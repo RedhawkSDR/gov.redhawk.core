@@ -69,8 +69,8 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 		this.waveform = waveform;
 	}
 
-	protected GraphitiModelMap getModelMap() {
-		return modelMap;
+	protected GraphitiModelMap createModelMapInstance() {
+		return new GraphitiModelMap(this, waveform);
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 		getEditingDomain().getCommandStack().removeCommandStackListener(getCommandStackListener());
 
 		// reflect runtime aspects here
-		getModelMap().reflectRuntimeStatus();
+		modelMap.reflectRuntimeStatus();
 
 		// set layout for sandbox editors
 		DUtil.layout(editor);
@@ -231,7 +231,7 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 				StatusManager.SHOW | StatusManager.LOG);
 		}
 
-		modelMap = new GraphitiModelMap(this, waveform);
+		modelMap = createModelMapInstance();
 
 		this.sadlistener = new SadGraphitiModelAdapter(modelMap);
 		this.scaListener = new ScaGraphitiModelAdapter(modelMap) {
@@ -337,10 +337,6 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 				}
 			});
 		}
-	}
-
-	public void componentRegistered(final SadComponentInstantiation component) {
-		refreshSelectedObject(component);
 	}
 
 	protected void addDiagramLinks(Diagram diagram) {

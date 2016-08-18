@@ -358,9 +358,9 @@ public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor impl
 	/**
 	 * Triggers a selection update if the given object is the current selection. This can be used from the sandbox
 	 * editors to refresh the properties view when the local component/device has registered.
-	 * @param object
+	 * @param businessObject
 	 */
-	protected void refreshSelectedObject(final Object object) {
+	public void refreshSelectedObject(final Object businessObject) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -371,7 +371,7 @@ public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor impl
 					if (element instanceof EditPart) {
 						EditPart part = (EditPart) element;
 						Object bo = DUtil.getBusinessObject((PictogramElement) part.getModel());
-						if (bo == object) {
+						if (bo == businessObject) {
 							// The properties view ignores the new selection if it's equal to the old selection, even
 							// though in our case it may lead to a change in input; setting the selection to the whole
 							// diagram and then back to the original selection triggers a refresh.

@@ -60,8 +60,8 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 		this.deviceManager = deviceManager;
 	}
 
-	protected GraphitiDcdModelMap getModelMap() {
-		return modelMap;
+	protected GraphitiDcdModelMap createModelMapInstance() {
+		return new GraphitiDcdModelMap(this, deviceManager);
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 			}
 		}
 
-		modelMap = new GraphitiDcdModelMap(this, dcd, deviceManager);
+		modelMap = createModelMapInstance();
 
 		this.dcdListener = new DcdGraphitiModelAdapter(modelMap);
 		this.scaListener = new ScaGraphitiModelAdapter(modelMap) {
@@ -266,10 +266,6 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 				}
 			});
 		}
-	}
-
-	public void deviceRegistered(DcdComponentInstantiation device) {
-		refreshSelectedObject(device);
 	}
 
 	@Override
