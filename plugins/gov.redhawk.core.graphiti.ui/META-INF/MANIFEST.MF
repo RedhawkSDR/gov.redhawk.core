@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.graphiti.ui,
  org.eclipse.emf.transaction,
  org.eclipse.emf.workspace,
- org.eclipse.gef
+ org.eclipse.gef,
+ gov.redhawk.sca.model
 Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.core.graphiti.ui.diagram.providers;
   x-friends:="gov.redhawk.core.graphiti.dcd.ui,
@@ -36,4 +37,9 @@ Export-Package: gov.redhawk.core.graphiti.ui.diagram.providers;
  gov.redhawk.core.graphiti.ui.ext,
  gov.redhawk.core.graphiti.ui.ext.impl,
  gov.redhawk.core.graphiti.ui.ext.util,
+ gov.redhawk.core.graphiti.ui.modelmap;
+  x-friends:="gov.redhawk.core.graphiti.dcd.ui,
+   gov.redhawk.core.graphiti.sad.ui,
+   gov.redhawk.ide.graphiti.dcd.ui,
+   gov.redhawk.ide.graphiti.sad.ui",
  gov.redhawk.core.graphiti.ui.util

@@ -30,13 +30,16 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 
+import gov.redhawk.core.graphiti.dcd.ui.modelmap.GraphitiDCDModelAdapter;
+import gov.redhawk.core.graphiti.dcd.ui.modelmap.GraphitiDCDModelMap;
+import gov.redhawk.core.graphiti.dcd.ui.modelmap.GraphitiDCDModelMapInitializerCommand;
+import gov.redhawk.core.graphiti.dcd.ui.modelmap.ScaDeviceManagerModelAdapter;
 import gov.redhawk.core.graphiti.ui.editor.AbstractGraphitiDiagramEditor;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.commands.NonDirtyingCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.ui.ScaFileStoreEditorInput;
-import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
@@ -47,10 +50,10 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 
 	public static final String EDITOR_ID = "gov.redhawk.ide.graphiti.dcd.ui.editor.dcdExplorer";
 
-	private GraphitiDcdModelMap modelMap;
 	private ScaDeviceManager deviceManager;
-	private ScaGraphitiModelAdapter scaListener;
-	private DcdGraphitiModelAdapter dcdListener;
+	private GraphitiDCDModelMap modelMap;
+	private ScaDeviceManagerModelAdapter scaListener;
+	private GraphitiDCDModelAdapter dcdListener;
 
 	protected ScaDeviceManager getDeviceManager() {
 		return deviceManager;
@@ -60,8 +63,8 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 		this.deviceManager = deviceManager;
 	}
 
-	protected GraphitiDcdModelMap createModelMapInstance() {
-		return new GraphitiDcdModelMap(this, deviceManager);
+	protected GraphitiDCDModelMap createModelMapInstance() {
+		return new GraphitiDCDModelMap(this, deviceManager);
 	}
 
 	@Override
@@ -168,8 +171,8 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 
 		modelMap = createModelMapInstance();
 
-		this.dcdListener = new DcdGraphitiModelAdapter(modelMap);
-		this.scaListener = new ScaGraphitiModelAdapter(modelMap) {
+		this.dcdListener = new GraphitiDCDModelAdapter(modelMap);
+		this.scaListener = new ScaDeviceManagerModelAdapter(modelMap) {
 
 			@Override
 			public void notifyChanged(Notification notification) {
@@ -215,12 +218,13 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 	 */
 	protected Command createModelInitializeCommand() {
 		DeviceConfiguration dcd = getDeviceConfiguration();
-		return new GraphitiDcdModelMapInitializerCommand(modelMap, dcd, deviceManager)
+		return new GraphitiDCDModelMapInitializerCommand(modelMap, dcd, deviceManager);
 	}
 
 	@Override
 	public void dispose() {
 		if (this.dcdListener != null) {
+			DeviceConfiguration dcd = getDeviceConfiguration();
 			if (dcd != null) {
 				dcd.eAdapters().remove(this.dcdListener);
 			}

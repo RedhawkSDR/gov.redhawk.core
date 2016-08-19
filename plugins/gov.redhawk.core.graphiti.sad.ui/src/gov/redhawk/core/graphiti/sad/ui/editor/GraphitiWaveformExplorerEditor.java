@@ -40,6 +40,10 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import gov.redhawk.core.graphiti.sad.ui.GraphitiSadUIPlugin;
+import gov.redhawk.core.graphiti.sad.ui.modelmap.GraphitiSADModelAdapter;
+import gov.redhawk.core.graphiti.sad.ui.modelmap.GraphitiSADModelMap;
+import gov.redhawk.core.graphiti.sad.ui.modelmap.GraphitiSADModelMapInitializerCommand;
+import gov.redhawk.core.graphiti.sad.ui.modelmap.ScaWaveformModelAdapter;
 import gov.redhawk.core.graphiti.ui.editor.AbstractGraphitiDiagramEditor;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaComponent;
@@ -56,10 +60,10 @@ import mil.jpeojtrs.sca.util.CorbaUtils;
  */
 public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 
-	private ScaGraphitiModelAdapter scaListener;
-	private SadGraphitiModelAdapter sadlistener;
-	private GraphitiModelMap modelMap;
 	private ScaWaveform waveform;
+	private GraphitiSADModelMap modelMap;
+	private ScaWaveformModelAdapter scaListener;
+	private GraphitiSADModelAdapter sadlistener;
 
 	protected ScaWaveform getWaveform() {
 		return waveform;
@@ -69,8 +73,8 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 		this.waveform = waveform;
 	}
 
-	protected GraphitiModelMap createModelMapInstance() {
-		return new GraphitiModelMap(this, waveform);
+	protected GraphitiSADModelMap createModelMapInstance() {
+		return new GraphitiSADModelMap(this, waveform);
 	}
 
 	@Override
@@ -233,8 +237,8 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 
 		modelMap = createModelMapInstance();
 
-		this.sadlistener = new SadGraphitiModelAdapter(modelMap);
-		this.scaListener = new ScaGraphitiModelAdapter(modelMap) {
+		this.sadlistener = new GraphitiSADModelAdapter(modelMap);
+		this.scaListener = new ScaWaveformModelAdapter(modelMap) {
 
 			@Override
 			public void notifyChanged(Notification notification) {
@@ -281,12 +285,13 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 	 */
 	protected Command createModelInitializeCommand() {
 		SoftwareAssembly sad = getSoftwareAssembly();
-		return new GraphitiModelMapInitializerCommand(modelMap, sad, waveform);
+		return new GraphitiSADModelMapInitializerCommand(modelMap, sad, waveform);
 	}
 
 	@Override
 	public void dispose() {
 		if (this.sadlistener != null) {
+			SoftwareAssembly sad = getSoftwareAssembly();
 			if (sad != null) {
 				sad.eAdapters().remove(this.sadlistener);
 			}
