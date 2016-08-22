@@ -133,6 +133,7 @@
     <module>tests/gov.redhawk.sca.tests</module>
     <module>tests/gov.redhawk.sca.ui.tests</module>
     <module>tests/gov.redhawk.sca.util.tests</module>
+    <module>tests/gov.redhawk.frontend.tests</module>
     <module>releng/p2</module>
   </modules>
 
