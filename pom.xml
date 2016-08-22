@@ -165,7 +165,7 @@
     <module>tests/gov.redhawk.scd.validation.tests</module>
     <module>tests/gov.redhawk.swt.browser.tests</module>
     <module>tests/gov.redhawk.validation.tests</module>
-
+    <module>tests/gov.redhawk.frontend.tests</module>
     <module>releng/p2</module>
   </modules>
 

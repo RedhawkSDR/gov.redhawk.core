@@ -425,39 +425,16 @@ public enum TunerProperties {
 
 		private Collection< ? extends Simple> createTunerAllocationSimples() {
 			List<Simple> tunerAllocSimpleList = new ArrayList<Simple>();
-
 			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.TUNER_TYPE.createSimple());
-
 			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.ALLOCATION_ID.createSimple());
-
-			Simple cFreq = TunerProperties.TunerAllocationProperties.CENTER_FREQUENCY.createSimple();
-			cFreq.setValue("0.0");
-			tunerAllocSimpleList.add(cFreq);
-
-			Simple bandwidth = TunerProperties.TunerAllocationProperties.BANDWIDTH.createSimple();
-			bandwidth.setValue("0.0");
-			tunerAllocSimpleList.add(bandwidth);
-
-			Simple bandwidthTol = TunerProperties.TunerAllocationProperties.BANDWIDTH_TOLERANCE.createSimple();
-			bandwidthTol.setValue("10.0");
-			tunerAllocSimpleList.add(bandwidthTol);
-
-			Simple sampleRate = TunerProperties.TunerAllocationProperties.SAMPLE_RATE.createSimple();
-			sampleRate.setValue("0.0");
-			tunerAllocSimpleList.add(sampleRate);
-
-			Simple sampleRateTol = TunerProperties.TunerAllocationProperties.SAMPLE_RATE_TOLERANCE.createSimple();
-			sampleRateTol.setValue("10.0");
-			tunerAllocSimpleList.add(sampleRateTol);
-
-			Simple deviceControl = TunerProperties.TunerAllocationProperties.DEVICE_CONTROL.createSimple();
-			deviceControl.setValue("true");
-			tunerAllocSimpleList.add(deviceControl);
-
+			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.CENTER_FREQUENCY.createSimple());
+			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.BANDWIDTH.createSimple());
+			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.BANDWIDTH_TOLERANCE.createSimple());
+			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.SAMPLE_RATE.createSimple());
+			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.SAMPLE_RATE_TOLERANCE.createSimple());
+			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.DEVICE_CONTROL.createSimple());
 			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.GROUP_ID.createSimple());
-
 			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.RF_FLOW_ID.createSimple());
-
 			return tunerAllocSimpleList;
 		}
 	}
