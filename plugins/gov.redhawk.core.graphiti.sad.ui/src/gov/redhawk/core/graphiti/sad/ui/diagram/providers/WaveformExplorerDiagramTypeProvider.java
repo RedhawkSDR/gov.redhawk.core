@@ -12,13 +12,13 @@ package gov.redhawk.core.graphiti.sad.ui.diagram.providers;
 
 import org.eclipse.graphiti.tb.IToolBehaviorProvider;
 
-public class WaveformExplorerTypeProvider extends SADDiagramTypeProvider {
+public class WaveformExplorerDiagramTypeProvider extends SADDiagramTypeProvider {
 
-	public static final String PROVIDER_ID = "gov.redhawk.ide.graphiti.sad.ui.WaveformExplorerTypeProvider";
+	public static final String PROVIDER_ID = "gov.redhawk.core.graphiti.sad.ui.WaveformExplorerDiagramTypeProvider";
 
 	private IToolBehaviorProvider[] toolBehaviorProviders;
 
-	public WaveformExplorerTypeProvider() {
+	public WaveformExplorerDiagramTypeProvider() {
 		super();
 		setFeatureProvider(new WaveformExplorerFeatureProvider(this));
 	}

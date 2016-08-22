@@ -99,8 +99,8 @@
    <extension
          point="org.eclipse.graphiti.ui.diagramTypeProviders">
       <diagramTypeProvider
-            class="gov.redhawk.ide.graphiti.sad.ui.diagram.providers.WaveformExplorerTypeProvider"
-            id="gov.redhawk.ide.graphiti.sad.ui.WaveformExplorerTypeProvider"
+            class="gov.redhawk.core.graphiti.sad.ui.diagram.providers.WaveformExplorerDiagramTypeProvider"
+            id="gov.redhawk.core.graphiti.sad.ui.WaveformExplorerDiagramTypeProvider"
             name="Waveform Explorer Diagram Type Provider">
          <diagramType
                id="gov.redhawk.ide.graphiti.sad.ui.SADDiagramEditor">

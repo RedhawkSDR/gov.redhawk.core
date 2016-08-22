@@ -7,7 +7,8 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: gov.redhawk.core.graphiti.sad.ui.editor;x-friends:="gov.redhawk.ide.graphiti.sad.ui",
+Export-Package: gov.redhawk.core.graphiti.sad.ui.diagram.providers;x-friends:="gov.redhawk.ide.graphiti.sad.ui",
+ gov.redhawk.core.graphiti.sad.ui.editor;x-friends:="gov.redhawk.ide.graphiti.sad.ui",
  gov.redhawk.core.graphiti.sad.ui.ext,
  gov.redhawk.core.graphiti.sad.ui.ext.impl,
  gov.redhawk.core.graphiti.sad.ui.ext.util,

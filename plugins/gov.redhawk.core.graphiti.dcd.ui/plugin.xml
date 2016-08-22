@@ -99,8 +99,8 @@
    <extension
          point="org.eclipse.graphiti.ui.diagramTypeProviders">
       <diagramTypeProvider
-            class="gov.redhawk.ide.graphiti.dcd.ui.diagram.providers.DevMgrExplorerDiagramTypeProvider"
-            id="gov.redhawk.ide.graphiti.dcd.ui.DevMgrExplorerDiagramTypeProvider"
+            class="gov.redhawk.core.graphiti.dcd.ui.diagram.providers.DevMgrExplorerDiagramTypeProvider"
+            id="gov.redhawk.core.graphiti.dcd.ui.DevMgrExplorerDiagramTypeProvider"
             name="Device Manager Diagram Type Provider">
          <diagramType
                id="gov.redhawk.ide.graphiti.dcd.ui.DCDDiagramEditor">

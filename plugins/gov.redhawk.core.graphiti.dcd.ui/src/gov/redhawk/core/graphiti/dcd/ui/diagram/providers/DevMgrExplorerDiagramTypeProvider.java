@@ -14,7 +14,7 @@ import org.eclipse.graphiti.tb.IToolBehaviorProvider;
 
 public class DevMgrExplorerDiagramTypeProvider extends DCDDiagramTypeProvider {
 
-	public static final String PROVIDER_ID = "gov.redhawk.ide.graphiti.dcd.ui.DevMgrExplorerDiagramTypeProvider";
+	public static final String PROVIDER_ID = "gov.redhawk.core.graphiti.dcd.ui.DevMgrExplorerDiagramTypeProvider";
 
 	private IToolBehaviorProvider[] toolBehaviorProviders;
 
