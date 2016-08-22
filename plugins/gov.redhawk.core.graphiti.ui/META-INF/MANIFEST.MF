@@ -23,7 +23,12 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.gef,
  gov.redhawk.sca.model
 Bundle-ActivationPolicy: lazy
-Export-Package: gov.redhawk.core.graphiti.ui.diagram.patterns;x-friends:="gov.redhawk.core.graphiti.dcd.ui,gov.redhawk.core.graphiti.sad.ui,gov.redhawk.ide.graphiti.ui",
+Export-Package: gov.redhawk.core.graphiti.ui.diagram.patterns;
+  x-friends:="gov.redhawk.core.graphiti.dcd.ui,
+   gov.redhawk.core.graphiti.sad.ui,
+   gov.redhawk.ide.graphiti.ui,
+   gov.redhawk.ide.graphiti.sad.ui,
+   gov.redhawk.ide.graphiti.dcd.ui",
  gov.redhawk.core.graphiti.ui.diagram.providers;
   x-friends:="gov.redhawk.core.graphiti.dcd.ui,
    gov.redhawk.core.graphiti.sad.ui,

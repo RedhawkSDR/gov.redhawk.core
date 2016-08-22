@@ -29,8 +29,11 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.impl.CreateContext;
 
 import gov.redhawk.core.graphiti.dcd.ui.GraphitiDcdUIPlugin;
+import gov.redhawk.core.graphiti.dcd.ui.diagram.feature.DeviceCreateFeature;
+import gov.redhawk.core.graphiti.dcd.ui.diagram.feature.ServiceCreateFeature;
 import gov.redhawk.core.graphiti.ui.editor.AbstractGraphitiMultiPageEditor;
 import gov.redhawk.core.graphiti.ui.modelmap.AbstractGraphitiModelMap;
+import gov.redhawk.core.graphiti.ui.modelmap.CreateComponentInstantiationCommand;
 import gov.redhawk.model.sca.CorbaObjWrapper;
 import gov.redhawk.model.sca.ScaConnection;
 import gov.redhawk.model.sca.ScaDevice;

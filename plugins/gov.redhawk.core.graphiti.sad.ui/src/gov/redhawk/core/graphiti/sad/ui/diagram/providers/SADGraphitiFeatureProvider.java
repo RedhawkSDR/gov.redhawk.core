@@ -26,6 +26,7 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 
 import gov.redhawk.core.graphiti.sad.ui.internal.diagram.feature.SADConnectionInterfaceDeleteFeature;
 import gov.redhawk.core.graphiti.sad.ui.internal.diagram.feature.SADConnectionInterfaceUpdateFeature;
+import gov.redhawk.core.graphiti.sad.ui.internal.diagram.patterns.ComponentPattern;
 import gov.redhawk.core.graphiti.sad.ui.internal.diagram.patterns.SADConnectInterfacePattern;
 import gov.redhawk.core.graphiti.ui.diagram.providers.AbstractGraphitiFeatureProvider;
 

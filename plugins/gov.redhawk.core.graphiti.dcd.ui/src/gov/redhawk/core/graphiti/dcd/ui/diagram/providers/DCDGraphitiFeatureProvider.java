@@ -29,9 +29,13 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.pattern.AddFeatureForPattern;
 import org.eclipse.graphiti.pattern.IPattern;
 
+import gov.redhawk.core.graphiti.dcd.ui.diagram.feature.DeviceCreateFeature;
+import gov.redhawk.core.graphiti.dcd.ui.diagram.feature.ServiceCreateFeature;
 import gov.redhawk.core.graphiti.dcd.ui.internal.diagram.feature.DCDConnectionInterfaceDeleteFeature;
 import gov.redhawk.core.graphiti.dcd.ui.internal.diagram.feature.DCDConnectionInterfaceUpdateFeature;
 import gov.redhawk.core.graphiti.dcd.ui.internal.diagram.patterns.DCDConnectInterfacePattern;
+import gov.redhawk.core.graphiti.dcd.ui.internal.diagram.patterns.DevicePattern;
+import gov.redhawk.core.graphiti.dcd.ui.internal.diagram.patterns.ServicePattern;
 import gov.redhawk.core.graphiti.ui.diagram.providers.AbstractGraphitiFeatureProvider;
 
 public abstract class DCDGraphitiFeatureProvider extends AbstractGraphitiFeatureProvider {
