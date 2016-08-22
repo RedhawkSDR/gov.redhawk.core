@@ -201,7 +201,6 @@ public class RHContainerShapeImpl extends ContainerShapeImpl implements RHContai
 	private static final String GA_INNER_ROUNDED_RECTANGLE_LINE = "innerRoundedRectangleLine";
 	private static final String GA_PROVIDES_PORT_RECTANGLE = "providesPortsRectangle";
 	private static final String GA_USES_PORTS_RECTANGLE = "usesPortsRectangle";
-	public static final String GA_FIX_POINT_ANCHOR_RECTANGLE = "fixPointAnchorRectangle";
 
 	// Property key/value pairs help us identify Shapes to enable/disable user actions
 	// (move, resize, delete, remove, etc.)
@@ -209,9 +208,6 @@ public class RHContainerShapeImpl extends ContainerShapeImpl implements RHContai
 	private static final String SHAPE_INNER_CONTAINER = "innerContainerShape";
 	private static final String SHAPE_USES_PORTS_CONTAINER = "usesPortsContainerShape";
 	private static final String SHAPE_PROVIDES_PORTS_CONTAINER = "providesPortsContainerShape";
-	public static final String SHAPE_INTERFACE_CONTAINER = "interfaceContainerShape";
-	public static final String SUPER_PROVIDES_PORTS_RECTANGLE = "superProvidesPortsContainer";
-	public static final String SUPER_USES_PORTS_RECTANGLE = "superUsesPortsContainer";
 
 	// Shape size constants
 	private static final int INNER_ROUNDED_RECTANGLE_CORNER_WIDTH = 10;

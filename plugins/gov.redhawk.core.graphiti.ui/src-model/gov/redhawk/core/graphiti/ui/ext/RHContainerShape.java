@@ -46,6 +46,21 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
  * @generated
  */
 public interface RHContainerShape extends ContainerShape {
+
+	// END GENERATED CODE
+
+	// These are property key/value pairs that help us resize an existing shape by properly identifying
+	// graphicsAlgorithms
+	public static final String GA_FIX_POINT_ANCHOR_RECTANGLE = "fixPointAnchorRectangle";
+
+	// Property key/value pairs help us identify Shapes to enable/disable user actions
+	// (move, resize, delete, remove, etc.)
+	public static final String SHAPE_INTERFACE_CONTAINER = "interfaceContainerShape";
+	public static final String SUPER_PROVIDES_PORTS_RECTANGLE = "superProvidesPortsContainer";
+	public static final String SUPER_USES_PORTS_RECTANGLE = "superUsesPortsContainer";
+
+	// BEGIN GENERATED CODE
+
 	/**
 	 * Returns the value of the '<em><b>Started</b></em>' attribute.
 	 * <!-- begin-user-doc -->
