@@ -13,7 +13,8 @@ Export-Package: gov.redhawk.core.graphiti.sad.ui.diagram.feature;x-friends:="gov
  gov.redhawk.core.graphiti.sad.ui.ext,
  gov.redhawk.core.graphiti.sad.ui.ext.impl,
  gov.redhawk.core.graphiti.sad.ui.ext.util,
- gov.redhawk.core.graphiti.sad.ui.modelmap;x-friends:="gov.redhawk.ide.graphiti.sad.ui"
+ gov.redhawk.core.graphiti.sad.ui.modelmap;x-friends:="gov.redhawk.ide.graphiti.sad.ui",
+ gov.redhawk.core.graphiti.sad.ui.utils;x-friends:="gov.redhawk.ide.graphiti.sad.ui"
 Require-Bundle: gov.redhawk.core.graphiti.ui;bundle-version="1.0.0";visibility:=reexport,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,

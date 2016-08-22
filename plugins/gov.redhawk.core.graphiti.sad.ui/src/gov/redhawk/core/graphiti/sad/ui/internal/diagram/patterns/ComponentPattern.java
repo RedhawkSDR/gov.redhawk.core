@@ -46,6 +46,7 @@ import org.eclipse.graphiti.services.Graphiti;
 
 import gov.redhawk.core.graphiti.sad.ui.ext.ComponentShape;
 import gov.redhawk.core.graphiti.sad.ui.ext.RHSadGxFactory;
+import gov.redhawk.core.graphiti.sad.ui.utils.SADUtils;
 import gov.redhawk.core.graphiti.ui.diagram.patterns.AbstractPortSupplierPattern;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.util.StyleUtil;
@@ -187,7 +188,7 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 				deleteComponentInstantiation(ciToDelete, sad);
 
 				// re-organize start order
-				organizeStartOrder(sad, diagram, getFeatureProvider());
+				SADUtils.organizeStartOrder(sad, diagram, getFeatureProvider());
 
 			}
 		});
@@ -543,159 +544,6 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 		}
 
 		return retVal;
-	}
-
-	/**
-	 * swap start order of provided components. Change assembly controller if start order zero
-	 * @param sad
-	 * @param featureProvider
-	 * @param lowerCi - The component that currently has the lower start order
-	 * @param higherCi - The component that currently has the higher start order
-	 */
-	public static void swapStartOrder(SoftwareAssembly sad, IFeatureProvider featureProvider, final SadComponentInstantiation lowerCi,
-		final SadComponentInstantiation higherCi) {
-
-		// editing domain for our transaction
-		TransactionalEditingDomain editingDomain = featureProvider.getDiagramTypeProvider().getDiagramBehavior().getEditingDomain();
-
-		// get AssemblyController
-		final AssemblyController assemblyController = sad.getAssemblyController();
-
-		// Perform business object manipulation in a Command
-		TransactionalCommandStack stack = (TransactionalCommandStack) editingDomain.getCommandStack();
-		stack.execute(new RecordingCommand(editingDomain) {
-			@Override
-			protected void doExecute() {
-
-				// Increment start order
-				lowerCi.setStartOrder(higherCi.getStartOrder());
-				// Decrement start order
-				higherCi.setStartOrder(higherCi.getStartOrder().subtract(BigInteger.ONE));
-
-				// set assembly controller if start order is zero
-				if (lowerCi.getStartOrder().compareTo(BigInteger.ZERO) == 0) {
-					assemblyController.getComponentInstantiationRef().setInstantiation(lowerCi);
-				} else if (higherCi.getStartOrder().compareTo(BigInteger.ZERO) == 0) {
-					assemblyController.getComponentInstantiationRef().setInstantiation(higherCi);
-				}
-			}
-		});
-	}
-
-	/*
-	 *  returns component instantiation with provided start order
-	 */
-	public static SadComponentInstantiation getComponentInstantiationViaStartOrder(final SoftwareAssembly sad, final BigInteger startOrder) {
-		for (SadComponentInstantiation ci : sad.getAllComponentInstantiations()) {
-			if (ci.getStartOrder() != null && ci.getStartOrder().compareTo(startOrder) == 0) {
-				return ci;
-			}
-		}
-		return null;
-	}
-
-	// adjust the start order for a component
-	public static void organizeStartOrder(final SoftwareAssembly sad, final Diagram diagram, final IFeatureProvider featureProvider) {
-		BigInteger startOrder = BigInteger.ZERO;
-
-		// get components by start order
-		EList<SadComponentInstantiation> componentInstantiationsInStartOrder = sad.getComponentInstantiationsInStartOrder();
-
-		// if assembly controller was deleted (or component that used to be assembly controller was deleted)
-		// set a new assembly controller
-		AssemblyController assemblyController = getAssemblyController(featureProvider, diagram);
-		if ((assemblyController == null || assemblyController.getComponentInstantiationRef().getInstantiation() == null)
-			&& componentInstantiationsInStartOrder.size() > 0) {
-			// assign assembly controller assign to first component
-			assemblyController = SadFactory.eINSTANCE.createAssemblyController();
-			SadComponentInstantiation ci = componentInstantiationsInStartOrder.get(0);
-			SadComponentInstantiationRef sadComponentInstantiationRef = SadFactory.eINSTANCE.createSadComponentInstantiationRef();
-			sadComponentInstantiationRef.setInstantiation(ci);
-			assemblyController.setComponentInstantiationRef(sadComponentInstantiationRef);
-			sad.setAssemblyController(assemblyController);
-
-			// If the component has a start order defined, update it to run first
-			if (ci.getStartOrder() != null) {
-				ci.setStartOrder(BigInteger.ZERO);
-			}
-
-		}
-
-		if (assemblyController != null && assemblyController.getComponentInstantiationRef() != null) {
-			final SadComponentInstantiation ci = assemblyController.getComponentInstantiationRef().getInstantiation();
-			// first check to make sure start order is set to zero
-			if (ci != null && ci.getStartOrder() != null && ci.getStartOrder() != BigInteger.ZERO) {
-				TransactionalEditingDomain editingDomain = featureProvider.getDiagramTypeProvider().getDiagramBehavior().getEditingDomain();
-				TransactionalCommandStack stack = (TransactionalCommandStack) editingDomain.getCommandStack();
-				stack.execute(new RecordingCommand(editingDomain) {
-
-					@Override
-					protected void doExecute() {
-						ci.setStartOrder(BigInteger.ZERO);
-					}
-				});
-			}
-
-			// remove assembly controller from list, it has already been updated
-			componentInstantiationsInStartOrder.remove(assemblyController.getComponentInstantiationRef().getInstantiation());
-		}
-
-		// set start order
-		for (final SadComponentInstantiation ci : componentInstantiationsInStartOrder) {
-			// Don't update start order if it has not already been declared for this component
-			if (ci.getStartOrder() != null) {
-				startOrder = startOrder.add(BigInteger.ONE);
-
-				// Only call the update if a change is needed
-				if (ci.getStartOrder().intValue() != startOrder.intValue()) {
-					final BigInteger newStartOrder = startOrder;
-					TransactionalEditingDomain editingDomain = featureProvider.getDiagramTypeProvider().getDiagramBehavior().getEditingDomain();
-					TransactionalCommandStack stack = (TransactionalCommandStack) editingDomain.getCommandStack();
-					stack.execute(new RecordingCommand(editingDomain) {
-
-						@Override
-						protected void doExecute() {
-							ci.setStartOrder(newStartOrder);
-
-							// Force pictogram elements to update
-							ComponentShape componentShape = (ComponentShape) DUtil.getPictogramElementForBusinessObject(diagram, ci, ComponentShape.class);
-							UpdateContext context = new UpdateContext(componentShape);
-							IUpdateFeature feature = featureProvider.getUpdateFeature(context);
-							feature.execute(context);
-						}
-					});
-				}
-			}
-		}
-	}
-
-	// returns the assembly controller for this waveform
-	private static AssemblyController getAssemblyController(IFeatureProvider featureProvider, Diagram diagram) {
-		final SoftwareAssembly sad = DUtil.getDiagramSAD(diagram);
-		if (sad.getAssemblyController() != null && sad.getAssemblyController().getComponentInstantiationRef() != null) {
-			return sad.getAssemblyController();
-		}
-		return null;
-
-	}
-
-	/**
-	 * Return all ComponentShape in Diagram (recursively)
-	 * @param containerShape
-	 * @return
-	 */
-	public static List<ComponentShape> getAllComponentShapes(ContainerShape containerShape) {
-		List<ComponentShape> children = new ArrayList<ComponentShape>();
-		if (containerShape instanceof ComponentShape) {
-			children.add((ComponentShape) containerShape);
-		} else {
-			for (Shape s : containerShape.getChildren()) {
-				if (s instanceof ContainerShape) {
-					children.addAll(getAllComponentShapes((ContainerShape) s));
-				}
-			}
-		}
-		return children;
 	}
 
 	@Override
