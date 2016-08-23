@@ -52,6 +52,7 @@ import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.ext.RHGxFactory;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.core.graphiti.ui.util.StyleUtil;
+import gov.redhawk.core.graphiti.ui.util.UpdateUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentSupportedInterfaceStub;
 import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
 import mil.jpeojtrs.sca.partitioning.ProvidesPortStub;
