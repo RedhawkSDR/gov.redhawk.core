@@ -30,6 +30,7 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.pattern.AbstractPattern;
 import org.eclipse.graphiti.pattern.config.IPatternConfiguration;
 
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import mil.jpeojtrs.sca.util.CollectionUtils;
 
 public abstract class AbstractContainerPattern extends AbstractPattern {

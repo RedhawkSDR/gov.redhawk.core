@@ -35,6 +35,7 @@ import org.eclipse.graphiti.services.IGaService;
 
 import gov.redhawk.core.graphiti.ui.diagram.providers.AbstractToolBehaviorProvider;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.core.graphiti.ui.util.StyleUtil;
 import gov.redhawk.sca.util.StringUtil;
 import mil.jpeojtrs.sca.partitioning.ConnectInterface;
@@ -204,10 +205,10 @@ public abstract class AbstractConnectInterfacePattern extends AbstractConnection
 		if (fb == null) {
 			fb = modelConnection.getUsesPort().getFindBy();
 			if (fb != null) {
-				findByPE = DUtil.getParentRhContainerShape(context.getSourceAnchor());
+				findByPE = ScaEcoreUtils.getEContainerOfType(context.getSourceAnchor(), RHContainerShape.class);
 			}
 		} else {
-			findByPE = DUtil.getParentRhContainerShape(context.getTargetAnchor());
+			findByPE = ScaEcoreUtils.getEContainerOfType(context.getTargetAnchor(), RHContainerShape.class);
 		}
 
 		if (fb != null) {

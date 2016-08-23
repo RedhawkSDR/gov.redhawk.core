@@ -31,6 +31,7 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 
 import gov.redhawk.core.graphiti.ui.diagram.patterns.AbstractPortSupplierPattern;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.dcd.DcdComponentPlacement;
 import mil.jpeojtrs.sca.dcd.DcdConnectInterface;

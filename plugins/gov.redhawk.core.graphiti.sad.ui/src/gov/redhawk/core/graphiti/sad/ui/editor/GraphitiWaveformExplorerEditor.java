@@ -45,6 +45,7 @@ import gov.redhawk.core.graphiti.sad.ui.modelmap.GraphitiSADModelMap;
 import gov.redhawk.core.graphiti.sad.ui.modelmap.GraphitiSADModelMapInitializerCommand;
 import gov.redhawk.core.graphiti.sad.ui.modelmap.ScaWaveformModelAdapter;
 import gov.redhawk.core.graphiti.ui.editor.AbstractGraphitiDiagramEditor;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaWaveform;

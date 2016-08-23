@@ -19,6 +19,7 @@ import org.eclipse.graphiti.features.impl.AbstractUpdateFeature;
 import org.eclipse.graphiti.features.impl.Reason;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import mil.jpeojtrs.sca.partitioning.ConnectionTarget;
 import mil.jpeojtrs.sca.partitioning.UsesPortStub;
 import mil.jpeojtrs.sca.sad.SadConnectInterface;

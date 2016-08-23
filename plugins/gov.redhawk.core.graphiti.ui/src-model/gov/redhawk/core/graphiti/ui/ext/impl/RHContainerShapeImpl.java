@@ -14,6 +14,7 @@ package gov.redhawk.core.graphiti.ui.ext.impl;
 
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.ext.RHGxPackage;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.core.graphiti.ui.util.StyleUtil;
 import mil.jpeojtrs.sca.partitioning.ProvidesPortStub;
 import mil.jpeojtrs.sca.partitioning.UsesPortStub;

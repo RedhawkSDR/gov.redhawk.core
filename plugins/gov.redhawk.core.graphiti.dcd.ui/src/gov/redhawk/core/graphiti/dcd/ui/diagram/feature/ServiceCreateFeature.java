@@ -19,6 +19,7 @@ import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.dcd.DcdComponentPlacement;

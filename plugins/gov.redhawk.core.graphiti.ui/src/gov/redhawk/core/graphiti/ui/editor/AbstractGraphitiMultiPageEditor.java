@@ -61,6 +61,7 @@ import org.eclipse.ui.views.properties.tabbed.ITabbedPropertySheetPageContributo
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
 import gov.redhawk.core.graphiti.ui.GraphitiUIPlugin;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.ui.editor.SCAFormEditor;
 
 public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor implements ITabbedPropertySheetPageContributor, IViewerProvider {

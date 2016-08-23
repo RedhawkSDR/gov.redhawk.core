@@ -35,6 +35,7 @@ import gov.redhawk.core.graphiti.dcd.ui.modelmap.GraphitiDCDModelMap;
 import gov.redhawk.core.graphiti.dcd.ui.modelmap.GraphitiDCDModelMapInitializerCommand;
 import gov.redhawk.core.graphiti.dcd.ui.modelmap.ScaDeviceManagerModelAdapter;
 import gov.redhawk.core.graphiti.ui.editor.AbstractGraphitiDiagramEditor;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.commands.NonDirtyingCommand;

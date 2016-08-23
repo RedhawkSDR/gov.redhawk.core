@@ -20,6 +20,7 @@ import org.eclipse.graphiti.pattern.IPattern;
 
 import gov.redhawk.core.graphiti.dcd.ui.ext.RHDeviceGxFactory;
 import gov.redhawk.core.graphiti.dcd.ui.ext.ServiceShape;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.core.graphiti.ui.util.StyleUtil;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;

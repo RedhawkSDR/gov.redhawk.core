@@ -49,6 +49,7 @@ import gov.redhawk.core.graphiti.ui.GraphitiUIPlugin;
 import gov.redhawk.core.graphiti.ui.diagram.patterns.AbstractConnectInterfacePattern;
 import gov.redhawk.core.graphiti.ui.editor.AbstractGraphitiMultiPageEditor;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.model.sca.CorbaObjWrapper;
 import gov.redhawk.model.sca.ScaConnection;
 import gov.redhawk.model.sca.ScaPackage;

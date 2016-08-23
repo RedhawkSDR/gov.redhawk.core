@@ -23,6 +23,7 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 
 import gov.redhawk.core.graphiti.sad.ui.ext.ComponentShape;
 import gov.redhawk.core.graphiti.sad.ui.internal.diagram.patterns.ComponentPattern;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentFile;
 import mil.jpeojtrs.sca.partitioning.ComponentFileRef;
@@ -62,7 +63,7 @@ public class ComponentCreateFeature extends AbstractCreateFeature {
 	// diagram and hostCollocation acceptable
 	@Override
 	public boolean canCreate(ICreateContext context) {
-		if (context.getTargetContainer() instanceof Diagram || DUtil.getHostCollocation(context.getTargetContainer()) != null) {
+		if (context.getTargetContainer() instanceof Diagram || DUtil.getBusinessObject(context.getTargetContainer(), HostCollocation.class) != null) {
 			return true;
 		}
 		return false;
@@ -86,7 +87,7 @@ public class ComponentCreateFeature extends AbstractCreateFeature {
 		final SoftwareAssembly sad = DUtil.getDiagramSAD(getDiagram());
 
 		// determine if target is HostCollocation ContainerShape
-		HostCollocation hostCollocation = DUtil.getHostCollocation(context.getTargetContainer());
+		HostCollocation hostCollocation = DUtil.getBusinessObject(context.getTargetContainer(), HostCollocation.class);
 
 		// if HostCollocation was the target use it, otherwise add to sad partitioning
 		final EList<SadComponentPlacement> componentPlacementList = hostCollocation != null ? hostCollocation.getComponentPlacement()

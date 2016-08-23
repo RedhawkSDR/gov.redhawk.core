@@ -49,6 +49,7 @@ import gov.redhawk.core.graphiti.sad.ui.ext.RHSadGxFactory;
 import gov.redhawk.core.graphiti.sad.ui.utils.SADUtils;
 import gov.redhawk.core.graphiti.ui.diagram.patterns.AbstractPortSupplierPattern;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.core.graphiti.ui.util.StyleUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentFile;
 import mil.jpeojtrs.sca.partitioning.ComponentSupportedInterfaceStub;
@@ -129,7 +130,7 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 	@Override
 	public boolean canAdd(IAddContext context) {
 		if (context.getNewObject() instanceof SadComponentInstantiation) {
-			if (context.getTargetContainer() instanceof Diagram || DUtil.getHostCollocation(context.getTargetContainer()) != null) {
+			if (context.getTargetContainer() instanceof Diagram || DUtil.getBusinessObject(context.getTargetContainer(), HostCollocation.class) != null) {
 				return true;
 			}
 			return false;
@@ -166,16 +167,8 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 	 */
 	@Override
 	public void delete(IDeleteContext context) {
-
-		// set componentToDelete
 		final SadComponentInstantiation ciToDelete = (SadComponentInstantiation) DUtil.getBusinessObject(context.getPictogramElement());
-
-		final Diagram diagram = DUtil.findDiagram((ContainerShape) context.getPictogramElement());
-
-		// editing domain for our transaction
 		TransactionalEditingDomain editingDomain = getFeatureProvider().getDiagramTypeProvider().getDiagramBehavior().getEditingDomain();
-
-		// get sad from diagram
 		final SoftwareAssembly sad = DUtil.getDiagramSAD(getDiagram());
 
 		// Perform business object manipulation in a Command
@@ -188,7 +181,7 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 				deleteComponentInstantiation(ciToDelete, sad);
 
 				// re-organize start order
-				SADUtils.organizeStartOrder(sad, diagram, getFeatureProvider());
+				SADUtils.organizeStartOrder(sad, getDiagram(), getFeatureProvider());
 
 			}
 		});
@@ -441,7 +434,7 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 		}
 
 		// if moving to HostCollocation to Sad Partitioning
-		if (context.getTargetContainer() instanceof Diagram || DUtil.getHostCollocation(context.getTargetContainer()) != null) {
+		if (context.getTargetContainer() instanceof Diagram || DUtil.getBusinessObject(context.getTargetContainer(), HostCollocation.class) != null) {
 			return true;
 		}
 		return false;
@@ -464,31 +457,25 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 			super.moveShape(context);
 		}
 
-		// if moving from HostCollocation to a different HostCollocation
-		if (DUtil.getHostCollocation(context.getSourceContainer()) != null && DUtil.getHostCollocation(context.getTargetContainer()) != null
-			&& DUtil.getHostCollocation(context.getSourceContainer()) != DUtil.getHostCollocation(context.getTargetContainer())) {
-			// swap parents
-			DUtil.getHostCollocation(context.getSourceContainer()).getComponentPlacement().remove((SadComponentPlacement) ci.getPlacement());
-			DUtil.getHostCollocation(context.getTargetContainer()).getComponentPlacement().add((SadComponentPlacement) ci.getPlacement());
-			super.moveShape(context);
-		}
+		HostCollocation sourceHostCollocation = DUtil.getBusinessObject(context.getSourceContainer(), HostCollocation.class);
+		HostCollocation targetHostCollocation = DUtil.getBusinessObject(context.getTargetContainer(), HostCollocation.class);
 
-		// if moving to HostCollocation from Sad Partitioning
-		if (DUtil.getHostCollocation(context.getTargetContainer()) != null && context.getSourceContainer() instanceof Diagram) {
-			// swap parents
+		if (sourceHostCollocation != null && targetHostCollocation != null && sourceHostCollocation != targetHostCollocation) {
+			// Moving from one host collocation to another
+			sourceHostCollocation.getComponentPlacement().remove((SadComponentPlacement) ci.getPlacement());
+			targetHostCollocation.getComponentPlacement().add((SadComponentPlacement) ci.getPlacement());
+			super.moveShape(context);
+		} else if (targetHostCollocation != null && context.getSourceContainer() instanceof Diagram) {
+			// Moving from top-level partitioning to a host collocation
 			sad.getPartitioning().getComponentPlacement().remove(ci.getPlacement());
-			DUtil.getHostCollocation(context.getTargetContainer()).getComponentPlacement().add((SadComponentPlacement) ci.getPlacement());
+			targetHostCollocation.getComponentPlacement().add((SadComponentPlacement) ci.getPlacement());
 			super.moveShape(context);
-		}
-
-		// if moving to Sad Partitioning from HostCollocation
-		if (DUtil.getHostCollocation(context.getSourceContainer()) != null && context.getTargetContainer() instanceof Diagram) {
-			// swap parents
+		} else if (sourceHostCollocation != null && context.getTargetContainer() instanceof Diagram) {
+			// Moving from a host collocation to top-level partitioning
 			sad.getPartitioning().getComponentPlacement().add((SadComponentPlacement) ci.getPlacement());
-			DUtil.getHostCollocation(context.getSourceContainer()).getComponentPlacement().remove((SadComponentPlacement) ci.getPlacement());
+			sourceHostCollocation.getComponentPlacement().remove((SadComponentPlacement) ci.getPlacement());
 			super.moveShape(context);
 		}
-
 	}
 
 	/**

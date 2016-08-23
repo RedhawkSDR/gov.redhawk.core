@@ -48,4 +48,9 @@ Export-Package: gov.redhawk.core.graphiti.ui.diagram.patterns;
    gov.redhawk.core.graphiti.sad.ui,
    gov.redhawk.ide.graphiti.dcd.ui,
    gov.redhawk.ide.graphiti.sad.ui",
- gov.redhawk.core.graphiti.ui.util
+ gov.redhawk.core.graphiti.ui.util;
+  x-friends:="gov.redhawk.core.graphiti.sad.ui,
+   gov.redhawk.core.graphiti.dcd.ui,
+   gov.redhawk.ide.graphiti.dcd.ui,
+   gov.redhawk.ide.graphiti.sad.ui,
+   gov.redhawk.ide.graphiti.ui"

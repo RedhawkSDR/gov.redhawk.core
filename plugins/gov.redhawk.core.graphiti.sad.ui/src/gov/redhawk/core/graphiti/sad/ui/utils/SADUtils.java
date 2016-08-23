@@ -26,6 +26,7 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 
 import gov.redhawk.core.graphiti.sad.ui.ext.ComponentShape;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import mil.jpeojtrs.sca.sad.AssemblyController;
 import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
 import mil.jpeojtrs.sca.sad.SadComponentInstantiationRef;

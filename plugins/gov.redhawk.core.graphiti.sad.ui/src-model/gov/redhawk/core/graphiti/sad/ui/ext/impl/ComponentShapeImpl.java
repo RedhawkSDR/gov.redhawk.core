@@ -16,6 +16,7 @@ import gov.redhawk.core.graphiti.sad.ui.ext.ComponentShape;
 import gov.redhawk.core.graphiti.sad.ui.ext.RHSadGxPackage;
 import gov.redhawk.core.graphiti.sad.ui.internal.diagram.patterns.ComponentPattern;
 import gov.redhawk.core.graphiti.ui.ext.impl.RHContainerShapeImpl;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 
 import org.eclipse.emf.ecore.EClass;
 

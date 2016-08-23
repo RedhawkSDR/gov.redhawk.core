@@ -22,6 +22,7 @@ import org.eclipse.graphiti.features.context.impl.RemoveContext;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.ui.features.DefaultDeleteFeature;
 
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import mil.jpeojtrs.sca.dcd.DcdConnectInterface;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 

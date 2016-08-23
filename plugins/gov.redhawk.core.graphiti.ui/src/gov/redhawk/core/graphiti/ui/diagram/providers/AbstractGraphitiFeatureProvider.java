@@ -32,6 +32,7 @@ import org.eclipse.graphiti.pattern.DirectEditingFeatureForPattern;
 import org.eclipse.graphiti.pattern.IPattern;
 
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 
 public abstract class AbstractGraphitiFeatureProvider extends DefaultFeatureProviderWithPatterns implements IHoverPadFeatureProvider {

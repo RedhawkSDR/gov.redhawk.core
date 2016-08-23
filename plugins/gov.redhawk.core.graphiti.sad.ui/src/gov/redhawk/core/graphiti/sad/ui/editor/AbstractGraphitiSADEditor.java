@@ -42,6 +42,7 @@ import CF.Application;
 import gov.redhawk.core.graphiti.sad.ui.GraphitiSadUIPlugin;
 import gov.redhawk.core.graphiti.sad.ui.diagram.providers.SADDiagramTypeProvider;
 import gov.redhawk.core.graphiti.ui.editor.AbstractGraphitiMultiPageEditor;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.NonDirtyingCommand;
 import gov.redhawk.model.sca.util.ModelUtil;

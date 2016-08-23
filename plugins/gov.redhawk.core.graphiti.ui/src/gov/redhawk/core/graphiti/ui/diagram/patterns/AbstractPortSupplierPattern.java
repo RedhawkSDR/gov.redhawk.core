@@ -50,6 +50,7 @@ import org.eclipse.graphiti.services.IGaLayoutService;
 
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.ext.RHGxFactory;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.core.graphiti.ui.util.StyleUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentSupportedInterfaceStub;
 import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
@@ -803,8 +804,8 @@ public abstract class AbstractPortSupplierPattern extends AbstractContainerPatte
 
 		// Capture the existing connection information and delete the connection
 		for (UsesPortStub portStub : portsToDelete) {
-			Anchor portStubPe = (Anchor) DUtil.getPictogramElementForBusinessObject(getDiagram(), portStub, Anchor.class);
-			RHContainerShape rhShape = DUtil.getParentRhContainerShape(portStubPe);
+			Anchor portStubPe = DUtil.getPictogramElementForBusinessObject(getDiagram(), portStub, Anchor.class);
+			RHContainerShape rhShape = ScaEcoreUtils.getEContainerOfType(portStubPe, RHContainerShape.class);
 			for (Connection connection : portStubPe.getOutgoingConnections()) {
 				Object connectionObject = getBusinessObjectForPictogramElement(connection);
 				if (connectionObject instanceof SadConnectInterface) {
@@ -850,8 +851,8 @@ public abstract class AbstractPortSupplierPattern extends AbstractContainerPatte
 
 		// Capture the existing connection information and delete the connection
 		for (ProvidesPortStub portStub : portsToDelete) {
-			Anchor portStubPe = (Anchor) DUtil.getPictogramElementForBusinessObject(getDiagram(), portStub, Anchor.class);
-			RHContainerShape rhShape = DUtil.getParentRhContainerShape(portStubPe);
+			Anchor portStubPe = DUtil.getPictogramElementForBusinessObject(getDiagram(), portStub, Anchor.class);
+			RHContainerShape rhShape = ScaEcoreUtils.getEContainerOfType(portStubPe, RHContainerShape.class);
 			for (Connection connection : portStubPe.getIncomingConnections()) {
 				Object connectionObject = getBusinessObjectForPictogramElement(connection);
 				if (connectionObject instanceof SadConnectInterface) {

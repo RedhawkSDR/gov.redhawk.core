@@ -15,6 +15,7 @@ import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.features.context.ICreateConnectionContext;
 
 import gov.redhawk.core.graphiti.ui.diagram.patterns.AbstractConnectInterfacePattern;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import mil.jpeojtrs.sca.partitioning.ConnectInterface;
 import mil.jpeojtrs.sca.sad.SadConnectInterface;
 import mil.jpeojtrs.sca.sad.SadFactory;

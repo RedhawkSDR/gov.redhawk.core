@@ -43,6 +43,7 @@ import org.eclipse.graphiti.util.IColorConstant;
 import org.eclipse.swt.graphics.Color;
 
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentSupportedInterfaceStub;
 import mil.jpeojtrs.sca.partitioning.ProvidesPortStub;
 import mil.jpeojtrs.sca.partitioning.UsesPortStub;
