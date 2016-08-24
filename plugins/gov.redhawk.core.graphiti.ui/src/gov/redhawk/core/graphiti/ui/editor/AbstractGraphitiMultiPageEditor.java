@@ -18,11 +18,8 @@ import java.util.Collections;
 import org.eclipse.core.commands.operations.DefaultOperationHistory;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.ui.viewer.IViewerProvider;
 import org.eclipse.emf.common.util.URI;
@@ -275,48 +272,11 @@ public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor impl
 		return getActionBarContributor().getActionBars();
 	}
 
-	/**
-	 * The Text editor always stays in sync with other editor changes therefore always save it.
-	 * Calling emfDoSave handles saving the graphiti diagram resource
-	 */
-	@Override
-	public void doSave(final IProgressMonitor monitor) {
-		final CleanUpComponentFilesAction cleanAction = new CleanUpComponentFilesAction();
-		cleanAction.setRoot(getMainObject());
-		cleanAction.run();
-
-		try {
-			this.editorSaving = true;
-			if (textEditor.isDirty()) {
-				textEditor.doSave(monitor);
-				commitPages(true);
-				emfDoSave(new SubProgressMonitor(monitor, 1));
-			} else {
-				// saving diagram files that had no effect on SAD resource
-				commitPages(true);
-				emfDoSave(new SubProgressMonitor(monitor, 1));
-			}
-			BasicCommandStack commandStack = (BasicCommandStack) diagramEditor.getEditingDomain().getCommandStack();
-			commandStack.saveIsDone();
-			editorDirtyStateChanged();
-		} catch (final OperationCanceledException e) {
-			// PASS
-		} finally {
-			monitor.done();
-			this.editorSaving = false;
-		}
-	}
-
 	@Override
 	public void reload() {
 		super.reload();
 		diagramEditor.getDiagramBehavior().getUpdateBehavior().setResourceChanged(true);
 		diagramEditor.getDiagramBehavior().getUpdateBehavior().handleActivate();
-	}
-
-	@Override
-	protected void emfDoSave(IProgressMonitor progressMonitor) {
-		diagramEditor.doSave(progressMonitor);
 	}
 
 	@Override
