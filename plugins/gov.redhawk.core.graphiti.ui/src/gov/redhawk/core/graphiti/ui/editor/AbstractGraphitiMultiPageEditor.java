@@ -207,12 +207,23 @@ public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor impl
 		return this.diagramEditor.getContributorId();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * {@link AbstractGraphitiMultiPageEditor} performs the following steps to create the diagram:
+	 * <ol>
+	 * <li>{@link #createDiagramEditor()}</li>
+	 * <li>{@link #initModelMap()}</li>
+	 * <li>{@link #createDiagramInput()}</li>
+	 * </ol>
+	 * An XML text editor is also created.
+	 */
 	@Override
 	protected void addPages() {
 		try {
 			this.diagramEditor = createDiagramEditor();
 			initModelMap();
-			final IEditorInput diagramInput = createDiagramInput(getMainResource());
+			final IEditorInput diagramInput = createDiagramInput();
 			int pageIndex = addPage(this.diagramEditor, diagramInput);
 			setPageText(pageIndex, "Diagram");
 			DUtil.layout(this.diagramEditor);
@@ -242,27 +253,31 @@ public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor impl
 	}
 
 	/**
-	 * Initializes the runtime model map if applicable
+	 * Initializes the runtime model map, if applicable.
 	 */
 	protected void initModelMap() throws CoreException {
 	}
 
 	/**
-	 * Given the input {@link Resource}, create a {@link Diagram} resource, associate it with the model object in the
-	 * resource and return
-	 * @param resource
+	 * Create the input for the {@link Diagram} editor (a page in this multi-page editor).
 	 * @return
 	 * @throws IOException
 	 * @throws CoreException
 	 */
-	protected abstract IEditorInput createDiagramInput(final Resource resource) throws IOException, CoreException;
+	protected abstract IEditorInput createDiagramInput() throws IOException, CoreException;
 
 	/**
-	 * Returns the property value that should be set for the Diagram container's DIAGRAM_CONTEXT property.
-	 * Indicates the mode the diagram is operating in.
+	 * Returns the property value that should be set for the {@link Diagram} container's DIAGRAM_CONTEXT property.
+	 * Indicates the mode the diagram is operating in. This may be called by {@link #createDiagramInput()}.
 	 * @return
 	 */
-	protected abstract String getDiagramContext(Resource sadResource);
+	protected abstract String getDiagramContext();
+
+	/**
+	 * Gets the extension point ID of the diagram type provider to be used.
+	 * @return
+	 */
+	protected abstract String getDiagramTypeProviderID();
 
 	public IEditorPart getTextEditor() {
 		return this.textEditor;
@@ -314,6 +329,10 @@ public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor impl
 		this.isDirtyAllowed = isDirtyAllowed;
 	}
 
+	/**
+	 * Should return the XML model object in the {@link Resource} returned by {@link #getMainResource()}.
+	 * @return
+	 */
 	protected abstract EObject getMainObject();
 
 	/**

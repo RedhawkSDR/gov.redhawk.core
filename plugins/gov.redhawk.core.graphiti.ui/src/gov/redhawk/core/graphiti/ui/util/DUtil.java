@@ -10,13 +10,34 @@
  */
 package gov.redhawk.core.graphiti.ui.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRunnable;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalCommandStack;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.graphiti.datatypes.IDimension;
+import org.eclipse.graphiti.dt.IDiagramTypeProvider;
 import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.ILayoutFeature;
@@ -46,11 +67,14 @@ import org.eclipse.graphiti.ui.editor.DiagramBehavior;
 import org.eclipse.graphiti.ui.editor.DiagramEditor;
 import org.eclipse.graphiti.ui.services.GraphitiUi;
 
+import gov.redhawk.core.graphiti.ui.GraphitiUIPlugin;
+import gov.redhawk.core.graphiti.ui.editor.IDiagramUtilHelper;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.partitioning.ConnectInterface;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
+import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
 
 public class DUtil {
 
@@ -323,6 +347,19 @@ public class DUtil {
 		return (DeviceConfiguration) getBusinessObject(diagram, DeviceConfiguration.class);
 	}
 
+	public static URI getDiagramResourceURI(final IDiagramUtilHelper options, final Resource resource) throws IOException {
+		if (resource != null) {
+			final URI uri = resource.getURI();
+			if (uri.isPlatformResource()) {
+				final IFile file = options.getFile(resource);
+				return DUtil.getRelativeDiagramResourceURI(options, file);
+			} else {
+				return DUtil.getTemporaryDiagramResourceURI(options, uri);
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Returns the {@link SoftwareAssembly} for the provided diagram.
 	 * @param featureProvider
@@ -350,6 +387,45 @@ public class DUtil {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Create a {@link URI} for the Graphiti diagram's resource file that is relative to the XML file that will be
+	 * edited.
+	 * @param options
+	 * @param file The {@link IFile} (XML) that will be edited
+	 */
+	private static URI getRelativeDiagramResourceURI(final IDiagramUtilHelper options, final IFile file) {
+		int fileNameLengthNoExtension = file.getName().length() - options.getSemanticFileExtension().length();
+		final IFile diagramFile = file.getParent().getFile(
+			new Path(file.getName().substring(0, fileNameLengthNoExtension) + options.getDiagramFileExtension()));
+		final URI uri = URI.createPlatformResourceURI(diagramFile.getFullPath().toString(), true);
+		return uri;
+	}
+
+	/**
+	 * Create a temporary file to contain the Graphiti diagram's resource. Return a {@link URI} to that file.
+	 * @param options
+	 * @param uri The {@link URI} of the XML that will be edited
+	 * @throws IOException
+	 */
+	private static URI getTemporaryDiagramResourceURI(final IDiagramUtilHelper options, final URI uri) throws IOException {
+		final String name = uri.lastSegment();
+		int fileNameLengthNoExtension = name.length() - options.getSemanticFileExtension().length();
+
+		java.nio.file.Path tmpFile;
+		try {
+			// Create a temporary file in our bundle's state location
+			IPath statePath = Platform.getStateLocation(Platform.getBundle(GraphitiUIPlugin.PLUGIN_ID));
+			java.nio.file.Path stateDir = Paths.get(statePath.toFile().getAbsolutePath());
+			tmpFile = Files.createTempFile(stateDir, name.substring(0, fileNameLengthNoExtension), options.getDiagramFileExtension());
+		} catch (IllegalStateException e) {
+			// Unable to init the bundle state location; create the file in the system temporary directory
+			tmpFile = Files.createTempFile(name.substring(0, fileNameLengthNoExtension), options.getDiagramFileExtension());
+		}
+
+		tmpFile.toFile().deleteOnExit();
+		return URI.createURI(tmpFile.toUri().toString());
 	}
 
 	/**
@@ -394,6 +470,37 @@ public class DUtil {
 			return layoutFeature.layout(updateContext);
 		}
 		return false;
+	}
+
+	public static void initializeDiagramResource(final IDiagramUtilHelper options, final String diagramTypeId, final String diagramTypeProviderId,
+		final URI diagramURI) throws IOException, CoreException {
+		if (diagramURI.isPlatform()) {
+			final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(diagramURI.toPlatformString(true)));
+
+			file.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+
+			if (!file.exists()) {
+				final IWorkspaceRunnable operation = new IWorkspaceRunnable() {
+
+					@Override
+					public void run(final IProgressMonitor monitor) throws CoreException {
+						final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+						try {
+							populateDiagram(options, diagramTypeId, diagramTypeProviderId, diagramURI, buffer);
+						} catch (final IOException e) {
+							// PASS
+						}
+						file.create(new ByteArrayInputStream(buffer.toByteArray()), true, monitor);
+					}
+
+				};
+				final ISchedulingRule rule = ResourcesPlugin.getWorkspace().getRuleFactory().createRule(file);
+
+				ResourcesPlugin.getWorkspace().run(operation, rule, 0, null);
+			}
+		} else {
+			populateDiagram(options, diagramTypeId, diagramTypeProviderId, diagramURI, null);
+		}
 	}
 
 	/**
@@ -457,6 +564,28 @@ public class DUtil {
 	 */
 	public static boolean isVisible(GraphicsAlgorithm ga) {
 		return ga.getLineVisible() || ga.getFilled();
+	}
+
+	private static void populateDiagram(final IDiagramUtilHelper options, final String diagramTypeId, final String diagramTypeProviderId, final URI diagramURI,
+		final OutputStream buffer) throws IOException {
+		// Create Resource
+		final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
+		final Resource diagramResource = resourceSet.createResource(diagramURI);
+
+		// Create Diagram and add to Resource
+		final String diagramName = diagramURI.lastSegment();
+		Diagram diagram = Graphiti.getPeCreateService().createDiagram(diagramTypeId, diagramName, true);
+		diagramResource.getContents().add(diagram);
+
+		// TODO:we will want to move this logic somewhere else
+		IDiagramTypeProvider dtp = GraphitiUi.getExtensionManager().createDiagramTypeProvider(diagram, diagramTypeProviderId);
+		IFeatureProvider featureProvider = dtp.getFeatureProvider();
+
+		if (buffer != null) {
+			diagramResource.save(buffer, options.getSaveOptions());
+		} else {
+			diagramResource.save(options.getSaveOptions());
+		}
 	}
 
 	/**

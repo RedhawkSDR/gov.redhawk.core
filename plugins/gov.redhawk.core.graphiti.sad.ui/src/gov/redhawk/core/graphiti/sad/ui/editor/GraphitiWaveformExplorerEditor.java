@@ -30,7 +30,6 @@ import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -40,6 +39,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import gov.redhawk.core.graphiti.sad.ui.GraphitiSadUIPlugin;
+import gov.redhawk.core.graphiti.sad.ui.diagram.providers.WaveformExplorerDiagramTypeProvider;
 import gov.redhawk.core.graphiti.sad.ui.modelmap.GraphitiSADModelAdapter;
 import gov.redhawk.core.graphiti.sad.ui.modelmap.GraphitiSADModelMap;
 import gov.redhawk.core.graphiti.sad.ui.modelmap.GraphitiSADModelMapInitializerCommand;
@@ -52,7 +52,6 @@ import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.NonDirtyingCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.ui.ScaFileStoreEditorInput;
-import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
@@ -74,10 +73,6 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 		this.waveform = waveform;
 	}
 
-	protected GraphitiSADModelMap createModelMapInstance() {
-		return new GraphitiSADModelMap(this, waveform);
-	}
-
 	@Override
 	protected void setInput(IEditorInput input) {
 		if (input instanceof ScaFileStoreEditorInput) {
@@ -93,11 +88,6 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 	}
 
 	@Override
-	public String getDiagramContext(Resource sadResource) {
-		return DUtil.DIAGRAM_CONTEXT_EXPLORER;
-	}
-
-	@Override
 	protected void addPages() {
 		super.addPages();
 
@@ -107,7 +97,7 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 		modelMap.reflectRuntimeStatus();
 
 		// set layout for sandbox editors
-		DUtil.layout(editor);
+		DUtil.layout(getDiagramEditor());
 
 		// Adjust the text editor's title to the profile file name if possible
 		IEditorPart textEditor = getTextEditor();
@@ -131,10 +121,18 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 		}
 	}
 
+	////////////////////////////////////////////////////
+	// 1. createDiagramEditor()
+	////////////////////////////////////////////////////
+
 	@Override
 	protected AbstractGraphitiDiagramEditor createDiagramEditor() {
 		return new GraphitiWaveformExplorerDiagramEditor(getEditingDomain());
 	}
+
+	////////////////////////////////////////////////////
+	// 2. initModelMap()
+	////////////////////////////////////////////////////
 
 	@Override
 	protected void initModelMap() throws CoreException {
@@ -281,6 +279,14 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 	}
 
 	/**
+	 * Creates the model map (SAD <-> ScaWaveform).
+	 * @return
+	 */
+	protected GraphitiSADModelMap createModelMapInstance() {
+		return new GraphitiSADModelMap(this, waveform);
+	}
+
+	/**
 	 * Creates an EMF {@link Command} to initialize the model map.
 	 * @return
 	 */
@@ -288,6 +294,29 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 		SoftwareAssembly sad = getSoftwareAssembly();
 		return new GraphitiSADModelMapInitializerCommand(modelMap, sad, waveform);
 	}
+
+	////////////////////////////////////////////////////
+	// 3. createDiagramInput()
+	////////////////////////////////////////////////////
+
+	@Override
+	public String getDiagramTypeProviderID() {
+		return WaveformExplorerDiagramTypeProvider.PROVIDER_ID;
+	}
+
+	@Override
+	public String getDiagramContext() {
+		return DUtil.DIAGRAM_CONTEXT_EXPLORER;
+	}
+
+	@Override
+	protected void addDiagramLinks(Diagram diagram) {
+		diagram.getLink().getBusinessObjects().add(waveform);
+	}
+
+	////////////////////////////////////////////////////
+	// Other
+	////////////////////////////////////////////////////
 
 	@Override
 	public void dispose() {
@@ -343,9 +372,5 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 				}
 			});
 		}
-	}
-
-	protected void addDiagramLinks(Diagram diagram) {
-		diagram.getLink().getBusinessObjects().add(waveform);
 	}
 }

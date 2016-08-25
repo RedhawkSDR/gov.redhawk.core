@@ -11,42 +11,25 @@
 package gov.redhawk.core.graphiti.dcd.ui.editor;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramLink;
 import org.eclipse.graphiti.mm.pictograms.PictogramsFactory;
 import org.eclipse.graphiti.services.Graphiti;
-import org.eclipse.graphiti.ui.editor.DiagramEditor;
 import org.eclipse.graphiti.ui.editor.DiagramEditorInput;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.forms.editor.IFormPage;
-import org.eclipse.ui.statushandlers.StatusManager;
 
-import gov.redhawk.core.graphiti.dcd.ui.GraphitiDcdUIPlugin;
 import gov.redhawk.core.graphiti.dcd.ui.diagram.providers.DCDDiagramTypeProvider;
 import gov.redhawk.core.graphiti.ui.editor.AbstractGraphitiMultiPageEditor;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
-import gov.redhawk.ide.dcd.internal.ui.editor.DevicesPage;
-import gov.redhawk.ide.dcd.internal.ui.editor.NodeOverviewPage;
 import gov.redhawk.model.sca.commands.NonDirtyingCommand;
-import gov.redhawk.model.sca.util.ModelUtil;
-import mil.jpeojtrs.sca.dcd.DcdPackage;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.dcd.provider.DcdItemProviderAdapterFactory;
 import mil.jpeojtrs.sca.prf.provider.PrfItemProviderAdapterFactory;
@@ -75,21 +58,15 @@ public abstract class AbstractGraphitiDCDEditor extends AbstractGraphitiMultiPag
 		return getDeviceConfiguration();
 	}
 
-	protected IEditorInput createDiagramInput(final Resource dcdResource) throws IOException, CoreException {
-		final URI diagramURI = DUtil.getDiagramResourceURI(DcdDiagramUtilHelper.INSTANCE, dcdResource);
-
-		DUtil.initializeDiagramResource(DcdDiagramUtilHelper.INSTANCE, DCDDiagramTypeProvider.DIAGRAM_TYPE_ID, DCDDiagramTypeProvider.PROVIDER_ID, diagramURI,
-			dcdResource);
-
+	@Override
+	protected IEditorInput createDiagramInput() throws IOException, CoreException {
+		// Create the diagram resource which will hold information only relevant to the Graphiti diagram
+		final URI diagramURI = DUtil.getDiagramResourceURI(DcdDiagramUtilHelper.INSTANCE, getMainResource());
+		DUtil.initializeDiagramResource(DcdDiagramUtilHelper.INSTANCE, DCDDiagramTypeProvider.DIAGRAM_TYPE_ID, getDiagramTypeProviderID(), diagramURI);
 		Resource diagramResource = getEditingDomain().getResourceSet().getResource(diagramURI, true);
-
-		// load diagram from resource
 		final Diagram diagram = (Diagram) diagramResource.getContents().get(0);
 
-		// load dcd from resource
-		final DeviceConfiguration dcd = DeviceConfiguration.Util.getDeviceConfiguration(dcdResource);
-
-		// link diagram with DeviceConfiguration
+		// Link the diagram with the DCD
 		NonDirtyingCommand.execute(diagram, new NonDirtyingCommand() {
 			@Override
 			public String getLabel() {
@@ -99,22 +76,24 @@ public abstract class AbstractGraphitiDCDEditor extends AbstractGraphitiMultiPag
 			@Override
 			public void execute() {
 				// set property specifying diagram context (design, local, domain)
-				Graphiti.getPeService().setPropertyValue(diagram, DUtil.DIAGRAM_CONTEXT, getDiagramContext(dcdResource));
-				
-				// link diagram and dcd
+				Graphiti.getPeService().setPropertyValue(diagram, DUtil.DIAGRAM_CONTEXT, getDiagramContext());
+
+				// link diagram and DCD
 				PictogramLink link = PictogramsFactory.eINSTANCE.createPictogramLink();
-				link.getBusinessObjects().add(dcd);
+				link.getBusinessObjects().add(getDeviceConfiguration());
 				diagram.setLink(link);
+
+				// Potentially link other objects in child classes
 				addDiagramLinks(diagram);
 			}
 		});
 
 		// return editor input from diagram with sad diagram type
-		return DiagramEditorInput.createEditorInput(diagram, DCDDiagramTypeProvider.PROVIDER_ID);
+		return DiagramEditorInput.createEditorInput(diagram, getDiagramTypeProviderID());
 	}
 
 	/**
-	 * Subclasses may override to add additional business object to the diagram (e.g., runtime waveform).
+	 * Subclasses may override to add additional business objects to the diagram (e.g., runtime waveform).
 	 * @param diagram
 	 */
 	protected void addDiagramLinks(Diagram diagram) {

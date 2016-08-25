@@ -22,7 +22,6 @@ import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -30,6 +29,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 
+import gov.redhawk.core.graphiti.dcd.ui.diagram.providers.DevMgrExplorerDiagramTypeProvider;
 import gov.redhawk.core.graphiti.dcd.ui.modelmap.GraphitiDCDModelAdapter;
 import gov.redhawk.core.graphiti.dcd.ui.modelmap.GraphitiDCDModelMap;
 import gov.redhawk.core.graphiti.dcd.ui.modelmap.GraphitiDCDModelMapInitializerCommand;
@@ -64,10 +64,6 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 		this.deviceManager = deviceManager;
 	}
 
-	protected GraphitiDCDModelMap createModelMapInstance() {
-		return new GraphitiDCDModelMap(this, deviceManager);
-	}
-
 	@Override
 	protected void setInput(IEditorInput input) {
 		if (input instanceof ScaFileStoreEditorInput) {
@@ -83,11 +79,6 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 	}
 
 	@Override
-	public String getDiagramContext(Resource sadResource) {
-		return DUtil.DIAGRAM_CONTEXT_EXPLORER;
-	}
-
-	@Override
 	protected void addPages() {
 		super.addPages();
 
@@ -97,7 +88,7 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 		this.modelMap.reflectRuntimeStatus();
 
 		// set layout for sandbox editors
-		DUtil.layout(editor);
+		DUtil.layout(getDiagramEditor());
 
 		// Adjust the text editor's title to the profile file name if possible
 		IEditorPart textEditor = getTextEditor();
@@ -121,11 +112,20 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 		}
 	}
 
+	////////////////////////////////////////////////////
+	// 1. createDiagramEditor()
+	////////////////////////////////////////////////////
+
 	@Override
 	protected AbstractGraphitiDiagramEditor createDiagramEditor() {
 		return new GraphitiDeviceManagerDiagramEditor(getEditingDomain());
 	}
 
+	////////////////////////////////////////////////////
+	// 2. initModelMap()
+	////////////////////////////////////////////////////
+
+	@Override
 	protected void initModelMap() {
 		if (deviceManager == null) {
 			throw new IllegalStateException("Can not initialize the model map without a device manager");
@@ -214,12 +214,39 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 	}
 
 	/**
+	 * Creates the model map (DCD <-> ScaDeviceManager).
+	 * @return
+	 */
+	protected GraphitiDCDModelMap createModelMapInstance() {
+		return new GraphitiDCDModelMap(this, deviceManager);
+	}
+
+	/**
 	 * Creates an EMF {@link Command} to initialize the model map.
 	 * @return
 	 */
 	protected Command createModelInitializeCommand() {
 		DeviceConfiguration dcd = getDeviceConfiguration();
 		return new GraphitiDCDModelMapInitializerCommand(modelMap, dcd, deviceManager);
+	}
+
+	////////////////////////////////////////////////////
+	// 3. createDiagramInput()
+	////////////////////////////////////////////////////
+
+	@Override
+	protected String getDiagramTypeProviderID() {
+		return DevMgrExplorerDiagramTypeProvider.PROVIDER_ID;
+	}
+
+	@Override
+	public String getDiagramContext() {
+		return DUtil.DIAGRAM_CONTEXT_EXPLORER;
+	}
+
+	@Override
+	protected void addDiagramLinks(Diagram diagram) {
+		diagram.getLink().getBusinessObjects().add(deviceManager);
 	}
 
 	@Override
@@ -271,10 +298,5 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 				}
 			});
 		}
-	}
-
-	@Override
-	protected void addDiagramLinks(Diagram diagram) {
-		diagram.getLink().getBusinessObjects().add(deviceManager);
 	}
 }
