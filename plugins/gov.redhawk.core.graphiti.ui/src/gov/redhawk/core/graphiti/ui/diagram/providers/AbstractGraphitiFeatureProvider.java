@@ -31,7 +31,17 @@ import org.eclipse.graphiti.pattern.DefaultFeatureProviderWithPatterns;
 import org.eclipse.graphiti.pattern.DirectEditingFeatureForPattern;
 import org.eclipse.graphiti.pattern.IPattern;
 
+import gov.redhawk.core.graphiti.ui.diagram.features.DisabledDeleteFeatureWrapper;
+import gov.redhawk.core.graphiti.ui.diagram.features.LayoutDiagramFeature;
+import gov.redhawk.core.graphiti.ui.diagram.patterns.ProvidesPortPattern;
+import gov.redhawk.core.graphiti.ui.diagram.patterns.UsesPortPattern;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
+import gov.redhawk.core.graphiti.ui.internal.diagram.features.CollapseAllShapesFeature;
+import gov.redhawk.core.graphiti.ui.internal.diagram.features.CollapseShapeFeature;
+import gov.redhawk.core.graphiti.ui.internal.diagram.features.ExpandAllShapesFeature;
+import gov.redhawk.core.graphiti.ui.internal.diagram.features.ExpandShapeFeature;
+import gov.redhawk.core.graphiti.ui.internal.diagram.features.StartFeature;
+import gov.redhawk.core.graphiti.ui.internal.diagram.features.StopFeature;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 
