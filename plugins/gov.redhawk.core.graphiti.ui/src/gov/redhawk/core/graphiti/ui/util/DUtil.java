@@ -32,6 +32,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -69,13 +70,21 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.ui.editor.DiagramBehavior;
 import org.eclipse.graphiti.ui.editor.DiagramEditor;
 import org.eclipse.graphiti.ui.services.GraphitiUi;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 import gov.redhawk.core.graphiti.ui.GraphitiUIPlugin;
 import gov.redhawk.core.graphiti.ui.diagram.features.LayoutDiagramFeature;
 import gov.redhawk.core.graphiti.ui.editor.IDiagramUtilHelper;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
+import gov.redhawk.core.graphiti.ui.internal.diagram.wizards.SuperPortConnectionWizard;
+import gov.redhawk.diagram.util.InterfacesUtil;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.partitioning.ConnectInterface;
+import mil.jpeojtrs.sca.partitioning.ConnectionTarget;
+import mil.jpeojtrs.sca.partitioning.UsesPortStub;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
@@ -120,6 +129,109 @@ public class DUtil {
 			return addFeature.add(addContext);
 		}
 		return null;
+	}
+
+	/**
+	 * Add source and target to a {@link ConnectInterface}. One anchor must be a {@link UsesPortStub}, and the
+	 * other a {@link ConnectionTarget}. Handles super ports and will pop a dialog if necessary for the user to choose
+	 * amongst multiple possible choices.
+	 * @param anchor1
+	 * @param anchor2
+	 * @return True if source and target were located and assigned, false otherwise
+	 */
+	public static boolean assignAnchorObjectsToConnection(ConnectInterface< ? , ? , ? > connectInterface, Anchor anchor1, Anchor anchor2) {
+		if (anchor1 == null || anchor2 == null) {
+			return false;
+		}
+
+		// get business objects for both anchors
+		EList<EObject> anchorObjects1 = anchor1.getParent().getLink().getBusinessObjects();
+		EList<EObject> anchorObjects2 = anchor2.getParent().getLink().getBusinessObjects();
+
+		UsesPortStub source = null;
+		ConnectionTarget target = null;
+
+		if (anchorObjects1.size() == 0 || anchorObjects2.size() == 0) {
+			return false;
+		}
+
+		// Check to ensure the first anchor is a UsesPortStub and the second is a ConnectionTarget. Swap if necessary.
+		boolean sourceIsFirst = true;
+		boolean sourceIsSecond = true;
+		boolean targetIsFirst = true;
+		boolean targetIsSecond = true;
+		for (EObject sourceObj : anchorObjects1) {
+			if (!(sourceObj instanceof UsesPortStub)) {
+				sourceIsFirst = false;
+			}
+			if (!(sourceObj instanceof ConnectionTarget)) {
+				targetIsFirst = false;
+			}
+		}
+		for (EObject targetObj : anchorObjects2) {
+			if (!(targetObj instanceof UsesPortStub)) {
+				sourceIsSecond = false;
+			}
+			if (!(targetObj instanceof ConnectionTarget)) {
+				targetIsSecond = false;
+			}
+		}
+		if (targetIsFirst && sourceIsSecond) {
+			// Correct objects are present, but they're reversed; swap them
+			EList<EObject> swap = anchorObjects1;
+			anchorObjects1 = anchorObjects2;
+			anchorObjects2 = swap;
+		} else if (!(sourceIsFirst && targetIsSecond)) {
+			// The only other acceptable case is source first, target second, and that isn't true
+			return false;
+		}
+
+		Set<UsesPortStub> possibleSources = new HashSet<UsesPortStub>();
+		Set<ConnectionTarget> possibleTargets = new HashSet<ConnectionTarget>();
+
+		if (anchorObjects1.size() == 1 && anchorObjects2.size() == 1) {
+			// Always attempt to honor direct connections
+			possibleSources.add((UsesPortStub) anchorObjects1.get(0));
+			possibleTargets.add((ConnectionTarget) anchorObjects2.get(0));
+		} else {
+			// If either side is a super port, then build a list of possible connections
+			for (EObject sourceObj : anchorObjects1) {
+				for (EObject targetObj : anchorObjects2) {
+					if (InterfacesUtil.areSuggestedMatch((UsesPortStub) sourceObj, targetObj)) {
+						possibleSources.add((UsesPortStub) sourceObj);
+						possibleTargets.add((ConnectionTarget) targetObj);
+					}
+				}
+			}
+		}
+
+		if (possibleSources.size() > 1 || possibleTargets.size() > 1) {
+			// If more than one connection is possible, display a wizard to complete the action
+			SuperPortConnectionWizard wizard = new SuperPortConnectionWizard(possibleSources, possibleTargets);
+			Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+			WizardDialog dialog = new WizardDialog(shell, wizard);
+			int retVal = dialog.open();
+
+			if (retVal == Window.OK) {
+				// Get user selections
+				source = wizard.getPage().getSource();
+				target = wizard.getPage().getTarget();
+			} else {
+				return false;
+			}
+		} else if (!possibleSources.isEmpty() && !possibleTargets.isEmpty()) {
+			// If only one connection is possible, just go ahead and do it
+			source = (UsesPortStub) possibleSources.iterator().next();
+			target = (ConnectionTarget) possibleTargets.iterator().next();
+		}
+
+		if (source == null || target == null) {
+			return false;
+		}
+
+		connectInterface.setSource(source);
+		connectInterface.setTarget(target);
+		return true;
 	}
 
 	// do this because we need to pass it to layout diagram, assumes we already have shapes drawn of a certain

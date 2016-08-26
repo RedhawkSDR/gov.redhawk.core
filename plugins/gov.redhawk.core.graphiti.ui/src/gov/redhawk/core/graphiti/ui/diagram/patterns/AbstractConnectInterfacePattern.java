@@ -167,13 +167,9 @@ public abstract class AbstractConnectInterfacePattern extends AbstractConnection
 	protected abstract void addConnectInterface(ConnectInterface< ? , ? , ? > connection);
 
 	protected ConnectInterface< ? , ? , ? > createModelConnection(Anchor source, Anchor target) {
-		ConnectInterface< ? , ? , ? > connection = DUtil.assignAnchorObjectsToConnection(createConnectInterface(), source, target);
-		if (connection == null) {
-			// Switch source/target direction and try again
-			connection = DUtil.assignAnchorObjectsToConnection(createConnectInterface(), target, source);
-		}
-
-		return connection;
+		ConnectInterface< ? , ? , ? > connection = createConnectInterface();
+		boolean success = DUtil.assignAnchorObjectsToConnection(connection, source, target);
+		return (success) ? connection : null;
 	}
 
 	/**
