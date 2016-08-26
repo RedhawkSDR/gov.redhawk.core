@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -47,9 +48,13 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.pattern.config.IPatternConfiguration;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaLayoutService;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
+import gov.redhawk.core.graphiti.ui.GraphitiUIPlugin;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.ext.RHGxFactory;
+import gov.redhawk.core.graphiti.ui.preferences.DiagramPreferenceConstants;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.core.graphiti.ui.util.StyleUtil;
 import gov.redhawk.core.graphiti.ui.util.UpdateUtil;
@@ -61,6 +66,7 @@ import mil.jpeojtrs.sca.sad.SadConnectInterface;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public abstract class AbstractPortSupplierPattern extends AbstractContainerPattern {
+
 	// Shape size constants
 	private static final int OUTER_CONTAINER_SHAPE_TITLE_HORIZONTAL_RIGHT_PADDING = 10;
 	private static final int INNER_CONTAINER_SHAPE_TOP_PADDING = 20;
@@ -417,8 +423,9 @@ public abstract class AbstractPortSupplierPattern extends AbstractContainerPatte
 		containerShape.setContainer(context.getTargetContainer());
 
 		// Set default configuration preferences
-		boolean hideDetailsPref = GraphitiUIPlugin.getDefault().getPreferenceStore().getBoolean(DiagramPreferenceConstants.HIDE_DETAILS);
-		boolean hidePortsPref = GraphitiUIPlugin.getDefault().getPreferenceStore().getBoolean(DiagramPreferenceConstants.HIDE_UNUSED_PORTS);
+		IPreferenceStore prefStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, GraphitiUIPlugin.PLUGIN_ID);
+		boolean hideDetailsPref = prefStore.getBoolean(DiagramPreferenceConstants.HIDE_DETAILS);
+		boolean hidePortsPref = prefStore.getBoolean(DiagramPreferenceConstants.HIDE_UNUSED_PORTS);
 		containerShape.setCollapsed(hideDetailsPref);
 		containerShape.setHideUnusedPorts(hidePortsPref);
 
