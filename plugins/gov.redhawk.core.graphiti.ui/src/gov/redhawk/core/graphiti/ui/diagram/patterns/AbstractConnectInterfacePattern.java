@@ -34,6 +34,7 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
 
 import gov.redhawk.core.graphiti.ui.diagram.providers.AbstractToolBehaviorProvider;
+import gov.redhawk.core.graphiti.ui.diagram.providers.ImageProvider;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.core.graphiti.ui.util.StyleUtil;
@@ -63,6 +64,11 @@ public abstract class AbstractConnectInterfacePattern extends AbstractConnection
 	@Override
 	public String getCreateDescription() {
 		return "Create new Connect Interface";
+	}
+
+	@Override
+	public String getCreateImageId() {
+		return ImageProvider.IMG_CONNECTION;
 	}
 
 	@Override

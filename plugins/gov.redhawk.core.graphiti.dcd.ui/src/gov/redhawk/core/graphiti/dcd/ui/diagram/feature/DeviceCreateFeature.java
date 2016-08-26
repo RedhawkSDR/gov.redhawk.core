@@ -19,6 +19,7 @@ import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 
+import gov.redhawk.core.graphiti.dcd.ui.diagram.providers.DeviceManagerImageProvider;
 import gov.redhawk.core.graphiti.dcd.ui.ext.DeviceShape;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.sca.util.PluginUtil;
@@ -177,6 +178,6 @@ public class DeviceCreateFeature extends AbstractCreateFeature {
 
 	@Override
 	public String getCreateImageId() {
-		return NodeImageProvider.IMG_SCA_DEVICE;
+		return DeviceManagerImageProvider.IMG_DEVICE;
 	}
 }

@@ -54,4 +54,13 @@
          </describer>
       </content-type>
    </extension>
+
+   <extension
+         point="org.eclipse.graphiti.ui.imageProviders">
+      <imageProvider
+            class="gov.redhawk.core.graphiti.ui.diagram.providers.ImageProvider"
+            id="gov.redhawk.core.graphiti.ui.ImageProvider">
+      </imageProvider>
+   </extension>
+
 </plugin>

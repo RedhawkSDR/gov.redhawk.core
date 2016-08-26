@@ -16,6 +16,7 @@ import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 
+import gov.redhawk.core.graphiti.ui.diagram.providers.ImageProvider;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 
 public class ExpandShapeFeature extends AbstractCustomFeature {

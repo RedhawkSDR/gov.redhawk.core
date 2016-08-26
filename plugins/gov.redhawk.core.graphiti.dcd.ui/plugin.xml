@@ -106,10 +106,10 @@
                id="gov.redhawk.ide.graphiti.dcd.ui.DCDDiagramEditor">
          </diagramType>
          <imageProvider
-               id="gov.redhawk.ide.graphiti.dcd.ui.diagram.providers.deviceImageProvider">
+               id="gov.redhawk.core.graphiti.dcd.ui.DeviceManagerImageProvider">
          </imageProvider>
          <imageProvider
-               id="gov.redhawk.ide.graphiti.ui.diagram.providers.imageProvider">
+               id="gov.redhawk.core.graphiti.ui.ImageProvider">
          </imageProvider>
       </diagramTypeProvider>
    </extension>
@@ -122,4 +122,13 @@
             type="DCDDiagram">
       </diagramType>
    </extension>
+
+   <extension
+         point="org.eclipse.graphiti.ui.imageProviders">
+      <imageProvider
+            class="gov.redhawk.core.graphiti.dcd.ui.diagram.providers.DeviceManagerImageProvider"
+            id="gov.redhawk.core.graphiti.dcd.ui.DeviceManagerImageProvider">
+      </imageProvider>
+   </extension>
+
 </plugin>

@@ -23,11 +23,6 @@ import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 
 public class SADConnectInterfacePattern extends AbstractConnectInterfacePattern {
 
-	@Override
-	public String getCreateImageId() {
-		return WaveformImageProvider.IMG_CONNECTION;
-	}
-
 	/**
 	 * Determines if a connection can be made.
 	 */

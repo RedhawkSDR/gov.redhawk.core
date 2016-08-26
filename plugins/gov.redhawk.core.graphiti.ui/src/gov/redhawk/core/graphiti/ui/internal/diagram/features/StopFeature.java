@@ -16,6 +16,7 @@ import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 
 import gov.redhawk.core.graphiti.ui.diagram.features.NonUndoableCustomFeature;
+import gov.redhawk.core.graphiti.ui.diagram.providers.ImageProvider;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.model.sca.ScaAbstractComponent;

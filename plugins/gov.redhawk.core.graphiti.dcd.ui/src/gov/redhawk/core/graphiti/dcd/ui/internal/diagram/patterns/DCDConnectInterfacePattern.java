@@ -23,11 +23,6 @@ import mil.jpeojtrs.sca.partitioning.ConnectInterface;
 
 public class DCDConnectInterfacePattern extends AbstractConnectInterfacePattern {
 
-	@Override
-	public String getCreateImageId() {
-		return NodeImageProvider.IMG_CONNECTION;
-	}
-
 	/**
 	 * Determines if a connection can be made.
 	 */

@@ -106,10 +106,10 @@
                id="gov.redhawk.ide.graphiti.sad.ui.SADDiagramEditor">
          </diagramType>
          <imageProvider
-               id="gov.redhawk.ide.graphiti.sad.ui.diagram.providers.imageProvider">
+               id="gov.redhawk.core.graphiti.sad.ui.WaveformImageProvider">
          </imageProvider>
          <imageProvider
-               id="gov.redhawk.ide.graphiti.ui.diagram.providers.imageProvider">
+               id="gov.redhawk.core.graphiti.ui.ImageProvider">
          </imageProvider>
       </diagramTypeProvider>
    </extension>
@@ -121,6 +121,14 @@
             name="SAD / Waveform Diagram"
             type="SADDiagram">
       </diagramType>
+   </extension>
+
+   <extension
+         point="org.eclipse.graphiti.ui.imageProviders">
+      <imageProvider
+            class="gov.redhawk.core.graphiti.sad.ui.diagram.providers.WaveformImageProvider"
+            id="gov.redhawk.core.graphiti.sad.ui.WaveformImageProvider">
+      </imageProvider>
    </extension>
 
 </plugin>

@@ -18,8 +18,10 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.pattern.IPattern;
 
+import gov.redhawk.core.graphiti.dcd.ui.diagram.providers.DeviceManagerImageProvider;
 import gov.redhawk.core.graphiti.dcd.ui.ext.DeviceShape;
 import gov.redhawk.core.graphiti.dcd.ui.ext.RHDeviceGxFactory;
+import gov.redhawk.core.graphiti.ui.diagram.providers.ImageProvider;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.core.graphiti.ui.util.StyleUtil;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
@@ -81,12 +83,12 @@ public class DevicePattern extends AbstractNodeComponentPattern implements IPatt
 
 	@Override
 	protected String getOuterImageId() {
-		return NodeImageProvider.IMG_COMPONENT_PLACEMENT;
+		return ImageProvider.IMG_SPD;
 	}
 
 	@Override
 	protected String getInnerImageId() {
-		return NodeImageProvider.IMG_SCA_DEVICE;
+		return DeviceManagerImageProvider.IMG_DEVICE;
 	}
 
 	@Override
