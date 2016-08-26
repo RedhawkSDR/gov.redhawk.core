@@ -65,15 +65,12 @@ public abstract class AbstractGraphitiFeatureProvider extends DefaultFeatureProv
 
 		// Check the selection to make sure it's appropriate
 		for (PictogramElement pe : context.getPictogramElements()) {
-			if (!(pe instanceof RHContainerShape)) {
-				return new ICustomFeature[0];
-			}
-			if (!(DUtil.getBusinessObject(pe) instanceof ComponentInstantiation)) {
+			if (!(pe instanceof RHContainerShape) || DUtil.getBusinessObject(pe, ComponentInstantiation.class) == null) {
 				return new ICustomFeature[0];
 			}
 		}
 
-		ICustomFeature[] features = new ICustomFeature[] { new StartFeature(this), new StopFeature(this), new ShowConsoleFeature(this) };
+		ICustomFeature[] features = new ICustomFeature[] { new StartFeature(this), new StopFeature(this) };
 		return features;
 	}
 
@@ -162,14 +159,6 @@ public abstract class AbstractGraphitiFeatureProvider extends DefaultFeatureProv
 				// Our standard shape features
 				features.add(new ExpandShapeFeature(this));
 				features.add(new CollapseShapeFeature(this));
-
-				IPattern pattern = getPatternForPictogramElement(pictogramElement);
-				if (pattern instanceof IDialogEditingPattern) {
-					IDialogEditingPattern dialogEditing = (IDialogEditingPattern) pattern;
-					if (dialogEditing.canDialogEdit(context)) {
-						features.add(new DialogEditingFeatureForPattern(this, dialogEditing));
-					}
-				}
 			}
 		}
 
