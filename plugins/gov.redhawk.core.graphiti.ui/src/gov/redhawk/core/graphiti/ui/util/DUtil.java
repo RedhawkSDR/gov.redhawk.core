@@ -88,6 +88,7 @@ public class DUtil {
 	public static final String SHAPE_TYPE = "ShapeType";
 
 	// Diagram context property values
+	public static final String DIAGRAM_CONTEXT_DESIGN = "design";
 	public static final String DIAGRAM_CONTEXT_EXPLORER = "explorer";
 	public static final String DIAGRAM_CONTEXT_LOCAL = "local";
 	public static final String DIAGRAM_CONTEXT_TARGET_SDR = "target-sdr";
@@ -97,7 +98,7 @@ public class DUtil {
 	private static final int DIAGRAM_SHAPE_ROOT_VERTICAL_PADDING = 50;
 	private static final int DIAGRAM_SHAPE_SIBLING_VERTICAL_PADDING = 5;
 
-	private DUtil() {
+	protected DUtil() {
 	}
 
 	/**
@@ -467,7 +468,7 @@ public class DUtil {
 	 * @param containerShape
 	 * @return
 	 */
-	private static List<Connection> getIncomingConnectionsContainedInContainerShape(ContainerShape containerShape) {
+	public static List<Connection> getIncomingConnectionsContainedInContainerShape(ContainerShape containerShape) {
 		List<Connection> connections = new ArrayList<Connection>();
 		Diagram diagram = Graphiti.getPeService().getDiagramForShape(containerShape);
 		for (Connection conn : diagram.getConnections()) {
@@ -664,6 +665,15 @@ public class DUtil {
 	 */
 	public static boolean isDiagramTargetSdr(final Diagram diagram) {
 		return getDiagramContext(diagram).equals(DIAGRAM_CONTEXT_TARGET_SDR);
+	}
+
+	/**
+	 * Determines if the diagram is a design-time diagram for file in the workspace.
+	 * @param diagram
+	 * @return
+	 */
+	public static boolean isDiagramWorkpace(final Diagram diagram) {
+		return getDiagramContext(diagram).equals(DIAGRAM_CONTEXT_DESIGN);
 	}
 
 	/**
