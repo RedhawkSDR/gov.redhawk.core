@@ -347,6 +347,24 @@ public class DUtil {
 	}
 
 	/**
+	 * Returns true if the {@link PictogramElement} has a property with the provided value.
+	 * @param context
+	 * @param propertyKeys
+	 * @return
+	 */
+	private static boolean doesPictogramContainProperty(PictogramElement pe, String propertyValue) {
+		if (pe == null || pe.getProperties() == null) {
+			return false;
+		}
+		for (Property p : pe.getProperties()) {
+			if (p.getValue().equals(propertyValue)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Deletes a Connection from its Diagram without doing a cross-reference search.
 	 * @see {@link #deletePictogramElement(PictogramElement)}
 	 * @param connection the connection to delete
@@ -805,6 +823,17 @@ public class DUtil {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Returns true if the portContainer is a super port
+	 * @param portContainer - The port container to be tested
+	 * @return
+	 */
+	public static boolean isSuperPort(ContainerShape portContainer) {
+		boolean isSuperProvides = DUtil.doesPictogramContainProperty(portContainer, RHContainerShape.SUPER_PROVIDES_PORTS_RECTANGLE);
+		boolean isSuperUses = DUtil.doesPictogramContainProperty(portContainer, RHContainerShape.SUPER_USES_PORTS_RECTANGLE);
+		return (isSuperProvides || isSuperUses);
 	}
 
 	/**
