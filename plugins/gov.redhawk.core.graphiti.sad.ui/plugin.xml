@@ -131,4 +131,36 @@
       </imageProvider>
    </extension>
 
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <commonFilter
+            activeByDefault="true"
+            description="Filters .sad_GDiagram resources"
+            id="gov.redhawk.ide.graphiti.sad.ui.commonfilter.gdiagram"
+            name=".sad_GDiagram resources">
+         <filterExpression>
+            <and>
+               <adapt
+                     type="org.eclipse.core.resources.IResource">
+                  <test
+                        property="org.eclipse.core.resources.name"
+                        value="*.sad_GDiagram">
+                  </test>
+               </adapt>
+            </and>
+         </filterExpression>
+      </commonFilter>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewerContentBinding
+            viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+         <includes>
+            <contentExtension
+                  pattern="gov.redhawk.ide.graphiti.sad.ui.commonfilter.gdiagram">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+   </extension>
+
 </plugin>
