@@ -168,4 +168,24 @@
       </factory>
    </extension>
 
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="gov.redhawk.ide.graphiti.ui.showPropertiesView"
+            name="Show Properties">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="gov.redhawk.core.graphiti.ui.handlers.ShowPropertiesViewHandler"
+            commandId="gov.redhawk.ide.graphiti.ui.showPropertiesView">
+         <enabledWhen>
+            <count
+                  value="1">
+            </count>
+         </enabledWhen>
+      </handler>
+   </extension>
+
 </plugin>
