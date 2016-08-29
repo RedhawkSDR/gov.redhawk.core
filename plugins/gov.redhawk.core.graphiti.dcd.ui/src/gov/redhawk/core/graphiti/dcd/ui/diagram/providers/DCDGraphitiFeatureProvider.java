@@ -33,6 +33,7 @@ import gov.redhawk.core.graphiti.dcd.ui.diagram.feature.DeviceCreateFeature;
 import gov.redhawk.core.graphiti.dcd.ui.diagram.feature.ServiceCreateFeature;
 import gov.redhawk.core.graphiti.dcd.ui.internal.diagram.feature.DCDConnectionInterfaceDeleteFeature;
 import gov.redhawk.core.graphiti.dcd.ui.internal.diagram.feature.DCDConnectionInterfaceUpdateFeature;
+import gov.redhawk.core.graphiti.dcd.ui.internal.diagram.feature.DeviceManagerUpdateDiagramFeature;
 import gov.redhawk.core.graphiti.dcd.ui.internal.diagram.patterns.DCDConnectInterfacePattern;
 import gov.redhawk.core.graphiti.dcd.ui.internal.diagram.patterns.DevicePattern;
 import gov.redhawk.core.graphiti.dcd.ui.internal.diagram.patterns.ServicePattern;
@@ -84,7 +85,7 @@ public abstract class DCDGraphitiFeatureProvider extends AbstractGraphitiFeature
 		if (context.getPictogramElement() instanceof Connection) {
 			return new DCDConnectionInterfaceUpdateFeature(this);
 		} else if (context.getPictogramElement() instanceof Diagram) {
-			return new GraphitiDcdDiagramUpdateFeature(this);
+			return new DeviceManagerUpdateDiagramFeature(this);
 		}
 
 		return super.getUpdateFeature(context);

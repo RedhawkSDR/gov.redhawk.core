@@ -25,6 +25,7 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 
 import gov.redhawk.core.graphiti.sad.ui.diagram.feature.FastRemoveFeature;
+import gov.redhawk.core.graphiti.sad.ui.internal.diagram.feature.WaveformUpdateDiagramFeature;
 import gov.redhawk.core.graphiti.sad.ui.internal.diagram.feature.SADConnectionInterfaceDeleteFeature;
 import gov.redhawk.core.graphiti.sad.ui.internal.diagram.feature.SADConnectionInterfaceUpdateFeature;
 import gov.redhawk.core.graphiti.sad.ui.internal.diagram.patterns.ComponentPattern;
@@ -44,7 +45,7 @@ public abstract class SADGraphitiFeatureProvider extends AbstractGraphitiFeature
 	@Override
 	public IUpdateFeature getUpdateFeature(IUpdateContext context) {
 		if (context.getPictogramElement() instanceof Diagram) {
-			return new GraphitiWaveformDiagramUpdateFeature(this);
+			return new WaveformUpdateDiagramFeature(this);
 		} else if (context.getPictogramElement() instanceof Connection) {
 			return new SADConnectionInterfaceUpdateFeature(this);
 		}

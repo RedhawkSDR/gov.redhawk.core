@@ -47,6 +47,7 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.ILayoutFeature;
 import org.eclipse.graphiti.features.IRemoveFeature;
 import org.eclipse.graphiti.features.context.ICustomContext;
+import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
 import org.eclipse.graphiti.features.context.impl.AddContext;
 import org.eclipse.graphiti.features.context.impl.CustomContext;
 import org.eclipse.graphiti.features.context.impl.LayoutContext;
@@ -108,6 +109,25 @@ public class DUtil {
 	private static final int DIAGRAM_SHAPE_SIBLING_VERTICAL_PADDING = 5;
 
 	protected DUtil() {
+	}
+
+	/**
+	 * Add PictogramElement Connection via feature for the provided object and anchors.
+	 * Relies on the framework determining which feature should be used and whether it can be added to diagram
+	 * @param featureProvider
+	 * @param object
+	 * @param sourceAnchor
+	 * @param targetAnchor
+	 * @return
+	 */
+	public static PictogramElement addConnectionViaFeature(IFeatureProvider featureProvider, Object object, Anchor sourceAnchor, Anchor targetAnchor) {
+		AddConnectionContext addConnectionContext = new AddConnectionContext(sourceAnchor, targetAnchor);
+		addConnectionContext.setNewObject(object);
+		IAddFeature addFeature = featureProvider.getAddFeature(addConnectionContext);
+		if (addFeature.canAdd(addConnectionContext)) {
+			return addFeature.add(addConnectionContext);
+		}
+		return null;
 	}
 
 	/**
