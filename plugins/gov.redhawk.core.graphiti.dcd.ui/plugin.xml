@@ -132,6 +132,26 @@
    </extension>
 
    <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            description="Redhawk device manager explorer diagram"
+            id="gov.redhawk.core.graphiti.dcd.ui.contexts.explorer"
+            name="Redhawk device manager explorer diagram"
+            parentId="org.eclipse.graphiti.ui.diagramEditor">
+      </context>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.eclipse.gef.zoom_in"
+            contextId="gov.redhawk.core.graphiti.dcd.ui.contexts.explorer"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL++">
+      </key>
+   </extension>
+
+   <extension
          point="org.eclipse.ui.navigator.navigatorContent">
       <commonFilter
             activeByDefault="true"

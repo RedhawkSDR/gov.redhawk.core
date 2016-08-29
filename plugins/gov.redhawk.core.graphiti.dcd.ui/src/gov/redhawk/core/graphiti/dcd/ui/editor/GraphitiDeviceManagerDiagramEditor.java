@@ -26,8 +26,8 @@ public class GraphitiDeviceManagerDiagramEditor extends AbstractGraphitiDiagramE
 
 	public GraphitiDeviceManagerDiagramEditor(EditingDomain editingDomain) {
 		super(editingDomain);
-		addContext("gov.redhawk.ide.dcd.graphiti.ui.contexts.diagram");
-		addContext("gov.redhawk.ide.dcd.graphiti.ui.contexts.sandbox");
+		addContext("gov.redhawk.core.graphiti.dcd.ui.contexts.explorer");
+		addContext("gov.redhawk.ide.graphiti.dcd.ui.contexts.sandbox");
 	}
 
 	@Override
