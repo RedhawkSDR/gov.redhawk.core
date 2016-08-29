@@ -17,32 +17,18 @@ import java.util.List;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.emf.common.util.Diagnostic;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.emf.transaction.TransactionalEditingDomain;
-import org.eclipse.emf.workspace.util.WorkspaceSynchronizer.Delegate;
-import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.impl.UpdateContext;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.tb.IToolBehaviorProvider;
-import org.eclipse.graphiti.ui.editor.DefaultMarkerBehavior;
-import org.eclipse.graphiti.ui.editor.DefaultPaletteBehavior;
-import org.eclipse.graphiti.ui.editor.DefaultRefreshBehavior;
-import org.eclipse.graphiti.ui.editor.DefaultUpdateBehavior;
 import org.eclipse.graphiti.ui.editor.DiagramBehavior;
 import org.eclipse.graphiti.ui.editor.DiagramEditor;
-import org.eclipse.graphiti.ui.editor.IDiagramEditorInput;
-import org.eclipse.graphiti.ui.platform.IConfigurationProvider;
-import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -58,11 +44,8 @@ public abstract class AbstractGraphitiDiagramEditor extends DiagramEditor {
 	private List<IContextActivation> contextActivations = new ArrayList<IContextActivation>();
 	private MouseListener mouseListener = null;
 
-	private EditingDomain editingDomain;
-
 	public AbstractGraphitiDiagramEditor(EditingDomain editingDomain) {
 		super();
-		this.editingDomain = editingDomain;
 	}
 
 	@Override
@@ -183,92 +166,6 @@ public abstract class AbstractGraphitiDiagramEditor extends DiagramEditor {
 	}
 
 	@Override
-	protected DiagramBehavior createDiagramBehavior() {
-		return new DiagramBehavior(this) {
+	protected abstract DiagramBehavior createDiagramBehavior();
 
-			// Override Marker behavior because it modifies the underlying sad resource
-			// and the user will be prompted if they would like to replace their file with what's on disk
-			@Override
-			public DefaultMarkerBehavior createMarkerBehavior() {
-				return new DefaultMarkerBehavior(this) {
-
-					public Diagnostic analyzeResourceProblems(Resource resource, Exception exception) {
-						return Diagnostic.OK_INSTANCE;
-					}
-				};
-
-			};
-
-			@Override
-			protected DefaultRefreshBehavior createRefreshBehavior() {
-				return new SynchronizedRefreshBehavior(this);
-			}
-
-			@Override
-			protected DefaultUpdateBehavior createUpdateBehavior() {
-				return new DefaultUpdateBehavior(this) {
-
-					// We need to provide our own editing domain so that all editors are working on the same resource.
-					// In order to work with a Graphiti diagram, our form creates an editing domain with the Graphiti
-					// supplied Command stack.
-					@Override
-					protected void createEditingDomain(IDiagramEditorInput input) {
-						initializeEditingDomain((TransactionalEditingDomain) editingDomain);
-					}
-
-					@Override
-					protected boolean handleDirtyConflict() {
-						return true;
-					}
-
-					@Override
-					protected Delegate createWorkspaceSynchronizerDelegate() {
-						return null;
-					}
-
-					@Override
-					protected void closeContainer() {
-					}
-
-					@Override
-					protected void disposeEditingDomain() {
-					}
-
-				};
-			}
-
-			@Override
-			protected DefaultPaletteBehavior createPaletteBehaviour() {
-				final DefaultPaletteBehavior paletteBehavior = new RHGraphitiPaletteBehavior(this);
-				return paletteBehavior;
-			}
-
-			@Override
-			protected List<TransferDropTargetListener> createBusinessObjectDropTargetListeners() {
-				List<TransferDropTargetListener> retVal = super.createBusinessObjectDropTargetListeners();
-
-				// Add custom drop target listener if provided
-				TransferDropTargetListener dropTargetListener = AbstractGraphitiDiagramEditor.this.createDropTargetListener(
-					getDiagramContainer().getGraphicalViewer(), this);
-				if (dropTargetListener != null) {
-					retVal.add(0, dropTargetListener);
-				}
-
-				return retVal;
-			}
-
-			@Override
-			protected ContextMenuProvider createContextMenuProvider() {
-				EditPartViewer viewer = getDiagramContainer().getGraphicalViewer();
-				ActionRegistry registry = getDiagramContainer().getActionRegistry();
-				IConfigurationProvider configurationProvider = getConfigurationProvider();
-				return AbstractGraphitiDiagramEditor.this.createContextMenuProvider(viewer, registry, configurationProvider);
-			}
-		};
-	}
-
-	protected abstract TransferDropTargetListener createDropTargetListener(GraphicalViewer viewer, DiagramBehavior behavior);
-
-	protected abstract ContextMenuProvider createContextMenuProvider(EditPartViewer viewer, ActionRegistry registry,
-		IConfigurationProvider configurationProvider);
 }

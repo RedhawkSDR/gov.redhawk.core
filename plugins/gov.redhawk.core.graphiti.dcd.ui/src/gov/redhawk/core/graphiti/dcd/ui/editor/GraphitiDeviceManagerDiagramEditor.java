@@ -11,33 +11,41 @@
 package gov.redhawk.core.graphiti.dcd.ui.editor;
 
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.graphiti.ui.editor.DiagramBehavior;
 import org.eclipse.graphiti.ui.platform.IConfigurationProvider;
-import org.eclipse.jface.util.TransferDropTargetListener;
 
 import gov.redhawk.core.graphiti.ui.diagram.providers.RuntimeContextMenuProvider;
 import gov.redhawk.core.graphiti.ui.editor.AbstractGraphitiDiagramEditor;
+import gov.redhawk.core.graphiti.ui.editor.RHDiagramBehavior;
 
 public class GraphitiDeviceManagerDiagramEditor extends AbstractGraphitiDiagramEditor {
 
+	private EditingDomain editingDomain;
+
 	public GraphitiDeviceManagerDiagramEditor(EditingDomain editingDomain) {
 		super(editingDomain);
+		this.editingDomain = editingDomain;
 		addContext("gov.redhawk.core.graphiti.dcd.ui.contexts.explorer");
 		addContext("gov.redhawk.ide.graphiti.dcd.ui.contexts.sandbox");
 	}
 
 	@Override
-	protected TransferDropTargetListener createDropTargetListener(GraphicalViewer viewer, DiagramBehavior behavior) {
-		return null;
-	}
+	protected DiagramBehavior createDiagramBehavior() {
+		return new RHDiagramBehavior(this, (TransactionalEditingDomain) editingDomain) {
 
-	@Override
-	protected ContextMenuProvider createContextMenuProvider(EditPartViewer viewer, ActionRegistry registry, IConfigurationProvider configurationProvider) {
-		return new RuntimeContextMenuProvider(viewer, registry, configurationProvider);
+			@Override
+			protected ContextMenuProvider createContextMenuProvider() {
+				EditPartViewer viewer = getDiagramContainer().getGraphicalViewer();
+				ActionRegistry registry = getDiagramContainer().getActionRegistry();
+				IConfigurationProvider configurationProvider = getConfigurationProvider();
+				return new RuntimeContextMenuProvider(viewer, registry, configurationProvider);
+			}
+
+		};
 	}
 
 }
