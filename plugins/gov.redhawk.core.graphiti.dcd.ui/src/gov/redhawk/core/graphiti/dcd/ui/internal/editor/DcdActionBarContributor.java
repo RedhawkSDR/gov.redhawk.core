@@ -51,20 +51,21 @@ import gov.redhawk.core.graphiti.dcd.ui.GraphitiDcdUIPlugin;
  * @since 1.2
  */
 public class DcdActionBarContributor extends EditingDomainActionBarContributor implements ISelectionChangedListener {
+
 	/**
 	 * This keeps track of the active editor.
 	 */
-	protected IEditorPart activeEditorPart;
+	private IEditorPart activeEditorPart;
 
 	/**
 	 * This keeps track of the current selection provider.
 	 */
-	protected ISelectionProvider selectionProvider;
+	private ISelectionProvider selectionProvider;
 
 	/**
 	 * This action opens the Properties view.
 	 */
-	protected IAction showPropertiesViewAction = new Action("Show &Properties View") {
+	private IAction showPropertiesViewAction = new Action("Show &Properties View") {
 		@Override
 		public void run() {
 			try {
@@ -80,7 +81,7 @@ public class DcdActionBarContributor extends EditingDomainActionBarContributor i
 	 * This action refreshes the viewer of the current editor if the editor
 	 * implements {@link org.eclipse.emf.common.ui.viewer.IViewerProvider}.
 	 */
-	protected IAction refreshViewerAction = new Action("&Refresh") {
+	private IAction refreshViewerAction = new Action("&Refresh") {
 		@Override
 		public boolean isEnabled() {
 			return DcdActionBarContributor.this.activeEditorPart instanceof IViewerProvider;
@@ -101,23 +102,23 @@ public class DcdActionBarContributor extends EditingDomainActionBarContributor i
 	 * This will contain one {@link org.eclipse.emf.edit.ui.action.CreateChildAction} corresponding to each descriptor
 	 * generated for the current selection by the item provider.
 	 */
-	protected Collection<IAction> createChildActions;
+	private Collection<IAction> createChildActions;
 
 	/**
 	 * This is the menu manager into which menu contribution items should be added for CreateChild actions.
 	 */
-	protected IMenuManager createChildMenuManager;
+	private IMenuManager createChildMenuManager;
 
 	/**
 	 * This will contain one {@link org.eclipse.emf.edit.ui.action.CreateSiblingAction} corresponding to each descriptor
 	 * generated for the current selection by the item provider.
 	 */
-	protected Collection<IAction> createSiblingActions;
+	private Collection<IAction> createSiblingActions;
 
 	/**
 	 * This is the menu manager into which menu contribution items should be added for CreateSibling actions.
 	 */
-	protected IMenuManager createSiblingMenuManager;
+	private IMenuManager createSiblingMenuManager;
 
 	/**
 	 * This creates an instance of the contributor.
