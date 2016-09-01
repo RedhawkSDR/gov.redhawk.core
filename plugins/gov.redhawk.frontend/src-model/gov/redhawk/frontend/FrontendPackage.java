@@ -32,8 +32,13 @@ import org.eclipse.emf.ecore.EReference;
  * <!-- end-user-doc -->
  * @see gov.redhawk.frontend.FrontendFactory
  * @model kind="package"
- * annotation=
- * "http://www.eclipse.org/emf/2002/GenModel prefix='Frontend' dataTypeConverters='true' binaryCompantibleReflectiveMethods='true' fileExtensions='xml' colorProviders='true' fontProviders='true' tablesProviders='true' resource='XML' templateDirectory='/gov.redhawk.frontend/templates' forceOverwrite='true' modelPluginVariables='org.eclipse.xtext.xbase.lib' tableProviders='true' runtimeVersion='2.9' codeFormatting='true' commentFormatting='true' dynamicTemplates='true' contentTypeIdentifier='http://redhawk.gov/frontend/1.0.0' modelDirectory='/gov.redhawk.frontend/src-model' editDirectory='/gov.redhawk.frontend.edit/src-gen' basePackage='gov.redhawk'"
+ * annotation="http://www.eclipse.org/emf/2002/GenModel prefix='Frontend' dataTypeConverters='true'
+ * binaryCompantibleReflectiveMethods='true' fileExtensions='xml' colorProviders='true' fontProviders='true'
+ * tablesProviders='true' resource='XML' templateDirectory='/gov.redhawk.frontend/templates' forceOverwrite='true'
+ * modelPluginVariables='org.eclipse.xtext.xbase.lib' tableProviders='true' runtimeVersion='2.9' codeFormatting='true'
+ * commentFormatting='true' dynamicTemplates='true' contentTypeIdentifier='http://redhawk.gov/frontend/1.0.0'
+ * modelDirectory='/gov.redhawk.frontend/src-model' editDirectory='/gov.redhawk.frontend.edit/src-gen'
+ * basePackage='gov.redhawk'"
  * @generated
  */
 public interface FrontendPackage extends EPackage {
@@ -379,8 +384,8 @@ public interface FrontendPackage extends EPackage {
 	int TUNER_STATUS_OPERATION_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link gov.redhawk.frontend.impl.ListenerAllocationImpl <em>Listener Allocation</em>}
-	 * ' class.
+	 * The meta object id for the '{@link gov.redhawk.frontend.impl.ListenerAllocationImpl <em>Listener
+	 * Allocation</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.frontend.impl.ListenerAllocationImpl
@@ -456,8 +461,8 @@ public interface FrontendPackage extends EPackage {
 	EClass getTunerContainer();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.frontend.TunerContainer#getTunerStatus <em>Tuner Status</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.frontend.TunerContainer#getTunerStatus <em>Tuner Status</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Tuner Status</em>'.
@@ -468,8 +473,8 @@ public interface FrontendPackage extends EPackage {
 	EReference getTunerContainer_TunerStatus();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.frontend.TunerContainer#getUnallocatedContainer <em>Unallocated Container</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.frontend.TunerContainer#getUnallocatedContainer <em>Unallocated Container</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Unallocated Container</em>'.
@@ -491,8 +496,8 @@ public interface FrontendPackage extends EPackage {
 	EClass getUnallocatedTunerContainer();
 
 	/**
-	 * Returns the meta object for the container reference '
-	 * {@link gov.redhawk.frontend.UnallocatedTunerContainer#getTunerContainer <em>Tuner Container</em>}'.
+	 * Returns the meta object for the container reference
+	 * '{@link gov.redhawk.frontend.UnallocatedTunerContainer#getTunerContainer <em>Tuner Container</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the container reference '<em>Tuner Container</em>'.
@@ -585,8 +590,8 @@ public interface FrontendPackage extends EPackage {
 	EAttribute getTunerStatus_Allocated();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getTunerID <em>Tuner ID</em>}
-	 * '.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getTunerID <em>Tuner
+	 * ID</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Tuner ID</em>'.
@@ -657,8 +662,8 @@ public interface FrontendPackage extends EPackage {
 	EAttribute getTunerStatus_SampleRate();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getGroupID <em>Group ID</em>}
-	 * '.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getGroupID <em>Group
+	 * ID</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Group ID</em>'.
@@ -738,8 +743,8 @@ public interface FrontendPackage extends EPackage {
 	EAttribute getTunerStatus_DeviceControl();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.frontend.TunerStatus#getListenerAllocations <em>Listener Allocations</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.frontend.TunerStatus#getListenerAllocations <em>Listener Allocations</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Listener Allocations</em>'.
@@ -771,8 +776,8 @@ public interface FrontendPackage extends EPackage {
 	EClass getListenerAllocation();
 
 	/**
-	 * Returns the meta object for the container reference '
-	 * {@link gov.redhawk.frontend.ListenerAllocation#getTunerStatus <em>Tuner Status</em>}'.
+	 * Returns the meta object for the container reference
+	 * '{@link gov.redhawk.frontend.ListenerAllocation#getTunerStatus <em>Tuner Status</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the container reference '<em>Tuner Status</em>'.
