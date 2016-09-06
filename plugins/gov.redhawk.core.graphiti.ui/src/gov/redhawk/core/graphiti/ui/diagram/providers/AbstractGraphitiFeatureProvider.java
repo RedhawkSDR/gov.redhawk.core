@@ -40,10 +40,7 @@ import gov.redhawk.core.graphiti.ui.internal.diagram.features.CollapseAllShapesF
 import gov.redhawk.core.graphiti.ui.internal.diagram.features.CollapseShapeFeature;
 import gov.redhawk.core.graphiti.ui.internal.diagram.features.ExpandAllShapesFeature;
 import gov.redhawk.core.graphiti.ui.internal.diagram.features.ExpandShapeFeature;
-import gov.redhawk.core.graphiti.ui.internal.diagram.features.StartFeature;
-import gov.redhawk.core.graphiti.ui.internal.diagram.features.StopFeature;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
-import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 
 public abstract class AbstractGraphitiFeatureProvider extends DefaultFeatureProviderWithPatterns implements IHoverPadFeatureProvider {
 
@@ -57,21 +54,8 @@ public abstract class AbstractGraphitiFeatureProvider extends DefaultFeatureProv
 
 	@Override
 	public ICustomFeature[] getContextButtonPadFeatures(CustomContext context) {
-		// We only add to runtime diagrams
-		Diagram diagram = getDiagramTypeProvider().getDiagram();
-		if (!DUtil.isDiagramRuntime(diagram)) {
-			return new ICustomFeature[0];
-		}
-
-		// Check the selection to make sure it's appropriate
-		for (PictogramElement pe : context.getPictogramElements()) {
-			if (!(pe instanceof RHContainerShape) || DUtil.getBusinessObject(pe, ComponentInstantiation.class) == null) {
-				return new ICustomFeature[0];
-			}
-		}
-
-		ICustomFeature[] features = new ICustomFeature[] { new StartFeature(this), new StopFeature(this) };
-		return features;
+		// By default, there are no context-button-pad-only features
+		return new ICustomFeature[0];
 	}
 
 	/**

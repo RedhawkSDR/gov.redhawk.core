@@ -8,14 +8,13 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  */
-package gov.redhawk.core.graphiti.ui.internal.diagram.features;
+package gov.redhawk.core.graphiti.ui.diagram.features;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 
-import gov.redhawk.core.graphiti.ui.diagram.features.NonUndoableCustomFeature;
 import gov.redhawk.core.graphiti.ui.diagram.providers.ImageProvider;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
