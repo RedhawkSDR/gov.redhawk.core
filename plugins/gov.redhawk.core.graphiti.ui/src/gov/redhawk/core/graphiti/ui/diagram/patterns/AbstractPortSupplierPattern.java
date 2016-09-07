@@ -174,7 +174,7 @@ public abstract class AbstractPortSupplierPattern extends AbstractContainerPatte
 		}
 
 		// Use legacy update method to ensure ports containers are created
-		if (((RHContainerShape) context.getPictogramElement()).update()) {
+		if (containerShape.update()) {
 			updateStatus = true;
 		}
 
