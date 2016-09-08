@@ -65,6 +65,14 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 	}
 
 	@Override
+	public < T > T getAdapter(Class<T> adapter) {
+		if (adapter.isInstance(this.deviceManager)) {
+			return adapter.cast(this.deviceManager);
+		}
+		return super.getAdapter(adapter);
+	}
+
+	@Override
 	protected void setInput(IEditorInput input) {
 		if (input instanceof ScaFileStoreEditorInput) {
 			ScaFileStoreEditorInput scaInput = (ScaFileStoreEditorInput) input;

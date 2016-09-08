@@ -92,6 +92,9 @@
             adaptableType="org.eclipse.graphiti.ui.platform.GraphitiShapeEditPart"
             class="gov.redhawk.core.graphiti.ui.adapters.ContainerShapeAdapterFactory">
          <adapter
+               type="gov.redhawk.model.sca.ScaService">
+         </adapter>
+         <adapter
                type="gov.redhawk.model.sca.ScaDevice">
          </adapter>
          <adapter
@@ -122,6 +125,9 @@
       <factory
             adaptableType="gov.redhawk.core.graphiti.ui.ext.RHContainerShape"
             class="gov.redhawk.core.graphiti.ui.adapters.ContainerShapeAdapterFactory">
+         <adapter
+               type="gov.redhawk.model.sca.ScaService">
+         </adapter>
          <adapter
                type="gov.redhawk.model.sca.ScaDevice">
          </adapter>

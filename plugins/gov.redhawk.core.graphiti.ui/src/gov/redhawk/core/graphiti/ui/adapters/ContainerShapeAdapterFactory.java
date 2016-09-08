@@ -41,7 +41,7 @@ import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
  */
 public class ContainerShapeAdapterFactory implements IAdapterFactory {
 
-	private static final Class< ? >[] ADAPTER_TYPES = new Class< ? >[] { ScaComponent.class, ScaDevice.class };
+	private static final Class< ? >[] ADAPTER_TYPES = new Class< ? >[] { ScaComponent.class, ScaDevice.class, ScaService.class };
 
 	@Override
 	public < T > T getAdapter(Object adaptableObject, Class<T> adapterType) {

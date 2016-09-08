@@ -74,6 +74,14 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 	}
 
 	@Override
+	public < T > T getAdapter(Class<T> adapter) {
+		if (adapter.isInstance(this.waveform)) {
+			return adapter.cast(this.waveform);
+		}
+		return super.getAdapter(adapter);
+	}
+
+	@Override
 	protected void setInput(IEditorInput input) {
 		if (input instanceof ScaFileStoreEditorInput) {
 			ScaFileStoreEditorInput scaInput = (ScaFileStoreEditorInput) input;
