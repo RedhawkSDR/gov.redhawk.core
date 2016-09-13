@@ -11,10 +11,6 @@
  */
 package gov.redhawk.prf.internal.ui.editor.composite;
 
-import gov.redhawk.common.ui.doc.HelpConstants;
-import gov.redhawk.ui.doc.HelpUtil;
-import mil.jpeojtrs.sca.prf.StructPropertyConfigurationType;
-
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -27,12 +23,18 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+import gov.redhawk.common.ui.doc.HelpConstants;
+import gov.redhawk.ui.doc.HelpUtil;
+import mil.jpeojtrs.sca.prf.StructPropertyConfigurationType;
+
 public abstract class BasicStructPropertyComposite extends AbstractPropertyComposite {
 	private Label kindLabel;
 	private ComboViewer configurationKindViewer;
 
 	private boolean configShown;
+	private boolean messageShown;
 	private ViewerFilter configFilter;
+	private ViewerFilter messageFilter;
 
 	public BasicStructPropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
 		super(parent, style, toolkit);
@@ -77,8 +79,24 @@ public abstract class BasicStructPropertyComposite extends AbstractPropertyCompo
 			}
 		};
 		viewer.addFilter(this.configFilter);
-		viewer.setInput(new Object[] { StructPropertyConfigurationType.PROPERTY, StructPropertyConfigurationType.ALLOCATION, StructPropertyConfigurationType.MESSAGE,
-			StructPropertyConfigurationType.CONFIGURE });
+
+		this.messageFilter = new ViewerFilter() {
+			@Override
+			public boolean select(Viewer viewer, Object parentElement, Object element) {
+				if (element instanceof StructPropertyConfigurationType) {
+					if (((StructPropertyConfigurationType) element) == StructPropertyConfigurationType.MESSAGE) {
+						return false;
+					}
+				}
+				return true;
+			}
+		};
+		if (this instanceof StructSequencePropertyComposite) {
+			viewer.addFilter(messageFilter);
+		}
+
+		viewer.setInput(new Object[] { StructPropertyConfigurationType.PROPERTY, StructPropertyConfigurationType.ALLOCATION,
+			StructPropertyConfigurationType.MESSAGE, StructPropertyConfigurationType.CONFIGURE });
 		viewer.getControl().setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, false).create());
 
 		this.configurationKindViewer = viewer;
@@ -113,5 +131,25 @@ public abstract class BasicStructPropertyComposite extends AbstractPropertyCompo
 			}
 			configShown = visible;
 		}
+	}
+
+	/**
+	 * This method adds or removes a filter for the "message" option in the property kind drop-down.
+	 * Provides backwards-compatibility for REDHAWK project pre-2.0.
+	 * @param visible If "message" should be shown
+	 */
+	public void showMessage(boolean visible) {
+		if (visible != messageShown) {
+			if (visible) {
+				this.configurationKindViewer.removeFilter(messageFilter);
+			} else {
+				this.configurationKindViewer.addFilter(messageFilter);
+			}
+			messageShown = visible;
+		}
+	}
+
+	public boolean isShowMessage() {
+		return this.messageShown;
 	}
 }

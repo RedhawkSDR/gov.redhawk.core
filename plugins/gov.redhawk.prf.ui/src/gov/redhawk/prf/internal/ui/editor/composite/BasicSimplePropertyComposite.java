@@ -11,24 +11,7 @@
  */
 package gov.redhawk.prf.internal.ui.editor.composite;
 
-import gov.redhawk.common.ui.doc.HelpConstants;
-import gov.redhawk.common.ui.editor.FormLayoutFactory;
-import gov.redhawk.common.ui.parts.FormEntry;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.sca.ui.ScaUI;
-import gov.redhawk.ui.doc.HelpUtil;
-import gov.redhawk.ui.util.SWTUtil;
-
 import java.util.Comparator;
-
-import mil.jpeojtrs.sca.prf.ActionType;
-import mil.jpeojtrs.sca.prf.Enumeration;
-import mil.jpeojtrs.sca.prf.PrfPackage;
-import mil.jpeojtrs.sca.prf.PropertyConfigurationType;
-import mil.jpeojtrs.sca.prf.PropertyValueType;
-import mil.jpeojtrs.sca.prf.Simple;
-import mil.jpeojtrs.sca.prf.provider.PrfItemProviderAdapterFactory;
-import mil.jpeojtrs.sca.util.AnyUtils;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -65,6 +48,22 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+
+import gov.redhawk.common.ui.doc.HelpConstants;
+import gov.redhawk.common.ui.editor.FormLayoutFactory;
+import gov.redhawk.common.ui.parts.FormEntry;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.sca.ui.ScaUI;
+import gov.redhawk.ui.doc.HelpUtil;
+import gov.redhawk.ui.util.SWTUtil;
+import mil.jpeojtrs.sca.prf.ActionType;
+import mil.jpeojtrs.sca.prf.Enumeration;
+import mil.jpeojtrs.sca.prf.PrfPackage;
+import mil.jpeojtrs.sca.prf.PropertyConfigurationType;
+import mil.jpeojtrs.sca.prf.PropertyValueType;
+import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.provider.PrfItemProviderAdapterFactory;
+import mil.jpeojtrs.sca.util.AnyUtils;
 
 public abstract class BasicSimplePropertyComposite extends AbstractPropertyComposite {
 
@@ -104,7 +103,9 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	private Combo typeModifier;
 
 	private boolean configExecParamShown;
+	private boolean messageShown;
 	private ViewerFilter configExecParamFilter;
+	private ViewerFilter messageFilter;
 
 	public BasicSimplePropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
 		super(parent, style, toolkit);
@@ -211,6 +212,21 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 			}
 		};
 		viewer.addFilter(this.configExecParamFilter);
+
+		this.messageShown = false;
+		this.messageFilter = new ViewerFilter() {
+			@Override
+			public boolean select(Viewer viewer, Object parentElement, Object element) {
+				if (element instanceof PropertyConfigurationType) {
+					if (((PropertyConfigurationType) element) == PropertyConfigurationType.MESSAGE) {
+						return false;
+					}
+				}
+				return true;
+			}
+		};
+		viewer.addFilter(this.messageFilter);
+
 		viewer.getControl().setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
 		viewer.setInput(new Object[] { PropertyConfigurationType.PROPERTY, PropertyConfigurationType.ALLOCATION, PropertyConfigurationType.MESSAGE,
 			PropertyConfigurationType.CONFIGURE, PropertyConfigurationType.EXECPARAM });
@@ -377,7 +393,9 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		tableLayout.addColumnData(new ColumnWeightData(20, 100, true)); // SUPPRESS CHECKSTYLE MagicNumber
 		tableLayout.addColumnData(new ColumnWeightData(30, 40, true)); // SUPPRESS CHECKSTYLE MagicNumber
 		table.setLayout(tableLayout);
-		table.setLayoutData(GridDataFactory.fillDefaults().span(1, 3).hint(SWT.DEFAULT, 100).grab(true, true).create()); // SUPPRESS CHECKSTYLE MagicNumber
+		table.setLayoutData(GridDataFactory.fillDefaults().span(1, 3).hint(SWT.DEFAULT, 100).grab(true, true).create()); // SUPPRESS
+																															// CHECKSTYLE
+																															// MagicNumber
 
 		this.enumViewer = new TableViewer(table);
 		this.enumViewer.setContentProvider(new AdapterFactoryContentProvider(getAdapterFactory()));
@@ -464,10 +482,13 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		});
 
 		this.enumViewer.setLabelProvider(new AdapterFactoryLabelProvider(getAdapterFactory()));
-		this.enumViewer.setColumnProperties(new String[] { PrfPackage.Literals.ENUMERATION__LABEL.getName(), PrfPackage.Literals.ENUMERATION__VALUE.getName() });
+		this.enumViewer.setColumnProperties(
+			new String[] { PrfPackage.Literals.ENUMERATION__LABEL.getName(), PrfPackage.Literals.ENUMERATION__VALUE.getName() });
 
 		this.enumViewer.setFilters(createEnumerationViewerFilter());
-		table.setLayoutData(GridDataFactory.fillDefaults().span(1, NUM_COLUMNS).hint(SWT.DEFAULT, 50).grab(true, true).create()); // SUPPRESS CHECKSTYLE MagicNumber
+		table.setLayoutData(GridDataFactory.fillDefaults().span(1, NUM_COLUMNS).hint(SWT.DEFAULT, 50).grab(true, true).create()); // SUPPRESS
+																																	// CHECKSTYLE
+																																	// MagicNumber
 		this.addEnumButton = this.toolkit.createButton(tableComp, "Add...", SWT.PUSH);
 		this.addEnumButton.setLayoutData(GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).create());
 		this.editEnumButton = this.toolkit.createButton(tableComp, "Edit", SWT.PUSH);
@@ -547,5 +568,25 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 			}
 			configExecParamShown = visible;
 		}
+	}
+
+	/**
+	 * This method adds or removes a filter for the "message" option in the property kind drop-down.
+	 * Provides backwards-compatibility for REDHAWK project pre-2.0.
+	 * @param visible If "message" should be shown
+	 */
+	public void showMessage(boolean visible) {
+		if (visible != messageShown) {
+			if (visible) {
+				this.kindViewer.removeFilter(messageFilter);
+			} else {
+				this.kindViewer.addFilter(messageFilter);
+			}
+			messageShown = visible;
+		}
+	}
+
+	public boolean isShowMessage() {
+		return this.messageShown;
 	}
 }

@@ -11,17 +11,10 @@
  */
 package gov.redhawk.prf.internal.ui.editor.detailspart;
 
-import gov.redhawk.prf.internal.ui.editor.PropertiesSection;
-import gov.redhawk.prf.internal.ui.editor.composite.BasicStructPropertyComposite;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import mil.jpeojtrs.sca.prf.ConfigurationKind;
-import mil.jpeojtrs.sca.prf.PrfFactory;
-import mil.jpeojtrs.sca.prf.StructPropertyConfigurationType;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -32,6 +25,12 @@ import org.eclipse.emf.databinding.edit.EMFEditObservables;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
+
+import gov.redhawk.prf.internal.ui.editor.PropertiesSection;
+import gov.redhawk.prf.internal.ui.editor.composite.BasicStructPropertyComposite;
+import mil.jpeojtrs.sca.prf.ConfigurationKind;
+import mil.jpeojtrs.sca.prf.PrfFactory;
+import mil.jpeojtrs.sca.prf.StructPropertyConfigurationType;
 
 public abstract class BasicStructPropertyDetailsPage extends AbstractPropertyDetailsPage {
 
@@ -82,6 +81,13 @@ public abstract class BasicStructPropertyDetailsPage extends AbstractPropertyDet
 					if (kindList.size() == 1) {
 						ConfigurationKind kind = (ConfigurationKind) kindList.get(0);
 						if (kind.isSetType()) {
+							// Message should only be shown as an option if the user explicitly enters it
+							if (kind.getType().equals(StructPropertyConfigurationType.MESSAGE)) {
+								BasicStructPropertyDetailsPage.this.getComposite().showMessage(true);
+							} else {
+								BasicStructPropertyDetailsPage.this.getComposite().showMessage(false);
+							}
+
 							return kind.getType();
 						} else {
 							return StructPropertyConfigurationType.PROPERTY;
@@ -136,6 +142,13 @@ public abstract class BasicStructPropertyDetailsPage extends AbstractPropertyDet
 			public Object convert(final Object fromObject) {
 				if (fromObject instanceof StructPropertyConfigurationType) {
 					final StructPropertyConfigurationType kindType = (StructPropertyConfigurationType) fromObject;
+
+					// Message should only be shown as an option if is already exists in the prf.xml
+					boolean isMessageShown = BasicStructPropertyDetailsPage.this.getComposite().isShowMessage();
+					if (!kindType.equals(StructPropertyConfigurationType.MESSAGE) && isMessageShown) {
+						BasicStructPropertyDetailsPage.this.getComposite().showMessage(false);
+					}
+
 					final ConfigurationKind kind = PrfFactory.eINSTANCE.createConfigurationKind();
 					kind.setType(kindType);
 					List<ConfigurationKind> kindList = new ArrayList<ConfigurationKind>();

@@ -98,29 +98,29 @@ public class PropertiesBlock extends SCAMasterDetailsBlock {
 
 			@Override
 			public IDetailsPage getPage(final Object key) {
+				if (key == StructSequencePropertyDetailsPage.class) {
+					return new StructSequencePropertyDetailsPage(fSection);
+				}
+				if (key == StructSequenceStructPropertyDetailsPage.class) {
+					return new StructSequenceStructPropertyDetailsPage(fSection);
+				}
 				if (key == StructSequenceSimplePropertyDetailsPage.class) {
 					return new StructSequenceSimplePropertyDetailsPage(fSection);
 				}
+				if (key == StructPropertyDetailsPage.class) {
+					return new StructPropertyDetailsPage(fSection);
+				}
 				if (key == StructSimplePropertyDetailsPage.class) {
 					return new StructSimplePropertyDetailsPage(fSection);
+				}
+				if (key == StructSimpleSequencePropertyDetailsPage.class) {
+					return new StructSimpleSequencePropertyDetailsPage(fSection);
 				}
 				if (key == SimplePropertyDetailsPage.class) {
 					return new SimplePropertyDetailsPage(fSection);
 				}
 				if (key == SimpleSequencePropertyDetailsPage.class) {
 					return new SimpleSequencePropertyDetailsPage(fSection);
-				}
-				if (key == StructSimpleSequencePropertyDetailsPage.class) {
-					return new StructSimpleSequencePropertyDetailsPage(fSection);
-				}
-				if (key == StructSequenceStructPropertyDetailsPage.class) {
-					return new StructSequenceStructPropertyDetailsPage(fSection);
-				}
-				if (key == StructPropertyDetailsPage.class) {
-					return new StructPropertyDetailsPage(fSection);
-				}
-				if (key == StructSequencePropertyDetailsPage.class) {
-					return new StructSequencePropertyDetailsPage(fSection);
 				}
 				return null;
 			}

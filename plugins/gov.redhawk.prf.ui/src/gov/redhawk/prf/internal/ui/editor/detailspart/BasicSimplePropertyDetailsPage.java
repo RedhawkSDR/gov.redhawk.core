@@ -11,29 +11,11 @@
  */
 package gov.redhawk.prf.internal.ui.editor.detailspart;
 
-import gov.redhawk.prf.internal.ui.editor.PropertiesSection;
-import gov.redhawk.prf.internal.ui.editor.composite.BasicSimplePropertyComposite;
-import gov.redhawk.prf.ui.wizard.EnumerationWizard;
-import gov.redhawk.ui.editor.SCAFormEditor;
-import gov.redhawk.ui.util.EMFEmptyStringToNullUpdateValueStrategy;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import mil.jpeojtrs.sca.prf.Action;
-import mil.jpeojtrs.sca.prf.ActionType;
-import mil.jpeojtrs.sca.prf.Enumeration;
-import mil.jpeojtrs.sca.prf.Enumerations;
-import mil.jpeojtrs.sca.prf.Kind;
-import mil.jpeojtrs.sca.prf.PrfFactory;
-import mil.jpeojtrs.sca.prf.PrfPackage;
-import mil.jpeojtrs.sca.prf.PropertyConfigurationType;
-import mil.jpeojtrs.sca.prf.Range;
-import mil.jpeojtrs.sca.prf.Simple;
-import mil.jpeojtrs.sca.prf.SimpleSequence;	//SUPPRESS CHECKSTYLE INLINE - Used in a Javadoc
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -64,8 +46,26 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 
+import gov.redhawk.prf.internal.ui.editor.PropertiesSection;
+import gov.redhawk.prf.internal.ui.editor.composite.BasicSimplePropertyComposite;
+import gov.redhawk.prf.ui.wizard.EnumerationWizard;
+import gov.redhawk.ui.editor.SCAFormEditor;
+import gov.redhawk.ui.util.EMFEmptyStringToNullUpdateValueStrategy;
+import mil.jpeojtrs.sca.prf.Action;
+import mil.jpeojtrs.sca.prf.ActionType;
+import mil.jpeojtrs.sca.prf.Enumeration;
+import mil.jpeojtrs.sca.prf.Enumerations;
+import mil.jpeojtrs.sca.prf.Kind;
+import mil.jpeojtrs.sca.prf.PrfFactory;
+import mil.jpeojtrs.sca.prf.PrfPackage;
+import mil.jpeojtrs.sca.prf.PropertyConfigurationType;
+import mil.jpeojtrs.sca.prf.Range;
+import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.SimpleSequence; //SUPPRESS CHECKSTYLE INLINE - Used in a Javadoc
+
 /**
- * Provides functionality common to {@link Simple} and {@link SimpleSequence} types, including data binding of all common widgets.
+ * Provides functionality common to {@link Simple} and {@link SimpleSequence} types, including data binding of all
+ * common widgets.
  */
 public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDetailsPage {
 
@@ -97,9 +97,10 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 	}
 
 	private void addRangeListener() {
-		// NOTE: MUST remove listener prior to adding since 
-		//		1.) We don't want multiple listeners
-		// 		2.) This listener MUST be triggered AFTER the binding listener, therefore, it is adding every time in the bind method
+		// NOTE: MUST remove listener prior to adding since
+		// 1.) We don't want multiple listeners
+		// 2.) This listener MUST be triggered AFTER the binding listener, therefore, it is adding every time in the
+		// bind method
 		((BasicSimplePropertyComposite) getComposite()).getRangeButton().removeSelectionListener(this.rangeListener);
 		((BasicSimplePropertyComposite) getComposite()).getRangeButton().addSelectionListener(this.rangeListener);
 	}
@@ -216,12 +217,19 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 			@Override
 			public Object convert(final Object fromObject) {
 				if (fromObject instanceof List) {
-					final List<?> kindList = (List<?>) fromObject;
+					final List< ? > kindList = (List< ? >) fromObject;
 
 					// Normally, we expect exactly one kind type in the list
 					if (kindList.size() == 1) {
 						Kind kind = (Kind) kindList.get(0);
 						if (kind.isSetType()) {
+							// Message should only be shown as an option if the user explicitly enters it
+							if (kind.getType().equals(PropertyConfigurationType.MESSAGE)) {
+								BasicSimplePropertyDetailsPage.this.getComposite().showMessage(true);
+							} else {
+								BasicSimplePropertyDetailsPage.this.getComposite().showMessage(false);
+							}
+
 							return kind.getType();
 						} else {
 							return PropertyConfigurationType.PROPERTY;
@@ -232,8 +240,9 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 						return PropertyConfigurationType.CONFIGURE;
 					}
 
-					// We can only display one kind type, even though the XML allows multiple. As of Redhawk 2.0, we only
-					// expect one type to be used. Since we have multiple, we'll select the "most important" one to show.
+					// We can only display one kind type, even though the XML allows multiple. As of Redhawk 2.0, we
+					// only expect one type to be used. Since we have multiple, we'll select the "most important" one to
+					// show.
 					Set<PropertyConfigurationType> kindTypeSet = new HashSet<PropertyConfigurationType>();
 					for (Object obj : kindList) {
 						Kind kind = (Kind) obj;
@@ -278,6 +287,13 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 			public Object convert(final Object fromObject) {
 				if (fromObject instanceof PropertyConfigurationType) {
 					final PropertyConfigurationType kindType = (PropertyConfigurationType) fromObject;
+
+					// Message should only be shown as an option if is already exists in the prf.xml
+					boolean isMessageShown = BasicSimplePropertyDetailsPage.this.getComposite().isShowMessage();
+					if (!kindType.equals(PropertyConfigurationType.MESSAGE) && isMessageShown) {
+						BasicSimplePropertyDetailsPage.this.getComposite().showMessage(false);
+					}
+
 					final Kind kind = PrfFactory.eINSTANCE.createKind();
 					kind.setType(kindType);
 					List<Kind> kindList = new ArrayList<Kind>();
@@ -337,7 +353,7 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		retVal.add(this.bindMax(context, maxText));
 		retVal.addAll(this.bindButton(context, composite.getRangeButton(), minText, maxText));
 
-		//		addRangeListener();
+		// addRangeListener();
 
 		return retVal;
 	}
@@ -380,9 +396,8 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		final IEMFEditValueProperty minProperty = EMFEditProperties.value(getEditingDomain(),
 			FeaturePath.fromList(this.property.getRange(), PrfPackage.Literals.RANGE__MIN));
 		final IObservableValue minObserver = minProperty.observe(this.input);
-		this.minBinding = context.bindValue(
-			WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(),
-				((BasicSimplePropertyComposite) getComposite()).getMinText().getText()), minObserver, EMFEmptyStringToNullUpdateValueStrategy.INSTANCE, null);
+		this.minBinding = context.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(),
+			((BasicSimplePropertyComposite) getComposite()).getMinText().getText()), minObserver, EMFEmptyStringToNullUpdateValueStrategy.INSTANCE, null);
 		return this.minBinding;
 	}
 
@@ -390,9 +405,8 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		final IEMFEditValueProperty maxProperty = EMFEditProperties.value(getEditingDomain(),
 			FeaturePath.fromList(this.property.getRange(), PrfPackage.Literals.RANGE__MAX));
 		final IObservableValue maxObserver = maxProperty.observe(this.input);
-		this.maxBinding = context.bindValue(
-			WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(),
-				((BasicSimplePropertyComposite) getComposite()).getMaxText().getText()), maxObserver, EMFEmptyStringToNullUpdateValueStrategy.INSTANCE, null);
+		this.maxBinding = context.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(),
+			((BasicSimplePropertyComposite) getComposite()).getMaxText().getText()), maxObserver, EMFEmptyStringToNullUpdateValueStrategy.INSTANCE, null);
 		return this.maxBinding;
 	}
 
