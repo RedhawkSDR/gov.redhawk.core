@@ -30,7 +30,6 @@ public class GraphitiWaveformExplorerDiagramEditor extends AbstractGraphitiDiagr
 		super(editingDomain);
 		this.editingDomain = editingDomain;
 		addContext("gov.redhawk.core.graphiti.sad.ui.contexts.explorer");
-		addContext("gov.redhawk.ide.graphiti.sad.ui.contexts.sandbox");
 	}
 
 	@Override
