@@ -126,7 +126,7 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 
 	@Override
 	protected AbstractGraphitiDiagramEditor createDiagramEditor() {
-		return new GraphitiDeviceManagerDiagramEditor(getEditingDomain());
+		return new GraphitiDeviceManagerExplorerDiagramEditor(getEditingDomain());
 	}
 
 	////////////////////////////////////////////////////

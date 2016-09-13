@@ -22,11 +22,11 @@ import gov.redhawk.core.graphiti.ui.diagram.providers.RuntimeContextMenuProvider
 import gov.redhawk.core.graphiti.ui.editor.AbstractGraphitiDiagramEditor;
 import gov.redhawk.core.graphiti.ui.editor.RHDiagramBehavior;
 
-public class GraphitiDeviceManagerDiagramEditor extends AbstractGraphitiDiagramEditor {
+public class GraphitiDeviceManagerExplorerDiagramEditor extends AbstractGraphitiDiagramEditor {
 
 	private EditingDomain editingDomain;
 
-	public GraphitiDeviceManagerDiagramEditor(EditingDomain editingDomain) {
+	public GraphitiDeviceManagerExplorerDiagramEditor(EditingDomain editingDomain) {
 		super(editingDomain);
 		this.editingDomain = editingDomain;
 		addContext("gov.redhawk.core.graphiti.dcd.ui.contexts.explorer");
