@@ -104,8 +104,8 @@ public interface TunerStatus extends EObject {
 	ScaStructProperty getTunerStatusStruct();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.frontend.TunerStatus#getTunerStatusStruct <em>Tuner Status Struct</em>}
-	 * ' attribute.
+	 * Sets the value of the '{@link gov.redhawk.frontend.TunerStatus#getTunerStatusStruct <em>Tuner Status
+	 * Struct</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Tuner Status Struct</em>' attribute.
@@ -262,8 +262,8 @@ public interface TunerStatus extends EObject {
 	void unsetAllocationID();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.frontend.TunerStatus#getAllocationID <em>Allocation ID</em>}
-	 * ' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.frontend.TunerStatus#getAllocationID <em>Allocation
+	 * ID</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Allocation ID</em>' attribute is set.

@@ -452,48 +452,38 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	@Override
 	public void refresh(IProgressMonitor monitor, RefreshDepth depth) throws InterruptedException {
 		// END GENERATED CODE
-		if (isDisposed()) {
+		SubMonitor progress = SubMonitor.convert(monitor);
+		if (isDisposed() || depth == null || depth == RefreshDepth.NONE || depth == RefreshDepth.SELF) {
+			progress.done();
 			return;
 		}
-		if (depth == null) {
-			return;
-		}
-		if (depth == RefreshDepth.NONE) {
-			return;
-		}
-		final SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
 
+		// Decrement depth level
 		if (RefreshDepth.CHILDREN == depth) {
 			depth = RefreshDepth.SELF;
-		} else if (RefreshDepth.SELF == depth) {
-			depth = null;
 		}
 
-		if (depth != null) {
-			final EObject[] contents = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<EObject[]>() {
+		final EObject[] contents = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<EObject[]>() {
 
-				@Override
-				public void run() {
-					setResult(eContents().toArray(new EObject[eContents().size()]));
-				}
+			@Override
+			public void run() {
+				setResult(eContents().toArray(new EObject[eContents().size()]));
+			}
 
-			});
-			if (contents != null) {
-				SubMonitor contentsMonitor = subMonitor.newChild(1).setWorkRemaining(contents.length);
-				int index = contents.length;
-				for (final EObject obj : contents) {
-					if (obj instanceof DataProviderObject) {
-						((DataProviderObject) obj).refresh(contentsMonitor.newChild(1), depth);
-					}
-					index--;
-					contentsMonitor.setWorkRemaining(index);
+		});
+		if (contents != null) {
+			progress.setWorkRemaining(contents.length);
+			int index = contents.length;
+			for (final EObject obj : contents) {
+				if (obj instanceof DataProviderObject) {
+					((DataProviderObject) obj).refresh(progress.newChild(1), depth);
 				}
-			} else {
-				subMonitor.worked(1);
+				index--;
+				progress.setWorkRemaining(index);
 			}
 		}
-		subMonitor.setWorkRemaining(1);
-		subMonitor.done();
+
+		progress.done();
 		// BEGIN GENERATED CODE
 	}
 

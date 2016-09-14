@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+-->
+<plugin>
+   <extension
+         point="org.eclipse.emf.ecore.content_handler">
+      <contentHandler
+            class="gov.redhawk.core.graphiti.ui.internal.style.StyleContentHandler">
+      </contentHandler>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.content_parser">
+      <parser
+            class="gov.redhawk.core.graphiti.ui.internal.style.StyleResourceFactory"
+            contentTypeIdentifier="gov.redhawk.ide.graphiti.ui.style">
+      </parser>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated RHGraphiti -->
+      <package
+            uri="http://www.redhawk.gov/model/rhgext/1.0.0"
+            class="gov.redhawk.core.graphiti.ui.ext.RHGxPackage"
+            genModel="model/RHGraphiti.xcore"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.content_parser">
+      <!-- @generated RHGraphiti -->
+      <parser
+            contentTypeIdentifier="http://www.redhawk.gov/model/rhgext/1.0.0"
+            class="org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.core.contenttype.contentTypes">
+      <!-- @generated RHGraphiti -->
+      <content-type
+            base-type="org.eclipse.emf.ecore.xmi"
+            file-extensions="rhgx"
+            id="http://www.redhawk.gov/model/rhgext/1.0.0"
+            name="%_UI_RHGx_content_type"
+            priority="normal">
+         <describer class="org.eclipse.emf.ecore.xmi.impl.RootXMLContentHandlerImpl$Describer">
+            <parameter name="namespace" value="http://www.redhawk.gov/model/rhgext/1.0.0"/>
+            <parameter name="kind" value="xmi"/>
+         </describer>
+      </content-type>
+   </extension>
+
+   <extension
+         point="org.eclipse.graphiti.ui.imageProviders">
+      <imageProvider
+            class="gov.redhawk.core.graphiti.ui.diagram.providers.ImageProvider"
+            id="gov.redhawk.core.graphiti.ui.ImageProvider">
+      </imageProvider>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="gov.redhawk.ui.preferences"
+            class="gov.redhawk.core.graphiti.ui.internal.preferences.DiagramPreferencePage"
+            id="gov.redhawk.core.graphiti.ui.DiagramPreferencePage"
+            name="Graphiti Diagram Preferences">
+      </page>
+      <page
+            category="gov.redhawk.ui.preferences"
+            class="gov.redhawk.core.graphiti.ui.internal.preferences.PortStatisticsPreferencePage"
+            id="gov.redhawk.core.graphiti.ui.PortStatisticsPreferencePage"
+            name="Port Statistics">
+      </page>
+   </extension>
+
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="gov.redhawk.core.graphiti.ui.internal.preferences.DiagramPreferenceInitializer">
+      </initializer>
+   </extension>
+
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="org.eclipse.graphiti.ui.platform.GraphitiShapeEditPart"
+            class="gov.redhawk.core.graphiti.ui.adapters.ContainerShapeAdapterFactory">
+         <adapter
+               type="gov.redhawk.model.sca.ScaService">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.ScaDevice">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.ScaComponent">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.ScaAbstractComponent">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.ScaPropertyContainer">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.ScaPortContainer">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.CorbaObjWrapper">
+         </adapter>
+         <adapter
+               type="CF.ResourceOperations">
+         </adapter>
+         <adapter
+               type="CF.LifeCycleOperations">
+         </adapter>
+         <adapter
+               type="CF.LogConfigurationOperations">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="gov.redhawk.core.graphiti.ui.ext.RHContainerShape"
+            class="gov.redhawk.core.graphiti.ui.adapters.ContainerShapeAdapterFactory">
+         <adapter
+               type="gov.redhawk.model.sca.ScaService">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.ScaDevice">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.ScaComponent">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.ScaAbstractComponent">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.ScaPropertyContainer">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.ScaPortContainer">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.CorbaObjWrapper">
+         </adapter>
+         <adapter
+               type="CF.ResourceOperations">
+         </adapter>
+         <adapter
+               type="CF.LifeCycleOperations">
+         </adapter>
+         <adapter
+               type="CF.LogConfigurationOperations">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="org.eclipse.graphiti.ui.internal.parts.AdvancedAnchorEditPart"
+            class="gov.redhawk.core.graphiti.ui.adapters.PortEditPartAdapterFactory">
+         <adapter
+               type="gov.redhawk.model.sca.ScaProvidesPort">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.ScaUsesPort">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.ScaPort">
+         </adapter>
+         <adapter
+               type="mil.jpeojtrs.sca.scd.AbstractPort">
+         </adapter>
+      </factory>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="gov.redhawk.ide.graphiti.ui.showPropertiesView"
+            name="Show Properties">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="gov.redhawk.core.graphiti.ui.handlers.ShowPropertiesViewHandler"
+            commandId="gov.redhawk.ide.graphiti.ui.showPropertiesView">
+         <enabledWhen>
+            <count
+                  value="1">
+            </count>
+         </enabledWhen>
+      </handler>
+   </extension>
+
+</plugin>
