@@ -21,6 +21,7 @@ import gov.redhawk.model.sca.ScaConnection;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaService;
 import gov.redhawk.model.sca.ScaUsesPort;
 
 /**
@@ -51,6 +52,20 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 					break;
 				}
 				break;
+			/* TODO: enable notificaitions about services
+			case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
+				switch (notification.getEventType()) {
+				case Notification.REMOVE:
+					Object oldVal = notification.getOldValue();
+					if (oldVal != null) {
+						this.modelMap.remove((ScaService) oldVal);
+					}
+					break;
+				default:
+					break;
+				}
+				break;
+			*/
 			default:
 				break;
 			}
@@ -80,6 +95,30 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 			default:
 				break;
 			}
+		} else if (notification.getNotifier() instanceof ScaService) {
+			ScaService service = (ScaService) notification.getNotifier();
+			/* TODO: enable notificaitions about services
+			switch (notification.getFeatureID(ScaDevice.class)) {
+			case ScaPackage.SCA_SERVICE__NAME:
+				switch (notification.getEventType()) {
+				case Notification.SET:
+					this.modelMap.add(service);
+					break;
+				default:
+					break;
+				}
+				break;
+			case ScaPackage.SCA_SERVICE__STATUS:
+				IStatus status = (IStatus) notification.getNewValue();
+				this.modelMap.reflectErrorState(service, status);
+				break;
+			case ScaPackage.SCA_SERVICE__DISPOSED:
+				service.eAdapters().remove(this);
+				break;
+			default:
+				break;
+			}
+			*/
 		} else if (notification.getNotifier() instanceof ScaUsesPort) {
 			switch (notification.getFeatureID(ScaUsesPort.class)) {
 			case ScaPackage.SCA_USES_PORT__CONNECTIONS:
@@ -122,7 +161,7 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 
 	@Override
 	public void addAdapter(final Notifier notifier) {
-		if (notifier instanceof ScaDeviceManager || notifier instanceof ScaDevice || notifier instanceof ScaUsesPort) {
+		if (notifier instanceof ScaDeviceManager || notifier instanceof ScaDevice || notifier instanceof ScaService || notifier instanceof ScaUsesPort) {
 			super.addAdapter(notifier);
 		}
 	}

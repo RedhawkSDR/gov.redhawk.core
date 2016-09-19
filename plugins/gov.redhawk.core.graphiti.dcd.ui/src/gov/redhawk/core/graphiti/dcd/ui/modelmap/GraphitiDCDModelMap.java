@@ -441,4 +441,20 @@ public class GraphitiDCDModelMap extends AbstractGraphitiModelMap {
 			updateErrorState(componentInstantiation, status);
 		}
 	}
+
+	/**
+	 * Updates the pictogram element's {@link IStatus}.
+	 * @param device
+	 * @param status
+	 */
+	public void reflectErrorState(ScaService service, final IStatus status) {
+		final DCDNodeMapEntry nodeMapEntry = nodes.get(DCDNodeMapEntry.getKey(service));
+		if (nodeMapEntry == null) {
+			return;
+		}
+		final ComponentInstantiation componentInstantiation = nodeMapEntry.getProfile();
+		if (componentInstantiation != null) {
+			updateErrorState(componentInstantiation, status);
+		}
+	}
 }
