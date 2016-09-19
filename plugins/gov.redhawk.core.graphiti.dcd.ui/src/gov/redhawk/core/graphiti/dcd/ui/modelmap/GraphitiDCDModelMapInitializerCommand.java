@@ -26,7 +26,6 @@ import gov.redhawk.model.sca.CorbaObjWrapper;
 import gov.redhawk.model.sca.ScaConnection;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
-import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaPortContainer;
 import gov.redhawk.model.sca.ScaProvidesPort;
@@ -66,8 +65,7 @@ public class GraphitiDCDModelMapInitializerCommand extends AbstractCommand {
 	private void initConnection(final ScaConnection con) {
 		final ScaUsesPort uses = con.getPort();
 		final ScaPortContainer container = uses.getPortContainer();
-		int containerID = container.eClass().getClassifierID();
-		if (containerID != ScaPackage.SCA_DEVICE && containerID != ScaPackage.SCA_SERVICE) {
+		if (!(container instanceof ScaDevice || container instanceof ScaService)) {
 			// Can only add connections from devices' and services' ports
 			return;
 		}

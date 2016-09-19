@@ -52,11 +52,12 @@ import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.model.sca.CorbaObjWrapper;
 import gov.redhawk.model.sca.ScaConnection;
-import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaPortContainer;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.NonDirtyingCommand;
 import gov.redhawk.sca.util.SubMonitor;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
@@ -234,8 +235,8 @@ public abstract class AbstractGraphitiModelMap {
 	 */
 	public void add(final ScaConnection connection) {
 		// Ignore connections at the waveform / device manager level
-		int classifierID = connection.getPort().eContainer().eClass().getClassifierID();
-		if (classifierID == ScaPackage.SCA_WAVEFORM || classifierID == ScaPackage.SCA_DEVICE_MANAGER) {
+		EObject portContainer = connection.getPort().eContainer();
+		if (portContainer instanceof ScaWaveform || portContainer instanceof ScaDeviceManager) {
 			return;
 		}
 
@@ -519,6 +520,7 @@ public abstract class AbstractGraphitiModelMap {
 	 * @param status
 	 */
 	protected void updateErrorState(final ComponentInstantiation componentInstantiation, final IStatus status) {
+		Assert.isNotNull(componentInstantiation);
 		Job job = new UIJob("Update error state for " + componentInstantiation.getUsageName()) {
 			@Override
 			public IStatus runInUIThread(IProgressMonitor monitor) {
@@ -548,6 +550,7 @@ public abstract class AbstractGraphitiModelMap {
 	 * @param status
 	 */
 	protected void updateStateStopState(final ComponentInstantiation componentInstantiation, final boolean started) {
+		Assert.isNotNull(componentInstantiation);
 		Job job = new UIJob("Update start/stop state for " + componentInstantiation.getUsageName()) {
 			@Override
 			public IStatus runInUIThread(IProgressMonitor monitor) {

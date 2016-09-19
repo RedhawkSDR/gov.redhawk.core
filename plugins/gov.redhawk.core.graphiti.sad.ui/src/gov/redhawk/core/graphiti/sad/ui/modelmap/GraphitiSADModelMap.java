@@ -293,7 +293,9 @@ public class GraphitiSADModelMap extends AbstractGraphitiModelMap {
 			return;
 		}
 		final ComponentInstantiation componentInstantiation = nodeMapEntry.getProfile();
-		updateStateStopState(componentInstantiation, resolveStarted);
+		if (componentInstantiation != null) {
+			updateStateStopState(componentInstantiation, resolveStarted);
+		}
 	}
 
 	/**
@@ -325,6 +327,8 @@ public class GraphitiSADModelMap extends AbstractGraphitiModelMap {
 			return;
 		}
 		final ComponentInstantiation componentInstantiation = nodeMapEntry.getProfile();
-		updateErrorState(componentInstantiation, status);
+		if (componentInstantiation != null) {
+			updateErrorState(componentInstantiation, status);
+		}
 	}
 }

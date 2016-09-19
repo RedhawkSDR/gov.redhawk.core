@@ -38,7 +38,6 @@ import gov.redhawk.model.sca.CorbaObjWrapper;
 import gov.redhawk.model.sca.ScaConnection;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
-import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaPortContainer;
 import gov.redhawk.model.sca.ScaPropertyContainer;
@@ -172,9 +171,9 @@ public class GraphitiDCDModelMap extends AbstractGraphitiModelMap {
 
 	protected CreateComponentInstantiationCommand createComponentInstantiationCommand(TransactionalEditingDomain editingDomain,
 		final IFeatureProvider featureProvider, ScaPropertyContainer< ? , SoftPkg> newObject) {
-		switch (newObject.eClass().getClassifierID()) {
-		case ScaPackage.SCA_DEVICE:
-			final ScaDevice< ? > newDevice = (ScaDevice< ? >) newObject;
+
+		if (newObject instanceof ScaDevice) {
+			final ScaDevice<?> newDevice = (ScaDevice<?>) newObject;
 			return new CreateComponentInstantiationCommand(editingDomain) {
 
 				private ComponentInstantiation compInst;
@@ -195,7 +194,7 @@ public class GraphitiDCDModelMap extends AbstractGraphitiModelMap {
 					compInst = (ComponentInstantiation) objects[0];
 				}
 			};
-		case ScaPackage.SCA_SERVICE:
+		} else if (newObject instanceof ScaService) {
 			final ScaService newService = (ScaService) newObject;
 			return new CreateComponentInstantiationCommand(editingDomain) {
 
@@ -216,7 +215,7 @@ public class GraphitiDCDModelMap extends AbstractGraphitiModelMap {
 					compInst = (ComponentInstantiation) objects[0];
 				}
 			};
-		default:
+		} else {
 			return null;
 		}
 	}
@@ -288,19 +287,11 @@ public class GraphitiDCDModelMap extends AbstractGraphitiModelMap {
 	}
 
 	public DcdComponentInstantiation getComponentInstantiation(final EObject obj) {
-		if (obj == null || obj.eClass().getEPackage() != ScaPackage.eINSTANCE) {
-			return null;
-		}
-		DCDNodeMapEntry nodeMapEntry;
-		switch (obj.eClass().getClassifierID()) {
-		case ScaPackage.SCA_DEVICE:
+		DCDNodeMapEntry nodeMapEntry = null;
+		if (obj instanceof ScaDevice) {
 			nodeMapEntry = nodes.get(DCDNodeMapEntry.getKey((ScaDevice< ? >) obj));
-			break;
-		case ScaPackage.SCA_SERVICE:
+		} else if (obj instanceof ScaService) {
 			nodeMapEntry = nodes.get(DCDNodeMapEntry.getKey((ScaService) obj));
-			break;
-		default:
-			nodeMapEntry = null;
 		}
 		return (nodeMapEntry != null) ? nodeMapEntry.getProfile() : null;
 	}
@@ -415,7 +406,9 @@ public class GraphitiDCDModelMap extends AbstractGraphitiModelMap {
 			return;
 		}
 		final ComponentInstantiation componentInstantiation = nodeMapEntry.getProfile();
-		updateStateStopState(componentInstantiation, resolveStarted);
+		if (componentInstantiation != null) {
+			updateStateStopState(componentInstantiation, resolveStarted);
+		}
 	}
 
 	/**
@@ -444,6 +437,8 @@ public class GraphitiDCDModelMap extends AbstractGraphitiModelMap {
 			return;
 		}
 		final ComponentInstantiation componentInstantiation = nodeMapEntry.getProfile();
-		updateErrorState(componentInstantiation, status);
+		if (componentInstantiation != null) {
+			updateErrorState(componentInstantiation, status);
+		}
 	}
 }
