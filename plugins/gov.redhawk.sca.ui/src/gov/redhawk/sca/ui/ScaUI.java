@@ -204,4 +204,10 @@ public final class ScaUI {
 		}
 		return existentFiles.toArray(new IFile[existentFiles.size()]);
 	}
+
+	/**
+	 * The job family for opening editors
+	 * @since 10.1
+	 */
+	public static final Object FAMILY_OPEN_EDITOR = new Object();
 }

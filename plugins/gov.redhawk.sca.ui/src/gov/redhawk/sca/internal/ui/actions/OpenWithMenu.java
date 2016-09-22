@@ -1,22 +1,14 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- *
  */
 package gov.redhawk.sca.internal.ui.actions;
-
-import gov.redhawk.model.sca.IRefreshable;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.sca.internal.ui.ResourceRegistry;
-import gov.redhawk.sca.internal.ui.ScaContentTypeRegistry;
-import gov.redhawk.sca.ui.IScaEditorDescriptor;
-import gov.redhawk.sca.ui.ScaUiPlugin;
 
 import java.text.Collator;
 import java.util.Arrays;
@@ -25,29 +17,25 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.progress.WorkbenchJob;
-import org.eclipse.ui.statushandlers.StatusManager;
+
+import gov.redhawk.sca.internal.ui.ResourceRegistry;
+import gov.redhawk.sca.internal.ui.ScaContentTypeRegistry;
+import gov.redhawk.sca.ui.IScaEditorDescriptor;
 
 /**
  * A menu for opening files in the workbench.
  * <p>
  * An <code>OpenWithMenu</code> is used to populate a menu with
- * "Open With" actions.  One action is added for each editor which is applicable
+ * "Open With" actions. One action is added for each editor which is applicable
  * to the selected file. If the user selects one of these items, the corresponding
  * editor is opened on the file.
  * </p>
@@ -66,7 +54,7 @@ public class OpenWithMenu extends ContributionItem {
 	 */
 	public static final String ID = PlatformUI.PLUGIN_ID + ".OpenWithMenu"; //$NON-NLS-1$
 
-	/*
+	/**
 	 * Compares the labels from two IEditorDescriptor objects
 	 */
 	private static final Comparator<IScaEditorDescriptor> COMPARER = new Comparator<IScaEditorDescriptor>() {
@@ -84,7 +72,7 @@ public class OpenWithMenu extends ContributionItem {
 	 * Constructs a new instance of <code>OpenWithMenu</code>.
 	 *
 	 * @param page the page where the editor is opened if an item within
-	 *		the menu is selected
+	 * the menu is selected
 	 * @param file the selected file
 	 */
 	public OpenWithMenu(final IWorkbenchPage page, final Object selection) {
@@ -113,7 +101,7 @@ public class OpenWithMenu extends ContributionItem {
 			public void handleEvent(final Event event) {
 				switch (event.type) {
 				case SWT.Selection:
-					openEditor(descriptor);
+					OpenEditorUtil.openEditor(page, descriptor);
 					break;
 				default:
 					break;
@@ -130,9 +118,6 @@ public class OpenWithMenu extends ContributionItem {
 		return ResourceRegistry.INSTANCE.getResourceManager().createImage(descriptor.getEditorDescriptor().getImageDescriptor());
 	}
 
-	/* (non-Javadoc)
-	 * Fills the menu with perspective items.
-	 */
 	@Override
 	public void fill(final Menu menu, final int index) {
 
@@ -140,8 +125,8 @@ public class OpenWithMenu extends ContributionItem {
 		final IScaEditorDescriptor[] editors = ScaContentTypeRegistry.INSTANCE.getAllScaEditorDescriptors(this.selection);
 		Collections.sort(Arrays.asList(editors), OpenWithMenu.COMPARER);
 
-		//Check that we don't add it twice. This is possible
-		//if the same editor goes to two mappings.
+		// Check that we don't add it twice. This is possible
+		// if the same editor goes to two mappings.
 		final Set<IScaEditorDescriptor> alreadyMapped = new HashSet<IScaEditorDescriptor>();
 
 		for (final IScaEditorDescriptor editor : editors) {
@@ -155,66 +140,8 @@ public class OpenWithMenu extends ContributionItem {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * Returns whether this menu is dynamic.
-	 */
 	@Override
 	public boolean isDynamic() {
 		return true;
 	}
-
-	/**
-	 * Opens the given editor on the selected file.
-	 *
-	 * @param editorDescriptor the editor descriptor, or null for the system editor
-	 * @param openUsingDescriptor use the descriptor's editor ID for opening if false (normal case),
-	 * or use the descriptor itself if true (needed to fix bug 178235).
-	 *
-	 */
-	protected void openEditor(final IScaEditorDescriptor editorDescriptor) {
-		final Object obj = editorDescriptor.getSelectedObject();
-		if (obj instanceof IRefreshable) {
-			final IRefreshable refreshable = (IRefreshable) obj;
-			final Job job = new Job("Opening...") {
-
-				@Override
-				protected IStatus run(final IProgressMonitor monitor) {
-					try {
-						refreshable.refresh(null, RefreshDepth.FULL);
-						Display display = page.getWorkbenchWindow().getShell().getDisplay();
-						if (display != null) {
-							final WorkbenchJob openJob = new WorkbenchJob(display, "Open") {
-
-								@Override
-								public IStatus runInUIThread(final IProgressMonitor monitor) {
-									open(editorDescriptor);
-									return Status.OK_STATUS;
-								}
-
-							};
-							openJob.schedule();
-						}
-					} catch (final InterruptedException e) {
-						// PASS
-					}
-					return Status.OK_STATUS;
-				}
-
-			};
-			job.setUser(true);
-			job.schedule();
-		} else {
-			open(editorDescriptor);
-		}
-	}
-
-	private void open(final IScaEditorDescriptor editorDescriptor) {
-		try {
-			this.page.openEditor(editorDescriptor.getEditorInput(), editorDescriptor.getEditorDescriptor().getId(), true, IWorkbenchPage.MATCH_ID
-					| IWorkbenchPage.MATCH_INPUT);
-		} catch (final PartInitException e) {
-			StatusManager.getManager().handle(e, ScaUiPlugin.PLUGIN_ID);
-		}
-	}
-
 }

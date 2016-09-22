@@ -13,30 +13,15 @@
  *******************************************************************************/
 package gov.redhawk.sca.internal.ui.actions;
 
-import java.util.concurrent.Callable;
-
-import gov.redhawk.model.sca.IRefreshable;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.sca.internal.ui.ScaContentTypeRegistry;
-import gov.redhawk.sca.ui.IScaEditorDescriptor;
-import gov.redhawk.sca.ui.ScaUiPlugin;
-import mil.jpeojtrs.sca.util.CorbaUtils;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.BaseSelectionListenerAction;
-import org.eclipse.ui.progress.WorkbenchJob;
-import org.eclipse.ui.statushandlers.StatusManager;
+
+import gov.redhawk.sca.internal.ui.ScaContentTypeRegistry;
+import gov.redhawk.sca.ui.IScaEditorDescriptor;
 
 /**
  * Standard action for opening editors on REDHAWK Model Types
@@ -61,12 +46,10 @@ public class OpenFileAction extends BaseSelectionListenerAction {
 
 	private Object selectObj;
 
-	private IScaEditorDescriptor descriptor;
-	
 	private ComposedAdapterFactory factory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
 
 	/**
-	 * Creates a new action that will open editors on the then-selected file 
+	 * Creates a new action that will open editors on the then-selected file
 	 * resources. Equivalent to <code>OpenFileAction(page,null)</code>.
 	 *
 	 * @param page the workbench page in which to open the editor
@@ -76,7 +59,7 @@ public class OpenFileAction extends BaseSelectionListenerAction {
 	}
 
 	/**
-	 * Creates a new action that will open instances of the specified editor on 
+	 * Creates a new action that will open instances of the specified editor on
 	 * the then-selected REDHAWK resources.
 	 *
 	 * @param page the workbench page in which to open the editor
@@ -85,7 +68,6 @@ public class OpenFileAction extends BaseSelectionListenerAction {
 	public OpenFileAction(final IWorkbenchPage page, final IScaEditorDescriptor descriptor) {
 		super("&Open");
 		this.page = page;
-		this.descriptor = descriptor;
 		setText((descriptor == null) ? "&Open" : descriptor.getEditorDescriptor().getLabel());
 		setToolTipText("Edit File");
 		this.editorDescriptor = descriptor;
@@ -93,68 +75,7 @@ public class OpenFileAction extends BaseSelectionListenerAction {
 
 	@Override
 	public void run() {
-		if (this.editorDescriptor == null || this.editorDescriptor.getEditorInput() == null || this.editorDescriptor.getEditorDescriptor().getId() == null) {
-			return;
-		}
-		if (this.selectObj instanceof IRefreshable) {
-			final IRefreshable refreshable = (IRefreshable) this.selectObj;
-			final Display display = page.getWorkbenchWindow().getShell().getDisplay();
-			
-			final Job job = new Job(getDescription()) {
-
-				@Override
-				protected IStatus run(final IProgressMonitor monitor) {
-					monitor.beginTask("Fetching state...", IProgressMonitor.UNKNOWN);
-					monitor.subTask("Refreshing...");
-					try {
-						CorbaUtils.invoke(new Callable<Object>() {
-
-							public Object call() throws Exception {
-								refreshable.refresh(null, RefreshDepth.FULL);
-								return null;
-							}
-
-						}, monitor);
-					} catch (CoreException e) {
-						return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
-					} catch (InterruptedException e) {
-						return Status.CANCEL_STATUS;
-					}
-
-					if (display != null) {
-						monitor.subTask(getDescription());
-						final WorkbenchJob openJob = new WorkbenchJob(display, "Open ") {
-
-							@Override
-							public IStatus runInUIThread(final IProgressMonitor monitor) {
-								open();
-								return Status.OK_STATUS;
-							}
-						};
-						openJob.schedule();
-					}
-					return Status.OK_STATUS;
-				}
-
-			};
-			job.setUser(true);
-			job.schedule();
-		} else {
-			open();
-		}
-
-	}
-
-	private void open() {
-		if (this.editorDescriptor == null || this.editorDescriptor.getEditorInput() == null || this.editorDescriptor.getEditorDescriptor().getId() == null) {
-			return;
-		}
-		try {
-			this.page.openEditor(this.editorDescriptor.getEditorInput(), this.editorDescriptor.getEditorDescriptor().getId(), true, IWorkbenchPage.MATCH_ID
-				| IWorkbenchPage.MATCH_INPUT);
-		} catch (final PartInitException e) {
-			StatusManager.getManager().handle(e, ScaUiPlugin.PLUGIN_ID);
-		}
+		OpenEditorUtil.openEditor(page, editorDescriptor);
 	}
 
 	@Override
@@ -163,7 +84,7 @@ public class OpenFileAction extends BaseSelectionListenerAction {
 		setImageDescriptor(null);
 		this.editorDescriptor = ScaContentTypeRegistry.INSTANCE.getScaEditorDescriptor(this.selectObj);
 		IItemLabelProvider lp = (IItemLabelProvider) factory.adapt(this.selectObj, IItemLabelProvider.class);
-		
+
 		setText("&Open");
 		setDescription("Open editor");
 		if (lp != null) {
