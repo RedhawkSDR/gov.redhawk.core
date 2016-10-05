@@ -14,7 +14,7 @@ import org.eclipse.osgi.util.NLS;
 
 // CHECKSTYLE:OFF
 public class GraphitiPreferencesNLS extends NLS {
-	private static final String BUNDLE_NAME = "gov.redhawk.ide.graphiti.ui.diagram.preferences.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "gov.redhawk.core.graphiti.ui.internal.preferences.messages"; //$NON-NLS-1$
 
 	static {
 		// load message values from bundle file
