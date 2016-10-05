@@ -24,7 +24,7 @@
     <eclipse>http://download.eclipse.org/releases/mars</eclipse>
     <orbit>http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository</orbit>
     <mil.jpeojtrs.sca>http://download.redhawksdr.org/mil.jpeojtrs.sca/releases/2.0</mil.jpeojtrs.sca>
-    <nxm>http://nextmidas.techma.com/p2/nxm/updates/latest</nxm>
+    <nxm>http://nextmidas.techma.com/p2/nxm/updates/3.6/latest/</nxm>
     <nxm-ui>http://nextmidas.techma.com/p2/nxm.ui/updates/latest/</nxm-ui>
     <jacorb>http://download.redhawksdr.org/jacorb/updates/stable</jacorb>
     <!-- Sonar -->
