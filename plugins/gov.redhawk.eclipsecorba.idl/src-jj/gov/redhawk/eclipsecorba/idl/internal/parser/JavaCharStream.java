@@ -439,7 +439,8 @@ public class JavaCharStream {
 	/** Reinitialise. */
 	public void ReInit(java.io.InputStream dstream, String encoding, int startline, int startcolumn, int buffersize)
 		throws java.io.UnsupportedEncodingException {
-		ReInit(encoding == null ? new java.io.InputStreamReader(dstream) : new java.io.InputStreamReader(dstream, encoding), startline, startcolumn, buffersize);
+		ReInit(encoding == null ? new java.io.InputStreamReader(dstream) : new java.io.InputStreamReader(dstream, encoding), startline, startcolumn,
+			buffersize);
 	}
 
 	/** Reinitialise. */
