@@ -1,0 +1,10 @@
+module LocalInterfaces {
+  // A forward-delcared local interface
+  local interface LocalForwardDeclaredInterface;
+
+  // A local interface
+  local interface LocalInterface {
+    void somemethod();
+  };
+};
+
