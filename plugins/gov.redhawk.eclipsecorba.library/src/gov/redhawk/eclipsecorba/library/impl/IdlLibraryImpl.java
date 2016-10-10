@@ -182,18 +182,24 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 			eNotify(new ENotificationImpl(this, Notification.SET, LibraryPackage.IDL_LIBRARY__LOAD_STATUS, oldLoadStatus, loadStatus));
 	}
 
-	// KLUDGE ALERT!! omniORB ships with crappy IDLs.  Skip the ones that are broken..
+	/**
+	 * This is used to avoid some problematic omniORB IDL files.
+	 */
 	private final String[] BROKEN_OMNIORB_IDL_FILES = new String[] {
-	        "Naming.idl", // Conflicts with CosNaming.idl
-	        // OmniORB doesn't support security interfaces
-	        "DCE_CIOPSecurity.idl", "Security.idl", "SecurityLevel1.idl", "SecurityLevel2.idl", "SecurityAdmin.idl", "SecurityReplaceable.idl",
-	        "NRService.idl", "SECIOP.idl", "SSLIOP.idl",
-	        // OmniORB doesn't support Transactions
-	        "CosTransactions.idl", "CosTSPortability.idl", "CosConcurrencyControl.idl", };
+		// Conflicts with CosNaming.idl (4.1.6)
+		"Naming.idl",
+		// omniORB doesn't support security interfaces (4.1.6)
+		"DCE_CIOPSecurity.idl", "Security.idl", "SecurityLevel1.idl", "SecurityLevel2.idl", "SecurityAdmin.idl", "SecurityReplaceable.idl", "NRService.idl",
+		"SECIOP.idl", "SSLIOP.idl",
+		// omniORB doesn't support Transactions (4.1.6)
+		"CosTransactions.idl", "CosTSPortability.idl", "CosConcurrencyControl.idl",
+		// Our parser doesn't fully implement valuetype's (4.2.0)
+		"messaging.idl", "pollable.idl"
+		};
 	{
 		Arrays.sort(this.BROKEN_OMNIORB_IDL_FILES); // Must be sorted to use binarySearch later on
 	}
-	
+
 	private final Adapter listener = new AdapterImpl() {
 		{
 			eAdapters().add(this);
