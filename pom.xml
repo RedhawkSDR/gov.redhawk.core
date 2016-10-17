@@ -22,6 +22,7 @@
   <properties>
     <tycho.scmUrl>scm:git:https://github.com/RedhawkSDR/eclipse-gov.redhawk.core.git</tycho.scmUrl>
     <eclipse>http://download.eclipse.org/releases/mars</eclipse>
+    <eclipse-neon-subset>http://download.redhawksdr.org/eclipse/neon-subset/</eclipse-neon-subset>
     <orbit>http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository</orbit>
     <mil.jpeojtrs.sca>http://download.redhawksdr.org/mil.jpeojtrs.sca/releases/2.0</mil.jpeojtrs.sca>
     <nxm>http://nextmidas.techma.com/p2/nxm/updates/3.6/latest/</nxm>
@@ -43,6 +44,12 @@
       <id>eclipse</id>
       <layout>p2</layout>
       <url>${eclipse}</url>
+    </repository>
+
+    <repository>
+      <id>eclipse-neon-subset</id>
+      <layout>p2</layout>
+      <url>${eclipse-neon-subset}</url>
     </repository>
 
     <repository>
@@ -80,6 +87,7 @@
     <module>features/gov.redhawk.core.feature</module>
     <module>features/gov.redhawk.core.ui.feature</module>
     <module>features/gov.redhawk.core.sdk</module>
+    <module>features/gov.redhawk.e4.rcp</module>
     <module>features/gov.redhawk.validation.feature</module>
     <module>features/gov.redhawk.idl.feature</module>
 
