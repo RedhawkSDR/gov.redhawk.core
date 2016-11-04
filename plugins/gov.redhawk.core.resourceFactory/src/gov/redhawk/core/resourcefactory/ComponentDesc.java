@@ -21,8 +21,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import mil.jpeojtrs.sca.scd.ComponentType;
 import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.scd.SoftwareComponent;
-import mil.jpeojtrs.sca.spd.Code;
-import mil.jpeojtrs.sca.spd.CodeFileType;
 import mil.jpeojtrs.sca.spd.Implementation;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.spd.SpdPackage;
@@ -49,12 +47,8 @@ public class ComponentDesc extends ResourceDesc {
 		this.componentType = ScaEcoreUtils.getFeature(spd, PATH);
 		this.implementationIds = new ArrayList<String>(spd.getImplementation().size());
 		for (Implementation impl : spd.getImplementation()) {
-			Code code = impl.getCode();
-			if (code != null) {
-				CodeFileType type = code.getType();
-				if (type == CodeFileType.EXECUTABLE) {
-					this.implementationIds.add(impl.getId());
-				}
+			if (impl.isExecutable()) {
+				this.implementationIds.add(impl.getId());
 			}
 		}
 	}
