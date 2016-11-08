@@ -48,6 +48,13 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 						this.modelMap.remove((ScaDevice< ? >) oldVal);
 					}
 					break;
+				case Notification.REMOVE_MANY:
+					for (final Object obj : (Collection< ? >) notification.getOldValue()) {
+						if (obj != null) {
+							this.modelMap.remove(((ScaDevice< ? >) obj));
+						}
+					}
+					break;
 				default:
 					break;
 				}
