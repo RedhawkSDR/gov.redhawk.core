@@ -14,10 +14,25 @@ import org.eclipse.graphiti.ui.platform.AbstractImageProvider;
 
 public class DeviceManagerImageProvider extends AbstractImageProvider {
 
+	/**
+	 * Maintained for DCD/device manager diagram icons for backwards compatibility purposes.
+	 * @deprecated Use {@link #PREFIX}
+	 */
+	@Deprecated
+	private static final String OLD_PREFIX = "gov.redhawk.ide.graphiti.dcd.ui.diagram.providers.deviceImageProvider.";
+
+	@SuppressWarnings("unused")
 	private static final String PREFIX = "gov.redhawk.core.graphiti.dcd.ui.DeviceManagerImageProvider.";
 
-	public static final String IMG_DEVICE = PREFIX + "device";
-	public static final String IMG_SERVICE = PREFIX + "service";
+	/**
+	 * Icon for a device.
+	 */
+	public static final String IMG_DEVICE = OLD_PREFIX + "scaDevice";
+
+	/**
+	 * Icons for a service.
+	 */
+	public static final String IMG_SERVICE = OLD_PREFIX + "scaService";
 
 	@Override
 	protected void addAvailableImages() {

@@ -14,9 +14,20 @@ import org.eclipse.graphiti.ui.platform.AbstractImageProvider;
 
 public class WaveformImageProvider extends AbstractImageProvider {
 
+	/**
+	 * Maintained for SAD/waveform diagram icons for backwards compatibility purposes.
+	 * @deprecated Use {@link #PREFIX}
+	 */
+	@Deprecated
+	private static final String OLD_PREFIX = "gov.redhawk.ide.graphiti.sad.ui.diagram.providers.imageProvider.";
+
+	@SuppressWarnings("unused")
 	private static final String PREFIX = "gov.redhawk.core.graphiti.sad.ui.WaveformImageProvider.";
 
-	public static final String IMG_COMPONENT = PREFIX + "component";
+	/**
+	 * Image for a component.
+	 */
+	public static final String IMG_COMPONENT = OLD_PREFIX + "componentInstance";
 
 	@Override
 	protected void addAvailableImages() {
