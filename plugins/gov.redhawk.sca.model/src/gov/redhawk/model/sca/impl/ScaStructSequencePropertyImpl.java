@@ -86,29 +86,9 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	 */
 	protected final StructList structs = new StructList(this);
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	protected ScaStructSequencePropertyImpl() {
-		super();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass() {
-		return ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY;
-	}
+	// END GENERATED CODE
 
 	private EContentAdapter derrivedStatusListener = new EContentAdapter() {
-		// END GENERATED CODE
 
 		@Override
 		public void notifyChanged(org.eclipse.emf.common.notify.Notification notification) {
@@ -136,23 +116,16 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 				}
 			}
 		}
-		// BEGIN GENERATED CODE
 	};
 
-	{
-		// END GENERATED CODE
-		eAdapters().add(derrivedStatusListener);
-		// BEGIN GENERATED CODE
-	}
-
 	private Adapter pushAdapter = new AdapterImpl() {
-		// END GENERATED CODE
+
 		@Override
 		public void notifyChanged(Notification msg) {
 			if (!isIgnoreRemoteSet()) {
 				switch (msg.getFeatureID(ScaStructSequenceProperty.class)) {
 				case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS:
-					pushValueJob.newRemoteValue = toAny();
+					pushValueJob.setNewRemoteValue(toAny());
 					pushValueJob.schedule();
 					break;
 				default:
@@ -160,10 +133,10 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 				}
 			}
 		}
-		// BEGIN GENERATED CODE
 	};
 
 	{
+		eAdapters().add(derrivedStatusListener);
 		eAdapters().add(pushAdapter);
 	}
 
@@ -171,8 +144,6 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	 * @since 14.0
 	 */
 	protected class StructList extends EObjectContainmentEList<ScaStructProperty> {
-		// END GENERATED CODE
-
 		private static final long serialVersionUID = 1L;
 
 		public StructList(ScaStructSequencePropertyImpl owner) {
@@ -204,8 +175,29 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 			clear();
 			addAll(props);
 		}
+	}
 
-		// BEGIN GENERATED CODE
+	// BEGIN GENERATED CODE
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected ScaStructSequencePropertyImpl() {
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY;
 	}
 
 	/**
@@ -221,14 +213,6 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 		// END GENERATED CODE
 		return structs;
 		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * @since 14.0
-	 */
-	@Override
-	public void setDefinition(StructSequence newDefinition) {
-		super.setDefinition(newDefinition);
 	}
 
 	/**
@@ -255,6 +239,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	 */
 	@Override
 	public StructSequenceRef createPropertyRef() {
+		// END GENERATED CODE
 		final StructSequenceRef structSequenceRef = PrfFactory.eINSTANCE.createStructSequenceRef();
 		structSequenceRef.setRefID(getId());
 		for (final ScaStructProperty struct : getStructs()) {
@@ -262,6 +247,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 			structSequenceRef.getStructValue().add(value);
 		}
 		return structSequenceRef;
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -360,8 +346,152 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 		return super.eIsSet(featureID);
 	}
 
-	private ScaStructProperty createStructValue(StructSequence seqDef, StructValue value) {
+	/**
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 14.0
+	 *        <!-- end-user-doc -->
+	 * @generated NOT
+	 * 
+	 */
+	@Override
+	public void query(PropertiesHolder configProperties) throws UnknownProperties {
 		// END GENERATED CODE
+		EObject container = eContainer();
+		if (container instanceof PropertySetOperations) {
+			((PropertySetOperations) container).query(configProperties);
+		}
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * This is an EMF-generated wrapper for {@link #registerPropertyListener(org.omg.CORBA.Object, String[], float)}.
+	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	public String registerPropertyListener(org.omg.CORBA.Object obj, EList<String> prop_ids, float interval) throws UnknownProperties, InvalidObjectReference {
+		// END GENERATED CODE
+		throw new UnsupportedOperationException();
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS:
+			return ((InternalEList< ? >) getStructs()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+		switch (featureID) {
+		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS:
+			return getStructs();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	// END GENERATED CODE
+
+	/**
+	 * @since 13.0
+	 */
+	@Override
+	public Any toAny() {
+		Any retVal = JacorbUtil.init().create_any();
+		List<Any> structVals = new ArrayList<Any>();
+		for (ScaStructProperty structProp : getStructs()) {
+			structVals.add(structProp.toAny());
+		}
+		AnySeqHelper.insert(retVal, structVals.toArray(new Any[structVals.size()]));
+		return retVal;
+	}
+
+	@Override
+	public boolean isDefaultValue() {
+		return getStructs().isDefaultValue();
+	}
+
+	@Override
+	public void restoreDefaultValue() {
+		getStructs().restoreDefaultValue();
+	}
+
+	/**
+	 * @since 13.0
+	 */
+	@Override
+	protected void internalFromAny(Any any) {
+		try {
+			Any[] structAnys;
+			if (any.type().kind() == TCKind.tk_null) {
+				structAnys = new Any[0];
+			} else {
+				structAnys = AnySeqHelper.extract(any);
+			}
+			for (int i = 0; i < structAnys.length; i++) {
+				ScaStructProperty structProp;
+				if (i < getStructs().size()) {
+					structProp = getStructs().get(i);
+				} else {
+					structProp = createStructValue(getDefinition(), null);
+					getStructs().add(structProp);
+				}
+				structProp.fromAny(structAnys[i]);
+			}
+
+			for (int i = structAnys.length; i < getStructs().size();) {
+				getStructs().remove(i);
+			}
+			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, Status.OK_STATUS);
+		} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
+			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS,
+				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
+		}
+	}
+
+	/**
+	 * @since 13.0
+	 */
+	@Override
+	public IStatus getStatus() {
+		IStatus parentStatus = super.getStatus();
+		if (!getStructs().isEmpty()) {
+			MultiStatus retVal = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Struct Sequence property: " + getName(), null);
+			retVal.addAll(super.getStatus());
+			for (ScaStructProperty struct : getStructs()) {
+				retVal.add(struct.getStatus());
+			}
+			retVal.add(parentStatus);
+			if (!retVal.isOK()) {
+				return retVal;
+			} else {
+				return Status.OK_STATUS;
+			}
+		} else {
+			return parentStatus;
+		}
+	}
+
+	private ScaStructProperty createStructValue(StructSequence seqDef, StructValue value) {
 		ScaStructPropertyImpl struct = new ScaStructPropertyImpl();
 		if (seqDef != null) {
 			Struct structDef = EcoreUtil.copy(seqDef.getStruct());
@@ -397,154 +527,8 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 			struct.setName(getName());
 		}
 		return struct;
-		// BEGIN GENERATED CODE
 	}
 
-	/**
-	 * @since 13.0
-	 */
-	@Override
-	public Any toAny() {
-		// END GENERATED CODE
-		Any retVal = JacorbUtil.init().create_any();
-		List<Any> structVals = new ArrayList<Any>();
-		for (ScaStructProperty structProp : getStructs()) {
-			structVals.add(structProp.toAny());
-		}
-		AnySeqHelper.insert(retVal, structVals.toArray(new Any[structVals.size()]));
-		return retVal;
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * @since 13.0
-	 */
-	@Override
-	protected void internalFromAny(Any any) {
-		// END GENERATED CODE
-		try {
-			Any[] structAnys;
-			if (any.type().kind() == TCKind.tk_null) {
-				structAnys = new Any[0];
-			} else {
-				structAnys = AnySeqHelper.extract(any);
-			}
-			for (int i = 0; i < structAnys.length; i++) {
-				ScaStructProperty structProp;
-				if (i < getStructs().size()) {
-					structProp = getStructs().get(i);
-				} else {
-					structProp = createStructValue(getDefinition(), null);
-					getStructs().add(structProp);
-				}
-				structProp.fromAny(structAnys[i]);
-			}
-
-			for (int i = structAnys.length; i < getStructs().size();) {
-				getStructs().remove(i);
-			}
-			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, Status.OK_STATUS);
-		} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
-			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS,
-				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
-		}
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * @since 13.0
-	 */
-	@Override
-	public IStatus getStatus() {
-		// END GENERATED CODE
-		IStatus parentStatus = super.getStatus();
-		if (!getStructs().isEmpty()) {
-			MultiStatus retVal = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Struct Sequence property: " + getName(), null);
-			retVal.addAll(super.getStatus());
-			for (ScaStructProperty struct : getStructs()) {
-				retVal.add(struct.getStatus());
-			}
-			retVal.add(parentStatus);
-			if (!retVal.isOK()) {
-				return retVal;
-			} else {
-				return Status.OK_STATUS;
-			}
-		} else {
-			return parentStatus;
-		}
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @generated NOT
-	 * 
-	 */
-	@Override
-	public void query(PropertiesHolder configProperties) throws UnknownProperties {
-		// END GENERATED CODE
-		EObject container = eContainer();
-		if (container instanceof PropertySetOperations) {
-			((PropertySetOperations) container).query(configProperties);
-		}
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * This is an EMF-generated wrapper for {@link #registerPropertyListener(org.omg.CORBA.Object, String[], float)}.
-	 * 
-	 * @since 20.0
-	 *        <!-- end-user-doc -->
-	 * 
-	 * @generated NOT
-	 */
-	public String registerPropertyListener(org.omg.CORBA.Object obj, EList<String> prop_ids, float interval) throws UnknownProperties, InvalidObjectReference {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS:
-			return ((InternalEList< ? >) getStructs()).basicRemove(otherEnd, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS:
-			return getStructs();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
-
-	@Override
-	public boolean isDefaultValue() {
-		return getStructs().isDefaultValue();
-	}
-
-	@Override
-	public void restoreDefaultValue() {
-		getStructs().restoreDefaultValue();
-	}
+	// BEGIN GENERATED CODE
 
 } // ScaStructSequencePropertyImpl

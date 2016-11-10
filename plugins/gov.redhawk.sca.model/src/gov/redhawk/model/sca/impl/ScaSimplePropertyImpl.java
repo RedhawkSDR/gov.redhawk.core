@@ -66,6 +66,33 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	 */
 	protected Object value = VALUE_EDEFAULT;
 
+	// END GENERATED CODE
+
+	private Adapter valueListener = new AdapterImpl() {
+
+		@Override
+		public void notifyChanged(Notification msg) {
+			if (!isIgnoreRemoteSet()) {
+				switch (msg.getFeatureID(ScaSimpleProperty.class)) {
+				case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
+					if (!PluginUtil.equals(msg.getOldValue(), msg.getNewValue())) {
+						pushValueJob.setNewRemoteValue(toAny());
+						pushValueJob.schedule();
+					}
+					break;
+				default:
+					break;
+				}
+			}
+		}
+	};
+
+	{
+		eAdapters().add(valueListener);
+	}
+
+	// BEGIN GENERATED CODE
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -89,19 +116,6 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * 
-	 * @since 18.0
-	 *        <!-- end-user-doc -->
-	 *        This is specialized for the more specific type known in this context.
-	 * @generated
-	 */
-	@Override
-	public void setDefinition(Simple newDefinition) {
-		super.setDefinition(newDefinition);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -109,32 +123,6 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	@Override
 	public Object getValue() {
 		return value;
-	}
-
-	private Adapter valueListener = new AdapterImpl() {
-		// END GENERATED CODE
-
-		@Override
-		public void notifyChanged(Notification msg) {
-			if (!isIgnoreRemoteSet()) {
-				switch (msg.getFeatureID(ScaSimpleProperty.class)) {
-				case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
-					if (!PluginUtil.equals(msg.getOldValue(), msg.getNewValue())) {
-						pushValueJob.newRemoteValue = toAny();
-						pushValueJob.schedule();
-					}
-					break;
-				default:
-					break;
-				}
-			}
-		}
-
-		// BEGIN GENERATED CODE
-	};
-
-	{
-		eAdapters().add(valueListener);
 	}
 
 	/**
@@ -158,6 +146,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	 */
 	@Override
 	public void setValue(Object newValue) {
+		// END GENERATED CODE
 		if (getDefinition() != null && getDefinition().getType() != null) {
 			PropertyValueType propType = getDefinition().getType();
 			EDataType eDataType = propType.toEDataType(getDefinition().isComplex());
@@ -168,6 +157,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 			return;
 		}
 		setValueGen(newValue);
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -180,12 +170,13 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	 */
 	@Override
 	public SimpleRef createPropertyRef() {
+		// END GENERATED CODE
 		final SimpleRef simpleRef = PrfFactory.eINSTANCE.createSimpleRef();
 		simpleRef.setRefID(getId());
-		final Object value = getValue();
-		final String stringValue = (value == null) ? null : value.toString();
+		final String stringValue = (getValue() == null) ? null : getValue().toString();
 		simpleRef.setValue(stringValue);
 		return simpleRef;
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -268,14 +259,26 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 		return result.toString();
 	}
 
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated NOT
-	 */
+	// END GENERATED CODE
+
+	@Override
+	public Any toAny() {
+		return AnyUtils.toAny(value, getType(), isComplex());
+	}
+
+	@Override
+	public boolean isDefaultValue() {
+		Object newValue;
+		if (getDefinition() != null && getDefinition().getType() != null) {
+			newValue = AnyUtils.convertString(getDefinition().getValue(), getDefinition().getType().getLiteral(), getDefinition().isComplex());
+		} else {
+			newValue = null;
+		}
+		return PluginUtil.equals(newValue, value);
+	}
+
 	@Override
 	public void restoreDefaultValue() {
-		// END GENERATED CODE
 		// value = VALUE_EDEFAULT;
 		Object newValue;
 		if (getDefinition() != null && getDefinition().getType() != null) {
@@ -284,25 +287,10 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 			newValue = null;
 		}
 		setValue(newValue);
-		// BEGIN GENERATED CODE
-	}
-
-	@Override
-	public boolean isDefaultValue() {
-		// END GENERATED CODE
-		Object newValue;
-		if (getDefinition() != null && getDefinition().getType() != null) {
-			newValue = AnyUtils.convertString(getDefinition().getValue(), getDefinition().getType().getLiteral(), getDefinition().isComplex());
-		} else {
-			newValue = null;
-		}
-		return PluginUtil.equals(newValue, value);
-		// BEGIN GENERATED CODE
 	}
 
 	@Override
 	protected void internalFromAny(Any newAny) {
-		// END GENERATED CODE
 		try {
 			if (newAny != null) {
 				Object newValue = AnyUtils.convertAny(newAny);
@@ -315,35 +303,23 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE,
 				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
 		}
-		// BEGIN GENERATED CODE
-	}
-
-	@Override
-	public Any toAny() {
-		// END GENERATED CODE
-		return AnyUtils.toAny(value, getType(), isComplex());
-		// BEGIN GENERATED CODE
 	}
 
 	/**
 	 * @since 18.0
 	 */
 	protected boolean isComplex() {
-		// END GENERATED CODE
 		if (getDefinition() != null && getDefinition().getComplex() != null) {
 			return getDefinition().getComplex();
 		}
 		return false;
-		// BEGIN GENERATED CODE
 	}
 
 	private String getType() {
-		// END GENERATED CODE
 		if (getDefinition() != null && getDefinition().getType() != null) {
 			return getDefinition().getType().getLiteral();
 		}
 		return null;
-		// BEGIN GENERATED CODE
 	}
 
 } // ScaSimplePropertyImpl

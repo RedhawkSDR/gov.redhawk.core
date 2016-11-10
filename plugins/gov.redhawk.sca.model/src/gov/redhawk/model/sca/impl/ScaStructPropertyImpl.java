@@ -93,29 +93,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 */
 	protected EList<ScaAbstractProperty< ? >> fields;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	protected ScaStructPropertyImpl() {
-		super();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass() {
-		return ScaPackage.Literals.SCA_STRUCT_PROPERTY;
-	}
+	// END GENERATED CODE
 
 	private EContentAdapter derrivedStatusListener = new EContentAdapter() {
-		// END GENERATED CODE
 		@Override
 		public void notifyChanged(org.eclipse.emf.common.notify.Notification notification) {
 			super.notifyChanged(notification);
@@ -141,13 +121,33 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 				}
 			}
 		}
-		// BEGIN GENERATED CODE
 	};
 
 	{
-		// END GENERATED CODE
 		eAdapters().add(derrivedStatusListener);
-		// BEGIN GENERATED CODE
+	}
+
+	// BEGIN GENERATED CODE
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected ScaStructPropertyImpl() {
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return ScaPackage.Literals.SCA_STRUCT_PROPERTY;
 	}
 
 	/**
@@ -160,6 +160,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 */
 	@Override
 	public EList<ScaSimpleProperty> getSimples() {
+		// END GENERATED CODE
 		List<ScaSimpleProperty> simples = new ArrayList<ScaSimpleProperty>();
 		if (fields != null) {
 			for (ScaAbstractProperty< ? > field : getFields()) {
@@ -169,36 +170,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			}
 		}
 		return ECollections.unmodifiableEList(simples);
-	}
-
-	/**
-	 * @since 14.0
-	 */
-	@Override
-	public void setDefinition(Struct newDefinition) {
-		// Save the old definition so that we can test that it changed, but call the superclass version first to allow
-		// it to do any validity checking first
-		Struct oldDefinition = getDefinition();
-		super.setDefinition(newDefinition);
-		if (newDefinition != oldDefinition) {
-			getFields().clear();
-			if (newDefinition != null) {
-				for (FeatureMap.Entry entry : newDefinition.getFields()) {
-					switch (entry.getEStructuralFeature().getFeatureID()) {
-					case PrfPackage.STRUCT__SIMPLE:
-						ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
-						simple.setDefinition((Simple) entry.getValue());
-						fields.add(simple);
-						break;
-					case PrfPackage.STRUCT__SIMPLE_SEQUENCE:
-						ScaSimpleSequenceProperty simpleSequence = ScaFactory.eINSTANCE.createScaSimpleSequenceProperty();
-						simpleSequence.setDefinition((SimpleSequence) entry.getValue());
-						fields.add(simpleSequence);
-						break;
-					}
-				}
-			}
-		}
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -213,50 +185,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			fields = new EObjectContainmentEList.Resolving<ScaAbstractProperty< ? >>(ScaAbstractProperty.class, this, ScaPackage.SCA_STRUCT_PROPERTY__FIELDS);
 		}
 		return fields;
-	}
-
-	@Override
-	protected void internalFromAny(Any newAny) {
-		// END GENERATED CODE
-		try {
-			if (newAny != null) {
-				final DataType[] fieldValues = PropertiesHelper.extract(newAny);
-				if (fieldValues != null) {
-					for (final DataType type : fieldValues) {
-						ScaAbstractProperty< ? > prop = getField(type.id);
-						if (prop != null) {
-							prop.fromAny(type.value);
-						} else {
-							ScaSimpleProperty newProp = ScaFactory.eINSTANCE.createScaSimpleProperty();
-							newProp.setId(type.id);
-							newProp.fromAny(type.value);
-							getFields().add(newProp);
-						}
-					}
-					return;
-				}
-			} else {
-				restoreDefaultValue();
-			}
-			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, Status.OK_STATUS);
-		} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
-			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS,
-				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
-		}
-		// BEGIN GENERATED CODE
-	}
-
-	@Override
-	public Any toAny() {
-		// END GENERATED CODE
-		Any retVal = JacorbUtil.init().create_any();
-		List<DataType> fieldValues = new ArrayList<DataType>(getFields().size());
-		for (ScaAbstractProperty< ? > field : getFields()) {
-			fieldValues.add(new DataType(field.getId(), field.toAny()));
-		}
-		PropertiesHelper.insert(retVal, fieldValues.toArray(new DataType[fieldValues.size()]));
-		return retVal;
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -287,12 +215,14 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * @generated NOT
 	 */
 	public ScaAbstractProperty< ? > getField(String id) {
+		// END GENERATED CODE
 		for (final ScaAbstractProperty< ? > field : getFields()) {
 			if (PluginUtil.equals(field.getId(), id)) {
 				return field;
 			}
 		}
 		return null;
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -305,6 +235,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 */
 	@Override
 	public StructRef createPropertyRef() {
+		// END GENERATED CODE
 		final StructRef structRef = PrfFactory.eINSTANCE.createStructRef();
 		structRef.setRefID(getId());
 		for (final ScaAbstractProperty< ? > field : getFields()) {
@@ -317,10 +248,14 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 				case PrfPackage.SIMPLE_SEQUENCE_REF:
 					structRef.getSimpleSequenceRef().add((SimpleSequenceRef) fieldRef);
 					break;
+				default:
+					String msg = String.format("Invalid struct field '%s' of type %s", fieldRef.getRefID(), fieldRef.getClass().getName());
+					throw new IllegalArgumentException(msg);
 				}
 			}
 		}
 		return structRef;
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -333,6 +268,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 */
 	@Override
 	public StructValue createStructValue() {
+		// END GENERATED CODE
 		final StructValue structValue = PrfFactory.eINSTANCE.createStructValue();
 		for (final ScaAbstractProperty< ? > field : getFields()) {
 			AbstractPropertyRef< ? > fieldRef = field.createPropertyRef();
@@ -343,9 +279,13 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			case PrfPackage.SIMPLE_SEQUENCE_REF:
 				structValue.getSimpleSequenceRef().add((SimpleSequenceRef) fieldRef);
 				break;
+			default:
+				String msg = String.format("Invalid struct field '%s' of type %s", fieldRef.getRefID(), fieldRef.getClass().getName());
+				throw new IllegalArgumentException(msg);
 			}
 		}
 		return structValue;
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -406,7 +346,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * @generated NOT
 	 */
 	public String registerPropertyListener(org.omg.CORBA.Object obj, EList<String> prop_ids, float interval) throws UnknownProperties, InvalidObjectReference {
+		// END GENERATED CODE
 		throw new UnsupportedOperationException();
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -450,6 +392,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
+		// END GENERATED CODE
 		switch (featureID) {
 		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
 			setIgnoreRemoteSet(true);
@@ -460,8 +403,11 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			}
 			getFields().addAll((Collection< ? extends ScaAbstractProperty< ? >>) newValue);
 			return;
+		default:
+			break;
 		}
 		super.eSet(featureID, newValue);
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -497,35 +443,50 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		return super.eIsSet(featureID);
 	}
 
+	// END GENERATED CODE
+
+	/**
+	 * @since 14.0
+	 */
 	@Override
-	public IStatus getStatus() {
-		// END GENERATED CODE
-		IStatus parentStatus = super.getStatus();
-		if (!getFields().isEmpty()) {
-			MultiStatus retVal = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Struct property: " + getName(), null);
-			retVal.addAll(super.getStatus());
-			for (ScaAbstractProperty< ? > field : getFields()) {
-				retVal.add(field.getStatus());
+	public void setDefinition(Struct newDefinition) {
+		// Save the old definition so that we can test that it changed, but call the superclass version first to allow
+		// it to do any validity checking first
+		Struct oldDefinition = getDefinition();
+		super.setDefinition(newDefinition);
+		if (newDefinition != oldDefinition) {
+			getFields().clear();
+			if (newDefinition != null) {
+				for (FeatureMap.Entry entry : newDefinition.getFields()) {
+					switch (entry.getEStructuralFeature().getFeatureID()) {
+					case PrfPackage.STRUCT__SIMPLE:
+						ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
+						simple.setDefinition((Simple) entry.getValue());
+						fields.add(simple);
+						break;
+					case PrfPackage.STRUCT__SIMPLE_SEQUENCE:
+						ScaSimpleSequenceProperty simpleSequence = ScaFactory.eINSTANCE.createScaSimpleSequenceProperty();
+						simpleSequence.setDefinition((SimpleSequence) entry.getValue());
+						fields.add(simpleSequence);
+						break;
+					default:
+						String msg = String.format("Invalid struct field of type %s", entry.getEStructuralFeature().getName());
+						throw new IllegalArgumentException(msg);
+					}
+				}
 			}
-			retVal.add(parentStatus);
-			if (!retVal.isOK()) {
-				return retVal;
-			} else {
-				return Status.OK_STATUS;
-			}
-		} else {
-			return parentStatus;
 		}
-		// BEGIN GENERATED CODE
 	}
 
-	private int getIndex() {
-		if (eContainer() instanceof ScaStructSequenceProperty) {
-			ScaStructSequenceProperty parent = (ScaStructSequenceProperty) eContainer();
-			int index = parent.getStructs().indexOf(this);
-			return index;
+	@Override
+	public Any toAny() {
+		Any retVal = JacorbUtil.init().create_any();
+		List<DataType> fieldValues = new ArrayList<DataType>(getFields().size());
+		for (ScaAbstractProperty< ? > field : getFields()) {
+			fieldValues.add(new DataType(field.getId(), field.toAny()));
 		}
-		return -1;
+		PropertiesHelper.insert(retVal, fieldValues.toArray(new DataType[fieldValues.size()]));
+		return retVal;
 	}
 
 	@Override
@@ -554,5 +515,65 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			field.restoreDefaultValue();
 		}
 	}
+
+	@Override
+	protected void internalFromAny(Any newAny) {
+		try {
+			if (newAny != null) {
+				final DataType[] fieldValues = PropertiesHelper.extract(newAny);
+				if (fieldValues != null) {
+					for (final DataType type : fieldValues) {
+						ScaAbstractProperty< ? > prop = getField(type.id);
+						if (prop != null) {
+							prop.fromAny(type.value);
+						} else {
+							ScaSimpleProperty newProp = ScaFactory.eINSTANCE.createScaSimpleProperty();
+							newProp.setId(type.id);
+							newProp.fromAny(type.value);
+							getFields().add(newProp);
+						}
+					}
+					return;
+				}
+			} else {
+				restoreDefaultValue();
+			}
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, Status.OK_STATUS);
+		} catch (Exception e) {
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS,
+				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
+		}
+	}
+
+	@Override
+	public IStatus getStatus() {
+		IStatus parentStatus = super.getStatus();
+		if (!getFields().isEmpty()) {
+			MultiStatus retVal = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Struct property: " + getName(), null);
+			retVal.addAll(super.getStatus());
+			for (ScaAbstractProperty< ? > field : getFields()) {
+				retVal.add(field.getStatus());
+			}
+			retVal.add(parentStatus);
+			if (!retVal.isOK()) {
+				return retVal;
+			} else {
+				return Status.OK_STATUS;
+			}
+		} else {
+			return parentStatus;
+		}
+	}
+
+	private int getIndex() {
+		if (eContainer() instanceof ScaStructSequenceProperty) {
+			ScaStructSequenceProperty parent = (ScaStructSequenceProperty) eContainer();
+			int index = parent.getStructs().indexOf(this);
+			return index;
+		}
+		return -1;
+	}
+
+	// BEGIN GENERATED CODE
 
 } // ScaStructPropertyImpl
