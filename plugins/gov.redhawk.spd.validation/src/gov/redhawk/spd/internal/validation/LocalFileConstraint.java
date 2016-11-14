@@ -45,7 +45,9 @@ public class LocalFileConstraint extends AbstractModelConstraint {
 	public IStatus validate(final IValidationContext ctx) {
 		final EObject target = ctx.getTarget();
 		IStatus retVal = null;
-		if (ctx.getCurrentConstraintId().equals(LocalFileConstraint.PROPERTY_ID)) {
+		String constraintId = ctx.getCurrentConstraintId();
+		switch (constraintId) {
+		case LocalFileConstraint.PROPERTY_ID:
 			if (target instanceof Implementation) {
 				final Implementation impl = (Implementation) target;
 				if (impl.getPropertyFile() != null && impl.getPropertyFile().getLocalFile() != null) {
@@ -59,25 +61,41 @@ public class LocalFileConstraint extends AbstractModelConstraint {
 					retVal = validateLocalFile(ctx, localFile, SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE);
 				}
 			}
-		} else if (ctx.getCurrentConstraintId().equals(LocalFileConstraint.PROPERTYIF_ID)) {
+			break;
+
+		case LocalFileConstraint.PROPERTYIF_ID:
 			final SoftPkg softPkg = (SoftPkg) target;
 			if (softPkg.getPropertyFile() != null && softPkg.getPropertyFile().getLocalFile() != null) {
 				final LocalFile localFile = softPkg.getPropertyFile().getLocalFile();
 				retVal = validatePrfInterface(ctx, localFile, SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, softPkg);
 			}
-		} else if (ctx.getCurrentConstraintId().equals(LocalFileConstraint.SCD_ID)) {
-			final SoftPkg softPkg = (SoftPkg) target;
-			if (softPkg.getDescriptor() != null && softPkg.getDescriptor().getLocalfile() != null) {
-				final LocalFile localFile = softPkg.getDescriptor().getLocalfile();
+			break;
+
+		case LocalFileConstraint.SCD_ID:
+			final SoftPkg spd = (SoftPkg) target;
+			if (spd.getDescriptor() != null && spd.getDescriptor().getLocalfile() != null) {
+				final LocalFile localFile = spd.getDescriptor().getLocalfile();
 				retVal = validateLocalFile(ctx, localFile, SpdPackage.Literals.SOFT_PKG__DESCRIPTOR);
 			}
-		} else if (ctx.getCurrentConstraintId().equals(LocalFileConstraint.CODE_ID)) {
+			break;
+
+		case LocalFileConstraint.CODE_ID:
 			final Code code = (Code) target;
-			if ((code.getLocalFile() != null) && code.getType().equals(CodeFileType.EXECUTABLE)) {
+			Implementation impl = null;
+			if (code.eContainer() instanceof Implementation) {
+				impl = (Implementation) code.eContainer();
+			}
+			boolean isValidType = code.getType().equals(CodeFileType.EXECUTABLE) || (impl != null && impl.isExecutable());
+			if ((code.getLocalFile() != null) && isValidType) {
 				final LocalFile localFile = code.getLocalFile();
 				retVal = validateLocalFile(ctx, localFile, SpdPackage.Literals.CODE__LOCAL_FILE);
 			}
+			break;
+
+		default:
+			break;
 		}
+
 		if (retVal != null) {
 			return retVal;
 		} else {
