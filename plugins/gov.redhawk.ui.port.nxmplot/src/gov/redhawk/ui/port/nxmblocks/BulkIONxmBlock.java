@@ -76,6 +76,15 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 					}
 				};
 				job.schedule(0);
+			} else {
+				Job job = new Job("updating stream [" + streamID + "] to plot") {
+					@Override
+					protected IStatus run(IProgressMonitor monitor) {
+						update(streamID, newSri);
+						return Status.OK_STATUS;
+					}
+				};
+				job.schedule(0);
 			}
 		}
 

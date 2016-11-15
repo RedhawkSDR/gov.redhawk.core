@@ -252,6 +252,14 @@ public abstract class AbstractNxmBlock< C extends Command > implements INxmBlock
 			}
 		}
 	}
+	
+	public void update(String streamID, StreamSRI sri) {
+		for (List<BlockIndexPair> outBlocks : outputMap.values()) {
+			for (BlockIndexPair outBlockIndexPair : outBlocks) {
+				outBlockIndexPair.getBlock().update(streamID, sri);
+			}
+		}
+	}
 
 	@Override
 	public void shutdown(String streamID) {

@@ -10,14 +10,6 @@
  *******************************************************************************/
 package gov.redhawk.ui.port.nxmblocks;
 
-import gov.redhawk.internal.ui.preferences.PlotPreferencePage;
-import gov.redhawk.sca.util.Debug;
-import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
-import gov.redhawk.ui.port.nxmplot.PlotActivator;
-import gov.redhawk.ui.port.nxmplot.PlotType;
-import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
-import gov.redhawk.ui.port.nxmplot.preferences.Preference;
-
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,11 +18,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import nxm.sys.inc.Units;
-import nxm.sys.lib.NeXtMidas;
-import nxm.sys.lib.Table;
-import nxm.sys.prim.plot;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -46,6 +33,17 @@ import org.omg.CORBA.BAD_OPERATION;
 
 import BULKIO.StreamSRI;
 import CF.DataType;
+import gov.redhawk.internal.ui.preferences.PlotPreferencePage;
+import gov.redhawk.sca.util.Debug;
+import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
+import gov.redhawk.ui.port.nxmplot.PlotType;
+import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
+import gov.redhawk.ui.port.nxmplot.preferences.Preference;
+import nxm.sys.inc.Units;
+import nxm.sys.lib.NeXtMidas;
+import nxm.sys.lib.Table;
+import nxm.sys.prim.plot;
 
 /**
  * @noreference This class is provisional/beta and is subject to API changes
@@ -160,6 +158,12 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		}
 		// FYI: this is end point, so it DOES NOT have any follow on blocks
 		PlotNxmBlock.TRACE_LOG.exitingMethod(streamID);
+	}
+	
+	@Override
+	public void update(String streamID, StreamSRI sri) {
+		streamIdToSriMap.put(streamID, sri);
+		updatePipeQualifiers();
 	}
 
 	@Override
