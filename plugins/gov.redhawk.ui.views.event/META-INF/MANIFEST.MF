@@ -18,7 +18,8 @@ Require-Bundle: org.apache.commons.lang,
  gov.redhawk.sca.model,
  gov.redhawk.sca.model.edit,
  gov.redhawk.sca.ui,
- gov.redhawk.ui.views.namebrowser
+ gov.redhawk.ui.views.namebrowser,
+ gov.redhawk.logging.ui
 Bundle-Activator: gov.redhawk.ui.views.event.EventViewPlugin
 Bundle-Vendor: REDHAWK
 Import-Package: org.omg.CosEventChannelAdmin,

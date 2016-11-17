@@ -25,6 +25,8 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import org.omg.CORBA.TypeCodePackage.BadKind;
 
 import CF.DataType;
+import CF.LogEvent;
+import CF.LogEventHelper;
 import ExtendedEvent.PropertySetChangeEventType;
 import ExtendedEvent.PropertySetChangeEventTypeHelper;
 import ExtendedEvent.ResourceStateChangeEventType;
@@ -134,6 +136,9 @@ public class EventViewerLabelProvider extends XViewerLabelProvider {
 				}
 			}
 			return (strBuilder.toString());
+		} else if (event.valueIsType(LogEventHelper.type())) {
+			LogEvent value = LogEventHelper.extract(event.getValue());
+			return value.msg;
 		}
 		return "";
 	}

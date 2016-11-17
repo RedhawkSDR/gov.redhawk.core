@@ -11,6 +11,7 @@
 package gov.redhawk.ui.views.event.properties;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.eclipse.jface.viewers.LabelProvider;
@@ -20,6 +21,8 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.omg.CORBA.TypeCodePackage.BadKind;
 
 import CF.DataType;
+import CF.LogEvent;
+import CF.LogEventHelper;
 import ExtendedEvent.PropertySetChangeEventType;
 import ExtendedEvent.PropertySetChangeEventTypeHelper;
 import ExtendedEvent.ResourceStateChangeEventType;
@@ -32,6 +35,7 @@ import StandardEvent.DomainManagementObjectRemovedEventType;
 import StandardEvent.DomainManagementObjectRemovedEventTypeHelper;
 import StandardEvent.StateChangeEventType;
 import StandardEvent.StateChangeEventTypeHelper;
+import gov.redhawk.logging.ui.LogLevels;
 import gov.redhawk.ui.views.event.model.Event;
 import gov.redhawk.ui.views.event.utils.EventViewUtils;
 
@@ -90,6 +94,8 @@ public class EventPropertySource implements IPropertySource {
 			createAbnormalTeminationPropertyDescriptors(propDescList);
 		} else if (event.valueIsType(CF.PropertiesHelper.type())) {
 			createMessageEventPropertyDescriptors(propDescList, CF.PropertiesHelper.extract(event.getValue()));
+		} else if (event.valueIsType(LogEventHelper.type())) {
+			createLogEventProperty(propDescList);
 		}
 
 		return propDescList.toArray(new IPropertyDescriptor[0]);
@@ -150,9 +156,17 @@ public class EventPropertySource implements IPropertySource {
 					return "";
 				}
 			});
-//			propDescList.add(new PropertyDescriptor(structId , structId));
 			propDescList.add(structDescriptor);
 		}
+	}
+
+	private void createLogEventProperty(List<PropertyDescriptor> propDescList) {
+		propDescList.add(new PropertyDescriptor(PRODUCER_ID, "Producer ID"));
+		propDescList.add(new PropertyDescriptor(ID_PREFIX + "producerName", "Producer Name"));
+		propDescList.add(new PropertyDescriptor(ID_PREFIX + "producerNameFqn", "Producer Name FQN"));
+		propDescList.add(new PropertyDescriptor(ID_PREFIX + "logTimestamp", "Log Event Timestamp"));
+		propDescList.add(new PropertyDescriptor(ID_PREFIX + "logLevel", "Log Level"));
+		propDescList.add(new PropertyDescriptor(ID_PREFIX + "message", "Message"));
 	}
 
 	@Override
@@ -185,6 +199,8 @@ public class EventPropertySource implements IPropertySource {
 			return getPropertyValue((String) id, AbnormalComponentTerminationEventTypeHelper.extract(event.getValue()));
 		} else if (event.valueIsType(CF.PropertiesHelper.type())) {
 			return getPropertyValue((String) id, CF.PropertiesHelper.extract(event.getValue()));
+		} else if (event.valueIsType(LogEventHelper.type())) {
+			return getPropertyValue((String) id, LogEventHelper.extract(event.getValue()));
 		}
 
 		return "";
@@ -289,6 +305,26 @@ public class EventPropertySource implements IPropertySource {
 			}
 		}
 		return "";
+	}
+
+	private Object getPropertyValue(String id, LogEvent event) {
+		switch (id) {
+		case PRODUCER_ID:
+			return (event.producerId != null) ? event.producerId : "";
+		case ID_PREFIX + "producerName":
+			return (event.producerName != null) ? event.producerName : "";
+		case ID_PREFIX + "producerNameFqn":
+			return (event.producerName_fqn != null) ? event.producerName_fqn : "";
+		case ID_PREFIX + "logTimestamp":
+			Date date = new Date(event.timeStamp);
+			return date.toString();
+		case ID_PREFIX + "logLevel":
+			return LogLevels.intToLogLevel(event.level).getLabel();
+		case ID_PREFIX + "message":
+			return (event.msg != null) ? event.msg : "";
+		default:
+			return "";
+		}
 	}
 
 	@Override
