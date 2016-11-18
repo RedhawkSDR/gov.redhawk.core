@@ -192,7 +192,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 		/**
 		 * Sets the {@link Any} that will be used to set the remote value when the job is run.
 		 * @param newValue
-		 * @since 20.2
+		 * @since 20.3
 		 */
 		public void setNewRemoteValue(Any newValue) {
 			this.newRemoteValue = newValue;
