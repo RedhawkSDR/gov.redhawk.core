@@ -104,6 +104,7 @@ public class GraphitiDCDModelMap extends AbstractGraphitiModelMap {
 				try {
 					newDevice = (DcdComponentInstantiation) GraphitiDCDModelMap.this.create(device, subMonitor.newChild(1));
 					nodeMapEntry.setProfile(newDevice);
+					reflectRuntimeStatus();
 					return Status.OK_STATUS;
 				} catch (CoreException e) {
 					nodes.remove(nodeMapEntry.getKey());
