@@ -201,6 +201,12 @@ public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider i
 
 	@Override
 	public String getDescription(Object anElement) {
+		if (anElement instanceof TunerStatus) {
+			TunerStatus tunerStatus = (TunerStatus) anElement;
+			if (tunerStatus.getAllocationID() != null) {
+				return tunerStatus.getAllocationID();
+			}
+		}
 		return getText(anElement);
 	}
 

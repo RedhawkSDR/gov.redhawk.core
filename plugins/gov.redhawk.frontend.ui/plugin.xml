@@ -78,7 +78,7 @@
          <propertyTab
                category="frontend"
                id="gov.redhawk.frontend.ui.tab.Frontend"
-               label="Front End Interfaces">
+               label="Properties">
          </propertyTab>
       </propertyTabs>
    </extension>
