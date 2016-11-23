@@ -11,12 +11,6 @@
  */
 package gov.redhawk.ui.views.namebrowser.view;
 
-import gov.redhawk.sca.util.CorbaURIUtil;
-import gov.redhawk.sca.util.Debug;
-import gov.redhawk.sca.util.ORBUtil;
-import gov.redhawk.sca.util.OrbSession;
-import gov.redhawk.ui.views.namebrowser.NameBrowserPlugin;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,8 +19,6 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
-
-import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
@@ -43,12 +35,22 @@ import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 
+import gov.redhawk.sca.util.CorbaURIUtil;
+import gov.redhawk.sca.util.Debug;
+import gov.redhawk.sca.util.ORBUtil;
+import gov.redhawk.sca.util.OrbSession;
+import gov.redhawk.ui.views.namebrowser.NameBrowserPlugin;
+import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
+
 /**
  * @since 1.1
  */
 public class BindingNode implements IPropertySource {
 	public static enum Type {
-		ROOT(null), CONTEXT(BindingType.ncontext), OBJECT(BindingType.nobject), UNKNOWN(null);
+		ROOT(null),
+		CONTEXT(BindingType.ncontext),
+		OBJECT(BindingType.nobject),
+		UNKNOWN(null);
 		private BindingType type;
 
 		Type(final BindingType type) {
@@ -133,39 +135,36 @@ public class BindingNode implements IPropertySource {
 	 */
 	public boolean is_a(final String repID) {
 		Boolean retVal = knownRepIds.get(repID);
-		if (retVal == null) {
-			if (getType() == BindingNode.Type.OBJECT) {
-				final NamingContextExt rootContext = getNamingContext();
-				try {
-					retVal = ProtectedThreadExecutor.submit(new Callable<Boolean>() {
+		if (retVal != null) {
+			return retVal;
+		}
 
-						@Override
-						public Boolean call() throws Exception {
-							final String path = getPath();
-							final org.omg.CORBA.Object obj = rootContext.resolve_str(path);
-							return obj._is_a(repID);
-						}
-					});
-				} catch (InterruptedException e) {
-					retVal = false;
-				} catch (ExecutionException e) {
-					retVal = false;
-				} catch (TimeoutException e) {
-					retVal = false;
-				}
-
-			} else {
+		if (getType() == BindingNode.Type.OBJECT) {
+			final NamingContextExt rootContext = getNamingContext();
+			try {
+				retVal = ProtectedThreadExecutor.submit(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						final org.omg.CORBA.Object obj = rootContext.resolve(getPathToNode());
+						return obj._is_a(repID);
+					}
+				});
+			} catch (InterruptedException e) {
+				retVal = false;
+			} catch (ExecutionException e) {
+				retVal = false;
+			} catch (TimeoutException e) {
 				retVal = false;
 			}
-			knownRepIds.put(repID, retVal);
+		} else {
+			retVal = false;
 		}
+		knownRepIds.put(repID, retVal);
 		return retVal;
-
 	}
 
 	public void connect() throws InvalidName {
-		// Create the CORBA ORB, overriding the Java ORB's default port if
-		// necessary
+		// Create the CORBA ORB, overriding the Java ORB's default port if necessary
 		if (BindingNode.DEBUG.enabled) {
 			BindingNode.DEBUG.enteringMethod();
 		}
@@ -238,7 +237,11 @@ public class BindingNode implements IPropertySource {
 	}
 
 	public String getPath() {
-		return this.getPathToNode();
+		try {
+			return this.getNamingContext().to_string(this.getPathToNode());
+		} catch (UserException e) {
+			return "";
+		}
 	}
 
 	@Override
@@ -304,27 +307,31 @@ public class BindingNode implements IPropertySource {
 		// If the type is ncontext, it has children, otherwise none
 		// We only need to do something to a node that has children
 		if (hasContents()) {
-			final String str = getPathToNode();
-
-			final Binding[] children = getChildren(str);
-
+			final NameComponent[] namingComponents = getPathToNode();
+			final Binding[] children = getChildren(namingComponents);
 			final List<BindingNode> retVal = new ArrayList<BindingNode>();
 			// Loop through the resolved names and add a node for each
 			for (final Binding b : children) {
 				String childIor = null;
 				org.omg.CORBA.Object objRef = null;
 				try {
-					String ref = str;
-					if (ref.length() > 0) {
-						ref = ref + "/";
-					}
-					ref = ref + b.binding_name[0].id;
-					objRef = getNamingContext().resolve_str(ref);
+					// Combine parent and child names
+					List<NameComponent> childName = new ArrayList<NameComponent>(Arrays.asList(namingComponents));
+					childName.addAll(Arrays.asList(b.binding_name));
+
+					// Resolve child binding
+					objRef = getNamingContext().resolve(childName.toArray(new NameComponent[0]));
 					childIor = objRef.toString();
 					retVal.add(new BindingNode(this, b, childIor));
 				} catch (final UserException e) {
+					if (BindingNode.DEBUG.enabled) {
+						DEBUG.message("UserException occurred: " + e.getMessage());
+					}
 					continue;
 				} catch (final SystemException e) {
+					if (BindingNode.DEBUG.enabled) {
+						DEBUG.message("SystemException occurred: " + e.getMessage());
+					}
 					continue;
 				} finally {
 					if (objRef != null) {
@@ -344,38 +351,23 @@ public class BindingNode implements IPropertySource {
 	}
 
 	/**
-	 * This creates the String form of the full path to the node.
-	 * 
-	 * @param bindingNode the node to locate
-	 * @return String path of the node
+	 * Recursive build a NameComponent[], which serves as the full path to the node
+	 * @return
 	 */
-	private String getPathToNode() {
-		StringBuilder str = new StringBuilder();
+	private NameComponent[] getPathToNode() {
+		List<NameComponent> nameComponents = new ArrayList<NameComponent>();
 		if (this.parent != null) {
-			str.append(this.parent.getPathToNode());
+			nameComponents.addAll(Arrays.asList(this.parent.getPathToNode()));
 		}
 
-		// Create the full path to the name of the object
 		if (this.binding != null) {
-			if (this.binding.binding_name.length > 0 && str.length() > 0) {
-				str.append("/");
-			}
-			for (int i = 0; i < this.binding.binding_name.length; i++) {
-				final NameComponent name = this.binding.binding_name[i];
-				str.append(name.id);
-				if (i + 1 < this.binding.binding_name.length) {
-					str.append("/");
-				}
-			}
+			nameComponents.addAll(Arrays.asList(this.binding.binding_name));
+		}
 
-		}
-		if (BindingNode.DEBUG.enabled) {
-			BindingNode.DEBUG.exitingMethod(str);
-		}
-		return str.toString();
+		return nameComponents.toArray(new NameComponent[0]);
 	}
 
-	private Binding[] getChildren(final String pathToNode) {
+	private Binding[] getChildren(NameComponent[] namingComponents) {
 		Binding[] retVal = BindingNode.EMPTY;
 
 		try {
@@ -386,7 +378,7 @@ public class BindingNode implements IPropertySource {
 			} else {
 				// Lookup the name in the NameService
 				org.omg.CORBA.Object obj;
-				obj = getNamingContext().resolve_str(pathToNode);
+				obj = getNamingContext().resolve(namingComponents);
 				final NamingContextExt nObj = NamingContextExtHelper.narrow(obj);
 
 				// Get a list of objects at this name/path
@@ -395,9 +387,13 @@ public class BindingNode implements IPropertySource {
 			}
 			retVal = bl.value;
 		} catch (final UserException e) {
-			// PASS
+			if (BindingNode.DEBUG.enabled) {
+				DEBUG.message("UserException occurred: " + e.getMessage());
+			}
 		} catch (final SystemException e) {
-			// PASS
+			if (BindingNode.DEBUG.enabled) {
+				DEBUG.message("SystemException occurred: " + e.getMessage());
+			}
 		}
 
 		if (BindingNode.DEBUG.enabled) {

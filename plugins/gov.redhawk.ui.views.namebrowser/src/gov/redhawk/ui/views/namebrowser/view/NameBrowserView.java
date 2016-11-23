@@ -11,10 +11,6 @@
  */
 package gov.redhawk.ui.views.namebrowser.view;
 
-import gov.redhawk.sca.ui.compatibility.CompatibilityFactory;
-import gov.redhawk.ui.views.namebrowser.NameBrowserPlugin;
-import gov.redhawk.ui.views.namebrowser.view.internal.BindingContentProvider;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -66,11 +62,12 @@ import org.omg.CosNaming.BindingListHolder;
 import org.omg.CosNaming.BindingType;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
-import org.omg.CosNaming.NamingContextPackage.CannotProceed;
-import org.omg.CosNaming.NamingContextPackage.InvalidName;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 import CF.DomainManagerHelper;
+import gov.redhawk.sca.ui.compatibility.CompatibilityFactory;
+import gov.redhawk.sca.util.Debug;
+import gov.redhawk.ui.views.namebrowser.NameBrowserPlugin;
+import gov.redhawk.ui.views.namebrowser.view.internal.BindingContentProvider;
 
 /**
  * @since 1.1
@@ -94,6 +91,8 @@ public class NameBrowserView extends ViewPart {
 	/** The list of connected NameServers (also the tree root) */
 	private Set<String> nameServerHistory = new HashSet<String>();
 
+	private static final Debug DEBUG = new Debug(NameBrowserPlugin.PLUGIN_ID, "contentprovider");
+
 	private Combo nameServerField;
 	private Button connectButton;
 
@@ -102,17 +101,13 @@ public class NameBrowserView extends ViewPart {
 		@Override
 		public IContentProposal[] getProposals(final String contents, final int position) {
 			final List<IContentProposal> list = new ArrayList<IContentProposal>();
-			try {
-				final String regexp = ".*" + contents.replace("*", ".*") + ".*";
-				final Pattern pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
-				for (final String proposal : NameBrowserView.this.nameServerHistory) {
-					final Matcher matcher = pattern.matcher(proposal);
-					if (proposal.length() >= contents.length() && matcher.matches()) {
-						list.add(new ContentProposal(proposal));
-					}
+			final String regexp = ".*" + contents.replace("*", ".*") + ".*";
+			final Pattern pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
+			for (final String proposal : NameBrowserView.this.nameServerHistory) {
+				final Matcher matcher = pattern.matcher(proposal);
+				if (proposal.length() >= contents.length() && matcher.matches()) {
+					list.add(new ContentProposal(proposal));
 				}
-			} catch (Exception e) { // SUPPRESS CHECKSTYLE Pattern Matcher
-				// PASS
 			}
 			return list.toArray(new IContentProposal[list.size()]);
 		}
@@ -169,8 +164,7 @@ public class NameBrowserView extends ViewPart {
 		});
 
 		this.treeViewer = new TreeViewer(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.VIRTUAL);
-		this.treeViewer.getControl().setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 3, 1)); // SUPPRESS CHECKSTYLE MagicNumber
-
+		this.treeViewer.getControl().setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 3, 1));
 		getSite().setSelectionProvider(this.treeViewer);
 		this.contentProvider = new BindingContentProvider();
 		this.treeViewer.setContentProvider(this.contentProvider);
@@ -384,9 +378,13 @@ public class NameBrowserView extends ViewPart {
 					// Unbind the name
 					rootContext.unbind(rootContext.to_name(node.getPath()));
 				} catch (final UserException e) {
-					// PASS Ignore unbind exceptions
+					if (NameBrowserView.DEBUG.enabled) {
+						DEBUG.message("UserException occurred: " + e.getMessage());
+					}
 				} catch (final SystemException e) {
-					// PASS Ignore unbind exceptions
+					if (NameBrowserView.DEBUG.enabled) {
+						DEBUG.message("SystemException occurred: " + e.getMessage());
+					}
 				}
 				nodes.add(node.getParent());
 			}
@@ -411,14 +409,13 @@ public class NameBrowserView extends ViewPart {
 	public void removeContext(final List<BindingNode> removeList) {
 		final Set<BindingNode> nodes = new HashSet<BindingNode>();
 		for (final BindingNode node : removeList) {
-			// Get the path to the node and narrow to the context
-			final String path = node.getPath();
+			try {
+				// Get the path to the node and narrow to the context
+				// You can remove only a context, doesn't work for an object
+				final String path = node.getPath();
+				if (node.getType() == BindingNode.Type.CONTEXT) {
+					final NamingContextExt rootContext = node.getNamingContext();
 
-			// You can remove only a context, doesn't work for an object
-			if (node.getType() == BindingNode.Type.CONTEXT) {
-				final NamingContextExt rootContext = node.getNamingContext();
-
-				try {
 					final org.omg.CORBA.Object obj = rootContext.resolve_str(path);
 					final NamingContextExt context = NamingContextExtHelper.narrow(obj);
 
@@ -426,25 +423,17 @@ public class NameBrowserView extends ViewPart {
 					removeChildren(context, path + "/");
 					// Destroy the context
 					context.destroy();
-				} catch (final UserException e) {
-					// PASS - this was probably removed before
-				} catch (final SystemException e) {
-					// PASS - this was probably removed before
-				}
 
-				// Unbind the name
-				try {
+					// Unbind the name
 					rootContext.unbind(rootContext.to_name(path));
-				} catch (final NotFound e) {
-					// PASS - this was probably removed before
-				} catch (final CannotProceed e) {
-					// PASS - this was probably removed before
-				} catch (final InvalidName e) {
-					// PASS - this was probably removed before
-				}
 
-				// Refresh the list for this host
-				nodes.add(node.getRoot());
+					// Refresh the list for this host
+					nodes.add(node.getRoot());
+				}
+			} catch (UserException e) {
+				if (NameBrowserView.DEBUG.enabled) {
+					DEBUG.message("UserException occurred: " + e.getMessage());
+				}
 			}
 		}
 
@@ -466,41 +455,43 @@ public class NameBrowserView extends ViewPart {
 		try {
 			context.list(-1, bl, bi);
 		} catch (final SystemException e) {
-			// PASS Skip all errors
+			if (NameBrowserView.DEBUG.enabled) {
+				DEBUG.message("SystemException occurred: " + e.getMessage());
+			}
+		}
+
+		if (bl.value == null) {
+			return;
 		}
 
 		// Remove everything in this context
-		if (bl.value != null) {
-			for (final Binding b : bl.value) {
-				final String newPath = path + b.binding_name[0].id;
+		for (final Binding b : bl.value) {
+			final String newPath = path + b.binding_name[0].id;
 
-				// Recursively unbind/delete context types
-				// Only need to unbind object types
+			// Recursively unbind/delete context types
+			// Only need to unbind object types
+			try {
 				if (b.binding_type == BindingType.ncontext) {
-					try {
-						// Resolve the naming context
-						final org.omg.CORBA.Object obj = context.resolve(b.binding_name);
-						final NamingContextExt c = NamingContextExtHelper.narrow(obj);
+					// Resolve the naming context
+					final org.omg.CORBA.Object obj = context.resolve(b.binding_name);
+					final NamingContextExt c = NamingContextExtHelper.narrow(obj);
 
-						// Remove all its children
-						removeChildren(c, newPath + "/");
+					// Remove all its children
+					removeChildren(c, newPath + "/");
 
-						// Destroy the context
-						c.destroy();
-					} catch (final UserException e) {
-						// PASS
-					} catch (final SystemException e) {
-						// PASS
-					}
+					// Destroy the context
+					c.destroy();
 				}
 
 				// Unbind the name
-				try {
-					context.unbind(b.binding_name);
-				} catch (final UserException e) {
-					// PASS
-				} catch (final SystemException e) {
-					// PASS
+				context.unbind(b.binding_name);
+			} catch (final UserException e) {
+				if (NameBrowserView.DEBUG.enabled) {
+					DEBUG.message("UserException occurred: " + e.getMessage());
+				}
+			} catch (final SystemException e) {
+				if (NameBrowserView.DEBUG.enabled) {
+					DEBUG.message("SystemException occurred: " + e.getMessage());
 				}
 			}
 		}
