@@ -63,12 +63,6 @@ public class FrontendSection extends AbstractPropertySection {
 		allocateAction = new AllocateAction(this);
 		deallocateAction = new DeallocateAction(this);
 		plotAction = new FeiPlotAction(this);
-//		allocateAction = new FrontendAction(this, "Allocate...", "gov.redhawk.frontend.actions.allocate", "gov.redhawk.frontend.commands.allocate",
-//				"icons/allocate.gif");
-//		deallocateAction = new FrontendAction(this, "Deallocate", "gov.redhawk.frontend.actions.deallocate", "gov.redhawk.frontend.commands.deallocate",
-//				"icons/deallocate.gif");
-//		plotAction = new FrontendAction(this, "Plot", "gov.redhawk.frontend.actions.plot", "gov.redhawk.ui.port.nxmplot.command.plot", "icons/plot.gif");
-
 		page = aTabbedPropertySheetPage;
 	}
 

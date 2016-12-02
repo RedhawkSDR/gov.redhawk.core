@@ -39,6 +39,7 @@ import CF.Resource;
 import CF.ResourceHelper;
 
 /**
+ * Used when updating the components belonging to a domain waveform.
  * @since 14.0
  */
 public class ScaWaveformMergeComponentsCommand extends SetStatusCommand<ScaWaveform> {
@@ -102,16 +103,12 @@ public class ScaWaveformMergeComponentsCommand extends SetStatusCommand<ScaWavef
 			URI profileURI = provider.getProfileURI();
 			for (final ComponentType typeInfo : newComponentsMap.values()) {
 				URI spdUri = ScaUriHelpers.createFileSystemURI(typeInfo.softwareProfile, profileURI, null);
-				final ScaComponent component = createComponent();
+				final ScaComponent component = createComponent(typeInfo.identifier, typeInfo.softwareProfile, typeInfo.componentObject);
 				if (typeInfo.componentObject == null) {
 					component.setStatus(ScaPackage.Literals.CORBA_OBJ_WRAPPER__CORBA_OBJ,
 						new Status(IStatus.ERROR, ScaModelPlugin.ID, "No CORBA object was provided by the waveform for this component."));
-				} else {
-					component.setCorbaObj(typeInfo.componentObject);
-					component.setObj((Resource) typeInfo.componentObject);
 				}
 				component.setProfileURI(spdUri);
-				component.setIdentifier(typeInfo.identifier);
 				provider.getComponents().add(component);
 				String ciId = component.getInstantiationIdentifier();
 				if (ciId != null) {
@@ -145,8 +142,44 @@ public class ScaWaveformMergeComponentsCommand extends SetStatusCommand<ScaWavef
 		super.execute();
 	}
 
+	/**
+	 * @deprecated Use {@link #createComponent(String, String, org.omg.CORBA.Object)}
+	 */
+	@Deprecated
 	protected ScaComponent createComponent() {
 		return ScaFactory.eINSTANCE.createScaComponent();
 	}
 
+	/**
+	 * Create the appropriate SCA model object for the component, and update it based on the identifier, profile and
+	 * CORBA object provided.
+	 *
+	 * @param identifier The component's identifier
+	 * @param softwareProfile The component's software profile (path to SPD in the domain manager's file manager)
+	 * @param componentObject The {@link Resource} object for the component
+	 * @return The newly created model object
+	 * @since 20.3
+	 */
+	protected ScaComponent createComponent(String identifier, String softwareProfile, org.omg.CORBA.Object componentObject) {
+		ScaComponent component = ScaFactory.eINSTANCE.createScaComponent();
+		setAttributes(component, identifier, softwareProfile, componentObject);
+		return component;
+	}
+
+	/**
+	 * Helper method to apply attributes to a {@link ScaComponent}.
+	 *
+	 * @param identifier The component's identifier
+	 * @param softwareProfile The component's software profile (path to SPD in the domain manager's file manager)
+	 * @param componentObject The {@link Resource} object for the component
+	 * @since 20.3
+	 */
+	protected void setAttributes(ScaComponent component, String identifier, String softwareProfile, org.omg.CORBA.Object componentObject) {
+		component.setIdentifier(identifier);
+		component.setProfile(softwareProfile);
+		if (componentObject != null) {
+			component.setCorbaObj(componentObject);
+			component.setObj((Resource) componentObject);
+		}
+	}
 }

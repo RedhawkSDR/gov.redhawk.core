@@ -118,7 +118,7 @@ public abstract class AbstractGraphitiModelMap {
 		final int WORK_FETCH_ATTR = 1;
 		final int WORK_FETCH_PROFILE = 2;
 		final int WORK_CREATE_OBJECT = 1;
-		SubMonitor progress = SubMonitor.convert(monitor, WORK_FETCH_ATTR + WORK_FETCH_PROFILE);
+		SubMonitor progress = SubMonitor.convert(monitor, WORK_FETCH_ATTR + WORK_FETCH_PROFILE + WORK_CREATE_OBJECT);
 
 		// get SoftPkg
 		newObject.fetchAttributes(progress.newChild(WORK_FETCH_ATTR));
@@ -145,12 +145,18 @@ public abstract class AbstractGraphitiModelMap {
 				shape.setEnabled(true);
 			}
 		};
-		CompoundCommand compoundCommand = new CompoundCommand(Arrays.asList(compInstCommand, setEnabledCommand));
+		final CompoundCommand compoundCommand = new CompoundCommand(Arrays.asList(compInstCommand, setEnabledCommand));
 
 		// Execute the commands
-		editingDomain.getCommandStack().execute(compoundCommand);
-		progress.worked(WORK_CREATE_OBJECT);
+		Display.getDefault().syncExec(new Runnable() {
 
+			@Override
+			public void run() {
+				editingDomain.getCommandStack().execute(compoundCommand);
+			}
+		});
+
+		progress.worked(WORK_CREATE_OBJECT);
 		progress.done();
 		return compInstCommand.getComponentInstantiation();
 	}

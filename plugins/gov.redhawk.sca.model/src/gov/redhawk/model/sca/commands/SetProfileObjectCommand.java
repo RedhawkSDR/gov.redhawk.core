@@ -37,6 +37,7 @@ public class SetProfileObjectCommand< T extends EObject > extends SetStatusComma
 		} else {
 			provider.unsetProfileObj();
 		}
+		provider.setStatus(ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ, status);
 		super.execute();
 	}
 

@@ -166,6 +166,14 @@ public interface INxmBlock {
 	 * @param sri (StreamSRI for this streamID - this can be null)
 	 */
 	void launch(String streamID, @Nullable StreamSRI sri);
+	
+	/**
+	 * Updates with new StreamSRI settings
+	 * @param streamID
+	 * @param sri
+	 * @since 5.0
+	 */
+	void update(String streamID, @Nullable StreamSRI sri);
 
 	/** Disposes of input source for specified stream ID. All resources MUST be freed. Any launched
 	 *  commands/processing should be closed/exited and cleaned for this stream.

@@ -164,6 +164,72 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 */
 	protected static final boolean IGNORE_REMOTE_SET_EDEFAULT = false;
 
+	// END GENERATED CODE
+
+	private static final Debug DEBUG = new Debug(ScaModelPlugin.ID, "scaAbstractProperty/ignoreRemoteSet");
+
+	/**
+	 * @since 13.0
+	 */
+	private int ignoreRemoteSetNumber = 0;
+
+	/**
+	 * @since 13.0
+	 */
+	protected final PushValueJob pushValueJob = new PushValueJob();
+
+	/**
+	 * @since 13.0
+	 */
+	protected class PushValueJob extends SilentModelJob {
+
+		private Any newRemoteValue = null;
+
+		public PushValueJob() {
+			super("Setting Property Value", ScaAbstractPropertyImpl.this, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE);
+		}
+
+		/**
+		 * Sets the {@link Any} that will be used to set the remote value when the job is run.
+		 * @param newValue
+		 * @since 20.3
+		 */
+		public void setNewRemoteValue(Any newValue) {
+			this.newRemoteValue = newValue;
+		}
+
+		@Override
+		public boolean shouldSchedule() {
+			return super.shouldSchedule() && !isIgnoreRemoteSet();
+		}
+
+		@Override
+		protected IStatus runSilent(IProgressMonitor monitor) {
+			try {
+				Any tmpValue = newRemoteValue;
+				if (tmpValue == null) {
+					tmpValue = ORB.init().create_any();
+				}
+				setRemoteValue(tmpValue);
+			} catch (PartialConfiguration e) {
+				return new Status(Status.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e), e);
+			} catch (InvalidConfiguration e) {
+				return new Status(Status.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e), e);
+			} finally {
+				for (EObject parent = eContainer(); parent != null; parent = parent.eContainer()) {
+					if (parent instanceof ScaPropertyContainer< ? , ? >) {
+						ScaPropertyContainer< ? , ? > propCont = (ScaPropertyContainer< ? , ? >) parent;
+						propCont.fetchProperties(monitor);
+						break;
+					}
+				}
+			}
+			return Status.OK_STATUS;
+		}
+	}
+
+	// BEGIN GENERATED CODE
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -215,58 +281,6 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 		return definition;
 	}
 
-	private static final Debug DEBUG = new Debug(ScaModelPlugin.ID, "scaAbstractProperty/ignoreRemoteSet");
-	/**
-	 * @since 13.0
-	 */
-	private int ignoreRemoteSetNumber = 0;
-
-	/**
-	 * @since 13.0
-	 */
-	protected class PushValueJob extends SilentModelJob {
-		public Any newRemoteValue = null;
-
-		public PushValueJob() {
-			super("Setting Property Value", ScaAbstractPropertyImpl.this, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE);
-		}
-
-		@Override
-		public boolean shouldSchedule() {
-			return super.shouldSchedule() && !isIgnoreRemoteSet();
-		}
-
-		@Override
-		protected IStatus runSilent(IProgressMonitor monitor) {
-			try {
-				Any tmpValue = newRemoteValue;
-				if (tmpValue == null) {
-					tmpValue = ORB.init().create_any();
-				}
-				setRemoteValue(tmpValue);
-			} catch (PartialConfiguration e) {
-				return new Status(Status.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e), e);
-			} catch (InvalidConfiguration e) {
-				return new Status(Status.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e), e);
-			} finally {
-				for (EObject parent = eContainer(); parent != null; parent = parent.eContainer()) {
-					if (parent instanceof ScaPropertyContainer< ? , ? >) {
-						ScaPropertyContainer< ? , ? > propCont = (ScaPropertyContainer< ? , ? >) parent;
-						propCont.fetchProperties(monitor);
-						break;
-					}
-				}
-			}
-			return Status.OK_STATUS;
-		}
-
-	}
-
-	/**
-	 * @since 13.0
-	 */
-	protected final PushValueJob pushValueJob = new PushValueJob();
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -288,6 +302,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 */
 	@Override
 	public void setDefinition(T newDefinition) {
+		// END GENERATED CODE
 		T oldDef = getDefinition();
 		setDefinitionGen(newDefinition);
 		if (!PluginUtil.equals(oldDef, newDefinition)) {
@@ -299,6 +314,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 				setIgnoreRemoteSet(false);
 			}
 		}
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -473,18 +489,15 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 */
 	@Override
 	public final void fromAny(Any any) {
+		// END GENERATED CODE
 		try {
 			setIgnoreRemoteSet(true);
 			internalFromAny(any);
 		} finally {
 			setIgnoreRemoteSet(false);
 		}
+		// BEGIN GENERATED CODE
 	}
-
-	/**
-	 * @since 13.0
-	 */
-	protected abstract void internalFromAny(Any any);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -705,6 +718,13 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 		return result.toString();
 	}
 
+	// END GENERATED CODE
+
+	/**
+	 * @since 13.0
+	 */
+	protected abstract void internalFromAny(Any any);
+
 	private static boolean valueEquals(DataType leftData, DataType rightData) {
 		if (!PluginUtil.equals(leftData.id, rightData.id)) {
 			return false;
@@ -743,7 +763,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 		}
 	}
 
-	protected void updateAttributes() {
+	private void updateAttributes() {
 		T defValue = getDefinition();
 		if (defValue != null) {
 			setName(defValue.getName());
@@ -757,5 +777,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 			setMode(null);
 		}
 	}
+
+	// BEGIN GENERATED CODE
 
 } // ScaAbstractPropertyImpl

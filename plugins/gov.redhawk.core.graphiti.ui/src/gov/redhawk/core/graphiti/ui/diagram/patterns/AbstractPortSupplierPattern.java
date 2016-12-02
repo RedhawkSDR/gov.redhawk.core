@@ -202,8 +202,13 @@ public abstract class AbstractPortSupplierPattern extends AbstractContainerPatte
 				updateStatus = true;
 			}
 
-			updatePorts(providesPortsShape, getProvides(businessObject));
-			updatePorts(usesPortsShape, getUses(businessObject));
+			if (updatePorts(providesPortsShape, getProvides(businessObject))) {
+				updateStatus = true;
+			}
+
+			if (updatePorts(usesPortsShape, getUses(businessObject))) {
+				updateStatus = true;
+			}
 
 			if (UpdateUtil.deleteIfNeeded(superProvidesPortsShape, superUsesPortsShape)) {
 				updateStatus = true;

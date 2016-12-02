@@ -11,9 +11,6 @@
  */
 package gov.redhawk.ui.views.namebrowser.internal.command;
 
-import gov.redhawk.sca.ui.DomainConnectionUtil;
-import gov.redhawk.ui.views.namebrowser.view.BindingNode;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -22,6 +19,9 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
+
+import gov.redhawk.sca.ui.DomainConnectionUtil;
+import gov.redhawk.ui.views.namebrowser.view.BindingNode;
 
 /**
  * The Class InitHandler.
@@ -41,7 +41,7 @@ public class ConnectToDomainHandler extends AbstractHandler implements IHandler 
 				if (selected instanceof BindingNode) {
 					final BindingNode b = (BindingNode) selected;
 					Shell shell = HandlerUtil.getActiveShell(event);
-					DomainConnectionUtil.showDialog(shell.getDisplay(), b.getHost(), b.getPath().split("/")[1]);
+					DomainConnectionUtil.showDialog(shell.getDisplay(), b.getHost(), b.getPath().split("/")[1], null);
 				}
 			}
 		}

@@ -161,7 +161,6 @@ public class BindingNodeDefferedWorkbenchAdapter implements IDeferredWorkbenchAd
 	 */
 	@Override
 	public ISchedulingRule getRule(final Object object) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

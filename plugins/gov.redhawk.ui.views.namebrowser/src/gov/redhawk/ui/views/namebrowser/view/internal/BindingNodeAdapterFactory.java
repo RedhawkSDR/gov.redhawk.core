@@ -26,6 +26,7 @@ public class BindingNodeAdapterFactory implements IAdapterFactory {
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adapterType == IWorkbenchAdapter.class) {

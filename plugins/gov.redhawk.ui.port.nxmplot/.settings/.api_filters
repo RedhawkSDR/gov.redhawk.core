@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="gov.redhawk.ui.port.nxmplot" version="2">
+    <resource path="src/gov/redhawk/ui/port/nxmplot/INxmBlock.java" type="gov.redhawk.ui.port.nxmplot.INxmBlock">
+        <filter id="403804204">
+            <message_arguments>
+                <message_argument value="gov.redhawk.ui.port.nxmplot.INxmBlock"/>
+                <message_argument value="update(String, StreamSRI)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>
