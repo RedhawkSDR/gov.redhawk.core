@@ -258,35 +258,38 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 				}
 				break;
 			case IResourceDelta.CHANGED:
-				if (delta.getResource() instanceof IFile) {
-					final IFile newFile = (IFile) delta.getResource();
+				// Ignore changes if they are only to markers, or if the changes aren't for a file
+				if (delta.getFlags() == IResourceDelta.MARKERS) {
+					break;
+				}
+				if (!(delta.getResource() instanceof IFile)) {
+					break;
+				}
 
-					// If the resource has been changed on disk and the editor is dirty we will prompt the user before
-					// blowing away its changes.
-					if (SCAFormEditor.this.isDirty() && !SCAFormEditor.this.editorSaving) {
-						boolean confirmOverwrite = MessageDialog.openConfirm(SCAFormEditor.this.getSite().getShell(), "File Changed", "The file '"
-							+ delta.getResource().getFullPath().toOSString()
-							+ "' has been changed on the file system. Do you want to replace the editor contents with these changes?");
+				final IFile newFile = (IFile) delta.getResource();
 
-						SCAFormEditor.this.setFocus();
+				// If the resource has been changed on disk and the editor is dirty we will prompt the user before
+				// blowing away its changes.
+				if (SCAFormEditor.this.isDirty() && !SCAFormEditor.this.editorSaving) {
+					boolean confirmOverwrite = MessageDialog.openConfirm(SCAFormEditor.this.getSite().getShell(), "File Changed", "The file '"
+						+ delta.getResource().getFullPath().toOSString()
+						+ "' has been changed on the file system. Do you want to replace the editor contents with these changes?");
 
-						if (confirmOverwrite) {
-							SCAFormEditor.this.resourceChanged(newFile, delta);
-							// Since the document gets changed within the resourceChanged function, the document will be
-							// marked dirty
-							// even though the document matches what is on disk. Currently I cannot figure out a good
-							// way to get rid
-							// of this dirty flag. It's a small bug that should not happen often though.
+					SCAFormEditor.this.setFocus();
 
-						}
-					}
-
-					// If the editor is not dirty and the editor is not in the middle of saving then we'll take the
-					// changes.
-					// This will cause the editor to appear dirty erroneously as mentioned in the note above.
-					if (!SCAFormEditor.this.isDirty() && !SCAFormEditor.this.editorSaving) {
+					if (confirmOverwrite) {
 						SCAFormEditor.this.resourceChanged(newFile, delta);
+						// Since the document gets changed within the resourceChanged function, the document will be
+						// marked dirty even though the document matches what is on disk. Currently I cannot figure out
+						// a good way to get rid of this dirty flag. It's a small bug that should not happen often
+						// though.
 					}
+				}
+
+				// If the editor is not dirty and the editor is not in the middle of saving then we'll take the
+				// changes. This will cause the editor to appear dirty erroneously as mentioned in the note above.
+				if (!SCAFormEditor.this.isDirty() && !SCAFormEditor.this.editorSaving) {
+					SCAFormEditor.this.resourceChanged(newFile, delta);
 				}
 				break;
 			default:
