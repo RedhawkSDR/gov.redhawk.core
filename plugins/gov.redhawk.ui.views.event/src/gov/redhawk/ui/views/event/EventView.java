@@ -10,7 +10,6 @@ package gov.redhawk.ui.views.event;
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -43,15 +42,14 @@ import org.eclipse.ui.views.properties.tabbed.ITabbedPropertySheetPageContributo
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.omg.CosEventChannelAdmin.EventChannel;
 
-import gov.redhawk.ui.views.event.model.ChannelListener;
-import gov.redhawk.ui.views.event.model.DomainChannelListener;
-import gov.redhawk.ui.views.event.model.EventChannelListener;
-import gov.redhawk.ui.views.event.EventViewPlugin;
 import gov.redhawk.model.sca.DomainConnectionException;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.sca.util.OrbSession;
+import gov.redhawk.ui.views.event.model.ChannelListener;
+import gov.redhawk.ui.views.event.model.DomainChannelListener;
+import gov.redhawk.ui.views.event.model.EventChannelListener;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
@@ -94,11 +92,28 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 			try {
 				EventView.this.getSite().getPage().showView(IPageLayout.ID_PROP_SHEET);
 			} catch (PartInitException e) {
-				StatusManager.getManager().handle(
-					new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, "Failed to open Properties view: " + e.getMessage(), e),
+				StatusManager.getManager().handle(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, "Failed to open Properties view: " + e.getMessage(), e),
 					StatusManager.SHOW | StatusManager.LOG);
 			}
 		}
+	};
+
+	private Action disconnectAction = new Action("Disconnect") {
+		{
+			setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(EventViewPlugin.PLUGIN_ID, "icons/disconnect.gif"));
+		}
+
+		@Override
+		public void run() {
+			List<ChannelListener> listeners = EventView.this.channelListeners;
+			for (int i = 0; i < listeners.size(); i++) {
+				if (listeners.get(i).getFullChannelName().equals(EventView.this.eventChannelId)) {
+					listeners.get(i).disconnect();
+					listeners.remove(i);
+					this.setEnabled(false);
+				}
+			}
+		};
 	};
 
 	private WritableList history = new WritableList();
@@ -110,6 +125,8 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 	private ScaItemProviderAdapterFactory factory;
 
 	private EventViewerContentProvider contentProvider;
+
+	private String eventChannelId;
 
 	/**
 	 * 
@@ -136,6 +153,7 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 
 	private void createToolbarItems(IToolBarManager toolBarManager) {
 		toolBarManager.add(detailsAction);
+		toolBarManager.add(disconnectAction);
 		toolBarManager.add(clearAction);
 		toolBarManager.add(scrollLockAction);
 	}
@@ -210,11 +228,17 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 	}
 
 	public synchronized void connect(String channel, final EventChannel eventChannel) throws CoreException {
+		this.eventChannelId = channel;
+
 		// Don't add duplicate listeners
 		for (ChannelListener l : channelListeners) {
 			if (l.getFullChannelName().equals(channel)) {
 				return;
 			}
+		}
+
+		if (!disconnectAction.isEnabled()) {
+			disconnectAction.setEnabled(true);
 		}
 
 		final ChannelListener newListener = new EventChannelListener(history, eventChannel, channel);
@@ -224,11 +248,17 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 	}
 
 	public synchronized void connect(final ScaDomainManager domain, final String channel) throws CoreException {
+		this.eventChannelId = domain.getLabel() + "/" + channel;
+
 		// Don't add duplicate listeners
 		for (ChannelListener l : channelListeners) {
 			if (l.getFullChannelName().equals(domain.getLabel() + "/" + channel)) {
 				return;
 			}
+		}
+
+		if (!disconnectAction.isEnabled()) {
+			disconnectAction.setEnabled(true);
 		}
 
 		final ChannelListener newListener = new DomainChannelListener(history, domain, channel);
@@ -270,7 +300,7 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 	public String getContributorId() {
 		return getSite().getId();
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Object getAdapter(Class adapter) {
