@@ -1,3 +1,2 @@
 gov.redhawk.sca.model.provider.refresh/debug=false
-gov.redhawk.sca.model.provider.refresh/debug/worker=false
-gov.redhawk.sca.model.provider.refresh/debug/tasker=false
+gov.redhawk.sca.model.provider.refresh/debug/refreshStats=false

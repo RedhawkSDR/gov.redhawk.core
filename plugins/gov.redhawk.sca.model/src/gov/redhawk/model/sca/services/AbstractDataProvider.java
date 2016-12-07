@@ -103,7 +103,7 @@ public abstract class AbstractDataProvider implements IScaDataProvider {
 	}
 
 	protected void setStatus(IStatus status) {
-		if (this.status != null && (status == null || (status.getSeverity() == this.status.getSeverity()))) {
+		if (this.status == status) {
 			return;
 		}
 		IStatus oldValue = this.status;

@@ -12,11 +12,15 @@
 package gov.redhawk.sca.model.provider.refresh;
 
 import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.sca.model.provider.refresh.internal.RefreshTasker;
+import gov.redhawk.sca.model.provider.refresh.internal.RefreshThreadPools;
 import gov.redhawk.sca.model.provider.refresh.preferences.RefreshPreferenceConstants;
 import gov.redhawk.sca.util.IPreferenceAccessor;
 import gov.redhawk.sca.util.ScopedPreferenceAccessor;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.framework.BundleContext;
@@ -25,6 +29,8 @@ public class RefreshProviderPlugin extends Plugin {
 
 	public static final String PLUGIN_ID = "gov.redhawk.sca.model.provider.refresh";
 
+	private static final long MAX_SHUTDOWN_TIME_MS = 2000;
+
 	private static RefreshProviderPlugin instance;
 	private final ScopedPreferenceAccessor refreshPreferenceStore = new ScopedPreferenceAccessor(InstanceScope.INSTANCE, RefreshProviderPlugin.getPluginId());
 
@@ -32,16 +38,35 @@ public class RefreshProviderPlugin extends Plugin {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		RefreshProviderPlugin.instance = this;
+
+		// Debug option to periodically print refresh stats
+		if ("true".equalsIgnoreCase(Platform.getDebugOption(PLUGIN_ID + "/debug/refreshStats"))) {
+			RefreshThreadPools.getEventExecutor().scheduleWithFixedDelay(() -> {
+				System.out.println(RefreshThreadPools.calculateStats().toString()); // SUPPRESS CHECKSTYLE Debug facility
+			}, 10, 10, TimeUnit.SECONDS);
+		}
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	public void stop(final BundleContext context) throws Exception {
-		RefreshTasker.TASKER_POOL.shutdownNow();
-		RefreshTasker.WORKER_POOL.shutdownNow();
-		super.stop(context);
+		// Prevent any more refreshes from being started; give existing ones a little time to stop
+		long endTime = System.currentTimeMillis() + MAX_SHUTDOWN_TIME_MS;
+		ExecutorService[] executors = new ExecutorService[] { RefreshThreadPools.getEventExecutor(), RefreshThreadPools.getRefreshExecutor() };
+		for (ExecutorService executor : executors) {
+			executor.shutdownNow();
+		}
+		for (ExecutorService executor : executors) {
+			long remainingTime = endTime - System.currentTimeMillis();
+			if (remainingTime <= 0) {
+				break;
+			}
+			executor.awaitTermination(remainingTime, TimeUnit.MILLISECONDS);
+		}
+
 		savePluginPreferences();
 		RefreshProviderPlugin.instance = null;
+		super.stop(context);
 	}
 
 	public static RefreshProviderPlugin getInstance() {
