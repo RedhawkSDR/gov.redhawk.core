@@ -18,8 +18,10 @@ import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.filesystem.EFS;
@@ -611,11 +613,15 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 
 					newChildrenMap.keySet().removeAll(currentChildren.keySet());
 
+					List<ScaFileStore> newChildren = new ArrayList<>(newChildrenMap.size());
 					for (FileStoreData childStore : newChildrenMap.values()) {
 						ScaFileStoreImpl childFileStore = new ScaFileStoreImpl();
 						childFileStore.setDirectory(childStore.isDirectory);
-						parentStore.getChildren().add(childFileStore);
 						childFileStore.setFileStore(childStore.fileStore);
+						newChildren.add(childFileStore);
+					}
+					if (newChildren.size() > 0) {
+						parentStore.getChildren().addAll(newChildren);
 					}
 
 					if (!parentStore.isSetChildren()) {
