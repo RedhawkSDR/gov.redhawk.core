@@ -593,9 +593,9 @@ public class ScaItemProviderAdapterFactory extends ScaAdapterFactory implements 
 	/**
 	 * This keeps track of the one adapter used for all {@link gov.redhawk.model.sca.WaveformsContainer} instances.
 	 * <!-- begin-user-doc -->
+	 * @since 12.4
 	 * <!-- end-user-doc -->
 	 * @generated
-	 * @since 12.4
 	 */
 	protected WaveformsContainerItemProvider waveformsContainerItemProvider;
 
