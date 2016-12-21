@@ -30,6 +30,7 @@ public class StartAction extends Action {
 		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(ScaUiPlugin.PLUGIN_ID, "icons/clcl16/play.gif"));
 		setText("Start");
 		setToolTipText("Start");
+		setId("gov.redhawk.start");
 		this.setEnabled(false);
 	}
 
