@@ -18,13 +18,12 @@ import org.eclipse.emf.transaction.TransactionalCommandStack;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICreateContext;
-import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 
 import gov.redhawk.core.graphiti.sad.ui.ext.ComponentShape;
 import gov.redhawk.core.graphiti.sad.ui.internal.diagram.patterns.ComponentPattern;
+import gov.redhawk.core.graphiti.ui.diagram.features.AbstractCreateInstatiationFeature;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
-import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentFile;
 import mil.jpeojtrs.sca.partitioning.ComponentFileRef;
 import mil.jpeojtrs.sca.partitioning.ComponentFiles;
@@ -40,13 +39,10 @@ import mil.jpeojtrs.sca.sad.SadFactory;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 
-public class ComponentCreateFeature extends AbstractCreateFeature {
+public class ComponentCreateFeature extends AbstractCreateInstatiationFeature {
 
 	public static final String OVERRIDE_USAGE_NAME = "OverrideUsageName";
 	public static final String OVERRIDE_INSTANTIATION_ID = "OverrideInstantiationId";
-
-	private SoftPkg spd = null;
-	private String implId = null;
 
 	@Override
 	public String getDescription() {
@@ -55,9 +51,7 @@ public class ComponentCreateFeature extends AbstractCreateFeature {
 	}
 
 	public ComponentCreateFeature(IFeatureProvider fp, final SoftPkg spd, String implId) {
-		super(fp, spd.getName(), spd.getDescription());
-		this.spd = spd;
-		this.implId = implId;
+		super(fp, spd, implId);
 	}
 
 	// diagram and hostCollocation acceptable
@@ -70,8 +64,7 @@ public class ComponentCreateFeature extends AbstractCreateFeature {
 	}
 
 	public Object[] create(ICreateContext context) {
-
-		if (spd == null) {
+		if (getSoftPkg() == null) {
 			// TODO: return some kind of error
 			return null;
 		}
@@ -102,7 +95,7 @@ public class ComponentCreateFeature extends AbstractCreateFeature {
 			@Override
 			protected void doExecute() {
 				// add component file
-				ComponentFile componentFile = createComponentFile(sad, spd);
+				ComponentFile componentFile = createComponentFile(sad);
 
 				// create component placement and add to list
 				final SadComponentPlacement componentPlacement = SadFactory.eINSTANCE.createSadComponentPlacement();
@@ -114,7 +107,7 @@ public class ComponentCreateFeature extends AbstractCreateFeature {
 				componentPlacement.setComponentFileRef(ref);
 
 				// component instantiation
-				componentInstantiations[0] = createComponentInstantiation(sad, componentPlacement, spd, usageName, instantiationId);
+				componentInstantiations[0] = createComponentInstantiation(sad, componentPlacement, usageName, instantiationId);
 
 				// determine start order and potentially create assembly controller if zero is zero
 				intializeComponentStartOrder(sad, componentInstantiations[0]);
@@ -144,45 +137,25 @@ public class ComponentCreateFeature extends AbstractCreateFeature {
 	}
 
 	// adds corresponding component file to sad if not already present
-	private ComponentFile createComponentFile(final SoftwareAssembly sad, final SoftPkg spd) {
-
-		// See if we have to add a new component file
-		ComponentFile file = null;
-		// set component files is not already set
-		ComponentFiles cFiles = sad.getComponentFiles();
-		if (cFiles == null) {
-			cFiles = PartitioningFactory.eINSTANCE.createComponentFiles();
-			sad.setComponentFiles(cFiles);
-		}
-		// search for existing compatible component file for spd
-		for (final ComponentFile f : cFiles.getComponentFile()) {
-			if (f == null) {
-				continue;
-			}
-			final SoftPkg fSpd = f.getSoftPkg();
-			if (fSpd != null && PluginUtil.equals(spd.getId(), fSpd.getId())) {
-				file = f;
-				break;
-			}
-		}
-		// add new component file if not found above
-		if (file == null) {
-			file = SadFactory.eINSTANCE.createComponentFile();
-			cFiles.getComponentFile().add(file);
-			file.setSoftPkg(spd);
+	private ComponentFile createComponentFile(final SoftwareAssembly sad) {
+		// Create the componentfiles element if it doesn't exist already
+		ComponentFiles componentFiles = sad.getComponentFiles();
+		if (componentFiles == null) {
+			componentFiles = PartitioningFactory.eINSTANCE.createComponentFiles();
+			sad.setComponentFiles(componentFiles);
 		}
 
-		return file;
+		// Find the matching component file, or create if necessary
+		return getComponentFile(componentFiles);
 	}
 
 	// create ComponentInstantiation
 	private SadComponentInstantiation createComponentInstantiation(final SoftwareAssembly sad, final SadComponentPlacement componentPlacement,
-		final SoftPkg spd, final String providedUsageName, final String providedInstantiationId) {
-
+		final String providedUsageName, final String providedInstantiationId) {
 		SadComponentInstantiation sadComponentInstantiation = SadFactory.eINSTANCE.createSadComponentInstantiation();
 
 		// use provided name/id if provided otherwise generate
-		String id = (providedInstantiationId != null) ? providedInstantiationId : SoftwareAssembly.Util.createComponentIdentifier(sad, spd.getName());
+		String id = (providedInstantiationId != null) ? providedInstantiationId : SoftwareAssembly.Util.createComponentIdentifier(sad, getSoftPkg().getName());
 		String compName = (providedUsageName != null) ? providedUsageName : SoftwareAssembly.Util.createComponentUsageName(sad, id);
 
 		sadComponentInstantiation.setUsageName(compName);
@@ -193,7 +166,7 @@ public class ComponentCreateFeature extends AbstractCreateFeature {
 		namingService.setName(compName);
 		findComponent.setNamingService(namingService);
 		sadComponentInstantiation.setFindComponent(findComponent);
-		sadComponentInstantiation.setImplID(implId);
+		sadComponentInstantiation.setImplID(getImplementationId());
 
 		// add to placement
 		componentPlacement.getComponentInstantiation().add(sadComponentInstantiation);

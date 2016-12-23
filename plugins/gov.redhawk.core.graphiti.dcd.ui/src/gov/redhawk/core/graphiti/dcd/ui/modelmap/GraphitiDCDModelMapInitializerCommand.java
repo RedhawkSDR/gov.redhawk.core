@@ -42,10 +42,13 @@ import mil.jpeojtrs.sca.dcd.DcdUsesPort;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.partitioning.ComponentFile;
 import mil.jpeojtrs.sca.partitioning.ComponentFileRef;
+import mil.jpeojtrs.sca.partitioning.ComponentFiles;
 import mil.jpeojtrs.sca.partitioning.ComponentSupportedInterface;
 import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
+import mil.jpeojtrs.sca.sad.SadFactory;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
+import mil.jpeojtrs.sca.util.ScaUriHelpers;
 
 /**
  * Uses the REDHAWK SCA model to build a corresponding DCD
@@ -198,21 +201,15 @@ public class GraphitiDCDModelMapInitializerCommand extends AbstractCommand {
 	 * @return
 	 */
 	private DcdComponentInstantiation createComponentInstatitation(SoftPkg spd, String id, String usageName) {
-		// Find an existing component file declaration, or create a new one
-		ComponentFile spdFile = null;
-		for (final ComponentFile file : dcd.getComponentFiles().getComponentFile()) {
-			if (file.getSoftPkg() != null) {
-				if (PluginUtil.equals(file.getSoftPkg().getId(), spd.getId())) {
-					spdFile = file;
-					break;
-				}
-			}
+		// Create the componentfiles element if it doesn't exist already
+		ComponentFiles componentFiles = dcd.getComponentFiles();
+		if (componentFiles == null) {
+			componentFiles = PartitioningFactory.eINSTANCE.createComponentFiles();
+			dcd.setComponentFiles(componentFiles);
 		}
-		if (spdFile == null) {
-			spdFile = DcdFactory.eINSTANCE.createComponentFile();
-			spdFile.setSoftPkg(spd);
-			dcd.getComponentFiles().getComponentFile().add(spdFile);
-		}
+
+		// Find the matching component file, or create if necessary
+		ComponentFile componentFile = getComponentFile(spd, componentFiles);
 
 		// Create the component placement and add to its parent, the partitioning
 		final DcdComponentPlacement placement = DcdFactory.eINSTANCE.createDcdComponentPlacement();
@@ -220,7 +217,7 @@ public class GraphitiDCDModelMapInitializerCommand extends AbstractCommand {
 
 		// Create a component file ref
 		final ComponentFileRef fileRef = PartitioningFactory.eINSTANCE.createComponentFileRef();
-		fileRef.setFile(spdFile);
+		fileRef.setFile(componentFile);
 
 		// Create a component instantiation
 		final DcdComponentInstantiation inst = DcdFactory.eINSTANCE.createDcdComponentInstantiation();
@@ -235,6 +232,28 @@ public class GraphitiDCDModelMapInitializerCommand extends AbstractCommand {
 		placement.getComponentInstantiation().add(inst);
 
 		return inst;
+	}
+
+	/**
+	 * Finds a {@link ComponentFile} that matches the {@link SoftPkg} for this class, creating and adding one if
+	 * necessary.
+	 * @param spd
+	 * @param componentFiles The list of component files
+	 * @return
+	 */
+	protected ComponentFile getComponentFile(SoftPkg spd, ComponentFiles componentFiles) {
+		final String spdPath = ScaUriHelpers.getLocalFilePath(componentFiles, spd);
+		for (final ComponentFile componentFile : componentFiles.getComponentFile()) {
+			final SoftPkg fSpd = componentFile.getSoftPkg();
+			if (fSpd != null && PluginUtil.equals(spdPath, componentFile.getLocalFile().getName())) {
+				return componentFile;
+			}
+		}
+
+		ComponentFile newFile = SadFactory.eINSTANCE.createComponentFile();
+		componentFiles.getComponentFile().add(newFile);
+		newFile.setSoftPkg(spd);
+		return newFile;
 	}
 
 	@Override
