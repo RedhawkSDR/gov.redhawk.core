@@ -11,8 +11,6 @@
  */
 package gov.redhawk.ui.editor;
 
-import gov.redhawk.internal.ui.SubActionBarsExt;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,11 +18,15 @@ import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.emf.edit.ui.action.EditingDomainActionBarContributor;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IActionBars2;
 import org.eclipse.ui.IEditorActionBarContributor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.part.MultiPageEditorActionBarContributor;
+
+import gov.redhawk.internal.ui.SubActionBarsExt;
 
 /**
  * A special implementation of a
@@ -47,31 +49,31 @@ public abstract class ScaMultipageActionBarContributor extends MultiPageEditorAc
 		public void propertyChanged(final Object source, final int propId) {
 			if (ScaMultipageActionBarContributor.this.myActiveEditorActionBars != null) {
 				if (ScaMultipageActionBarContributor.this.myActiveEditorActionBars.getContributor() instanceof EditingDomainActionBarContributor
-				        && ScaMultipageActionBarContributor.this.myActiveEditor.getEditorSite() != null) {
-					ScaMultipageActionBarContributor.this.myActiveEditorActionBars.getContributor()
-					        .setActiveEditor(ScaMultipageActionBarContributor.this.myActiveEditor);
+					&& ScaMultipageActionBarContributor.this.myActiveEditor.getEditorSite() != null) {
+					ScaMultipageActionBarContributor.this.myActiveEditorActionBars.getContributor().setActiveEditor(
+						ScaMultipageActionBarContributor.this.myActiveEditor);
 					((EditingDomainActionBarContributor) ScaMultipageActionBarContributor.this.myActiveEditorActionBars.getContributor()).update();
 				}
 			}
 		}
 	};
 
-	public IActionBars2 getActionBarContributor(final IEditorPart part) {
-		return this.actionBarMap.get(part);
+	@Override
+	public void init(IActionBars actionBars) {
+		super.init(actionBars);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.ui.part.MultiPageEditorActionBarContributor#setActiveEditor
-	 * (org.eclipse.ui.IEditorPart)
-	 */
+	@Override
+	public void contributeToToolBar(IToolBarManager toolBarManager) {
+		super.contributeToToolBar(toolBarManager);
+	}
+
 	@Override
 	public void setActiveEditor(final IEditorPart part) {
 		if (this.myActiveEditor != null) {
 			this.myActiveEditor.removePropertyListener(this.myEditorPropertyChangeListener);
 		}
+		// TODO: Will this cast ever not be correct?
 		this.myActiveEditor = part;
 		super.setActiveEditor(part);
 		if (this.myActiveEditor instanceof IEditingDomainProvider) {
@@ -86,23 +88,17 @@ public abstract class ScaMultipageActionBarContributor extends MultiPageEditorAc
 		return this.myActiveEditor;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public IActionBars2 getActionBars() {
 		return (IActionBars2) super.getActionBars();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.ui.part.MultiPageEditorActionBarContributor#setActivePage
-	 * (org.eclipse.ui.IEditorPart)
-	 */
 	@Override
 	public void setActivePage(IEditorPart activeEditor) {
+		if (myActiveEditor == null) {
+			return;
+		}
+
 		if (activeEditor == null) {
 			activeEditor = this.myActiveEditor;
 		}
@@ -134,11 +130,6 @@ public abstract class ScaMultipageActionBarContributor extends MultiPageEditorAc
 		return (IEditorActionBarContributor) activeEditor.getAdapter(IEditorActionBarContributor.class);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.part.EditorActionBarContributor#dispose()
-	 */
 	@Override
 	public void dispose() {
 		super.dispose();
@@ -152,27 +143,21 @@ public abstract class ScaMultipageActionBarContributor extends MultiPageEditorAc
 	 * Switches the active action bars.
 	 */
 	private void setActiveActionBars(final SubActionBarsExt actionBars, final IEditorPart activeEditor) {
-		boolean barsChanged = false;
-		if (this.myActiveEditorActionBars != null && !this.myActiveEditorActionBars.equals(actionBars)) {
+		if (this.myActiveEditorActionBars != null && this.myActiveEditorActionBars != actionBars) {
 			this.myActiveEditorActionBars.deactivate();
-			this.myActiveEditorActionBars.updateActionBars();
-			barsChanged = true;
-		} else if (this.myActiveEditorActionBars == null && actionBars != null) {
-			barsChanged = true;
 		}
 		this.myActiveEditorActionBars = actionBars;
 		if (this.myActiveEditorActionBars != null) {
 			this.myActiveEditorActionBars.setEditorPart(activeEditor);
-			if (barsChanged) {
-				this.myActiveEditorActionBars.activate();
-			}
+			this.myActiveEditorActionBars.activate();
 			this.myActiveEditorActionBars.updateActionBars();
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	public IActionBars2 getActionBarContributor(final IEditorPart part) {
+		return this.actionBarMap.get(part);
+	}
+
 	@Override
 	public void menuAboutToShow(final IMenuManager manager) {
 		final SubActionBarsExt actionBars = this.actionBarMap.get(this.myActiveEditor);

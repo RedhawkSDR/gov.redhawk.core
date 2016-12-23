@@ -36,6 +36,7 @@ public class ReleaseAction extends Action {
 		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(ScaUiPlugin.PLUGIN_ID, "icons/clcl16/release.gif"));
 		setText("Release");
 		setToolTipText("Release");
+		setId("gov.redhawk.release");
 		this.setEnabled(false);
 	}
 

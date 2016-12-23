@@ -46,7 +46,7 @@
          point="org.eclipse.ui.editors">
       <editor
             class="gov.redhawk.core.graphiti.sad.ui.editor.GraphitiWaveformExplorerEditor"
-            contributorClass="gov.redhawk.core.graphiti.sad.ui.editor.GraphitiWaveformMultipageEditorActionBarContributor"
+            contributorClass="gov.redhawk.core.graphiti.sad.ui.editor.GraphitiWaveformRuntimeActionBarContributor"
             default="true"
             icon="icons/WaveformExplorer.gif"
             id="gov.redhawk.ide.graphiti.sad.ui.editor.waveformExplorer"

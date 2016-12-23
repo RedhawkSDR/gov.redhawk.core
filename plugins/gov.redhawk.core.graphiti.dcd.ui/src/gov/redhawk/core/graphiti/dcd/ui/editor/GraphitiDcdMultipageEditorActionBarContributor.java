@@ -11,22 +11,22 @@
 package gov.redhawk.core.graphiti.dcd.ui.editor;
 
 import org.eclipse.graphiti.ui.editor.DiagramEditor;
-import org.eclipse.graphiti.ui.editor.DiagramEditorActionBarContributor;
 import org.eclipse.ui.IEditorActionBarContributor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.part.EditorActionBarContributor;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 
 import gov.redhawk.core.graphiti.dcd.ui.internal.editor.DcdActionBarContributor;
+import gov.redhawk.core.graphiti.ui.editor.AbstractGraphitiMultipageEditorActionBarContributor;
 import gov.redhawk.ui.editor.SCAFormEditor;
-import gov.redhawk.ui.editor.ScaMultipageActionBarContributor;
 
-public class GraphitiDcdMultipageEditorActionBarContributor extends ScaMultipageActionBarContributor {
+public class GraphitiDcdMultipageEditorActionBarContributor extends AbstractGraphitiMultipageEditorActionBarContributor {
 
 	@Override
 	protected IEditorActionBarContributor getSubActionBarContributor(final IEditorPart activeEditor) {
 		if (activeEditor instanceof DiagramEditor) {
-			return new DiagramEditorActionBarContributor();
+			return new EditorActionBarContributor();
 		} else if (activeEditor instanceof SCAFormEditor) {
 			return new DcdActionBarContributor();
 		}

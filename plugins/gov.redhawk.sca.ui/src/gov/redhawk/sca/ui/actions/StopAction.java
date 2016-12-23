@@ -29,6 +29,7 @@ public class StopAction extends Action {
 		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(ScaUiPlugin.PLUGIN_ID, "icons/clcl16/stop.gif"));
 		setText("Stop");
 		setToolTipText("Stop");
+		setId("gov.redhawk.stop");
 		this.setEnabled(false);
 	}
 
