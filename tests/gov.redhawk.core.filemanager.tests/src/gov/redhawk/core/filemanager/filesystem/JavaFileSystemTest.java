@@ -6,8 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Platform;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,8 +34,8 @@ public class JavaFileSystemTest {
 
 	@Before
 	public void before() throws CoreException {
-		// Ensure we don't have root permissions so we don't do anything destructive in our tests
-		Assert.assertFalse(new File("/root").canRead());
+		// Enforce the assumption that we're running on Linux. Necessary for many of the file system checks.
+		Assume.assumeTrue(Platform.OS_LINUX.equals(Platform.getOS()));
 
 		this.session = OrbSession.createSession();
 		this.fileSystem = new JavaFileSystem(session.getOrb(), session.getPOA(), new File("/"));
@@ -57,22 +59,22 @@ public class JavaFileSystemTest {
 
 	@Test(expected = InvalidFileName.class)
 	public void copy_null1() throws InvalidFileName, FileException {
-		getFileSystem().copy(null, "/root");
+		getFileSystem().copy(null, "/var");
 	}
 
 	@Test(expected = InvalidFileName.class)
 	public void copy_null2() throws InvalidFileName, FileException {
-		this.fileSystem.copy("/root", null);
+		this.fileSystem.copy("/var", null);
 	}
 
 	@Test(expected = InvalidFileName.class)
 	public void copy_empty1() throws InvalidFileName, FileException {
-		getFileSystem().copy("   ", "/root");
+		getFileSystem().copy("   ", "/var");
 	}
 
 	@Test(expected = InvalidFileName.class)
 	public void copy_empty2() throws InvalidFileName, FileException {
-		getFileSystem().copy("/root", "   ");
+		getFileSystem().copy("/var", "   ");
 	}
 
 	@Test(expected = InvalidFileName.class)
@@ -116,6 +118,8 @@ public class JavaFileSystemTest {
 
 	@Test
 	public void copy_accessDenied() throws InvalidFileName, FileException {
+		assumeNonRootUser();
+
 		try {
 			getFileSystem().copy("/root/noaccess", "/tmp/newfile");
 		} catch (FileException e) {
@@ -160,22 +164,22 @@ public class JavaFileSystemTest {
 
 	@Test(expected = InvalidFileName.class)
 	public void move_null1() throws InvalidFileName, FileException {
-		getFileSystem().move(null, "/root");
+		getFileSystem().move(null, "/var");
 	}
 
 	@Test(expected = InvalidFileName.class)
 	public void move_null2() throws InvalidFileName, FileException {
-		getFileSystem().move("/root", null);
+		getFileSystem().move("/var", null);
 	}
 
 	@Test(expected = InvalidFileName.class)
 	public void move_empty1() throws InvalidFileName, FileException {
-		getFileSystem().move("   ", "/root");
+		getFileSystem().move("   ", "/var");
 	}
 
 	@Test(expected = InvalidFileName.class)
 	public void move_empty2() throws InvalidFileName, FileException {
-		getFileSystem().move("/root", "   ");
+		getFileSystem().move("/var", "   ");
 	}
 
 	@Test(expected = InvalidFileName.class)
@@ -191,7 +195,7 @@ public class JavaFileSystemTest {
 	@Test
 	public void move_nonexistent() throws InvalidFileName, FileException {
 		try {
-			getFileSystem().move("/nonexistent", "/root");
+			getFileSystem().move("/nonexistent", "/tmp");
 		} catch (FileException e) {
 			Assert.assertEquals("Expected ENOENT from attempt to move a non-existent file/dir", ErrorNumberType.CF_ENOENT, e.errorNumber);
 			return;
@@ -201,6 +205,8 @@ public class JavaFileSystemTest {
 
 	@Test
 	public void move_accessDenied() throws InvalidFileName, FileException {
+		assumeNonRootUser();
+
 		try {
 			getFileSystem().move("/root", "/newroot");
 		} catch (FileException e) {
@@ -291,6 +297,8 @@ public class JavaFileSystemTest {
 
 	@Test
 	public void create_accessDenied() throws InvalidFileName, FileException {
+		assumeNonRootUser();
+
 		try {
 			getFileSystem().create("/root/noaccess");
 		} catch (FileException e) {
@@ -361,6 +369,8 @@ public class JavaFileSystemTest {
 
 	@Test
 	public void exists_accessDenied() throws InvalidFileName {
+		assumeNonRootUser();
+
 		Assert.assertFalse(getFileSystem().exists("/root/noaccess"));
 	}
 
@@ -387,7 +397,7 @@ public class JavaFileSystemTest {
 	}
 
 	/**
-	 * Sanity check that listing the root directory seems okay
+	 * Sanity check that listing the root directory ( / ) seems okay
 	 */
 	@Test
 	public void list_root() throws FileException, InvalidFileName {
@@ -442,6 +452,8 @@ public class JavaFileSystemTest {
 
 	@Test
 	public void list_accessDenied() throws FileException, InvalidFileName {
+		assumeNonRootUser();
+
 		try {
 			getFileSystem().list("/root/");
 		} catch (FileException e) {
@@ -468,6 +480,8 @@ public class JavaFileSystemTest {
 
 	@Test
 	public void mkdir_accessDenied() throws InvalidFileName, FileException {
+		assumeNonRootUser();
+
 		try {
 			getFileSystem().mkdir("/noaccess");
 		} catch (FileException e) {
@@ -568,6 +582,8 @@ public class JavaFileSystemTest {
 
 	@Test
 	public void open_accessDeniedDirectory() throws InvalidFileName, FileException {
+		assumeNonRootUser();
+
 		try {
 			getFileSystem().open("/root/noaccess", true);
 		} catch (FileException e) {
@@ -580,6 +596,8 @@ public class JavaFileSystemTest {
 
 	@Test
 	public void open_accessDeniedReadFile() throws InvalidFileName, FileException {
+		assumeNonRootUser();
+
 		try {
 			getFileSystem().open("/var/log/messages", true);
 		} catch (FileException e) {
@@ -592,6 +610,8 @@ public class JavaFileSystemTest {
 
 	@Test
 	public void open_accessDeniedWriteFile() throws InvalidFileName, FileException {
+		assumeNonRootUser();
+
 		try {
 			getFileSystem().open("/bin/echo", false);
 		} catch (FileException e) {
@@ -674,6 +694,8 @@ public class JavaFileSystemTest {
 
 	@Test
 	public void remove_accessDenied() throws FileException, InvalidFileName {
+		assumeNonRootUser();
+
 		try {
 			getFileSystem().remove("/bin/echo");
 		} catch (FileException e) {
@@ -737,6 +759,8 @@ public class JavaFileSystemTest {
 
 	@Test
 	public void rmdir_accessDenied() throws FileException, InvalidFileName {
+		assumeNonRootUser();
+
 		try {
 			getFileSystem().rmdir("/root");
 		} catch (FileException e) {
@@ -794,5 +818,14 @@ public class JavaFileSystemTest {
 		Assert.assertTrue("Didn't find LAST_ACCESS_TIME", foundLastAccessTime);
 		Assert.assertTrue("Didn't find MODIFIED_TIME", foundLastModifiedTime);
 		Assert.assertTrue("Didn't find CREATED_TIME", foundLastCreatedTime);
+	}
+
+	/**
+	 * Enforce the assumption that we're running as a non-root user. This is necessary for tests that need to
+	 * encounter a permissions issue.
+	 */
+	private void assumeNonRootUser() {
+		Assume.assumeFalse("root".equals(System.getProperty("user.name")));
+		Assume.assumeFalse(new File("/root").canRead());
 	}
 }
