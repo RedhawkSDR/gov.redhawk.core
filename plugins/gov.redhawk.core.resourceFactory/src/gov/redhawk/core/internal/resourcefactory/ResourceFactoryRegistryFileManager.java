@@ -20,6 +20,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.omg.CORBA.ORB;
+import org.omg.PortableServer.POA;
 
 import CF.InvalidFileName;
 import CF.FileManagerPackage.InvalidFileSystem;
@@ -29,7 +31,6 @@ import gov.redhawk.core.filemanager.FileManagerImpl;
 import gov.redhawk.core.filemanager.filesystem.JavaFileSystem;
 import gov.redhawk.core.resourcefactory.ResourceDesc;
 import gov.redhawk.core.resourcefactory.ResourceFactoryPlugin;
-import gov.redhawk.sca.util.OrbSession;
 
 /**
  * Extends {@link FileManagerImpl} to provide the ability to mount the file systems of {@link ResourceDesc} into the
@@ -38,10 +39,9 @@ import gov.redhawk.sca.util.OrbSession;
 public class ResourceFactoryRegistryFileManager extends FileManagerImpl {
 
 	private Map<String, ResourceDesc> profileToResourceDesc = new HashMap<String, ResourceDesc>();
-	private OrbSession session = OrbSession.createSession();
 
-	public ResourceFactoryRegistryFileManager() throws CoreException {
-		setLocalFileSystem(new JavaFileSystem(session.getOrb(), session.getPOA(), new File("/")));
+	public ResourceFactoryRegistryFileManager(final ORB orb, final POA poa) throws CoreException {
+		setLocalFileSystem(new JavaFileSystem(orb, poa, new File("/")));
 	}
 
 	/**

@@ -16,6 +16,7 @@ import gov.redhawk.core.resourcefactory.IResourceFactoryProvider;
 import gov.redhawk.core.resourcefactory.IResourceFactoryRegistry;
 import gov.redhawk.core.resourcefactory.ResourceDesc;
 import gov.redhawk.core.resourcefactory.ResourceFactoryPlugin;
+import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.PropertyChangeSupport;
 
 import java.beans.PropertyChangeEvent;
@@ -50,6 +51,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 	private final List<ResourceDesc> registry = Collections.synchronizedList(new ArrayList<ResourceDesc>());
 	private final List<IResourceFactoryProvider> providerRegistry = Collections.synchronizedList(new ArrayList<IResourceFactoryProvider>());
 	private ResourceFactoryRegistryFileManager fileManager = null;
+	private OrbSession session = OrbSession.createSession(ResourceFactoryPlugin.ID);
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 
@@ -74,7 +76,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 
 	private ResourceFactoryRegistry() {
 		try {
-			fileManager = new ResourceFactoryRegistryFileManager();
+			fileManager = new ResourceFactoryRegistryFileManager(session.getOrb(), session.getPOA());
 		} catch (CoreException e) {
 			ResourceFactoryPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ResourceFactoryPlugin.ID, "Unable to initialize resource factory file manager", e));
 		}
@@ -149,6 +151,11 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 				desc.dispose();
 			}
 			this.registry.clear();
+		}
+
+		if (session != null) {
+			session.dispose();
+			session = null;
 		}
 	}
 

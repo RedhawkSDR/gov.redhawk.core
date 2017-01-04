@@ -48,7 +48,7 @@ import CF.ResourceFactoryPackage.ShutdownFailure;
  */
 public abstract class ResourceDesc {
 
-	private OrbSession session = OrbSession.createSession();
+	private OrbSession session = OrbSession.createSession(ResourceFactoryPlugin.ID);
 	private final String identifier;
 	private String name;
 	private String description;
