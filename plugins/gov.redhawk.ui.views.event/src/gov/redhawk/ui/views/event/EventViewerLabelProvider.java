@@ -44,7 +44,7 @@ import gov.redhawk.ui.views.event.utils.EventViewUtils;
 
 public class EventViewerLabelProvider extends XViewerLabelProvider {
 
-	private static final DateFormat DATE_FORMAT_SS = new SimpleDateFormat("HH:mm::ss");
+	private static final DateFormat DATE_FORMAT_SS = new SimpleDateFormat("HH:mm:ss");
 
 	public EventViewerLabelProvider(XViewer viewer) {
 		super(viewer);
