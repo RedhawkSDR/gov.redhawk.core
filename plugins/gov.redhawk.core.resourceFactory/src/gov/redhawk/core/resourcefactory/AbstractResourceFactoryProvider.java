@@ -16,22 +16,29 @@ import gov.redhawk.sca.util.PropertyChangeSupport;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 
+import CF.FileSystem;
+
 public abstract class AbstractResourceFactoryProvider implements IResourceFactoryProvider, IExecutableExtension {
 	private int priority;
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
-	private List<ResourceDesc> descriptors = new ArrayList<ResourceDesc>();
+	private List<ResourceDesc> descriptors = new ArrayList<>();
+	private Map<String, FileSystem> fileSystemMounts = new HashMap<>();
 
 	/**
 	 * @since 2.0
+	 * @deprecated This attribute is deprecated and should not be used.
 	 */
 	@Override
+	@Deprecated
 	public int getPriority() {
 		return this.priority;
 	}
@@ -67,6 +74,26 @@ public abstract class AbstractResourceFactoryProvider implements IResourceFactor
 	}
 
 	/**
+	 * @param fs
+	 * @param mountPoint
+	 * @since 3.2
+	 */
+	protected void addFileSystemMount(FileSystem fs, String mountPoint) {
+		fileSystemMounts.put(mountPoint, fs);
+		pcs.firePropertyChange(IResourceFactoryProvider.PROPERTY_FILE_SYSTEM_MOUNTS, null, mountPoint);
+	}
+
+	/**
+	 * @param mountPoint
+	 * @since 3.2
+	 */
+	protected void removeFileSystemMount(String mountPoint) {
+		if (fileSystemMounts.remove(mountPoint) != null) {
+			pcs.firePropertyChange(IResourceFactoryProvider.PROPERTY_FILE_SYSTEM_MOUNTS, mountPoint, null);
+		}
+	}
+
+	/**
 	 * @since 2.0
 	 */
 	protected void fireRemoveResourceDescriptor(ResourceDesc desc) {
@@ -86,6 +113,11 @@ public abstract class AbstractResourceFactoryProvider implements IResourceFactor
 	@Override
 	public List<ResourceDesc> getResourceDescriptors() {
 		return Collections.unmodifiableList(new ArrayList<ResourceDesc>(descriptors));
+	}
+
+	@Override
+	public Map<String, FileSystem> getFileSystemMounts() {
+		return Collections.unmodifiableMap(new HashMap<>(fileSystemMounts));
 	}
 
 	/**

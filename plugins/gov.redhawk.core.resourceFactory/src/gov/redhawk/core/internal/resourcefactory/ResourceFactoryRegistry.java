@@ -18,12 +18,16 @@ import gov.redhawk.core.resourcefactory.ResourceDesc;
 import gov.redhawk.core.resourcefactory.ResourceFactoryPlugin;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.PropertyChangeSupport;
+import mil.jpeojtrs.sca.util.CFErrorFormatter;
+import mil.jpeojtrs.sca.util.CFErrorFormatter.FileOperation;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -35,6 +39,12 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
+
+import CF.FileSystem;
+import CF.InvalidFileName;
+import CF.FileManagerPackage.InvalidFileSystem;
+import CF.FileManagerPackage.MountPointAlreadyExists;
+import CF.FileManagerPackage.NonExistentMount;
 
 /**
  * The resource factory registry instantiates instances of resource factories ({@link IResourceFactoryProvider})
@@ -49,6 +59,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	private final List<ResourceDesc> registry = Collections.synchronizedList(new ArrayList<ResourceDesc>());
+	private final Set<String> mountPoints = Collections.synchronizedSet(new HashSet<String>());
 	private final List<IResourceFactoryProvider> providerRegistry = Collections.synchronizedList(new ArrayList<IResourceFactoryProvider>());
 	private ResourceFactoryRegistryFileManager fileManager = null;
 	private OrbSession session = OrbSession.createSession(ResourceFactoryPlugin.ID);
@@ -70,6 +81,17 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 							new Status(IStatus.ERROR, ResourceFactoryPlugin.ID, "Failed to add resource descriptor: " + desc.getIdentifier(), e));
 					}
 				}
+			} else if (IResourceFactoryProvider.PROPERTY_FILE_SYSTEM_MOUNTS.equals(evt.getPropertyName())) {
+				if (evt.getOldValue() != null) {
+					String mountPoint = (String) evt.getOldValue();
+					removeFileSystemMount(mountPoint);
+				}
+				if (evt.getNewValue() != null) {
+					IResourceFactoryProvider factory = (IResourceFactoryProvider) evt.getSource();
+					String mountPoint = (String) evt.getNewValue();
+					FileSystem fs = factory.getFileSystemMounts().get(mountPoint);
+					addFileSystemMount(fs, mountPoint);
+				}
 			}
 		}
 	};
@@ -78,7 +100,8 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 		try {
 			fileManager = new ResourceFactoryRegistryFileManager(session.getOrb(), session.getPOA());
 		} catch (CoreException e) {
-			ResourceFactoryPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ResourceFactoryPlugin.ID, "Unable to initialize resource factory file manager", e));
+			ResourceFactoryPlugin.getDefault().getLog().log(
+				new Status(IStatus.ERROR, ResourceFactoryPlugin.ID, "Unable to initialize resource factory file manager", e));
 		}
 
 		// Find resource factories declared in extension points
@@ -104,6 +127,9 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 							final IResourceFactoryProvider provider = (IResourceFactoryProvider) element.createExecutableExtension("class");
 							provider.addPropertyChangeListener(listener);
 							providerRegistry.add(provider);
+							for (String mountPoint : provider.getFileSystemMounts().keySet()) {
+								addFileSystemMount(provider.getFileSystemMounts().get(mountPoint), mountPoint);
+							}
 							for (ResourceDesc desc : provider.getResourceDescriptors()) {
 								addResourceDesc(desc);
 							}
@@ -114,9 +140,8 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 					}
 
 					@Override
-					public void handleException(Throwable exception) {
-						// TODO Auto-generated method stub
-
+					public void handleException(Throwable e) {
+						// PASS - Logged by SafeRunner
 					}
 				});
 
@@ -138,13 +163,46 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 		pcs.firePropertyChange(IResourceFactoryRegistry.PROP_RESOURCES, desc, null);
 	}
 
+	private void addFileSystemMount(FileSystem fs, String mountPoint) {
+		try {
+			fileManager.mount(mountPoint, fs);
+			mountPoints.add(mountPoint);
+		} catch (InvalidFileName e) {
+			ResourceFactoryPlugin.logError(CFErrorFormatter.format(e, FileOperation.Mount, mountPoint), e);
+		} catch (InvalidFileSystem e) {
+			String msg = String.format("Invalid file system (mount point %s)", mountPoint);
+			ResourceFactoryPlugin.logError(msg, e);
+		} catch (MountPointAlreadyExists e) {
+			String msg = String.format("File system already mounted at %s", mountPoint);
+			ResourceFactoryPlugin.logError(msg, e);
+		}
+	}
+
+	private void removeFileSystemMount(String mountPoint) {
+		try {
+			if (mountPoints.remove(mountPoint)) {
+				fileManager.unmount(mountPoint);
+			}
+		} catch (NonExistentMount e) {
+			ResourceFactoryPlugin.logError(CFErrorFormatter.format(e, mountPoint), e);
+		}
+	}
+
 	@Override
 	public void dispose() {
+		// Dispose the resource factory providers
 		for (final IResourceFactoryProvider provider : this.providerRegistry) {
 			provider.dispose();
 		}
 		this.providerRegistry.clear();
 
+		// There should be no file systems or resource descriptors remaining unless a provider failed to unregister
+		// them
+		synchronized (this.mountPoints) {
+			for (String mountPoint : this.mountPoints) {
+				removeFileSystemMount(mountPoint);
+			}
+		}
 		synchronized (this.registry) {
 			for (final ResourceDesc desc : this.registry) {
 				this.fileManager.unmount(desc);
