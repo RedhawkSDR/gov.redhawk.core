@@ -11,15 +11,32 @@
  */
 package gov.redhawk.core.internal.filemanager;
 
-import CF.DataType;
+import java.util.List;
+
+import org.eclipse.core.runtime.IPath;
+
+import CF.File;
+import CF.FileException;
+import CF.InvalidFileName;
 import CF.FileSystemPackage.FileInformationType;
 
 /**
  * An entry in the IDE's file manager file system. See derived classes for details.
  */
 public interface Node {
-	public DataType[] createDataTypeArray();
 
-	FileInformationType createFileInformationType();
+	public void remove(IPath fileName) throws FileException, InvalidFileName;
+
+	public void rmdir(IPath directoryName) throws InvalidFileName, FileException;
+
+	public File create(IPath fileName) throws InvalidFileName, FileException;
+
+	public void mkdir(IPath directoryName) throws InvalidFileName, FileException;
+
+	public boolean exists(IPath fileName) throws InvalidFileName;
+
+	public List<FileInformationType> list(IPath pattern) throws FileException, InvalidFileName;
+
+	public File open(IPath fileName, final boolean readOnly) throws InvalidFileName, FileException;
 
 }

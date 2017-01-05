@@ -22,20 +22,12 @@ public class ResourceFactoryPlugin extends Plugin {
 	public static final String ID = "gov.redhawk.core.resourceFactory";
 	private static ResourceFactoryPlugin plugin;
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void start(final BundleContext bundleContext) throws Exception {
 		super.start(bundleContext);
 		ResourceFactoryPlugin.plugin = this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void stop(final BundleContext bundleContext) throws Exception {
 		super.stop(bundleContext);
@@ -51,9 +43,19 @@ public class ResourceFactoryPlugin extends Plugin {
 	}
 
 	/**
+	 * Log an error
      * @since 2.0
+     * @deprecated Use {@link #logError(String, Throwable)}
      */
+	@Deprecated
 	public static void log(String msg, Throwable e) {
+		logError(msg, e);
+	}
+
+	/**
+	 * @since 3.2
+	 */
+	public static void logError(String msg, Throwable e) {
 		ResourceFactoryPlugin instance = plugin;
 		if (instance != null) {
 			instance.getLog().log(new Status(Status.ERROR, ID, msg, e));

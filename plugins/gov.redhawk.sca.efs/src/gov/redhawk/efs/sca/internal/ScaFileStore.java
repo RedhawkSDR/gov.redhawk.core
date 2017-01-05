@@ -40,6 +40,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.osgi.util.NLS;
+import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.SystemException;
 import org.omg.CORBA.TCKind;
 
@@ -59,7 +60,8 @@ public class ScaFileStore extends FileStore {
 		MODIFIED_TIME,
 		LAST_ACCESS_TIME,
 		IOR_AVAILABLE,
-		READ_ONLY
+		READ_ONLY,
+		EXECUTABLE
 	}
 
 	private static final Debug DEBUG = new Debug(ScaFileSystemPlugin.ID, "fileStore");
@@ -148,9 +150,6 @@ public class ScaFileStore extends FileStore {
 		// directory
 		info.setLength(typeInfo.size);
 
-		// TODO since there is no way to determine executable bit or permissions
-//		info.setAttribute(EFS.ATTRIBUTE_EXECUTABLE, true);
-
 		for (final DataType t : typeInfo.fileProperties) {
 			ScaFileInformationDataType scaDataType;
 			try {
@@ -175,22 +174,24 @@ public class ScaFileStore extends FileStore {
 				}
 				break;
 			case READ_ONLY:
-				switch (t.value.type().kind().value()) {
-				case TCKind._tk_boolean:
+				try {
 					info.setAttribute(EFS.ATTRIBUTE_READ_ONLY, t.value.extract_boolean());
-					break;
-				default:
-					break;
+				} catch (BAD_OPERATION e) {
+					ScaFileSystemPlugin.logError("Non-boolean value for read-only property in FileInformationType", null);
+				}
+				break;
+			case EXECUTABLE:
+				try {
+					info.setAttribute(EFS.ATTRIBUTE_EXECUTABLE, t.value.extract_boolean());
+				} catch (BAD_OPERATION e) {
+					ScaFileSystemPlugin.logError("Non-boolean value for executable property in FileInformationType", null);
 				}
 				break;
 			default:
-				// TODO Handle DataType
+				// Unhandled property
 				break;
 			}
 		}
-
-		// XXX: Set all Files and Directory to read only for now
-		// info.setAttribute(EFS.ATTRIBUTE_READ_ONLY, true);
 
 		info.setExists(true);
 		switch (typeInfo.kind.value()) {

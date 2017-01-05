@@ -240,7 +240,18 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	 */
 	public void testExists__String() throws InvalidFileName {
 		// END GENERATED CODE
-		Assert.assertTrue(getFixture().exists(""));
+		try {
+			getFixture().exists("");
+			Assert.fail("Expected InvalidFileName");
+		} catch (InvalidFileName e) {
+			// PASS
+		}
+		try {
+			getFixture().exists("blah");
+			Assert.fail("Expected InvalidFileName");
+		} catch (InvalidFileName e) {
+			// PASS
+		}
 		Assert.assertFalse(getFixture().exists("/blah/blah/blah/blah/file"));
 		// BEGIN GENERATED CODE
 	}
@@ -261,7 +272,8 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	 */
 	public void testList__String() throws FileException, InvalidFileName {
 		// END GENERATED CODE
-		getFixture().list("");
+		Assert.assertEquals(1, getFixture().list("").length);
+		Assert.assertTrue("Expected multiple file listings", getFixture().list("/*").length > 1);
 		// BEGIN GENERATED CODE
 	}
 

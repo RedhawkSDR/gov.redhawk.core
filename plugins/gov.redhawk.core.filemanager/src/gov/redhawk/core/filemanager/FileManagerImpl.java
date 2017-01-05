@@ -11,15 +11,18 @@
  */
 package gov.redhawk.core.filemanager;
 
-import gov.redhawk.core.internal.filemanager.Directory;
-
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 
 import CF.ErrorNumberType;
 import CF.File;
 import CF.FileException;
 import CF.FileSystem;
+import CF.FileSystemOperations;
 import CF.InvalidFileName;
 import CF.PropertiesHolder;
 import CF.FileManagerPackage.InvalidFileSystem;
@@ -27,151 +30,237 @@ import CF.FileManagerPackage.MountPointAlreadyExists;
 import CF.FileManagerPackage.MountType;
 import CF.FileManagerPackage.NonExistentMount;
 import CF.FileSystemPackage.FileInformationType;
-import CF.FileSystemPackage.FileType;
 import CF.FileSystemPackage.UnknownFileSystemProperties;
+import gov.redhawk.core.internal.filemanager.Directory;
 
 /**
- * An IDE implementation of a {@link CF.FileManager}. The root directory is a virtual directory (see
- * {@link Directory}).
+ * An IDE implementation of a {@link CF.FileManager}. The file system is essentially a union file system with two
+ * layers. The base file system is the host's file system (since gov.redhawk.core.filemanager 2.0.0; see
+ * {@link #setLocalFileSystem(FileSystemOperations)}). Virtual directories and mounts ({@link CF.FileSystem}) are
+ * overlaid on top, taking precedence over the host's file system.
  */
 public class FileManagerImpl implements IFileManager {
 
-	private final Directory root = new Directory();
+	/**
+	 * This represents the root of the virtual file system. Any contents take precedence over the root of the local
+	 * file system.
+	 */
+	private final Directory virtualRoot = new Directory();
 
+	/**
+	 * The local file system.
+	 */
+	private FileSystemOperations localFileSystem;
+
+	/**
+	 * Create the file manager. The local file system <b>MUST</b> be set before use (see
+	 * {@link #setLocalFileSystem(FileSystemOperations)}).
+	 */
 	public FileManagerImpl() {
 	}
 
+	/**
+	 * @since 2.0
+	 */
+	public void setLocalFileSystem(final FileSystemOperations localFileSystem) {
+		this.localFileSystem = localFileSystem;
+	}
+
 	@Override
-	public void remove(String fileName) throws FileException, InvalidFileName {
-		if ("".equals(fileName) || fileName == null) {
-			throw new InvalidFileName(ErrorNumberType.CF_EIO, "");
+	public void remove(final String fileName) throws FileException, InvalidFileName {
+		IPath file = precheck(fileName);
+		if (file.segmentCount() == 0) {
+			throw new FileException(ErrorNumberType.CF_EISDIR, "Is a directory");
 		}
-		if (fileName.length() == 0 || "/".equals(fileName)) {
-			throw new InvalidFileName();
+		if (this.virtualRoot.containsChildNode(file.segment(0))) {
+			this.virtualRoot.remove(file);
+		} else {
+			this.localFileSystem.remove(file.toString());
 		}
-		if (fileName.charAt(0) == '/') {
-			fileName = fileName.substring(1);
-		}
-		this.root.remove(Arrays.asList(fileName.split("/")));
 	}
 
 	@Override
 	public void copy(final String sourceFileName, final String destinationFileName) throws InvalidFileName, FileException {
-		// TODO
-		throw new FileException(ErrorNumberType.CF_ENOTSUP, "Operation not supported");
-	}
-
-	@Override
-	public boolean exists(String fileName) throws InvalidFileName {
-		if (fileName == null || fileName.length() == 0 || "/".equals(fileName)) {
-			return true;
-		}
-		if (fileName.charAt(0) == '/') {
-			fileName = fileName.substring(1);
-		}
-		return this.root.exists(Arrays.asList(fileName.split("/")));
-	}
-
-	@Override
-	public FileInformationType[] list(String pattern) throws FileException, InvalidFileName {
-		if (pattern == null) {
-			throw new InvalidFileName(ErrorNumberType.CF_EIO, "File must not be null");
-		}
-		if (pattern.length() == 0 || "/".equals(pattern)) {
-			final FileInformationType info = this.root.createFileInformationType();
-			info.kind = FileType.FILE_SYSTEM;
-			info.name = "/";
-			return new FileInformationType[] { info };
+		IPath sourceFile = precheck(sourceFileName);
+		IPath destinationFile = precheck(destinationFileName);
+		boolean virtualSource = sourceFile.segmentCount() > 0 && this.virtualRoot.containsChildNode(sourceFile.segment(0));
+		boolean virtualDestination = destinationFile.segmentCount() > 0 && this.virtualRoot.containsChildNode(destinationFile.segment(0));
+		if (virtualSource || virtualDestination) {
+			throw new FileException(ErrorNumberType.CF_ENOTSUP, "Operation not supported");
 		} else {
-			if (pattern.charAt(0) == '/') {
-				pattern = pattern.substring(1);
+			this.localFileSystem.copy(sourceFile.toString(), destinationFile.toString());
+		}
+	}
+
+	@Override
+	public boolean exists(final String fileName) throws InvalidFileName {
+		IPath file = precheck(fileName);
+
+		// We check the virtual root first since the local file system could throw due to a permissions error
+		return this.virtualRoot.exists(file) || this.localFileSystem.exists(file.toString());
+	}
+
+	@Override
+	public FileInformationType[] list(final String pattern) throws FileException, InvalidFileName {
+		if (pattern == null) {
+			throw new InvalidFileName(ErrorNumberType.CF_ENOENT, "No such file");
+		}
+
+		// Special case - an empty pattern is the way you get info for the root directory itself
+		if (pattern.trim().isEmpty()) {
+			return this.localFileSystem.list("");
+		}
+
+		IPath pathWithPattern = precheck(pattern);
+
+		// If they've asked for the root, or a path ending with a separator, give the contents of the directory
+		if (pathWithPattern.segmentCount() == 0 || pathWithPattern.hasTrailingSeparator()) {
+			pathWithPattern = pathWithPattern.append("*");
+		}
+
+		if (pathWithPattern.segmentCount() == 1) {
+			// We have to combine the local and virtual root file listings, with preference to the virtual
+			List<FileInformationType> virtualFiles = this.virtualRoot.list(pathWithPattern);
+			FileInformationType[] localFiles = this.localFileSystem.list(pathWithPattern.toString());
+			Map<String, FileInformationType> combinedFiles = new HashMap<String, FileInformationType>();
+			for (FileInformationType fit : localFiles) {
+				combinedFiles.put(fit.name, fit);
 			}
-			final List<FileInformationType> retVal = this.root.list(Arrays.asList(pattern.split("/")));
-			return retVal.toArray(new FileInformationType[retVal.size()]);
+			for (FileInformationType fit : virtualFiles) {
+				combinedFiles.put(fit.name, fit);
+			}
+			return combinedFiles.values().toArray(new FileInformationType[combinedFiles.size()]);
+		} else if (this.virtualRoot.containsChildNode(pathWithPattern.segment(0))) {
+			List<FileInformationType> fits = this.virtualRoot.list(pathWithPattern);
+			return fits.toArray(new FileInformationType[fits.size()]);
+		} else {
+			return this.localFileSystem.list(pathWithPattern.toString());
 		}
 	}
 
 	@Override
-	public File create(String fileName) throws InvalidFileName, FileException {
-		if (fileName == null || fileName.length() == 0 || "/".equals(fileName)) {
-			throw new InvalidFileName(ErrorNumberType.CF_EIO, "");
+	public File create(final String fileName) throws InvalidFileName, FileException {
+		IPath file = precheck(fileName);
+		if (file.segmentCount() == 0) {
+			throw new FileException(ErrorNumberType.CF_EISDIR, "Is a directory");
+		} else if (file.segmentCount() == 1) {
+			// At the root level, we only allow attempting to create files in the local file system
+			return this.localFileSystem.create(file.toString());
+		} else if (this.virtualRoot.containsChildNode(file.segment(0))) {
+			return this.virtualRoot.create(file);
+		} else {
+			return this.localFileSystem.create(file.toString());
 		}
-		if (fileName.charAt(0) == '/') {
-			fileName = fileName.substring(1);
-		}
-		return this.root.create(Arrays.asList(fileName.split("/")));
 	}
 
 	@Override
-	public File open(String fileName, final boolean readOnly) throws InvalidFileName, FileException {
-		if (fileName == null || fileName.length() == 0 || "/".equals(fileName)) {
-			throw new InvalidFileName(ErrorNumberType.CF_EINVAL, "Invalid file: " + fileName);
+	public File open(final String fileName, final boolean readOnly) throws InvalidFileName, FileException {
+		IPath file = precheck(fileName);
+		if (file.segmentCount() == 0) {
+			throw new FileException(ErrorNumberType.CF_EISDIR, "Is a directory");
+		} else if (file.segmentCount() == 1) {
+			// At the root level, we only allow attempting to open files in the local file system
+			return this.localFileSystem.open(file.toString(), readOnly);
+		} else if (this.virtualRoot.containsChildNode(file.segment(0))) {
+			return this.virtualRoot.open(file, readOnly);
+		} else {
+			return this.localFileSystem.open(file.toString(), readOnly);
 		}
-		if (fileName.charAt(0) == '/') {
-			fileName = fileName.substring(1);
-		}
-		return this.root.open(Arrays.asList(fileName.split("/")), readOnly);
 	}
 
 	@Override
-	public void mkdir(String directoryName) throws InvalidFileName, FileException {
-		if (directoryName == null || directoryName.length() == 0 || "/".equals(directoryName)) {
-			throw new InvalidFileName(ErrorNumberType.CF_EINVAL, "Invalid directory Name: " + directoryName);
+	public void mkdir(final String directoryName) throws InvalidFileName, FileException {
+		IPath directory = precheck(directoryName);
+		if (directory.segmentCount() == 0) {
+			throw new FileException(ErrorNumberType.CF_EEXIST, "Directory exists");
+		} else if (this.virtualRoot.containsChildNode(directory.segment(0))) {
+			this.virtualRoot.mkdir(directory);
+		} else {
+			this.localFileSystem.mkdir(directory.toString());
 		}
-		if (directoryName.charAt(0) == '/') {
-			directoryName = directoryName.substring(1);
-		}
-		this.root.mkdir(Arrays.asList(directoryName.split("/")));
 	}
 
 	@Override
-	public void rmdir(String directoryName) throws InvalidFileName, FileException {
-		if (directoryName == null || directoryName.length() == 0 || "/".equals(directoryName)) {
-			throw new InvalidFileName(ErrorNumberType.CF_EINVAL, "Invalid directory Name: " + directoryName);
+	public void rmdir(final String directoryName) throws InvalidFileName, FileException {
+		IPath directory = precheck(directoryName);
+		if (directory.segmentCount() == 0) {
+			throw new FileException(ErrorNumberType.CF_EACCES, "Access denied");
+		} else if (this.virtualRoot.containsChildNode(directory.segment(0))) {
+			this.virtualRoot.rmdir(directory);
+		} else {
+			this.localFileSystem.rmdir(directory.toString());
 		}
-		if (directoryName.charAt(0) == '/') {
-			directoryName = directoryName.substring(1);
-		}
-		this.root.rmdir(Arrays.asList(directoryName.split("/")));
 	}
 
 	@Override
 	public void query(final PropertiesHolder fileSystemProperties) throws UnknownFileSystemProperties {
-		// No properties
+		this.localFileSystem.query(fileSystemProperties);
 	}
 
 	@Override
-	public void mount(String mp, final FileSystem fileSystem) throws InvalidFileName, InvalidFileSystem, MountPointAlreadyExists {
-		if (mp == null || mp.length() == 0 || "/".equals(mp)) {
-			throw new InvalidFileName(ErrorNumberType.CF_EINVAL, "Invalid mount point: " + mp);
+	public void mount(final String mountPoint, final FileSystem fileSystem) throws InvalidFileName, InvalidFileSystem, MountPointAlreadyExists {
+		IPath mountPointPath = precheck(mountPoint);
+		if (mountPointPath.segmentCount() == 0) {
+			throw new InvalidFileName(ErrorNumberType.CF_EINVAL, "Invalid mount point");
 		}
-		if (mp.charAt(0) == '/') {
-			mp = mp.substring(1);
+		if (fileSystem == null) {
+			throw new InvalidFileSystem("Null file system");
 		}
-		this.root.mount(Arrays.asList(mp.split("/")), fileSystem);
+
+		// Mount requests go right to the virtual root after initial validation
+		this.virtualRoot.mount(mountPointPath, fileSystem);
 	}
 
 	@Override
-	public void unmount(String mp) throws NonExistentMount {
-		if (mp == null || mp.length() == 0 || "/".equals(mp)) {
-			throw new NonExistentMount("Invalid mount Name: " + mp);
+	public void unmount(final String mountPoint) throws NonExistentMount {
+		IPath mountPointPath;
+		try {
+			mountPointPath = precheck(mountPoint);
+		} catch (InvalidFileName e) {
+			throw new NonExistentMount(e.msg);
 		}
-		if (mp.charAt(0) == '/') {
-			mp = mp.substring(1);
+		if (mountPointPath.segmentCount() == 0) {
+			throw new NonExistentMount("Invalid mount point");
 		}
-		this.root.unmount(Arrays.asList(mp.split("/")));
+
+		// Mount requests go right to the virtual root after initial validation
+		this.virtualRoot.unmount(mountPointPath);
 	}
 
 	@Override
 	public MountType[] getMounts() {
-		final List<MountType> retVal = this.root.getMounts();
+		final List<MountType> retVal = this.virtualRoot.getMounts();
 		return retVal.toArray(new MountType[retVal.size()]);
 	}
 
 	@Override
 	public void move(final String sourceFileName, final String destinationFileName) throws InvalidFileName, FileException {
-		// TODO Auto-generated method stub
-		throw new FileException(ErrorNumberType.CF_ENOTSUP, "Operation not supported");
+		IPath sourceFile = precheck(sourceFileName);
+		IPath destinationFile = precheck(destinationFileName);
+		boolean virtualSource = sourceFile.segmentCount() > 0 && this.virtualRoot.containsChildNode(sourceFile.segment(0));
+		boolean virtualDestination = destinationFile.segmentCount() > 0 && this.virtualRoot.containsChildNode(destinationFile.segment(0));
+		if (virtualSource || virtualDestination) {
+			throw new FileException(ErrorNumberType.CF_ENOTSUP, "Operation not supported");
+		} else {
+			this.localFileSystem.move(sourceFile.toString(), destinationFile.toString());
+		}
+	}
+
+	/**
+	 * Checks that the path is non-empty and absolute. Returns an {@link IPath}.
+	 * @param path The path to check
+	 * @return An {@link IPath} object
+	 * @throws InvalidFileName The path is null, empty, or not absolute
+	 */
+	private IPath precheck(final String path) throws InvalidFileName {
+		if (path == null || path.trim().isEmpty()) {
+			throw new InvalidFileName(ErrorNumberType.CF_ENOENT, "No such file or directory");
+		}
+		IPath iPath = new Path(path).makeUNC(false);
+		if (!iPath.isAbsolute()) {
+			throw new InvalidFileName(ErrorNumberType.CF_EINVAL, "Path is not absolute");
+		}
+		return iPath;
 	}
 
 }

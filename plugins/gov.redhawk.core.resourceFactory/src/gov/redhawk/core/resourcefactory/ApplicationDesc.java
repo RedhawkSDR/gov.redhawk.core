@@ -16,17 +16,14 @@ import CF.ResourceFactoryOperations;
 
 /**
  * @since 2.0
+ * @noreference This class is not currently used
  */
 public class ApplicationDesc extends ResourceDesc {
 
 	public ApplicationDesc(SoftwareAssembly sad,  ResourceFactoryOperations factory) {
-		super(sad.getId(), sad.eResource().getURI(), createProfile(sad), sad.getVersion(), factory);
+		super(sad.getId(), sad.eResource().getURI(), sad.getVersion(), factory);
 		setName(sad.getName());
 		setDescription(sad.getDescription());
-	}
-	
-	private static String createProfile(SoftwareAssembly sad) {
-		return "/waveforms/" + sad.getName() + "/" + sad.eResource().getURI().lastSegment();
 	}
 
 }

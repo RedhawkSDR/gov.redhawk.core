@@ -13,14 +13,22 @@ package gov.redhawk.core.filemanager.filesystem;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.FileStore;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.io.FileSystemUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
 import org.omg.PortableServer.POA;
@@ -37,14 +45,13 @@ import CF.PropertiesHolder;
 import CF.FileSystemPackage.FileInformationType;
 import CF.FileSystemPackage.FileType;
 import CF.FileSystemPackage.UnknownFileSystemProperties;
+import gov.redhawk.core.filemanager.FileManagerPlugin;
 
 /**
- * 
- *
+ * A {@link CF.FileSystem} for the local file system (using <code>java.io.file</code>, <code>java.nio.file</code>).
  */
 public class JavaFileSystem extends AbstractFileSystem {
 
-	private static final int MILLIS_PER_SEC = 1000;
 	private final File root;
 
 	public JavaFileSystem(final ORB orb, final POA poa, final File root) {
@@ -54,15 +61,26 @@ public class JavaFileSystem extends AbstractFileSystem {
 
 	@Override
 	public void copy(final String sourceFileName, final String destinationFileName) throws InvalidFileName, FileException {
-		if ("".equals(sourceFileName) || "".equals(destinationFileName)) {
-			throw new InvalidFileName(ErrorNumberType.CF_EIO, "");
-		}
-		if (sourceFileName.equals(destinationFileName)) {
-			throw new InvalidFileName(ErrorNumberType.CF_EINVAL, "Source file must be different from destination file.");
-		}
-		final File sourceFile = new File(this.root, sourceFileName);
+		File sourceFile = precheck(sourceFileName);
+		File destinationFile = precheck(destinationFileName);
 		try {
-			FileUtils.copyFile(sourceFile, new File(this.root, destinationFileName));
+			if (!sourceFile.exists()) {
+				if (Files.notExists(sourceFile.toPath())) {
+					throw new FileException(ErrorNumberType.CF_ENOENT, "No such source file or directory");
+				} else {
+					throw new FileException(ErrorNumberType.CF_EACCES, "Permission denied");
+				}
+			}
+			if (sourceFile.isDirectory()) {
+				throw new FileException(ErrorNumberType.CF_EISDIR, "Source is a directory");
+			}
+			Files.copy(sourceFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		} catch (DirectoryNotEmptyException e) {
+			throw new FileException(ErrorNumberType.CF_ENOTEMPTY, "Target directory not empty");
+		} catch (AccessDeniedException e) {
+			throw new FileException(ErrorNumberType.CF_EACCES, "Permission denied");
+		} catch (SecurityException e) {
+			throw new FileException(ErrorNumberType.CF_EACCES, e.getMessage());
 		} catch (final IOException e) {
 			throw new FileException(ErrorNumberType.CF_EIO, e.getMessage());
 		}
@@ -70,160 +88,235 @@ public class JavaFileSystem extends AbstractFileSystem {
 
 	@Override
 	public void move(final String sourceFileName, final String destinationFileName) throws InvalidFileName, FileException {
-		if ("".equals(sourceFileName) || "".equals(destinationFileName)) {
-			throw new InvalidFileName(ErrorNumberType.CF_EIO, "");
-		}
-		if (sourceFileName.equals(destinationFileName)) {
-			throw new InvalidFileName(ErrorNumberType.CF_EINVAL, "Source file must be different from destination file.");
-		}
-		final File sourceFile = new File(this.root, sourceFileName);
-		if (!sourceFile.renameTo(new File(this.root, destinationFileName))) {
-			throw new FileException(ErrorNumberType.CF_EIO, "Failed to rename file: " + sourceFileName + " to " + destinationFileName);
+		File sourceFile = precheck(sourceFileName);
+		File destinationFile = precheck(destinationFileName);
+		try {
+			if (!sourceFile.exists()) {
+				if (Files.notExists(sourceFile.toPath())) {
+					throw new FileException(ErrorNumberType.CF_ENOENT, "No such source file or directory");
+				} else {
+					throw new FileException(ErrorNumberType.CF_EACCES, "Permission denied");
+				}
+			}
+			Files.move(sourceFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		} catch (DirectoryNotEmptyException e) {
+			throw new FileException(ErrorNumberType.CF_ENOTEMPTY, "Target directory not empty");
+		} catch (AccessDeniedException e) {
+			throw new FileException(ErrorNumberType.CF_EACCES, "Permission denied");
+		} catch (SecurityException e) {
+			throw new FileException(ErrorNumberType.CF_EACCES, e.getMessage());
+		} catch (IOException e) {
+			throw new FileException(ErrorNumberType.CF_EIO, e.getMessage());
 		}
 	}
 
 	@Override
 	public CF.File create(final String fileName) throws InvalidFileName, FileException {
-		if ("".equals(fileName)) {
-			throw new InvalidFileName(ErrorNumberType.CF_EIO, "");
-		}
-		final File file = new File(this.root, fileName);
-		if (file.exists()) {
-			throw new FileException(ErrorNumberType.CF_EEXIST, "File already exists of the name: " + fileName);
-		}
-
+		File file = precheck(fileName);
 		try {
+			Files.createFile(file.toPath());
 			final JavaFileFileImpl impl = new JavaFileFileImpl(file, false);
 			final byte[] id = this.poa.activate_object(impl);
 			return FileHelper.narrow(this.poa.id_to_reference(id));
-		} catch (final FileNotFoundException e) {
+		} catch (AccessDeniedException e) {
+			throw new FileException(ErrorNumberType.CF_EACCES, "Permission denied");
+		} catch (SecurityException e) {
+			throw new FileException(ErrorNumberType.CF_EACCES, e.getMessage());
+		} catch (FileAlreadyExistsException e) {
+			throw new FileException(ErrorNumberType.CF_EEXIST, "File already exists");
+		} catch (final IOException e) {
 			throw new FileException(ErrorNumberType.CF_EIO, e.getMessage());
-		} catch (final ServantAlreadyActive e) {
-			throw new FileException(ErrorNumberType.CF_EIO, e.getMessage());
-		} catch (final WrongPolicy e) {
-			throw new FileException(ErrorNumberType.CF_EIO, e.getMessage());
-		} catch (final ObjectNotActive e) {
-			throw new FileException(ErrorNumberType.CF_EIO, e.getMessage());
+		} catch (final ServantAlreadyActive | WrongPolicy | ObjectNotActive e) {
+			throw new FileException(ErrorNumberType.CF_NOTSET, e.getMessage());
 		}
 	}
 
 	@Override
 	public boolean exists(final String fileName) throws InvalidFileName {
-		return new File(this.root, fileName).exists();
+		File file = precheck(fileName);
+		try {
+			return file.exists();
+		} catch (SecurityException e) {
+			throw new InvalidFileName(ErrorNumberType.CF_EACCES, e.getMessage());
+		}
 	}
 
 	@Override
-	public FileInformationType[] list(final String fullPattern) throws FileException, InvalidFileName {
-		final int index = fullPattern.lastIndexOf('/');
-		final File container;
-		if (index > 0) {
-			container = new File(this.root, fullPattern.substring(0, index));
-		} else {
-			container = this.root;
+	public FileInformationType[] list(final String pattern) throws FileException, InvalidFileName {
+		if (pattern == null) {
+			throw new InvalidFileName(ErrorNumberType.CF_ENOENT, "No such file");
 		}
 
-		final String pattern = fullPattern.substring(index + 1, fullPattern.length());
-
-		final String[] fileNames;
-
-		if (pattern.length() == 0) {
-			fileNames = new String[] {
-				""
-			};
-		} else {
-			fileNames = container.list(new FilenameFilter() {
-
-				@Override
-				public boolean accept(final File dir, final String name) {
-					if (!dir.equals(container)) {
-						return false;
-					}
-					return FilenameUtils.wildcardMatch(name, pattern);
-				}
-			});
-		}
-		
-		if (fileNames == null) {
-			return new FileInformationType[0];
-		}
-
-		final FileInformationType[] retVal = new FileInformationType[fileNames.length];
-		for (int i = 0; i < fileNames.length; i++) {
-			final FileInformationType fileInfo = new FileInformationType();
-			final File file = new File(container, fileNames[i]);
-			fileInfo.name = file.getName();
-			fileInfo.size = file.length();
-			if (file.isFile()) {
-				fileInfo.kind = FileType.PLAIN;
-			} else {
-				fileInfo.kind = FileType.DIRECTORY;
+		// Special case - an empty pattern is the way you get info for the root directory itself
+		if (pattern.trim().isEmpty()) {
+			try {
+				return new FileInformationType[] { getFileInformationType(this.root.toPath()) };
+			} catch (SecurityException e) {
+				String errorMsg = String.format("%s: %s", "File system root", e.getMessage());
+				throw new FileException(ErrorNumberType.CF_EACCES, errorMsg);
+			} catch (IOException e) {
+				String errorMsg = String.format("%s: %s", "File system root", e.getMessage());
+				throw new FileException(ErrorNumberType.CF_EIO, errorMsg);
 			}
-			final Any any = this.orb.create_any();
-			any.insert_ulonglong(file.lastModified() / JavaFileSystem.MILLIS_PER_SEC);
-			final DataType modifiedTime = new DataType("MODIFIED_TIME", any);
-
-			fileInfo.fileProperties = new DataType[] {
-				modifiedTime
-			};
-
-			retVal[i] = fileInfo;
 		}
-		return retVal;
+
+		IPath pathWithPattern = new Path(pattern).makeUNC(false);
+		if (!pathWithPattern.isAbsolute()) {
+			throw new InvalidFileName(ErrorNumberType.CF_EINVAL, "Path is not absolute");
+		}
+
+		// If they've asked for the root, or a path ending with a separator, give the contents of that directory
+		if (pathWithPattern.segmentCount() == 0 || pathWithPattern.hasTrailingSeparator()) {
+			pathWithPattern = pathWithPattern.append("*");
+		}
+
+		// Find files/dirs matching the pattern in the appropriate directory
+		final File parentPath = new File(this.root, pathWithPattern.removeLastSegments(1).toString());
+		final String filePatternOnly = pathWithPattern.lastSegment();
+		// List<String> fileNames = new ArrayList<String>();
+		List<FileInformationType> fileInfos = new ArrayList<FileInformationType>();
+		try (DirectoryStream<java.nio.file.Path> directory = Files.newDirectoryStream(parentPath.toPath(), filePatternOnly)) {
+			for (java.nio.file.Path directoryEntry : directory) {
+				fileInfos.add(getFileInformationType(directoryEntry));
+			}
+		} catch (AccessDeniedException e) {
+			throw new FileException(ErrorNumberType.CF_EACCES, "Permission denied");
+		} catch (SecurityException e) {
+			throw new FileException(ErrorNumberType.CF_EACCES, e.getMessage());
+		} catch (IOException e) {
+			throw new FileException(ErrorNumberType.CF_EIO, e.getMessage());
+		}
+		return fileInfos.toArray(new FileInformationType[fileInfos.size()]);
+	}
+
+	/**
+	 * Gets a {@link CF.FileSystemPackage.FileInformationType} for the given <code>child</code> in the
+	 * <code>parent</code> directory.
+	 * @param parent
+	 * @param child
+	 * @return
+	 * @throws IOException File attributes can't be accessed
+	 */
+	private FileInformationType getFileInformationType(java.nio.file.Path file) throws IOException {
+		// Basic info
+		final FileInformationType fileInfo = new FileInformationType();
+		if (file.getNameCount() == 0) {
+			fileInfo.name = "/";
+		} else {
+			fileInfo.name = file.getFileName().toString();
+		}
+		if (Files.isDirectory(file)) {
+			fileInfo.kind = FileType.DIRECTORY;
+		} else {
+			fileInfo.kind = FileType.PLAIN;
+		}
+		fileInfo.size = Files.size(file);
+
+		// Properties
+		List<DataType> properties = new ArrayList<DataType>();
+		Map<String, Object> attributes = Files.readAttributes(file, "*");
+		if (attributes.containsKey("creationTime")) {
+			Any any = this.orb.create_any();
+			any.insert_ulonglong(((FileTime) attributes.get("creationTime")).to(TimeUnit.SECONDS));
+			properties.add(new DataType("CREATED_TIME", any));
+		}
+		if (attributes.containsKey("lastModifiedTime")) {
+			Any any = this.orb.create_any();
+			any.insert_ulonglong(((FileTime) attributes.get("lastModifiedTime")).to(TimeUnit.SECONDS));
+			properties.add(new DataType("MODIFIED_TIME", any));
+		}
+		if (attributes.containsKey("lastAccessTime")) {
+			Any any = this.orb.create_any();
+			any.insert_ulonglong(((FileTime) attributes.get("lastModifiedTime")).to(TimeUnit.SECONDS));
+			properties.add(new DataType("LAST_ACCESS_TIME", any));
+		}
+
+		boolean writeable = Files.isWritable(file);
+		Any writeableAny = this.orb.create_any();
+		writeableAny.insert_boolean(!writeable);
+		properties.add(new DataType("READ_ONLY", writeableAny));
+
+		boolean executable = Files.isExecutable(file);
+		Any executableAny = this.orb.create_any();
+		executableAny.insert_boolean(executable);
+		properties.add(new DataType("EXECUTABLE", executableAny));
+
+		fileInfo.fileProperties = properties.toArray(new DataType[properties.size()]);
+		return fileInfo;
 	}
 
 	@Override
 	public void mkdir(final String directoryName) throws InvalidFileName, FileException {
-		if ("".equals(directoryName)) {
-			throw new InvalidFileName(ErrorNumberType.CF_EIO, "");
+		File directory = precheck(directoryName);
+		try {
+			Files.createDirectory(directory.toPath());
+		} catch (FileAlreadyExistsException e) {
+			throw new FileException(ErrorNumberType.CF_EEXIST, "File exists");
+		} catch (AccessDeniedException e) {
+			throw new FileException(ErrorNumberType.CF_EACCES, "Permission denied");
+		} catch (SecurityException e) {
+			throw new FileException(ErrorNumberType.CF_EACCES, e.getMessage());
+		} catch (IOException e) {
+			throw new FileException(ErrorNumberType.CF_NOTSET, e.getMessage());
 		}
 		new File(this.root, directoryName).mkdir();
 	}
 
 	@Override
 	public CF.File open(final String fileName, final boolean readOnly) throws InvalidFileName, FileException {
-		final File file = new File(this.root, fileName);
-		if (!file.exists()) {
-			throw new FileException(ErrorNumberType.CF_ENOENT, "No such file or directory\n");
-		}
-		if (file.isDirectory()) {
-			throw new FileException(ErrorNumberType.CF_ENOENT, "Can not open a directory\n");
-		}
+		File file = precheck(fileName);
 		try {
+			if (!file.exists()) {
+				if (Files.notExists(file.toPath())) {
+					throw new FileException(ErrorNumberType.CF_ENOENT, "No such file");
+				} else {
+					throw new FileException(ErrorNumberType.CF_EACCES, "Permission denied");
+				}
+			}
+			if (file.isDirectory()) {
+				throw new FileException(ErrorNumberType.CF_EISDIR, "Is a directory");
+			}
+			if (!file.canRead() || (!readOnly && !file.canWrite())) {
+				throw new FileException(ErrorNumberType.CF_EACCES, "Permission denied");
+			}
 			final JavaFileFileImpl impl = new JavaFileFileImpl(file, readOnly);
-			
 			final byte[] id = this.poa.activate_object(impl);
 			return FileHelper.narrow(this.poa.id_to_reference(id));
-		} catch (final FileNotFoundException e) {
-			throw new FileException(ErrorNumberType.CF_EIO, e.getMessage());
-		} catch (final ServantAlreadyActive e) {
-			throw new FileException(ErrorNumberType.CF_EIO, e.getMessage());
-		} catch (final WrongPolicy e) {
-			throw new FileException(ErrorNumberType.CF_EIO, e.getMessage());
-		} catch (final ObjectNotActive e) {
-			throw new FileException(ErrorNumberType.CF_EIO, e.getMessage());
+		} catch (FileNotFoundException e) {
+			throw new FileException(ErrorNumberType.CF_ENOENT, "No such file");
+		} catch (SecurityException e) {
+			throw new FileException(ErrorNumberType.CF_EACCES, e.getMessage());
+		} catch (final ServantAlreadyActive | WrongPolicy | ObjectNotActive e) {
+			throw new FileException(ErrorNumberType.CF_NOTSET, e.getMessage());
 		}
 	}
 
 	@Override
 	public void query(final PropertiesHolder fileSystemProperties) throws UnknownFileSystemProperties {
+		if (fileSystemProperties.value.length == 0) {
+			fileSystemProperties.value = new DataType[] { new DataType("SIZE", null), new DataType("AVAILABLE_SPACE", null) };
+		}
 		final List<DataType> unknownProperties = new ArrayList<DataType>();
 		for (final DataType dataType : fileSystemProperties.value) {
 			if (dataType.id.equals("SIZE")) {
 				final Any any = this.orb.create_any();
-				// TODO For now we don't support SIZE
-				any.insert_ulonglong(0);
-				//				any.insert_ulonglong(this.root..getTotalSpace());
-				dataType.value = any;
-			} else if (dataType.id.equals("AVAILABLE SPACE")) {
-				final Any any = this.orb.create_any();
-				long freeKb;
 				try {
-					freeKb = FileSystemUtils.freeSpaceKb(this.root.getAbsolutePath());
-				} catch (final IOException e) {
-					// PASS
-					freeKb = 0;
+					FileStore fileStore = Files.getFileStore(this.root.toPath());
+					any.insert_ulonglong(fileStore.getTotalSpace());
+				} catch (IOException e) {
+					FileManagerPlugin.logError("Unable to get capacity of root " + this.root.toString(), e);
+					any.insert_ulonglong(0);
 				}
-				any.insert_ulonglong(freeKb * 1024 / 8); // SUPPRESS CHECKSTYLE MagicNumber
+				dataType.value = any;
+			} else if (dataType.id.equals("AVAILABLE_SPACE")) {
+				final Any any = this.orb.create_any();
+				try {
+					FileStore fileStore = Files.getFileStore(this.root.toPath());
+					any.insert_ulonglong(fileStore.getUsableSpace());
+				} catch (final IOException e) {
+					FileManagerPlugin.logError("Unable to get available space of root " + this.root.toString(), e);
+					any.insert_ulonglong(0);
+				}
 				dataType.value = any;
 			} else {
 				unknownProperties.add(dataType);
@@ -232,42 +325,76 @@ public class JavaFileSystem extends AbstractFileSystem {
 		if (unknownProperties.size() > 0) {
 			throw new UnknownFileSystemProperties(unknownProperties.toArray(new DataType[unknownProperties.size()]));
 		}
-
 	}
 
 	@Override
 	public void remove(final String fileName) throws FileException, InvalidFileName {
-		if ("".equals(fileName)) {
-			throw new InvalidFileName(ErrorNumberType.CF_EIO, "");
+		File file = precheck(fileName);
+		try {
+			if (!file.exists()) {
+				if (Files.notExists(file.toPath())) {
+					throw new FileException(ErrorNumberType.CF_ENOENT, "No such file");
+				} else {
+					throw new FileException(ErrorNumberType.CF_EACCES, "Permission denied");
+				}
+			}
+			if (file.isDirectory()) {
+				throw new FileException(ErrorNumberType.CF_EISDIR, "Is a directory");
+			}
+			Files.delete(file.toPath());
+		} catch (AccessDeniedException e) {
+			throw new FileException(ErrorNumberType.CF_EACCES, "Permission denied");
+		} catch (SecurityException e) {
+			throw new FileException(ErrorNumberType.CF_EACCES, e.getMessage());
+		} catch (IOException e) {
+			throw new FileException(ErrorNumberType.CF_NOTSET, e.getMessage());
 		}
-		final boolean result = new File(this.root, fileName).delete();
-		if (!result) {
-			throw new FileException(ErrorNumberType.CF_EIO, "Failed to delete file: " + fileName);
-		}
-
 	}
 
 	@Override
 	public void rmdir(final String directoryName) throws InvalidFileName, FileException {
-		if ("".equals(directoryName)) {
-			throw new InvalidFileName(ErrorNumberType.CF_EIO, "");
+		File directory = precheck(directoryName);
+		try {
+			if (!directory.exists()) {
+				if (Files.notExists(directory.toPath())) {
+					throw new FileException(ErrorNumberType.CF_ENOENT, "No such directory");
+				} else {
+					throw new FileException(ErrorNumberType.CF_EACCES, "Permission denied");
+				}
+			}
+			if (!directory.isDirectory()) {
+				throw new FileException(ErrorNumberType.CF_ENOTDIR, "Not a directory");
+			}
+			Files.delete(directory.toPath());
+		} catch (DirectoryNotEmptyException e) {
+			throw new FileException(ErrorNumberType.CF_ENOTEMPTY, "Directory not empty");
+		} catch (AccessDeniedException e) {
+			throw new FileException(ErrorNumberType.CF_EACCES, "Permission denied");
+		} catch (SecurityException e) {
+			throw new FileException(ErrorNumberType.CF_EACCES, e.getMessage());
+		} catch (IOException e) {
+			throw new FileException(ErrorNumberType.CF_NOTSET, e.getMessage());
 		}
-		final File file = new File(this.root, directoryName);
-		if (!file.isDirectory()) {
-			throw new FileException(ErrorNumberType.CF_ENOTDIR, "Not a directory\n");
-		}
-		if (file.list().length != 0) {
-			throw new FileException(ErrorNumberType.CF_ENOTEMPTY, "Directory not empty\n");
-		}
-		final boolean result = file.delete();
-		if (!result) {
-			throw new FileException(ErrorNumberType.CF_EIO, "Failed to delete directory: " + directoryName);
-		}
-
 	}
-	
+
 	public void dispose() {
-		
+	}
+
+	/**
+	 * Checks that the path is non-empty and absolute. Returns a {@link File}.
+	 * @param path The path to check
+	 * @return A {@link java.io.File} object
+	 * @throws InvalidFileName The path is null, empty, or not absolute
+	 */
+	private File precheck(String path) throws InvalidFileName {
+		if (path == null || path.trim().isEmpty()) {
+			throw new InvalidFileName(ErrorNumberType.CF_ENOENT, "No such file or directory");
+		}
+		File file = new File(path);
+		if (!file.isAbsolute()) {
+			throw new InvalidFileName(ErrorNumberType.CF_EINVAL, "Path is not absolute");
+		}
+		return new File(this.root, path);
 	}
 
 }
