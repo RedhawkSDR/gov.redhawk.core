@@ -388,7 +388,7 @@ public class JavaFileSystemTest {
 		FileInformationType[] info = getFileSystem().list("   ");
 		Assert.assertNotNull(info);
 		Assert.assertEquals(1, info.length);
-		assertFileInformation(info[0], "/", FileType.DIRECTORY, true, true);
+		assertFileInformation(info[0], "/", FileType.DIRECTORY, !isRoot(), true);
 	}
 
 	@Test(expected = InvalidFileName.class)
@@ -426,12 +426,12 @@ public class JavaFileSystemTest {
 		FileInformationType[] infos = getFileSystem().list("/v*r");
 		Assert.assertNotNull(infos);
 		Assert.assertEquals(1, infos.length);
-		assertFileInformation(infos[0], "var", FileType.DIRECTORY, true, true);
+		assertFileInformation(infos[0], "var", FileType.DIRECTORY, !isRoot(), true);
 
 		infos = getFileSystem().list("/v?r");
 		Assert.assertNotNull(infos);
 		Assert.assertEquals(1, infos.length);
-		assertFileInformation(infos[0], "var", FileType.DIRECTORY, true, true);
+		assertFileInformation(infos[0], "var", FileType.DIRECTORY, !isRoot(), true);
 	}
 
 	@Test
@@ -447,7 +447,7 @@ public class JavaFileSystemTest {
 		FileInformationType[] infos = getFileSystem().list("/bin/echo");
 		Assert.assertNotNull(infos);
 		Assert.assertEquals(1, infos.length);
-		assertFileInformation(infos[0], "echo", FileType.PLAIN, true, true);
+		assertFileInformation(infos[0], "echo", FileType.PLAIN, !isRoot(), true);
 	}
 
 	@Test
@@ -825,7 +825,10 @@ public class JavaFileSystemTest {
 	 * encounter a permissions issue.
 	 */
 	private void assumeNonRootUser() {
-		Assume.assumeFalse("root".equals(System.getProperty("user.name")));
-		Assume.assumeFalse(new File("/root").canRead());
+		Assume.assumeFalse(isRoot());
+	}
+
+	private boolean isRoot() {
+		return "root".equals(System.getProperty("user.name")) || new File("/root").canRead();
 	}
 }
