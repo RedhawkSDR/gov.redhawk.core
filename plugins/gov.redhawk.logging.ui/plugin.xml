@@ -26,6 +26,11 @@
                      <adapt
                            type="CF.LogConfigurationOperations">
                      </adapt>
+                     <not>
+                        <adapt
+                              type="CF.ApplicationOperations">
+                        </adapt>
+                     </not>
                   </iterate>
             </visibleWhen>
             <command
