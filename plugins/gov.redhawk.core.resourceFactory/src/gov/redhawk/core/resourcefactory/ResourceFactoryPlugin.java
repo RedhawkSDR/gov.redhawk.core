@@ -31,6 +31,7 @@ public class ResourceFactoryPlugin extends Plugin {
 	@Override
 	public void stop(final BundleContext bundleContext) throws Exception {
 		super.stop(bundleContext);
+		ResourceFactoryRegistry.INSTANCE.dispose();
 		ResourceFactoryPlugin.plugin = null;
 	}
 
