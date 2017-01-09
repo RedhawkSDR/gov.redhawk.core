@@ -115,6 +115,9 @@ public abstract class AbstractResourceFactoryProvider implements IResourceFactor
 		return Collections.unmodifiableList(new ArrayList<ResourceDesc>(descriptors));
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	@Override
 	public Map<String, FileSystem> getFileSystemMounts() {
 		return Collections.unmodifiableMap(new HashMap<>(fileSystemMounts));
