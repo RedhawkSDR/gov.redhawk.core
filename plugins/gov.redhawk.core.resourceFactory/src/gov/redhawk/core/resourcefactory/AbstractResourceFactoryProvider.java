@@ -76,7 +76,7 @@ public abstract class AbstractResourceFactoryProvider implements IResourceFactor
 	/**
 	 * @param fs
 	 * @param mountPoint
-	 * @since 3.2
+	 * @since 4.0
 	 */
 	protected void addFileSystemMount(FileSystem fs, String mountPoint) {
 		fileSystemMounts.put(mountPoint, fs);
@@ -85,7 +85,7 @@ public abstract class AbstractResourceFactoryProvider implements IResourceFactor
 
 	/**
 	 * @param mountPoint
-	 * @since 3.2
+	 * @since 4.0
 	 */
 	protected void removeFileSystemMount(String mountPoint) {
 		if (fileSystemMounts.remove(mountPoint) != null) {

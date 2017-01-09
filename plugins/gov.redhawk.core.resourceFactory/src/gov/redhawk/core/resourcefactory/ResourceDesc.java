@@ -63,7 +63,7 @@ public abstract class ResourceDesc {
 	private final String version;
 
 	/**
-	 * @since 3.2
+	 * @since 4.0
 	 */
 	public ResourceDesc(String identifier, URI resourceURI, final String version, ResourceFactoryOperations factory) {
 		this.factory = factory;

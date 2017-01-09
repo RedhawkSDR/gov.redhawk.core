@@ -36,7 +36,7 @@ public interface IResourceFactoryProvider {
 	/**
 	 * Used to indicate that the file system mounts of this object have changed. The value(s) passed with the
 	 * notification are the mount point(s).
-	 * @since 3.2
+	 * @since 4.0
 	 */
 	final String PROPERTY_FILE_SYSTEM_MOUNTS = "fileSystemMounts";
 
@@ -57,7 +57,7 @@ public interface IResourceFactoryProvider {
 
 	/**
 	 * @return
-	 * @since 3.2
+	 * @since 4.0
 	 */
 	Map<String, FileSystem> getFileSystemMounts();
 

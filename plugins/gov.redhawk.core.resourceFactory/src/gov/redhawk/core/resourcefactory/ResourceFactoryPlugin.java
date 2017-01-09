@@ -54,7 +54,7 @@ public class ResourceFactoryPlugin extends Plugin {
 	}
 
 	/**
-	 * @since 3.2
+	 * @since 4.0
 	 */
 	public static void logError(String msg, Throwable e) {
 		ResourceFactoryPlugin instance = plugin;
