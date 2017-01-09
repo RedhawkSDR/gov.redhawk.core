@@ -2,15 +2,16 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.core.filemanager
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 2.0.0.qualifier
 Bundle-Activator: gov.redhawk.core.filemanager.FileManagerPlugin
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  idl.cf;bundle-version="2.0.0",
  org.eclipse.core.filesystem;bundle-version="1.3.1",
  org.apache.commons.io;bundle-version="1.3.2",
- mil.jpeojtrs.sca.util;bundle-version="3.1.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+ mil.jpeojtrs.sca.util;bundle-version="3.1.0",
+ org.jacorb
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.core.filemanager,
  gov.redhawk.core.filemanager.filesystem

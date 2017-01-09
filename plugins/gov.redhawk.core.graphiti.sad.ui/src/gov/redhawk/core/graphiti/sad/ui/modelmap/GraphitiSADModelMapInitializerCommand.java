@@ -31,6 +31,7 @@ import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentFile;
 import mil.jpeojtrs.sca.partitioning.ComponentFileRef;
+import mil.jpeojtrs.sca.partitioning.ComponentFiles;
 import mil.jpeojtrs.sca.partitioning.ComponentSupportedInterface;
 import mil.jpeojtrs.sca.partitioning.NamingService;
 import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
@@ -45,6 +46,7 @@ import mil.jpeojtrs.sca.sad.SadUsesPort;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
+import mil.jpeojtrs.sca.util.ScaUriHelpers;
 
 /**
  * Uses the REDHAWK SCA model to build a corresponding SAD
@@ -177,21 +179,15 @@ public class GraphitiSADModelMapInitializerCommand extends AbstractCommand {
 	 * @return
 	 */
 	private SadComponentInstantiation createComponentInstatitation(SoftPkg spd, String id, String usageName, String namingServiceName) {
-		// Find an existing component file declaration, or create a new one
-		ComponentFile spdFile = null;
-		for (final ComponentFile file : sad.getComponentFiles().getComponentFile()) {
-			if (file.getSoftPkg() != null) {
-				if (PluginUtil.equals(file.getSoftPkg().getId(), spd.getId())) {
-					spdFile = file;
-					break;
-				}
-			}
+		// Create the componentfiles element if it doesn't exist already
+		ComponentFiles componentFiles = sad.getComponentFiles();
+		if (componentFiles == null) {
+			componentFiles = PartitioningFactory.eINSTANCE.createComponentFiles();
+			sad.setComponentFiles(componentFiles);
 		}
-		if (spdFile == null) {
-			spdFile = SadFactory.eINSTANCE.createComponentFile();
-			spdFile.setSoftPkg(spd);
-			sad.getComponentFiles().getComponentFile().add(spdFile);
-		}
+
+		// Find the matching component file, or create if necessary
+		ComponentFile componentFile = getComponentFile(spd, componentFiles);
 
 		// Create the component placement and add to its parent, the partitioning
 		final SadComponentPlacement placement = SadFactory.eINSTANCE.createSadComponentPlacement();
@@ -199,7 +195,7 @@ public class GraphitiSADModelMapInitializerCommand extends AbstractCommand {
 
 		// Create a component file ref
 		final ComponentFileRef fileRef = PartitioningFactory.eINSTANCE.createComponentFileRef();
-		fileRef.setFile(spdFile);
+		fileRef.setFile(componentFile);
 
 		// Create a component instantiation
 		final SadComponentInstantiation inst = SadFactory.eINSTANCE.createSadComponentInstantiation();
@@ -219,6 +215,28 @@ public class GraphitiSADModelMapInitializerCommand extends AbstractCommand {
 		placement.getComponentInstantiation().add(inst);
 
 		return inst;
+	}
+
+	/**
+	 * Finds a {@link ComponentFile} that matches the {@link SoftPkg} for this class, creating and adding one if
+	 * necessary.
+	 * @param spd
+	 * @param componentFiles The list of component files
+	 * @return
+	 */
+	private ComponentFile getComponentFile(SoftPkg spd, ComponentFiles componentFiles) {
+		final String spdPath = ScaUriHelpers.getLocalFilePath(componentFiles, spd);
+		for (final ComponentFile componentFile : componentFiles.getComponentFile()) {
+			final SoftPkg fSpd = componentFile.getSoftPkg();
+			if (fSpd != null && PluginUtil.equals(spdPath, componentFile.getLocalFile().getName())) {
+				return componentFile;
+			}
+		}
+
+		ComponentFile newFile = SadFactory.eINSTANCE.createComponentFile();
+		componentFiles.getComponentFile().add(newFile);
+		newFile.setSoftPkg(spd);
+		return newFile;
 	}
 
 	@Override

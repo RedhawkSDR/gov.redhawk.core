@@ -15,17 +15,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import mil.jpeojtrs.sca.scd.ComponentType;
+import CF.ResourceFactoryOperations;
 import mil.jpeojtrs.sca.scd.ScdPackage;
-import mil.jpeojtrs.sca.scd.SoftwareComponent;
 import mil.jpeojtrs.sca.spd.Implementation;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.spd.SpdPackage;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
-import CF.ResourceFactoryOperations;
 
 /**
  * @since 2.0
@@ -40,7 +37,7 @@ public class ComponentDesc extends ResourceDesc {
 	private SoftPkg spd;
 
 	public ComponentDesc(SoftPkg spd, ResourceFactoryOperations factory) {
-		super(spd.getId(), spd.eResource().getURI(), createProfile(spd), spd.getVersion(), factory);
+		super(spd.getId(), spd.eResource().getURI(), spd.getVersion(), factory);
 		setSoftPkg(spd);
 		setName(spd.getName());
 		setDescription(spd.getDescription());
@@ -50,62 +47,6 @@ public class ComponentDesc extends ResourceDesc {
 			if (impl.isExecutable()) {
 				this.implementationIds.add(impl.getId());
 			}
-		}
-	}
-
-	private static String createProfile(SoftPkg spd) {
-		Path path = new Path(spd.eResource().getURI().path());
-		if (spd.getDescriptor() != null) {
-			ComponentType type = SoftwareComponent.Util.getWellKnownComponentType(spd.getDescriptor().getComponent());
-			if (type != null) {
-				switch (type) {
-				case DEVICE:
-					return createPathFrom(spd, path, "devices", true);
-				case RESOURCE:
-					return createPathFrom(spd, path, "components", true);
-				case DEVICE_MANAGER:
-					return "/dev/mgr/" + spd.getName() + "/" + spd.eResource().getURI().lastSegment();
-				case DOMAIN_MANAGER:
-					return "/dom/mgr/" + spd.getName() + "/" + spd.eResource().getURI().lastSegment();
-				case EVENT_SERVICE:
-				case SERVICE:
-				case NAMING_SERVICE:
-					return createPathFrom(spd, path, "services", true);
-				default:
-					break;
-				}
-			}
-		}
-		String[] roots = new String[] { "components", "dom", "devices", "services", "dev", };
-		String retVal = null;
-		for (String s : roots) {
-			retVal = createPathFrom(spd, path, s, false);
-			if (retVal != null) {
-				break;
-			}
-		}
-		if (retVal == null) {
-			retVal = spd.getName() + "/" + spd.eResource().getURI().lastSegment();
-		}
-		return retVal;
-	}
-
-	private static String createPathFrom(SoftPkg spd, Path path, String root, boolean force) {
-		int i = 0;
-		boolean found = false;
-		for (String s : path.segments()) {
-			if (s.equals(root)) {
-				found = true;
-				break;
-			}
-			i++;
-		}
-		if (found) {
-			return path.removeFirstSegments(i).toString();
-		} else if (force) {
-			return "/" + root + "/" + spd.getName() + "/" + spd.eResource().getURI().lastSegment();
-		} else {
-			return null;
 		}
 	}
 

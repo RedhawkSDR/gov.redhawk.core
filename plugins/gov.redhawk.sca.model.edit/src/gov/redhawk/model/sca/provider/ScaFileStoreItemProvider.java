@@ -19,15 +19,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
+
 import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.core.runtime.jobs.JobGroup;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -151,27 +155,54 @@ public class ScaFileStoreItemProvider extends IStatusProviderItemProvider {
 	}
 
 	private static class FetchImageDescJob extends SilentJob {
+
+		/**
+		 * Used to limit how many fetch image jobs can run at a time.
+		 */
+		private static final JobGroup JOB_GROUP = new JobGroup(FetchImageDescJob.class.getSimpleName(), 5, 1);
+
+		/**
+		 * Don't examine the content of files larger than this in bytes.
+		 */
+		private static final long MAX_DOWNLOAD_SIZE = 64 * 1024;
+
 		private ScaFileStore scaFileStore;
 
 		public FetchImageDescJob(ScaFileStore store) {
 			super("Fetching Image for: " + store.getName());
+			setPriority(DECORATE);
+			setJobGroup(JOB_GROUP);
 			this.scaFileStore = store;
 		}
 
 		@Override
 		protected IStatus runSilent(IProgressMonitor monitor) {
+			final int WORK_FETCH_INFO = 1;
+			final int WORK_FETCH_FILE = 9;
+			SubMonitor progress = SubMonitor.convert(monitor, WORK_FETCH_INFO + WORK_FETCH_FILE);
+
+			// Get the file store and its name
 			IFileStore fileStore = scaFileStore.getFileStore();
 			if (fileStore == null) {
+				progress.done();
 				return Status.OK_STATUS;
 			}
 			final String fileName = fileStore.getName();
 
 			IContentType contentType = null;
 			try {
-				final InputStream is = fileStore.openInputStream(EFS.NONE, null);
-				final IContentDescription contDesc = Platform.getContentTypeManager().getDescriptionFor(is, fileName, IContentDescription.ALL);
-				if (contDesc != null) {
-					contentType = contDesc.getContentType();
+				IFileInfo fileInfo = fileStore.fetchInfo(EFS.NONE, progress.newChild(WORK_FETCH_INFO));
+
+				// If the file is too large, don't examine its content (which requires a copy or download).
+				if (fileInfo.getLength() > MAX_DOWNLOAD_SIZE) {
+					contentType = Platform.getContentTypeManager().findContentTypeFor(fileName);
+				} else {
+					try (InputStream is = fileStore.openInputStream(EFS.NONE, progress.newChild(WORK_FETCH_FILE))) {
+						final IContentDescription contDesc = Platform.getContentTypeManager().getDescriptionFor(is, fileName, IContentDescription.ALL);
+						if (contDesc != null) {
+							contentType = contDesc.getContentType();
+						}
+					}
 				}
 			} catch (final CoreException e) {
 				// PASS
@@ -179,11 +210,14 @@ public class ScaFileStoreItemProvider extends IStatusProviderItemProvider {
 				// PASS
 			}
 
+			// Find the best image based on filename and content type (if available)
 			final ImageDescriptor imageDescriptor = PlatformUI.getWorkbench().getEditorRegistry().getImageDescriptor(fileName, contentType);
 			TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(scaFileStore);
 			if (domain != null) {
 				domain.getCommandStack().execute(SetCommand.create(domain, scaFileStore, ScaPackage.Literals.SCA_FILE_STORE__IMAGE_DESC, imageDescriptor));
 			}
+
+			progress.done();
 			return Status.OK_STATUS;
 		}
 
@@ -206,10 +240,20 @@ public class ScaFileStoreItemProvider extends IStatusProviderItemProvider {
 		}
 		if (store.getImageDesc() == null) {
 			new FetchImageDescJob(store).schedule();
-			return DEFAULT_IMG;
+			return getDefaultImage(store.getName());
 		}
 		return store.getImageDesc();
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Returns the default image that should be used based on a filename.
+	 * @param fileName
+	 * @return
+	 */
+	private ImageDescriptor getDefaultImage(String fileName) {
+		IContentType contentType = Platform.getContentTypeManager().findContentTypeFor(fileName);
+		return (contentType == null) ? DEFAULT_IMG : PlatformUI.getWorkbench().getEditorRegistry().getImageDescriptor(fileName, contentType);
 	}
 
 	/**
@@ -245,22 +289,32 @@ public class ScaFileStoreItemProvider extends IStatusProviderItemProvider {
 	 */
 	@Override
 	public void notifyChanged(Notification notification) {
-		updateChildren(notification);
-
 		switch (notification.getFeatureID(ScaFileStore.class)) {
 		case ScaPackage.SCA_FILE_STORE__FILE_STORE:
+			updateChildren(notification);
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, true));
-			return;
+			break;
 		case ScaPackage.SCA_FILE_STORE__IMAGE_DESC:
+			ScaFileStore notifier = (ScaFileStore) notification.getNotifier();
+			ImageDescriptor defaultImage = getDefaultImage(notifier.getName());
+			// Only fire a notification if the new image is not the default image
+			if (notification.getNewValue() != defaultImage) {
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			}
+			break;
 		case ScaPackage.SCA_FILE_STORE__DIRECTORY:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+			break;
 		case ScaPackage.SCA_FILE_STORE__NAME:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-			return;
+			break;
 		case ScaPackage.SCA_FILE_STORE__CHILDREN:
+			updateChildren(notification);
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-			return;
+			break;
+		default:
+			super.notifyChanged(notification);
 		}
-		super.notifyChanged(notification);
 	}
 
 	/**
