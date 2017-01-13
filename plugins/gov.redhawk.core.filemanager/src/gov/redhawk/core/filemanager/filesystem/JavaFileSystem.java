@@ -20,11 +20,12 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.attribute.FileTime;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.runtime.IPath;
@@ -40,6 +41,7 @@ import CF.DataType;
 import CF.ErrorNumberType;
 import CF.FileException;
 import CF.FileHelper;
+import CF.FileSystem;
 import CF.InvalidFileName;
 import CF.PropertiesHolder;
 import CF.FileSystemPackage.FileInformationType;
@@ -172,8 +174,7 @@ public class JavaFileSystem extends AbstractFileSystem {
 
 		// Find files/dirs matching the pattern in the appropriate directory
 		final File parentPath = new File(this.root, pathWithPattern.removeLastSegments(1).toString());
-		final String filePatternOnly = pathWithPattern.lastSegment();
-		// List<String> fileNames = new ArrayList<String>();
+		final String filePatternOnly = escapePattern(pathWithPattern.lastSegment());
 		List<FileInformationType> fileInfos = new ArrayList<FileInformationType>();
 		try (DirectoryStream<java.nio.file.Path> directory = Files.newDirectoryStream(parentPath.toPath(), filePatternOnly)) {
 			for (java.nio.file.Path directoryEntry : directory) {
@@ -187,6 +188,17 @@ public class JavaFileSystem extends AbstractFileSystem {
 			throw new FileException(ErrorNumberType.CF_EIO, e.getMessage());
 		}
 		return fileInfos.toArray(new FileInformationType[fileInfos.size()]);
+	}
+
+	/**
+	 * Escapes characters which are special file glob characters for
+	 * {@link Files#newDirectoryStream(java.nio.file.Path, String)} but are normal characters for
+	 * {@link FileSystem#list(String)}.
+	 * @return
+	 */
+	private String escapePattern(String pattern) {
+		// Escape these characters: [ ] { }
+		return pattern.replaceAll("(\\[|\\]|\\{|\\})", "\\\\$1");
 	}
 
 	/**
@@ -205,29 +217,52 @@ public class JavaFileSystem extends AbstractFileSystem {
 		} else {
 			fileInfo.name = file.getFileName().toString();
 		}
-		if (Files.isDirectory(file)) {
+
+		// Get file attributes
+		BasicFileAttributes attrs = null;
+		try {
+			attrs = Files.readAttributes(file, BasicFileAttributes.class);
+		} catch (NoSuchFileException e) {
+			// Try to read without following symlinks. If that works, the file is a symlink that points at something
+			// we can't read (probably because the target doesn't exist). We'll report on the symlink itself.
+			try {
+				attrs = Files.readAttributes(file, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+			} catch (IOException e2) {
+				// PASS
+			}
+
+			// If we can't get file attributes throw the original exception
+			if (attrs == null) {
+				throw e;
+			}
+		}
+
+		// Basic attributes
+		if (attrs.isDirectory()) {
 			fileInfo.kind = FileType.DIRECTORY;
 		} else {
 			fileInfo.kind = FileType.PLAIN;
 		}
-		fileInfo.size = Files.size(file);
+		fileInfo.size = attrs.size();
 
 		// Properties
 		List<DataType> properties = new ArrayList<DataType>();
-		Map<String, Object> attributes = Files.readAttributes(file, "*");
-		if (attributes.containsKey("creationTime")) {
+		long time = attrs.creationTime().to(TimeUnit.SECONDS);
+		if (time > 0) {
 			Any any = this.orb.create_any();
-			any.insert_ulonglong(((FileTime) attributes.get("creationTime")).to(TimeUnit.SECONDS));
+			any.insert_ulonglong(time);
 			properties.add(new DataType("CREATED_TIME", any));
 		}
-		if (attributes.containsKey("lastModifiedTime")) {
+		time = attrs.lastModifiedTime().to(TimeUnit.SECONDS);
+		if (time > 0) {
 			Any any = this.orb.create_any();
-			any.insert_ulonglong(((FileTime) attributes.get("lastModifiedTime")).to(TimeUnit.SECONDS));
+			any.insert_ulonglong(time);
 			properties.add(new DataType("MODIFIED_TIME", any));
 		}
-		if (attributes.containsKey("lastAccessTime")) {
+		time = attrs.lastAccessTime().to(TimeUnit.SECONDS);
+		if (time > 0) {
 			Any any = this.orb.create_any();
-			any.insert_ulonglong(((FileTime) attributes.get("lastModifiedTime")).to(TimeUnit.SECONDS));
+			any.insert_ulonglong(time);
 			properties.add(new DataType("LAST_ACCESS_TIME", any));
 		}
 

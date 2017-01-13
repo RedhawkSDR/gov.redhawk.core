@@ -463,6 +463,36 @@ public class JavaFileSystemTest {
 		Assert.fail("Expected a FileException");
 	}
 
+	@Test
+	public void list_withInvalidSymlink() throws IOException, FileException, InvalidFileName {
+		// Create a symlink that point to a file that doesn't exist
+		Path pathDir = Files.createTempDirectory(JavaFileSystemTest.class.getSimpleName());
+		Path symLink = Files.createSymbolicLink(pathDir.resolve("symlink"), pathDir.resolve("target"));
+
+		try {
+			FileInformationType[] infos = getFileSystem().list(pathDir.toString() + "/*");
+			Assert.assertNotNull(infos);
+			Assert.assertEquals(1, infos.length);
+			assertFileInformation(infos[0], "symlink", FileType.PLAIN, true, false);
+		} finally {
+			Files.delete(symLink);
+			Files.delete(pathDir);
+		}
+	}
+
+	@Test
+	public void list_specialChars() throws IOException, FileException, InvalidFileName {
+		Path specialCharsFile = Files.createTempFile(JavaFileSystemTest.class.getSimpleName(), "][}{.tmp");
+
+		try {
+			FileInformationType[] infos = getFileSystem().list(specialCharsFile.toString());
+			Assert.assertNotNull(infos);
+			Assert.assertEquals(1, infos.length);
+		} finally {
+			Files.delete(specialCharsFile);
+		}
+	}
+
 	@Test(expected = InvalidFileName.class)
 	public void mkdir_null() throws InvalidFileName, FileException {
 		getFileSystem().mkdir(null);
