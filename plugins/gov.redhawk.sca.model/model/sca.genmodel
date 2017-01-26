@@ -175,8 +175,8 @@
       <genOperations ecoreOperation="sca.ecore#//ScaAbstractProperty/createPropertyRef"/>
     </genClasses>
     <genClasses ecoreClass="sca.ecore#//ScaComponent">
-      <genFeatures property="None" notify="false" createChild="false" propertySortChoices="true"
-          ecoreFeature="ecore:EReference sca.ecore#//ScaComponent/componentInstantiation"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" propertyCategory=""
+          propertyDescription="" propertySortChoices="true" ecoreFeature="ecore:EReference sca.ecore#//ScaComponent/componentInstantiation"/>
       <genFeatures property="Readonly" children="true" createChild="false" propertySortChoices="true"
           ecoreFeature="ecore:EReference sca.ecore#//ScaComponent/devices"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaComponent/instantiationIdentifier"/>
