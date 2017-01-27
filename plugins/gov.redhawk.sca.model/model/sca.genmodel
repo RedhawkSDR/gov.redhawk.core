@@ -199,6 +199,8 @@
           ecoreFeature="ecore:EReference sca.ecore#//ScaDevice/parentDevice"/>
       <genFeatures property="None" notify="false" createChild="false" propertySortChoices="true"
           ecoreFeature="ecore:EReference sca.ecore#//ScaDevice/devMgr"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference sca.ecore#//ScaDevice/componentInstantiation"/>
       <genOperations ecoreOperation="sca.ecore#//ScaDevice/fetchAggregateDevices">
         <genParameters ecoreParameter="sca.ecore#//ScaDevice/fetchAggregateDevices/monitor"/>
       </genOperations>

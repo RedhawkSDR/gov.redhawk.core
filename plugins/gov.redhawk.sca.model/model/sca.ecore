@@ -507,6 +507,9 @@
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="devMgr" eType="#//ScaDeviceManager"
         changeable="false" volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="componentInstantiation"
+        lowerBound="1" eType="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.dcd/model/dcd.ecore#//DcdComponentInstantiation"
+        transient="true" unsettable="true"/>
     <eGenericSuperTypes eClassifier="#//ScaAbstractComponent">
       <eTypeArguments eTypeParameter="#//ScaDevice/D"/>
     </eGenericSuperTypes>
