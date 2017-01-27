@@ -13,7 +13,6 @@
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.IRefreshable;
-import gov.redhawk.model.sca.IStatusProvider;
 import gov.redhawk.model.sca.ProfileObjectWrapper;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
@@ -30,11 +29,11 @@ import gov.redhawk.model.sca.ScaService;
 import gov.redhawk.model.sca.commands.MergePortsCommand;
 import gov.redhawk.model.sca.commands.MergePortsCommand.PortData;
 import gov.redhawk.model.sca.commands.MergeServicesCommand;
+import gov.redhawk.model.sca.commands.ScaDeviceManagerMergeDevicesCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
 import gov.redhawk.model.sca.commands.SetDeviceManagerFileSystemCommand;
 import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
-import gov.redhawk.model.sca.commands.SetStatusCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
@@ -1529,35 +1528,22 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		final DeviceManager devMgr = fetchNarrowedObject(subMonitor.newChild(1));
 
 		Transaction transaction = devicesRevision.createTransaction();
-
 		if (devMgr != null) {
-			// Setup new Device Map
-
 			Device[] regDevices = null;
+			IStatus status = null;
 			try {
 				regDevices = devMgr.registeredDevices();
-				List<Device> newRootDevices = new ArrayList<Device>();
-				List<Device> newChildDevices = new ArrayList<Device>();
-				if (regDevices != null) {
-					for (Device device : regDevices) {
-						if (device.compositeDevice() == null) {
-							newRootDevices.add(device);
-						} else {
-							newChildDevices.add(device);
-						}
-					}
-				}
-				transaction.append(fetchDevices(subMonitor.newChild(1), this, getRootDevices(), newRootDevices.toArray(new Device[newRootDevices.size()])));
-				transaction.append(fetchDevices(subMonitor.newChild(1), this, getChildDevices(), newChildDevices.toArray(new Device[newChildDevices.size()])));
-				transaction.append(new SetStatusCommand<IStatusProvider>(this, ScaPackage.Literals.SCA_DEVICE_MANAGER__DEVICES, null));
 			} catch (SystemException e) {
-				IStatus status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch devices.", e);
-				transaction.append(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_DEVICE_MANAGER__DEVICES));
+				status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch devices.", e);
 			}
+			subMonitor.worked(1);
+
+			transaction.append(createMergeDevicesCommand(regDevices, status));
 		} else {
 			transaction.append(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DEVICE_MANAGER__DEVICES));
 		}
 		transaction.commit();
+		subMonitor.worked(1);
 
 		// We must ALWAYS fetch device SELF attributes since the REFRESH FULL will fail otherwise
 		ScaDevice< ? >[] deviceArray = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaDevice< ? >[]>() {
@@ -1575,13 +1561,18 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 				device.fetchIdentifier(deviceMonitor.newChild(1));
 			}
 		}
+
 		subMonitor.done();
 		// BEGIN GENERATED CODE
 	}
 
+	// END GENERATED CODE
+
 	/**
 	 * @since 18.0
+	 * @deprecated Replaced by {@link ScaDeviceManagerMergeDevicesCommand}
 	 */
+	@Deprecated
 	protected static class DeviceData {
 		private final Device dev;
 		private final EClass deviceType;
@@ -1597,8 +1588,17 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	}
 
 	/**
-	 * @since 18.0
+	 * @since 20.4
 	 */
+	protected Command createMergeDevicesCommand(Device[] devices, IStatus status) {
+		return new ScaDeviceManagerMergeDevicesCommand(this, devices, status);
+	}
+
+	/**
+	 * @since 18.0
+	 * @deprecated Replaced by {@link ScaDeviceManagerMergeDevicesCommand}
+	 */
+	@Deprecated
 	protected Command fetchDevices(IProgressMonitor monitor, final ScaPropertyContainer< ? , ? > container, final List<ScaDevice< ? >> deviceList,
 		Device[] corbaDevices) {
 		if (isDisposed()) {
@@ -1630,7 +1630,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 
 	/**
 	 * @since 18.0
+	 * @deprecated Replaced by {@link ScaDeviceManagerMergeDevicesCommand}
 	 */
+	@Deprecated
 	protected void mergeDevices(final List<ScaDevice< ? >> deviceList, final Map<String, DeviceData> newDevices) {
 		// END GENERATED CODE
 		// Perform Actions
@@ -1662,8 +1664,15 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	}
 
 	/**
+	 * Performs {@link org.omg.CORBA.Object#_is_a(String)} checks on a device object to determine it's most-derived
+	 * type and returns the corresponding {@link EClass} type.
+	 * 
+	 * @param dev The device object to examine
+	 * @return The EMF class for the device
 	 * @since 18.0
+	 * @deprecated Replaced by {@link ScaDeviceManagerMergeDevicesCommand}
 	 */
+	@Deprecated
 	protected EClass getType(Device dev) {
 		EClass type = ScaPackage.Literals.SCA_DEVICE;
 		if (dev._is_a(ExecutableDeviceHelper.id())) {
@@ -1676,10 +1685,14 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 
 	/**
 	 * @since 18.0
+	 * @deprecated Replaced by {@link ScaDeviceManagerMergeDevicesCommand}
 	 */
+	@Deprecated
 	protected ScaDevice< ? > createType(EClass type) {
 		return (ScaDevice< ? >) ScaFactory.eINSTANCE.create(type);
 	}
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * <!-- begin-user-doc -->

@@ -682,9 +682,18 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 		// BEGIN GENERATED CODE
 	}
 
+	// END GENERATED CODE
+
+	public void testGetComponentInstantiation() {
+		// The component instantiation should have been found and set by fetchIdentifier() already
+		Assert.assertNotNull(getFixture().getComponentInstantiation());
+	}
+
 	@Override
 	protected String getRepId() {
 		return DeviceHelper.id();
 	}
+
+	// BEGIN GENERATED CODE
 
 } // ScaDeviceTest

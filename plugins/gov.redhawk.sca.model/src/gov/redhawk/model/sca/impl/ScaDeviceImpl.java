@@ -33,6 +33,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
+import mil.jpeojtrs.sca.dcd.DcdComponentPlacement;
+import mil.jpeojtrs.sca.dcd.DcdPartitioning;
+import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -42,11 +46,14 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectWithInverseEList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.omg.CORBA.SystemException;
 
@@ -627,19 +634,18 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		// BEGIN GENERATED CODE
 	}
 
+	// END GENERATED CODE
+
 	@Override
 	protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
-		// END GENERATED CODE
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
 		super.internalFetchChildren(subMonitor.newChild(1));
 		internalFetchAggregateDevices(subMonitor.newChild(1));
 		subMonitor.done();
-		// BEGIN GENERATED CODE
 	}
 
 	@Override
 	protected void notifyChanged(Notification msg) {
-		// END GENERATED CODE
 		super.notifyChanged(msg);
 		if (msg.isTouch()) {
 			return;
@@ -661,8 +667,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		default:
 			break;
 		}
-		// BEGIN GENERATED CODE
 	}
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -673,10 +680,19 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 */
 	@Override
 	public EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor) {
+		// END GENERATED CODE
 		return fetchAggregateDevices(monitor, RefreshDepth.SELF);
+		// BEGIN GENERATED CODE
 	}
 
+	// END GENERATED CODE
+
 	private final VersionedFeature adminStateFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE__ADMIN_STATE);
+	private final VersionedFeature labelFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE__LABEL);
+	private final VersionedFeature opStateFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE__OPERATIONAL_STATE);
+	private final VersionedFeature usageStateFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE__USAGE_STATE);
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -713,8 +729,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		return getAdminState();
 		// BEGIN GENERATED CODE
 	}
-
-	private final VersionedFeature labelFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE__LABEL);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -753,8 +767,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		// BEGIN GENERATED CODE
 	}
 
-	private final VersionedFeature opStateFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE__OPERATIONAL_STATE);
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
@@ -788,8 +800,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		return getOperationalState();
 		// BEGIN GENERATED CODE
 	}
-
-	private final VersionedFeature usageStateFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE__USAGE_STATE);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -977,14 +987,14 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		return componentInstantiationESet;
 	}
 
+	// END GENERATED CODE
+
 	/**
 	 * @since 14.0
 	 */
 	@Override
 	public AdminType adminState() {
-		// END GENERATED CODE
 		return getAdminState();
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -992,13 +1002,11 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 */
 	@Override
 	public void adminState(final AdminType newAdminState) {
-		// END GENERATED CODE
 		D device = fetchNarrowedObject(null);
 		if (device == null) {
 			throw new IllegalStateException("CORBA Object is Null");
 		}
 		device.adminState(newAdminState);
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -1006,13 +1014,11 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 */
 	@Override
 	public boolean allocateCapacity(final DataType[] capacities) throws InvalidCapacity, InvalidState, InsufficientCapacity {
-		// END GENERATED CODE
 		D device = fetchNarrowedObject(null);
 		if (device == null) {
 			throw new IllegalStateException("CORBA Object is Null");
 		}
 		return device.allocateCapacity(capacities);
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -1020,13 +1026,11 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 */
 	@Override
 	public AggregateDevice compositeDevice() {
-		// END GENERATED CODE
 		D device = fetchNarrowedObject(null);
 		if (device == null) {
 			throw new IllegalStateException("CORBA Object is Null");
 		}
 		return device.compositeDevice();
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -1034,14 +1038,14 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 */
 	@Override
 	public void deallocateCapacity(final DataType[] capacities) throws InvalidCapacity, InvalidState {
-		// END GENERATED CODE
 		D device = fetchNarrowedObject(null);
 		if (device == null) {
 			throw new IllegalStateException("CORBA Object is Null");
 		}
 		device.deallocateCapacity(capacities);
-		// BEGIN GENERATED CODE
 	}
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1250,11 +1254,11 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		return result.toString();
 	}
 
+	// END GENERATED CODE
+
 	@Override
 	public String label() {
-		// END GENERATED CODE
 		return getLabel();
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -1262,16 +1266,12 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 */
 	@Override
 	public OperationalType operationalState() {
-		// END GENERATED CODE
 		return getOperationalState();
-		// BEGIN GENERATED CODE
 	}
 
 	@Override
 	public String softwareProfile() {
-		// END GENERATED CODE
 		return getProfile();
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -1279,9 +1279,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 */
 	@Override
 	public UsageType usageState() {
-		// END GENERATED CODE
 		return getUsageState();
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -1290,9 +1288,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	@SuppressWarnings("unchecked")
 	@Override
 	protected D narrow(final org.omg.CORBA.Object obj) {
-		// END GENERATED CODE
 		return (D) DeviceHelper.narrow(obj);
-		// BEGIN GENERATED CODE
 	}
 
 	@Override
@@ -1346,6 +1342,8 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		return getProfileURI();
 	}
 
+	// BEGIN GENERATED CODE
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
@@ -1355,6 +1353,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 */
 	@Override
 	public EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor, RefreshDepth depth) {
+		// END GENERATED CODE
 		if (isDisposed()) {
 			return ECollections.emptyEList();
 		}
@@ -1384,6 +1383,56 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		} else {
 			return ECollections.emptyEList();
 		}
+		// BEGIN GENERATED CODE
 	}
+
+	// END GENERATED CODE
+
+	@Override
+	public String fetchIdentifier(IProgressMonitor monitor) {
+		String identifier = super.fetchIdentifier(monitor);
+
+		// Also check if the component instantiation from the DCD has/can be set. This should be a fast operation
+		// as it only relies on information that is present.
+		if (!isSetComponentInstantiation() && identifier != null) {
+			fetchComponentInstantiation(identifier);
+		}
+
+		return identifier;
+	}
+
+	private void fetchComponentInstantiation(String identifier) {
+		ScaDeviceManager devMgr = getDevMgr();
+		if (devMgr == null) {
+			return;
+		}
+		DeviceConfiguration dcd = devMgr.getProfileObj();
+		if (dcd == null) {
+			return;
+		}
+		for (TreeIterator<EObject> iterator = EcoreUtil.getAllContents(dcd, false); iterator.hasNext();) {
+			EObject obj = iterator.next();
+			if (obj instanceof DcdPartitioning || obj instanceof DcdComponentPlacement) {
+				continue;
+			} else if (obj instanceof DcdComponentInstantiation) {
+				DcdComponentInstantiation instance = (DcdComponentInstantiation) obj;
+				if (identifier.equals(instance.getId())) {
+					ScaModelCommand command = new SetLocalAttributeCommand(this, instance, ScaPackage.Literals.SCA_DEVICE__COMPONENT_INSTANTIATION, null);
+					ScaModelCommand.execute(this, command);
+					return;
+				}
+				iterator.prune();
+			} else {
+				iterator.prune();
+			}
+		}
+
+		// The componentInstantiation cannot be found
+		IStatus status = new Status(IStatus.ERROR, ScaModelPlugin.ID, "Cannot locate componentInstantiation in DCD XML");
+		ScaModelCommand command = new SetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DEVICE__COMPONENT_INSTANTIATION, status);
+		ScaModelCommand.execute(this, command);
+	}
+
+	// BEGIN GENERATED CODE
 
 } // ScaDeviceImpl
