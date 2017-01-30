@@ -481,6 +481,29 @@ public class JavaFileSystemTest {
 	}
 
 	@Test
+	public void list_withSymlinkToUnreadable() throws IOException, FileException, InvalidFileName {
+		assumeNonRootUser();
+
+		// Create a symlink that point to a file that we can't read
+		Path pathDir = Files.createTempDirectory(JavaFileSystemTest.class.getSimpleName());
+		Path symLink = Files.createSymbolicLink(pathDir.resolve("symlink"), new File("/root/insideroot").toPath());
+
+		try {
+			FileInformationType[] infos = getFileSystem().list(pathDir.toString() + "/*");
+			Assert.assertNotNull(infos);
+			Assert.assertEquals(1, infos.length);
+			assertFileInformation(infos[0], "symlink", FileType.PLAIN, true, false);
+			/*
+			Assert.assertEquals("symlink", infos[0].name);
+			Assert.assertEquals(FileType._PLAIN, infos[0].kind.value());
+			*/
+		} finally {
+			Files.delete(symLink);
+			Files.delete(pathDir);
+		}
+	}
+
+	@Test
 	public void list_specialChars() throws IOException, FileException, InvalidFileName {
 		Path specialCharsFile = Files.createTempFile(JavaFileSystemTest.class.getSimpleName(), "][}{.tmp");
 
