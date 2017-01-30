@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -77,6 +78,8 @@ import CF.DevicePackage.UsageType;
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getUsageState <em>Usage State</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getParentDevice <em>Parent Device</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getDevMgr <em>Dev Mgr</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getComponentInstantiation <em>Component
+ *        Instantiation</em>}</li>
  *        </ul>
  *
  * @generated
@@ -219,6 +222,28 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * @ordered
 	 */
 	protected ScaDevice< ? > parentDevice;
+
+	/**
+	 * The cached value of the '{@link #getComponentInstantiation() <em>Component Instantiation</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * @since 20.4
+	 * <!-- end-user-doc -->
+	 * 
+	 * @see #getComponentInstantiation()
+	 * @generated
+	 * @ordered
+	 */
+	protected DcdComponentInstantiation componentInstantiation;
+	/**
+	 * This is true if the Component Instantiation reference has been set.
+	 * <!-- begin-user-doc -->
+	 * @since 20.4
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean componentInstantiationESet;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -877,6 +902,82 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	}
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.4
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public DcdComponentInstantiation getComponentInstantiation() {
+		if (componentInstantiation != null && componentInstantiation.eIsProxy()) {
+			InternalEObject oldComponentInstantiation = (InternalEObject) componentInstantiation;
+			componentInstantiation = (DcdComponentInstantiation) eResolveProxy(oldComponentInstantiation);
+			if (componentInstantiation != oldComponentInstantiation) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ScaPackage.SCA_DEVICE__COMPONENT_INSTANTIATION, oldComponentInstantiation,
+						componentInstantiation));
+			}
+		}
+		return componentInstantiation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.4
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public DcdComponentInstantiation basicGetComponentInstantiation() {
+		return componentInstantiation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.4
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setComponentInstantiation(DcdComponentInstantiation newComponentInstantiation) {
+		DcdComponentInstantiation oldComponentInstantiation = componentInstantiation;
+		componentInstantiation = newComponentInstantiation;
+		boolean oldComponentInstantiationESet = componentInstantiationESet;
+		componentInstantiationESet = true;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DEVICE__COMPONENT_INSTANTIATION, oldComponentInstantiation,
+				componentInstantiation, !oldComponentInstantiationESet));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.4
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void unsetComponentInstantiation() {
+		DcdComponentInstantiation oldComponentInstantiation = componentInstantiation;
+		boolean oldComponentInstantiationESet = componentInstantiationESet;
+		componentInstantiation = null;
+		componentInstantiationESet = false;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DEVICE__COMPONENT_INSTANTIATION, oldComponentInstantiation, null,
+				oldComponentInstantiationESet));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.4
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public boolean isSetComponentInstantiation() {
+		return componentInstantiationESet;
+	}
+
+	/**
 	 * @since 14.0
 	 */
 	@Override
@@ -1006,6 +1107,10 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 			if (resolve)
 				return getDevMgr();
 			return basicGetDevMgr();
+		case ScaPackage.SCA_DEVICE__COMPONENT_INSTANTIATION:
+			if (resolve)
+				return getComponentInstantiation();
+			return basicGetComponentInstantiation();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1039,6 +1144,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		case ScaPackage.SCA_DEVICE__PARENT_DEVICE:
 			setParentDevice((ScaDevice< ? >) newValue);
 			return;
+		case ScaPackage.SCA_DEVICE__COMPONENT_INSTANTIATION:
+			setComponentInstantiation((DcdComponentInstantiation) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1070,6 +1178,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		case ScaPackage.SCA_DEVICE__PARENT_DEVICE:
 			setParentDevice((ScaDevice< ? >) null);
 			return;
+		case ScaPackage.SCA_DEVICE__COMPONENT_INSTANTIATION:
+			unsetComponentInstantiation();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1097,6 +1208,8 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 			return parentDevice != null;
 		case ScaPackage.SCA_DEVICE__DEV_MGR:
 			return basicGetDevMgr() != null;
+		case ScaPackage.SCA_DEVICE__COMPONENT_INSTANTIATION:
+			return isSetComponentInstantiation();
 		}
 		return super.eIsSet(featureID);
 	}

@@ -46,8 +46,9 @@ import CF.InvalidObjectReference;
  *              </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManager()
- * @model superTypes=
- *        "gov.redhawk.model.sca.ScaPropertyContainer<mil.jpeojtrs.sca.cf.DeviceManager, mil.jpeojtrs.sca.dcd.DeviceConfiguration> mil.jpeojtrs.sca.cf.DeviceManagerOperations gov.redhawk.model.sca.ScaPortContainer"
+ * @model superTypes="gov.redhawk.model.sca.ScaPropertyContainer<mil.jpeojtrs.sca.cf.DeviceManager,
+ *        mil.jpeojtrs.sca.dcd.DeviceConfiguration> mil.jpeojtrs.sca.cf.DeviceManagerOperations
+ *        gov.redhawk.model.sca.ScaPortContainer"
  *        extendedMetaData="name='ScaDeviceManager' kind='elementOnly'"
  * @generated
  */
@@ -167,8 +168,8 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	void unsetAllDevices();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDeviceManager#getAllDevices
-	 * <em>All Devices</em>}' containment reference list is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDeviceManager#getAllDevices <em>All
+	 * Devices</em>}' containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -230,8 +231,8 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	void unsetFileSystem();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDeviceManager#getFileSystem
-	 * <em>File System</em>}' containment reference is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDeviceManager#getFileSystem <em>File
+	 * System</em>}' containment reference is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -326,8 +327,8 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	void unsetIdentifier();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDeviceManager#getIdentifier <em>Identifier</em>
-	 * }' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDeviceManager#getIdentifier
+	 * <em>Identifier</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 

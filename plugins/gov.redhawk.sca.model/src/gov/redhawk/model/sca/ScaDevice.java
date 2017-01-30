@@ -20,6 +20,7 @@ import CF.DeviceOperations;
 import CF.DevicePackage.AdminType;
 import CF.DevicePackage.OperationalType;
 import CF.DevicePackage.UsageType;
+import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 
 /**
  * <!-- begin-user-doc -->
@@ -39,6 +40,8 @@ import CF.DevicePackage.UsageType;
  *              <li>{@link gov.redhawk.model.sca.ScaDevice#getUsageState <em>Usage State</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaDevice#getParentDevice <em>Parent Device</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaDevice#getDevMgr <em>Dev Mgr</em>}</li>
+ *              <li>{@link gov.redhawk.model.sca.ScaDevice#getComponentInstantiation <em>Component
+ *              Instantiation</em>}</li>
  *              </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDevice()
@@ -52,8 +55,8 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	/**
 	 * Returns the value of the '<em><b>Child Devices</b></em>' reference list.
 	 * The list contents are of type {@link gov.redhawk.model.sca.ScaDevice}&lt;?>.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDevice#getParentDevice
-	 * <em>Parent Device</em>}'.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDevice#getParentDevice <em>Parent
+	 * Device</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Child Devices</em>' reference list isn't clear, there really should be more of a
@@ -269,8 +272,8 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	void unsetOperationalState();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDevice#getOperationalState
-	 * <em>Operational State</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDevice#getOperationalState <em>Operational
+	 * State</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -345,8 +348,8 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 
 	/**
 	 * Returns the value of the '<em><b>Parent Device</b></em>' reference.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDevice#getChildDevices
-	 * <em>Child Devices</em>}'.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDevice#getChildDevices <em>Child
+	 * Devices</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Parent Device</em>' reference isn't clear, there really should be more of a
@@ -389,6 +392,69 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * @generated
 	 */
 	ScaDeviceManager getDevMgr();
+
+	/**
+	 * Returns the value of the '<em><b>Component Instantiation</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * Gets the component instantiation for this device (from the DCD XML).
+	 * </p>
+	 * @since 20.4
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Component Instantiation</em>' reference.
+	 * @see #isSetComponentInstantiation()
+	 * @see #unsetComponentInstantiation()
+	 * @see #setComponentInstantiation(DcdComponentInstantiation)
+	 * @see gov.redhawk.model.sca.ScaPackage#getScaDevice_ComponentInstantiation()
+	 * @model unsettable="true" required="true" transient="true"
+	 * @generated
+	 */
+	DcdComponentInstantiation getComponentInstantiation();
+
+	/**
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getComponentInstantiation <em>Component
+	 * Instantiation</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * @since 20.4
+	 * <!-- end-user-doc -->
+	 * 
+	 * @param value the new value of the '<em>Component Instantiation</em>' reference.
+	 * @see #isSetComponentInstantiation()
+	 * @see #unsetComponentInstantiation()
+	 * @see #getComponentInstantiation()
+	 * @generated
+	 */
+	void setComponentInstantiation(DcdComponentInstantiation value);
+
+	/**
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getComponentInstantiation <em>Component
+	 * Instantiation</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * @since 20.4
+	 * <!-- end-user-doc -->
+	 * 
+	 * @see #isSetComponentInstantiation()
+	 * @see #getComponentInstantiation()
+	 * @see #setComponentInstantiation(DcdComponentInstantiation)
+	 * @generated
+	 */
+	void unsetComponentInstantiation();
+
+	/**
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDevice#getComponentInstantiation <em>Component
+	 * Instantiation</em>}' reference is set.
+	 * <!-- begin-user-doc -->
+	 * @since 20.4
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return whether the value of the '<em>Component Instantiation</em>' reference is set.
+	 * @see #unsetComponentInstantiation()
+	 * @see #getComponentInstantiation()
+	 * @see #setComponentInstantiation(DcdComponentInstantiation)
+	 * @generated
+	 */
+	boolean isSetComponentInstantiation();
 
 	/**
 	 * <!-- begin-user-doc -->

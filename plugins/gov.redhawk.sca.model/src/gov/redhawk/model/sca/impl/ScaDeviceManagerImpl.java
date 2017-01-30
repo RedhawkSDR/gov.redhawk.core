@@ -100,7 +100,7 @@ import CF.ExecutableDeviceHelper;
 import CF.FileSystem;
 import CF.InvalidObjectReference;
 import CF.LoadableDeviceHelper;
-import CF.PortSupplierOperations;
+import CF.PortSetOperations;
 import CF.PropertiesHolder;
 import CF.UnknownProperties;
 import CF.DeviceManagerPackage.ServiceType;
@@ -135,7 +135,7 @@ import CF.PropertySetPackage.PartialConfiguration;
  *
  * @generated
  */
-public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager, DeviceConfiguration>implements ScaDeviceManager {
+public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager, DeviceConfiguration> implements ScaDeviceManager {
 
 	/**
 	 * The cached value of the '{@link #getPorts() <em>Ports</em>}' containment reference list.
@@ -1418,7 +1418,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class< ? > baseClass) {
-		if (baseClass == PortSupplierOperations.class) {
+		if (baseClass == PortSetOperations.class) {
 			switch (derivedFeatureID) {
 			default:
 				return -1;
@@ -1449,7 +1449,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class< ? > baseClass) {
-		if (baseClass == PortSupplierOperations.class) {
+		if (baseClass == PortSetOperations.class) {
 			switch (baseFeatureID) {
 			default:
 				return -1;

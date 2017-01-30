@@ -390,6 +390,12 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 			final ScaPort< ? , ? > port = getFixture().getPorts().get(0);
 			Assert.assertEquals(port.getObj(), getFixture().getPort(port.getName()));
 		}
+		try {
+			getFixture().getPort("nonexistentport");
+			Assert.fail("Expected UnknownPort");
+		} catch (UnknownPort e) {
+			// PASS
+		}
 		// BEGIN GENERATED CODE
 	}
 

@@ -59,6 +59,7 @@ public class ScaDeviceItemProvider extends ScaAbstractComponentItemProvider {
 			addOperationalStatePropertyDescriptor(object);
 			addUsageStatePropertyDescriptor(object);
 			addParentDevicePropertyDescriptor(object);
+			addComponentInstantiationPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -125,6 +126,19 @@ public class ScaDeviceItemProvider extends ScaAbstractComponentItemProvider {
 			getString("_UI_ScaDevice_parentDevice_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_ScaDevice_parentDevice_feature", "_UI_ScaDevice_type"),
 			ScaPackage.Literals.SCA_DEVICE__PARENT_DEVICE, false, false, true, null, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Component Instantiation feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addComponentInstantiationPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaDevice_componentInstantiation_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaDevice_componentInstantiation_feature", "_UI_ScaDevice_type"),
+			ScaPackage.Literals.SCA_DEVICE__COMPONENT_INSTANTIATION, false, false, true, null, null, null));
 	}
 
 	/**

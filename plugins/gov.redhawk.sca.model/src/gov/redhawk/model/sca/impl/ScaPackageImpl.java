@@ -1091,6 +1091,17 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 20.4
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getScaDevice_ComponentInstantiation() {
+		return (EReference) scaDeviceEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -2171,9 +2182,9 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.2
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.2
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getWaveformsContainer() {
@@ -2182,9 +2193,9 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.2
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.2
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getWaveformsContainer_SubContainers() {
@@ -2193,9 +2204,9 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.2
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.2
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getWaveformsContainer_Waveforms() {
@@ -2204,9 +2215,9 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.2
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.2
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getWaveformsContainer_ContainerName() {
@@ -2510,6 +2521,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		createEAttribute(scaDeviceEClass, SCA_DEVICE__USAGE_STATE);
 		createEReference(scaDeviceEClass, SCA_DEVICE__PARENT_DEVICE);
 		createEReference(scaDeviceEClass, SCA_DEVICE__DEV_MGR);
+		createEReference(scaDeviceEClass, SCA_DEVICE__COMPONENT_INSTANTIATION);
 
 		scaDeviceManagerEClass = createEClass(SCA_DEVICE_MANAGER);
 		createEAttribute(scaDeviceManagerEClass, SCA_DEVICE_MANAGER__DEVICES);
@@ -3116,6 +3128,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 			!IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getScaDevice_DevMgr(), this.getScaDeviceManager(), null, "devMgr", null, 0, 1, ScaDevice.class, IS_TRANSIENT, IS_VOLATILE,
 			!IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getScaDevice_ComponentInstantiation(), theDcdPackage.getDcdComponentInstantiation(), null, "componentInstantiation", null, 1, 1,
+			ScaDevice.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(scaDeviceEClass, null, "fetchAggregateDevices", 0, -1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);

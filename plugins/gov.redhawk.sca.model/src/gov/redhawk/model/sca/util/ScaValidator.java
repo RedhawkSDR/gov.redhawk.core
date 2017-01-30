@@ -678,9 +678,9 @@ public class ScaValidator extends EObjectValidator {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.2
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.2
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean validateWaveformsContainer(WaveformsContainer waveformsContainer, DiagnosticChain diagnostics, Map<Object, Object> context) {
