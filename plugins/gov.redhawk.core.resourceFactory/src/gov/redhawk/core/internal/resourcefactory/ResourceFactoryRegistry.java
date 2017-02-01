@@ -40,11 +40,13 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 
+import CF.FileException;
 import CF.FileSystem;
 import CF.InvalidFileName;
 import CF.FileManagerPackage.InvalidFileSystem;
 import CF.FileManagerPackage.MountPointAlreadyExists;
 import CF.FileManagerPackage.NonExistentMount;
+import CF.FileSystemPackage.FileType;
 
 /**
  * The resource factory registry instantiates instances of resource factories ({@link IResourceFactoryProvider})
@@ -165,6 +167,16 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 
 	private void addFileSystemMount(FileSystem fs, String mountPoint) {
 		try {
+			// Only mount the file system if the mount point doesn't exist or is a directory with no files
+			if (fileManager.exists(mountPoint)) {
+				try {
+					if (fileManager.list(mountPoint)[0].kind.value() != FileType.DIRECTORY.value() || fileManager.list(mountPoint + "/*").length != 0) {
+						return;
+					}
+				} catch (FileException e) {
+					return;
+				}
+			}
 			fileManager.mount(mountPoint, fs);
 			mountPoints.add(mountPoint);
 		} catch (InvalidFileName e) {
