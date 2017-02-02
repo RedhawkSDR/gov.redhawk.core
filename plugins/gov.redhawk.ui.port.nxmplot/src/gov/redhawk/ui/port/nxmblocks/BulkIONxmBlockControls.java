@@ -62,6 +62,7 @@ public class BulkIONxmBlockControls {
 		this.dataBindingCtx = dataBindingCtx;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void createControls(final Composite container) {
 		container.setLayout(new GridLayout(2, false));
 		Label label;
@@ -128,6 +129,7 @@ public class BulkIONxmBlockControls {
 		initDataBindings();
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initDataBindings() {
 		Binding bindingValue;
 

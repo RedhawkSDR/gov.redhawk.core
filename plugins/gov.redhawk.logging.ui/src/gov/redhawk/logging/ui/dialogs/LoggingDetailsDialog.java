@@ -12,6 +12,7 @@ package gov.redhawk.logging.ui.dialogs;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -82,8 +83,12 @@ public class LoggingDetailsDialog extends TitleAreaDialog {
 		});
 
 		DataBindingContext dbc = new DataBindingContext();
-		dbc.bindValue(ViewerProperties.singleSelection().observe(levelViewer), PojoProperties.value("logLevel").observe(this)); //$NON-NLS-1$
-		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(loggerText), PojoProperties.value("logger").observe(this)); //$NON-NLS-1$
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		IObservableValue logLevelModelObservable = PojoProperties.value("logLevel").observe(this);
+		dbc.bindValue(ViewerProperties.singleSelection().observe(levelViewer), logLevelModelObservable); //$NON-NLS-1$
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		IObservableValue loggerModelObservable = PojoProperties.value("logger").observe(this);
+		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(loggerText), loggerModelObservable); //$NON-NLS-1$
 
 		return parent;
 	}

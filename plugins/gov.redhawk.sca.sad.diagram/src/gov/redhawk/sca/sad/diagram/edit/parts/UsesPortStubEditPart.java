@@ -57,7 +57,7 @@ public class UsesPortStubEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.part
 	private static final Color EXTERNAL_PORT_BACKGROUND = new Color(null, 0, 0, 194);
 	private static final Color EXTERNAL_PORT_FOREGROUND = UsesPortStubFigure.getDefaultForegroundColor();
 
-	private IObservableList observer;
+	private IObservableList< ? > observer;
 
 	public UsesPortStubEditPart(final View view) {
 		super(view);
@@ -99,6 +99,7 @@ public class UsesPortStubEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.part
 		return this.editPartHelper.getDragTracker(request);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected void addSemanticListeners() {
 		super.addSemanticListeners();

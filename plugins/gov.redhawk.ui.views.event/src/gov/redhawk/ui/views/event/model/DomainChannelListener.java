@@ -44,7 +44,7 @@ public class DomainChannelListener extends ChannelListener {
 	private PushConsumer ref;
 	private String registrationId;
 
-	public DomainChannelListener(IObservableList history, ScaDomainManager domain, String channel) {
+	public DomainChannelListener(IObservableList<Event> history, ScaDomainManager domain, String channel) {
 		super(history, channel);
 		this.domain = domain;
 	}

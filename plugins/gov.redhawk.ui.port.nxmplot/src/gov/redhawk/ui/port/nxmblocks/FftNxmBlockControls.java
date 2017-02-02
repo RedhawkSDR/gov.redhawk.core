@@ -148,6 +148,7 @@ public class FftNxmBlockControls {
 		initDataBindings();
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initDataBindings() {
 		Binding bindingValue;
 

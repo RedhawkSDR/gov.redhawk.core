@@ -156,19 +156,22 @@ public class StructSequencePropertyDetailsPage extends BasicStructPropertyDetail
 		this.sequence = (StructSequence) input;
 
 		this.structSequenceComposite.getStructValueViewer().setInput(this.sequence);
+		@SuppressWarnings("rawtypes")
 		final IObservableValue target = WidgetProperties.enabled().observe(this.structSequenceComposite.getAddButton());
 
 		final IEMFListProperty property = EMFProperties.list(FeaturePath.fromList(PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT,
 		        PrfPackage.Literals.STRUCT__SIMPLE));
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		final IObservableList list = property.observe(this.sequence);
 
 		final IEMFListProperty seqProperty = EMFProperties.list(FeaturePath.fromList(PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT,
 		        PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE));
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		final IObservableList seqList = seqProperty.observe(this.sequence);
 	
-		final IObservableValue value = new ComputedValue() {
+		final IObservableValue<Boolean> value = new ComputedValue<Boolean>() {
 			@Override
-			protected Object calculate() {
+			protected Boolean calculate() {
 				return list.isEmpty() && seqList.isEmpty();
 			}
 		};

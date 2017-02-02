@@ -65,6 +65,7 @@ public class PlotWizardPage extends WizardPage {
 		setDescription("Provide the initial settings for the new plot.");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void createControl(Composite root) {
 		Composite parent = new Composite(root, SWT.None);

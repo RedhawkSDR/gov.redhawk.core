@@ -74,7 +74,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * all registered IPlotWidgetListener listeners
 	 */
 	private class PlotMessageHandler implements MessageHandler {
-		private final ListenerList plotListeners = new ListenerList(ListenerList.IDENTITY);
+		private final ListenerList<IPlotWidgetListener> plotListeners = new ListenerList<IPlotWidgetListener>(ListenerList.IDENTITY);
 
 		@Override
 		public int processMessage(Message msg) {
@@ -183,7 +183,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 
 	private final PlotMessageHandler plotMessageHandler = new PlotMessageHandler();
 
-	private final ListenerList messageHandlers = new ListenerList(ListenerList.IDENTITY);
+	private final ListenerList<MessageHandler> messageHandlers = new ListenerList<MessageHandler>(ListenerList.IDENTITY);
 
 	private PlotType plotType;
 

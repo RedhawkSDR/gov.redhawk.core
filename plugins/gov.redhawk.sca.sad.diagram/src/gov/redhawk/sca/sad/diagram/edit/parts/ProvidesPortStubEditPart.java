@@ -51,7 +51,7 @@ public class ProvidesPortStubEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.
 
 	private final ProvidesPortStubEditPartHelper editPartHelper = new ProvidesPortStubEditPartHelper(this);
 
-	private IObservableList observer;
+	private IObservableList< ? > observer;
 
 	public ProvidesPortStubEditPart(final View view) {
 		super(view);
@@ -157,6 +157,7 @@ public class ProvidesPortStubEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.
 		super.setVisibility(vis);
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected void addSemanticListeners() {
 		super.addSemanticListeners();

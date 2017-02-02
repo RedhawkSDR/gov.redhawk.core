@@ -27,6 +27,7 @@ import mil.jpeojtrs.sca.prf.Values;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
@@ -133,7 +134,9 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		// Values
 		final IEMFEditValueProperty valueProp = EMFEditProperties.value(getEditingDomain(), FeaturePath.fromList(PrfPackage.Literals.SIMPLE_SEQUENCE__VALUES));
 		final TableViewer valuesViewer = this.composite.getValuesViewer();
-		retVal.add(context.bindValue(ViewersObservables.observeInput(valuesViewer), valueProp.observe(input)));
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		IObservableValue modelObservableValue = valueProp.observe(input);
+		retVal.add(context.bindValue(ViewersObservables.observeInput(valuesViewer), modelObservableValue));
 
 		if (this.isEditable()) {
 			this.composite.getValueColumn().setEditingSupport(new SimpleSequenceValueEditingSupport(this.input.getType(), this.input.isComplex(), valuesViewer));

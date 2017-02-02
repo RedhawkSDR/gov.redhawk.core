@@ -47,7 +47,7 @@ public class SCAObservables {
 		//Prevent instantiation
 	}
 	
-	public static IObservableValue observeSimpleProperty(final ScaComponent component, final String id) {
+	public static IObservableValue< ? > observeSimpleProperty(final ScaComponent component, final String id) {
 		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(component);
 		return observeSimpleProperty(domain, component, id);
 		
@@ -56,7 +56,7 @@ public class SCAObservables {
 	/**
 	 * @since 1.2
 	 */
-	public static IObservableValue observeSimpleProperty(EditingDomain domain, final ScaComponent component, final String id) {
+	public static IObservableValue< ? > observeSimpleProperty(EditingDomain domain, final ScaComponent component, final String id) {
 		if (component != null && !component.isDisposed() && id != null) {
 			final ScaSimpleProperty simple = (ScaSimpleProperty) component.getProperty(id);
 			return SCAObservables.observeSimpleProperty(simple);
@@ -68,7 +68,7 @@ public class SCAObservables {
 	/**
 	 * @since 1.2
 	 */
-	public static IObservableValue observeSimpleProperty(EditingDomain domain, final ScaSimpleProperty simple) {
+	public static IObservableValue< ? > observeSimpleProperty(EditingDomain domain, final ScaSimpleProperty simple) {
 		if (simple != null) {
 			final EDataType type;
 
@@ -105,7 +105,7 @@ public class SCAObservables {
 		return null;
 	}
 
-	public static IObservableValue observeSimpleProperty(final ScaSimpleProperty simple) {
+	public static IObservableValue< ? > observeSimpleProperty(final ScaSimpleProperty simple) {
 		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(simple);
 		return observeSimpleProperty(domain, simple);
 	}

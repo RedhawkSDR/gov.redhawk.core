@@ -31,7 +31,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -107,7 +107,7 @@ public class BrowsePropertiesWizardPage extends WizardPage {
 
 		this.propertyTree.setContentProvider(contentProvider);
 		this.propertyTree.setLabelProvider(new PropertiesBrowserLabelProvider(myAdapterFactory));
-		this.propertyTree.setSorter(new ViewerSorter());
+		this.propertyTree.setComparator(new ViewerComparator());
 		this.propertyTree.addSelectionChangedListener(new ISelectionChangedListener() {
 
 			@Override

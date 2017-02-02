@@ -49,8 +49,8 @@ public class EmfValidationStatusProvider extends MultiValidator {
 	private final EObject eObject;
 	private final DataBindingContext dataBindingContext;
 	private final AdapterFactory adapterFactory;
-	private final IObservableValue validationStatus;
-	private IObservableValue unmodifiableValidationStatus;
+	private final IObservableValue<IStatus> validationStatus;
+	private IObservableValue<IStatus> unmodifiableValidationStatus;
 
 	/**
 	 * 
@@ -58,7 +58,7 @@ public class EmfValidationStatusProvider extends MultiValidator {
 	public EmfValidationStatusProvider(final EObject objectToValidate, final DataBindingContext context,
 	        final AdapterFactory factory) {
 		this.eObject = objectToValidate;
-		this.validationStatus = new WritableValue(Realm.getDefault(), ValidationStatus.ok(), IStatus.class);
+		this.validationStatus = new WritableValue<IStatus>(Realm.getDefault(), ValidationStatus.ok(), IStatus.class);
 		this.eObject.eAdapters().add(new EContentAdapter() {
 			/**
 			 * {@inheritDoc}
@@ -168,7 +168,7 @@ public class EmfValidationStatusProvider extends MultiValidator {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public IObservableValue getValidationStatus() {
+	public IObservableValue<IStatus> getValidationStatus() {
 		if (this.unmodifiableValidationStatus == null) {
 			myRevalidate();
 			this.unmodifiableValidationStatus = Observables.unmodifiableObservableValue(this.validationStatus);

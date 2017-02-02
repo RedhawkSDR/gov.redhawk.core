@@ -13,6 +13,7 @@ package gov.redhawk.sca.ui.singledomain;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.EventListener;
 
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.action.ControlContribution;
@@ -30,7 +31,7 @@ public class CustomControlItem  extends ControlContribution {
 	private static final String MOUSE_TRACK_LISTENER_CLASS_NAME = "org.eclipse.swt.events.MouseTrackListener";
 	private String text;
 	private TrackableLabel control;
-	private ListenerList deferredListeners = new ListenerList();
+	private ListenerList<EventListener> deferredListeners = new ListenerList<EventListener>();
 	private Composite parent;
 
 	public CustomControlItem(String text) {

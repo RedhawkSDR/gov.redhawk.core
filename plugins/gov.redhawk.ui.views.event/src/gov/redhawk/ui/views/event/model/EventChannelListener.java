@@ -36,7 +36,7 @@ public class EventChannelListener extends ChannelListener {
 	private PushConsumer ref;
 	private ProxyPushSupplier pushSupplier;
 
-	public EventChannelListener(IObservableList history, EventChannel eventChannel, String channel) {
+	public EventChannelListener(IObservableList<Event> history, EventChannel eventChannel, String channel) {
 		super(history, channel);
 		this.eventChannel = eventChannel;
 	}

@@ -395,6 +395,7 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 	public Binding bindMin(final DataBindingContext context, final Text minText) {
 		final IEMFEditValueProperty minProperty = EMFEditProperties.value(getEditingDomain(),
 			FeaturePath.fromList(this.property.getRange(), PrfPackage.Literals.RANGE__MIN));
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		final IObservableValue minObserver = minProperty.observe(this.input);
 		this.minBinding = context.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(),
 			((BasicSimplePropertyComposite) getComposite()).getMinText().getText()), minObserver, EMFEmptyStringToNullUpdateValueStrategy.INSTANCE, null);
@@ -404,6 +405,7 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 	public Binding bindMax(final DataBindingContext context, final Text maxText) {
 		final IEMFEditValueProperty maxProperty = EMFEditProperties.value(getEditingDomain(),
 			FeaturePath.fromList(this.property.getRange(), PrfPackage.Literals.RANGE__MAX));
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		final IObservableValue maxObserver = maxProperty.observe(this.input);
 		this.maxBinding = context.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(),
 			((BasicSimplePropertyComposite) getComposite()).getMaxText().getText()), maxObserver, EMFEmptyStringToNullUpdateValueStrategy.INSTANCE, null);

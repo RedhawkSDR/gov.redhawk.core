@@ -90,6 +90,7 @@ public class DomainEntryWizardPage extends WizardPage {
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void createControl(final Composite parent) {
 		final Composite container = new Composite(parent, SWT.NONE);

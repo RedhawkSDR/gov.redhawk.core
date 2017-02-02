@@ -57,8 +57,11 @@ import CF.PropertySetPackage.PartialConfiguration;
 public class ScaSimplePropertyControl {
 
 	public static final String FLASH_ID = "FLASH_ID";
+	@SuppressWarnings("rawtypes")
 	private final WritableValue localValue;
+	@SuppressWarnings("rawtypes")
 	private final WritableValue serverValue;
+	@SuppressWarnings("rawtypes")
 	private final WritableValue editingValue = new WritableValue();
 
 	private final ScaSimpleProperty property;
@@ -66,6 +69,7 @@ public class ScaSimplePropertyControl {
 	private boolean editing = false;
 	private boolean ignoreSet = false;
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ScaSimplePropertyControl(final Control control, final ScaSimpleProperty property) {
 		this.property = property;
 		final ScaSimpleProperty simpleProperty = property;
@@ -133,15 +137,15 @@ public class ScaSimplePropertyControl {
 		property.setRemoteValue(AnyUtils.toAny(value, property.getDefinition().getType().getLiteral(), property.getDefinition().isComplex()));
 	}
 
-	public IObservableValue getModel() {
+	public IObservableValue< ? > getModel() {
 		return this.localValue;
 	}
 
-	public IObservableValue getTarget() {
+	public IObservableValue< ? > getTarget() {
 		return this.serverValue;
 	}
 
-	public IObservableValue getEditingObserable() {
+	public IObservableValue< ? > getEditingObserable() {
 		return this.editingValue;
 	}
 

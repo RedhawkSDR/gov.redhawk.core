@@ -95,8 +95,11 @@ public class PlotNxmBlockControls {
 		initDataBindings();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void initDataBindings() {
+		@SuppressWarnings("rawtypes")
 		IObservableValue frameSizeWidgetValue = WidgetProperties.selection().observe(this.frameSizeField.getCombo());
+		@SuppressWarnings({ "rawtypes" })
 		IObservableValue frameSizeModelValue = PojoProperties.value(PlotNxmBlockSettings.PROP_FRAME_SIZE).observe(this.settings);
 		UpdateValueStrategy frameSizeTargetToModel = new UpdateValueStrategy();
 		frameSizeTargetToModel.setAfterGetValidator(new StringToIntegerValidator(FRAME_SIZE_FIELD_NAME, VALUE_USE_DEFAULT));

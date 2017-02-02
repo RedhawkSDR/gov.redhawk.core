@@ -62,7 +62,9 @@ public class SddsNxmBlockControls {
 	}
 
 	protected void addDataBindings() {
+		@SuppressWarnings({ "rawtypes" })
 		IObservableValue boTargetObservableValue = ViewerProperties.singleSelection().observe(this.dataByteOrderField);
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		IObservableValue boModelObservableValue = PojoProperties.value(SddsNxmBlockSettings.PROP_DATA_BYTE_ORDER).observe(this.settings);
 		dataBindingCtx.bindValue(boTargetObservableValue, boModelObservableValue);
 	}

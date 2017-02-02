@@ -161,6 +161,7 @@ public class FftNumAvgControls extends Composite {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void createPartControls(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
 

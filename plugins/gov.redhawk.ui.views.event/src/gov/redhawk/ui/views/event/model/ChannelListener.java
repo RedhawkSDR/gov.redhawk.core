@@ -22,10 +22,10 @@ import org.omg.CosEventComm.PushConsumerOperations;
 
 public abstract class ChannelListener implements PushConsumerOperations {
 
-	private IObservableList history;
+	private IObservableList<Event> history;
 	private String channel;
 
-	public ChannelListener(IObservableList history, String channel) {
+	public ChannelListener(IObservableList<Event> history, String channel) {
 		this.history = history;
 		this.channel = channel;
 	}

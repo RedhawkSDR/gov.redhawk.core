@@ -33,7 +33,7 @@ public class FormEntryBinder {
 	private final EditingDomain domain;
 	private final EStructuralFeature feature;
 	private final FormEntry entry;
-	private final IObservableValue input;
+	private final IObservableValue< ? > input;
 	private Binding binding;
 	private final DataBindingContext context;
 
@@ -48,7 +48,7 @@ public class FormEntryBinder {
 	 * @param form the form
 	 * @since 6.0
 	 */
-	public FormEntryBinder(final EditingDomain domain, final EStructuralFeature feature, final FormEntry entry, final IObservableValue input,
+	public FormEntryBinder(final EditingDomain domain, final EStructuralFeature feature, final FormEntry entry, final IObservableValue< ? > input,
 	        final DataBindingContext context) {
 		this.domain = domain;
 		this.feature = feature;

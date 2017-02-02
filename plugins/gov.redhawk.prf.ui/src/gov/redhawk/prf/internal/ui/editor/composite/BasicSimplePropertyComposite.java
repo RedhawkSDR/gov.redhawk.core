@@ -36,7 +36,6 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -281,7 +280,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 			}
 		});
 		this.typeViewer.setInput(PropertyValueType.values());
-		this.typeViewer.setSorter(new ViewerSorter());
+		this.typeViewer.setComparator(new ViewerComparator());
 		toolkit.adapt(this.typeViewer.getCombo());
 
 		this.typeViewer.getControl().setLayoutData(GridDataFactory.fillDefaults().span(1, 1).grab(true, false).create());

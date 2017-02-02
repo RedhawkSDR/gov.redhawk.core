@@ -27,6 +27,7 @@ import mil.jpeojtrs.sca.prf.PropertyConfigurationType;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.databinding.edit.EMFEditObservables;
@@ -92,7 +93,9 @@ public class SimplePropertyDetailsPage extends BasicSimplePropertyDetailsPage {
 		//Enumerations
 		if (getComposite().getEnumerationViewer() != null) {
 			final IEMFEditValueProperty enumProperty = EMFEditProperties.value(getEditingDomain(), FeaturePath.fromList(PrfPackage.Literals.SIMPLE__ENUMERATIONS));
-			retVal.add(dataBindingContext.bindValue(ViewersObservables.observeInput(getComposite().getEnumerationViewer()), enumProperty.observe(input)));
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			IObservableValue modelObservableValue = enumProperty.observe(input);
+			retVal.add(dataBindingContext.bindValue(ViewersObservables.observeInput(getComposite().getEnumerationViewer()), modelObservableValue));
 		}
 
 		return retVal;

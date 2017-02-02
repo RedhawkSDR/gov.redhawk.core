@@ -49,12 +49,10 @@ import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.ui.views.event.model.ChannelListener;
 import gov.redhawk.ui.views.event.model.DomainChannelListener;
+import gov.redhawk.ui.views.event.model.Event;
 import gov.redhawk.ui.views.event.model.EventChannelListener;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
-/**
- * 
- */
 public class EventView extends ViewPart implements ITabbedPropertySheetPageContributor {
 
 	public static final String ID = "gov.redhawk.ui.views.event.eventViewer";
@@ -116,7 +114,7 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 		};
 	};
 
-	private WritableList history = new WritableList();
+	private WritableList<Event> history = new WritableList<Event>();
 
 	private List<ChannelListener> channelListeners = new ArrayList<ChannelListener>();
 
@@ -128,17 +126,9 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 
 	private String eventChannelId;
 
-	/**
-	 * 
-	 */
 	public EventView() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
-	 */
 	@Override
 	public void createPartControl(Composite parent) {
 		parent.setLayout(GridLayoutFactory.fillDefaults().numColumns(1).create());
@@ -274,11 +264,6 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 		channelListeners.add(newListener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
-	 */
 	@Override
 	public void setFocus() {
 		if (viewer != null) {

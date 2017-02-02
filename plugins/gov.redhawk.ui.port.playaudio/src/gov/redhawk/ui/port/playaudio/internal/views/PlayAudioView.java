@@ -53,7 +53,7 @@ public class PlayAudioView extends ViewPart {
 	/** This is set when the view is being disposed */
 	private boolean isDisposed = false;
 	private ComposedAdapterFactory adapterFactory;
-	private WritableList connections = new WritableList();
+	private WritableList<AudioReceiver> connections = new WritableList<AudioReceiver>();
 
 	private PropertyChangeListener listener = new PropertyChangeListener() {
 
@@ -153,11 +153,11 @@ public class PlayAudioView extends ViewPart {
 		}
 		this.isDisposed = true;
 		adapterFactory.dispose();
-		final Object[] oldConnections = connections.toArray();
+		final AudioReceiver[] oldConnections = connections.toArray(new AudioReceiver[connections.size()]);
 		connections.clear();
 		if (oldConnections.length > 0) {
-			for (Object receiver : oldConnections) {
-				((AudioReceiver) receiver).dispose();
+			for (AudioReceiver receiver : oldConnections) {
+				receiver.dispose();
 			}
 		}
 		super.dispose();
@@ -212,8 +212,7 @@ public class PlayAudioView extends ViewPart {
 	 */
 	public void disconnectPort(final ScaUsesPort port) {
 		if (!this.isDisposed) {
-			for (Object obj : this.connections) {
-				final AudioReceiver receiver = (AudioReceiver) obj;
+			for (AudioReceiver receiver : this.connections) {
 				if (receiver.getPort() == port) {
 					disconnect(receiver);
 					return;

@@ -80,24 +80,24 @@ public class ConnectPortWizard extends Wizard {
 	private static class ConnectWizardPage extends WizardPage {
 
 		private class SourceTargetValidator extends ValidationStatusProvider implements PropertyChangeListener {
-			private final WritableValue status = new WritableValue();
-			private IObservableList list = new WritableList();
+			private final WritableValue<IStatus> status = new WritableValue<IStatus>();
+			private IObservableList<WritableValue<IStatus>> list = new WritableList<WritableValue<IStatus>>();
 			{
 				list.add(status);
 			}
 
 			@Override
-			public IObservableValue getValidationStatus() {
+			public IObservableValue<IStatus> getValidationStatus() {
 				return status;
 			}
 
 			@Override
-			public IObservableList getTargets() {
+			public IObservableList<WritableValue<IStatus>> getTargets() {
 				return list;
 			}
 
 			@Override
-			public IObservableList getModels() {
+			public IObservableList< ? > getModels() {
 				return null;
 			}
 
@@ -152,6 +152,7 @@ public class ConnectPortWizard extends Wizard {
 			pcs.removePropertyChangeListener(listener);
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public void createControl(Composite parent) {
 			Composite composite = new Composite(parent, SWT.None);

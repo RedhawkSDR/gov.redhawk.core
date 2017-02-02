@@ -404,6 +404,7 @@ public class PlaybackInfo extends Composite {
 	/**
 	 * This clears the text from all the textboxes.
 	 */
+	@SuppressWarnings("unchecked")
 	private void updateBindings() {
 		if (context != null) {
 			context.dispose();

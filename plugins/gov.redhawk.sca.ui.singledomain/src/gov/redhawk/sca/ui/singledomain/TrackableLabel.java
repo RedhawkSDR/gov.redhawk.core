@@ -35,7 +35,7 @@ public class TrackableLabel extends Composite {
 	 * For RCP, we add regular SWT Mouse Track listeners (external to this class),
 	 * which respond to local mouse events.
 	 */
-	private ListenerList listeners = new ListenerList();
+	private ListenerList<CustomMouseTrackListener> listeners = new ListenerList<CustomMouseTrackListener>();
 
 	private String mouseEnter;
 	private String mouseExit;
