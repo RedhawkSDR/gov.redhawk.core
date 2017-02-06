@@ -151,15 +151,7 @@ public class JavaFileSystem extends AbstractFileSystem {
 
 		// Special case - an empty pattern is the way you get info for the root directory itself
 		if (pattern.trim().isEmpty()) {
-			try {
-				return new FileInformationType[] { getFileInformationType(this.root.toPath()) };
-			} catch (SecurityException e) {
-				String errorMsg = String.format("%s: %s", "File system root", e.getMessage());
-				throw new FileException(ErrorNumberType.CF_EACCES, errorMsg);
-			} catch (IOException e) {
-				String errorMsg = String.format("%s: %s", "File system root", e.getMessage());
-				throw new FileException(ErrorNumberType.CF_EIO, errorMsg);
-			}
+			return new FileInformationType[] { getFileInformationType(this.root.toPath()) };
 		}
 
 		IPath pathWithPattern = new Path(pattern).makeUNC(false);
@@ -202,14 +194,12 @@ public class JavaFileSystem extends AbstractFileSystem {
 	}
 
 	/**
-	 * Gets a {@link CF.FileSystemPackage.FileInformationType} for the given <code>child</code> in the
-	 * <code>parent</code> directory.
-	 * @param parent
-	 * @param child
+	 * Gets a {@link CF.FileSystemPackage.FileInformationType} for the given path. If the target is unreadable, as
+	 * much informatino as possible will be returned.
+	 * @param file The file to return information for
 	 * @return
-	 * @throws IOException File attributes can't be accessed
 	 */
-	private FileInformationType getFileInformationType(java.nio.file.Path file) throws IOException {
+	private FileInformationType getFileInformationType(java.nio.file.Path file) {
 		// Basic info
 		final FileInformationType fileInfo = new FileInformationType();
 		if (file.getNameCount() == 0) {
@@ -222,19 +212,23 @@ public class JavaFileSystem extends AbstractFileSystem {
 		BasicFileAttributes attrs = null;
 		try {
 			attrs = Files.readAttributes(file, BasicFileAttributes.class);
-		} catch (NoSuchFileException e) {
+		} catch (AccessDeniedException | NoSuchFileException e) {
 			// Try to read without following symlinks. If that works, the file is a symlink that points at something
-			// we can't read (probably because the target doesn't exist). We'll report on the symlink itself.
+			// we either can't read (AccessDeniedException), or doesn't exist (NoSuchFileException). We'll try to
+			// report on the symlink itself.
 			try {
 				attrs = Files.readAttributes(file, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
 			} catch (IOException e2) {
-				// PASS
+				// Just return basic information
+				fileInfo.kind = FileType.PLAIN;
+				fileInfo.size = 0;
+				return fileInfo;
 			}
-
-			// If we can't get file attributes throw the original exception
-			if (attrs == null) {
-				throw e;
-			}
+		} catch (IOException e) {
+			// Just return basic information
+			fileInfo.kind = FileType.PLAIN;
+			fileInfo.size = 0;
+			return fileInfo;
 		}
 
 		// Basic attributes
