@@ -605,8 +605,8 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	 * CF.DeviceAssignmentType[])
 	 * @generated NOT
 	 */
-	public void testCreateApplication__String_String_DataType_DeviceAssignmentType() throws InvalidProfile, InvalidFileName, CreateApplicationError,
-		CreateApplicationRequestError, CreateApplicationInsufficientCapacityError, InvalidInitConfiguration, InterruptedException {
+	public void testCreateApplication__String_String_DataType_DeviceAssignmentType() throws InvalidProfile, InvalidFileName, ApplicationInstallationError,
+		CreateApplicationError, CreateApplicationRequestError, CreateApplicationInsufficientCapacityError, InvalidInitConfiguration {
 		String name = "testCreateApplication";
 		getFixture().createApplication("/waveforms/FinishedExampleWaveform/ExampleWaveform.sad.xml", name, new CF.DataType[0], new CF.DeviceAssignmentType[0]);
 		List<ScaWaveform> waveforms = getFixture().fetchWaveforms(new NullProgressMonitor(), RefreshDepth.SELF);

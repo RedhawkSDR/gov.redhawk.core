@@ -351,8 +351,8 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 
 	@Override
 	public Application createApplication(String profileFileName, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments)
-		throws InvalidProfile, InvalidFileName, CreateApplicationError, CreateApplicationRequestError, CreateApplicationInsufficientCapacityError,
-		InvalidInitConfiguration {
+		throws InvalidProfile, InvalidFileName, ApplicationInstallationError, CreateApplicationError, CreateApplicationRequestError,
+		CreateApplicationInsufficientCapacityError, InvalidInitConfiguration {
 		// Re-use the application factory logic to create the application
 		URI uri = ScaURIFactory.createURI(profileFileName, fileManager);
 		try {
