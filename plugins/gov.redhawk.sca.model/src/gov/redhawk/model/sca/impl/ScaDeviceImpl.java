@@ -1401,7 +1401,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		return identifier;
 	}
 
-	private void fetchComponentInstantiation(String identifier) {
+	protected void fetchComponentInstantiation(String identifier) {
 		ScaDeviceManager devMgr = getDevMgr();
 		if (devMgr == null) {
 			return;
