@@ -34,6 +34,8 @@ public class EventViewUtils {
 			return "DEVICE";
 		case SourceCategoryType._DEVICE_MANAGER:
 			return "DEVICE_MANAGER";
+		case SourceCategoryType._EVENT_CHANNEL:
+			return "EVENT_CHANNEL";
 		case SourceCategoryType._SERVICE:
 			return "SERVICE";
 		default:
