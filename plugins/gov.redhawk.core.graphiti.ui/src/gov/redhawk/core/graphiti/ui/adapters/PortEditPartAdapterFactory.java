@@ -27,6 +27,8 @@ import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 import mil.jpeojtrs.sca.partitioning.ProvidesPortStub;
 import mil.jpeojtrs.sca.partitioning.UsesPortStub;
 import mil.jpeojtrs.sca.scd.AbstractPort;
+import mil.jpeojtrs.sca.scd.Provides;
+import mil.jpeojtrs.sca.scd.Uses;
 
 /**
  * Adapts a graphical port object (org.eclipse.graphiti.ui.internal.parts.AdvancedAnchorEditPart) to an SCA port model
@@ -65,9 +67,22 @@ public class PortEditPartAdapterFactory implements IAdapterFactory {
 			return adapterType.cast(scaPort.getProfileObj());
 		} else if (adapterType.isInstance(scaPort)) {
 			return adapterType.cast(scaPort);
-		} else {
-			return null;
 		}
+
+		// We get here when selecting a port in a design time editor
+		if (port instanceof UsesPortStub) {
+			Uses uses = ((UsesPortStub) port).getUses();
+			if (adapterType.isInstance(uses)) {
+				return adapterType.cast(uses);
+			}
+		} else if (port instanceof ProvidesPortStub) {
+			Provides provides = ((ProvidesPortStub) port).getProvides();
+			if (adapterType.isInstance(provides)) {
+				return adapterType.cast(provides);
+			}
+		}
+
+		return null;
 	}
 
 	private ScaPort< ? , ? > getScaPort(Diagram diagram, EObject port, String name) {
