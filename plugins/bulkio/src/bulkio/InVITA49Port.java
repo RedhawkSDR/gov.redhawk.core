@@ -142,7 +142,7 @@ public class InVITA49Port extends BULKIO.jni.dataVITA49POA implements org.ossie.
 		       bulkio.time.Comparator   timeCmp )
     {
 	this.name = portName;
-        this.stats = new linkStatistics(this.name, new Int8Size() );
+        this.stats = new linkStatistics(this.name, 1);
 	this.sriUpdateLock = new Object();
 	this.statUpdateLock = new Object();
 	this.attachedStreamMap = new HashMap<String, VITA49StreamDefinition>();
@@ -154,11 +154,11 @@ public class InVITA49Port extends BULKIO.jni.dataVITA49POA implements org.ossie.
 	sri_cmp = sriCmp;
 	time_cmp = timeCmp;
 	sriCallback = null;
-	logger = logger;
-
-	if ( logger != null  ){
-	    logger.debug( "bulkio::InVITA49Port  CTOR port:" + name  );
-	}
+	this.logger = logger;
+	if ( this.logger == null ) {
+            this.logger = Logger.getLogger("redhawk.bulkio.inport."+portName);
+        }
+        this.logger.debug( "bulkio::InVITA49Port  CTOR port:" + name  );
 
     }
 
@@ -453,7 +453,7 @@ public class InVITA49Port extends BULKIO.jni.dataVITA49POA implements org.ossie.
 
 	public String getDirection()
 	{
-		return "Provides";
+		return CF.PortSet.DIRECTION_PROVIDES;
 	}
 
 }

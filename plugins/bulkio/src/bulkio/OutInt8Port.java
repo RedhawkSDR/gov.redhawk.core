@@ -17,17 +17,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+/*
+ * WARNING: This file is generated from OutPort.java.template.
+ *          Do not modify directly.
+ */
 package bulkio;
 
 import java.util.Arrays;
+
 import org.apache.log4j.Logger;
+
 import BULKIO.PrecisionUTCTime;
 import BULKIO.dataCharOperations;
 
 /**
- * 
+ * BulkIO output port implementation for dataChar.
  */
-public class OutInt8Port extends OutDataPort<dataCharOperations,char[]> {
+public class OutInt8Port extends OutStreamPort<dataCharOperations,char[]> {
 
     public OutInt8Port(String portName) {
         this(portName, null, null);
@@ -38,10 +44,11 @@ public class OutInt8Port extends OutDataPort<dataCharOperations,char[]> {
     }
 
     public OutInt8Port(String portName, Logger logger, ConnectionEventListener eventCB) {
-        super(portName, logger, eventCB, new Int8Size());
+        super(portName, logger, eventCB, 1);
         if (this.logger != null) {
-            this.logger.debug("bulkio.OutPort CTOR port: " + portName); 
+            this.logger.debug("bulkio.OutPort CTOR port: " + portName);
         }
+
     }
 
     protected dataCharOperations narrow(final org.omg.CORBA.Object obj) {
@@ -65,8 +72,8 @@ public class OutInt8Port extends OutDataPort<dataCharOperations,char[]> {
         return new char[0];
     }
 
-	public String getRepid() {
-		return BULKIO.dataCharHelper.id();
-	}
+    public String getRepid() {
+        return BULKIO.dataCharHelper.id();
+    }
 }
 

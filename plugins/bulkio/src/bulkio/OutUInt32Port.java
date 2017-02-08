@@ -17,17 +17,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+/*
+ * WARNING: This file is generated from OutPort.java.template.
+ *          Do not modify directly.
+ */
 package bulkio;
 
 import java.util.Arrays;
+
 import org.apache.log4j.Logger;
+
 import BULKIO.PrecisionUTCTime;
 import BULKIO.dataUlongOperations;
 
 /**
- * 
+ * BulkIO output port implementation for dataUlong.
  */
-public class OutUInt32Port extends OutDataPort<dataUlongOperations,int[]> {
+public class OutUInt32Port extends OutStreamPort<dataUlongOperations,int[]> {
 
     public OutUInt32Port(String portName) {
         this(portName, null, null);
@@ -38,10 +44,11 @@ public class OutUInt32Port extends OutDataPort<dataUlongOperations,int[]> {
     }
 
     public OutUInt32Port(String portName, Logger logger, ConnectionEventListener eventCB) {
-        super(portName, logger, eventCB, new UInt32Size());
+        super(portName, logger, eventCB, 4);
         if (this.logger != null) {
-            this.logger.debug("bulkio.OutPort CTOR port: " + portName); 
+            this.logger.debug("bulkio.OutPort CTOR port: " + portName);
         }
+
     }
 
     protected dataUlongOperations narrow(final org.omg.CORBA.Object obj) {
@@ -65,8 +72,8 @@ public class OutUInt32Port extends OutDataPort<dataUlongOperations,int[]> {
         return new int[0];
     }
 
-	public String getRepid() {
-		return BULKIO.dataUlongHelper.id();
-	}
+    public String getRepid() {
+        return BULKIO.dataUlongHelper.id();
+    }
 }
 

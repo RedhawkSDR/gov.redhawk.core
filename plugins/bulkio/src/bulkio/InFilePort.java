@@ -160,7 +160,7 @@ public class InFilePort extends BULKIO.jni.dataFilePOA implements PortBase {
 
         this.name = portName;
 	this.logger = logger;
-        this.stats = new linkStatistics(this.name, new Int8Size() );
+        this.stats = new linkStatistics(this.name, 1);
         this.sriUpdateLock = new Object();
         this.statUpdateLock = new Object();
         this.currentHs = new HashMap<String, sriState>();
@@ -175,10 +175,11 @@ public class InFilePort extends BULKIO.jni.dataFilePOA implements PortBase {
 	sri_cmp = compareSRI;	
 	sriCallback = sriCallback;
 
-	if ( this.logger != null ) {
-	    this.logger.debug( "bulkio::InPort CTOR port: " + portName ); 
-	}
-	
+	if ( this.logger == null ) {
+            this.logger = Logger.getLogger("redhawk.bulkio.inport."+portName);
+        }
+        this.logger.debug( "bulkio::InPort CTOR port: " + portName ); 
+
     }
 
     public void setLogger( Logger newlogger ){
@@ -518,7 +519,7 @@ public class InFilePort extends BULKIO.jni.dataFilePOA implements PortBase {
     }
 
     public String getDirection() {
-        return "Provides";
+        return CF.PortSet.DIRECTION_PROVIDES;
     }
 
     public String getRepid() {

@@ -17,17 +17,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+/*
+ * WARNING: This file is generated from OutPort.java.template.
+ *          Do not modify directly.
+ */
 package bulkio;
 
 import java.util.Arrays;
+
 import org.apache.log4j.Logger;
+
 import BULKIO.PrecisionUTCTime;
 import BULKIO.dataDoubleOperations;
 
 /**
- * 
+ * BulkIO output port implementation for dataDouble.
  */
-public class OutDoublePort extends OutDataPort<dataDoubleOperations,double[]> {
+public class OutDoublePort extends OutStreamPort<dataDoubleOperations,double[]> {
 
     public OutDoublePort(String portName) {
         this(portName, null, null);
@@ -38,10 +44,11 @@ public class OutDoublePort extends OutDataPort<dataDoubleOperations,double[]> {
     }
 
     public OutDoublePort(String portName, Logger logger, ConnectionEventListener eventCB) {
-        super(portName, logger, eventCB, new DoubleSize());
+        super(portName, logger, eventCB, 8);
         if (this.logger != null) {
-            this.logger.debug("bulkio.OutPort CTOR port: " + portName); 
+            this.logger.debug("bulkio.OutPort CTOR port: " + portName);
         }
+
     }
 
     protected dataDoubleOperations narrow(final org.omg.CORBA.Object obj) {
@@ -65,7 +72,8 @@ public class OutDoublePort extends OutDataPort<dataDoubleOperations,double[]> {
         return new double[0];
     }
 
-	public String getRepid() {
-		return BULKIO.dataDoubleHelper.id();
-	}
+    public String getRepid() {
+        return BULKIO.dataDoubleHelper.id();
+    }
 }
+

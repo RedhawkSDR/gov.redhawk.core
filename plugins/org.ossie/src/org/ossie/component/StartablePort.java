@@ -17,19 +17,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-package org.ossie.redhawk;
 
-public class NetworkContainer {
-    protected String _nic;
-    
-    public NetworkContainer() {
-    }
-    
-    public NetworkContainer(String nic) {
-        this._nic = nic;
-    }
-    
-    public String getNic() {
-        return this._nic;
-    }
-};
+package org.ossie.component;
+
+public interface StartablePort extends PortBase {
+    public void startPort();
+    public void stopPort();
+}

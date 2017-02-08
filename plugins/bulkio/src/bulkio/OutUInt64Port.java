@@ -17,17 +17,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+/*
+ * WARNING: This file is generated from OutPort.java.template.
+ *          Do not modify directly.
+ */
 package bulkio;
 
 import java.util.Arrays;
+
 import org.apache.log4j.Logger;
+
 import BULKIO.PrecisionUTCTime;
 import BULKIO.dataUlongLongOperations;
 
 /**
- * 
+ * BulkIO output port implementation for dataUlongLong.
  */
-public class OutUInt64Port extends OutDataPort<dataUlongLongOperations,long[]> {
+public class OutUInt64Port extends OutStreamPort<dataUlongLongOperations,long[]> {
 
     public OutUInt64Port(String portName) {
         this(portName, null, null);
@@ -38,10 +44,11 @@ public class OutUInt64Port extends OutDataPort<dataUlongLongOperations,long[]> {
     }
 
     public OutUInt64Port(String portName, Logger logger, ConnectionEventListener eventCB) {
-        super(portName, logger, eventCB, new UInt64Size());
+        super(portName, logger, eventCB, 8);
         if (this.logger != null) {
-            this.logger.debug("bulkio.OutPort CTOR port: " + portName); 
+            this.logger.debug("bulkio.OutPort CTOR port: " + portName);
         }
+
     }
 
     protected dataUlongLongOperations narrow(final org.omg.CORBA.Object obj) {
@@ -65,8 +72,8 @@ public class OutUInt64Port extends OutDataPort<dataUlongLongOperations,long[]> {
         return new long[0];
     }
 
-	public String getRepid() {
-		return BULKIO.dataUlongLongHelper.id();
-	}
+    public String getRepid() {
+        return BULKIO.dataUlongLongHelper.id();
+    }
 }
 

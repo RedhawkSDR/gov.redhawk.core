@@ -17,17 +17,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+/*
+ * WARNING: This file is generated from OutPort.java.template.
+ *          Do not modify directly.
+ */
 package bulkio;
 
 import java.util.Arrays;
+
 import org.apache.log4j.Logger;
+
 import BULKIO.PrecisionUTCTime;
 import BULKIO.dataUshortOperations;
 
 /**
- * 
+ * BulkIO output port implementation for dataUshort.
  */
-public class OutUInt16Port extends OutDataPort<dataUshortOperations,short[]> {
+public class OutUInt16Port extends OutStreamPort<dataUshortOperations,short[]> {
 
     public OutUInt16Port(String portName) {
         this(portName, null, null);
@@ -38,10 +44,11 @@ public class OutUInt16Port extends OutDataPort<dataUshortOperations,short[]> {
     }
 
     public OutUInt16Port(String portName, Logger logger, ConnectionEventListener eventCB) {
-        super(portName, logger, eventCB, new UInt16Size());
+        super(portName, logger, eventCB, 2);
         if (this.logger != null) {
-            this.logger.debug("bulkio.OutPort CTOR port: " + portName); 
+            this.logger.debug("bulkio.OutPort CTOR port: " + portName);
         }
+
     }
 
     protected dataUshortOperations narrow(final org.omg.CORBA.Object obj) {
@@ -65,7 +72,8 @@ public class OutUInt16Port extends OutDataPort<dataUshortOperations,short[]> {
         return new short[0];
     }
 
-	public String getRepid() {
-		return BULKIO.dataUshortHelper.id();
-	}
+    public String getRepid() {
+        return BULKIO.dataUshortHelper.id();
+    }
 }
+

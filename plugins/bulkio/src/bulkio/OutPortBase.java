@@ -28,14 +28,13 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 import ExtendedCF.UsesConnection;
+import org.ossie.component.PortBase;
 
 import BULKIO.PortUsageType;
 import BULKIO.StreamSRI;
 import BULKIO.UsesPortStatistics;
 
-import org.ossie.component.PortBase;
-
-public abstract class OutPortBase<E> extends BULKIO.UsesPortStatisticsProviderPOA implements org.ossie.component.PortBase {
+public abstract class OutPortBase<E> extends BULKIO.UsesPortStatisticsProviderPOA implements PortBase {
     /**
      * Name within the component
      */
@@ -76,6 +75,11 @@ public abstract class OutPortBase<E> extends BULKIO.UsesPortStatisticsProviderPO
      */
     protected final Map<String,SriMapStruct> currentSRIs = new HashMap<String,SriMapStruct>();
 
+    /**
+     * Table of port names, connection IDs and stream IDs for connection-based routing
+     */
+    protected List<connection_descriptor_struct> filterTable = null;
+
     protected OutPortBase(String portName) {
         this(portName, null, null);
     }
@@ -85,6 +89,9 @@ public abstract class OutPortBase<E> extends BULKIO.UsesPortStatisticsProviderPO
         this.active = false;
         this.logger = logger;
         this.callback = connectionListener;
+	if ( this.logger == null ) {
+            this.logger = Logger.getLogger("redhawk.bulkio.outport."+portName);
+        }
     }
 
     /**
@@ -129,6 +136,7 @@ public abstract class OutPortBase<E> extends BULKIO.UsesPortStatisticsProviderPO
     /**
      * @deprecated
      */
+    @Deprecated
     public HashMap<String,E> getPorts() {
         return new HashMap<String,E>();
     }
@@ -163,6 +171,32 @@ public abstract class OutPortBase<E> extends BULKIO.UsesPortStatisticsProviderPO
         }
         return connList.toArray(new UsesConnection[connList.size()]);
     }
+
+    public void updateStats( String cid ) 
+    {
+        stats.get(cid).resetConnectionErrors();
+    }
+
+    public boolean reportConnectionErrors( String cid ) 
+    {
+        boolean retval = false;
+        if ( stats.get(cid).connectionErrors(1) < 11 ) {
+                retval=true;
+        }
+             
+       return retval;
+   }
+
+    public boolean reportConnectionErrors( String cid, String msg ) 
+    {
+        boolean retval=reportConnectionErrors(cid );
+        if ( retval ) {
+            if ( logger != null ) {
+                logger.error(msg);
+            }
+        }
+       return retval;
+   }
 
     /**
      * Enables tracking of statistics.
@@ -201,13 +235,55 @@ public abstract class OutPortBase<E> extends BULKIO.UsesPortStatisticsProviderPO
         return sriList.toArray(new StreamSRI[0]);
     }
 
-	public String getRepid()
-	{
-		return "IDL:CORBA/Object:1.0";
-	}
+    public String getRepid()
+    {
+        return "IDL:CORBA/Object:1.0";
+    }
 
-	public String getDirection()
-	{
-		return "Uses";
-	}
+    public String getDirection()
+    {
+        return CF.PortSet.DIRECTION_USES;
+    }
+
+    public void updateConnectionFilter(List<connection_descriptor_struct> filterTable) {
+        this.filterTable = filterTable;
+    }
+
+    protected boolean isStreamRoutedToConnection(final String streamID, final String connectionID)
+    {
+        // Is this port listed in the filter table?
+        boolean portListed = false;
+
+        // Check the filter table for this stream/connection pair.
+        for (connection_descriptor_struct filter : bulkio.utils.emptyIfNull(this.filterTable)) {
+            // Ignore filters for other ports
+            if (!this.name.equals(filter.port_name.getValue())) {
+                continue;
+            }
+            // Filtering is in effect for this port
+            portListed = true;
+
+            if (connectionID.equals(filter.connection_id.getValue()) &&
+                streamID.equals(filter.stream_id.getValue())) {
+                if (logger != null) {
+                    logger.trace("OutPort FilterMatch port:" + this.name + " connection:" + connectionID +
+                                 " streamID:" + streamID);
+                }
+                return true;
+            }
+        }
+
+        // If the port was not listed and we made it to here, there is no
+        // filter in effect, so send the packet or SRI; otherwise, it was
+        // listed and there is no route.
+        if (!portListed) {
+            if (logger != null) {
+                logger.trace("OutPort NO Filter port:" + this.name + " connection:" + connectionID +
+                             " streamID:" + streamID);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

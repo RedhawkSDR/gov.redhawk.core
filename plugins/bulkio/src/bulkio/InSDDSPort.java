@@ -142,7 +142,7 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA implements org.ossie.comp
 		       bulkio.time.Comparator   timeCmp )
     {
 	this.name = portName;
-        this.stats = new linkStatistics(this.name, new Int8Size() );
+        this.stats = new linkStatistics(this.name, 1);
 	this.sriUpdateLock = new Object();
 	this.statUpdateLock = new Object();
 	this.attachedStreamMap = new HashMap<String, SDDSStreamDefinition>();
@@ -154,12 +154,11 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA implements org.ossie.comp
 	sri_cmp = sriCmp;
 	time_cmp = timeCmp;
 	sriCallback = null;
-	logger = logger;
-
-	if ( logger != null  ){
-	    logger.debug( "bulkio::InSDDSPort  CTOR port:" + name  );
-	}
-
+	this.logger = logger;
+	if ( this.logger == null ) {
+            this.logger = Logger.getLogger("redhawk.bulkio.inport."+portName);
+        }
+        this.logger.debug( "bulkio::InSDDSPort  CTOR port:" + name  );
     }
 
 
@@ -453,7 +452,7 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA implements org.ossie.comp
 
 	public String getDirection()
 	{
-		return "Provides";
+		return CF.PortSet.DIRECTION_PROVIDES;
 	}
 
 }

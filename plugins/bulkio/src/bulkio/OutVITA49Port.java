@@ -66,8 +66,6 @@ public class OutVITA49Port extends OutPortBase<dataVITA49Operations> {
      */
     protected VITA49StreamContainer streamContainer;
 
-    protected List<connection_descriptor_struct> filterTable = null;
-
     public OutVITA49Port(String portName ){
 	this( portName, null, null );
     }
@@ -85,8 +83,11 @@ public class OutVITA49Port extends OutPortBase<dataVITA49Operations> {
 		       ConnectionEventListener  eventCB ) {
         super(portName, logger, eventCB);
         this.filterTable = null;
-        this.streamContainer = new VITA49StreamContainer();
+        this.streamContainer = new VITA49StreamContainer(this);
         this.userId = new String("defaultUserId");
+	if ( this.logger == null ) {
+            this.logger = Logger.getLogger("redhawk.bulkio.outport."+portName);
+        }
 	if ( this.logger != null ) {
 	    this.logger.debug( "bulkio::OutPort CTOR port: " + portName ); 
             this.streamContainer.setLogger(logger);
@@ -179,9 +180,12 @@ public class OutVITA49Port extends OutPortBase<dataVITA49Operations> {
                                 p.getValue().pushSRI(header, time);
                                 //Update entry in currentSRIs
                                 this.currentSRIs.get(header.streamID).connections.add(p.getKey());
+                                this.updateStats(p.getKey());
                             } catch(Exception e) {
-                                if ( logger != null ) {
-                                    logger.error("Call to pushSRI failed on port " + name + " connection " + p.getKey() );
+                                if (  this.reportConnectionErrors( p.getKey() ) ) {
+                                    if ( logger != null ) {
+                                        logger.error("Call to pushSRI failed on port " + name + " connection " + p.getKey() );
+                                    }
                                 }
                             }
                         }
@@ -199,9 +203,12 @@ public class OutVITA49Port extends OutPortBase<dataVITA49Operations> {
                             p.getValue().pushSRI(header, time);
                             //Update entry in currentSRIs
                             this.currentSRIs.get(header.streamID).connections.add(p.getKey());
+                            this.updateStats(p.getKey());
                         } catch(Exception e) {
-                            if ( logger != null ) {
-                                logger.error("Call to pushSRI failed on port " + name + " connection " + p.getKey() );
+                            if (  this.reportConnectionErrors( p.getKey() ) ) {
+                                if ( logger != null ) {
+                                    logger.error("Call to pushSRI failed on port " + name + " connection " + p.getKey() );
+                                }
                             }
                         }
                     }
@@ -218,7 +225,7 @@ public class OutVITA49Port extends OutPortBase<dataVITA49Operations> {
     }
 
     public void updateConnectionFilter(List<connection_descriptor_struct> _filterTable) {
-        this.filterTable = _filterTable;
+        super.updateConnectionFilter(_filterTable);
 
         //1. loop over fitlerTable
         //   A. ignore other port names
@@ -254,7 +261,7 @@ public class OutVITA49Port extends OutPortBase<dataVITA49Operations> {
             // Keep track of which attachments are supposed to exist
             if (this.streamContainer.hasStreamId(ftPtr.stream_id.getValue())){
                 streamsFound.put(ftPtr.stream_id.getValue(),Boolean.TRUE);
-                VITA49StreamAttachment expectedAttachment = new VITA49StreamAttachment(ftPtr.connection_id.getValue(),connectedPort);
+                VITA49StreamAttachment expectedAttachment = new VITA49StreamAttachment(ftPtr.connection_id.getValue(),connectedPort,this);
                 ArrayList<VITA49StreamAttachment> streamAttList;
                 if (streamAttMap.get(ftPtr.stream_id.getValue()) == null){
                     streamAttList = new ArrayList<VITA49StreamAttachment>();
@@ -351,7 +358,6 @@ public class OutVITA49Port extends OutPortBase<dataVITA49Operations> {
         String streamId;
         Set<String> streamConnIds = new HashSet<String>(); 
         Set<String> currentSRIConnIds = new HashSet<String>();
-        Iterator connIdIter;
 
         // Iterate through all registered streams
         for (VITA49Stream s: this.streamContainer.getStreams()){
@@ -408,7 +414,7 @@ public class OutVITA49Port extends OutPortBase<dataVITA49Operations> {
             }
             this.outConnections.put(connectionId, port);
             this.active = true;
-            this.stats.put(connectionId, new linkStatistics( this.name, new Int8Size() ) );
+            this.stats.put(connectionId, new linkStatistics(this.name, 1));
 
             boolean portListed = false;
 
@@ -625,7 +631,7 @@ public class OutVITA49Port extends OutPortBase<dataVITA49Operations> {
                 //if stream already exists return false
                 return false;
             }else{
-                stream = new VITA49Stream(streamDef, this.userId, streamDef.id, null, null, null);
+                stream = new VITA49Stream(streamDef, this.userId, streamDef.id, null, null, null,this);
                 this.streamContainer.addStream(stream);
             }
 

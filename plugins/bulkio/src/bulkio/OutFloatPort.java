@@ -17,17 +17,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+/*
+ * WARNING: This file is generated from OutPort.java.template.
+ *          Do not modify directly.
+ */
 package bulkio;
 
 import java.util.Arrays;
+
 import org.apache.log4j.Logger;
+
 import BULKIO.PrecisionUTCTime;
 import BULKIO.dataFloatOperations;
 
 /**
- * 
+ * BulkIO output port implementation for dataFloat.
  */
-public class OutFloatPort extends OutDataPort<dataFloatOperations,float[]> {
+public class OutFloatPort extends OutStreamPort<dataFloatOperations,float[]> {
 
     public OutFloatPort(String portName) {
         this(portName, null, null);
@@ -38,10 +44,11 @@ public class OutFloatPort extends OutDataPort<dataFloatOperations,float[]> {
     }
 
     public OutFloatPort(String portName, Logger logger, ConnectionEventListener eventCB) {
-        super(portName, logger, eventCB, new FloatSize());
+        super(portName, logger, eventCB, 4);
         if (this.logger != null) {
-            this.logger.debug("bulkio.OutPort CTOR port: " + portName); 
+            this.logger.debug("bulkio.OutPort CTOR port: " + portName);
         }
+
     }
 
     protected dataFloatOperations narrow(final org.omg.CORBA.Object obj) {
@@ -65,8 +72,8 @@ public class OutFloatPort extends OutDataPort<dataFloatOperations,float[]> {
         return new float[0];
     }
 
-	public String getRepid() {
-		return BULKIO.dataFloatHelper.id();
-	}
+    public String getRepid() {
+        return BULKIO.dataFloatHelper.id();
+    }
 }
 

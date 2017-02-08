@@ -67,6 +67,7 @@ import CF.complexLongHelper;
 import CF.complexULongHelper;
 import CF.complexLongLongHelper;
 import CF.complexULongLongHelper;
+import CF.UTCTimeHelper;
 
 import CF.complexFloatSeqHelper;
 import CF.complexDoubleSeqHelper;
@@ -79,6 +80,7 @@ import CF.complexLongSeqHelper;
 import CF.complexULongSeqHelper;
 import CF.complexLongLongSeqHelper;
 import CF.complexULongLongSeqHelper;
+import CF.UTCTimeSequenceHelper;
 
 
 public final class AnyUtils {
@@ -334,6 +336,8 @@ public final class AnyUtils {
                     return complexLongLongHelper.extract(theAny);
                 } else if (typeCode.name().equals("complexULongLong")) {
                     return complexULongLongHelper.extract(theAny);
+                } else if (typeCode.name().equals("UTCTime")) {
+                    return UTCTimeHelper.extract(theAny);
                 }
             case TCKind._tk_longdouble:
             case TCKind._tk_array:
@@ -439,6 +443,8 @@ public final class AnyUtils {
                     return complexLongSeqHelper.extract(theAny);
                 } else if (complexULongLongHelper.type().equivalent(contentType)) {
                     return complexULongLongSeqHelper.extract(theAny);
+                } else if (UTCTimeHelper.type().equivalent(contentType)) {
+                    return UTCTimeSequenceHelper.extract(theAny);
                 } else {
                     throw new IllegalArgumentException("Unsupported struct content type: " + contentType);
                 }
@@ -1125,7 +1131,7 @@ public final class AnyUtils {
                         }
                         return false;
                     }
-                    
+
                     // Here is the test to determine if we have a struct sequence
                     if(tmpA.getClass() == Any[].class) {
                         Any[] anysA = (Any[])tmpA;
@@ -1256,6 +1262,12 @@ public final class AnyUtils {
             result = AnyUtils.performAction(
                 CF.complexULongLongHelper.extract(a), 
                 CF.complexULongLongHelper.extract(b), 
+                action, 
+                a.type());
+        } else if (a.type().equivalent(UTCTimeHelper.type())) {
+            result = AnyUtils.performAction(
+                CF.UTCTimeHelper.extract(a), 
+                CF.UTCTimeHelper.extract(b), 
                 action, 
                 a.type());
         } else {

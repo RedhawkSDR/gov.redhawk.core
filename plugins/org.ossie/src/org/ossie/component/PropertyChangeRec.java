@@ -1,3 +1,22 @@
+/*
+ * This file is protected by Copyright. Please refer to the COPYRIGHT file
+ * distributed with this source distribution.
+ *
+ * This file is part of REDHAWK core.
+ *
+ * REDHAWK core is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * REDHAWK core is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses/.
+ */
 package org.ossie.component;
 
 import java.lang.reflect.Field;
@@ -83,10 +102,16 @@ class EC_PropertyChangeListener  implements PCL_Listener {
     public int  notify( PropertyChangeRec prec, DataType[]  props) {
         
         String uuid = UUID.randomUUID().toString();
+        long tmp_time = System.currentTimeMillis();
+        CF.UTCTime _time = new CF.UTCTime();
+        _time.tcstatus = 1;
+        _time.twsec = tmp_time /1000;
+        _time.tfsec = (tmp_time % 1000)/1000.0;
         PropertyChangeEvent evt = new PropertyChangeEvent( uuid,
                                                            prec.regId,
                                                            prec.rscId,
-                                                           props);
+                                                           props,
+                                                           _time);
 
         final Any any = ORB.init().create_any();
         PropertyChangeEventHelper.insert( any, evt);
@@ -123,10 +148,16 @@ class INF_PropertyChangeListener implements PCL_Listener {
     public int  notify( PropertyChangeRec prec, DataType[]  props) {
 
         String uuid = UUID.randomUUID().toString();
+        long tmp_time = System.currentTimeMillis();
+        CF.UTCTime _time = new CF.UTCTime();
+        _time.tcstatus = 1;
+        _time.twsec = tmp_time /1000;
+        _time.tfsec = (tmp_time % 1000)/1000.0;
         PropertyChangeEvent evt = new PropertyChangeEvent( uuid,
                                                            prec.regId,
                                                            prec.rscId,
-                                                           props);
+                                                           props,
+                                                           _time);
 
         int retval=0;
         try {

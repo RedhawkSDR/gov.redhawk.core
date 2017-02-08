@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.io.FileOutputStream;
@@ -258,6 +259,44 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
     }
     
     /**
+     * Start processing for any ports that support it.
+     */
+    protected void startPorts() {
+        for (StartablePort port : getStartablePorts()) {
+            port.startPort();
+        }
+    }
+
+    /**
+     * Stop processing for any ports that support it. If there are any calls on
+     * the port that are blocking, this should cause them to return immediately.
+     */
+    protected void stopPorts() {
+        for (StartablePort port : getStartablePorts()) {
+            port.stopPort();
+        }
+    }
+
+    /**
+     * Returns a list of the registered ports that support the StartablePort
+     * interface.
+     */
+    private List<StartablePort> getStartablePorts() {
+        List<StartablePort> startablePorts = new ArrayList<StartablePort>();
+        for (Servant servant : this.portServants.values()) {
+            if (servant instanceof StartablePort) {
+                startablePorts.add((StartablePort) servant);
+            }
+        }
+        for (omnijni.Servant servant : this.nativePorts.values()) {
+            if (servant instanceof StartablePort) {
+                startablePorts.add((StartablePort) servant);
+            }
+        }
+        return startablePorts;
+    }
+
+    /**
      * Default Constructor that automatically sets parameters for the Sun ORB
      * and the JacORB ORB.
      * 
@@ -335,6 +374,7 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
         // While we are starting or stopping don't let anything else occur
         logger.trace("start()");
         synchronized (this) {
+            startPorts();
             this._started = true;
             if (processingThread == null) {
                 processingThread = new Thread(this);
@@ -351,6 +391,7 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
         logger.trace("stop()");
         synchronized (this) {
             if (processingThread != null) {
+                stopPorts();
                 this._started = false;
                 try {
                     processingThread.interrupt();
@@ -599,6 +640,19 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
         }
     }
 
+    String _propertyQueryTimestamp = "QUERY_TIMESTAMP";
+    
+    public CF.UTCTime _makeTime(final short status, final double wsec, final double fsec) {
+        CF.UTCTime _time = new CF.UTCTime(status, wsec, fsec);
+        if (status == -1) {
+            long tmp_time = System.currentTimeMillis();
+            _time.tcstatus = 1;
+            _time.twsec = tmp_time /1000;
+            _time.tfsec = (tmp_time % 1000)/1000.0;
+        }
+        return _time;
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -626,6 +680,10 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
                     }
                 }
             }
+            
+            /*final Any anytime = ORB.init().create_any();
+            CF.UTCTimeHelper.insert(anytime, this._makeTime((short)-1,0,0));
+            props.add(new DataType(_propertyQueryTimestamp, anytime));*/
 
             configProperties.value = props.toArray(new DataType[props.size()]);
             return;
@@ -638,6 +696,12 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
         // Return values for valid queries in the same order as requested
         for (final DataType dt : configProperties.value) {
             // Look up the property and ensure it is queryable
+            if (dt.id.equals(_propertyQueryTimestamp)) {
+                final Any anytime = ORB.init().create_any();
+                CF.UTCTimeHelper.insert(anytime, this._makeTime((short)-1,0,0));
+                validProperties.add(new DataType(_propertyQueryTimestamp, anytime));
+                continue;
+            }
             final IProperty prop = this.propSet.get(dt.id);
             if ((prop != null) && prop.isQueryable()) {
                 if (prop instanceof StructProperty) {
@@ -1100,6 +1164,12 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
     public static void start_component(final Class<? extends Resource> clazz,  final String[] args, final Properties props) 
 	throws InstantiationException, IllegalAccessException, InvalidObjectReference, NotFound, CannotProceed, org.omg.CosNaming.NamingContextPackage.InvalidName, ServantNotActive, WrongPolicy 
     {
+        if (args.length == 1) {
+            if (args[0].equals("-i")) {
+                System.out.println("Interactive mode (-i) no longer supported. Please use the sandbox to run Components/Devices/Services outside the scope of a Domain");
+                System.exit(-1);
+            }
+        }
         // initialize library's ORB reference 
         final org.omg.CORBA.ORB orb = org.ossie.corba.utils.Init( args, props );
 
@@ -1170,15 +1240,11 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
         }
 
         if ((nameContext == null) || (nameBinding == null)) {
-            if ((!Arrays.toString(args).contains("-i")) && (!Arrays.toString(args).contains("--interactive"))) {
-                System.out.println("usage: "+clazz+" [options] [execparams]\n");
-                System.out.println("The set of execparams is defined in the .prf for the component");
-                System.out.println("They are provided as arguments pairs ID VALUE, for example:");
-                System.out.println("     "+clazz+" INT_PARAM 5 STR_PARAM ABCDED\n");
-                System.out.println("Options:");
-                System.out.println("     -i,--interactive           Run the component in interactive test mode\n");
-                System.exit(-1);
-            }
+            System.out.println("usage: "+clazz+" [options] [execparams]\n");
+            System.out.println("The set of execparams is defined in the .prf for the component");
+            System.out.println("They are provided as arguments pairs ID VALUE, for example:");
+            System.out.println("     "+clazz+" INT_PARAM 5 STR_PARAM ABCDED\n");
+            System.exit(-1);
         }
 
 	logging.ComponentCtx ctx = new	logging.ComponentCtx( nameBinding, identifier, dom_path );
@@ -1223,6 +1289,16 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
         Thread shutdownWatcher = new Thread(new Runnable() {
                 public void run() {
                     resource_i.waitDisposed();
+                    // On slow VMs, shutting down the ORB immediately after
+                    // releaseObject() sometimes leads to a CORBA.COMM_FAILURE
+                    // exception being thrown to the caller, presumably because
+                    // it's still closing out the request. A small delay before
+                    // shutting down the ORB (1 usec) appears to reduce the
+                    // likelihood of that happening to, effectively, zero.
+                    try {
+                        Thread.sleep(0, 1000);
+                    } catch (final InterruptedException exc) {
+                    }
                     shutdownORB(orb);
                 }
             });
@@ -1241,9 +1317,6 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
         // Destroy the ORB, otherwise the JVM shutdown will take an unusually
         // long time (~300ms).
         orb.destroy();
-
-        // Shut down native ORB, if it's running
-        omnijni.ORB.shutdown();
 
         logger.debug("Goodbye!");
     }

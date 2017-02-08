@@ -31,29 +31,13 @@ import BULKIO.StreamSRI;
 
 public abstract class OutDataPort<E extends BULKIO.updateSRIOperations,A> extends OutPortBase<E> {
     /**
-     * CORBA transfer limit in bytes
-     */
-    // Multiply by some number < 1 to leave some margin for the CORBA header
-    protected static final int MAX_PAYLOAD_SIZE = (int)(Const.MAX_TRANSFER_BYTES * 0.9);
-
-    /**
      * Size of a single element
      */
-    protected final SizeOf sizeof;
+    protected final int sizeof;
 
-    /**
-     * CORBA transfer limit in samples
-     */
-    protected int maxSamplesPerPush;
-
-    protected List<connection_descriptor_struct> filterTable = null;
-
-    protected OutDataPort(String portName, Logger logger, ConnectionEventListener connectionListener, SizeOf size) {
+    protected OutDataPort(String portName, Logger logger, ConnectionEventListener connectionListener, int size) {
         super(portName, logger, connectionListener);
         this.sizeof = size;
-        // Make sure max samples per push is even so that complex data case is
-        // handled properly
-        this.maxSamplesPerPush = (MAX_PAYLOAD_SIZE/this.sizeof.sizeof()) & 0xFFFFFFFE;
     }
 
     /**
@@ -111,9 +95,6 @@ public abstract class OutDataPort<E extends BULKIO.updateSRIOperations,A> extend
                 final BULKIO.PrecisionUTCTime tstamp = bulkio.time.utils.notSet();
                 for (Map.Entry<String, SriMapStruct> entry: this.currentSRIs.entrySet()) {
                     final String streamID = entry.getKey();
-                    if (!isStreamRoutedToConnection(streamID, connectionId)) {
-                        continue;
-                    }
 
                     final SriMapStruct sriMap = entry.getValue();
                     if (sriMap.connections.contains(connectionId)) {
@@ -156,7 +137,7 @@ public abstract class OutDataPort<E extends BULKIO.updateSRIOperations,A> extend
     /**
      * Sends an array of samples.
      */
-    public void pushPacket(A data, PrecisionUTCTime time, boolean endOfStream, String streamID)
+    protected void pushPacket(A data, PrecisionUTCTime time, boolean endOfStream, String streamID)
     {
         if (logger != null) {
             logger.trace("bulkio.OutPort pushPacket  ENTER (port=" + this.name +")");
@@ -169,12 +150,17 @@ public abstract class OutDataPort<E extends BULKIO.updateSRIOperations,A> extend
                 this.pushSRI(header);
             }
 
-            pushOversizedPacket(data, time, endOfStream, streamID);
+            pushPacketData(data, time, endOfStream, streamID);
         }
 
         if (logger != null) {
             logger.trace("bulkio.OutPort pushPacket  EXIT (port=" + this.name +")");
         }
+    }
+
+    protected void pushPacketData(A data, PrecisionUTCTime time, boolean endOfStream, String streamID)
+    {
+        pushSinglePacket(data, time, endOfStream, streamID);
     }
 
     /**
@@ -234,9 +220,12 @@ public abstract class OutDataPort<E extends BULKIO.updateSRIOperations,A> extend
 
                         // Update entry in currentSRIs
                         this.currentSRIs.get(header.streamID).connections.add(connectionID);
+                        this.updateStats(connectionID);
                     } catch (Exception e) {
-                        if (logger != null) {
-                            logger.error("Call to pushSRI failed on port " + name + " connection " + connectionID);
+                        if ( this.reportConnectionErrors(connectionID)) {
+                            if (this.logger != null) {
+                                logger.error("Call to pushSRI failed on port " + name + " connection " + connectionID);
+                            }
                         }
                     }
                 }
@@ -248,110 +237,7 @@ public abstract class OutDataPort<E extends BULKIO.updateSRIOperations,A> extend
         }
     }
 
-    public void updateConnectionFilter(List<connection_descriptor_struct> _filterTable) {
-        this.filterTable = _filterTable;
-    }
-
-    protected boolean isStreamRoutedToConnection(final String streamID, final String connectionID)
-    {
-        // Is this port listed in the filter table?
-        boolean portListed = false;
-
-        // Check the filter table for this stream/connection pair.
-        for (connection_descriptor_struct filter : bulkio.utils.emptyIfNull(this.filterTable)) {
-            // Ignore filters for other ports
-            if (!this.name.equals(filter.port_name.getValue())) {
-                continue;
-            }
-            // Filtering is in effect for this port
-            portListed = true;
-
-            if (connectionID.equals(filter.connection_id.getValue()) &&
-                streamID.equals(filter.stream_id.getValue())) {
-                if (logger != null) {
-                    logger.trace("OutPort FilterMatch port:" + this.name + " connection:" + connectionID +
-                                 " streamID:" + streamID);
-                }
-                return true;
-            }
-        }
-
-        // If the port was not listed and we made it to here, there is no
-        // filter in effect, so send the packet or SRI; otherwise, it was
-        // listed and there is no route.
-        if (!portListed) {
-            if (logger != null) {
-                logger.trace("OutPort NO Filter port:" + this.name + " connection:" + connectionID +
-                             " streamID:" + streamID);
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private void pushOversizedPacket(A data, PrecisionUTCTime time, boolean endOfStream, String streamID) {
-        final int length = arraySize(data);
-
-        // If there is no need to break data into smaller packets, skip
-        // straight to the pushPacket call and return.
-        SriMapStruct sriStruct = this.currentSRIs.get(streamID);
-        if (sriStruct.sri.subsize != 0) {
-            if (this.maxSamplesPerPush%sriStruct.sri.subsize != 0) {
-                this.maxSamplesPerPush = (MAX_PAYLOAD_SIZE/this.sizeof.sizeof()) & 0xFFFFFFFE;
-                while (this.maxSamplesPerPush%sriStruct.sri.subsize != 0) {
-                    this.maxSamplesPerPush -= this.maxSamplesPerPush%sriStruct.sri.subsize;
-                    if (this.maxSamplesPerPush%2 != 0){
-                        this.maxSamplesPerPush--;
-                    }
-                }
-            }
-        }
-        if (length <= this.maxSamplesPerPush) {
-            this.pushSinglePacket(data, time, endOfStream, streamID);
-            return;
-        }
-
-        // Determine xdelta for this streamID to be used for time increment for subpackets
-        SriMapStruct sriMap = this.currentSRIs.get(streamID);
-        double xdelta = 0.0;
-        if (sriMap != null){
-            xdelta = sriMap.sri.xdelta;
-        }
-
-        // Initialize time of first subpacket
-        PrecisionUTCTime packetTime = time;
-        for (int offset = 0; offset < length;) {
-            // Don't send more samples than are remaining
-            final int pushSize = java.lang.Math.min(length-offset, this.maxSamplesPerPush);
-
-            // Copy the range for this sub-packet and advance the offset
-            A subPacket = copyOfRange(data, offset, offset+pushSize);
-            offset += pushSize;
-
-            // Send end-of-stream as false for all sub-packets except for the
-            // last one (when there are no samples remaining after this push),
-            // which gets the input EOS.
-            boolean packetEOS = false;
-            if (offset == length) {
-                packetEOS = endOfStream;
-            }
-
-            if (logger != null) {
-                logger.trace("bulkio.OutPort pushOversizedPacket() calling pushPacket with pushSize " + pushSize + " and packetTime twsec: " + packetTime.twsec + " tfsec: " + packetTime.tfsec);
-            }
-            this.pushSinglePacket(subPacket, packetTime, packetEOS, streamID);
-            int data_xfer_len = pushSize;
-            if (sriMap != null){
-                if (sriMap.sri.mode == 1) {
-                    data_xfer_len = data_xfer_len / 2;
-                }
-            }
-            packetTime = bulkio.time.utils.addSampleOffset(packetTime, data_xfer_len, xdelta);
-        }
-    }
-
-    private void pushSinglePacket(A data, PrecisionUTCTime time, boolean endOfStream, String streamID)
+    protected void pushSinglePacket(A data, PrecisionUTCTime time, boolean endOfStream, String streamID)
     {
         final int length = arraySize(data);
         SriMapStruct sriStruct = this.currentSRIs.get(streamID);
@@ -375,8 +261,10 @@ public abstract class OutDataPort<E extends BULKIO.updateSRIOperations,A> extend
                     this.sendPacket(port, data, time, endOfStream, streamID);
                     this.stats.get(connectionID).update(length, (float)0.0, endOfStream, streamID, false);
                 } catch (Exception e) {
-                    if (logger != null) {
-                        logger.error("Call to pushPacket failed on port " + name + " connection " + connectionID);
+                    if ( this.reportConnectionErrors(connectionID)) {
+                        if ( this.logger != null ) {
+                            logger.error("Call to pushPacket failed on port " + name + " connection " + connectionID);
+                        }
                     }
                 }
             }
@@ -391,7 +279,6 @@ public abstract class OutDataPort<E extends BULKIO.updateSRIOperations,A> extend
 
     protected abstract E narrow(org.omg.CORBA.Object obj);
     protected abstract void sendPacket(E port, A data, PrecisionUTCTime time, boolean endOfStream, String streamID);
-    protected abstract A copyOfRange(A array, int start, int end);
     protected abstract int arraySize(A array);
     protected abstract A emptyArray();
 }
