@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IProgressMonitorWithBlocking;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 
 /**
  * A class with the same functionality of {@link org.eclipse.core.runtime.SubMonitor}, but with a handy function to
@@ -22,6 +23,16 @@ import org.eclipse.core.runtime.NullProgressMonitor;
  * @since 3.2
  */
 public class SubMonitor implements IProgressMonitorWithBlocking {
+
+	/**
+	 * Number of trivial operations (operations which do not report any progress) which can be
+	 * performed before the monitor performs a cancellation check. This ensures that cancellation
+	 * checks do not create a performance problem in tight loops that create a lot of SubMonitors,
+	 * while still ensuring that cancellation is checked occasionally in such loops. This only
+	 * affects operations which are too small to report any progress. Operations which are large
+	 * enough to consume at least one tick will always be checked for cancellation.
+	 */
+	private static final int TRIVIAL_OPERATIONS_BEFORE_CANCELLATION_CHECK = 1000;
 
 	/**
 	 * Minimum number of ticks to allocate when calling beginTask on an unknown IProgressMonitor.
@@ -50,8 +61,14 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 		private String subTask = null;
 
 		/**
-		 * Creates a RootInfo struct that delegates to the given progress 
-		 * monitor. 
+		 * Counter that indicates when we should perform an cancellation check for a trivial
+		 * operation.
+		 */
+		int cancellationCheckCounter;
+
+		/**
+		 * Creates a RootInfo struct that delegates to the given progress
+		 * monitor.
 		 * 
 		 * @param root progress monitor to delegate to
 		 */
@@ -100,6 +117,12 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 			}
 		}
 
+		public void checkForCancellation() {
+			if (root.isCanceled()) {
+				throw new OperationCanceledException();
+			}
+		}
+
 	}
 
 	/**
@@ -120,13 +143,13 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 
 	/**
 	 * Number of ticks allocated for this instance's children. This is the total number
-	 * of ticks that may be passed into worked(int) or newChild(int). 
+	 * of ticks that may be passed into worked(int) or newChild(int).
 	 */
 	private int totalForChildren;
 
 	/**
 	 * Children created by newChild will be completed automatically the next time
-	 * the parent progress monitor is touched. This points to the last incomplete child 
+	 * the parent progress monitor is touched. This points to the last incomplete child
 	 * created with newChild.
 	 */
 	private IProgressMonitor lastSubMonitor = null;
@@ -152,8 +175,8 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	/**
 	 * May be passed as a flag to newChild. Indicates that strings
 	 * passed into beginTask should be ignored. If this flag is
-	 * specified, then the progress monitor instance will accept null 
-	 * as the first argument to beginTask. Without this flag, any 
+	 * specified, then the progress monitor instance will accept null
+	 * as the first argument to beginTask. Without this flag, any
 	 * string passed to beginTask will result in a call to
 	 * setTaskName on the parent.
 	 */
@@ -162,10 +185,17 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	/**
 	 * May be passed as a flag to newChild. Indicates that strings
 	 * passed into setTaskName should be ignored. If this string
-	 * is omitted, then a call to setTaskName on the child will 
+	 * is omitted, then a call to setTaskName on the child will
 	 * result in a call to setTaskName on the parent.
 	 */
 	public static final int SUPPRESS_SETTASKNAME = 0x0004;
+
+	/**
+	 * May be passed as a flag to {@link #split}. Indicates that isCanceled
+	 * should always return false.
+	 * @since 4.1
+	 */
+	public static final int SUPPRESS_ISCANCELED = 0x0008;
 
 	/**
 	 * May be passed as a flag to newChild. Indicates that strings
@@ -250,9 +280,9 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	}
 
 	/**
-	 * Consumes the given number of child ticks, given as a double. Must only 
+	 * Consumes the given number of child ticks, given as a double. Must only
 	 * be called if the monitor is in floating-point mode.
-	 *  
+	 * 
 	 * @param ticks the number of ticks to consume
 	 * @return ticks the number of ticks to be consumed from parent
 	 */
@@ -378,9 +408,9 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 
 		// Compute the flags for the child. We want the net effect to be as though the child is
 		// delegating to its parent, even though it is actually talking directly to the root.
-		// This means that we need to compute the flags such that - even if a label isn't 
+		// This means that we need to compute the flags such that - even if a label isn't
 		// suppressed by the child - if that same label would have been suppressed when the
-		// child delegated to its parent, the child must explicitly suppress the label. 
+		// child delegated to its parent, the child must explicitly suppress the label.
 		int childFlags = SubMonitor.SUPPRESS_NONE;
 
 		if ((flags & SubMonitor.SUPPRESS_SETTASKNAME) != 0) {
@@ -401,6 +431,44 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 
 		SubMonitor result = new SubMonitor(root, consume(totalWorkDouble), (int) totalWorkDouble, childFlags);
 		lastSubMonitor = result;
+		return result;
+	}
+
+	/**
+	 * @see org.eclipse.core.runtime.SubMonitor#split(int)
+	 * @since 4.1
+	 */
+	public SubMonitor split(int totalWork) throws OperationCanceledException {
+		return split(totalWork, SUPPRESS_BEGINTASK);
+	}
+
+	/**
+	 * @see org.eclipse.core.runtime.SubMonitor#split(int, int)
+	 * @since 4.1
+	 */
+	public SubMonitor split(int totalWork, int suppressFlags) throws OperationCanceledException {
+		int oldUsedForParent = this.usedForParent;
+		SubMonitor result = newChild(totalWork, suppressFlags);
+
+		if ((flags & SUPPRESS_ISCANCELED) == 0) {
+			int ticksTheChildWillReportToParent = result.totalParent;
+
+			// If the new child reports a nonzero amount of progress.
+			if (ticksTheChildWillReportToParent > 0) {
+				// Don't check for cancellation if the child is consuming 100% of its parent since whatever code created
+				// the parent already performed this check.
+				if (oldUsedForParent > 0 || usedForParent < totalParent) {
+					// Treat this as a nontrivial operation and check for cancellation unconditionally.
+					root.checkForCancellation();
+				}
+			} else {
+				// This is a trivial operation. Only perform a cancellation check after the counter expires.
+				if (++root.cancellationCheckCounter >= TRIVIAL_OPERATIONS_BEFORE_CANCELLATION_CHECK) {
+					root.cancellationCheckCounter = 0;
+					root.checkForCancellation();
+				}
+			}
+		}
 		return result;
 	}
 
