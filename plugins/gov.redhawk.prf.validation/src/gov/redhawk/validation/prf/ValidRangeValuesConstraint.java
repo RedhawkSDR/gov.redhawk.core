@@ -58,8 +58,8 @@ public class ValidRangeValuesConstraint extends AbstractModelConstraint {
 		if (!complex && min != null && max != null && min.trim().length() > 0 && max.trim().length() > 0) {
 			Object minValue, maxValue;
 			try {
-				minValue = AnyUtils.convertString(min, type.getLiteral());
-				maxValue = AnyUtils.convertString(max, type.getLiteral());
+				minValue = AnyUtils.convertString(min, type.getLiteral(), complex);
+				maxValue = AnyUtils.convertString(max, type.getLiteral(), complex);
 			} catch (IllegalArgumentException ex) {
 				// If we can't parse the string and convert to the appropriate type, we can't check range
 				// The type-checking constraint for min/max will indicate an error

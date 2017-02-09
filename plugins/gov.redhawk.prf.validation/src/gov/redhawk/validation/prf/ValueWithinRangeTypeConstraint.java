@@ -56,13 +56,13 @@ public class ValueWithinRangeTypeConstraint extends AbstractModelConstraint {
 
 			String strMax = range.getMax();
 
-			Object obj = AnyUtils.convertString(value, type.getLiteral());
+			Object obj = AnyUtils.convertString(value, type.getLiteral(), false);
 			if (!(obj instanceof Number)) {
 				// Can't compare non numbers
 				return null;
 			}
-			Object minObj = AnyUtils.convertString(strMin, type.getLiteral());
-			Object maxObj = AnyUtils.convertString(strMax, type.getLiteral());
+			Object minObj = AnyUtils.convertString(strMin, type.getLiteral(), false);
+			Object maxObj = AnyUtils.convertString(strMax, type.getLiteral(), false);
 			if (minObj instanceof Number && maxObj instanceof Number) {
 				if (CompareNumbers.compare((Number) obj, (Number) minObj) < 0) {
 					return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value + " is less than min value of " + strMin),
