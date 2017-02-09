@@ -53,6 +53,7 @@ public class ComplexTypeConstraint extends AbstractModelConstraint {
 				case CHAR:
 				case OBJREF:
 				case STRING:
+				case UTCTIME:
 					return false;
 				default:
 					break;
