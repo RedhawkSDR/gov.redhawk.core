@@ -49,4 +49,8 @@
     <kind kindtype="property"/>
     <action type="external"/>
   </simple>
+  <simple id="utctime" mode="readwrite" type="utctime">
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simple>
 </properties>
