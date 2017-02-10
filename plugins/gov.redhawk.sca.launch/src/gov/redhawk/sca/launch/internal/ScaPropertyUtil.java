@@ -19,11 +19,15 @@ import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
 
+import java.beans.Encoder;
+import java.beans.Expression;
+import java.beans.PersistenceDelegate;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +73,7 @@ public class ScaPropertyUtil {
 			XMLEncoder encoder = null;
 			buffer = new ByteArrayOutputStream();
 			encoder = new XMLEncoder(buffer);
+			encoder.setPersistenceDelegate(BigInteger.class, new BigIntegerPersistenceDelegate());
 			encoder.writeObject(propMap);
 
 			encoder.close();
@@ -81,6 +86,21 @@ public class ScaPropertyUtil {
 			return buffer.toString();
 		} else {
 			return null;
+		}
+	}
+
+	/**
+	 * Allows persisting {@link BigInteger}s with the java.beans system.
+	 */
+	private static class BigIntegerPersistenceDelegate extends PersistenceDelegate {
+
+		public BigIntegerPersistenceDelegate() {
+		}
+
+		@Override
+		protected Expression instantiate(Object oldInstance, Encoder out) {
+			BigInteger bigInt = (BigInteger) oldInstance;
+			return new Expression(bigInt, BigInteger.class, "new", new Object[] { bigInt.toString() });
 		}
 	}
 

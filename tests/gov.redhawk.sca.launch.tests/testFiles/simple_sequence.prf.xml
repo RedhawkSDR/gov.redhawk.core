@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties PUBLIC "-//JTRS//DTD SCA V2.2.2 PRF//EN" "properties.dtd">
+<properties>
+  <simplesequence id="boolean" mode="readwrite" type="boolean">
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="char" mode="readwrite" type="char">
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="double" mode="readwrite" type="double">
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="float" mode="readwrite" type="float">
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="long" mode="readwrite" type="long">
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="longlong" mode="readwrite" type="longlong">
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="octet" mode="readwrite" type="octet">
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="short" mode="readwrite" type="short">
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="string" mode="readwrite" type="string">
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="ulong" mode="readwrite" type="ulong">
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="ulonglong" mode="readwrite" type="ulonglong">
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="ushort" mode="readwrite" type="ushort">
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+</properties>
