@@ -29,6 +29,7 @@ import mil.jpeojtrs.sca.util.math.ComplexUByte;
 import mil.jpeojtrs.sca.util.math.ComplexULong;
 import mil.jpeojtrs.sca.util.math.ComplexULongLong;
 import mil.jpeojtrs.sca.util.math.ComplexUShort;
+import mil.jpeojtrs.sca.util.time.UTCTime;
 
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.emf.databinding.EObjectObservableValue;
@@ -114,52 +115,52 @@ public class SCAObservables {
 	 * @since 1.2
 	 */
 	public static EDataType toType(Object obj) {
-		EDataType type;
 		if (obj instanceof Integer) {
-			type = EcorePackage.Literals.EINTEGER_OBJECT;
+			return EcorePackage.Literals.EINTEGER_OBJECT;
 		} else if (obj instanceof Boolean) {
-			type = EcorePackage.Literals.EBOOLEAN_OBJECT;
+			return EcorePackage.Literals.EBOOLEAN_OBJECT;
 		} else if (obj instanceof BigInteger) {
-			type = EcorePackage.Literals.EBIG_INTEGER;
+			return EcorePackage.Literals.EBIG_INTEGER;
 		} else if (obj instanceof Character) {
-			type = EcorePackage.Literals.ECHARACTER_OBJECT;
+			return EcorePackage.Literals.ECHARACTER_OBJECT;
 		} else if (obj instanceof Short) {
-			type = EcorePackage.Literals.ESHORT_OBJECT;
+			return EcorePackage.Literals.ESHORT_OBJECT;
 		} else if (obj instanceof Long) {
-			type = EcorePackage.Literals.ELONG_OBJECT;
+			return EcorePackage.Literals.ELONG_OBJECT;
 		} else if (obj instanceof Float) {
-			type = EcorePackage.Literals.EFLOAT_OBJECT;
+			return EcorePackage.Literals.EFLOAT_OBJECT;
 		} else if (obj instanceof Double) {
-			type = EcorePackage.Literals.EDOUBLE_OBJECT;
+			return EcorePackage.Literals.EDOUBLE_OBJECT;
 		} else if (obj instanceof String) {
-			type = EcorePackage.Literals.ESTRING;
+			return EcorePackage.Literals.ESTRING;
 		} else if (obj instanceof Byte) {
-			type = EcorePackage.Literals.EBYTE;
+			return EcorePackage.Literals.EBYTE;
 		} else if (obj instanceof ComplexBoolean) {
-			type = PrfPackage.Literals.COMPLEX_BOOLEAN;
+			return PrfPackage.Literals.COMPLEX_BOOLEAN;
 		} else if (obj instanceof ComplexByte) {
-			type = PrfPackage.Literals.COMPLEX_BYTE;
+			return PrfPackage.Literals.COMPLEX_BYTE;
 		} else if (obj instanceof ComplexDouble) {
-			type = PrfPackage.Literals.COMPLEX_DOUBLE;
+			return PrfPackage.Literals.COMPLEX_DOUBLE;
 		} else if (obj instanceof ComplexFloat) {
-			type = PrfPackage.Literals.COMPLEX_FLOAT;
+			return PrfPackage.Literals.COMPLEX_FLOAT;
 		} else if (obj instanceof ComplexLong) {
-			type = PrfPackage.Literals.COMPLEX_LONG;
+			return PrfPackage.Literals.COMPLEX_LONG;
 		} else if (obj instanceof ComplexLongLong) {
-			type = PrfPackage.Literals.COMPLEX_LONG_LONG;
+			return PrfPackage.Literals.COMPLEX_LONG_LONG;
 		} else if (obj instanceof ComplexUByte) {
-			type = PrfPackage.Literals.COMPLEX_UBYTE;
+			return PrfPackage.Literals.COMPLEX_UBYTE;
 		} else if (obj instanceof ComplexShort) {
-			type = PrfPackage.Literals.COMPLEX_SHORT;
+			return PrfPackage.Literals.COMPLEX_SHORT;
 		} else if (obj instanceof ComplexULong) {
-			type = PrfPackage.Literals.COMPLEX_ULONG;
+			return PrfPackage.Literals.COMPLEX_ULONG;
 		} else if (obj instanceof ComplexULongLong) {
-			type = PrfPackage.Literals.COMPLEX_ULONG_LONG;
+			return PrfPackage.Literals.COMPLEX_ULONG_LONG;
 		} else if (obj instanceof ComplexUShort) {
-			type = PrfPackage.Literals.COMPLEX_USHORT;
+			return PrfPackage.Literals.COMPLEX_USHORT;
+		} else if (obj instanceof UTCTime) {
+			return PrfPackage.Literals.UTC_TIME;
 		} else {
-			type = null;
+			return null;
 		}
-		return type;
 	}
 }
