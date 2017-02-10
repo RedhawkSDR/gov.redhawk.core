@@ -40,6 +40,76 @@ import mil.jpeojtrs.sca.util.math.ComplexUShort;
 public class ScaPropertyUtilTest {
 
 	@Test
+	public void simple_props() throws IOException {
+		// Create two components with our test properties
+		String spdPath = "/testFiles/simple.spd.xml";
+		ScaComponent component1 = loadComponent(spdPath);
+		ScaComponent component2 = loadComponent(spdPath);
+
+		// Verify properties are the same
+		assertProps(component1, component2, true);
+
+		// Change component 1's properties
+		((ScaSimpleProperty) component1.getProperty("boolean")).setValue(Boolean.TRUE);
+		((ScaSimpleProperty) component1.getProperty("char")).setValue(new Character('!'));
+		((ScaSimpleProperty) component1.getProperty("double")).setValue(new Double(1.2));
+		((ScaSimpleProperty) component1.getProperty("float")).setValue(new Float(3.4f));
+		((ScaSimpleProperty) component1.getProperty("long")).setValue(new Integer(5));
+		((ScaSimpleProperty) component1.getProperty("longlong")).setValue(new Long(6));
+		((ScaSimpleProperty) component1.getProperty("octet")).setValue(new Short((short) 7));
+		((ScaSimpleProperty) component1.getProperty("short")).setValue(new Short((short) 8));
+		((ScaSimpleProperty) component1.getProperty("string")).setValue("abc");
+		((ScaSimpleProperty) component1.getProperty("ulong")).setValue(new Long(8));
+		((ScaSimpleProperty) component1.getProperty("ulonglong")).setValue(new BigInteger("9"));
+		((ScaSimpleProperty) component1.getProperty("ushort")).setValue(new Integer(10));
+
+		// Verify properties are different
+		assertProps(component1, component2, false);
+
+		// Serialize component 1, deserialize into component 2
+		String serializedProps = ScaPropertyUtil.save(component1);
+		ScaPropertyUtil.load(component2, serializedProps);
+
+		// Verify properties are the same
+		assertProps(component1, component2, true);
+	}
+
+	@Test
+	public void simple_sequence_props() throws IOException {
+		// Create two components with our test properties
+		String spdPath = "/testFiles/simple_sequence.spd.xml";
+		ScaComponent component1 = loadComponent(spdPath);
+		ScaComponent component2 = loadComponent(spdPath);
+
+		// Verify properties are the same
+		assertProps(component1, component2, true);
+
+		// Change component 1's properties
+		((ScaSimpleSequenceProperty) component1.getProperty("boolean")).setValue(new Object[] { Boolean.TRUE, Boolean.FALSE });
+		((ScaSimpleSequenceProperty) component1.getProperty("char")).setValue(new Object[] { new Character('!'), new Character('*') });
+		((ScaSimpleSequenceProperty) component1.getProperty("double")).setValue(new Object[] { new Double(1.2), new Double(3.4) });
+		((ScaSimpleSequenceProperty) component1.getProperty("float")).setValue(new Object[] { new Float(5.6f), new Float(7.8f) });
+		((ScaSimpleSequenceProperty) component1.getProperty("long")).setValue(new Object[] { new Integer(9), new Integer(10) });
+		((ScaSimpleSequenceProperty) component1.getProperty("longlong")).setValue(new Object[] { new Long(11), new Long(12) });
+		((ScaSimpleSequenceProperty) component1.getProperty("octet")).setValue(new Object[] { new Short((short) 13), new Short((short) 14) });
+		((ScaSimpleSequenceProperty) component1.getProperty("short")).setValue(new Object[] { new Short((short) 15), new Short((short) 16) });
+		((ScaSimpleSequenceProperty) component1.getProperty("string")).setValue(new Object[] { "abc", "def" });
+		((ScaSimpleSequenceProperty) component1.getProperty("ulong")).setValue(new Object[] { new Long(17), new Long(18) });
+		((ScaSimpleSequenceProperty) component1.getProperty("ulonglong")).setValue(new Object[] { new BigInteger("19"), new BigInteger("20") });
+		((ScaSimpleSequenceProperty) component1.getProperty("ushort")).setValue(new Object[] { new Integer(21), new Integer(22) });
+
+		// Verify properties are different
+		assertProps(component1, component2, false);
+
+		// Serialize component 1, deserialize into component 2
+		String serializedProps = ScaPropertyUtil.save(component1);
+		ScaPropertyUtil.load(component2, serializedProps);
+
+		// Verify properties are the same
+		assertProps(component1, component2, true);
+	}
+
+	@Test
 	public void complex_simple_props() throws IOException {
 		// Create two components with our test properties
 		String spdPath = "/testFiles/complex_simple.spd.xml";
