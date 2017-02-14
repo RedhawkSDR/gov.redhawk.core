@@ -24,9 +24,9 @@ public class EventViewerFactory extends XViewerFactory {
 
 	public static final String NAMESPACE = EventView.ID + ".viewer";
 
-	static final XViewerColumn TIME_COL_SS = new XViewerColumn(EventViewerFactory.NAMESPACE + ".time_ss", "Time", 140, XViewerAlign.Left, true,
+	static final XViewerColumn TIME_COL_SS = new XViewerColumn(EventViewerFactory.NAMESPACE + ".time_ss", "Time", 100, XViewerAlign.Left, true,
 		SortDataType.Date, false, "Timestamp of the event");
-	static final XViewerColumn TYPE_COL = new XViewerColumn(EventViewerFactory.NAMESPACE + ".type", "Type", 200, XViewerAlign.Left, true, SortDataType.String,
+	static final XViewerColumn TYPE_COL = new XViewerColumn(EventViewerFactory.NAMESPACE + ".type", "Type", 240, XViewerAlign.Left, true, SortDataType.String,
 		false, "Type of event");
 	static final XViewerColumn SUMMARY = new XViewerColumn(EventViewerFactory.NAMESPACE + ".summary", "Summary", 360, XViewerAlign.Left, true,
 		SortDataType.String, false, "Event");

@@ -23,6 +23,9 @@ import org.omg.CORBA.TypeCodePackage.BadKind;
 import CF.DataType;
 import CF.LogEvent;
 import CF.LogEventHelper;
+import CF.PropertyChangeListenerPackage.PropertyChangeEvent;
+import CF.PropertyChangeListenerPackage.PropertyChangeEventHelper;
+import CF.PropertyChangeListenerPackage.PropertyChangeEventHelper_2_0;
 import ExtendedEvent.PropertySetChangeEventType;
 import ExtendedEvent.PropertySetChangeEventTypeHelper;
 import ExtendedEvent.ResourceStateChangeEventType;
@@ -38,6 +41,7 @@ import StandardEvent.StateChangeEventTypeHelper;
 import gov.redhawk.logging.ui.LogLevels;
 import gov.redhawk.ui.views.event.model.Event;
 import gov.redhawk.ui.views.event.utils.EventViewUtils;
+import mil.jpeojtrs.sca.util.time.UTCTime;
 
 /**
  * 
@@ -50,8 +54,10 @@ public class EventPropertySource implements IPropertySource {
 	private static final String CHANNEL = ID_PREFIX + "type.channel";
 	private static final String COMPONENT_ID = ID_PREFIX + "ComponentId";
 	private static final String DEVICE_ID = ID_PREFIX + "deviceId";
+	private static final String EVENT_ID = ID_PREFIX + "eventId";
 	private static final String PRODUCER_ID = ID_PREFIX + "producerId";
 	private static final String PROPERTIES = ID_PREFIX + "properties";
+	private static final String REGISTRATION_ID = ID_PREFIX + "registrationId";
 	private static final String SOURCE_CATEGORY = ID_PREFIX + "sourceCategory";
 	private static final String SOURCE_ID = ID_PREFIX + "sourceId";
 	private static final String SOURCE_IOR = ID_PREFIX + "sourceIor";
@@ -60,6 +66,7 @@ public class EventPropertySource implements IPropertySource {
 	private static final String STATE_CHANGE_FROM = ID_PREFIX + "stateChangeFrom";
 	private static final String STATE_CHANGE_TO = ID_PREFIX + "stateChangeTo";
 	private static final String TIMESTAMP = ID_PREFIX + "timestamp";
+	private static final String TIMESTAMP_STATUS = ID_PREFIX + "timestampStatus";
 	private static final String TYPE = ID_PREFIX + "type";
 
 	private Event event;
@@ -84,6 +91,8 @@ public class EventPropertySource implements IPropertySource {
 			createObjectAddedPropertyDescriptors(propDescList);
 		} else if (event.valueIsType(DomainManagementObjectRemovedEventTypeHelper.type())) {
 			createObjectRemovedPropertyDescriptors(propDescList);
+		} else if (event.valueIsType(PropertyChangeEventHelper.type())) {
+			createPropertyChangePropertyDescriptors(propDescList);
 		} else if (event.valueIsType(PropertySetChangeEventTypeHelper.type())) {
 			createPropertySetChangePropertyDescriptors(propDescList);
 		} else if (event.valueIsType(StateChangeEventTypeHelper.type())) {
@@ -96,6 +105,8 @@ public class EventPropertySource implements IPropertySource {
 			createMessageEventPropertyDescriptors(propDescList, CF.PropertiesHelper.extract(event.getValue()));
 		} else if (event.valueIsType(LogEventHelper.type())) {
 			createLogEventProperty(propDescList);
+		} else if (event.valueIsType(PropertyChangeEventHelper_2_0.type())) {
+			createPropertyChangePropertyDescriptors(propDescList);
 		}
 
 		return propDescList.toArray(new IPropertyDescriptor[0]);
@@ -111,6 +122,14 @@ public class EventPropertySource implements IPropertySource {
 		propDescList.add(new PropertyDescriptor(SOURCE_CATEGORY, "Source Category"));
 		propDescList.add(new PropertyDescriptor(SOURCE_ID, "Source ID"));
 		propDescList.add(new PropertyDescriptor(SOURCE_NAME, "Source Name"));
+	}
+
+	private void createPropertyChangePropertyDescriptors(List<PropertyDescriptor> propDescList) {
+		propDescList.add(new PropertyDescriptor(EVENT_ID, "Event ID"));
+		propDescList.add(new PropertyDescriptor(REGISTRATION_ID, "Registration ID"));
+		propDescList.add(new PropertyDescriptor(SOURCE_ID, "Source ID"));
+		propDescList.add(new PropertyDescriptor(PROPERTIES, "Properties"));
+		propDescList.add(new PropertyDescriptor(TIMESTAMP_STATUS, "Timestamp status"));
 	}
 
 	private void createPropertySetChangePropertyDescriptors(List<PropertyDescriptor> propDescList) {
@@ -171,20 +190,34 @@ public class EventPropertySource implements IPropertySource {
 
 	@Override
 	public Object getPropertyValue(Object id) {
+		// Common to all events
 		switch ((String) id) {
 		case TYPE:
 			try {
 				return event.getValue().type().id();
 			} catch (BadKind e) {
-				return "UNKOWN TYPE";
+				return "UNKNOWN TYPE";
 			}
 		case CHANNEL:
 			return event.getChannel();
-		case TIMESTAMP:
-			return event.getTimestamp().toString();
 		default:
 		}
 
+		// PropertyChangeEvent
+		if (event.valueIsType(PropertyChangeEventHelper.type())) {
+			return getPropertyValue((String) id, PropertyChangeEventHelper.extract(event.getValue()));
+		} else if (event.valueIsType(PropertyChangeEventHelper_2_0.type())) {
+			PropertyChangeEvent eventObject = PropertyChangeEventHelper_2_0.extract(event.getValue());
+			eventObject.timestamp = new CF.UTCTime((short) 0, event.getTimestamp().getTime() / 1000, event.getTimestamp().getTime() % 1000);
+			return getPropertyValue((String) id, eventObject);
+		}
+
+		// Common to all *remaining* events
+		if (TIMESTAMP.equals(id)) {
+			return event.getTimestamp().toString();
+		}
+
+		// Properties vary per the event type
 		if (event.valueIsType(DomainManagementObjectAddedEventTypeHelper.type())) {
 			return getPropertyValue((String) id, DomainManagementObjectAddedEventTypeHelper.extract(event.getValue()));
 		} else if (event.valueIsType(DomainManagementObjectRemovedEventTypeHelper.type())) {
@@ -233,6 +266,35 @@ public class EventPropertySource implements IPropertySource {
 			return (event.sourceId != null) ? event.sourceId : "";
 		case SOURCE_NAME:
 			return (event.sourceName != null) ? event.sourceName : "";
+		default:
+			return "";
+		}
+	}
+
+	private String getPropertyValue(String id, PropertyChangeEvent event) {
+		switch (id) {
+		case EVENT_ID:
+			return (event.evt_id != null) ? event.evt_id : "";
+		case REGISTRATION_ID:
+			return (event.reg_id != null) ? event.reg_id : "";
+		case SOURCE_ID:
+			return (event.resource_id != null) ? event.resource_id : "";
+		case PROPERTIES:
+			return (event.properties != null) ? EventViewUtils.toString(event.properties) : "";
+		case TIMESTAMP:
+			return (event.timestamp != null) ? new UTCTime(event.timestamp).toString() : "";
+		case TIMESTAMP_STATUS:
+			if (event.timestamp == null) {
+				return "";
+			}
+			switch (event.timestamp.tcstatus) {
+			case 0:
+				return "0 (invalid)";
+			case 1:
+				return "1 (valid)";
+			default:
+				return Short.toString(event.timestamp.tcstatus);
+			}
 		default:
 			return "";
 		}

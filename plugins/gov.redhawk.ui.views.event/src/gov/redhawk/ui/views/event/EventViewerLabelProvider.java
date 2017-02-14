@@ -27,6 +27,9 @@ import org.omg.CORBA.TypeCodePackage.BadKind;
 import CF.DataType;
 import CF.LogEvent;
 import CF.LogEventHelper;
+import CF.PropertyChangeListenerPackage.PropertyChangeEvent;
+import CF.PropertyChangeListenerPackage.PropertyChangeEventHelper;
+import CF.PropertyChangeListenerPackage.PropertyChangeEventHelper_2_0;
 import ExtendedEvent.PropertySetChangeEventType;
 import ExtendedEvent.PropertySetChangeEventTypeHelper;
 import ExtendedEvent.ResourceStateChangeEventType;
@@ -111,9 +114,22 @@ public class EventViewerLabelProvider extends XViewerLabelProvider {
 			StateChangeEventType value = StateChangeEventTypeHelper.extract(event.getValue());
 			return (value.sourceId + " state changed from " + EventViewUtils.toString(value.stateChangeFrom) + " to "
 				+ EventViewUtils.toString(value.stateChangeTo));
+		} else if (event.valueIsType(PropertyChangeEventHelper.type())) {
+			PropertyChangeEvent value = PropertyChangeEventHelper.extract(event.getValue());
+			StringBuilder sb = new StringBuilder(100);
+			sb.append("Properties for ");
+			sb.append(value.resource_id);
+			sb.append(" have been changed: ");
+			appendPropIdList(sb, value.properties);
+			return sb.toString();
 		} else if (event.valueIsType(PropertySetChangeEventTypeHelper.type())) {
 			PropertySetChangeEventType value = PropertySetChangeEventTypeHelper.extract(event.getValue());
-			return (value.sourceName + " properties have been changed");
+			StringBuilder sb = new StringBuilder(100);
+			sb.append("Properties for ");
+			sb.append(value.sourceName);
+			sb.append(" have been changed: ");
+			appendPropIdList(sb, value.properties);
+			return sb.toString();
 		} else if (event.valueIsType(ResourceStateChangeEventTypeHelper.type())) {
 			ResourceStateChangeEventType value = ResourceStateChangeEventTypeHelper.extract(event.getValue());
 			return (value.sourceName + " state changed from " + EventViewUtils.toString(value.stateChangeFrom) + " to "
@@ -123,24 +139,44 @@ public class EventViewerLabelProvider extends XViewerLabelProvider {
 			return (value.componentId + " terminated unexpectedly");
 		} else if (event.valueIsType(CF.PropertiesHelper.type())) {
 			DataType[] value = CF.PropertiesHelper.extract(event.getValue());
-			StringBuilder strBuilder = new StringBuilder("Event received regarding structs:");
-			if (value.length < 1) {
-				return "See properties view for details";
-			}
-
-			for (int i = 0; i < value.length; i++) {
-				strBuilder.append(String.format(" [%s]", value[i].id));
-				if (i > 4) {
-					strBuilder.append("...");
-					break;
-				}
-			}
-			return (strBuilder.toString());
+			StringBuilder sb = new StringBuilder("Event received regarding structs: ");
+			appendPropIdList(sb, value);
+			return sb.toString();
 		} else if (event.valueIsType(LogEventHelper.type())) {
 			LogEvent value = LogEventHelper.extract(event.getValue());
 			return value.msg;
+		} else if (event.valueIsType(PropertyChangeEventHelper_2_0.type())) {
+			PropertyChangeEvent value = PropertyChangeEventHelper_2_0.extract(event.getValue());
+			StringBuilder sb = new StringBuilder(100);
+			sb.append("Properties for ");
+			sb.append(value.resource_id);
+			sb.append(" have been changed: ");
+			appendPropIdList(sb, value.properties);
+			return sb.toString();
 		}
 		return "";
+	}
+
+	private String appendPropIdList(StringBuilder sb, DataType[] props) {
+		sb.append('[');
+		int len = 0;
+		boolean ellipsis = false;
+		for (DataType prop : props) {
+			len += prop.id.length();
+			if (len < 50) {
+				sb.append(prop.id);
+				sb.append(", ");
+			} else {
+				sb.append("...");
+				ellipsis = true;
+				break;
+			}
+		}
+		if (!ellipsis && props.length > 0) {
+			sb.setLength(sb.length() - 2);
+		}
+		sb.append(']');
+		return sb.toString();
 	}
 
 	@Override
