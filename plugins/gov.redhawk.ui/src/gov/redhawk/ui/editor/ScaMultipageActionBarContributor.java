@@ -12,7 +12,9 @@
 package gov.redhawk.ui.editor;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.emf.edit.ui.action.EditingDomainActionBarContributor;
@@ -73,7 +75,7 @@ public abstract class ScaMultipageActionBarContributor extends MultiPageEditorAc
 		if (this.myActiveEditor != null) {
 			this.myActiveEditor.removePropertyListener(this.myEditorPropertyChangeListener);
 		}
-		// TODO: Will this cast ever not be correct?
+
 		this.myActiveEditor = part;
 		super.setActiveEditor(part);
 		if (this.myActiveEditor instanceof IEditingDomainProvider) {
@@ -104,6 +106,14 @@ public abstract class ScaMultipageActionBarContributor extends MultiPageEditorAc
 		}
 		SubActionBarsExt actionBars = this.actionBarMap.get(activeEditor);
 		if (actionBars == null) {
+
+			Iterator<Entry<IEditorPart, SubActionBarsExt>> iter = this.actionBarMap.entrySet().iterator();
+			while (iter.hasNext()) {
+				Entry<IEditorPart, SubActionBarsExt> tmp = iter.next();
+				tmp.getValue().dispose();
+				this.actionBarMap.remove(tmp.getKey());
+			}
+
 			final IEditorActionBarContributor subBars = getSubActionBarContributor(activeEditor);
 			if (subBars != null) {
 				actionBars = new SubActionBarsExt(getPage(), getActionBars(), subBars, getType(activeEditor));
