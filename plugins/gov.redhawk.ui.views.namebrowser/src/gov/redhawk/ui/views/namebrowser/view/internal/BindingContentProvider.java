@@ -69,6 +69,7 @@ public class BindingContentProvider implements ITreeContentProvider, IStructured
 			if (retVal == null) {
 				return this.fManager.getChildren(parentElement);
 			}
+			return retVal;
 		} else if (parentElement instanceof Collection< ? >) {
 			return ((Collection< ? >) parentElement).toArray();
 		}
