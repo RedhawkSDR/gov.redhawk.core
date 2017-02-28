@@ -22,7 +22,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.IElementCollector;
-import org.omg.CosNaming.NameComponent;
+import org.omg.CosNaming.NamingContextPackage.InvalidName;
 
 public class BindingNodeDefferedWorkbenchAdapter implements IDeferredWorkbenchAdapter {
 
@@ -53,8 +53,11 @@ public class BindingNodeDefferedWorkbenchAdapter implements IDeferredWorkbenchAd
 			if (n.getBinding() == null) {
 				return n.getHost().substring(n.getHost().indexOf("::") + 2);
 			} else {
-				NameComponent nc = n.getBinding().binding_name[0];
-				return (nc.kind == null) ? nc.id : nc.id + "." + nc.kind;
+				try {
+					return n.getNamingContext().to_string(n.getBinding().binding_name);
+				} catch (InvalidName e) {
+					return "(invalid name)";
+				}
 			}
 		}
 		return "";
