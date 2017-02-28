@@ -56,6 +56,11 @@ public class ContainerShapeAdapterFactory implements IAdapterFactory {
 		}
 		RHContainerShape containerShape = (RHContainerShape) adaptableObject;
 
+		// Check to make sure the container is not null, possible in a multi-delete action
+		if (containerShape.getContainer() == null) {
+			return null;
+		}
+
 		// Get the diagram
 		Diagram diagram = Graphiti.getPeService().getDiagramForShape(containerShape);
 		if (diagram == null) {
