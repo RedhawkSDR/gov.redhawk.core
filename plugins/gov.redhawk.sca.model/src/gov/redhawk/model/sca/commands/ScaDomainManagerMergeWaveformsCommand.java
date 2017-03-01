@@ -22,28 +22,34 @@ import java.util.Map;
 import CF.Application;
 
 /**
+ * Updates the domain manager's waveform list based on a list of {@link Application} objects.
  * @since 14.0
- * 
  */
 public class ScaDomainManagerMergeWaveformsCommand extends SetStatusCommand<ScaDomainManager> {
-	private final Application[] applications;
 
+	private final Map<String, Application> corbaApplications;
+
+	/**
+	 * This constructor performs {@link Object#toString()} calls on the {@link Application} CORBA objects, and thus is
+	 * subject to blocking.
+	 * @param provider the domain manager
+	 * @param applications the current application list for the domain manager
+	 */
 	public ScaDomainManagerMergeWaveformsCommand(ScaDomainManager provider, Application[] applications) {
 		super(provider, ScaPackage.Literals.SCA_DOMAIN_MANAGER__WAVEFORMS, null);
-		this.applications = applications;
-	}
 
-	@Override
-	public void execute() {
-		// Populate Applications Map
-		final Map<String, Application> corbaApplications = new HashMap<String, Application>();
+		// Populate a map of IORs -> CORBA Application objects
+		this.corbaApplications = new HashMap<String, Application>();
 		if (applications != null) {
 			for (final Application app : applications) {
 				corbaApplications.put(app.toString(), app);
 			}
 		}
+	}
 
-		// Current Waveforms Map
+	@Override
+	public void execute() {
+		// Populate a map of IORs -> SCA model waveforms
 		final Map<String, ScaWaveform> scaApplications = new HashMap<String, ScaWaveform>();
 		for (final ScaWaveform app : provider.getWaveforms()) {
 			scaApplications.put(app.getIor(), app);
