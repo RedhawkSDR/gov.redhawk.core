@@ -11,8 +11,8 @@
 package gov.redhawk.core.graphiti.ui.adapters;
 
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
-import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.ui.platform.GraphitiShapeEditPart;
 
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
@@ -56,16 +56,16 @@ public class ContainerShapeAdapterFactory implements IAdapterFactory {
 		}
 		RHContainerShape containerShape = (RHContainerShape) adaptableObject;
 
-		// Check to make sure the container is not null, possible in a multi-delete action
-		if (containerShape.getContainer() == null) {
-			return null;
-		}
-
 		// Get the diagram
-		Diagram diagram = Graphiti.getPeService().getDiagramForShape(containerShape);
-		if (diagram == null) {
-			return null;
+		// Check to make sure the container is not null, possible in a multi-delete and probably other actions
+		ContainerShape container = containerShape.getContainer();
+		while (!(container instanceof Diagram)) {
+			if (container == null) {
+				return null;
+			}
+			container = container.getContainer();
 		}
+		Diagram diagram = (Diagram) container;
 
 		// Try to convert the Graphiti PictogramElement to a SAD ComponentInstantiation
 		ComponentInstantiation instantiation = DUtil.getBusinessObject(containerShape, ComponentInstantiation.class);
