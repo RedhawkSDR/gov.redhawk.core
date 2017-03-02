@@ -903,7 +903,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	@Override
 	public Application create(final String name, final DataType[] initConfiguration, final DeviceAssignmentType[] deviceAssignments)
 		throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
-		ScaWaveform result = createWaveform(null, name, initConfiguration, deviceAssignments, null);
+		ScaWaveform result = createWaveform(null, name, initConfiguration, deviceAssignments, RefreshDepth.NONE);
 		if (result != null) {
 			return result.fetchNarrowedObject(null);
 		}

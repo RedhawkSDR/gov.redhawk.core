@@ -572,7 +572,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 				for (AbstractPort abstractPort : scdPorts.getAllPorts()) {
 					String portName = abstractPort.getName();
 					try {
-						if (monitor.isCanceled()) {
+						if (subMonitor.isCanceled()) {
 							throw new OperationCanceledException();
 						}
 						org.omg.CORBA.Object portCorbaObj = currentObj.getPort(portName);
@@ -775,17 +775,17 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		// END GENERATED CODE
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
 
-		if (monitor.isCanceled()) {
+		if (subMonitor.isCanceled()) {
 			throw new OperationCanceledException();
 		}
 		super.fetchAttributes(subMonitor.newChild(1));
 
-		if (monitor.isCanceled()) {
+		if (subMonitor.isCanceled()) {
 			throw new OperationCanceledException();
 		}
 		fetchProfileObject(subMonitor.newChild(1));
 
-		if (monitor.isCanceled()) {
+		if (subMonitor.isCanceled()) {
 			throw new OperationCanceledException();
 		}
 		fetchProperties(subMonitor.newChild(1));
