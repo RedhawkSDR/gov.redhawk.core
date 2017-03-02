@@ -104,7 +104,6 @@ public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Obj
 	@Override
 	protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
 		// Do nothing
-
 	}
 
 	/**

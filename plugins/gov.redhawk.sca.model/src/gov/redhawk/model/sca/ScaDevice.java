@@ -399,6 +399,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
+	@Deprecated
 	EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor);
 
 	/**

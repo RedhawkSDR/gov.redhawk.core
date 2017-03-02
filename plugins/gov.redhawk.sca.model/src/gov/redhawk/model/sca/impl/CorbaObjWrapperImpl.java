@@ -31,9 +31,9 @@ import java.util.concurrent.TimeoutException;
 
 import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
@@ -416,7 +416,6 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	@Override
 	public boolean exists() {
 		// END GENERATED CODE
-
 		try {
 			if ((getCorbaObj() != null) && (!getCorbaObj()._non_existent())) {
 				return true;
@@ -436,10 +435,9 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 */
 	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
-		if (isDisposed()) {
-			return;
-		}
+		// END GENERATED CODE
 		fetchNarrowedObject(monitor);
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -468,6 +466,9 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 1);
 		org.omg.CORBA.Object localCorbaObj = getCorbaObj();
 		if (localCorbaObj != null) {
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			try {
 				T newObj = narrow(localCorbaObj);
 				transaction.addCommand(new SetLocalAttributeCommand(this, newObj, ScaPackage.Literals.CORBA_OBJ_WRAPPER__OBJ));
@@ -705,32 +706,38 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		// BEGIN GENERATED CODE
 	}
 
-	/**
-	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @throws InterruptedException
-	 * @generated NOT
-	 */
+	// END GENERATED CODE
+
 	@Override
 	public final void refresh(IProgressMonitor monitor, RefreshDepth depth) throws InterruptedException {
 		if (isDisposed()) {
 			return;
 		}
-		Assert.isNotNull(depth);
+
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Refresh...", 100);
 		if (depth == RefreshDepth.NONE) {
+			subMonitor.done();
 			return;
 		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Refresh...", 100);
+
 		try {
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			fetchAttributes(subMonitor.newChild(20));
 			switch (depth) {
 			case CHILDREN:
 			case FULL:
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				internalFetchChildren(subMonitor.newChild(20));
 				break;
 			default:
 				break;
+			}
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
 			}
 			super.refresh(subMonitor.newChild(60), depth);
 		} finally {
@@ -744,5 +751,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		dispose();
 		eAdapters().clear();
 	}
+
+	// BEGIN GENERATED CODE
 
 } // CorbaObjWrapperImpl

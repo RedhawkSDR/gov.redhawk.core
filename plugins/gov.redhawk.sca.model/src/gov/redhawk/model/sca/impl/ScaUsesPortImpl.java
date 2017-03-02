@@ -18,18 +18,17 @@ import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.commands.ScaUsesPortMergeConnectionsCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import mil.jpeojtrs.sca.scd.Uses;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -186,69 +185,40 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 		if (isDisposed()) {
 			return ECollections.emptyEList();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		Port portObj = fetchNarrowedObject(subMonitor.newChild(1));
+
+		// Convert the CORBA object to a QueryablePort if possible
 		if (!(portObj instanceof QueryablePort)) {
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			if (_is_a(QueryablePortHelper.id())) {
-				portObj = QueryablePortHelper.narrow(portObj);
+				portObj = QueryablePortHelper.unchecked_narrow(portObj);
 			}
 		}
+
 		if (portObj instanceof QueryablePort) {
+			// Ask the port for its connections
 			Transaction transaction = connectionsFeature.createTransaction();
 			QueryablePort queryPort = (QueryablePort) portObj;
-			IStatus tmpStatus = Status.OK_STATUS;
-			UsesConnection[] tmpConnections = new UsesConnection[0];
-			try {
-				tmpConnections = queryPort.connections();
-			} catch (SystemException e) {
-				tmpStatus = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port connections.", e);
+			IStatus fetchStatus = Status.OK_STATUS;
+			UsesConnection[] newConnections = new UsesConnection[0];
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
 			}
-			final IStatus fetchStatus = tmpStatus;
-			final UsesConnection[] newConnections = tmpConnections;
-			transaction.addCommand(new ScaModelCommand() {
+			try {
+				newConnections = queryPort.connections();
+			} catch (SystemException e) {
+				fetchStatus = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port connections.", e);
+			}
 
-				@Override
-				public void execute() {
-					Map<String, ScaConnection> currentConnections = new HashMap<String, ScaConnection>();
-					for (ScaConnection connection : getConnections()) {
-						currentConnections.put(connection.getId(), connection);
-					}
-
-					Map<String, ScaConnection> connectionToRemove = new HashMap<String, ScaConnection>();
-					connectionToRemove.putAll(currentConnections);
-
-					Map<String, ScaConnection> newConnectionMaps = Collections.emptyMap();
-					if (newConnections != null) {
-						newConnectionMaps = new HashMap<String, ScaConnection>();
-						for (UsesConnection connection : newConnections) {
-							ScaConnection newConnection = ScaFactory.eINSTANCE.createScaConnection();
-							newConnection.setData(connection);
-							newConnectionMaps.put(connection.connectionId, newConnection);
-						}
-					}
-					connectionToRemove.keySet().removeAll(newConnectionMaps.keySet());
-
-					// Remove old connections
-					if (!connectionToRemove.isEmpty()) {
-						getConnections().removeAll(connectionToRemove.values());
-					}
-
-					// Remove duplicates
-					newConnectionMaps.keySet().removeAll(currentConnections.keySet());
-
-					// Add new connections
-					if (!newConnectionMaps.isEmpty()) {
-						getConnections().addAll(newConnectionMaps.values());
-					}
-
-					// Do this to "Set" the connections
-					if (!isSetConnections()) {
-						getConnections().clear();
-					}
-
-					setStatus(ScaPackage.Literals.SCA_USES_PORT__CONNECTIONS, fetchStatus);
-				}
-			});
+			// Update the model
+			transaction.addCommand(new ScaUsesPortMergeConnectionsCommand(this, newConnections, fetchStatus));
 			transaction.commit();
 		}
 

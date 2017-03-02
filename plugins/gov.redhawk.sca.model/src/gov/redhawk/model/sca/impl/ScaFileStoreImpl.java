@@ -16,18 +16,21 @@ import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaFileStore;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.commands.ScaFileStoreMergeChildrenCommand;
+import gov.redhawk.model.sca.commands.ScaFileStoreMergeChildrenCommand.FileStoreData;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
@@ -550,9 +553,6 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	@Override
 	public void refresh(IProgressMonitor monitor, RefreshDepth depth) throws InterruptedException {
 		// END GENERATED CODE
-		if (depth == null) {
-			return;
-		}
 		switch (depth) {
 		case FULL:
 		case CHILDREN:
@@ -564,87 +564,43 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 		// BEGIN GENERATED CODE
 	}
 
-	private static class FileStoreData {
-		public FileStoreData(IFileStore childStore, boolean isDirectory) {
-			fileStore = childStore;
-			this.isDirectory = isDirectory;
-		}
-
-		final IFileStore fileStore;
-		final boolean isDirectory;
-	}
-
 	static void internalFetchChildren(IProgressMonitor monitor, final ScaFileStore parentStore) {
 		// END GENERATED CODE
+		IFileStore store = parentStore.getFileStore();
+		if (store == null) {
+			return;
+		}
+
+		final int WORK_FETCH_CHILD_STORES = 45;
+		final int WORK_FETCH_CHILD_INFOS = 45;
+		final int WORK_MODEL_UPDATE = 5;
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching children of " + store.getName(), WORK_FETCH_CHILD_STORES + WORK_FETCH_CHILD_INFOS + WORK_MODEL_UPDATE);
+
 		try {
-			IFileStore store = parentStore.getFileStore();
-			if (store == null) {
-				return;
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
 			}
-			SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching children of " + store.getName(), 100); // SUPPRESS
-																													// CHECKSTYLE
-																													// MagicNumber
-			final IFileStore[] childStores = store.childStores(EFS.NONE, subMonitor.newChild(45));
-			SubMonitor setupStoreMap = subMonitor.newChild(45).setWorkRemaining(childStores.length); // SUPPRESS
-																										// CHECKSTYLE
-																										// MagicNumbers
+			final IFileStore[] childStores = store.childStores(EFS.NONE, subMonitor.newChild(WORK_FETCH_CHILD_STORES));
+
+			SubMonitor setupStoreMap = subMonitor.newChild(WORK_FETCH_CHILD_INFOS).setWorkRemaining(childStores.length);
 			final Map<String, FileStoreData> newChildrenMap = new HashMap<String, FileStoreData>();
 			for (final IFileStore childStore : childStores) {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				boolean isDirectory = childStore.fetchInfo(EFS.NONE, setupStoreMap.newChild(1)).isDirectory();
 				FileStoreData data = new FileStoreData(childStore, isDirectory);
 				newChildrenMap.put(childStore.getName(), data);
+				setupStoreMap.worked(1);
 			}
 
-			ScaModelCommand.execute(parentStore, new ScaModelCommand() {
-
-				@Override
-				public void execute() {
-					Map<String, ScaFileStore> currentChildren = new HashMap<String, ScaFileStore>();
-					for (ScaFileStore store : parentStore.getChildren()) {
-						currentChildren.put(store.getFileStore().getName(), store);
-					}
-
-					Map<String, ScaFileStore> removeChildrenMap = new HashMap<String, ScaFileStore>(currentChildren);
-					removeChildrenMap.keySet().removeAll(newChildrenMap.keySet());
-
-					if (!removeChildrenMap.isEmpty() && !parentStore.getChildren().isEmpty()) {
-						parentStore.getChildren().removeAll(removeChildrenMap.values());
-					}
-
-					newChildrenMap.keySet().removeAll(currentChildren.keySet());
-
-					List<ScaFileStore> newChildren = new ArrayList<>(newChildrenMap.size());
-					for (FileStoreData childStore : newChildrenMap.values()) {
-						ScaFileStoreImpl childFileStore = new ScaFileStoreImpl();
-						childFileStore.setDirectory(childStore.isDirectory);
-						childFileStore.setFileStore(childStore.fileStore);
-						newChildren.add(childFileStore);
-					}
-					if (newChildren.size() > 0) {
-						parentStore.getChildren().addAll(newChildren);
-					}
-
-					if (!parentStore.isSetChildren()) {
-						parentStore.getChildren().clear();
-					}
-
-					parentStore.setStatus(ScaPackage.Literals.SCA_FILE_STORE__CHILDREN, Status.OK_STATUS);
-				}
-
-			});
-			subMonitor.worked(10); // SUPPRESS CHECKSTYLE MagicNumbers
-			subMonitor.done();
+			ScaModelCommand.execute(parentStore, new ScaFileStoreMergeChildrenCommand(parentStore, newChildrenMap, Status.OK_STATUS));
+			subMonitor.worked(WORK_MODEL_UPDATE);
 		} catch (final CoreException e) {
-			ScaModelCommand.execute(parentStore, new ScaModelCommand() {
-
-				@Override
-				public void execute() {
-					parentStore.unsetChildren();
-					parentStore.setStatus(ScaPackage.Literals.SCA_FILE_STORE__CHILDREN,
-						new Status(e.getStatus().getSeverity(), ScaModelPlugin.ID, e.getLocalizedMessage(), e));
-				}
-
-			});
+			IStatus status = new Status(e.getStatus().getSeverity(), ScaModelPlugin.ID, e.getLocalizedMessage(), e);
+			ScaModelCommand.execute(parentStore, new UnsetLocalAttributeCommand(parentStore, status, ScaPackage.Literals.SCA_FILE_STORE__CHILDREN));
+		} finally {
+			subMonitor.done();
 		}
 		// BEGIN GENERATED CODE
 	}

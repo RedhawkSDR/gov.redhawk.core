@@ -35,6 +35,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
@@ -441,19 +442,14 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 		// BEGIN GENERATED CODE
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * Ask all data providers connected to this object to do an immediate refresh.
-	 * <!-- end-user-doc -->
-	 * 
-	 * @throws InterruptedException
-	 * @generated NOT
-	 */
-	@Override
 	public void refresh(IProgressMonitor monitor, RefreshDepth depth) throws InterruptedException {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return;
+		}
+
 		SubMonitor progress = SubMonitor.convert(monitor);
-		if (isDisposed() || depth == null || depth == RefreshDepth.NONE || depth == RefreshDepth.SELF) {
+		if (depth == RefreshDepth.NONE || depth == RefreshDepth.SELF) {
 			progress.done();
 			return;
 		}
@@ -463,23 +459,26 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 			depth = RefreshDepth.SELF;
 		}
 
-		final EObject[] contents = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<EObject[]>() {
+		final List<EObject> contents = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<List<EObject>>() {
 
 			@Override
 			public void run() {
-				setResult(eContents().toArray(new EObject[eContents().size()]));
+				setResult(new ArrayList<>(eContents()));
 			}
 
 		});
 		if (contents != null) {
-			progress.setWorkRemaining(contents.length);
-			int index = contents.length;
+			progress.setWorkRemaining(contents.size());
+			int remaining = contents.size();
 			for (final EObject obj : contents) {
 				if (obj instanceof DataProviderObject) {
+					if (progress.isCanceled()) {
+						throw new OperationCanceledException();
+					}
 					((DataProviderObject) obj).refresh(progress.newChild(1), depth);
 				}
-				index--;
-				progress.setWorkRemaining(index);
+				remaining--;
+				progress.setWorkRemaining(remaining);
 			}
 		}
 

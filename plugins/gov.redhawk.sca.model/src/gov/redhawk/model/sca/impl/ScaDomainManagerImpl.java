@@ -13,7 +13,6 @@
 package gov.redhawk.model.sca.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +25,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
@@ -1428,13 +1428,21 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		if (isDisposed()) {
 			return;
 		}
+
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		final DomainManager domMgr = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = devicemanagers.createTransaction();
 		if (domMgr != null) {
 			// Setup New Device Managers Map
 			DeviceManager[] deviceMgrs = null;
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				deviceMgrs = domMgr.deviceManagers();
 				transaction.addCommand(new ScaDomainManagerMergeDeviceManagersCommand(this, deviceMgrs));
 			} catch (SystemException e) {
@@ -1449,7 +1457,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		// Perform Actions
 		subMonitor.setWorkRemaining(1);
 		transaction.commit();
-		subMonitor.worked(1);
 		subMonitor.done();
 		// BEGIN GENERATED CODE
 	}
@@ -1464,13 +1471,21 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		if (isDisposed()) {
 			return;
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		final DomainManager domMgr = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = waveformFactoriesFeature.createTransaction();
 		if (domMgr != null) {
 			// Setup new Factory Map
 			ApplicationFactory[] factories = null;
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				factories = domMgr.applicationFactories();
 				transaction.addCommand(new ScaDomainManagerMergeWaveformFactoriesCommand(this, factories));
 			} catch (SystemException e) {
@@ -1481,9 +1496,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES));
 		}
+
 		subMonitor.setWorkRemaining(1);
 		transaction.commit();
-		subMonitor.worked(1);
 		subMonitor.done();
 		// BEGIN GENERATED CODE
 	}
@@ -1498,14 +1513,22 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		if (isDisposed()) {
 			return;
 		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 3); // SUPPRESS CHECKSTYLE MagicNumber
+
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		final DomainManager domMgr = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = waveformsFeature.createTransaction();
 
 		if (domMgr != null) {
 			// Fetch Applications
 			Application[] applications = null;
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				applications = domMgr.applications();
 				transaction.addCommand(new ScaDomainManagerMergeWaveformsCommand(this, applications));
 			} catch (SystemException e) {
@@ -1520,7 +1543,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		// Perform Actions
 		subMonitor.setWorkRemaining(1);
 		transaction.commit();
-		subMonitor.worked(1);
 		subMonitor.done();
 		// BEGIN GENERATED CODE
 	}
@@ -2251,33 +2273,87 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
+		// END GENERATED CODE
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 7);
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchKeepAlive(subMonitor.newChild(1));
-		fetchNarrowedObject(subMonitor.newChild(1)); // Handled by the CORBA obj superclass!
-		fetchLocalAttributes(subMonitor.newChild(1));
-		fetchFileManager(subMonitor.newChild(1), RefreshDepth.SELF);
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		super.fetchAttributes(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
+		fetchIdentifier(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
+		fetchProfile(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
+		fetchFileManager(subMonitor.newChild(1), RefreshDepth.SELF);
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchProfileObject(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchProperties(subMonitor.newChild(1));
 
 		subMonitor.done();
+		// BEGIN GENERATED CODE
 	}
+
+	// END GENERATED CODE
 
 	@Override
 	protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchDeviceManagers(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchWaveformFactories(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchWaveforms(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchEventChannels(subMonitor.newChild(1));
+
 		subMonitor.done();
 	}
 
 	private final VersionedFeature keepAliveFeature = new VersionedFeature(this, ScaPackage.Literals.CORBA_OBJ_WRAPPER__CORBA_OBJ);
 
 	private void fetchKeepAlive(IProgressMonitor monitor) {
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 1);
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		final boolean tmpExists = exists();
+		subMonitor.worked(1);
+
 		final NamingContextExt namingContext = rootContext;
 		final String domMgrname = getDomMgrName();
 		Boolean shouldProceed;
@@ -2296,7 +2372,12 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		if (shouldProceed != null && shouldProceed) {
 			try {
 				Transaction transaction = keepAliveFeature.createTransaction();
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				final org.omg.CORBA.Object newRootContext = CorbaUtils.resolve_str(namingContext, domMgrname, monitor);
+				subMonitor.worked(1);
+
 				transaction.addCommand(new ScaModelCommand() {
 
 					@Override
@@ -2315,10 +2396,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 					DEBUG_KEEP_ALIVE_ERRORS.catching(e);
 				}
 			} catch (InterruptedException e) {
-				return;
+				throw new OperationCanceledException();
 			}
 		}
-		subMonitor.worked(1);
 
 		subMonitor.done();
 	}
@@ -2326,6 +2406,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	private VersionedFeature fileManagerFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__FILE_MANAGER);
 
 	private final VersionedFeature identifierRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__IDENTIFIER);
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -2340,12 +2422,21 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		if (isSetIdentifier()) {
 			return getIdentifier();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Identifier", 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		DomainManager resource = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = identifierRevision.createTransaction();
 		if (resource != null) {
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				String newValue = resource.identifier();
+				subMonitor.worked(1);
 				transaction.append(new SetLocalAttributeCommand(this, newValue, ScaPackage.Literals.SCA_DOMAIN_MANAGER__IDENTIFIER));
 			} catch (final SystemException e) {
 				IStatus startedStatus = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch identifier.", e);
@@ -2353,8 +2444,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			}
 		} else {
 			transaction.append(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DOMAIN_MANAGER__IDENTIFIER));
+			subMonitor.setWorkRemaining(1);
 		}
-		subMonitor.worked(1);
+
 		transaction.commit();
 		subMonitor.worked(1);
 		subMonitor.done();
@@ -2362,12 +2454,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		// BEGIN GENERATED CODE
 	}
 
-	private void fetchLocalAttributes(IProgressMonitor monitor) {
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
-		fetchIdentifier(subMonitor.newChild(1));
-		fetchProfile(subMonitor.newChild(1));
-		subMonitor.done();
-	}
+	// END GENERATED CODE
 
 	private static final EStructuralFeature[] PRF_PATH = { DmdPackage.Literals.DOMAIN_MANAGER_CONFIGURATION__DOMAIN_MANAGER_SOFT_PKG,
 		DmdPackage.Literals.DOMAIN_MANAGER_SOFT_PKG__SOFT_PKG, SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, SpdPackage.Literals.PROPERTY_FILE__PROPERTIES };
@@ -2377,6 +2464,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		if (isDisposed()) {
 			return Collections.emptyList();
 		}
+
 		DomainManagerConfiguration dmd = fetchProfileObject(monitor);
 		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(dmd, PRF_PATH);
 		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
@@ -2393,6 +2481,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 	private final VersionedFeature profileObjectFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);
 
+	// BEGIN GENERATED CODE
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
@@ -2402,17 +2492,20 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public DomainManagerConfiguration fetchProfileObject(IProgressMonitor monitor) {
+		// END GENERATED CODE
 		if (isDisposed()) {
 			return null;
 		}
 		if (isSetProfileObj()) {
 			return getProfileObj();
 		}
+
 		Transaction transaction = profileObjectFeature.createTransaction();
 		transaction.addCommand(
 			ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, DomainManagerConfiguration.class, DomainManagerConfiguration.EOBJECT_PATH));
 		transaction.commit();
 		return getProfileObj();
+		// BEGIN GENERATED CODE
 	}
 
 	private final VersionedFeature profileRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__PROFILE);
@@ -2423,31 +2516,43 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public String fetchProfile(IProgressMonitor monitor) {
+		// END GENERATED CODE
 		if (isDisposed()) {
 			return null;
 		}
 		if (isSetProfile()) {
 			return getProfile();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching profile", 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		DomainManager resource = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = profileRevision.createTransaction();
 		if (resource != null) {
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				String newValue = resource.domainManagerProfile();
+				subMonitor.worked(1);
 				transaction.append(new SetLocalAttributeCommand(this, newValue, ScaPackage.Literals.SCA_DOMAIN_MANAGER__PROFILE));
 			} catch (final SystemException e) {
 				IStatus startedStatus = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch profile.", e);
 				transaction.append(new UnsetLocalAttributeCommand(this, startedStatus, ScaPackage.Literals.SCA_DOMAIN_MANAGER__PROFILE));
 			}
 		} else {
+			subMonitor.setWorkRemaining(1);
 			transaction.append(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DOMAIN_MANAGER__PROFILE));
 		}
-		subMonitor.worked(1);
+
 		transaction.commit();
 		subMonitor.worked(1);
 		subMonitor.done();
 		return getProfile();
+		// BEGIN GENERATED CODE
 	}
 
 	private final VersionedFeature eventChannelFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS);
@@ -2460,18 +2565,36 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		if (isDisposed()) {
 			return;
 		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 3); // SUPPRESS CHECKSTYLE MagicNumber
+
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
 		NamingContextExt localRootContext = getRootContext();
 
 		Transaction transaction = eventChannelFeature.createTransaction();
 		if (localRootContext != null) {
 			try {
+				// Resolve the naming context
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				NamingContextExt context = NamingContextExtHelper.narrow(localRootContext.resolve_str(getName()));
+				subMonitor.worked(1);
+
+				// List children
 				BindingIteratorHolder bi = new BindingIteratorHolder();
 				BindingListHolder bl = new BindingListHolder();
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				context.list(-1, bl, bi);
+				subMonitor.worked(1);
+
+				// Iterate children looking for EventChannel's
+				SubMonitor checkChildProgress = subMonitor.newChild(1).setWorkRemaining(bl.value.length);
 				List<ScaEventChannel> newChannels = new ArrayList<ScaEventChannel>();
 				for (Binding b : bl.value) {
+					if (subMonitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
 					org.omg.CORBA.Object objC = context.resolve(b.binding_name);
 					if (objC._is_a(EventChannelHelper.id())) {
 						ScaEventChannel channel = ScaFactory.eINSTANCE.createScaEventChannel();
@@ -2479,6 +2602,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 						channel.setCorbaObj(objC);
 						newChannels.add(channel);
 					}
+					checkChildProgress.worked(1);
 				}
 				transaction.addCommand(new ScaDomainManagerMergeEventChannelsCommand(this, newChannels));
 			} catch (SystemException e) {
@@ -2494,7 +2618,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 				Status status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch Event Channels.", e);
 				transaction.addCommand(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS));
 			}
-			subMonitor.worked(1);
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS));
 		}
@@ -2502,7 +2625,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		// Perform Actions
 		subMonitor.setWorkRemaining(1);
 		transaction.commit();
-		subMonitor.worked(1);
 		subMonitor.done();
 		// BEGIN GENERATED CODE
 	}
@@ -2511,17 +2633,27 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 	@Override
 	public URI fetchProfileURI(IProgressMonitor monitor) {
+		// END GENERATED CODE
 		if (isDisposed()) {
 			return null;
 		}
 		if (isSetProfileURI()) {
 			return getProfileURI();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Profile URI", 2);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		ScaDomainManagerFileSystem fileSystem = fetchFileManager(subMonitor.newChild(1), RefreshDepth.SELF);
+
 		if (fileSystem != null) {
 			Transaction transaction = profileURIFeature.createTransaction();
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			final URI newURI = fileSystem.createURI(fetchProfile(subMonitor.newChild(1)));
+
 			transaction.addCommand(new ScaModelCommand() {
 
 				@Override
@@ -2531,8 +2663,10 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			});
 			transaction.commit();
 		}
+
 		subMonitor.done();
 		return getProfileURI();
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -2584,32 +2718,41 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public EList<ScaDeviceManager> fetchDeviceManagers(IProgressMonitor monitor, RefreshDepth depth) {
+		// END GENERATED CODE
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Device Managers", 2);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchDeviceManagers(subMonitor.newChild(1));
-		ScaDeviceManager[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaDeviceManager[]>() {
+
+		List<ScaDeviceManager> deviceManagersCopy = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<List<ScaDeviceManager>>() {
 
 			@Override
 			public void execute() {
-				setResult(getDeviceManagers().toArray(new ScaDeviceManager[getDeviceManagers().size()]));
+				setResult(new ArrayList<>(getDeviceManagers()));
 			}
 		});
-		if (array != null && depth != null) {
-			SubMonitor deviceMonitor = subMonitor.newChild(1);
-			deviceMonitor.beginTask("Refreshing device Managers", array.length);
-			for (ScaDeviceManager element : array) {
+		if (deviceManagersCopy != null && depth != RefreshDepth.NONE) {
+			SubMonitor deviceMonitor = subMonitor.newChild(1).setWorkRemaining(deviceManagersCopy.size());
+			for (ScaDeviceManager element : deviceManagersCopy) {
 				try {
+					if (subMonitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
 					element.refresh(deviceMonitor.newChild(1), depth);
 				} catch (InterruptedException e) {
-					// PASS
+					throw new OperationCanceledException();
 				}
 			}
 		}
+
 		subMonitor.done();
-		if (array != null) {
-			return ECollections.unmodifiableEList(new BasicEList<ScaDeviceManager>(Arrays.asList(array)));
+		if (deviceManagersCopy != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaDeviceManager>(deviceManagersCopy));
 		} else {
 			return ECollections.emptyEList();
 		}
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -2624,29 +2767,37 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		if (isDisposed()) {
 			return ECollections.emptyEList();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Waveform Factories", 2);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchWaveformFactories(subMonitor.newChild(1));
-		ScaWaveformFactory[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaWaveformFactory[]>() {
+
+		List<ScaWaveformFactory> waveformFactoriesCopy = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<List<ScaWaveformFactory>>() {
 
 			@Override
 			public void execute() {
-				setResult(getWaveformFactories().toArray(new ScaWaveformFactory[getWaveformFactories().size()]));
+				setResult(new ArrayList<>(getWaveformFactories()));
 			}
 		});
-		if (array != null && depth != null) {
-			SubMonitor childMonitor = subMonitor.newChild(1);
-			childMonitor.beginTask("Refreshing waveform factory", array.length);
-			for (ScaWaveformFactory element : array) {
+		if (waveformFactoriesCopy != null && depth != RefreshDepth.NONE) {
+			SubMonitor childMonitor = subMonitor.newChild(1).setWorkRemaining(waveformFactoriesCopy.size());
+			for (ScaWaveformFactory element : waveformFactoriesCopy) {
 				try {
+					if (subMonitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
 					element.refresh(childMonitor.newChild(1), depth);
 				} catch (InterruptedException e) {
-					// PASS
+					throw new OperationCanceledException();
 				}
 			}
 		}
+
 		subMonitor.done();
-		if (array != null) {
-			return ECollections.unmodifiableEList(new BasicEList<ScaWaveformFactory>(Arrays.asList(array)));
+		if (waveformFactoriesCopy != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaWaveformFactory>(waveformFactoriesCopy));
 		} else {
 			return ECollections.emptyEList();
 		}
@@ -2661,35 +2812,42 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public EList<ScaWaveform> fetchWaveforms(IProgressMonitor monitor, RefreshDepth depth) {
+		// END GENERATED CODE
 		if (isDisposed()) {
 			return ECollections.emptyEList();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Waveforms", 2);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchWaveforms(subMonitor.newChild(1));
-		ScaWaveform[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaWaveform[]>() {
+
+		List<ScaWaveform> waveformsCopy = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<List<ScaWaveform>>() {
 
 			@Override
 			public void execute() {
-				setResult(getWaveforms().toArray(new ScaWaveform[getWaveforms().size()]));
+				setResult(new ArrayList<>(getWaveforms()));
 			}
 		});
-		if (array != null && depth != null) {
-			SubMonitor childMonitor = subMonitor.newChild(1);
-			childMonitor.beginTask("Refreshing waveforms", array.length);
-			for (ScaWaveform element : array) {
+		if (waveformsCopy != null && depth != RefreshDepth.NONE) {
+			SubMonitor childMonitor = subMonitor.newChild(1).setWorkRemaining(waveformsCopy.size());
+			for (ScaWaveform element : waveformsCopy) {
 				try {
 					element.refresh(childMonitor.newChild(1), depth);
 				} catch (InterruptedException e) {
-					// PASS
+					throw new OperationCanceledException();
 				}
 			}
 		}
+
 		subMonitor.done();
-		if (array != null) {
-			return ECollections.unmodifiableEList(new BasicEList<ScaWaveform>(Arrays.asList(array)));
+		if (waveformsCopy != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaWaveform>(waveformsCopy));
 		} else {
 			return ECollections.emptyEList();
 		}
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -2701,15 +2859,26 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public ScaDomainManagerFileSystem fetchFileManager(IProgressMonitor monitor, RefreshDepth depth) {
+		// END GENERATED CODE
 		if (isSetFileManager()) {
 			return getFileManager();
 		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
+
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		final DomainManager localObj = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = fileManagerFeature.createTransaction();
 		if (localObj != null) {
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				final FileManager newFileMgr = localObj.fileMgr();
+				subMonitor.worked(1);
+
 				transaction.addCommand(new ScaModelCommand() {
 
 					@Override
@@ -2727,22 +2896,27 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 				transaction.addCommand(new UnsetLocalAttributeCommand(this, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch file manager.", e),
 					ScaPackage.Literals.SCA_DOMAIN_MANAGER__FILE_MANAGER));
 			}
-			subMonitor.worked(1);
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DOMAIN_MANAGER__FILE_MANAGER));
 		}
-		subMonitor.setWorkRemaining(2);
+
+		subMonitor.setWorkRemaining(1);
 		transaction.commit();
 		ScaDomainManagerFileSystem localFileManager = getFileManager();
-		if (localFileManager != null && depth != null) {
+		if (localFileManager != null && depth != RefreshDepth.NONE) {
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				localFileManager.refresh(subMonitor.newChild(1), depth);
 			} catch (InterruptedException e) {
-				// PASS
+				throw new OperationCanceledException();
 			}
 		}
+
 		subMonitor.done();
 		return getFileManager();
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -2755,28 +2929,35 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	public EList<ScaEventChannel> fetchEventChannels(IProgressMonitor monitor, RefreshDepth depth) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Event Channels", 2);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchEventChannels(subMonitor.newChild(1));
-		ScaEventChannel[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaEventChannel[]>() {
+
+		List<ScaEventChannel> eventChannelsCopy = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<List<ScaEventChannel>>() {
 
 			@Override
 			public void execute() {
-				setResult(getEventChannels().toArray(new ScaEventChannel[getEventChannels().size()]));
+				setResult(new ArrayList<>(getEventChannels()));
 			}
 		});
-		if (array != null && depth != null) {
-			SubMonitor childMonitor = subMonitor.newChild(1);
-			childMonitor.beginTask("Refreshing event channels", array.length);
-			for (ScaEventChannel element : array) {
+		if (eventChannelsCopy != null && depth != RefreshDepth.NONE) {
+			SubMonitor childMonitor = subMonitor.newChild(1).setWorkRemaining(eventChannelsCopy.size());
+			for (ScaEventChannel element : eventChannelsCopy) {
 				try {
+					if (subMonitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
 					element.refresh(childMonitor.newChild(1), depth);
 				} catch (InterruptedException e) {
-					// PASS
+					throw new OperationCanceledException();
 				}
 			}
 		}
+
 		subMonitor.done();
-		if (array != null) {
-			return ECollections.unmodifiableEList(new BasicEList<ScaEventChannel>(Arrays.asList(array)));
+		if (eventChannelsCopy != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaEventChannel>(eventChannelsCopy));
 		} else {
 			return ECollections.emptyEList();
 		}

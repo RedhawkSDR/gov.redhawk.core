@@ -196,7 +196,7 @@ public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel> imple
 
 	@Override
 	protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
-		// Do nothing
+		// Nothing to do
 	}
 
 	@Override

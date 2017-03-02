@@ -17,8 +17,12 @@ import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
 import gov.redhawk.model.sca.provider.ScaWaveformsContainerItemProvider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 
 public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapterFactory {
@@ -56,18 +60,25 @@ public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapter
 
 		private void refreshFull(final IProgressMonitor monitor) throws InterruptedException {
 			final SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching waveforms fully", 2);
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			refreshStandard(subMonitor.newChild(1));
-			final ScaWaveform[] waveforms = ScaModelCommandWithResult.execute(this.domain, new ScaModelCommandWithResult<ScaWaveform[]>() {
+
+			final List<ScaWaveform> waveforms = ScaModelCommandWithResult.execute(this.domain, new ScaModelCommandWithResult<List<ScaWaveform>>() {
 
 				@Override
 				public void execute() {
-					setResult(Refresher.this.domain.getWaveforms().toArray(new ScaWaveform[Refresher.this.domain.getWaveforms().size()]));
+					setResult(new ArrayList<ScaWaveform>(Refresher.this.domain.getWaveforms()));
 				}
 			});
 			final SubMonitor refreshMonitor = subMonitor.newChild(1);
 			if (waveforms != null) {
-				refreshMonitor.beginTask("Refreshing waveforms", waveforms.length);
+				refreshMonitor.setWorkRemaining(waveforms.size());
 				for (final ScaWaveform waveform : waveforms) {
+					if (subMonitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
 					waveform.refresh(refreshMonitor.newChild(1), RefreshDepth.SELF);
 				}
 			}

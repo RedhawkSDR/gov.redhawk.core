@@ -30,6 +30,7 @@ import mil.jpeojtrs.sca.prf.AbstractProperty;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
@@ -594,19 +595,26 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 		if (isDisposed()) {
 			return ECollections.emptyEList();
 		}
-		final SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
+
+		final SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
 		Transaction transaction = propertiesFeature.createTransaction();
 		IStatus fetchStatus = Status.OK_STATUS;
 		final PropertiesHolder propHolder = new PropertiesHolder(EMPTY_DATA_TYPE_ARRAY);
 		try {
-			subMonitor.worked(1);
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			List<AbstractProperty> defs = fetchPropertyDefinitions(subMonitor.newChild(1));
 			if (!isSetProperties()) {
 				transaction.append(new MergePropertiesCommand(this, defs));
 			}
+
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			query(propHolder);
-			subMonitor.worked(1);
 			transaction.append(new SetPropertiesValuesCommand(this, propHolder, defs));
+			subMonitor.worked(1);
 		} catch (UnknownProperties e) {
 			fetchStatus = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to query property values.", e);
 			transaction.append(new UnsetLocalAttributeCommand(this, fetchStatus, ScaPackage.Literals.SCA_PROPERTY_CONTAINER__PROPERTIES));
@@ -617,8 +625,9 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 			fetchStatus = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch properties.", e);
 			transaction.append(new UnsetLocalAttributeCommand(this, fetchStatus, ScaPackage.Literals.SCA_PROPERTY_CONTAINER__PROPERTIES));
 		}
+
+		subMonitor.setWorkRemaining(1);
 		transaction.commit();
-		subMonitor.worked(1);
 		subMonitor.done();
 		try {
 			return ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<EList<ScaAbstractProperty< ? >>>() {

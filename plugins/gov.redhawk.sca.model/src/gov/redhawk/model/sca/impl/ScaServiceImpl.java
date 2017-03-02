@@ -30,7 +30,6 @@ import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 import gov.redhawk.sca.util.PluginUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +40,7 @@ import mil.jpeojtrs.sca.dcd.DcdPartitioning;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.scd.AbstractPort;
+import mil.jpeojtrs.sca.scd.Ports;
 import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.spd.SpdPackage;
@@ -48,6 +48,7 @@ import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.command.Command;
@@ -63,7 +64,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
-import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.transaction.RunnableWithResult;
@@ -479,45 +479,61 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		if (isDisposed()) {
 			return ECollections.emptyEList();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchPorts(subMonitor.newChild(1));
-		ScaPort< ? , ? >[] ports = null;
+
+		List<ScaPort< ? , ? >> ports = null;
 		try {
-			ports = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<ScaPort< ? , ? >[]>() {
+			ports = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<List<ScaPort< ? , ? >>>() {
 
 				@Override
 				public void run() {
-					setResult(getPorts().toArray(new ScaPort< ? , ? >[getPorts().size()]));
+					setResult(new ArrayList<>(getPorts()));
 				}
 
 			});
 		} catch (InterruptedException e) {
-			// PASS
+			throw new OperationCanceledException();
 		}
 		if (ports != null) {
-			SubMonitor portRefresh = subMonitor.newChild(1);
-			portRefresh.beginTask("Refreshing state of ports", ports.length);
+			SubMonitor portRefresh = subMonitor.newChild(1).setWorkRemaining(ports.size());
 			for (ScaPort< ? , ? > port : ports) {
 				try {
+					if (subMonitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
 					port.refresh(portRefresh.newChild(1), RefreshDepth.SELF);
 				} catch (InterruptedException e) {
-					// PASS
+					throw new OperationCanceledException();
 				}
 			}
 		}
+
 		subMonitor.done();
 		if (ports != null) {
-			return ECollections.unmodifiableEList(new BasicEList<ScaPort< ? , ? >>(Arrays.asList(ports)));
+			return ECollections.unmodifiableEList(new BasicEList<ScaPort< ? , ? >>(ports));
 		} else {
 			return ECollections.emptyEList();
 		}
 	}
 
+	// END GENERATED CODE
+
 	private final VersionedFeature portRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS);
 	private PortSupplierOperations portSupplier;
-	private static final EStructuralFeature[] PORTS_GROUP_PATH = { ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
+
+	/**
+	 * EMF feature path from a {@link ScaService} to the ports in its SCD file.
+	 */
+	private static final EStructuralFeature[] RESOURCE_TO_PORTS_PATH = { ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
 		SpdPackage.Literals.SOFT_PKG__DESCRIPTOR, SpdPackage.Literals.DESCRIPTOR__COMPONENT, ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES,
-		ScdPackage.Literals.COMPONENT_FEATURES__PORTS, ScdPackage.Literals.PORTS__GROUP };
+		ScdPackage.Literals.COMPONENT_FEATURES__PORTS};
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -532,55 +548,52 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		if (isDisposed()) {
 			return;
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
 		PortSupplierOperations currentObj = getPortSupplier();
 		Transaction transaction = portRevision.createTransaction();
 		if (currentObj != null) {
-			if (!isSetProfileObj()) {
-				fetchProfileObject(subMonitor.newChild(1));
-			} else {
-				subMonitor.setWorkRemaining(2);
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
 			}
+			fetchProfileObject(subMonitor.newChild(1));
 
-			FeatureMap portGroup = ScaEcoreUtils.getFeature(this, PORTS_GROUP_PATH);
+			Ports scdPorts = ScaEcoreUtils.getFeature(this, RESOURCE_TO_PORTS_PATH);
 			int size = getPorts().size();
-			int groupSize = (portGroup == null) ? 0 : portGroup.size();
+			int groupSize = (scdPorts == null) ? 0 : scdPorts.getGroup().size();
 			if (isSetPorts() && size == groupSize) {
 				return;
 			}
-			List<MergePortsCommand.PortData> newPorts = new ArrayList<MergePortsCommand.PortData>();
-			// Load all of the ports
-			final MultiStatus fetchPortsStatus = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Fetch ports status.", null);
-			if (portGroup != null) {
-				for (ValueListIterator<Object> i = portGroup.valueListIterator(); i.hasNext();) {
-					Object portObj = i.next();
-					if (portObj instanceof AbstractPort) {
-						AbstractPort abstractPort = (AbstractPort) portObj;
-						String portName = abstractPort.getName();
-						try {
-							org.omg.CORBA.Object portCorbaObj = currentObj.getPort(portName);
-							newPorts.add(new PortData(abstractPort, portCorbaObj));
-						} catch (UnknownPort e) {
-							fetchPortsStatus.add(new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
-						} catch (SystemException e) {
-							fetchPortsStatus.add(new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
-						}
 
+			// Load all of the ports
+			List<MergePortsCommand.PortData> newPorts = new ArrayList<MergePortsCommand.PortData>();
+			final MultiStatus fetchPortsStatus = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Fetch ports status.", null);
+			if (scdPorts != null) {
+				for (AbstractPort abstractPort : scdPorts.getAllPorts()) {
+					String portName = abstractPort.getName();
+					try {
+						if (monitor.isCanceled()) {
+							throw new OperationCanceledException();
+						}
+						org.omg.CORBA.Object portCorbaObj = currentObj.getPort(portName);
+						newPorts.add(new PortData(abstractPort, portCorbaObj));
+					} catch (UnknownPort e) {
+						fetchPortsStatus.add(new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
+					} catch (SystemException e) {
+						fetchPortsStatus.add(new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
 					}
 				}
 			}
 			subMonitor.worked(1);
 
 			MergePortsCommand command = new MergePortsCommand(this, newPorts, fetchPortsStatus);
-
-			// Perform the actions
 			transaction.addCommand(command);
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, Status.OK_STATUS, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS));
 		}
+
 		subMonitor.setWorkRemaining(1);
 		transaction.commit();
-		subMonitor.worked(1);
 		subMonitor.done();
 		// BEGIN GENERATED CODE
 	}
@@ -618,6 +631,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		if (isSetProfileObj()) {
 			return getProfileObj();
 		}
+
 		Transaction transaction = profileObjectRevision.createTransaction();
 		Command command = ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, SoftPkg.class, SoftPkg.EOBJECT_PATH);
 		transaction.addCommand(command);
@@ -629,18 +643,25 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 	@Override
 	public URI fetchProfileURI(IProgressMonitor monitor) {
+		// END GENERATED CODE
 		if (isDisposed()) {
 			return null;
 		}
 		if (isSetProfileURI()) {
 			return getProfileURI();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch profile URI.", 2);
 		ScaDeviceManager devMgr = getDevMgr();
 		if (devMgr != null) {
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			DeviceConfiguration dcd = devMgr.fetchProfileObject(subMonitor.newChild(1));
+
 			String profilePath = null;
 			ScaDeviceManagerFileSystem fileSystem = devMgr.fetchFileSystem(subMonitor.newChild(1), RefreshDepth.SELF);
+
 			if (dcd != null) {
 				DcdPartitioning part = dcd.getPartitioning();
 				if (part != null) {
@@ -668,22 +689,24 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 				transaction.commit();
 			}
 		}
+
 		subMonitor.done();
 		return getProfileURI();
+		// BEGIN GENERATED CODE
 	}
+
+	// END GENERATED CODE
 
 	/**
 	 * @since 20.0
 	 */
 	@Override
 	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
-		// END GENERATED CODE
 		PropertyEmitterOperations propEmitter = getPropertyEmitter();
 		if (propEmitter == null) {
 			throw new IllegalStateException("CORBA Object is null, or service does not support IDL:CF/PropertyEmitter:1.0");
 		}
 		propEmitter.initializeProperties(configProperties);
-		// BEGIN GENERATED CODE
 	}
 
 	@Override
@@ -725,6 +748,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		if (isDisposed()) {
 			return Collections.emptyList();
 		}
+
 		EObject localProfile = fetchProfileObject(monitor);
 		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(localProfile, PRF_PATH);
 		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
@@ -744,12 +768,30 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		internalFetchPorts(monitor);
 	}
 
+	// BEGIN GENERATED CODE
+
 	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 2); // SUPPRESS CHECKSTYLE MagicNumber
+		// END GENERATED CODE
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
+
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		super.fetchAttributes(subMonitor.newChild(1));
+
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchProfileObject(subMonitor.newChild(1));
+
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchProperties(subMonitor.newChild(1));
+
+		subMonitor.done();
+		// BEGIN GENERATED CODE
 	}
 
 	/**
