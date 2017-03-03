@@ -13,7 +13,6 @@
 package gov.redhawk.model.sca.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,6 +22,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.command.Command;
@@ -39,7 +39,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.transaction.RunnableWithResult;
@@ -109,6 +108,7 @@ import mil.jpeojtrs.sca.sad.SadComponentInstantiationRef;
 import mil.jpeojtrs.sca.sad.SadPackage;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.scd.AbstractPort;
+import mil.jpeojtrs.sca.scd.Ports;
 import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.spd.SpdPackage;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
@@ -815,10 +815,18 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		if (isSetIdentifier()) {
 			return getIdentifier();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch identifier", 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		Application localObj = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = identifierFeature.createTransaction();
 		if (localObj != null) {
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			try {
 				String id = localObj.identifier();
 				transaction.append(new SetLocalAttributeCommand(this, id, ScaPackage.Literals.SCA_WAVEFORM__IDENTIFIER));
@@ -826,10 +834,12 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 				Status status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch identifier.", e);
 				transaction.append(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_WAVEFORM__IDENTIFIER));
 			}
+			subMonitor.worked(1);
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, Status.OK_STATUS, ScaPackage.Literals.SCA_WAVEFORM__IDENTIFIER));
 		}
-		subMonitor.worked(1);
+
+		subMonitor.setWorkRemaining(1);
 		transaction.commit();
 		subMonitor.worked(1);
 		subMonitor.done();
@@ -855,10 +865,18 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		if (isSetName()) {
 			return getName();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Name", 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		Application localObj = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = nameFeature.createTransaction();
 		if (localObj != null) {
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			try {
 				String newName = localObj.name();
 				transaction.append(new SetLocalAttributeCommand(this, newName, ScaPackage.Literals.SCA_WAVEFORM__NAME));
@@ -866,10 +884,12 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 				Status status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch name.", e);
 				transaction.append(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_WAVEFORM__NAME));
 			}
+			subMonitor.worked(1);
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, Status.OK_STATUS, ScaPackage.Literals.SCA_WAVEFORM__NAME));
 		}
-		subMonitor.worked(1);
+
+		subMonitor.setWorkRemaining(1);
 		transaction.commit();
 		subMonitor.worked(1);
 		subMonitor.done();
@@ -892,10 +912,18 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		if (isDisposed()) {
 			return null;
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching started", 4);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		Application localObj = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = startedFeature.createTransaction();
 		if (localObj != null) {
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			try {
 				boolean newStarted = localObj.started();
 				transaction.append(new SetLocalAttributeCommand(this, newStarted, ScaPackage.Literals.SCA_WAVEFORM__STARTED));
@@ -906,24 +934,14 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 				Status status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch started.", e);
 				transaction.append(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_WAVEFORM__STARTED));
 			}
+			subMonitor.worked(1);
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, Status.OK_STATUS, ScaPackage.Literals.SCA_WAVEFORM__STARTED));
 		}
-		subMonitor.worked(1);
+
+		subMonitor.setWorkRemaining(1);
 		transaction.commit();
 		subMonitor.worked(1);
-
-		SubMonitor compMonitor = subMonitor.newChild(1);
-		compMonitor.beginTask("Fetch Component started", getComponents().size());
-		List<ScaComponent> tmpComponents = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<List<ScaComponent>>() {
-			@Override
-			public void execute() {
-				setResult(new ArrayList<ScaComponent>(getComponents()));
-			}
-		});
-		for (ScaComponent comp : tmpComponents) {
-			comp.fetchStarted(compMonitor.newChild(1));
-		}
 		subMonitor.done();
 		return getStarted();
 		// BEGIN GENERATED CODE
@@ -939,23 +957,32 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		if (isSetComponents() || isDisposed()) {
 			return;
 		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 6); // SUPPRESS CHECKSTYLE MagicNumber
+
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 6);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		final Application app = fetchNarrowedObject(subMonitor.newChild(1));
 
 		Transaction transaction = componentsFeature.createTransaction();
 		if (app != null) {
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			final SoftwareAssembly localSad = fetchProfileObject(subMonitor.newChild(1));
 			if (localSad != null) {
 				// New Components
 				ComponentType[] compTypes = null;
 				IStatus status = null;
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				try {
 					compTypes = app.registeredComponents();
 				} catch (SystemException e) {
 					status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch components.", e);
 				}
 				subMonitor.worked(1);
-
 				transaction.addCommand(createMergeComponentsCommand(compTypes, status));
 			} else {
 				transaction.addCommand(new UnsetLocalAttributeCommand(this, Status.OK_STATUS, ScaPackage.Literals.SCA_WAVEFORM__ASSEMBLY_CONTROLLER));
@@ -965,11 +992,11 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, Status.OK_STATUS, ScaPackage.Literals.SCA_WAVEFORM__ASSEMBLY_CONTROLLER));
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, Status.OK_STATUS, ScaPackage.Literals.SCA_WAVEFORM__COMPONENTS));
 		}
+
 		subMonitor.setWorkRemaining(1);
 		transaction.commit();
 		subMonitor.worked(1);
 		subMonitor.done();
-
 		// BEGIN GENERATED CODE
 	}
 
@@ -1003,49 +1030,62 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public EList<ScaPort< ? , ? >> fetchPorts(IProgressMonitor monitor) {
+		// END GENERATED CODE
 		if (isDisposed()) {
 			return ECollections.emptyEList();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchPorts(subMonitor.newChild(1));
-		ScaPort< ? , ? >[] ports = null;
+
+		List<ScaPort< ? , ? >> portsCopy = null;
 		try {
-			ports = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<ScaPort< ? , ? >[]>() {
+			portsCopy = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<List<ScaPort< ? , ? >>>() {
 				@Override
 				public void run() {
-					setResult(getPorts().toArray(new ScaPort< ? , ? >[getPorts().size()]));
+					setResult(new ArrayList<>(getPorts()));
 				}
 			});
 		} catch (InterruptedException e) {
-			// PASS
+			throw new OperationCanceledException();
 		}
-		if (ports != null) {
-			SubMonitor portRefresh = subMonitor.newChild(1);
-			portRefresh.beginTask("Refreshing state of ports", ports.length);
-			for (ScaPort< ? , ? > port : ports) {
+		if (portsCopy != null) {
+			SubMonitor portRefresh = subMonitor.newChild(1).setWorkRemaining(portsCopy.size());
+			for (ScaPort< ? , ? > port : portsCopy) {
 				try {
+					if (subMonitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
 					port.refresh(portRefresh.newChild(1), RefreshDepth.SELF);
 				} catch (InterruptedException e) {
-					// PASS
+					throw new OperationCanceledException();
 				}
 			}
 		}
+
 		subMonitor.done();
-		if (ports != null) {
-			return ECollections.unmodifiableEList(new BasicEList<ScaPort< ? , ? >>(Arrays.asList(ports)));
+		if (portsCopy != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaPort< ? , ? >>(portsCopy));
 		} else {
 			return ECollections.emptyEList();
 		}
+		// BEGIN GENERATED CODE
 	}
 
 	private static final EStructuralFeature[] EXTERNAL_PORTS_PATH = { SadPackage.Literals.SOFTWARE_ASSEMBLY__EXTERNAL_PORTS,
 		SadPackage.Literals.EXTERNAL_PORTS__PORT };
 
-	private static final EStructuralFeature[] PORTS_GROUP_PATH = { SadPackage.Literals.PORT__COMPONENT_INSTANTIATION_REF,
+	/**
+	 * EMF feature path from a SAD external port to the ports in the corresponding component's SCD.
+	 */
+	private static final EStructuralFeature[] EXT_PORT_TO_SCD_PORTS_PATH = { SadPackage.Literals.PORT__COMPONENT_INSTANTIATION_REF,
 		PartitioningPackage.Literals.COMPONENT_INSTANTIATION_REF__INSTANTIATION, PartitioningPackage.Literals.COMPONENT_INSTANTIATION__PLACEMENT,
 		PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF, PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE,
 		PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG, SpdPackage.Literals.SOFT_PKG__DESCRIPTOR, SpdPackage.Literals.DESCRIPTOR__COMPONENT,
-		ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES, ScdPackage.Literals.COMPONENT_FEATURES__PORTS, ScdPackage.Literals.PORTS__GROUP };
+		ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES, ScdPackage.Literals.COMPONENT_FEATURES__PORTS};
 
 	private final VersionedFeature portsFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS);
 
@@ -1058,8 +1098,15 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 			return;
 		}
 
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		final Application currentObj = fetchNarrowedObject(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		final SoftwareAssembly localProfileObj = fetchProfileObject(subMonitor.newChild(1));
 
 		List<MergePortsCommand.PortData> newPorts = new ArrayList<MergePortsCommand.PortData>();
@@ -1068,10 +1115,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		Transaction transaction = portsFeature.createTransaction();
 		// Load all of the ports
 		EList<Port> externalPorts = ScaEcoreUtils.getFeature(localProfileObj, EXTERNAL_PORTS_PATH);
-
 		if (externalPorts != null) {
+			SubMonitor externalPortProgress = subMonitor.newChild(1).setWorkRemaining(externalPorts.size());
 			for (final Port port : externalPorts) {
-				FeatureMap portGroup = ScaEcoreUtils.getFeature(port, PORTS_GROUP_PATH);
 				String id = port.getProvidesIdentifier();
 				if (id == null) {
 					id = port.getUsesIdentifier();
@@ -1080,34 +1126,45 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 					id = port.getSupportedIdentifier();
 				}
 				if (id == null) {
+					fetchPortsStatus.add(new Status(IStatus.WARNING, ScaModelPlugin.ID, "External port without a valid identifier cannot be located"));
+					externalPortProgress.worked(1);
 					continue;
 				}
 
-				if (portGroup != null) {
-					for (ValueListIterator<Object> i = portGroup.valueListIterator(); i.hasNext();) {
-						Object portObj = i.next();
-						if (portObj instanceof AbstractPort) {
-							AbstractPort abstractPort = (AbstractPort) portObj;
-							if (!abstractPort.getName().equals(id)) {
-								continue;
-							}
-
-							String portName = port.getExternalName();
-							if (portName == null) {
-								portName = abstractPort.getName();
-							}
-							try {
-								org.omg.CORBA.Object portCorbaObj = currentObj.getPort(portName);
-								newPorts.add(new PortData(portName, abstractPort, portCorbaObj));
-							} catch (UnknownPort e) {
-								fetchPortsStatus.add(new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
-							} catch (SystemException e) {
-								fetchPortsStatus.add(new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
-							}
-
-						}
-					}
+				Ports componentSCDPorts = ScaEcoreUtils.getFeature(port, EXT_PORT_TO_SCD_PORTS_PATH);
+				if (componentSCDPorts == null) {
+					String msg = String.format("Cannot locate ports for the external port with ID '%s'", id);
+					fetchPortsStatus.add(new Status(IStatus.WARNING, ScaModelPlugin.ID, msg));
+					externalPortProgress.worked(1);
+					continue;
 				}
+
+				for (AbstractPort abstractPort : componentSCDPorts.getAllPorts()) {
+					if (!id.equals(abstractPort.getName())) {
+						continue;
+					}
+
+					String portName = port.getExternalName();
+					if (portName == null) {
+						portName = id;
+					}
+
+					if (subMonitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
+					try {
+						org.omg.CORBA.Object portCorbaObj = currentObj.getPort(portName);
+						newPorts.add(new PortData(portName, abstractPort, portCorbaObj));
+					} catch (UnknownPort e) {
+						fetchPortsStatus.add(new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
+					} catch (SystemException e) {
+						fetchPortsStatus.add(new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
+					}
+
+					break;
+				}
+
+				externalPortProgress.worked(1);
 			}
 			transaction.addCommand(new MergePortsCommand(this, newPorts, fetchPortsStatus));
 		} else {
@@ -1115,7 +1172,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		}
 
 		// Perform the actions
-
+		subMonitor.setWorkRemaining(1);
 		transaction.commit();
 		subMonitor.done();
 		// BEGIN GENERATED CODE
@@ -1169,31 +1226,79 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
-		super.fetchAttributes(subMonitor.newChild(1));
-		fetchLocalAttributes(subMonitor.newChild(1));
-		fetchProfileObject(subMonitor.newChild(1));
-		fetchProperties(subMonitor.newChild(1));
-		subMonitor.done();
-	}
-
-	private void fetchLocalAttributes(IProgressMonitor monitor) {
+		// END GENERATED CODE
 		if (isDisposed()) {
 			return;
 		}
+
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
+		super.fetchAttributes(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
+		fetchLocalAttributes(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
+		fetchProfileObject(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
+		fetchProperties(subMonitor.newChild(1));
+
+		subMonitor.done();
+		// BEGIN GENERATED CODE
+	}
+
+	// END GENERATED CODE
+
+	private void fetchLocalAttributes(IProgressMonitor monitor) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 5);
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchIdentifier(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchStarted(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchProfile(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchName(subMonitor.newChild(1));
+
 		subMonitor.done();
 	}
 
 	@Override
 	protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchComponents(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchPorts(subMonitor.newChild(1));
+
 		subMonitor.done();
 	}
 
@@ -1241,6 +1346,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 			default:
 				break;
 			}
+			break;
 		default:
 			break;
 		}
@@ -1273,9 +1379,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	protected Application narrow(final org.omg.CORBA.Object obj) {
-		// END GENERATED CODE
 		return ApplicationHelper.narrow(obj);
-		// BEGIN GENERATED CODE
 	}
 
 	@Override
@@ -1288,13 +1392,11 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public DeviceAssignmentType[] componentDevices() {
-		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
 		if (waveform == null) {
 			return NO_DEVICE_ASSIGNMENT_TYPE;
 		}
 		return waveform.componentDevices();
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -1302,13 +1404,11 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public ComponentElementType[] componentImplementations() {
-		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
 		if (waveform == null) {
 			return NO_COMPONENT_ELEMENT_TYPE;
 		}
 		return waveform.componentImplementations();
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -1316,13 +1416,11 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public ComponentElementType[] componentNamingContexts() {
-		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
 		if (waveform == null) {
 			return NO_COMPONENT_ELEMENT_TYPE;
 		}
 		return waveform.componentNamingContexts();
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -1330,34 +1428,26 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public ComponentProcessIdType[] componentProcessIds() {
-		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
 		if (waveform == null) {
 			return NO_COMPONENT_PROCESS_ID;
 		}
 		return waveform.componentProcessIds();
-		// BEGIN GENERATED CODE
 	}
 
 	@Override
 	public String name() {
-		// END GENERATED CODE
 		return getName();
-		// BEGIN GENERATED CODE
 	}
 
 	@Override
 	public String profile() {
-		// END GENERATED CODE
 		return getProfile();
-		// BEGIN GENERATED CODE
 	}
 
 	@Override
 	public String identifier() {
-		// END GENERATED CODE
 		return getIdentifier();
-		// BEGIN GENERATED CODE
 	}
 
 	@Override
@@ -1371,7 +1461,6 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 
 	@Override
 	public void start() throws StartError {
-		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
 		if (waveform == null) {
 			throw new IllegalStateException("CORBA Object is Null");
@@ -1381,12 +1470,10 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		for (Object c : ModelUtil.getAsImmutableList(this, ScaPackage.Literals.SCA_WAVEFORM__COMPONENTS)) {
 			((ScaComponent) c).fetchStarted(null);
 		}
-		// BEGIN GENERATED CODE
 	}
 
 	@Override
 	public void stop() throws StopError {
-		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
 		if (waveform == null) {
 			throw new IllegalStateException("CORBA Object is Null");
@@ -1396,12 +1483,10 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		for (Object c : ModelUtil.getAsImmutableList(this, ScaPackage.Literals.SCA_WAVEFORM__COMPONENTS)) {
 			((ScaComponent) c).fetchStarted(null);
 		}
-		// BEGIN GENERATED CODE
 	}
 
 	@Override
 	public void initialize() throws InitializeError {
-		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
 		if (waveform == null) {
 			throw new IllegalStateException("CORBA Object is Null");
@@ -1412,15 +1497,12 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		} catch (InterruptedException e) {
 			// PASS
 		}
-		// BEGIN GENERATED CODE
 	}
 
 	private boolean released;
 
 	@Override
 	public void releaseObject() throws ReleaseError {
-		// END GENERATED CODE
-
 		// Ensure we only call releaseObject() once (assuming no exception thrown) 
 		if (released) {
 			return;
@@ -1446,9 +1528,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		} else {
 			ScaModelCommand.execute(this, command);
 		}
-
-		// BEGIN GENERATED CODE
 	}
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1779,18 +1861,18 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		return result.toString();
 	}
 
+	// END GENERATED CODE
+
 	/**
 	 * @since 14.0
 	 */
 	@Override
 	public void runTest(final int testid, final PropertiesHolder testValues) throws UnknownTest, UnknownProperties {
-		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
 		if (waveform == null) {
 			throw new IllegalStateException("CORBA Object is Null");
 		}
 		waveform.runTest(testid, testValues);
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -1798,59 +1880,49 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
-		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
 		if (waveform == null) {
 			throw new IllegalStateException("CORBA Object is null");
 		}
 		waveform.initializeProperties(configProperties);
-		// BEGIN GENERATED CODE
 	}
 
 	@Override
 	public void configure(final DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration {
-		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
 		if (waveform == null) {
 			return;
 		}
 		waveform.configure(configProperties);
 		fetchProperties(null);
-		// BEGIN GENERATED CODE
 	}
 
 	@Override
 	public void query(final PropertiesHolder configProperties) throws UnknownProperties {
-		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
 		if (waveform != null) {
 			waveform.query(configProperties);
 		}
-		// BEGIN GENERATED CODE
 	}
 
 	@Override
 	public org.omg.CORBA.Object getPort(final String name) throws UnknownPort {
-		// END GENERATED CODE
 		ScaPort< ? , ? > scaPort = getScaPort(name);
 		if (scaPort != null) {
 			return scaPort.fetchNarrowedObject(null);
 		}
 		return null;
-		// BEGIN GENERATED CODE
 	}
 
 	/**
 	 * @since 20.0
 	 */
 	public PortInfoType[] getPortSet() {
-		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
 		if (waveform == null) {
 			throw new IllegalStateException("CORBA Object is null");
 		}
 		return waveform.getPortSet();
-		// BEGIN GENERATED CODE
 	}
 
 	private static final EStructuralFeature[] PRF_PATH = { SadPackage.Literals.SOFTWARE_ASSEMBLY__ASSEMBLY_CONTROLLER,
@@ -1870,14 +1942,13 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
 		SoftwareAssembly localProfile = fetchProfileObject(monitor);
-		if (isDisposed() || localProfile == null) {
+		if (localProfile == null) {
 			return Collections.emptyList();
 		}
 
 		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
 		retVal.addAll(getAssemblyControllerProps(localProfile));
 		retVal.addAll(getExternalControllerProps(localProfile));
-
 		return retVal;
 	}
 
@@ -1947,6 +2018,8 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 
 	private final VersionedFeature profileObjectFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);
 
+	// BEGIN GENERATED CODE
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
@@ -1962,6 +2035,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		if (isSetProfileObj()) {
 			return getProfileObj();
 		}
+
 		Transaction transaction = profileObjectFeature.createTransaction();
 		transaction.addCommand(ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, SoftwareAssembly.class, SoftwareAssembly.EOBJECT_PATH));
 		transaction.commit();
@@ -1994,10 +2068,18 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		if (isSetProfile()) {
 			return getProfile();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch profile", 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		Application localObj = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = profileFeature.createTransaction();
 		if (localObj != null) {
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			try {
 				String newName = localObj.profile();
 				transaction.append(new SetLocalAttributeCommand(this, newName, ScaPackage.Literals.SCA_WAVEFORM__PROFILE));
@@ -2005,10 +2087,12 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 				Status status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch profile.", e);
 				transaction.append(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_WAVEFORM__PROFILE));
 			}
+			subMonitor.worked(1);
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_WAVEFORM__PROFILE));
 		}
-		subMonitor.worked(1);
+
+		subMonitor.setWorkRemaining(1);
 		transaction.commit();
 		subMonitor.worked(1);
 		subMonitor.done();
@@ -2040,26 +2124,28 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 
 	@Override
 	public URI fetchProfileURI(IProgressMonitor monitor) {
-		final int WORK_FETCH_PROFILE = 1;
-		final int WORK_FETCH_FILE_MANAGER = 1;
-		final int WORK_TX = 1;
-		SubMonitor progress = SubMonitor.convert(monitor, WORK_FETCH_PROFILE + WORK_FETCH_FILE_MANAGER + WORK_TX);
-
 		if (isDisposed()) {
-			progress.done();
 			return null;
 		}
 		if (isSetProfileURI()) {
-			progress.done();
 			return getProfileURI();
 		}
 
+		SubMonitor progress = SubMonitor.convert(monitor, 3);
 		ScaDomainManager domMgr = getDomMgr();
 		Transaction transaction = profileURIFeature.createTransaction();
-		String profile = fetchProfile(progress.newChild(WORK_FETCH_PROFILE));
+		if (progress.isCanceled()) {
+			throw new OperationCanceledException();
+		}
+		String profile = fetchProfile(progress.newChild(1));
+
 		if (profile != null) {
 			if (domMgr != null) {
-				ScaDomainManagerFileSystem fileMgr = domMgr.fetchFileManager(progress.newChild(WORK_FETCH_FILE_MANAGER), RefreshDepth.SELF);
+				if (progress.isCanceled()) {
+					throw new OperationCanceledException();
+				}
+				ScaDomainManagerFileSystem fileMgr = domMgr.fetchFileManager(progress.newChild(1), RefreshDepth.SELF);
+
 				if (fileMgr != null) {
 					final URI newURI = fileMgr.createURI(profile);
 					transaction.addCommand(new ScaModelCommand() {
@@ -2070,9 +2156,11 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 						}
 					});
 					transaction.commit();
-					progress.worked(WORK_TX);
+					progress.worked(1);
 				}
 			} else {
+				progress.setWorkRemaining(1);
+
 				final URI newURI = URI.createURI(profile);
 				transaction.addCommand(new ScaModelCommand() {
 
@@ -2082,7 +2170,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 					}
 				});
 				transaction.commit();
-				progress.worked(WORK_TX);
+				progress.worked(1);
 			}
 		}
 
@@ -2179,32 +2267,41 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public EList<ScaComponent> fetchComponents(IProgressMonitor monitor, RefreshDepth depth) {
+		// END GENERATED CODE
 		if (isDisposed()) {
 			return ECollections.emptyEList();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching components", 2);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchComponents(subMonitor.newChild(1));
-		IRefreshable[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<IRefreshable[]>() {
+
+		List<ScaComponent> componentsCopy = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<List<ScaComponent>>() {
 
 			@Override
 			public void execute() {
-				setResult(getComponents().toArray(new IRefreshable[getComponents().size()]));
+				setResult(new ArrayList<>(getComponents()));
 			}
-
 		});
-		if (array != null && depth != null) {
-			SubMonitor portRefresh = subMonitor.newChild(1);
-			portRefresh.beginTask("Refreshing components", array.length);
-			for (IRefreshable element : array) {
+		if (componentsCopy != null && depth != RefreshDepth.NONE) {
+			SubMonitor portRefresh = subMonitor.newChild(1).setWorkRemaining(componentsCopy.size());
+			for (IRefreshable element : componentsCopy) {
 				try {
+					if (subMonitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
 					element.refresh(portRefresh.newChild(1), depth);
 				} catch (InterruptedException e) {
-					// PASS
+					throw new OperationCanceledException();
 				}
 			}
 		}
+
 		subMonitor.done();
 		return getComponents();
+		// BEGIN GENERATED CODE
 	}
 
 	/**

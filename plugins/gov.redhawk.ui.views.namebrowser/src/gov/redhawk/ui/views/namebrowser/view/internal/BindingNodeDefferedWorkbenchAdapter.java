@@ -22,23 +22,15 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.IElementCollector;
+import org.omg.CosNaming.NamingContextPackage.InvalidName;
 
-/**
- * 
- */
 public class BindingNodeDefferedWorkbenchAdapter implements IDeferredWorkbenchAdapter {
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Object[] getChildren(final Object o) {
 		return ((BindingNode) o).getContents();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ImageDescriptor getImageDescriptor(final Object object) {
 		final BindingNode bind = (BindingNode) object;
@@ -54,34 +46,28 @@ public class BindingNodeDefferedWorkbenchAdapter implements IDeferredWorkbenchAd
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String getLabel(final Object element) {
-		String text = "";
 		if (element instanceof BindingNode) {
 			final BindingNode n = (BindingNode) element;
 			if (n.getBinding() == null) {
 				return n.getHost().substring(n.getHost().indexOf("::") + 2);
 			} else {
-				text = n.getBinding().binding_name[0].id;
+				try {
+					return n.getNamingContext().to_string(n.getBinding().binding_name);
+				} catch (InvalidName e) {
+					return "(invalid name)";
+				}
 			}
 		}
-		return text;
+		return "";
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Object getParent(final Object o) {
 		return ((BindingNode) o).getParent();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void fetchDeferredChildren(final Object object, final IElementCollector collector, final IProgressMonitor monitor) {
 		final BindingNode node = (BindingNode) object;
@@ -148,17 +134,11 @@ public class BindingNodeDefferedWorkbenchAdapter implements IDeferredWorkbenchAd
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean isContainer() {
 		return true;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ISchedulingRule getRule(final Object object) {
 		return null;

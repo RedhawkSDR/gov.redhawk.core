@@ -16,6 +16,7 @@ import java.util.Arrays;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
@@ -691,11 +692,19 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		if (isSetIdentifier()) {
 			return getIdentifier();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching identifier", 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		ApplicationFactory resource = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = idFeature.createTransaction();
 		if (resource != null) {
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				String newValue = resource.identifier();
 				transaction.append(new SetLocalAttributeCommand(this, newValue, ScaPackage.Literals.SCA_WAVEFORM_FACTORY__IDENTIFIER));
 			} catch (final SystemException e) {
@@ -706,9 +715,9 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		} else {
 			transaction.append(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_WAVEFORM_FACTORY__IDENTIFIER));
 		}
+
 		subMonitor.setWorkRemaining(1);
 		transaction.commit();
-		subMonitor.worked(1);
 		subMonitor.done();
 		return getIdentifier();
 		// BEGIN GENERATED CODE
@@ -732,11 +741,19 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		if (isSetName()) {
 			return getName();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching name", 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		ApplicationFactory resource = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = nameFeature.createTransaction();
 		if (resource != null) {
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				String newValue = resource.name();
 				transaction.append(new SetLocalAttributeCommand(this, newValue, ScaPackage.Literals.SCA_WAVEFORM_FACTORY__NAME));
 			} catch (final SystemException e) {
@@ -747,9 +764,9 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		} else {
 			transaction.append(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_WAVEFORM_FACTORY__NAME));
 		}
+
 		subMonitor.setWorkRemaining(1);
 		transaction.commit();
-		subMonitor.worked(1);
 		subMonitor.done();
 		return getName();
 		// BEGIN GENERATED CODE
@@ -774,6 +791,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		if (isSetProfileObj()) {
 			return getProfileObj();
 		}
+
 		Transaction transaction = profileObjFeature.createTransaction();
 		transaction.addCommand(ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, SoftwareAssembly.class, SoftwareAssembly.EOBJECT_PATH));
 		transaction.commit();
@@ -799,11 +817,19 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		if (isSetProfile()) {
 			return getProfile();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching profile", 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		ApplicationFactory resource = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = profileFeature.createTransaction();
 		if (resource != null) {
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				String newValue = resource.softwareProfile();
 				transaction.append(new SetLocalAttributeCommand(this, newValue, ScaPackage.Literals.SCA_WAVEFORM_FACTORY__PROFILE));
 			} catch (final SystemException e) {
@@ -814,9 +840,9 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		} else {
 			transaction.append(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_WAVEFORM_FACTORY__PROFILE));
 		}
+
 		subMonitor.setWorkRemaining(1);
 		transaction.commit();
-		subMonitor.worked(1);
 		subMonitor.done();
 		return getProfile();
 		// BEGIN GENERATED CODE
@@ -832,24 +858,43 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 */
 	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
+		// END GENERATED CODE
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 5);
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		super.fetchAttributes(subMonitor.newChild(1));
-		fetchLocalAttributes(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
+		fetchName(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
+		fetchIdentifier(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
+		fetchProfile(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchProfileObject(subMonitor.newChild(1));
+
 		subMonitor.done();
+		// BEGIN GENERATED CODE
 	}
+
+	// END GENERATED CODE
 
 	@Override
 	protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
 		// Do nothing
-	}
-
-	private void fetchLocalAttributes(IProgressMonitor monitor) {
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
-		fetchName(subMonitor.newChild(1));
-		fetchIdentifier(subMonitor.newChild(1));
-		fetchProfile(subMonitor.newChild(1));
-		subMonitor.done();
 	}
 
 	/**
@@ -858,14 +903,14 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	@Override
 	public Application create(final String name, final DataType[] initConfiguration, final DeviceAssignmentType[] deviceAssignments)
 		throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
-		// END GENERATED CODE
-		ScaWaveform result = createWaveform(null, name, initConfiguration, deviceAssignments, null);
+		ScaWaveform result = createWaveform(null, name, initConfiguration, deviceAssignments, RefreshDepth.NONE);
 		if (result != null) {
 			return result.fetchNarrowedObject(null);
 		}
 		return null;
-		// BEGIN GENERATED CODE
 	}
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1162,12 +1207,20 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		if (isSetProfileURI()) {
 			return getProfileURI();
 		}
+
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Profile URI", 2);
 		ScaDomainManager domMgr = getDomMgr();
 		if (domMgr != null) {
-			SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Profile URI", 2);
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			ScaDomainManagerFileSystem fileSystem = domMgr.fetchFileManager(subMonitor.newChild(1), RefreshDepth.SELF);
+
 			if (fileSystem != null) {
 				Transaction transaction = profileURIFeature.createTransaction();
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				final URI newURI = fileSystem.createURI(fetchProfile(subMonitor.newChild(1)));
 				transaction.addCommand(new ScaModelCommand() {
 
@@ -1180,6 +1233,8 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 			}
 			subMonitor.done();
 		}
+
+		subMonitor.done();
 		return getProfileURI();
 	}
 
@@ -1206,6 +1261,9 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 					deviceAssignments = DEVICE_EMPTY_TYPE;
 				}
 
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				final Application app = factory.create(name, initConfiguration, deviceAssignments);
 
 				ScaWaveform retVal = null;
@@ -1237,11 +1295,15 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 				if (retVal == null) {
 					throw new IllegalStateException("Unable to find Waveform after successful create.");
 				}
-				if (depth != null) {
+
+				if (depth != RefreshDepth.NONE) {
 					try {
+						if (subMonitor.isCanceled()) {
+							throw new OperationCanceledException();
+						}
 						retVal.refresh(subMonitor.newChild(1), depth);
 					} catch (InterruptedException e) {
-						// PASS
+						throw new OperationCanceledException();
 					}
 				}
 				if (DEBUG.enabled) {

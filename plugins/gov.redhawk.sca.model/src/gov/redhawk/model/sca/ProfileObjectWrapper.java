@@ -18,6 +18,7 @@ import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.command.Command;
@@ -187,6 +188,8 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	 */
 	URI fetchProfileURI(IProgressMonitor monitor);
 
+	// END GENERATED CODE
+
 	/**
 	 * @since 14.0
 	 */
@@ -213,6 +216,9 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 
 			SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Profile Object", 2);
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				URI uri = wrapper.fetchProfileURI(subMonitor.newChild(1));
 
 				if (uri != null) {
@@ -221,6 +227,9 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 
 					T profileObject = null;
 					IStatus status = null;
+					if (subMonitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
 					try {
 						profileObject = type.cast(fetchProfileObject(resourceSet, uri));
 						subMonitor.worked(1);
@@ -252,5 +261,7 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 
 		}
 	}
+
+	// BEGIN GENERATED CODE
 
 } // ScaObjectWrapper

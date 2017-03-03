@@ -27,9 +27,10 @@ import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 import gov.redhawk.sca.util.PluginUtil;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
@@ -39,6 +40,7 @@ import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
@@ -623,13 +625,38 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
 		// END GENERATED CODE
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 6); // SUPPRESS CHECKSTYLE MagicNumber
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 6);
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		super.fetchAttributes(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchAdminState(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchLabel(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchOperationalState(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchUsageState(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchProperties(subMonitor.newChild(1));
+
 		subMonitor.done();
 		// BEGIN GENERATED CODE
 	}
@@ -639,8 +666,17 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	@Override
 	protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		super.internalFetchChildren(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchAggregateDevices(subMonitor.newChild(1));
+
 		subMonitor.done();
 	}
 
@@ -679,6 +715,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * @generated NOT
 	 */
 	@Override
+	@Deprecated
 	public EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		return fetchAggregateDevices(monitor, RefreshDepth.SELF);
@@ -707,11 +744,19 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		if (isDisposed()) {
 			return null;
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching admin state", 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		D localObj = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = adminStateFeature.createTransaction();
 		if (localObj != null) {
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				AdminType newValue = localObj.adminState();
 				subMonitor.worked(1);
 				transaction.addCommand(new SetLocalAttributeCommand(this, newValue, ScaPackage.Literals.SCA_DEVICE__ADMIN_STATE));
@@ -722,9 +767,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DEVICE__ADMIN_STATE));
 		}
+
 		subMonitor.setWorkRemaining(1);
 		transaction.commit();
-		subMonitor.worked(1);
 		subMonitor.done();
 		return getAdminState();
 		// BEGIN GENERATED CODE
@@ -746,11 +791,19 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		if (isSetLabel()) {
 			return getLabel();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching label", 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		D localObj = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = labelFeature.createTransaction();
 		if (localObj != null) {
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				String newLabel = localObj.label();
 				subMonitor.worked(1);
 				transaction.addCommand(new SetLocalAttributeCommand(this, newLabel, ScaPackage.Literals.SCA_DEVICE__LABEL));
@@ -761,6 +814,8 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DEVICE__LABEL));
 		}
+
+		subMonitor.setWorkRemaining(1);
 		transaction.commit();
 		subMonitor.done();
 		return getLabel();
@@ -780,11 +835,19 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		if (isDisposed()) {
 			return null;
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching operational state", 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		D localObj = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = opStateFeature.createTransaction();
 		if (localObj != null) {
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				OperationalType newValue = localObj.operationalState();
 				subMonitor.worked(1);
 				transaction.addCommand(new SetLocalAttributeCommand(this, newValue, ScaPackage.Literals.SCA_DEVICE__OPERATIONAL_STATE));
@@ -795,6 +858,8 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DEVICE__OPERATIONAL_STATE));
 		}
+
+		subMonitor.setWorkRemaining(1);
 		transaction.commit();
 		subMonitor.done();
 		return getOperationalState();
@@ -814,11 +879,19 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		if (isDisposed()) {
 			return null;
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching usage state", 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		D localObj = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = usageStateFeature.createTransaction();
 		if (localObj != null) {
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				UsageType newValue = localObj.usageState();
 				subMonitor.worked(1);
 				transaction.addCommand(new SetLocalAttributeCommand(this, newValue, ScaPackage.Literals.SCA_DEVICE__USAGE_STATE));
@@ -829,6 +902,8 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DEVICE__USAGE_STATE));
 		}
+
+		subMonitor.setWorkRemaining(1);
 		transaction.commit();
 		subMonitor.done();
 		return getUsageState();
@@ -846,17 +921,11 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 */
 	protected void internalFetchAggregateDevices(IProgressMonitor monitor) {
 		// END GENERATED CODE
-		if (isDisposed()) {
-			return;
-		}
-		if (isSetChildDevices()) {
-			if (monitor != null) {
-				monitor.done();
-			}
+		if (isDisposed() || isSetChildDevices()) {
 			return;
 		}
 
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 2); // SUPPRESS CHECKSTYLE MagicNumber
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
 		final org.omg.CORBA.Object localObj = getCorbaObj();
 		Transaction transaction = aggregateDevicesRevision.createTransaction();
 		if (localObj != null) {
@@ -864,6 +933,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 			IStatus tmpStatus = Status.OK_STATUS;
 
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				if (_is_a(AggregateDeviceHelper.id())) {
 					aggDev = AggregateDeviceHelper.unchecked_narrow(getCorbaObj());
 				}
@@ -876,8 +948,14 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 			final Set<String> deviceIds = new HashSet<String>();
 			if (aggDev != null) {
 				try {
+					if (subMonitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
 					Device[] devices = aggDev.devices();
 					for (Device d : devices) {
+						if (subMonitor.isCanceled()) {
+							throw new OperationCanceledException();
+						}
 						deviceIds.add(d.identifier());
 					}
 				} catch (SystemException e) {
@@ -891,6 +969,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		} else {
 			transaction.append(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DEVICE__CHILD_DEVICES));
 		}
+
 		transaction.commit();
 		subMonitor.done();
 		// BEGIN GENERATED CODE
@@ -1315,18 +1394,26 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 
 	@Override
 	public URI fetchProfileURI(IProgressMonitor monitor) {
+		// END GENERATED CODE
 		if (isDisposed()) {
 			return null;
 		}
 		if (isSetProfileURI()) {
 			return getProfileURI();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch profile URI.", 2);
 		ScaDeviceManager devMgr = getDevMgr();
 		if (devMgr != null) {
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			ScaDeviceManagerFileSystem fileSystem = devMgr.fetchFileSystem(subMonitor.newChild(1), RefreshDepth.SELF);
 			if (fileSystem != null) {
 				Transaction transaction = profileURIFeature.createTransaction();
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				final URI newURI = fileSystem.createURI(fetchProfile(subMonitor.newChild(1)));
 				transaction.addCommand(new ScaModelCommand() {
 
@@ -1338,8 +1425,10 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 				transaction.commit();
 			}
 		}
+
 		subMonitor.done();
 		return getProfileURI();
+		// BEGIN GENERATED CODE
 	}
 
 	// BEGIN GENERATED CODE
@@ -1357,29 +1446,37 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		if (isDisposed()) {
 			return ECollections.emptyEList();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Aggregate Devices", 2);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchAggregateDevices(subMonitor.newChild(1));
-		ScaDevice< ? >[] devices = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaDevice< ? >[]>() {
+
+		List<ScaDevice< ? >> devicesCopy = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<List<ScaDevice< ? >>>() {
 
 			@Override
 			public void execute() {
-				setResult(getChildDevices().toArray(new ScaDevice< ? >[getChildDevices().size()]));
+				setResult(new ArrayList<>(getChildDevices()));
 			}
 		});
-		if (devices != null && depth != null) {
-			SubMonitor deviceMonitor = subMonitor.newChild(1);
-			deviceMonitor.beginTask("Refreshing devices", devices.length);
-			for (ScaDevice< ? > device : devices) {
+		if (devicesCopy != null && depth != RefreshDepth.NONE) {
+			SubMonitor deviceMonitor = subMonitor.newChild(1).setWorkRemaining(devicesCopy.size());
+			for (ScaDevice< ? > device : devicesCopy) {
 				try {
+					if (subMonitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
 					device.refresh(deviceMonitor.newChild(1), depth);
 				} catch (InterruptedException e) {
-					// PASS
+					throw new OperationCanceledException();
 				}
 			}
 		}
+
 		subMonitor.done();
-		if (devices != null) {
-			return ECollections.unmodifiableEList(new BasicEList<ScaDevice< ? >>(Arrays.asList(devices)));
+		if (devicesCopy != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaDevice< ? >>(devicesCopy));
 		} else {
 			return ECollections.emptyEList();
 		}

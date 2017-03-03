@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.pattern.IPattern;
@@ -26,9 +27,16 @@ import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.core.graphiti.ui.util.StyleUtil;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
-import mil.jpeojtrs.sca.spd.SoftPkg;
+import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
+import mil.jpeojtrs.sca.scd.SoftwareComponent;
+import mil.jpeojtrs.sca.spd.SpdPackage;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public class DevicePattern extends AbstractNodeComponentPattern implements IPattern {
+
+	private static final EStructuralFeature[] SCD_PATH = new EStructuralFeature[] { PartitioningPackage.Literals.COMPONENT_INSTANTIATION__PLACEMENT,
+		PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF, PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE,
+		PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG, SpdPackage.Literals.SOFT_PKG__DESCRIPTOR, SpdPackage.Literals.DESCRIPTOR__COMPONENT };
 
 	public DevicePattern() {
 		super();
@@ -41,20 +49,18 @@ public class DevicePattern extends AbstractNodeComponentPattern implements IPatt
 
 	@Override
 	protected boolean isInstantiationApplicable(DcdComponentInstantiation instantiation) {
-		SoftPkg spd = instantiation.getPlacement().getComponentFileRef().getFile().getSoftPkg();
-		if (spd == null) {
+		SoftwareComponent scd = ScaEcoreUtils.getFeature(instantiation, SCD_PATH);
+
+		if (scd == null) {
 			return true;
 		}
 
-		String componentType = spd.getDescriptor().getComponent().getComponentType();
-
-		String[] deviceTypes = { mil.jpeojtrs.sca.scd.ComponentType.DEVICE.getLiteral(), "loadabledevice", "executabledevice" };
-		for (String deviceType : deviceTypes) {
-			if (deviceType.equals(componentType)) {
-				return true;
-			}
+		switch (SoftwareComponent.Util.getWellKnownComponentType(scd)) {
+		case DEVICE:
+			return true;
+		default:
+			return false;
 		}
-		return false;
 	}
 
 	@Override

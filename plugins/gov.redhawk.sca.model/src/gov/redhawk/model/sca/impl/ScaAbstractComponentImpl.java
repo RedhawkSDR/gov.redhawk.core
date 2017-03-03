@@ -28,7 +28,6 @@ import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -36,6 +35,7 @@ import java.util.List;
 import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.Properties;
 import mil.jpeojtrs.sca.scd.AbstractPort;
+import mil.jpeojtrs.sca.scd.Ports;
 import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.spd.SpdPackage;
@@ -44,6 +44,7 @@ import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.command.Command;
@@ -58,7 +59,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.transaction.RunnableWithResult;
@@ -469,10 +469,18 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		if (isSetIdentifier()) {
 			return getIdentifier();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Identifier", 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		R resource = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = identifierRevision.createTransaction();
 		if (resource != null) {
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			try {
 				String newId = resource.identifier();
 				transaction.append(new SetLocalAttributeCommand(this, newId, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__IDENTIFIER));
@@ -484,6 +492,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		} else {
 			transaction.append(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__IDENTIFIER));
 		}
+
 		subMonitor.setWorkRemaining(1);
 		transaction.commit();
 		subMonitor.done();
@@ -506,10 +515,18 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		if (isDisposed()) {
 			return false;
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching Started", 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		R resource = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = startedRevision.createTransaction();
 		if (resource != null) {
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			try {
 				boolean newStarted = resource.started();
 				transaction.append(new SetLocalAttributeCommand(this, newStarted, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__STARTED));
@@ -525,9 +542,9 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		} else {
 			transaction.append(new UnsetLocalAttributeCommand(this, Status.OK_STATUS, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__STARTED));
 		}
+
 		subMonitor.setWorkRemaining(1);
 		transaction.commit();
-		subMonitor.worked(1);
 		subMonitor.done();
 		return getStarted();
 		// BEGIN GENERATED CODE
@@ -942,109 +959,124 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	@Override
 	public EList<ScaPort< ? , ? >> fetchPorts(IProgressMonitor monitor) {
+		// END GENERATED CODE
 		if (isDisposed()) {
 			return ECollections.emptyEList();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchPorts(subMonitor.newChild(1));
-		ScaPort< ? , ? >[] ports = null;
+
+		List<ScaPort< ? , ? >> portsCopy = null;
 		try {
-			ports = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<ScaPort< ? , ? >[]>() {
+			portsCopy = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<List<ScaPort< ? , ? >>>() {
 				@Override
 				public void run() {
-					setResult(getPorts().toArray(new ScaPort< ? , ? >[getPorts().size()]));
+					setResult(new ArrayList<>(getPorts()));
 				}
 			});
 		} catch (InterruptedException e) {
-			// PASS
+			throw new OperationCanceledException();
 		}
-		if (ports != null) {
-			SubMonitor portRefresh = subMonitor.newChild(1);
-			portRefresh.beginTask("Refreshing state of ports", ports.length);
-			for (ScaPort< ? , ? > port : ports) {
+		if (portsCopy != null) {
+			SubMonitor portRefresh = subMonitor.newChild(1).setWorkRemaining(portsCopy.size());
+			for (ScaPort< ? , ? > port : portsCopy) {
 				try {
+					if (subMonitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
 					port.refresh(portRefresh.newChild(1), RefreshDepth.SELF);
 				} catch (InterruptedException e) {
-					// PASS
+					throw new OperationCanceledException();
 				}
 			}
 		}
+
 		subMonitor.done();
-		if (ports != null) {
-			return ECollections.unmodifiableEList(new BasicEList<ScaPort< ? , ? >>(Arrays.asList(ports)));
+		if (portsCopy != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaPort< ? , ? >>(portsCopy));
 		} else {
 			return ECollections.emptyEList();
 		}
+		// BEGIN GENERATED CODE
 	}
 
-	private static final EStructuralFeature[] PORTS_GROUP_PATH = { ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
+	// END GENERATED CODE
+
+	/**
+	 * EMF feature path from a {@link ScaAbstractComponent} to the ports in its SCD file.
+	 */
+	private static final EStructuralFeature[] RESOURCE_TO_PORTS_PATH = { ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
 		SpdPackage.Literals.SOFT_PKG__DESCRIPTOR, SpdPackage.Literals.DESCRIPTOR__COMPONENT, ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES,
-		ScdPackage.Literals.COMPONENT_FEATURES__PORTS, ScdPackage.Literals.PORTS__GROUP };
+		ScdPackage.Literals.COMPONENT_FEATURES__PORTS};
 
 	private final VersionedFeature portRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS);
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @throws InterruptedException
-	 * @generated NOT
 	 */
 	protected void internalFetchPorts(IProgressMonitor monitor) {
-		// END GENERATED CODE
 		if (isDisposed()) {
 			return;
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		R currentObj = this.fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = portRevision.createTransaction();
 		if (currentObj != null) {
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			fetchProfileObject(subMonitor.newChild(1));
-			FeatureMap portGroup = ScaEcoreUtils.getFeature(this, PORTS_GROUP_PATH);
+
+			Ports scdPorts = ScaEcoreUtils.getFeature(this, RESOURCE_TO_PORTS_PATH);
 			int size = getPorts().size();
-			int groupSize = (portGroup == null) ? 0 : portGroup.size();
+			int groupSize = (scdPorts == null) ? 0 : scdPorts.getGroup().size();
 			if (isSetPorts() && size == groupSize) {
 				return;
 			}
 
-			List<MergePortsCommand.PortData> newPorts = new ArrayList<MergePortsCommand.PortData>();
 			// Load all of the ports
+			List<MergePortsCommand.PortData> newPorts = new ArrayList<MergePortsCommand.PortData>();
 			final MultiStatus fetchPortsStatus = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Fetch ports status.", null);
-			if (portGroup != null) {
-				for (ValueListIterator<Object> i = portGroup.valueListIterator(); i.hasNext();) {
-					Object portObj = i.next();
-					if (portObj instanceof AbstractPort) {
-						AbstractPort abstractPort = (AbstractPort) portObj;
-						String portName = abstractPort.getName();
-						try {
-							org.omg.CORBA.Object portCorbaObj = currentObj.getPort(portName);
-							newPorts.add(new PortData(abstractPort, portCorbaObj));
-						} catch (UnknownPort e) {
-							// Unknown port exception can be treated as a warning. If set as an error, the MergePortsCommand will unset all ports
-							fetchPortsStatus.add(new Status(Status.WARNING, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
-						} catch (SystemException e) {
-							fetchPortsStatus.add(new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
+			if (scdPorts != null) {
+				for (AbstractPort abstractPort : scdPorts.getAllPorts()) {
+					String portName = abstractPort.getName();
+					try {
+						if (subMonitor.isCanceled()) {
+							throw new OperationCanceledException();
 						}
-
+						org.omg.CORBA.Object portCorbaObj = currentObj.getPort(portName);
+						newPorts.add(new PortData(abstractPort, portCorbaObj));
+					} catch (UnknownPort e) {
+						// Unknown port exception can be treated as a warning. If set as an error, the MergePortsCommand will unset all ports
+						fetchPortsStatus.add(new Status(Status.WARNING, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
+					} catch (SystemException e) {
+						fetchPortsStatus.add(new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
 					}
 				}
 			}
 			subMonitor.worked(1);
 
 			MergePortsCommand command = new MergePortsCommand(this, newPorts, fetchPortsStatus);
-
-			// Perform the actions
 			transaction.addCommand(command);
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, Status.OK_STATUS, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS));
 		}
+
 		subMonitor.setWorkRemaining(1);
 		transaction.commit();
-		subMonitor.worked(1);
 		subMonitor.done();
-		// BEGIN GENERATED CODE
 	}
+
+	// BEGIN GENERATED CODE
 
 	@Override
 	protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
@@ -1078,17 +1110,43 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
+		// END GENERATED CODE
 		if (isDisposed()) {
 			return;
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 5);
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		super.fetchAttributes(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchIdentifier(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchStarted(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchProfile(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchProfileObject(subMonitor.newChild(1));
+
 		subMonitor.done();
+		// BEGIN GENERATED CODE
 	}
+
+	// END GENERATED CODE
 
 	/**
 	 * @since 14.0
@@ -1114,6 +1172,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		if (isDisposed()) {
 			return Collections.emptyList();
 		}
+
 		Properties propertyDefs = ScaEcoreUtils.getFeature(fetchProfileObject(monitor), PRF_PATH);
 		List<AbstractProperty> retVal;
 		if (propertyDefs != null) {
@@ -1132,6 +1191,8 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 
 	private final VersionedFeature profileObjectRevision = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);
 
+	// BEGIN GENERATED CODE
+
 	/**
 	 * @generated NOT {@inheritDoc}
 	 * @since 14.0
@@ -1144,6 +1205,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		if (isSetProfileObj()) {
 			return getProfileObj();
 		}
+
 		Transaction transaction = profileObjectRevision.createTransaction();
 		Command command = ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, SoftPkg.class, SoftPkg.EOBJECT_PATH);
 		transaction.addCommand(command);
@@ -1165,12 +1227,20 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		if (isSetProfile()) {
 			return getProfile();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching profile", 3);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		R localObj = fetchNarrowedObject(subMonitor.newChild(1));
+
 		Transaction transaction = profileFeature.createTransaction();
 		if (localObj != null) {
 			final String newProfile;
 			try {
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
 				newProfile = localObj.softwareProfile();
 				transaction.addCommand(new SetLocalAttributeCommand(this, newProfile, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__PROFILE));
 			} catch (BAD_OPERATION e) {
@@ -1184,6 +1254,8 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__PROFILE));
 		}
+
+		subMonitor.setWorkRemaining(1);
 		transaction.commit();
 		subMonitor.done();
 		return getProfile();

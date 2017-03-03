@@ -174,8 +174,12 @@ public class SriDataViewContentProvider implements ITreeContentProvider {
 	@Override
 	public boolean hasChildren(Object element) {
 		if (element instanceof SriBuilder) {
+			// For this type, only keywords with non-zero length value has children
 			SriBuilder attribute = (SriBuilder) element;
-			return "keywords: ".equals(attribute.getName());
+			if (!"keywords: ".equals(attribute.getName())) {
+				return false;
+			}
+			return (attribute.getValue() != null && ((DataType[]) attribute.getValue()).length > 0);
 		}
 
 		if (element instanceof SriDataTypeWrapper) {

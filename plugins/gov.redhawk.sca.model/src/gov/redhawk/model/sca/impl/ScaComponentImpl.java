@@ -28,16 +28,19 @@ import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
 import mil.jpeojtrs.sca.util.DceUuidUtil;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
@@ -418,22 +421,44 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 */
 	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
+		// END GENERATED CODE
 		if (isDisposed()) {
 			return;
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		super.fetchAttributes(subMonitor.newChild(1));
-		fetchProfileObject(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		fetchProperties(subMonitor.newChild(1));
+
 		subMonitor.done();
+		// BEGIN GENERATED CODE
 	}
 
 	@Override
 	protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
+		// END GENERATED CODE
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		super.internalFetchChildren(subMonitor.newChild(1));
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchDevices(subMonitor.newChild(1));
+
 		subMonitor.done();
+		// BEGIN GENERATED CODE
 	}
 
 	@Override
@@ -638,9 +663,11 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * @since 14.0
 	 */
 	protected void internalFetchDevices(IProgressMonitor monitor) {
+		// END GENERATED CODE
 		if (isSetDevices() || isDisposed()) {
 			return;
 		}
+
 		Transaction transaction = devicesRevision.createTransaction();
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 5);
 
@@ -648,32 +675,45 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 		ScaWaveform waveform = getWaveform();
 
 		if (waveform != null) {
+			if (subMonitor.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			Application app = waveform.fetchNarrowedObject(subMonitor.newChild(1));
 
 			if (app != null) {
 				final Map<String, ScaDevice< ? >> newDevices = new HashMap<String, ScaDevice< ? >>();
-				final DeviceAssignmentType[] devices = app.componentDevices();
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
+				final DeviceAssignmentType[] deviceAssignments = app.componentDevices();
+
 				MultiStatus status = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Problems fetching devices.", null);
 				ScaDomainManager domMgr = waveform.getDomMgr();
 				if (domMgr != null) {
 					boolean calledFetch = false;
-					for (final DeviceAssignmentType dat : devices) {
-						if (dat.componentId.equals(componentIdentifier)) {
-							ScaDeviceImpl< ? > device = (ScaDeviceImpl< ? >) domMgr.getDevice(dat.assignedDeviceId);
+					for (final DeviceAssignmentType deviceAssignment : deviceAssignments) {
+						if (deviceAssignment.componentId.equals(componentIdentifier)) {
+							ScaDevice< ? > device = domMgr.getDevice(deviceAssignment.assignedDeviceId);
 							if (device == null && !calledFetch) {
+								if (subMonitor.isCanceled()) {
+									throw new OperationCanceledException();
+								}
 								domMgr.fetchDeviceManagers(subMonitor.newChild(1), RefreshDepth.SELF);
-								SubMonitor devMgrMonitor = subMonitor.newChild(1);
-								devMgrMonitor.beginTask("Refreshing Device Managers...", domMgr.getDeviceManagers().size());
+
+								SubMonitor devMgrMonitor = subMonitor.newChild(1).setWorkRemaining(domMgr.getDeviceManagers().size());
 								for (ScaDeviceManager devMgr : domMgr.getDeviceManagers()) {
+									if (subMonitor.isCanceled()) {
+										throw new OperationCanceledException();
+									}
 									devMgr.fetchDevices(devMgrMonitor.newChild(1), RefreshDepth.SELF);
 								}
-								device = (ScaDeviceImpl< ? >) domMgr.getDevice(dat.assignedDeviceId);
+								device = domMgr.getDevice(deviceAssignment.assignedDeviceId);
 								calledFetch = true;
 							}
 							if (device != null) {
-								newDevices.put(dat.assignedDeviceId, device);
+								newDevices.put(deviceAssignment.assignedDeviceId, device);
 							} else {
-								status.add(new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch device: " + dat.assignedDeviceId, null));
+								status.add(new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch device: " + deviceAssignment.assignedDeviceId, null));
 							}
 						}
 					}
@@ -687,10 +727,12 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_COMPONENT__DEVICES));
 		}
+
 		subMonitor.setWorkRemaining(1);
 		transaction.commit();
 		subMonitor.worked(1);
 		subMonitor.done();
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -714,37 +756,44 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 
 	@Override
 	public URI fetchProfileURI(IProgressMonitor monitor) {
+		// END GENERATED CODE
 		if (isDisposed()) {
 			return null;
 		}
 		if (isSetProfileURI()) {
 			return getProfileURI();
 		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch profile URI.", 2);
-		ScaWaveform waveform = getWaveform();
-		if (waveform != null) {
-			ScaDomainManager domMgr = waveform.getDomMgr();
-			if (domMgr != null) {
-				ScaDomainManagerFileSystem fileSystem = domMgr.getFileManager();
-				if (fileSystem != null) {
-					Transaction transaction = profileURIFeature.createTransaction();
-					final String localProfile = fetchProfile(subMonitor.newChild(1));
-					if (localProfile != null) {
-						final URI newURI = fileSystem.createURI(localProfile);
-						transaction.addCommand(new ScaModelCommand() {
 
-							@Override
-							public void execute() {
-								setProfileURI(newURI);
-							}
-						});
-						transaction.commit();
-					}
-				}
-			}
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch profile URI.", 2);
+		ScaDomainManagerFileSystem fileSystem = ScaEcoreUtils.getFeature(this, ScaPackage.Literals.SCA_COMPONENT__WAVEFORM,
+			ScaPackage.Literals.SCA_WAVEFORM__DOM_MGR, ScaPackage.Literals.SCA_DOMAIN_MANAGER__FILE_MANAGER);
+		if (fileSystem == null) {
+			subMonitor.done();
+			return null;
 		}
+
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
+		final String localProfile = fetchProfile(subMonitor.newChild(1));
+
+		Transaction transaction = profileURIFeature.createTransaction();
+		if (localProfile != null) {
+			final URI newURI = fileSystem.createURI(localProfile);
+			transaction.addCommand(new ScaModelCommand() {
+
+				@Override
+				public void execute() {
+					setProfileURI(newURI);
+				}
+			});
+			transaction.commit();
+			subMonitor.worked(1);
+		}
+
 		subMonitor.done();
 		return getProfileURI();
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -756,35 +805,45 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 */
 	@Override
 	public EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor, RefreshDepth depth) {
+		// END GENERATED CODE
 		if (isDisposed()) {
 			return ECollections.emptyEList();
 		}
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Devices", 2);
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
 		internalFetchDevices(subMonitor.newChild(1));
-		ScaDevice< ? >[] devices = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaDevice< ? >[]>() {
+
+		List<ScaDevice< ? >> devicesCopy = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<List<ScaDevice< ? >>>() {
 
 			@Override
 			public void execute() {
-				setResult(getDevices().toArray(new ScaDevice< ? >[getDevices().size()]));
+				setResult(new ArrayList<>(getDevices()));
 			}
 		});
-		if (devices != null && depth != null) {
-			SubMonitor deviceMonitor = subMonitor.newChild(1);
-			deviceMonitor.beginTask("Refreshing Devices", devices.length);
-			for (ScaDevice< ? > device : devices) {
+		if (devicesCopy != null && depth != RefreshDepth.NONE) {
+			SubMonitor deviceMonitor = subMonitor.newChild(1).setWorkRemaining(devicesCopy.size());
+			for (ScaDevice< ? > device : devicesCopy) {
 				try {
+					if (subMonitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
 					device.refresh(deviceMonitor.newChild(1), depth);
 				} catch (InterruptedException e) {
-					// PASS
+					throw new OperationCanceledException();
 				}
 			}
 		}
+
 		subMonitor.done();
-		if (devices != null) {
-			return ECollections.unmodifiableEList(new BasicEList<ScaDevice< ? >>(Arrays.asList(devices)));
+		if (devicesCopy != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaDevice< ? >>(devicesCopy));
 		} else {
 			return ECollections.emptyEList();
 		}
+		// BEGIN GENERATED CODE
 	}
 
 } // ScaComponentImpl
