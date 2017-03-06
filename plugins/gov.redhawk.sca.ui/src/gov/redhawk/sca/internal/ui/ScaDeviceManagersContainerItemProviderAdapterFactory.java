@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 
 public class ScaDeviceManagersContainerItemProviderAdapterFactory implements IAdapterFactory {
@@ -68,10 +67,7 @@ public class ScaDeviceManagersContainerItemProviderAdapterFactory implements IAd
 			private void refreshFull(final IProgressMonitor monitor) throws InterruptedException {
 				final SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching device managers fully", 2);
 
-				if (subMonitor.isCanceled()) {
-					throw new OperationCanceledException();
-				}
-				refreshStandard(subMonitor.newChild(1));
+				refreshStandard(subMonitor.split(1));
 
 				final ScaDomainManager domain = (ScaDomainManager) provider.getParent(null);
 				final SubMonitor refreshMonitor = subMonitor.newChild(1);
@@ -85,10 +81,7 @@ public class ScaDeviceManagersContainerItemProviderAdapterFactory implements IAd
 				if (devMgrs != null) {
 					refreshMonitor.setWorkRemaining(devMgrs.size());
 					for (final ScaDeviceManager manager : devMgrs) {
-						if (subMonitor.isCanceled()) {
-							throw new OperationCanceledException();
-						}
-						manager.refresh(refreshMonitor.newChild(1), RefreshDepth.FULL);
+						manager.refresh(refreshMonitor.split(1), RefreshDepth.FULL);
 					}
 				}
 			}

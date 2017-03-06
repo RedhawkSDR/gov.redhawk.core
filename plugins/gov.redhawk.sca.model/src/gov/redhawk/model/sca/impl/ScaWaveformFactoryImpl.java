@@ -694,10 +694,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		}
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching identifier", 3);
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		ApplicationFactory resource = fetchNarrowedObject(subMonitor.newChild(1));
+		ApplicationFactory resource = fetchNarrowedObject(subMonitor.split(1));
 
 		Transaction transaction = idFeature.createTransaction();
 		if (resource != null) {
@@ -743,10 +740,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		}
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching name", 3);
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		ApplicationFactory resource = fetchNarrowedObject(subMonitor.newChild(1));
+		ApplicationFactory resource = fetchNarrowedObject(subMonitor.split(1));
 
 		Transaction transaction = nameFeature.createTransaction();
 		if (resource != null) {
@@ -819,10 +813,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		}
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching profile", 3);
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		ApplicationFactory resource = fetchNarrowedObject(subMonitor.newChild(1));
+		ApplicationFactory resource = fetchNarrowedObject(subMonitor.split(1));
 
 		Transaction transaction = profileFeature.createTransaction();
 		if (resource != null) {
@@ -860,32 +851,11 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	public void fetchAttributes(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 5);
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		super.fetchAttributes(subMonitor.newChild(1));
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		fetchName(subMonitor.newChild(1));
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		fetchIdentifier(subMonitor.newChild(1));
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		fetchProfile(subMonitor.newChild(1));
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		fetchProfileObject(subMonitor.newChild(1));
-
+		super.fetchAttributes(subMonitor.split(1));
+		fetchName(subMonitor.split(1));
+		fetchIdentifier(subMonitor.split(1));
+		fetchProfile(subMonitor.split(1));
+		fetchProfileObject(subMonitor.split(1));
 		subMonitor.done();
 		// BEGIN GENERATED CODE
 	}
@@ -1211,17 +1181,11 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Profile URI", 2);
 		ScaDomainManager domMgr = getDomMgr();
 		if (domMgr != null) {
-			if (subMonitor.isCanceled()) {
-				throw new OperationCanceledException();
-			}
-			ScaDomainManagerFileSystem fileSystem = domMgr.fetchFileManager(subMonitor.newChild(1), RefreshDepth.SELF);
+			ScaDomainManagerFileSystem fileSystem = domMgr.fetchFileManager(subMonitor.split(1), RefreshDepth.SELF);
 
 			if (fileSystem != null) {
 				Transaction transaction = profileURIFeature.createTransaction();
-				if (subMonitor.isCanceled()) {
-					throw new OperationCanceledException();
-				}
-				final URI newURI = fileSystem.createURI(fetchProfile(subMonitor.newChild(1)));
+				final URI newURI = fileSystem.createURI(fetchProfile(subMonitor.split(1)));
 				transaction.addCommand(new ScaModelCommand() {
 
 					@Override
@@ -1298,10 +1262,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 
 				if (depth != RefreshDepth.NONE) {
 					try {
-						if (subMonitor.isCanceled()) {
-							throw new OperationCanceledException();
-						}
-						retVal.refresh(subMonitor.newChild(1), depth);
+						retVal.refresh(subMonitor.split(1), depth);
 					} catch (InterruptedException e) {
 						throw new OperationCanceledException();
 					}

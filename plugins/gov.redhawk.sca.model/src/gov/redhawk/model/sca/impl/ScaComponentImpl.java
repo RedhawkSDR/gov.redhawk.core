@@ -427,17 +427,8 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 		}
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		super.fetchAttributes(subMonitor.newChild(1));
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		fetchProperties(subMonitor.newChild(1));
-
+		super.fetchAttributes(subMonitor.split(1));
+		fetchProperties(subMonitor.split(1));
 		subMonitor.done();
 		// BEGIN GENERATED CODE
 	}
@@ -446,17 +437,8 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
 		// END GENERATED CODE
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		super.internalFetchChildren(subMonitor.newChild(1));
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		internalFetchDevices(subMonitor.newChild(1));
-
+		super.internalFetchChildren(subMonitor.split(1));
+		internalFetchDevices(subMonitor.split(1));
 		subMonitor.done();
 		// BEGIN GENERATED CODE
 	}
@@ -675,10 +657,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 		ScaWaveform waveform = getWaveform();
 
 		if (waveform != null) {
-			if (subMonitor.isCanceled()) {
-				throw new OperationCanceledException();
-			}
-			Application app = waveform.fetchNarrowedObject(subMonitor.newChild(1));
+			Application app = waveform.fetchNarrowedObject(subMonitor.split(1));
 
 			if (app != null) {
 				final Map<String, ScaDevice< ? >> newDevices = new HashMap<String, ScaDevice< ? >>();
@@ -695,17 +674,11 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 						if (deviceAssignment.componentId.equals(componentIdentifier)) {
 							ScaDevice< ? > device = domMgr.getDevice(deviceAssignment.assignedDeviceId);
 							if (device == null && !calledFetch) {
-								if (subMonitor.isCanceled()) {
-									throw new OperationCanceledException();
-								}
-								domMgr.fetchDeviceManagers(subMonitor.newChild(1), RefreshDepth.SELF);
+								domMgr.fetchDeviceManagers(subMonitor.split(1), RefreshDepth.SELF);
 
 								SubMonitor devMgrMonitor = subMonitor.newChild(1).setWorkRemaining(domMgr.getDeviceManagers().size());
 								for (ScaDeviceManager devMgr : domMgr.getDeviceManagers()) {
-									if (subMonitor.isCanceled()) {
-										throw new OperationCanceledException();
-									}
-									devMgr.fetchDevices(devMgrMonitor.newChild(1), RefreshDepth.SELF);
+									devMgr.fetchDevices(devMgrMonitor.split(1), RefreshDepth.SELF);
 								}
 								device = domMgr.getDevice(deviceAssignment.assignedDeviceId);
 								calledFetch = true;
@@ -772,10 +745,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 			return null;
 		}
 
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		final String localProfile = fetchProfile(subMonitor.newChild(1));
+		final String localProfile = fetchProfile(subMonitor.split(1));
 
 		Transaction transaction = profileURIFeature.createTransaction();
 		if (localProfile != null) {
@@ -811,10 +781,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 		}
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Devices", 2);
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		internalFetchDevices(subMonitor.newChild(1));
+		internalFetchDevices(subMonitor.split(1));
 
 		List<ScaDevice< ? >> devicesCopy = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<List<ScaDevice< ? >>>() {
 
@@ -827,10 +794,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 			SubMonitor deviceMonitor = subMonitor.newChild(1).setWorkRemaining(devicesCopy.size());
 			for (ScaDevice< ? > device : devicesCopy) {
 				try {
-					if (subMonitor.isCanceled()) {
-						throw new OperationCanceledException();
-					}
-					device.refresh(deviceMonitor.newChild(1), depth);
+					device.refresh(deviceMonitor.split(1), depth);
 				} catch (InterruptedException e) {
 					throw new OperationCanceledException();
 				}

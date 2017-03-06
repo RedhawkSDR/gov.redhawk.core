@@ -481,10 +481,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		}
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		internalFetchPorts(subMonitor.newChild(1));
+		internalFetchPorts(subMonitor.split(1));
 
 		List<ScaPort< ? , ? >> ports = null;
 		try {
@@ -503,10 +500,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 			SubMonitor portRefresh = subMonitor.newChild(1).setWorkRemaining(ports.size());
 			for (ScaPort< ? , ? > port : ports) {
 				try {
-					if (subMonitor.isCanceled()) {
-						throw new OperationCanceledException();
-					}
-					port.refresh(portRefresh.newChild(1), RefreshDepth.SELF);
+					port.refresh(portRefresh.split(1), RefreshDepth.SELF);
 				} catch (InterruptedException e) {
 					throw new OperationCanceledException();
 				}
@@ -553,10 +547,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		PortSupplierOperations currentObj = getPortSupplier();
 		Transaction transaction = portRevision.createTransaction();
 		if (currentObj != null) {
-			if (subMonitor.isCanceled()) {
-				throw new OperationCanceledException();
-			}
-			fetchProfileObject(subMonitor.newChild(1));
+			fetchProfileObject(subMonitor.split(1));
 
 			Ports scdPorts = ScaEcoreUtils.getFeature(this, RESOURCE_TO_PORTS_PATH);
 			int size = getPorts().size();
@@ -654,10 +645,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch profile URI.", 2);
 		ScaDeviceManager devMgr = getDevMgr();
 		if (devMgr != null) {
-			if (subMonitor.isCanceled()) {
-				throw new OperationCanceledException();
-			}
-			DeviceConfiguration dcd = devMgr.fetchProfileObject(subMonitor.newChild(1));
+			DeviceConfiguration dcd = devMgr.fetchProfileObject(subMonitor.split(1));
 
 			String profilePath = null;
 			ScaDeviceManagerFileSystem fileSystem = devMgr.fetchFileSystem(subMonitor.newChild(1), RefreshDepth.SELF);
@@ -774,22 +762,9 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	public void fetchAttributes(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		super.fetchAttributes(subMonitor.newChild(1));
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		fetchProfileObject(subMonitor.newChild(1));
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		fetchProperties(subMonitor.newChild(1));
-
+		super.fetchAttributes(subMonitor.split(1));
+		fetchProfileObject(subMonitor.split(1));
+		fetchProperties(subMonitor.split(1));
 		subMonitor.done();
 		// BEGIN GENERATED CODE
 	}

@@ -471,10 +471,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		}
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Identifier", 3);
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		R resource = fetchNarrowedObject(subMonitor.newChild(1));
+		R resource = fetchNarrowedObject(subMonitor.split(1));
 
 		Transaction transaction = identifierRevision.createTransaction();
 		if (resource != null) {
@@ -517,10 +514,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		}
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching Started", 3);
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		R resource = fetchNarrowedObject(subMonitor.newChild(1));
+		R resource = fetchNarrowedObject(subMonitor.split(1));
 
 		Transaction transaction = startedRevision.createTransaction();
 		if (resource != null) {
@@ -965,10 +959,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		}
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		internalFetchPorts(subMonitor.newChild(1));
+		internalFetchPorts(subMonitor.split(1));
 
 		List<ScaPort< ? , ? >> portsCopy = null;
 		try {
@@ -985,10 +976,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 			SubMonitor portRefresh = subMonitor.newChild(1).setWorkRemaining(portsCopy.size());
 			for (ScaPort< ? , ? > port : portsCopy) {
 				try {
-					if (subMonitor.isCanceled()) {
-						throw new OperationCanceledException();
-					}
-					port.refresh(portRefresh.newChild(1), RefreshDepth.SELF);
+					port.refresh(portRefresh.split(1), RefreshDepth.SELF);
 				} catch (InterruptedException e) {
 					throw new OperationCanceledException();
 				}
@@ -1024,17 +1012,11 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		}
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		R currentObj = this.fetchNarrowedObject(subMonitor.newChild(1));
+		R currentObj = this.fetchNarrowedObject(subMonitor.split(1));
 
 		Transaction transaction = portRevision.createTransaction();
 		if (currentObj != null) {
-			if (subMonitor.isCanceled()) {
-				throw new OperationCanceledException();
-			}
-			fetchProfileObject(subMonitor.newChild(1));
+			fetchProfileObject(subMonitor.split(1));
 
 			Ports scdPorts = ScaEcoreUtils.getFeature(this, RESOURCE_TO_PORTS_PATH);
 			int size = getPorts().size();
@@ -1116,32 +1098,11 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		}
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 5);
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		super.fetchAttributes(subMonitor.newChild(1));
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		fetchIdentifier(subMonitor.newChild(1));
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		fetchStarted(subMonitor.newChild(1));
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		fetchProfile(subMonitor.newChild(1));
-
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		fetchProfileObject(subMonitor.newChild(1));
-
+		super.fetchAttributes(subMonitor.split(1));
+		fetchIdentifier(subMonitor.split(1));
+		fetchStarted(subMonitor.split(1));
+		fetchProfile(subMonitor.split(1));
+		fetchProfileObject(subMonitor.split(1));
 		subMonitor.done();
 		// BEGIN GENERATED CODE
 	}
@@ -1229,10 +1190,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		}
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching profile", 3);
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		R localObj = fetchNarrowedObject(subMonitor.newChild(1));
+		R localObj = fetchNarrowedObject(subMonitor.split(1));
 
 		Transaction transaction = profileFeature.createTransaction();
 		if (localObj != null) {

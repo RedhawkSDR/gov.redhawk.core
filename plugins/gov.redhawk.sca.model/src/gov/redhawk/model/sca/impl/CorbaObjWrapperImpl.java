@@ -721,25 +721,16 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		}
 
 		try {
-			if (subMonitor.isCanceled()) {
-				throw new OperationCanceledException();
-			}
-			fetchAttributes(subMonitor.newChild(20));
+			fetchAttributes(subMonitor.split(20));
 			switch (depth) {
 			case CHILDREN:
 			case FULL:
-				if (subMonitor.isCanceled()) {
-					throw new OperationCanceledException();
-				}
-				internalFetchChildren(subMonitor.newChild(20));
+				internalFetchChildren(subMonitor.split(20));
 				break;
 			default:
 				break;
 			}
-			if (subMonitor.isCanceled()) {
-				throw new OperationCanceledException();
-			}
-			super.refresh(subMonitor.newChild(60), depth);
+			super.refresh(subMonitor.split(60), depth);
 		} finally {
 			subMonitor.done();
 		}

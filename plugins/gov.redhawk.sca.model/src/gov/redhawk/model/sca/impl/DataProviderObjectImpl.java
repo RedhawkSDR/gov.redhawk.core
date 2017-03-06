@@ -35,7 +35,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
-import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
@@ -472,10 +471,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 			int remaining = contents.size();
 			for (final EObject obj : contents) {
 				if (obj instanceof DataProviderObject) {
-					if (progress.isCanceled()) {
-						throw new OperationCanceledException();
-					}
-					((DataProviderObject) obj).refresh(progress.newChild(1), depth);
+					((DataProviderObject) obj).refresh(progress.split(1), depth);
 				}
 				remaining--;
 				progress.setWorkRemaining(remaining);

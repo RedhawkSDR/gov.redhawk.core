@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 
 public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapterFactory {
@@ -60,10 +59,7 @@ public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapter
 
 		private void refreshFull(final IProgressMonitor monitor) throws InterruptedException {
 			final SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching waveforms fully", 2);
-			if (subMonitor.isCanceled()) {
-				throw new OperationCanceledException();
-			}
-			refreshStandard(subMonitor.newChild(1));
+			refreshStandard(subMonitor.split(1));
 
 			final List<ScaWaveform> waveforms = ScaModelCommandWithResult.execute(this.domain, new ScaModelCommandWithResult<List<ScaWaveform>>() {
 
@@ -76,10 +72,7 @@ public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapter
 			if (waveforms != null) {
 				refreshMonitor.setWorkRemaining(waveforms.size());
 				for (final ScaWaveform waveform : waveforms) {
-					if (subMonitor.isCanceled()) {
-						throw new OperationCanceledException();
-					}
-					waveform.refresh(refreshMonitor.newChild(1), RefreshDepth.SELF);
+					waveform.refresh(refreshMonitor.split(1), RefreshDepth.SELF);
 				}
 			}
 

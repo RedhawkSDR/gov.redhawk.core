@@ -30,7 +30,6 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
@@ -577,18 +576,12 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching children of " + store.getName(), WORK_FETCH_CHILD_STORES + WORK_FETCH_CHILD_INFOS + WORK_MODEL_UPDATE);
 
 		try {
-			if (subMonitor.isCanceled()) {
-				throw new OperationCanceledException();
-			}
-			final IFileStore[] childStores = store.childStores(EFS.NONE, subMonitor.newChild(WORK_FETCH_CHILD_STORES));
+			final IFileStore[] childStores = store.childStores(EFS.NONE, subMonitor.split(WORK_FETCH_CHILD_STORES));
 
 			SubMonitor setupStoreMap = subMonitor.newChild(WORK_FETCH_CHILD_INFOS).setWorkRemaining(childStores.length);
 			final Map<String, FileStoreData> newChildrenMap = new HashMap<String, FileStoreData>();
 			for (final IFileStore childStore : childStores) {
-				if (subMonitor.isCanceled()) {
-					throw new OperationCanceledException();
-				}
-				boolean isDirectory = childStore.fetchInfo(EFS.NONE, setupStoreMap.newChild(1)).isDirectory();
+				boolean isDirectory = childStore.fetchInfo(EFS.NONE, setupStoreMap.split(1)).isDirectory();
 				FileStoreData data = new FileStoreData(childStore, isDirectory);
 				newChildrenMap.put(childStore.getName(), data);
 				setupStoreMap.worked(1);

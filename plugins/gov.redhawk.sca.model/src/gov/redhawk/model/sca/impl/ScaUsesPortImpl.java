@@ -187,10 +187,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 		}
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
-		if (subMonitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-		Port portObj = fetchNarrowedObject(subMonitor.newChild(1));
+		Port portObj = fetchNarrowedObject(subMonitor.split(1));
 
 		// Convert the CORBA object to a QueryablePort if possible
 		if (!(portObj instanceof QueryablePort)) {

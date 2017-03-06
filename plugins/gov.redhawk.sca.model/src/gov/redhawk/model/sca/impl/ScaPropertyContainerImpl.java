@@ -601,10 +601,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 		IStatus fetchStatus = Status.OK_STATUS;
 		final PropertiesHolder propHolder = new PropertiesHolder(EMPTY_DATA_TYPE_ARRAY);
 		try {
-			if (subMonitor.isCanceled()) {
-				throw new OperationCanceledException();
-			}
-			List<AbstractProperty> defs = fetchPropertyDefinitions(subMonitor.newChild(1));
+			List<AbstractProperty> defs = fetchPropertyDefinitions(subMonitor.split(1));
 			if (!isSetProperties()) {
 				transaction.append(new MergePropertiesCommand(this, defs));
 			}

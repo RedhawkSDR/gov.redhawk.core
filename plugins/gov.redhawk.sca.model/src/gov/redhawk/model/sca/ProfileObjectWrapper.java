@@ -216,10 +216,7 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 
 			SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Profile Object", 2);
 			try {
-				if (subMonitor.isCanceled()) {
-					throw new OperationCanceledException();
-				}
-				URI uri = wrapper.fetchProfileURI(subMonitor.newChild(1));
+				URI uri = wrapper.fetchProfileURI(subMonitor.split(1));
 
 				if (uri != null) {
 					uri = uri.appendFragment(rootPath);
