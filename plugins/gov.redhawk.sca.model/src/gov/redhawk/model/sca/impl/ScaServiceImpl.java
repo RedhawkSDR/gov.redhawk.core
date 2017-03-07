@@ -639,11 +639,20 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		return getProfileObj();
 	}
 
+	// END GENERATED CODE
+
 	private final VersionedFeature profileURIFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI);
+
+	/**
+	 * Retrieves the {@link VersionedFeature} for the profile URI feature.
+	 * @since 20.4
+	 */
+	protected VersionedFeature getProfileURIVersionedFeature() {
+		return profileURIFeature;
+	}
 
 	@Override
 	public URI fetchProfileURI(IProgressMonitor monitor) {
-		// END GENERATED CODE
 		if (isDisposed()) {
 			return null;
 		}
@@ -692,10 +701,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 		subMonitor.done();
 		return getProfileURI();
-		// BEGIN GENERATED CODE
 	}
-
-	// END GENERATED CODE
 
 	/**
 	 * @since 20.0
