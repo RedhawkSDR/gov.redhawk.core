@@ -104,9 +104,9 @@ public class ContainerShapeAdapterFactory implements IAdapterFactory {
 			if (adapterType.isInstance(device)) {
 				return adapterType.cast(device);
 			}
-			ScaService serivce = devMgr.getScaService(instantiation.getId());
-			if (adapterType.isInstance(serivce)) {
-				return adapterType.cast(serivce);
+			ScaService service = devMgr.getScaService(instantiation.getUsageName());
+			if (adapterType.isInstance(service)) {
+				return adapterType.cast(service);
 			}
 		}
 

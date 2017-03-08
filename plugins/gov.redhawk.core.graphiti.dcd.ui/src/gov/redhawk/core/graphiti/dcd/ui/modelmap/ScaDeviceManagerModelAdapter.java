@@ -59,7 +59,6 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 					break;
 				}
 				break;
-			/* TODO: enable notificaitions about services
 			case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
 				switch (notification.getEventType()) {
 				case Notification.REMOVE:
@@ -72,7 +71,6 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 					break;
 				}
 				break;
-			*/
 			default:
 				break;
 			}
@@ -104,12 +102,13 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 			}
 		} else if (notification.getNotifier() instanceof ScaService) {
 			ScaService service = (ScaService) notification.getNotifier();
-			/* TODO: enable notificaitions about services
-			switch (notification.getFeatureID(ScaDevice.class)) {
+			switch (notification.getFeatureID(ScaService.class)) {
 			case ScaPackage.SCA_SERVICE__NAME:
 				switch (notification.getEventType()) {
 				case Notification.SET:
-					this.modelMap.add(service);
+					if (checkServiceAttr(service)) {
+						this.modelMap.add(service);
+					}
 					break;
 				default:
 					break;
@@ -125,7 +124,6 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 			default:
 				break;
 			}
-			*/
 		} else if (notification.getNotifier() instanceof ScaUsesPort) {
 			switch (notification.getFeatureID(ScaUsesPort.class)) {
 			case ScaPackage.SCA_USES_PORT__CONNECTIONS:
@@ -164,6 +162,15 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 				break;
 			}
 		}
+	}
+
+	// ScaService must have the name set before we can add it to the model map
+	protected boolean checkServiceAttr(ScaService service) {
+		return true;
+	}
+
+	protected GraphitiDCDModelMap getModelMap() {
+		return modelMap;
 	}
 
 	@Override
