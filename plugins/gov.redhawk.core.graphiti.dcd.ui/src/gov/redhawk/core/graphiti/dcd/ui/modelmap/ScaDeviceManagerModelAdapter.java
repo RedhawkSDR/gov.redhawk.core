@@ -139,7 +139,9 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 			case ScaPackage.SCA_SERVICE__NAME:
 				switch (notification.getEventType()) {
 				case Notification.SET:
-					this.modelMap.add(service);
+					if (checkServiceAttr(service)) {
+						this.modelMap.add(service);
+					}
 					break;
 				default:
 					break;
