@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.pattern.IPattern;
@@ -27,16 +26,10 @@ import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.core.graphiti.ui.util.StyleUtil;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
-import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
+import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 import mil.jpeojtrs.sca.scd.SoftwareComponent;
-import mil.jpeojtrs.sca.spd.SpdPackage;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public class DevicePattern extends AbstractNodeComponentPattern implements IPattern {
-
-	private static final EStructuralFeature[] SCD_PATH = new EStructuralFeature[] { PartitioningPackage.Literals.COMPONENT_INSTANTIATION__PLACEMENT,
-		PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF, PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE,
-		PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG, SpdPackage.Literals.SOFT_PKG__DESCRIPTOR, SpdPackage.Literals.DESCRIPTOR__COMPONENT };
 
 	public DevicePattern() {
 		super();
@@ -49,7 +42,7 @@ public class DevicePattern extends AbstractNodeComponentPattern implements IPatt
 
 	@Override
 	protected boolean isInstantiationApplicable(DcdComponentInstantiation instantiation) {
-		SoftwareComponent scd = ScaEcoreUtils.getFeature(instantiation, SCD_PATH);
+		SoftwareComponent scd = ComponentInstantiation.Util.getScd(instantiation);
 
 		if (scd == null) {
 			return true;

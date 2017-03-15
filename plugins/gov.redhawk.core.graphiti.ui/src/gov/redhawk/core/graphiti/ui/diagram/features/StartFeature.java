@@ -21,6 +21,8 @@ import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.util.StartJob;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
+import mil.jpeojtrs.sca.scd.ComponentType;
+import mil.jpeojtrs.sca.scd.SoftwareComponent;
 
 public class StartFeature extends NonUndoableCustomFeature {
 
@@ -42,7 +44,12 @@ public class StartFeature extends NonUndoableCustomFeature {
 	public boolean canExecute(ICustomContext context) {
 		RHContainerShape shape = (RHContainerShape) context.getPictogramElements()[0];
 		Object object = DUtil.getBusinessObject(shape);
-		return (object instanceof ComponentInstantiation) && !shape.isStarted() && shape.isEnabled();
+		if (!(object instanceof ComponentInstantiation)) {
+			return false;
+		}
+		SoftwareComponent scd = ComponentInstantiation.Util.getScd((ComponentInstantiation) object);
+		boolean isService = SoftwareComponent.Util.getWellKnownComponentType(scd).equals(ComponentType.SERVICE);
+		return (!isService && !shape.isStarted() && shape.isEnabled());
 	}
 
 	@Override

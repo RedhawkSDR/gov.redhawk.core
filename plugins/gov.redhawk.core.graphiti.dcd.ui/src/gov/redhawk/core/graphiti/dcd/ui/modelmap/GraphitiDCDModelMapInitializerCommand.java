@@ -189,7 +189,7 @@ public class GraphitiDCDModelMapInitializerCommand extends AbstractCommand {
 			return;
 		}
 
-		DcdComponentInstantiation inst = createComponentInstatitation(spd, service.getName(), service.getName());
+		DcdComponentInstantiation inst = createComponentInstatitation(spd, dcd.getName() + ":" + service.getName(), service.getName());
 		modelMap.put(service, inst);
 	}
 

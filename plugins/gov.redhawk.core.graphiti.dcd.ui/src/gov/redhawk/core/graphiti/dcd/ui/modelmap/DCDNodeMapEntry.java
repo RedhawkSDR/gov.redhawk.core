@@ -14,6 +14,7 @@ import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaService;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
+import mil.jpeojtrs.sca.scd.SoftwareComponent;
 
 public class DCDNodeMapEntry {
 
@@ -41,7 +42,13 @@ public class DCDNodeMapEntry {
 		} else if (service != null) {
 			return getKey(service);
 		} else if (profile != null) {
-			return profile.getId();
+			SoftwareComponent scd = ComponentInstantiation.Util.getScd(profile);
+			switch (SoftwareComponent.Util.getWellKnownComponentType(scd)) {
+			case SERVICE:
+				return profile.getUsageName();
+			default:
+				return profile.getId();
+			}
 		}
 		return null;
 	}

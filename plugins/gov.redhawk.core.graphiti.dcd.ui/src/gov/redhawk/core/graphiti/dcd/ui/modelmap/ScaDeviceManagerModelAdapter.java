@@ -42,6 +42,19 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 			switch (notification.getFeatureID(ScaDeviceManager.class)) {
 			case ScaPackage.SCA_DEVICE_MANAGER__ALL_DEVICES:
 				switch (notification.getEventType()) {
+				case Notification.ADD:
+					Object newVal = notification.getNewValue();
+					if (newVal != null && checkDeviceAttr((ScaDevice< ? >) newVal)) {
+						this.modelMap.add((ScaDevice< ? >) newVal);
+					}
+					break;
+				case Notification.ADD_MANY:
+					for (final Object obj : (Collection< ? >) notification.getNewValue()) {
+						if (obj != null && checkDeviceAttr((ScaDevice< ? >) obj)) {
+							this.modelMap.add((ScaDevice< ? >) obj);
+						}
+					}
+					break;
 				case Notification.REMOVE:
 					Object oldVal = notification.getOldValue();
 					if (oldVal != null) {
@@ -59,20 +72,38 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 					break;
 				}
 				break;
-			/* TODO: enable notificaitions about services
 			case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
 				switch (notification.getEventType()) {
+				case Notification.ADD:
+					Object newVal = notification.getNewValue();
+					if (newVal != null && checkServiceAttr((ScaService) newVal)) {
+						this.modelMap.add((ScaService) newVal);
+					}
+					break;
+				case Notification.ADD_MANY:
+					for (final Object obj : (Collection< ? >) notification.getNewValue()) {
+						if (obj != null && checkServiceAttr((ScaService) obj)) {
+							this.modelMap.add((ScaService) obj);
+						}
+					}
+					break;
 				case Notification.REMOVE:
 					Object oldVal = notification.getOldValue();
 					if (oldVal != null) {
 						this.modelMap.remove((ScaService) oldVal);
 					}
 					break;
+				case Notification.REMOVE_MANY:
+					for (final Object obj : (Collection< ? >) notification.getOldValue()) {
+						if (obj != null) {
+							this.modelMap.remove(((ScaService) obj));
+						}
+					}
+					break;
 				default:
 					break;
 				}
 				break;
-			*/
 			default:
 				break;
 			}
@@ -104,12 +135,13 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 			}
 		} else if (notification.getNotifier() instanceof ScaService) {
 			ScaService service = (ScaService) notification.getNotifier();
-			/* TODO: enable notificaitions about services
-			switch (notification.getFeatureID(ScaDevice.class)) {
+			switch (notification.getFeatureID(ScaService.class)) {
 			case ScaPackage.SCA_SERVICE__NAME:
 				switch (notification.getEventType()) {
 				case Notification.SET:
-					this.modelMap.add(service);
+					if (checkServiceAttr(service)) {
+						this.modelMap.add(service);
+					}
 					break;
 				default:
 					break;
@@ -125,7 +157,6 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 			default:
 				break;
 			}
-			*/
 		} else if (notification.getNotifier() instanceof ScaUsesPort) {
 			switch (notification.getFeatureID(ScaUsesPort.class)) {
 			case ScaPackage.SCA_USES_PORT__CONNECTIONS:
@@ -164,6 +195,19 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 				break;
 			}
 		}
+	}
+
+	private boolean checkDeviceAttr(ScaDevice< ? > device) {
+		return device.isSetIdentifier();
+	}
+
+	// ScaService must have the name set before we can add it to the model map
+	protected boolean checkServiceAttr(ScaService service) {
+		return service.getName() != null;
+	}
+
+	protected GraphitiDCDModelMap getModelMap() {
+		return modelMap;
 	}
 
 	@Override

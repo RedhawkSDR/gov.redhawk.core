@@ -24,7 +24,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -44,17 +45,14 @@ public class RefreshTasker extends AbstractDataProvider implements Runnable {
 	 */
 	public static final ScheduledExecutorService TASKER_POOL = Executors.newScheduledThreadPool(1, new NamedThreadFactory(
 		ScaRefreshableDataProviderService.class.getName() + ":TaskerPool"));
-	static {
-		ScheduledThreadPoolExecutor executor = (ScheduledThreadPoolExecutor) TASKER_POOL;
-		executor.setMaximumPoolSize(20);
-	}
+
 	/**
 	 * @since 4.0
 	 */
 	public static final String PROP_ACTIVE = "active";
 
-	public static final ExecutorService WORKER_POOL = Executors.newCachedThreadPool(new NamedThreadFactory(ScaRefreshableDataProviderService.class.getName()
-		+ ":WorkerPool"));
+	public static final ExecutorService WORKER_POOL = new ThreadPoolExecutor(0, 20, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>(),
+		new NamedThreadFactory(ScaRefreshableDataProviderService.class.getName() + ":WorkerPool"));
 
 	private final EObject eObject;
 	private final IRefresher refresher;

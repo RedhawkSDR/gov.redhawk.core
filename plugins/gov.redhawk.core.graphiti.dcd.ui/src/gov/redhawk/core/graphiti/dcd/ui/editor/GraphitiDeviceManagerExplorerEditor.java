@@ -181,27 +181,7 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 		modelMap = createModelMapInstance();
 
 		this.dcdListener = new GraphitiDCDModelAdapter(modelMap);
-		this.scaListener = new ScaDeviceManagerModelAdapter(modelMap) {
-
-			@Override
-			public void notifyChanged(Notification notification) {
-				super.notifyChanged(notification);
-				if (notification.getNotifier() == deviceManager) {
-					if (deviceManager.isDisposed() && !isDisposed()) {
-						getEditorSite().getPage().getWorkbenchWindow().getWorkbench().getDisplay().asyncExec(new Runnable() {
-
-							@Override
-							public void run() {
-								if (!isDisposed()) {
-									getEditorSite().getPage().closeEditor(GraphitiDeviceManagerExplorerEditor.this, false);
-								}
-							}
-
-						});
-					}
-				}
-			}
-		};
+		this.scaListener = getScaModelAdapter();
 
 		// Initialize the model map, then begin listening to the model
 		CommandStack stack = getEditingDomain().getCommandStack();
@@ -227,6 +207,34 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 	 */
 	protected GraphitiDCDModelMap createModelMapInstance() {
 		return new GraphitiDCDModelMap(this, deviceManager);
+	}
+	
+	/**
+	 * Load the SCA model adapter 
+	 * @return
+	 */
+	protected ScaDeviceManagerModelAdapter getScaModelAdapter() {
+		return new ScaDeviceManagerModelAdapter(modelMap) {
+
+			@Override
+			public void notifyChanged(Notification notification) {
+				super.notifyChanged(notification);
+				if (notification.getNotifier() == deviceManager) {
+					if (deviceManager.isDisposed() && !isDisposed()) {
+						getEditorSite().getPage().getWorkbenchWindow().getWorkbench().getDisplay().asyncExec(new Runnable() {
+
+							@Override
+							public void run() {
+								if (!isDisposed()) {
+									getEditorSite().getPage().closeEditor(GraphitiDeviceManagerExplorerEditor.this, false);
+								}
+							}
+
+						});
+					}
+				}
+			}
+		};
 	}
 
 	/**
