@@ -193,7 +193,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	/**
 	 * May be passed as a flag to {@link #split}. Indicates that isCanceled
 	 * should always return false.
-	 * @since 4.1
+	 * @since 4.2
 	 */
 	public static final int SUPPRESS_ISCANCELED = 0x0008;
 
@@ -436,7 +436,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 
 	/**
 	 * @see org.eclipse.core.runtime.SubMonitor#split(int)
-	 * @since 4.1
+	 * @since 4.2
 	 */
 	public SubMonitor split(int totalWork) throws OperationCanceledException {
 		return split(totalWork, SUPPRESS_BEGINTASK);
@@ -444,7 +444,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 
 	/**
 	 * @see org.eclipse.core.runtime.SubMonitor#split(int, int)
-	 * @since 4.1
+	 * @since 4.2
 	 */
 	public SubMonitor split(int totalWork, int suppressFlags) throws OperationCanceledException {
 		int oldUsedForParent = this.usedForParent;
