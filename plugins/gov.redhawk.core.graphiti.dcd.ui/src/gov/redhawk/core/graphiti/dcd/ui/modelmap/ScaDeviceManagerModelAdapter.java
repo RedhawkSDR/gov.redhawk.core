@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.emf.ecore.util.FeatureMap;
 
 import gov.redhawk.model.sca.ScaConnection;
 import gov.redhawk.model.sca.ScaDevice;
@@ -37,35 +38,39 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 
 	@Override
 	public void notifyChanged(final Notification notification) {
+		// Ignore this as it is a duplicate notification of SCA_DEVICE_MANAGER__DEVICES, just minus the FeatureMap info
+		if (ScaPackage.Literals.SCA_DEVICE_MANAGER__ALL_DEVICES.equals(notification.getFeature())) {
+			return;
+		}
+
 		super.notifyChanged(notification);
+
 		if (notification.getNotifier() instanceof ScaDeviceManager) {
 			switch (notification.getFeatureID(ScaDeviceManager.class)) {
-			case ScaPackage.SCA_DEVICE_MANAGER__ALL_DEVICES:
+			case ScaPackage.SCA_DEVICE_MANAGER__DEVICES:
 				switch (notification.getEventType()) {
 				case Notification.ADD:
-					Object newVal = notification.getNewValue();
-					if (newVal != null && checkDeviceAttr((ScaDevice< ? >) newVal)) {
-						this.modelMap.add((ScaDevice< ? >) newVal);
+					ScaDevice< ? > newVal = (ScaDevice< ? >) ((FeatureMap.Entry) notification.getNewValue()).getValue();
+					if (checkDeviceAttr(newVal)) {
+						this.modelMap.add(newVal);
 					}
 					break;
 				case Notification.ADD_MANY:
 					for (final Object obj : (Collection< ? >) notification.getNewValue()) {
-						if (obj != null && checkDeviceAttr((ScaDevice< ? >) obj)) {
-							this.modelMap.add((ScaDevice< ? >) obj);
+						ScaDevice< ? > newDevice = (ScaDevice< ? >) ((FeatureMap.Entry) obj).getValue();
+						if (checkDeviceAttr(newDevice)) {
+							this.modelMap.add(newDevice);
 						}
 					}
 					break;
 				case Notification.REMOVE:
-					Object oldVal = notification.getOldValue();
-					if (oldVal != null) {
-						this.modelMap.remove((ScaDevice< ? >) oldVal);
-					}
+					ScaDevice< ? > oldVal = (ScaDevice< ? >) ((FeatureMap.Entry) notification.getOldValue()).getValue();
+					this.modelMap.remove(oldVal);
 					break;
 				case Notification.REMOVE_MANY:
 					for (final Object obj : (Collection< ? >) notification.getOldValue()) {
-						if (obj != null) {
-							this.modelMap.remove(((ScaDevice< ? >) obj));
-						}
+						ScaDevice< ? > oldDevice = (ScaDevice< ? >) ((FeatureMap.Entry) obj).getValue();
+						this.modelMap.remove(oldDevice);
 					}
 					break;
 				default:
@@ -75,29 +80,27 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 			case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
 				switch (notification.getEventType()) {
 				case Notification.ADD:
-					Object newVal = notification.getNewValue();
-					if (newVal != null && checkServiceAttr((ScaService) newVal)) {
-						this.modelMap.add((ScaService) newVal);
+					ScaService newVal = (ScaService) notification.getNewValue();
+					if (checkServiceAttr(newVal)) {
+						this.modelMap.add(newVal);
 					}
 					break;
 				case Notification.ADD_MANY:
 					for (final Object obj : (Collection< ? >) notification.getNewValue()) {
-						if (obj != null && checkServiceAttr((ScaService) obj)) {
-							this.modelMap.add((ScaService) obj);
+						ScaService newService = (ScaService) obj;
+						if (checkServiceAttr(newService)) {
+							this.modelMap.add(newService);
 						}
 					}
 					break;
 				case Notification.REMOVE:
-					Object oldVal = notification.getOldValue();
-					if (oldVal != null) {
-						this.modelMap.remove((ScaService) oldVal);
-					}
+					ScaService oldVal = (ScaService) notification.getOldValue();
+					this.modelMap.remove(oldVal);
 					break;
 				case Notification.REMOVE_MANY:
 					for (final Object obj : (Collection< ? >) notification.getOldValue()) {
-						if (obj != null) {
-							this.modelMap.remove(((ScaService) obj));
-						}
+						ScaService oldService = (ScaService) obj;
+						this.modelMap.remove(oldService);
 					}
 					break;
 				default:
@@ -163,28 +166,20 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 				switch (notification.getEventType()) {
 				case Notification.ADD:
 					Object newVal = notification.getNewValue();
-					if (newVal != null) {
-						this.modelMap.add((ScaConnection) newVal);
-					}
+					this.modelMap.add((ScaConnection) newVal);
 					break;
 				case Notification.ADD_MANY:
 					for (final Object obj : (Collection< ? >) notification.getNewValue()) {
-						if (obj != null) {
-							this.modelMap.add((ScaConnection) obj);
-						}
+						this.modelMap.add((ScaConnection) obj);
 					}
 					break;
 				case Notification.REMOVE:
 					Object oldVal = notification.getOldValue();
-					if (oldVal != null) {
-						this.modelMap.remove((ScaConnection) oldVal);
-					}
+					this.modelMap.remove((ScaConnection) oldVal);
 					break;
 				case Notification.REMOVE_MANY:
 					for (final Object obj : (Collection< ? >) notification.getOldValue()) {
-						if (obj != null) {
-							this.modelMap.remove((ScaConnection) obj);
-						}
+						this.modelMap.remove((ScaConnection) obj);
 					}
 					break;
 				default:
