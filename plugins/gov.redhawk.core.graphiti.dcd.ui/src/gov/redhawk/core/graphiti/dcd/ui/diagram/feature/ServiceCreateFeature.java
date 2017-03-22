@@ -19,6 +19,7 @@ import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 
 import gov.redhawk.core.graphiti.dcd.ui.diagram.providers.DeviceManagerImageProvider;
+import gov.redhawk.core.graphiti.dcd.ui.ext.ServiceShape;
 import gov.redhawk.core.graphiti.ui.diagram.features.AbstractCreateInstatiationFeature;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
@@ -104,7 +105,11 @@ public class ServiceCreateFeature extends AbstractCreateInstatiationFeature {
 
 		// Call add feature
 		context.putProperty("shapeType", SHAPE_TYPE);
-		addGraphicalRepresentation(context, componentInstantiations[0]);
+		ServiceShape shape = (ServiceShape) addGraphicalRepresentation(context, componentInstantiations[0]);
+
+		if (DUtil.isDiagramRuntime(getDiagram())) {
+			shape.setEnabled(false);
+		}
 
 		return new Object[] { componentInstantiations[0] };
 	}
