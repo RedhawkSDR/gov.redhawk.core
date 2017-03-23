@@ -11,20 +11,32 @@
  */
 package gov.redhawk.sca.ui.views;
 
-import gov.redhawk.sca.ui.ITooltipProvider;
-
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.LabelProviderChangedEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.internal.navigator.NavigatorDecoratingLabelProvider;
 import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.ui.navigator.ICommonLabelProvider;
 import org.eclipse.ui.navigator.INavigatorContentExtension;
+import org.eclipse.ui.progress.UIJob;
+
+import gov.redhawk.sca.internal.ui.ScaLabelProviderChangedEvent;
+import gov.redhawk.sca.ui.ITooltipProvider;
 
 /**
  * Extends the Common Navigator framework to support extensible tooltips
@@ -34,6 +46,8 @@ import org.eclipse.ui.navigator.INavigatorContentExtension;
  */
 @SuppressWarnings("restriction")
 public class ScaCommonViewer extends CommonViewer {
+
+	private Map<Object, Job> elementMap;
 
 	private class DelegatingTooltipLabelProvider extends NavigatorDecoratingLabelProvider {
 
@@ -146,11 +160,64 @@ public class ScaCommonViewer extends CommonViewer {
 		}
 	}
 
+	@Override
+	protected void handleLabelProviderChanged(LabelProviderChangedEvent event) {
+		super.handleLabelProviderChanged(event);
+		if (event instanceof ScaLabelProviderChangedEvent) {
+			final Notification notification = ((ScaLabelProviderChangedEvent) event).getNotification();
+			Widget widget = findItem(notification.getNotifier());
+			TreeItem tmpParent = null;
+			if (widget instanceof TreeItem) {
+				if (((TreeItem) widget).getParentItem() != null) {
+					tmpParent = ((TreeItem) widget).getParentItem();
+				}
+			}
+			if (tmpParent == null) {
+				return;
+			}
+			final TreeItem parent = tmpParent;
+
+			synchronized (elementMap) {
+
+				if (!elementMap.containsKey(parent)) {
+					UIJob sortJob = new UIJob("Sorting") {
+
+						@Override
+						public boolean shouldRun() {
+							synchronized (elementMap) {
+								elementMap.remove(parent);
+							}
+							return super.shouldRun();
+						}
+
+						@Override
+						public IStatus runInUIThread(IProgressMonitor monitor) {
+							preservingSelection(new Runnable() {
+								@Override
+								public void run() {
+									internalRefreshStruct(parent, parent.getData(), false);
+								}
+							});
+							return Status.OK_STATUS;
+						}
+					};
+
+					sortJob.setUser(false);
+					sortJob.setSystem(true);
+					elementMap.put(parent, sortJob);
+				}
+
+				elementMap.get(parent).schedule(2000);
+			}
+		}
+	}
+
 	/**
 	 * @since 10.0
 	 */
 	public ScaCommonViewer(final String aViewerId, final Composite aParent, final int aStyle) {
 		super(aViewerId, aParent, aStyle);
+		elementMap = new HashMap<Object, Job>();
 	}
 
 	@Override
