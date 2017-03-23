@@ -410,6 +410,10 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		return getDevices().list(ScaPackage.Literals.SCA_DEVICE_MANAGER__CHILD_DEVICES);
 	}
 
+	/**
+	 * @deprecated This should be removed along with the "all devices" feature.
+	 */
+	@Deprecated
 	private Adapter deviceListener = new AdapterImpl() {
 		// END GENERATED CODE
 		@Override
@@ -547,9 +551,11 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
+	 * @deprecated
 	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Deprecated
 	@Override
 	public void unsetAllDevices() {
 		// END GENERATED CODE
@@ -561,9 +567,11 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
+	 * @deprecated
 	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Deprecated
 	@Override
 	public boolean isSetAllDevices() {
 		// END GENERATED CODE
