@@ -55,6 +55,7 @@ import mil.jpeojtrs.sca.scd.Ports;
 import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.spd.SpdPackage;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
+import mil.jpeojtrs.sca.util.collections.FeatureMapList;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -968,7 +969,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		if (deviceId == null) {
 			return null;
 		}
-		for (final ScaDevice< ? > dev : getAllDevices()) {
+		for (final ScaDevice< ? > dev : new FeatureMapList<>(getDevices(), ScaDevice.class)) {
 			if (deviceId.equals(dev.getIdentifier())) {
 				return dev;
 			}
@@ -1589,16 +1590,19 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		transaction.commit();
 
 		// We must ALWAYS fetch device SELF attributes since the REFRESH FULL will fail otherwise
-		List<ScaDevice< ? >> deviceArray = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<List<ScaDevice< ? >>>() {
+		List<ScaDevice< ? >> allDevices = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<List<ScaDevice< ? >>>() {
 
 			@Override
 			public void execute() {
-				setResult(getAllDevices());
+				List<ScaDevice< ? >> retVal = new ArrayList<>();
+				retVal.addAll(getRootDevices());
+				retVal.addAll(getChildDevices());
+				setResult(retVal);
 			}
 		});
-		if (deviceArray != null) {
-			SubMonitor deviceMonitor = subMonitor.newChild(1).setWorkRemaining(deviceArray.size());
-			for (ScaDevice< ? > device : deviceArray) {
+		if (allDevices != null) {
+			SubMonitor deviceMonitor = subMonitor.newChild(1).setWorkRemaining(allDevices.size());
+			for (ScaDevice< ? > device : allDevices) {
 				if (subMonitor.isCanceled()) {
 					throw new OperationCanceledException();
 				}

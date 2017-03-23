@@ -49,6 +49,7 @@ import mil.jpeojtrs.sca.sad.SadFactory;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
 import mil.jpeojtrs.sca.util.ScaUriHelpers;
+import mil.jpeojtrs.sca.util.collections.FeatureMapList;
 
 /**
  * Uses the REDHAWK SCA model to build a corresponding DCD
@@ -56,7 +57,11 @@ import mil.jpeojtrs.sca.util.ScaUriHelpers;
 public class GraphitiDCDModelMapInitializerCommand extends AbstractCommand {
 
 	private final GraphitiDCDModelMap modelMap;
+
 	private final ScaDeviceManager deviceManager;
+	private List<ScaPortContainer> portContainers;
+	private List<CorbaObjWrapper< ? >> componentSupportedInterfaceTargets;
+
 	private final DeviceConfiguration dcd;
 
 	public GraphitiDCDModelMapInitializerCommand(final GraphitiDCDModelMap modelMap, final DeviceConfiguration dcd, final ScaDeviceManager deviceManager) {
@@ -99,13 +104,6 @@ public class GraphitiDCDModelMapInitializerCommand extends AbstractCommand {
 	}
 
 	private void initConnectionTarget(DcdConnectInterface dcdCon, ScaUsesPort scaUsesPort, org.omg.CORBA.Object targetPortObject) {
-		List<ScaPortContainer> portContainers = new ArrayList<>();
-		List<CorbaObjWrapper< ? >> componentSupportedInterfaceTargets = new ArrayList<>();
-		portContainers.addAll(this.deviceManager.getAllDevices());
-		portContainers.addAll(this.deviceManager.getServices());
-		componentSupportedInterfaceTargets.addAll(this.deviceManager.getAllDevices());
-		componentSupportedInterfaceTargets.addAll(this.deviceManager.getServices());
-
 		// Iterate port containers looking for a provides ports which may match
 		for (final ScaPortContainer portContainer : portContainers) {
 			for (final ScaPort< ? , ? > port : portContainer.getPorts()) {
@@ -263,16 +261,20 @@ public class GraphitiDCDModelMapInitializerCommand extends AbstractCommand {
 		this.dcd.setConnections(DcdFactory.eINSTANCE.createDcdConnections());
 
 		if (deviceManager != null) {
-			for (ScaDevice< ? > device : this.deviceManager.getAllDevices()) {
+			portContainers = new ArrayList<>();
+			componentSupportedInterfaceTargets = new ArrayList<>();
+
+			for (ScaDevice< ? > device : new FeatureMapList<>(this.deviceManager.getDevices(), ScaDevice.class)) {
+				portContainers.add(device);
+				componentSupportedInterfaceTargets.add(device);
 				initDevice(device);
 			}
 			for (ScaService service : this.deviceManager.getServices()) {
+				portContainers.add(service);
+				componentSupportedInterfaceTargets.add(service);
 				initService(service);
 			}
 
-			List<ScaPortContainer> portContainers = new ArrayList<>();
-			portContainers.addAll(this.deviceManager.getAllDevices());
-			portContainers.addAll(this.deviceManager.getServices());
 			for (final ScaPortContainer portContainer : portContainers) {
 				for (final ScaPort< ? , ? > port : portContainer.getPorts()) {
 					if (port instanceof ScaUsesPort) {

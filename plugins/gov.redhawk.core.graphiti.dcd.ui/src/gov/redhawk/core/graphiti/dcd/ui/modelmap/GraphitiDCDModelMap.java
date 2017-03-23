@@ -243,9 +243,11 @@ public class GraphitiDCDModelMap extends AbstractGraphitiModelMap {
 
 				@Override
 				public void run() {
-					portContainers.addAll(GraphitiDCDModelMap.this.deviceManager.getAllDevices());
+					portContainers.addAll(GraphitiDCDModelMap.this.deviceManager.getRootDevices());
+					portContainers.addAll(GraphitiDCDModelMap.this.deviceManager.getChildDevices());
 					portContainers.addAll(GraphitiDCDModelMap.this.deviceManager.getServices());
-					componentSupportedInterfaceTargets.addAll(GraphitiDCDModelMap.this.deviceManager.getAllDevices());
+					componentSupportedInterfaceTargets.addAll(GraphitiDCDModelMap.this.deviceManager.getRootDevices());
+					componentSupportedInterfaceTargets.addAll(GraphitiDCDModelMap.this.deviceManager.getChildDevices());
 					componentSupportedInterfaceTargets.addAll(GraphitiDCDModelMap.this.deviceManager.getServices());
 				}
 			});

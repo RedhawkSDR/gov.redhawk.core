@@ -42,6 +42,7 @@ import gov.redhawk.monitor.model.ports.PortMonitor;
 import gov.redhawk.monitor.model.ports.PortSupplierMonitor;
 import gov.redhawk.monitor.model.ports.PortsFactory;
 import gov.redhawk.monitor.model.ports.PortsPackage;
+import mil.jpeojtrs.sca.util.collections.FeatureMapList;
 
 /**
  * <!-- begin-user-doc -->
@@ -175,7 +176,7 @@ public class PortSupplierMonitorImpl extends EObjectImpl implements PortSupplier
 			}
 		} else if (this.portContainer != null && this.portContainer instanceof ScaDeviceManager) {
 			ScaDeviceManager deviceManager = (ScaDeviceManager) portContainer;
-			for (ScaDevice< ? > device : deviceManager.getAllDevices()) {
+			for (ScaDevice< ? > device : new FeatureMapList<>(deviceManager.getDevices(), ScaDevice.class)) {
 				for (final ScaPort< ? , ? > port : device.getPorts()) {
 					final PortMonitor pm = PortsFactory.eINSTANCE.createPortMonitor();
 					pm.setPort(port);
