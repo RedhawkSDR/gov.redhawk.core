@@ -21,7 +21,6 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.dcd.diagram.DcdDiagramPluginActivator;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -46,12 +45,11 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-@SuppressWarnings("rawtypes")
 public class DcdComponentInstantiationEditPartAdapterFactory implements IAdapterFactory {
 	private static final Class< ? >[] LIST = new Class< ? >[] { ScaDevice.class, ScaAbstractComponent.class, ScaPropertyContainer.class };
 
 	@Override
-	public Object getAdapter(final Object adaptableObject, final Class adapterType) {
+	public <T> T getAdapter(final Object adaptableObject, final Class<T> adapterType) {
 		if (adaptableObject instanceof GraphicalEditPart) {
 			final GraphicalEditPart editPart = (GraphicalEditPart) adaptableObject;
 			final DcdComponentInstantiation ci = (DcdComponentInstantiation) editPart.getAdapter(ComponentInstantiation.class);
@@ -64,10 +62,7 @@ public class DcdComponentInstantiationEditPartAdapterFactory implements IAdapter
 					final ScaDeviceManager manager = ScaModelPlugin.getDefault().findEObject(ScaDeviceManager.class, ior);
 					final String deviceId = ci.getId();
 					if (manager != null) {
-						List<ScaDevice< ? >> devices = Collections.emptyList();
-						if (manager.isSetDevices()) {
-							devices = manager.getAllDevices();
-						} else {
+						if (!manager.isSetDevices()) {
 							if (Display.getCurrent() != null) {
 								ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
 								try {
@@ -77,11 +72,11 @@ public class DcdComponentInstantiationEditPartAdapterFactory implements IAdapter
 										public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 											monitor.beginTask("Fetching devices for " + manager.getLabel(), IProgressMonitor.UNKNOWN);
 											try {
-												CorbaUtils.invoke(new Callable<List<ScaDevice< ? >>>() {
+												CorbaUtils.invoke(new Callable<Object>() {
 
 													public List<ScaDevice< ? >> call() throws Exception {
 														manager.fetchDevices(monitor, RefreshDepth.SELF);
-														return manager.getAllDevices();
+														return null;
 													}
 												}, monitor);
 											} catch (CoreException e) {
@@ -99,11 +94,10 @@ public class DcdComponentInstantiationEditPartAdapterFactory implements IAdapter
 
 							} else {
 								try {
-									ProtectedThreadExecutor.submit(new Callable<List<ScaDevice< ? >>>() {
+									ProtectedThreadExecutor.submit(new Runnable() {
 
-										public List<ScaDevice< ? >> call() throws Exception {
+										public void run() {
 											manager.fetchDevices(null, RefreshDepth.SELF);
-											return manager.getAllDevices();
 										}
 									});
 								} catch (final InterruptedException e) {
@@ -120,26 +114,21 @@ public class DcdComponentInstantiationEditPartAdapterFactory implements IAdapter
 							}
 
 							// Ensure the manager devices are "set" to avoid future zombie threads
-							if (!manager.isSetAllDevices()) {
+							if (!manager.isSetDevices()) {
 								ScaModelCommand.execute(manager, new ScaModelCommand() {
 
 									@Override
 									public void execute() {
-										if (!manager.isSetAllDevices()) {
+										if (!manager.isSetDevices()) {
 											manager.getDevices().clear();
 										}
 									}
 								});
 							}
-
-							devices = manager.getAllDevices();
 						}
 
-						for (final ScaDevice< ? > device : devices) {
-							if (deviceId.equals(device.getIdentifier())) {
-								return device;
-							}
-						}
+						ScaDevice< ? > device = manager.getDevice(deviceId);
+						return adapterType.cast(device);
 					}
 				}
 			}

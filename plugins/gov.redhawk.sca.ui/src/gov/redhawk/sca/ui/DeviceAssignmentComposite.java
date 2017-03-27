@@ -133,7 +133,8 @@ public class DeviceAssignmentComposite extends Composite {
 					public void execute() {
 						final Set<ScaDevice< ? >> devices = new HashSet<ScaDevice< ? >>();
 						for (final ScaDeviceManager devMgr : domain.getDeviceManagers()) {
-							devices.addAll(devMgr.getAllDevices());
+							devices.addAll(devMgr.getRootDevices());
+							devices.addAll(devMgr.getChildDevices());
 						}
 						retVal.addAll(devices);
 					}

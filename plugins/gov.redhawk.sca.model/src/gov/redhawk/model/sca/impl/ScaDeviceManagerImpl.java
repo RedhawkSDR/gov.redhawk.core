@@ -54,6 +54,7 @@ import mil.jpeojtrs.sca.scd.Ports;
 import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.spd.SpdPackage;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
+import mil.jpeojtrs.sca.util.collections.FeatureMapList;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -409,6 +410,10 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		return getDevices().list(ScaPackage.Literals.SCA_DEVICE_MANAGER__CHILD_DEVICES);
 	}
 
+	/**
+	 * @deprecated This should be removed along with the "all devices" feature.
+	 */
+	@Deprecated
 	private Adapter deviceListener = new AdapterImpl() {
 		// END GENERATED CODE
 		@Override
@@ -546,9 +551,11 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
+	 * @deprecated
 	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Deprecated
 	@Override
 	public void unsetAllDevices() {
 		// END GENERATED CODE
@@ -560,9 +567,11 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
+	 * @deprecated
 	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Deprecated
 	@Override
 	public boolean isSetAllDevices() {
 		// END GENERATED CODE
@@ -959,7 +968,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		if (deviceId == null) {
 			return null;
 		}
-		for (final ScaDevice< ? > dev : getAllDevices()) {
+		for (final ScaDevice< ? > dev : new FeatureMapList<>(getDevices(), ScaDevice.class)) {
 			if (deviceId.equals(dev.getIdentifier())) {
 				return dev;
 			}
@@ -1552,16 +1561,19 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		subMonitor.worked(1);
 
 		// We must ALWAYS fetch device SELF attributes since the REFRESH FULL will fail otherwise
-		List<ScaDevice< ? >> deviceArray = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<List<ScaDevice< ? >>>() {
+		List<ScaDevice< ? >> allDevices = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<List<ScaDevice< ? >>>() {
 
 			@Override
 			public void execute() {
-				setResult(getAllDevices());
+				List<ScaDevice< ? >> retVal = new ArrayList<>();
+				retVal.addAll(getRootDevices());
+				retVal.addAll(getChildDevices());
+				setResult(retVal);
 			}
 		});
-		if (deviceArray != null) {
-			SubMonitor deviceMonitor = subMonitor.newChild(1).setWorkRemaining(deviceArray.size());
-			for (ScaDevice< ? > device : deviceArray) {
+		if (allDevices != null) {
+			SubMonitor deviceMonitor = subMonitor.newChild(1).setWorkRemaining(allDevices.size());
+			for (ScaDevice< ? > device : allDevices) {
 				device.fetchIdentifier(deviceMonitor.split(1));
 			}
 		}

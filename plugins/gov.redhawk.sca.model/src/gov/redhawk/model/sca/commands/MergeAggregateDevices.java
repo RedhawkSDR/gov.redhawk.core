@@ -13,6 +13,7 @@ package gov.redhawk.model.sca.commands;
 
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaPackage;
+import mil.jpeojtrs.sca.util.collections.FeatureMapList;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,7 +39,7 @@ public class MergeAggregateDevices extends SetStatusCommand<ScaDevice< ? >> {
 			Set<ScaDevice< ? >> devicesToRemove = new HashSet<ScaDevice< ? >>();
 			devicesToRemove.addAll(provider.getChildDevices());
 			if (provider.getDevMgr() != null && !deviceIds.isEmpty()) {
-				for (ScaDevice< ? > device : provider.getDevMgr().getAllDevices()) {
+				for (ScaDevice< ? > device : new FeatureMapList<>(provider.getDevMgr().getDevices(), ScaDevice.class)) {
 					String deviceId = device.getIdentifier();
 					if (deviceIds.contains(deviceId)) {
 						if (!devicesToRemove.contains(device)) {

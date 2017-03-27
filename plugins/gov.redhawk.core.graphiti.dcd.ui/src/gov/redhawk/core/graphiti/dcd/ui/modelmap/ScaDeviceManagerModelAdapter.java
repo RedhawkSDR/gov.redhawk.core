@@ -207,8 +207,12 @@ public class ScaDeviceManagerModelAdapter extends EContentAdapter {
 
 	@Override
 	public void addAdapter(final Notifier notifier) {
+		// Ensure it's an object we care about
 		if (notifier instanceof ScaDeviceManager || notifier instanceof ScaDevice || notifier instanceof ScaService || notifier instanceof ScaUsesPort) {
-			super.addAdapter(notifier);
+			// Ensure we aren't double-adding (an issue because of SCA_DEVICE_MANAGER__ALL_DEVICES)
+			if (!notifier.eAdapters().contains(this)) {
+				super.addAdapter(notifier);
+			}
 		}
 	}
 }

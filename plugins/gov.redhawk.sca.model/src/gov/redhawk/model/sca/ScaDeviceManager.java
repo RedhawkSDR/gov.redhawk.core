@@ -140,10 +140,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * Returns the value of the '<em><b>All Devices</b></em>' containment reference list.
 	 * The list contents are of type {@link gov.redhawk.model.sca.ScaDevice}&lt;?>.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>All Devices</em>' containment reference list isn't clear, there really should be more
-	 * of a description here...
-	 * </p>
+	 * @deprecated Use {@link #getDevices()}, or {@link #getRootDevices()} and {@link #getChildDevices()}.
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>All Devices</em>' containment reference list.
@@ -153,24 +150,28 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * @model containment="true" resolveProxies="true" unsettable="true" transient="true" volatile="true" derived="true"
 	 * @generated
 	 */
+	@Deprecated
 	EList<ScaDevice< ? >> getAllDevices();
 
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDeviceManager#getAllDevices <em>All Devices</em>}'
 	 * containment reference list.
 	 * <!-- begin-user-doc -->
+	 * @deprecated Use {@link #unsetDevices()}
 	 * <!-- end-user-doc -->
 	 * 
 	 * @see #isSetAllDevices()
 	 * @see #getAllDevices()
 	 * @generated
 	 */
+	@Deprecated
 	void unsetAllDevices();
 
 	/**
 	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDeviceManager#getAllDevices <em>All
 	 * Devices</em>}' containment reference list is set.
 	 * <!-- begin-user-doc -->
+	 * @deprecated Use {@link #isSetDevices()}
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return whether the value of the '<em>All Devices</em>' containment reference list is set.
@@ -178,6 +179,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * @see #getAllDevices()
 	 * @generated
 	 */
+	@Deprecated
 	boolean isSetAllDevices();
 
 	/**

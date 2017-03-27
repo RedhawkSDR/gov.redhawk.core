@@ -11,25 +11,30 @@
  */
 package gov.redhawk.sca.ui;
 
-import gov.redhawk.sca.ScaPlugin;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.edit.provider.IViewerNotification;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.ui.provider.TransactionalAdapterFactoryLabelProvider;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
+import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.jface.viewers.ITableFontProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.Color;
 
+import gov.redhawk.model.sca.CorbaObjWrapper;
+import gov.redhawk.sca.ScaPlugin;
+import gov.redhawk.sca.internal.ui.ScaLabelProviderChangedEvent;
+
 /**
  * @since 6.0
  *
  */
-public class ScaModelAdapterFactoryLabelProvider extends TransactionalAdapterFactoryLabelProvider implements IColorProvider, ITableColorProvider,
-        IFontProvider, ITableFontProvider {
+public class ScaModelAdapterFactoryLabelProvider extends TransactionalAdapterFactoryLabelProvider
+		implements IColorProvider, ITableColorProvider, IFontProvider, ITableFontProvider {
 
 	/**
 	 * @since 7.0
@@ -67,6 +72,21 @@ public class ScaModelAdapterFactoryLabelProvider extends TransactionalAdapterFac
 				setResult(ScaModelAdapterFactoryLabelProvider.super.getForeground(object, columnIndex));
 			}
 		});
+	}
+
+	@Override
+	public void notifyChanged(Notification notification) {
+		if (!(notification.getNotifier() instanceof CorbaObjWrapper< ? >)) {
+			super.notifyChanged(notification);
+		}
+
+		if (isFireLabelUpdateNotifications()) {
+			if (!(notification instanceof IViewerNotification) || ((IViewerNotification) notification).isLabelUpdate()) {
+				for (ILabelProviderListener labelProviderListener : labelProviderListeners) {
+					labelProviderListener.labelProviderChanged(new ScaLabelProviderChangedEvent(this, notification.getNotifier(), notification));
+				}
+			}
+		}
 	}
 
 }
