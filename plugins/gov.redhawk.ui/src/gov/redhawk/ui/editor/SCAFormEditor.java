@@ -47,7 +47,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.common.command.BasicCommandStack;
@@ -848,18 +848,18 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		try {
 			this.editorSaving = true;
 			commitPages(true);
-			monitor.beginTask("Saving " + this.getTitle(), this.getPageCount() + 2);
-			internalDoValidate(new SubProgressMonitor(monitor, 1));
+			SubMonitor subMonitor = SubMonitor.convert(monitor, "Saving " + this.getTitle(), this.getPageCount() + 2);
+			internalDoValidate(subMonitor.newChild(1));
 			for (int i = 0; i < this.getPageCount(); i++) {
 				final IEditorPart part = this.getEditor(i);
 				if (part != null && part.isDirty()) {
-					part.doSave(new SubProgressMonitor(monitor, 1));
+					part.doSave(subMonitor.newChild(1));
 				} else {
 					monitor.worked(1);
 				}
 			}
 			if (isDirty()) {
-				emfDoSave(new SubProgressMonitor(monitor, 1));
+				emfDoSave(subMonitor.newChild(1));
 			}
 			editorDirtyStateChanged();
 		} catch (final OperationCanceledException e) {
