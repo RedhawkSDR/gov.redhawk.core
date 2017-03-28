@@ -11,13 +11,6 @@
  */
 package gov.redhawk.ui.editor;
 
-import gov.redhawk.eclipsecorba.library.IdlLibrary;
-import gov.redhawk.eclipsecorba.library.util.RefreshIdlLibraryJob;
-import gov.redhawk.internal.ui.ScaIdeConstants;
-import gov.redhawk.internal.ui.editor.validation.ValidatingEContentAdapter;
-import gov.redhawk.ui.RedhawkUiActivator;
-import gov.redhawk.ui.util.ViewerUtil;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
@@ -33,9 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
-
-import mil.jpeojtrs.sca.util.CorbaUtils;
-import mil.jpeojtrs.sca.validator.AdvancedEObjectValidator;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -64,10 +54,10 @@ import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.command.CommandStackListener;
-import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.ui.dialogs.DiagnosticDialog;
 import org.eclipse.emf.common.ui.viewer.IViewerProvider;
 import org.eclipse.emf.common.util.BasicDiagnostic;
@@ -95,7 +85,6 @@ import org.eclipse.emf.edit.ui.provider.UnwrappingSelectionProvider;
 import org.eclipse.emf.edit.ui.util.EditUIUtil;
 import org.eclipse.emf.transaction.NotificationFilter;
 import org.eclipse.emf.transaction.Transaction;
-import org.eclipse.emf.transaction.TransactionalCommandStack;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.impl.TransactionalEditingDomainImpl;
 import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
@@ -158,6 +147,15 @@ import org.eclipse.ui.progress.WorkbenchJob;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.xml.sax.InputSource;
+
+import gov.redhawk.eclipsecorba.library.IdlLibrary;
+import gov.redhawk.eclipsecorba.library.util.RefreshIdlLibraryJob;
+import gov.redhawk.internal.ui.ScaIdeConstants;
+import gov.redhawk.internal.ui.editor.validation.ValidatingEContentAdapter;
+import gov.redhawk.ui.RedhawkUiActivator;
+import gov.redhawk.ui.util.ViewerUtil;
+import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.validator.AdvancedEObjectValidator;
 
 /**
  * The Class SCAFormEditor.
@@ -418,7 +416,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		}
 
 		private void handleStackChanged(EventObject event) {
-			handleStructuredModelChange(event);
 			firePropertyChange(IEditorPart.PROP_DIRTY);
 			final Command mostRecentCommand = ((CommandStack) event.getSource()).getMostRecentCommand();
 			if (mostRecentCommand != null && mostRecentCommand.getAffectedObjects() != null && !mostRecentCommand.getAffectedObjects().isEmpty()) {
@@ -544,46 +541,63 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			((TransactionalEditingDomainImpl) domain).setDefaultTransactionOptions(myOptions);
 		}
 
-		final NotificationFilter resourceModifiedFilter = NotificationFilter.createNotifierFilter(domain.getResourceSet()).and(
-			NotificationFilter.createEventTypeFilter(Notification.ADD)).and(
-			NotificationFilter.createFeatureFilter(ResourceSet.class, ResourceSet.RESOURCE_SET__RESOURCES));
-		domain.getResourceSet().eAdapters().add(new Adapter() {
+		NotificationFilter notifierFilter = NotificationFilter.createNotifierFilter(domain.getResourceSet());
+		NotificationFilter addEventFilter = NotificationFilter.createEventTypeFilter(Notification.ADD);
+		NotificationFilter featureFilter = NotificationFilter.createFeatureFilter(ResourceSet.class, ResourceSet.RESOURCE_SET__RESOURCES);
+		final NotificationFilter resourceModifiedFilter = notifierFilter.and(addEventFilter).and(featureFilter);
 
-			private Notifier myTarget;
-
-			@Override
-			public Notifier getTarget() {
-				return this.myTarget;
-			}
-
-			@Override
-			public boolean isAdapterForType(final Object type) {
-				return false;
-			}
+		domain.getResourceSet().eAdapters().add(new AdapterImpl() {
 
 			@Override
 			public void notifyChanged(final Notification notification) {
 				if (resourceModifiedFilter.matches(notification)) {
 					final Object value = notification.getNewValue();
 					if (value instanceof Resource) {
-						((Resource) value).setTrackingModification(true);
+						Resource resource = (Resource) value;
+						resource.setTrackingModification(true);
+						addResourceListener(resource);
 					}
 				}
 			}
-
-			@Override
-			public void setTarget(final Notifier newTarget) {
-				this.myTarget = newTarget;
-			}
-
 		});
 
 		// Add a listener to set the most recent command's affected objects to
 		// be the selection of the viewer with focus.
-		//
 		domain.getCommandStack().addCommandStackListener(this.commandStackListener);
 
 		this.editingDomain = domain;
+	}
+
+	/**
+	 * Listen for modifications to underlying resource. Used to force associated document updates.
+	 */
+	private void addResourceListener(final Resource resource) {
+		resource.eAdapters().add(new AdapterImpl() {
+			public void notifyChanged(Notification msg) {
+				if (msg.getFeatureID(Resource.class) == Resource.RESOURCE__IS_MODIFIED && msg.getNewBooleanValue()) {
+
+					// If in the UI thread, update the associated document
+					if (Display.getCurrent() != null) {
+						updateDocument(resource);
+						return;
+					}
+
+					// If not in the UI thread, attempt to grab the display and update the associated document
+					if (getContainer() == null || getContainer().isDisposed()) {
+						return;
+					}
+
+					getContainer().getDisplay().asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							if (getContainer() != null && !getContainer().isDisposed()) {
+								updateDocument(resource);
+							}
+						}
+					});
+				}
+			}
+		});
 	}
 
 	/**
@@ -1790,50 +1804,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			// PASS - Allow the validators to do their job rather than prevent invalid xml
 		}
 
-	}
-
-	/**
-	 * Updates each document associated with this editor based on its associated {@link Resource} changes.
-	 * 
-	 * @since 4.0
-	 */
-	protected void handleStructuredModelChange(final EventObject event) {
-		if (isDisposed()) {
-			return;
-		}
-		if (event.getSource() instanceof TransactionalCommandStack) {
-			final TransactionalCommandStack stack = ((TransactionalCommandStack) event.getSource());
-			if (stack.getMostRecentCommand() != null) {
-
-				final Collection< ? > objects = stack.getMostRecentCommand().getAffectedObjects();
-				if (objects.isEmpty()) {
-					updateAllDocs();
-				} else {
-					for (final Object obj : objects) {
-						final Resource resource = getResourceForObject(obj);
-						if (resource != null) {
-							updateDocument(resource);
-						}
-					}
-				}
-			} else {
-				updateAllDocs();
-			}
-		}
-	}
-
-	private Resource getResourceForObject(Object object) {
-		object = AdapterFactoryEditingDomain.unwrap(object);
-		if (object instanceof EObject) {
-			return ((EObject) object).eResource();
-		}
-		return null;
-	}
-
-	private void updateAllDocs() {
-		for (Resource r : resourceToDocumentMap.keySet()) {
-			updateDocument(r);
-		}
 	}
 
 	/**
