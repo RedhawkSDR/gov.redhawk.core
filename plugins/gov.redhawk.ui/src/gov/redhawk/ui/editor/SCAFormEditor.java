@@ -303,6 +303,10 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 */
 	private ResourceTracker resourceTracker = new ResourceTracker();
 
+	/**
+	 * When true, used to suppress acting on change notifications from the workspace. This is done when we are
+	 * refreshing the workspace {@link IResource}s and re-loading them from disk.
+	 */
 	private boolean reloading = false;
 
 	/**
@@ -393,6 +397,12 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	private SCAMultiPageContentOutline fContentOutline;
 	private int fLastActivePageIndex;
 	private boolean fLastDirtyState;
+
+	/**
+	 * When changes are made in the EMF model, they must be reflected as a change in the IDocument, and vice-versa.
+	 * When true, this flag is used to suppress responding to a change notification from either side. This prevents a
+	 * back-and-forth between the two sides as one side modifies the other, i.e. EMF -> IDocument -> EMF -> IDocument.
+	 */
 	private boolean handledStructuredModelChange;
 
 	/**
@@ -575,6 +585,9 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		resource.eAdapters().add(new AdapterImpl() {
 			public void notifyChanged(Notification msg) {
 				if (msg.getFeatureID(Resource.class) == Resource.RESOURCE__IS_MODIFIED && msg.getNewBooleanValue()) {
+					if (handledStructuredModelChange) {
+						return;
+					}
 
 					// If in the UI thread, update the associated document
 					if (Display.getCurrent() != null) {
@@ -1772,9 +1785,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 				@Override
 				public void documentChanged(final DocumentEvent documentEvent) {
 					try {
-						if (SCAFormEditor.this.handledStructuredModelChange) {
-							SCAFormEditor.this.handledStructuredModelChange = false;
-						} else {
+						if (!handledStructuredModelChange) {
 							handleDocumentChange(resource);
 						}
 					} catch (final Exception exception) { // SUPPRESS CHECKSTYLE Fallback
@@ -1796,14 +1807,21 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		final IDocument document = this.resourceToDocumentMap.get(resource);
 		final XMLResource xmlResource = (XMLResource) resource;
 		try {
+			handledStructuredModelChange = true;
+
+			// Re-load the EMF model from the text in the IDocument
 			if (xmlResource.isLoaded()) {
 				xmlResource.unload();
 			}
 			xmlResource.load(new InputSource(new StringReader(document.get())), xmlResource.getDefaultLoadOptions());
+
+			// TODO: Right now we clear the command stack. It would be better if we could provide undo/redo.
+			getEditingDomain().getCommandStack().flush();
 		} catch (final Exception exception) { // SUPPRESS CHECKSTYLE Fallback
 			// PASS - Allow the validators to do their job rather than prevent invalid xml
+		} finally {
+			handledStructuredModelChange = false;
 		}
-
 	}
 
 	/**
@@ -1839,8 +1857,12 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 				if (!"".equals(replacement) || length != 0) {
 					// Ignore this change in the document listener, since it originates with a change that is being
 					// made in response to some other modification
-					this.handledStructuredModelChange = true;
-					document.replace(startIndex, length, replacement);
+					handledStructuredModelChange = true;
+					try {
+						document.replace(startIndex, length, replacement);
+					} finally {
+						handledStructuredModelChange = false;
+					}
 				}
 			} catch (final Exception exception) { // SUPPRESS CHECKSTYLE Fallback
 				// PASS
