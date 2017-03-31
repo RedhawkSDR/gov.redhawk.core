@@ -41,4 +41,13 @@ public class BrowserInitializerTest {
 		Assert.assertEquals(new Version(7, 1, 0), OsVersionParser.getRedhatVersion("CentOS Linux release 7.1.1503 (Core) "));
 	}
 
+	/**
+	 * Test non-matching strings
+	 */
+	@Test
+	public void noMatch() {
+		Version zeroVersion = new Version(0, 0, 0);
+		Assert.assertEquals(zeroVersion, OsVersionParser.getRedhatVersion(""));
+		Assert.assertEquals(zeroVersion, OsVersionParser.getRedhatVersion("Other text 1.2.3"));
+	}
 }
