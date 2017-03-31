@@ -2020,11 +2020,14 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			final IFile file = WorkspaceSynchronizer.getFile(r);
 			if (file != null && file.equals(resource)) {
 				r.unload();
+				this.handledStructuredModelChange = true;
 				try {
 					r.load(getEditingDomain().getResourceSet().getLoadOptions());
 					updateDocument(r);
 				} catch (final IOException e) {
 					// PASS
+				} finally {
+					this.handledStructuredModelChange = false;
 				}
 			}
 		}
