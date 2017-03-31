@@ -868,7 +868,10 @@ public class JavaFileSystemTest {
 
 		Assert.assertTrue("Didn't find READ_ONLY", foundReadOnly);
 		Assert.assertTrue("Didn't find EXECUTABLE", foundExecutable);
-		Assert.assertTrue("Didn't find LAST_ACCESS_TIME", foundLastAccessTime);
+		// Tests run in docker may not have a last access time for directories
+		if (type != FileType.DIRECTORY) {
+			Assert.assertTrue("Didn't find LAST_ACCESS_TIME", foundLastAccessTime);
+		}
 		Assert.assertTrue("Didn't find MODIFIED_TIME", foundLastModifiedTime);
 		Assert.assertTrue("Didn't find CREATED_TIME", foundLastCreatedTime);
 	}

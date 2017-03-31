@@ -43,7 +43,6 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.databinding.EMFDataBindingContext;
@@ -51,7 +50,6 @@ import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
-import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -62,8 +60,6 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -76,7 +72,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.progress.UIJob;
 
 public class TunerAllocationWizardPage extends WizardPage {
 
@@ -149,107 +144,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 		public IStatus validate(Object value) {
 			return getValidationStatus(control, value);
 		}
-	}
-
-	private class TargetableFocusListener implements FocusListener {
-
-		private Control control;
-
-		public TargetableFocusListener(Control control) {
-			this.control = control;
-		}
-
-		@Override
-		public void focusGained(FocusEvent e) {
-			// If we don't do this asynchronously, the focus_in event will come afterwards and cancel the selection
-			if (control == allocIdText) {
-				allocIdText.setBackground(null);
-				UIJob job = new UIJob("Select Allocation ID text") {
-
-					@Override
-					public IStatus runInUIThread(IProgressMonitor monitor) {
-						allocIdText.selectAll();
-						return Status.OK_STATUS;
-					}
-
-				};
-				job.schedule();
-
-			} else if (control == srText) {
-				srText.setBackground(null);
-			}
-			int pageStatus = IMessageProvider.NONE;
-			String msg = null;
-
-			String value = null;
-			if (control instanceof Text) {
-				value = ((Text) control).getText();
-			} else if (control instanceof Combo) {
-				Combo combo = (Combo) control;
-				value = combo.getItem(combo.getSelectionIndex());
-			}
-			IStatus status = getValidationStatus(control, value);
-
-			switch (status.getSeverity()) {
-			case IStatus.OK:
-				// PASS
-				break;
-			case IStatus.WARNING:
-				pageStatus = IMessageProvider.WARNING;
-				msg = status.getMessage();
-				break;
-			case IStatus.ERROR:
-				setErrorMessage(status.getMessage());
-				return;
-			default:
-			}
-			setMessage(msg, pageStatus);
-		}
-
-		@Override
-		public void focusLost(FocusEvent e) {
-			if (control == bwText) {
-				if ("".equals(srText.getText())) {
-					Double bwVal = null;
-					String bwString = bwText.getText();
-					try {
-						bwVal = Double.parseDouble(bwString);
-					} catch (NumberFormatException ex) {
-						// PASS
-					}
-
-					if (bwVal != null && bwVal.intValue() != 0) {
-						double srVal = bwVal * 2;
-						NumberFormat localNF = NumberFormat.getInstance();
-						localNF.setMinimumFractionDigits(0);
-						localNF.setGroupingUsed(false);
-						srText.setText(localNF.format(srVal));
-						UIJob job = new UIJob("Set SR Text Background") {
-
-							@Override
-							public IStatus runInUIThread(IProgressMonitor monitor) {
-								srText.setBackground(srText.getDisplay().getSystemColor(SWT.COLOR_CYAN));
-								return Status.OK_STATUS;
-							}
-
-						};
-						job.schedule();
-					}
-				}
-			} else if (control == srText) {
-				UIJob job = new UIJob("Clear SR Text Background") {
-
-					@Override
-					public IStatus runInUIThread(IProgressMonitor monitor) {
-						srText.setBackground(null);
-						return Status.OK_STATUS;
-					}
-
-				};
-				job.schedule();
-			}
-		}
-
 	}
 
 	private class UseAnyValueListener extends SelectionAdapter {
@@ -573,8 +467,16 @@ public class TunerAllocationWizardPage extends WizardPage {
 			allocIdText.setText(getUsername() + ":" + uuid.toString());
 			allocIdText.setBackground(allocIdText.getDisplay().getSystemColor(SWT.COLOR_CYAN));
 		}
-		allocIdText.addFocusListener(new TargetableFocusListener(allocIdText));
-
+		allocIdText.addListener(SWT.FocusIn, event -> {
+			allocIdText.setBackground(null);
+			// Select-all asynchronously; it won't work directly here since we're moving into the allocIdText control
+			getShell().getDisplay().asyncExec(() -> {
+				if (allocIdText.isDisposed()) {
+					return;
+				}
+				allocIdText.selectAll();
+			});
+		});
 	}
 
 	private void addExistingAllocIdBindings() {
@@ -596,7 +498,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 		ControlDecorationSupport.create(context.bindValue(WidgetProperties.text(SWT.Modify).observe(targetAllocText),
 			SCAObservables.observeSimpleProperty(listenerAllocationStruct.getSimple(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.getId())),
 			existingAllocIdStrategy1, existingAllocIdStrategy2), SWT.TOP | SWT.LEFT);
-		targetAllocText.addFocusListener(new TargetableFocusListener(targetAllocText));
 	}
 
 	private void addCfBindings() {
@@ -630,8 +531,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 			context.bindValue(WidgetProperties.text(SWT.Modify).observe(cfText),
 				SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.CENTER_FREQUENCY.getId())), cfStrategy1,
 				cfStrategy2), SWT.TOP | SWT.LEFT);
-		cfText.addFocusListener(new TargetableFocusListener(cfText));
-
 	}
 
 	private void addBwBindings() {
@@ -665,7 +564,38 @@ public class TunerAllocationWizardPage extends WizardPage {
 			context.bindValue(WidgetProperties.text(SWT.Modify).observe(bwText),
 				SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH.getId())), bwStrategy1, bwStrategy2),
 			SWT.TOP | SWT.LEFT);
-		bwText.addFocusListener(new TargetableFocusListener(bwText));
+		bwText.addListener(SWT.FocusOut, event -> {
+			// If the sample rate is already set, don't do anything
+			if (srAnyValue.getSelection() || !"".equals(srText.getText())) {
+				return;
+			}
+
+			// Must have a valid, non-zero number for bandwidth
+			double bwVal;
+			try {
+				bwVal = Double.parseDouble(bwText.getText());
+			} catch (NumberFormatException ex) {
+				return;
+			}
+			if (bwVal == 0.0) {
+				return;
+			}
+
+			// Set the sample rate to twice the bandwidth
+			double srVal = bwVal * 2;
+			NumberFormat localNF = NumberFormat.getInstance();
+			localNF.setMinimumFractionDigits(0);
+			localNF.setGroupingUsed(false);
+			srText.setText(localNF.format(srVal));
+			// Set background asynchronously; if the user is moving into the srText control this prevents setting the
+			// background
+			getShell().getDisplay().asyncExec(() -> {
+				if (srText.isDisposed()) {
+					return;
+				}
+				srText.setBackground(srText.getDisplay().getSystemColor(SWT.COLOR_CYAN));
+			});
+		});
 
 		// bwAnyValue
 		if (tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH.getId()).getValue() != null) {
@@ -703,8 +633,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 			SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH_TOLERANCE.getId())), bwTolStrategy1,
 			bwTolStrategy2), SWT.TOP | SWT.LEFT);
 		bwTolText.setText("20");
-		bwTolText.addFocusListener(new TargetableFocusListener(bwTolText));
-
 	}
 
 	private void addSrBindings() {
@@ -738,7 +666,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			context.bindValue(WidgetProperties.text(SWT.Modify).observe(srText),
 				SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.SAMPLE_RATE.getId())), srStrategy1, srStrategy2),
 			SWT.TOP | SWT.LEFT);
-		srText.addFocusListener(new TargetableFocusListener(srText));
+		srText.addListener(SWT.FocusIn, event -> srText.setBackground(null));
 
 		// srAnyValue
 		if (tunerAllocationStruct.getSimple(TunerAllocationProperties.SAMPLE_RATE.getId()).getValue() != null) {
@@ -776,8 +704,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 			SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.SAMPLE_RATE_TOLERANCE.getId())), srTolStrategy1,
 			srTolStrategy2), SWT.TOP | SWT.LEFT);
 		srTolText.setText("20");
-		srTolText.addFocusListener(new TargetableFocusListener(srTolText));
-
 	}
 
 	private void addAllocationComboBindings() {
