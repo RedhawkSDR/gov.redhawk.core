@@ -52,46 +52,41 @@ public class ScaPreferenceInitializer extends AbstractPreferenceInitializer {
 	}
 
 	/**
-	 * Loads a default configuration of domains.  This is loaded from the domains.sca file located in the configuration.
+	 * Loads a default configuration of domains. This is loaded from the domains.sca file located in the configuration.
 	 * It is also populated with the values from the preference store to support backwards compatibility.
 	 * 
 	 * We do not need to create the file if it doesn't exist, simple create one in the memory file store.
 	 * @since 3.0
 	 */
-	public static ScaDomainManagerRegistry getDefaultScaDomainManagerRegistry() {
+	public static synchronized ScaDomainManagerRegistry getDefaultScaDomainManagerRegistry() {
 		if (ScaPreferenceInitializer.scaDomainManagerRegistry == null) {
-			synchronized (ScaPreferenceInitializer.class) {
-				if (ScaPreferenceInitializer.scaDomainManagerRegistry == null) { // SUPPRESS CHECKSTYLE DoubleCheck
-					final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
-					try {
-						// First, try the user's config area
-						final URL configUrl = ScaPreferenceInitializer.getDomainManagerRegistryConfigURL();
-						final org.eclipse.emf.common.util.URI configUri = org.eclipse.emf.common.util.URI.createURI(configUrl.toString());
-						final Resource configResource = resourceSet.getResource(configUri, true);
-						ScaPreferenceInitializer.scaDomainManagerRegistry = ScaDomainManagerRegistry.Util.getScaDomainManagerRegistry(configResource);
-					} catch (RuntimeException e) { // SUPPRESS CHECKSTYLE ResourceSet.getResource(URI, boolean) has a broad throws definition
-						// Second, try the shared config area
-						try {
-							final URL sharedConfigUrl = ScaPreferenceInitializer.getDomainManagerRegistrySharedConfigURL();
-							if (sharedConfigUrl != null) {
-								final org.eclipse.emf.common.util.URI sharedConfigUri = org.eclipse.emf.common.util.URI.createURI(sharedConfigUrl.toString());
-								final Resource sharedConfigResource = resourceSet.getResource(sharedConfigUri, true);
-								ScaPreferenceInitializer.scaDomainManagerRegistry = ScaDomainManagerRegistry.Util.getScaDomainManagerRegistry(sharedConfigResource);
-							}
-						} catch (final RuntimeException e2) { // SUPPRESS CHECKSTYLE ResourceSet.getResource(URI, boolean) has a broad throws definition
-							// PASS
-						}
+			final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
+			try {
+				// First, try the user's config area
+				final URL configUrl = ScaPreferenceInitializer.getDomainManagerRegistryConfigURL();
+				final org.eclipse.emf.common.util.URI configUri = org.eclipse.emf.common.util.URI.createURI(configUrl.toString());
+				final Resource configResource = resourceSet.getResource(configUri, true);
+				ScaPreferenceInitializer.scaDomainManagerRegistry = ScaDomainManagerRegistry.Util.getScaDomainManagerRegistry(configResource);
+			} catch (RuntimeException e) { // SUPPRESS CHECKSTYLE ResourceSet.getResource(URI, boolean) has a broad throws definition
+				// Second, try the shared config area
+				try {
+					final URL sharedConfigUrl = ScaPreferenceInitializer.getDomainManagerRegistrySharedConfigURL();
+					if (sharedConfigUrl != null) {
+						final org.eclipse.emf.common.util.URI sharedConfigUri = org.eclipse.emf.common.util.URI.createURI(sharedConfigUrl.toString());
+						final Resource sharedConfigResource = resourceSet.getResource(sharedConfigUri, true);
+						ScaPreferenceInitializer.scaDomainManagerRegistry = ScaDomainManagerRegistry.Util.getScaDomainManagerRegistry(sharedConfigResource);
 					}
-
-					// If we still don't have a registry, create a new empty one
-					if (ScaPreferenceInitializer.scaDomainManagerRegistry == null) {
-						ScaPreferenceInitializer.scaDomainManagerRegistry = ScaFactory.eINSTANCE.createScaDomainManagerRegistry();
-						final Resource resource = resourceSet.createResource(org.eclipse.emf.common.util.URI.createURI("virtual://domains.sca"));
-						resource.getContents().add(ScaPreferenceInitializer.scaDomainManagerRegistry);
-					}
+				} catch (final RuntimeException e2) { // SUPPRESS CHECKSTYLE ResourceSet.getResource(URI, boolean) has a broad throws definition
+					// PASS
 				}
 			}
 
+			// If we still don't have a registry, create a new empty one
+			if (ScaPreferenceInitializer.scaDomainManagerRegistry == null) {
+				ScaPreferenceInitializer.scaDomainManagerRegistry = ScaFactory.eINSTANCE.createScaDomainManagerRegistry();
+				final Resource resource = resourceSet.createResource(org.eclipse.emf.common.util.URI.createURI("virtual://domains.sca"));
+				resource.getContents().add(ScaPreferenceInitializer.scaDomainManagerRegistry);
+			}
 		}
 		return ScaPreferenceInitializer.scaDomainManagerRegistry;
 	}
