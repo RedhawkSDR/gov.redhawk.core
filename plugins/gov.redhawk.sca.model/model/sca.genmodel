@@ -14,8 +14,8 @@
     modelPluginID="gov.redhawk.sca.model" templateDirectory="/gov.redhawk.sca.model/templates"
     dynamicTemplates="true" forceOverwrite="true" modelName="Sca" codeFormatting="true"
     commentFormatting="true" testsDirectory="/gov.redhawk.sca.model.tests/src" importerID="org.eclipse.emf.importer.ecore"
-    containmentProxies="true" complianceLevel="6.0" suppressGenModelAnnotations="false"
-    copyrightFields="false" tableProviders="true" colorProviders="true" runtimeVersion="2.9"
+    containmentProxies="true" complianceLevel="7.0" suppressGenModelAnnotations="false"
+    copyrightFields="false" tableProviders="true" colorProviders="true" runtimeVersion="2.11"
     language="" usedGenPackages="platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.genmodel#//cf platform:/plugin/mil.jpeojtrs.sca.spd/model/spd.genmodel#//spd platform:/plugin/mil.jpeojtrs.sca.scd/model/scd.genmodel#//scd platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.genmodel#//prf platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/mil.jpeojtrs.sca.sad/model/sad.genmodel#//sad platform:/plugin/mil.jpeojtrs.sca.dcd/model/dcd.genmodel#//dcd platform:/plugin/mil.jpeojtrs.sca.dmd/model/dmd.genmodel#//dmd platform:/plugin/mil.jpeojtrs.sca.dpd/model/dpd.genmodel#//dpd platform:/plugin/mil.jpeojtrs.sca.partitioning/model/partitioning.genmodel#//partitioning platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.genmodel#//extended"
     interfaceNamePattern="" importOrganizing="true">
   <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/exporter/org.eclipse.xsd.ecore.exporter">
@@ -105,7 +105,6 @@
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ProfileObjectWrapper/profileURI"/>
       <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
           ecoreFeature="ecore:EReference sca.ecore#//ProfileObjectWrapper/profileObj"/>
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ProfileObjectWrapper/rootFileStore"/>
       <genOperations ecoreOperation="sca.ecore#//ProfileObjectWrapper/fetchProfileObject">
         <genParameters ecoreParameter="sca.ecore#//ProfileObjectWrapper/fetchProfileObject/monitor"/>
       </genOperations>
@@ -185,6 +184,7 @@
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaComponent/name"/>
       <genOperations ecoreOperation="sca.ecore#//ScaComponent/fetchDevices">
         <genParameters ecoreParameter="sca.ecore#//ScaComponent/fetchDevices/monitor"/>
+        <genParameters ecoreParameter="sca.ecore#//ScaComponent/fetchDevices/depth"/>
       </genOperations>
     </genClasses>
     <genClasses ecoreClass="sca.ecore#//ScaDevice" labelFeature="#//sca/ScaDevice/label">
@@ -203,6 +203,10 @@
           ecoreFeature="ecore:EReference sca.ecore#//ScaDevice/componentInstantiation"/>
       <genOperations ecoreOperation="sca.ecore#//ScaDevice/fetchAggregateDevices">
         <genParameters ecoreParameter="sca.ecore#//ScaDevice/fetchAggregateDevices/monitor"/>
+      </genOperations>
+      <genOperations ecoreOperation="sca.ecore#//ScaDevice/fetchAggregateDevices.1">
+        <genParameters ecoreParameter="sca.ecore#//ScaDevice/fetchAggregateDevices.1/monitor"/>
+        <genParameters ecoreParameter="sca.ecore#//ScaDevice/fetchAggregateDevices.1/depth"/>
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaDevice/fetchAdminState">
         <genParameters ecoreParameter="sca.ecore#//ScaDevice/fetchAdminState/monitor"/>
@@ -235,9 +239,11 @@
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaDeviceManager/fetchDevices">
         <genParameters ecoreParameter="sca.ecore#//ScaDeviceManager/fetchDevices/monitor"/>
+        <genParameters ecoreParameter="sca.ecore#//ScaDeviceManager/fetchDevices/depth"/>
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaDeviceManager/fetchFileSystem">
         <genParameters ecoreParameter="sca.ecore#//ScaDeviceManager/fetchFileSystem/monitor"/>
+        <genParameters ecoreParameter="sca.ecore#//ScaDeviceManager/fetchFileSystem/depth"/>
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaDeviceManager/fetchIdentifier">
         <genParameters ecoreParameter="sca.ecore#//ScaDeviceManager/fetchIdentifier/monitor"/>
@@ -247,6 +253,7 @@
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaDeviceManager/fetchServices">
         <genParameters ecoreParameter="sca.ecore#//ScaDeviceManager/fetchServices/monitor"/>
+        <genParameters ecoreParameter="sca.ecore#//ScaDeviceManager/fetchServices/depth"/>
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaDeviceManager/registerScaService">
         <genParameters ecoreParameter="sca.ecore#//ScaDeviceManager/registerScaService/registeringService"/>
@@ -262,6 +269,9 @@
     <genClasses ecoreClass="sca.ecore#//ScaService">
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaService/name"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaService/devMgr"/>
+      <genOperations ecoreOperation="sca.ecore#//ScaService/isInstance">
+        <genParameters ecoreParameter="sca.ecore#//ScaService/isInstance/intf"/>
+      </genOperations>
     </genClasses>
     <genClasses image="false" ecoreClass="sca.ecore#//ScaDeviceManagerFileSystem">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaDeviceManagerFileSystem/deviceManager"/>
@@ -296,23 +306,24 @@
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaDomainManager/connect">
         <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/connect/monitor"/>
-      </genOperations>
-      <genOperations ecoreOperation="sca.ecore#//ScaDomainManager/connect.1">
-        <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/connect.1/monitor"/>
-        <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/connect.1/refreshDepth"/>
+        <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/connect/refreshDepth"/>
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaDomainManager/disconnect"/>
       <genOperations ecoreOperation="sca.ecore#//ScaDomainManager/fetchDeviceManagers">
         <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/fetchDeviceManagers/monitor"/>
+        <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/fetchDeviceManagers/depth"/>
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaDomainManager/fetchWaveformFactories">
         <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/fetchWaveformFactories/monitor"/>
+        <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/fetchWaveformFactories/depth"/>
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaDomainManager/fetchWaveforms">
         <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/fetchWaveforms/monitor"/>
+        <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/fetchWaveforms/depth"/>
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaDomainManager/fetchFileManager">
         <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/fetchFileManager/monitor"/>
+        <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/fetchFileManager/depth"/>
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaDomainManager/fetchIdentifier">
         <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/fetchIdentifier/monitor"/>
@@ -328,7 +339,9 @@
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaDomainManager/fetchEventChannels">
         <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/fetchEventChannels/monitor"/>
+        <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/fetchEventChannels/depth"/>
       </genOperations>
+      <genOperations ecoreOperation="sca.ecore#//ScaDomainManager/getLabel"/>
     </genClasses>
     <genClasses image="false" ecoreClass="sca.ecore#//ScaDomainManagerFileSystem">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaDomainManagerFileSystem/domMgr"/>
@@ -428,6 +441,10 @@
       <genOperations ecoreOperation="sca.ecore#//ScaWaveform/fetchComponents">
         <genParameters ecoreParameter="sca.ecore#//ScaWaveform/fetchComponents/monitor"/>
       </genOperations>
+      <genOperations ecoreOperation="sca.ecore#//ScaWaveform/fetchComponents.1">
+        <genParameters ecoreParameter="sca.ecore#//ScaWaveform/fetchComponents.1/monitor"/>
+        <genParameters ecoreParameter="sca.ecore#//ScaWaveform/fetchComponents.1/depth"/>
+      </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaWaveform/fetchIdentifier">
         <genParameters ecoreParameter="sca.ecore#//ScaWaveform/fetchIdentifier/monitor"/>
       </genOperations>
@@ -446,6 +463,7 @@
       <genOperations ecoreOperation="sca.ecore#//ScaWaveform/fetchProfile">
         <genParameters ecoreParameter="sca.ecore#//ScaWaveform/fetchProfile/monitor"/>
       </genOperations>
+      <genOperations ecoreOperation="sca.ecore#//ScaWaveform/getComponentsCopy"/>
     </genClasses>
     <genClasses ecoreClass="sca.ecore#//ScaWaveformFactory">
       <genFeatures property="None" notify="false" createChild="false" propertySortChoices="true"
@@ -497,6 +515,11 @@
     <genClasses image="false" ecoreClass="sca.ecore#//StringToObjectMap">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//StringToObjectMap/key"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EReference sca.ecore#//StringToObjectMap/value"/>
+    </genClasses>
+    <genClasses ecoreClass="sca.ecore#//WaveformsContainer">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sca.ecore#//WaveformsContainer/subContainers"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sca.ecore#//WaveformsContainer/waveforms"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//WaveformsContainer/containerName"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

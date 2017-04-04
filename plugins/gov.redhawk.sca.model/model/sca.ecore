@@ -631,6 +631,9 @@
     <eGenericSuperTypes eClassifier="#//ScaPortContainer"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ScaService">
+    <eOperations name="isInstance" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean">
+      <eParameters name="intf" lowerBound="1" eType="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.scd/model/scd.ecore#//Interface"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="devMgr" ordered="false"
         eType="#//ScaDeviceManager" changeable="false" transient="true" resolveProxies="false"
