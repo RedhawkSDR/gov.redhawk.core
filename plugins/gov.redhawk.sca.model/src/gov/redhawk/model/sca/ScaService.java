@@ -83,6 +83,12 @@ public interface ScaService extends ScaPropertyContainer<org.omg.CORBA.Object, S
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Checks the profile (SCD) to see if the service supports the requested interface. This method is designed to be
+	 * quick, and thus will return <code>false</code> if it is unable to make a determination.
+	 * <p/>
+	 * The profile should be present before invoking this method
+	 * ({@link #fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor)}) or it will return false.
+	 * @since 20.4
 	 * <!-- end-user-doc -->
 	 * 
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean" intfRequired="true"

@@ -19,8 +19,11 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import org.eclipse.emf.common.util.EList;
 import org.junit.Assert;
+
 import junit.textui.TestRunner;
+import mil.jpeojtrs.sca.scd.ScdFactory;
 import CF.DeviceHelper;
+import CF.LifeCycleHelper;
 
 /**
  * <!-- begin-user-doc -->
@@ -104,12 +107,15 @@ public class ScaServiceTest extends ScaPropertyContainerTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaService#isInstance(mil.jpeojtrs.sca.scd.Interface)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testIsInstance__Interface() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		// END GENERATED CODE
+		// The underlying object implements CF.ExecutableDevice
+		Assert.assertTrue(getFixture().isInstance(ScdFactory.eINSTANCE.createInterface(DeviceHelper.id())));
+		Assert.assertTrue(getFixture().isInstance(ScdFactory.eINSTANCE.createInterface(LifeCycleHelper.id())));
+		Assert.assertFalse(getFixture().isInstance(ScdFactory.eINSTANCE.createInterface("IDL:Foo/Bar:1.0")));
+		// BEGIN GENERATED CODE
 	}
 
 	/**

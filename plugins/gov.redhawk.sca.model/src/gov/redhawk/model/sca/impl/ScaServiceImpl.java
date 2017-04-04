@@ -43,6 +43,7 @@ import mil.jpeojtrs.sca.scd.AbstractPort;
 import mil.jpeojtrs.sca.scd.Interface;
 import mil.jpeojtrs.sca.scd.Ports;
 import mil.jpeojtrs.sca.scd.ScdPackage;
+import mil.jpeojtrs.sca.scd.SupportsInterface;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.spd.SpdPackage;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
@@ -255,16 +256,38 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		return (ScaDeviceManager) eInternalContainer();
 	}
 
+	// END GENERATED CODE
+
+	/**
+	 * EMF feature path from a {@link ScaService} to the ports in its SCD file.
+	 */
+	private static final EStructuralFeature[] RESOURCE_TO_INTERFACES_PATH = { ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
+		SpdPackage.Literals.SOFT_PKG__DESCRIPTOR, SpdPackage.Literals.DESCRIPTOR__COMPONENT, ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES,
+		ScdPackage.Literals.COMPONENT_FEATURES__SUPPORTS_INTERFACE };
+
+	// BEGIN GENERATED CODE
+
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 20.4
 	 * <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	public boolean isInstance(Interface intf) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		// END GENERATED CODE
+		List<SupportsInterface> supportsInterfaces = ScaEcoreUtils.getFeature(this, RESOURCE_TO_INTERFACES_PATH);
+		if (supportsInterfaces == null) {
+			return false;
+		}
+		for (SupportsInterface supportsInterface : supportsInterfaces) {
+			Interface thisIntf = supportsInterface.getInterface();
+			if (thisIntf != null && thisIntf.isInstance(intf)) {
+				return true;
+			}
+		}
+		return false;
+		// BEGIN GENERATED CODE
 	}
 
 	/**
