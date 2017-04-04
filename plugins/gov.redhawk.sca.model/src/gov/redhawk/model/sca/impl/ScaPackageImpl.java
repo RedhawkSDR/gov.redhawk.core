@@ -1091,9 +1091,9 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.4
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.4
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getScaDevice_ComponentInstantiation() {
@@ -2711,8 +2711,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		PrfPackage thePrfPackage = (PrfPackage) EPackage.Registry.INSTANCE.getEPackage(PrfPackage.eNS_URI);
 		SadPackage theSadPackage = (SadPackage) EPackage.Registry.INSTANCE.getEPackage(SadPackage.eNS_URI);
 		DcdPackage theDcdPackage = (DcdPackage) EPackage.Registry.INSTANCE.getEPackage(DcdPackage.eNS_URI);
-		DmdPackage theDmdPackage = (DmdPackage) EPackage.Registry.INSTANCE.getEPackage(DmdPackage.eNS_URI);
 		ScdPackage theScdPackage = (ScdPackage) EPackage.Registry.INSTANCE.getEPackage(ScdPackage.eNS_URI);
+		DmdPackage theDmdPackage = (DmdPackage) EPackage.Registry.INSTANCE.getEPackage(DmdPackage.eNS_URI);
 		EcorePackage theEcorePackage = (EcorePackage) EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		ExtendedPackage theExtendedPackage = (ExtendedPackage) EPackage.Registry.INSTANCE.getEPackage(ExtendedPackage.eNS_URI);
 
@@ -3236,6 +3236,9 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 			!IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getScaService_DevMgr(), this.getScaDeviceManager(), this.getScaDeviceManager_Services(), "devMgr", null, 0, 1, ScaService.class,
 			IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		op = addEOperation(scaServiceEClass, theXMLTypePackage.getBoolean(), "isInstance", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theScdPackage.getInterface(), "intf", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(scaDeviceManagerFileSystemEClass, ScaDeviceManagerFileSystem.class, "ScaDeviceManagerFileSystem", !IS_ABSTRACT, !IS_INTERFACE,
 			IS_GENERATED_INSTANCE_CLASS);

@@ -40,6 +40,7 @@ import mil.jpeojtrs.sca.dcd.DcdPartitioning;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.scd.AbstractPort;
+import mil.jpeojtrs.sca.scd.Interface;
 import mil.jpeojtrs.sca.scd.Ports;
 import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.spd.SoftPkg;
@@ -252,6 +253,18 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		if (eContainerFeatureID() != ScaPackage.SCA_SERVICE__DEV_MGR)
 			return null;
 		return (ScaDeviceManager) eInternalContainer();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public boolean isInstance(Interface intf) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -528,7 +541,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 */
 	private static final EStructuralFeature[] RESOURCE_TO_PORTS_PATH = { ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
 		SpdPackage.Literals.SOFT_PKG__DESCRIPTOR, SpdPackage.Literals.DESCRIPTOR__COMPONENT, ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES,
-		ScdPackage.Literals.COMPONENT_FEATURES__PORTS};
+		ScdPackage.Literals.COMPONENT_FEATURES__PORTS };
 
 	// BEGIN GENERATED CODE
 
@@ -647,6 +660,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 	/**
 	 * Retrieves the {@link VersionedFeature} for the profile URI feature.
+	 * 
 	 * @since 20.4
 	 */
 	protected VersionedFeature getProfileURIVersionedFeature() {
