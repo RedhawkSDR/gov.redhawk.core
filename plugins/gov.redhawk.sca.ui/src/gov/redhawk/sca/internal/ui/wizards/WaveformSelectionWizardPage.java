@@ -158,7 +158,8 @@ public class WaveformSelectionWizardPage extends WizardPage {
 
 			@Override
 			public void doubleClick(final DoubleClickEvent event) {
-				if (getWizard().canFinish()) {
+				StructuredSelection selection = (StructuredSelection) waveformSelectionList.getViewer().getSelection();
+				if (getWizard().canFinish() && !(selection.getFirstElement() instanceof WaveformsContainer)) {
 					if (getWizard().performFinish()) {
 						getWizard().getContainer().getShell().dispose();
 					}
@@ -233,7 +234,6 @@ public class WaveformSelectionWizardPage extends WizardPage {
 
 		this.uninstallExistAppFactory = new Button(advancedSection, SWT.CHECK);
 		this.uninstallExistAppFactory.setText("Uninstall existing application factory (pre-2.0 Redhawk domains only)");
-		
 		this.waveformSelectionList.getViewer().addSelectionChangedListener(new ISelectionChangedListener() {
 
 			@Override
@@ -241,14 +241,13 @@ public class WaveformSelectionWizardPage extends WizardPage {
 				final Object selected = ((StructuredSelection) event.getSelection()).getFirstElement();
 				if (selected instanceof SoftwareAssembly) {
 					if (WaveformSelectionWizardPage.this.sad == selected) {
+						updateFinished();
 						return;
 					}
 					WaveformSelectionWizardPage.this.sad = (SoftwareAssembly) selected;
-					
 					if (WaveformSelectionWizardPage.this.getWizard() instanceof LaunchWaveformWizard) {
 						((LaunchWaveformWizard) WaveformSelectionWizardPage.this.getWizard()).reinitalizePages();
 					}
-					
 					if (WaveformSelectionWizardPage.this.defaultNameChanged) {
 						// PASS since user had explicitly set the Waveform name
 					} else if (WaveformSelectionWizardPage.this.sad == null) {
@@ -260,8 +259,6 @@ public class WaveformSelectionWizardPage extends WizardPage {
 						waveformNameTextBox.setText(initialValue);
 						WaveformSelectionWizardPage.this.defaultNameChanged = false;
 					}
-				} else if (selected instanceof WaveformsContainer) {
-					return;
 				}
 				updateFinished();
 			}
@@ -317,8 +314,9 @@ public class WaveformSelectionWizardPage extends WizardPage {
 	}
 
 	private void updateFinished() {
-		this.setPageComplete(this.sad != null && this.waveformName != null && this.waveformName.trim().length() > 0);
-
+		StructuredSelection selection = (StructuredSelection) waveformSelectionList.getViewer().getSelection();
+		boolean isContainer = selection.getFirstElement() instanceof WaveformsContainer;
+		this.setPageComplete(this.sad != null && this.waveformName != null && this.waveformName.trim().length() > 0 && !(isContainer));
 	}
 
 	@Override
