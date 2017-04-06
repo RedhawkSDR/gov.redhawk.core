@@ -1891,7 +1891,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	public void configure(final DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration {
 		Application waveform = fetchNarrowedObject(null);
 		if (waveform == null) {
-			return;
+			throw new IllegalStateException("CORBA Object is null");
 		}
 		waveform.configure(configProperties);
 		fetchProperties(null);

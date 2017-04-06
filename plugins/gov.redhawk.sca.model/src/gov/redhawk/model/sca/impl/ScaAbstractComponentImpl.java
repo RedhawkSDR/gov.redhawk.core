@@ -907,7 +907,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		// END GENERATED CODE
 		R resource = fetchNarrowedObject(null);
 		if (resource == null) {
-			return;
+			throw new IllegalStateException("CORBA Object is null");
 		}
 		resource.configure(configProperties);
 		fetchProperties(null);
