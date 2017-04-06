@@ -19,7 +19,7 @@ public class ScaLabelProviderChangedEvent extends LabelProviderChangedEvent {
 
 	private static final long serialVersionUID = 2626099358220654381L;
 
-	private Notification notification;
+	private transient Notification notification;
 
 	public ScaLabelProviderChangedEvent(IBaseLabelProvider source, Object element, Notification notification) {
 		super(source, element);
