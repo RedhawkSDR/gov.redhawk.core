@@ -22,6 +22,7 @@ import org.eclipse.emf.common.util.URI;
 import CF.DataType;
 import CF.PropertiesHolder;
 import CF.UnknownProperties;
+import CF.PropertyEmitterPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 
@@ -296,14 +297,30 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	 * Properties</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @throws AlreadyInitialized
 	 * @throws PartialConfiguration 
 	 * @throws InvalidConfiguration 
 	 * @see CF.PropertyEmitterOperations#initializeProperties(CF.DataType[])
 	 * @generated NOT
 	 */
-	public void testInitializeProperties__DataType() throws InvalidConfiguration, PartialConfiguration {
+	public void testInitializeProperties__DataType() throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
 		// END GENERATED CODE
-		getFixture().configure(new DataType[0]);
+		getFixture().initializeProperties(new DataType[0]);
+
+		// Test w/o a CORBA object
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				getFixture().unsetCorbaObj();
+			}
+		});
+		boolean caught = false;
+		try {
+			getFixture().initializeProperties(new DataType[] { new DataType("bad_id_and_value", null) });
+		} catch (IllegalStateException e) {
+			caught = true;
+		}
+		Assert.assertTrue(caught);
 		// BEGIN GENERATED CODE
 	}
 
@@ -320,6 +337,21 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	public void testConfigure__DataType() throws InvalidConfiguration, PartialConfiguration {
 		// END GENERATED CODE
 		getFixture().configure(new DataType[0]);
+
+		// Test w/o a CORBA object
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				getFixture().unsetCorbaObj();
+			}
+		});
+		boolean caught = false;
+		try {
+			getFixture().configure(new DataType[] { new DataType("bad_id_and_value", null) });
+		} catch (IllegalStateException e) {
+			caught = true;
+		}
+		Assert.assertTrue(caught);
 		// BEGIN GENERATED CODE
 	}
 
@@ -337,6 +369,18 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 		PropertiesHolder holder = new PropertiesHolder();
 		holder.value = new DataType[0];
 		getFixture().query(holder);
+
+		// Test w/o a CORBA object
+		holder = new PropertiesHolder();
+		holder.value = new DataType[0];
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				getFixture().unsetCorbaObj();
+			}
+		});
+		getFixture().query(holder);
+		Assert.assertEquals(0, holder.value.length);
 		// BEGIN GENERATED CODE
 	}
 

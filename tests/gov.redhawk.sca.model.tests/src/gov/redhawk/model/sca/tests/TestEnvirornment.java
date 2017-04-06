@@ -172,10 +172,8 @@ public class TestEnvirornment {
 	}
 
 	private void validateStartState(final ScaAbstractProperty<?> property) {
-		// Assert.assertNotNull(property.getDescription());
 		Assert.assertNotNull(property.getDefinition());
 		Assert.assertNotNull(property.getId());
-		Assert.assertNotNull(property.getName());
 		Assert.assertNotNull(property.getMode());
 	}
 

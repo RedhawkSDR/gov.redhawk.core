@@ -50,10 +50,19 @@ import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
 
 /**
  * @since 9.0
- * 
  */
 public class InstallApplicationContentProvider implements ITreeContentProvider {
-	private List<SoftwareAssembly> children;
+
+	/**
+	 * Once fetched, contains only the list of {@link SoftwareAssembly} found in the domain. See also {@link #children}.
+	 */
+	private List<SoftwareAssembly> waveforms;
+
+	/**
+	 * Once fetched, contains a structured tree of {@link SoftwareAssembly} and namespace containers
+	 * ({@link WaveformsContainer}). See also {@link #waveforms}.
+	 */
+	private Object[] children;
 
 	private class RefreshJob extends UIJob {
 
@@ -93,8 +102,9 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 				return Status.CANCEL_STATUS;
 			}
 			final MultiStatus mergedStatus = new MultiStatus(ScaUiPlugin.PLUGIN_ID, IStatus.WARNING, "Problems while loading SAD files.", null);
-			InstallApplicationContentProvider.this.children = InstallApplicationContentProvider.fetchDeferredChildren(InstallApplicationContentProvider.this.input, monitor,
-					mergedStatus);
+			waveforms = InstallApplicationContentProvider.fetchDeferredChildren(InstallApplicationContentProvider.this.input, monitor,
+				mergedStatus);
+			children = createNamespaceStructure(waveforms);
 			InstallApplicationContentProvider.this.refreshJob.schedule();
 			if (!mergedStatus.isOK()) {
 				InstallApplicationContentProvider.this.loadStatus = mergedStatus;
@@ -148,9 +158,13 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 		return getChildren(inputElement);
 	}
 
+	/**
+	 * Gets the complete list of {@link SoftwareAssembly} in the domain.
+	 * @return An unmodifiable list containing any {@link SoftwareAssembly} that have been fetched
+	 */
 	public List<SoftwareAssembly> getChildren() {
-		if (this.children != null) {
-			return Collections.unmodifiableList(this.children);
+		if (this.waveforms != null) {
+			return Collections.unmodifiableList(this.waveforms);
 		} else {
 			return Collections.emptyList();
 		}
@@ -163,7 +177,7 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 				this.fetchChildrenJob.schedule();
 				return new Object[] { this.fetchChildrenJob };
 			} else {
-				return createNamespaceStructure(this.children);
+				return this.children;
 			}
 		} else if (parentElement instanceof WaveformsContainer) {
 			WaveformsContainer container = (WaveformsContainer) parentElement;

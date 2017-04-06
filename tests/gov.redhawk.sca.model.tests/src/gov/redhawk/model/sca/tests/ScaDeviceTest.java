@@ -136,8 +136,7 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	@Override
 	public void testFetchPorts__IProgressMonitor() throws InterruptedException {
 		// END GENERATED CODE
-		// There are no ports in the GPP device
-		final int initialSize = 0;
+		final int initialSize = 2;
 		Assert.assertEquals(initialSize, getFixture().getPorts().size());
 		getFixture().fetchPorts(null);
 		Assert.assertEquals(initialSize, getFixture().getPorts().size());

@@ -10,28 +10,29 @@
     http://www.eclipse.org/legal/epl-v10.html.
  
 -->
-<softpkg type="sca_compliant" id="DCE:363ada33-0721-46be-800f-2d83e174f505" name="GPP">
-    <title></title>
-    <author>
-        <name></name>
-    </author>
-    <description>General purpose processor device</description>
-    <propertyfile type="PRF">
-        <localfile name="GPP.prf.xml"></localfile>
-    </propertyfile>
-    <descriptor>
-        <localfile name="GPP.scd.xml"></localfile>
-    </descriptor>
-    <implementation id="DCE:6ca942b4-0e39-4092-9c4d-7f1c8d306567">
-        <description>Basic Python implementation of GPP</description>
-        <code type="Executable">
-            <localfile name="/devices/GPP"></localfile>
-            <entrypoint>/devices/GPP/GPP.py</entrypoint>
-        </code>
-        <programminglanguage name="Python"></programminglanguage>
-        <humanlanguage name="EN"></humanlanguage>
-        <runtime version="2.4.4" name="python"></runtime>
-        <os name="Linux"></os>
-        <processor name="x86"></processor>
-    </implementation>
+<!DOCTYPE properties PUBLIC "-//JTRS//DTD SCA V2.2.2 SPD//EN" "properties.dtd">
+<softpkg version="2.1.0" id="DCE:4e20362c-4442-4656-af6d-aedaaf13b275" name="GPP" type="sca_compliant">
+  <title>Redhawk GPP</title>
+  <author>
+    <name>null</name>
+  </author>
+  <propertyfile type="PRF">
+    <localfile name="GPP.prf.xml"/>
+  </propertyfile>
+  <descriptor>
+    <localfile name="GPP.scd.xml"/>
+  </descriptor>
+  <implementation id="cpp">
+    <description>The implementation contains descriptive information about the template for a software component.</description>
+    <code type="Executable">
+      <localfile name="cpp/GPP"/>
+      <entrypoint>cpp/GPP</entrypoint>
+    </code>
+    <compiler name="/usr/bin/gcc" version="4.1.2"/>
+    <programminglanguage name="C++"/>
+    <humanlanguage name="EN"/>
+    <os name="Linux"/>
+    <processor name="x86"/>
+    <processor name="x86_64"/>
+  </implementation>
 </softpkg>

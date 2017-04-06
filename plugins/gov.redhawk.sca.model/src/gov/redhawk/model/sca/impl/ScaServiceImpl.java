@@ -70,11 +70,14 @@ import org.eclipse.emf.transaction.RunnableWithResult;
 import org.omg.CORBA.SystemException;
 
 import CF.DataType;
+import CF.PortSupplier;
 import CF.PortSupplierHelper;
 import CF.PortSupplierOperations;
 import CF.PropertiesHolder;
+import CF.PropertyEmitter;
 import CF.PropertyEmitterHelper;
 import CF.PropertyEmitterOperations;
+import CF.PropertySet;
 import CF.PropertySetHelper;
 import CF.PropertySetOperations;
 import CF.UnknownProperties;
@@ -590,15 +593,23 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	}
 
 	private PortSupplierOperations getPortSupplier() {
-		if (this.portSupplier == null) {
-			if (this.obj instanceof PortSupplierOperations) {
-				this.portSupplier = (PortSupplierOperations) this.obj;
-			}
-			if (this.obj._is_a(PortSupplierHelper.id())) {
-				this.portSupplier = PortSupplierHelper.narrow(obj);
-			}
+		if (portSupplier == null) {
+			// Narrow
+			final org.omg.CORBA.Object corbaObj = obj;
+			final PortSupplier narrowedObj = PortSupplierHelper.narrow(corbaObj);
+
+			// Update in protected context so that we don't hold on to incorrect information if the CORBA object was
+			// unset or changed
+			ScaModelCommand.execute(this, new ScaModelCommand() {
+				@Override
+				public void execute() {
+					if (obj == corbaObj) {
+						portSupplier = narrowedObj;
+					}
+				}
+			});
 		}
-		return this.portSupplier;
+		return portSupplier;
 	}
 
 	@Override
@@ -698,7 +709,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
 		PropertyEmitterOperations propEmitter = getPropertyEmitter();
 		if (propEmitter == null) {
-			throw new IllegalStateException("CORBA Object is null, or service does not support IDL:CF/PropertyEmitter:1.0");
+			throw new IllegalStateException("CORBA Object is null, or service does not support " + PropertyEmitterHelper.id());
 		}
 		propEmitter.initializeProperties(configProperties);
 	}
@@ -706,33 +717,50 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	@Override
 	public void configure(DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration {
 		PropertySetOperations set = getPropertySet();
-		if (set != null) {
-			set.configure(configProperties);
+		if (set == null) {
+			throw new IllegalStateException("CORBA Object is null, or service does not support " + PropertySetHelper.id());
 		}
+		set.configure(configProperties);
 	}
 
 	private PropertySetOperations getPropertySet() {
-		if (this.propertySetOp == null) {
-			if (this.obj instanceof PropertySetOperations) {
-				this.propertySetOp = (PropertySetOperations) this.obj;
-			}
-			if (this.obj._is_a(PropertySetHelper.id())) {
-				this.propertySetOp = PropertySetHelper.narrow(obj);
-			}
+		if (propertySetOp == null) {
+			// Narrow
+			final org.omg.CORBA.Object corbaObj = obj;
+			final PropertySet narrowedObj = PropertySetHelper.narrow(corbaObj);
+
+			// Update in protected context so that we don't hold on to incorrect information if the CORBA object was
+			// unset or changed
+			ScaModelCommand.execute(this, new ScaModelCommand() {
+				@Override
+				public void execute() {
+					if (obj == corbaObj) {
+						propertySetOp = narrowedObj;
+					}
+				}
+			});
 		}
-		return this.propertySetOp;
+		return propertySetOp;
 	}
 
 	private PropertyEmitterOperations getPropertyEmitter() {
-		if (this.propertyEmitterOp == null) {
-			if (this.obj instanceof PropertyEmitterOperations) {
-				this.propertyEmitterOp = (PropertyEmitterOperations) this.propertyEmitterOp;
-			}
-			if (this.obj._is_a(PropertyEmitterHelper.id())) {
-				this.propertyEmitterOp = PropertyEmitterHelper.narrow(obj);
-			}
+		if (propertyEmitterOp == null) {
+			// Narrow
+			final org.omg.CORBA.Object corbaObj = obj;
+			final PropertyEmitter narrowedObj = PropertyEmitterHelper.narrow(corbaObj);
+
+			// Update in protected context so that we don't hold on to incorrect information if the CORBA object was
+			// unset or changed
+			ScaModelCommand.execute(this, new ScaModelCommand() {
+				@Override
+				public void execute() {
+					if (obj == corbaObj) {
+						propertyEmitterOp = narrowedObj;
+					}
+				}
+			});
 		}
-		return this.propertyEmitterOp;
+		return propertyEmitterOp;
 	}
 
 	private static final EStructuralFeature[] PRF_PATH = { SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, SpdPackage.Literals.PROPERTY_FILE__PROPERTIES };
@@ -784,6 +812,9 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		switch (msg.getFeatureID(ScaService.class)) {
 		case ScaPackage.SCA_SERVICE__CORBA_OBJ:
 			unsetPorts();
+			portSupplier = null;
+			propertySetOp = null;
+			propertyEmitterOp = null;
 			break;
 		default:
 			break;
