@@ -29,13 +29,19 @@ import mil.jpeojtrs.sca.scd.Provides;
 import mil.jpeojtrs.sca.scd.Uses;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.util.AnyUtils;
+import mil.jpeojtrs.sca.util.CFErrorFormatter;
 
+import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.TCKind;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
+import org.osgi.framework.FrameworkUtil;
 import org.ossie.component.Resource;
 import org.ossie.properties.Action;
 import org.ossie.properties.BooleanProperty;
@@ -78,13 +84,17 @@ import CF.PortPackage.OccupiedPort;
 public class AbstractResourceImpl extends Resource {
 
 	protected SoftPkg spd; // SUPPRESS CHECKSTYLE Protected Field
+	private static final String PLUGIN_ID = "gov.redhawk.sca.model.tests";
+	private ILog log;
 
 	public AbstractResourceImpl() {
 		super();
+		log = Platform.getLog(FrameworkUtil.getBundle(getClass()));
 	}
 
 	public AbstractResourceImpl(String compId, String compName, ORB orb, POA poa) throws ServantNotActive, WrongPolicy {
 		super(compId, compName, orb, poa);
+		log = Platform.getLog(FrameworkUtil.getBundle(getClass()));
 	}
 
 	public void init(SoftPkg spd) {
@@ -100,17 +110,12 @@ public class AbstractResourceImpl extends Resource {
 		}
 
 		initProperties(prf);
-		try {
-			initPorts(spd.getDescriptor().getComponent().getComponentFeatures().getPorts());
-		} catch (Exception e) { // CHECKSTYLE: DEBUG CODE
-			// TODO Auto-generated catch block
-			e.printStackTrace(); // CHECKSTYLE: DEBUG CODE
-		}
+		initPorts(spd.getDescriptor().getComponent().getComponentFeatures().getPorts());
+
 		try {
 			initialize();
 		} catch (InitializeError e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace(); // CHECKSTYLE: DEBUG CODE
+			log.log(new Status(IStatus.ERROR, PLUGIN_ID, CFErrorFormatter.format(e, spd.getName())));
 		}
 	}
 
@@ -130,7 +135,7 @@ public class AbstractResourceImpl extends Resource {
 
 	}
 
-	protected void initPorts(Ports ports) throws Exception {
+	protected void initPorts(Ports ports) {
 		for (Provides out : ports.getProvides()) {
 			PortPOATie tie = new PortPOATie(new AbstractPort());
 			addPort(out.getName(), tie);
@@ -294,7 +299,7 @@ public class AbstractResourceImpl extends Resource {
 		String name = simple.getName();
 		Object value = AnyUtils.convertString(simple.getValue(), simple.getType().toString(), simple.isComplex());
 		Mode mode = Mode.get(simple.getMode().getLiteral());
-		Action action = Action.get(simple.getAction().getType().getLiteral());
+		Action action = (simple.getAction() == null) ? null : Action.get(simple.getAction().getType().getLiteral());
 		Kind[] kinds = new Kind[simple.getKind().size()];
 		for (int i = 0; i < simple.getKind().size(); i++) {
 			kinds[i] = Kind.get(simple.getKind().get(i).getType().getLiteral());
@@ -315,17 +320,29 @@ public class AbstractResourceImpl extends Resource {
 		case TCKind._tk_long:
 			return new LongProperty(id, name, (Integer) value, mode, action, kinds);
 		case TCKind._tk_octet:
-			return new OctetProperty(id, name, ((Short) value).byteValue(), mode, action, kinds);
+			if (value != null) {
+				value = ((Short) value).byteValue();
+			}
+			return new OctetProperty(id, name, (Byte) value, mode, action, kinds);
 		case TCKind._tk_short:
 			return new ShortProperty(id, name, (Short) value, mode, action, kinds);
 		case TCKind._tk_string:
 			return new StringProperty(id, name, (String) value, mode, action, kinds);
 		case TCKind._tk_ulonglong:
-			return new ULongLongProperty(id, name, ((BigInteger) value).longValue(), mode, action, kinds);
+			if (value != null) {
+				value = ((BigInteger) value).longValue();
+			}
+			return new ULongLongProperty(id, name, (Long) value, mode, action, kinds);
 		case TCKind._tk_ulong:
-			return new ULongProperty(id, name, ((Long) value).intValue(), mode, action, kinds);
+			if (value != null) {
+				value = ((Long) value).intValue();
+			}
+			return new ULongProperty(id, name, (Integer) value, mode, action, kinds);
 		case TCKind._tk_ushort:
-			return new UShortProperty(id, name, ((Integer) value).shortValue(), mode, action, kinds);
+			if (value != null) {
+				value = ((Integer) value).shortValue();
+			}
+			return new UShortProperty(id, name, (Short) value, mode, action, kinds);
 		default:
 			throw new IllegalArgumentException("Test harness doesn't have support for type: " + type);
 		}

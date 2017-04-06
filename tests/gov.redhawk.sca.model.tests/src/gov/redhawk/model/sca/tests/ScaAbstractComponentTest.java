@@ -271,9 +271,9 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 			public void execute() {
 				final int result = getFixture().getPorts().size();
 				setResult(result);
-				Assert.assertTrue(result > 0);
 			}
 		});
+		Assert.assertTrue(ports > 0);
 		getFixture().fetchPorts(null);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
@@ -281,18 +281,11 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 			public void execute() {
 				Assert.assertEquals(ports, getFixture().getPorts().size());
 				getFixture().unsetPorts();
-				Assert.assertEquals(0, getFixture().getPorts().size());
 			}
 		});
-
+		Assert.assertEquals(0, getFixture().getPorts().size());
 		EList<ScaPort< ? , ? >> portsEList = getFixture().fetchPorts(null);
-		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-
-			@Override
-			public void execute() {
-				Assert.assertEquals(ports, getFixture().getPorts().size());
-			}
-		});
+		Assert.assertEquals(ports, getFixture().getPorts().size());
 		try {
 			portsEList.clear();
 			Assert.fail("fetched Ports list should be unmodifiable");
