@@ -29,6 +29,7 @@ import CF.DeviceHelper;
  * <p>
  * The following operations are tested:
  * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaService#isInstance(mil.jpeojtrs.sca.scd.Interface) <em>Is Instance</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
  * Ports</em>}</li>
@@ -95,6 +96,20 @@ public class ScaServiceTest extends ScaPropertyContainerTest {
 	protected void tearDown() throws Exception {
 		this.env = null;
 		setFixture(null);
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaService#isInstance(mil.jpeojtrs.sca.scd.Interface) <em>Is
+	 * Instance</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaService#isInstance(mil.jpeojtrs.sca.scd.Interface)
+	 * @generated
+	 */
+	public void testIsInstance__Interface() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
 	}
 
 	/**

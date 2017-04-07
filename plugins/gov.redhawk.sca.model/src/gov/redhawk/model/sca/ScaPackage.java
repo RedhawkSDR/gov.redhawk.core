@@ -109,8 +109,8 @@ public interface ScaPackage extends EPackage {
 	 */
 	int ISTATUS_PROVIDER_FEATURE_COUNT = 1;
 	/**
-	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl
-	 * <em>Data Provider Object</em>}' class.
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl <em>Data Provider
+	 * Object</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -381,8 +381,8 @@ public interface ScaPackage extends EPackage {
 	 */
 	int PROPERTIES_FEATURE_COUNT = 1;
 	/**
-	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl
-	 * <em>Property Container</em>}' class.
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl <em>Property
+	 * Container</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -511,8 +511,8 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_PROPERTY_CONTAINER_FEATURE_COUNT = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 3;
 	/**
-	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl
-	 * <em>Abstract Component</em>}' class.
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl <em>Abstract
+	 * Component</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -734,8 +734,8 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_PORT_CONTAINER_FEATURE_COUNT = IREFRESHABLE_FEATURE_COUNT + 2;
 	/**
-	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl <em>Abstract Property</em>}
-	 * ' class.
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl <em>Abstract
+	 * Property</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -1802,8 +1802,8 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_FILE_SYSTEM_FEATURE_COUNT = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 6;
 	/**
-	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaDeviceManagerFileSystemImpl
-	 * <em>Device Manager File System</em>}' class.
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaDeviceManagerFileSystemImpl <em>Device Manager
+	 * File System</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -2446,8 +2446,8 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_FILE_MANAGER_FEATURE_COUNT = SCA_FILE_SYSTEM_FEATURE_COUNT + 0;
 	/**
-	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaDomainManagerFileSystemImpl
-	 * <em>Domain Manager File System</em>}' class.
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaDomainManagerFileSystemImpl <em>Domain Manager
+	 * File System</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -2612,8 +2612,8 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_DOMAIN_MANAGER_FILE_SYSTEM_FEATURE_COUNT = SCA_FILE_MANAGER_FEATURE_COUNT + 1;
 	/**
-	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaDomainManagerRegistryImpl
-	 * <em>Domain Manager Registry</em>}' class.
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaDomainManagerRegistryImpl <em>Domain Manager
+	 * Registry</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -2879,8 +2879,8 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_LOADABLE_DEVICE_FEATURE_COUNT = SCA_DEVICE_FEATURE_COUNT + 0;
 	/**
-	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaExecutableDeviceImpl <em>Executable Device</em>}
-	 * ' class.
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaExecutableDeviceImpl <em>Executable
+	 * Device</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -3549,8 +3549,8 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_SIMPLE_PROPERTY_FEATURE_COUNT = SCA_ABSTRACT_PROPERTY_FEATURE_COUNT + 1;
 	/**
-	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaSimpleSequencePropertyImpl
-	 * <em>Simple Sequence Property</em>}' class.
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaSimpleSequencePropertyImpl <em>Simple Sequence
+	 * Property</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -4294,8 +4294,8 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_WAVEFORM_FACTORY_FEATURE_COUNT = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 6;
 	/**
-	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.StringToStringMapImpl <em>String To String Map</em>
-	 * }' class.
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.StringToStringMapImpl <em>String To String
+	 * Map</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -4332,8 +4332,8 @@ public interface ScaPackage extends EPackage {
 	 */
 	int STRING_TO_STRING_MAP_FEATURE_COUNT = 2;
 	/**
-	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaStructSequencePropertyImpl
-	 * <em>Struct Sequence Property</em>}' class.
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaStructSequencePropertyImpl <em>Struct Sequence
+	 * Property</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -4566,8 +4566,8 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_EVENT_CHANNEL_FEATURE_COUNT = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 1;
 	/**
-	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.StringToObjectMapImpl <em>String To Object Map</em>
-	 * }' class.
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.StringToObjectMapImpl <em>String To Object
+	 * Map</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
@@ -4608,12 +4608,12 @@ public interface ScaPackage extends EPackage {
 	 */
 	int STRING_TO_OBJECT_MAP_FEATURE_COUNT = 2;
 	/**
-	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl <em>Waveforms Container</em>
-	 * }' class.
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl <em>Waveforms
+	 * Container</em>}' class.
 	 * <!-- begin-user-doc -->
-	 * @since 20.2
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.2
+	 *        <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.impl.WaveformsContainerImpl
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getWaveformsContainer()
 	 * @generated
@@ -4622,9 +4622,9 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Sub Containers</b></em>' reference list.
 	 * <!-- begin-user-doc -->
-	 * @since 20.2
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.2
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -4632,9 +4632,9 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Waveforms</b></em>' reference list.
 	 * <!-- begin-user-doc -->
-	 * @since 20.2
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.2
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -4642,9 +4642,9 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Container Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * @since 20.2
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.2
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -4652,9 +4652,9 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The number of structural features of the '<em>Waveforms Container</em>' class.
 	 * <!-- begin-user-doc -->
-	 * @since 20.2
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.2
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -4885,8 +4885,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getCorbaObjWrapper_Obj();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.CorbaObjWrapper#getCorbaObj
-	 * <em>Corba Obj</em>}'.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.CorbaObjWrapper#getCorbaObj <em>Corba
+	 * Obj</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -4898,8 +4898,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getCorbaObjWrapper_CorbaObj();
 
 	/**
-	 * Returns the meta object for the map '{@link gov.redhawk.model.sca.CorbaObjWrapper#getFeatureData
-	 * <em>Feature Data</em>}'.
+	 * Returns the meta object for the map '{@link gov.redhawk.model.sca.CorbaObjWrapper#getFeatureData <em>Feature
+	 * Data</em>}'.
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
@@ -4912,8 +4912,8 @@ public interface ScaPackage extends EPackage {
 	EReference getCorbaObjWrapper_FeatureData();
 
 	/**
-	 * Returns the meta object for class '{@link gov.redhawk.model.sca.DataProviderObject <em>Data Provider Object</em>}
-	 * '.
+	 * Returns the meta object for class '{@link gov.redhawk.model.sca.DataProviderObject <em>Data Provider
+	 * Object</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -4950,8 +4950,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getDataProviderObject_DataProvidersEnabled();
 
 	/**
-	 * Returns the meta object for the attribute list '
-	 * {@link gov.redhawk.model.sca.DataProviderObject#getEnabledDataProviders <em>Enabled Data Providers</em>}'.
+	 * Returns the meta object for the attribute list
+	 * '{@link gov.redhawk.model.sca.DataProviderObject#getEnabledDataProviders <em>Enabled Data Providers</em>}'.
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
@@ -4975,8 +4975,8 @@ public interface ScaPackage extends EPackage {
 	EClass getIDisposable();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.IDisposable#isDisposed <em>Disposed</em>}
-	 * '.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.IDisposable#isDisposed
+	 * <em>Disposed</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -4988,8 +4988,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getIDisposable_Disposed();
 
 	/**
-	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ProfileObjectWrapper
-	 * <em>Profile Object Wrapper</em>}'.
+	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ProfileObjectWrapper <em>Profile Object
+	 * Wrapper</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5049,8 +5049,8 @@ public interface ScaPackage extends EPackage {
 	EReference getProperties_Property();
 
 	/**
-	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaAbstractComponent <em>Abstract Component</em>}
-	 * '.
+	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaAbstractComponent <em>Abstract
+	 * Component</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5101,8 +5101,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaAbstractComponent_Profile();
 
 	/**
-	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaPropertyContainer <em>Property Container</em>}
-	 * '.
+	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaPropertyContainer <em>Property
+	 * Container</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5113,8 +5113,8 @@ public interface ScaPackage extends EPackage {
 	EClass getScaPropertyContainer();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaPropertyContainer#getProperties <em>Properties</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.model.sca.ScaPropertyContainer#getProperties <em>Properties</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5137,8 +5137,8 @@ public interface ScaPackage extends EPackage {
 	EClass getScaPortContainer();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaPortContainer#getPorts <em>Ports</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.model.sca.ScaPortContainer#getPorts <em>Ports</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5199,8 +5199,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaAbstractProperty_Id();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaAbstractProperty#getMode <em>Mode</em>
-	 * }'.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaAbstractProperty#getMode
+	 * <em>Mode</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5212,8 +5212,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaAbstractProperty_Mode();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaAbstractProperty#getName <em>Name</em>
-	 * }'.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaAbstractProperty#getName
+	 * <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5324,8 +5324,8 @@ public interface ScaPackage extends EPackage {
 	EClass getScaDevice();
 
 	/**
-	 * Returns the meta object for the reference list '{@link gov.redhawk.model.sca.ScaDevice#getChildDevices
-	 * <em>Child Devices</em>}'.
+	 * Returns the meta object for the reference list '{@link gov.redhawk.model.sca.ScaDevice#getChildDevices <em>Child
+	 * Devices</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5337,8 +5337,8 @@ public interface ScaPackage extends EPackage {
 	EReference getScaDevice_ChildDevices();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaDevice#getAdminState
-	 * <em>Admin State</em>}'.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaDevice#getAdminState <em>Admin
+	 * State</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5375,8 +5375,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaDevice_OperationalState();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaDevice#getUsageState
-	 * <em>Usage State</em>}'.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaDevice#getUsageState <em>Usage
+	 * State</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5388,8 +5388,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaDevice_UsageState();
 
 	/**
-	 * Returns the meta object for the reference '{@link gov.redhawk.model.sca.ScaDevice#getParentDevice
-	 * <em>Parent Device</em>}'.
+	 * Returns the meta object for the reference '{@link gov.redhawk.model.sca.ScaDevice#getParentDevice <em>Parent
+	 * Device</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5437,8 +5437,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaDeviceManager_Devices();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaDeviceManager#getRootDevices <em>Root Devices</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.model.sca.ScaDeviceManager#getRootDevices <em>Root Devices</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5450,8 +5450,8 @@ public interface ScaPackage extends EPackage {
 	EReference getScaDeviceManager_RootDevices();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaDeviceManager#getChildDevices <em>Child Devices</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.model.sca.ScaDeviceManager#getChildDevices <em>Child Devices</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5463,8 +5463,8 @@ public interface ScaPackage extends EPackage {
 	EReference getScaDeviceManager_ChildDevices();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaDeviceManager#getAllDevices <em>All Devices</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.model.sca.ScaDeviceManager#getAllDevices <em>All Devices</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5476,8 +5476,8 @@ public interface ScaPackage extends EPackage {
 	EReference getScaDeviceManager_AllDevices();
 
 	/**
-	 * Returns the meta object for the containment reference '
-	 * {@link gov.redhawk.model.sca.ScaDeviceManager#getFileSystem <em>File System</em>}'.
+	 * Returns the meta object for the containment reference
+	 * '{@link gov.redhawk.model.sca.ScaDeviceManager#getFileSystem <em>File System</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5515,8 +5515,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaDeviceManager_Identifier();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaDeviceManager#getLabel <em>Label</em>}
-	 * '.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaDeviceManager#getLabel
+	 * <em>Label</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5528,8 +5528,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaDeviceManager_Label();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaDeviceManager#getServices <em>Services</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.model.sca.ScaDeviceManager#getServices <em>Services</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5577,8 +5577,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaService_Name();
 
 	/**
-	 * Returns the meta object for the container reference '{@link gov.redhawk.model.sca.ScaService#getDevMgr
-	 * <em>Dev Mgr</em>}'.
+	 * Returns the meta object for the container reference '{@link gov.redhawk.model.sca.ScaService#getDevMgr <em>Dev
+	 * Mgr</em>}'.
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 18.0
@@ -5591,8 +5591,8 @@ public interface ScaPackage extends EPackage {
 	EReference getScaService_DevMgr();
 
 	/**
-	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem
-	 * <em>Device Manager File System</em>}'.
+	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem <em>Device Manager
+	 * File System</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5603,8 +5603,8 @@ public interface ScaPackage extends EPackage {
 	EClass getScaDeviceManagerFileSystem();
 
 	/**
-	 * Returns the meta object for the container reference '
-	 * {@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager <em>Device Manager</em>}'.
+	 * Returns the meta object for the container reference
+	 * '{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager <em>Device Manager</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5640,8 +5640,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaDocumentRoot_Mixed();
 
 	/**
-	 * Returns the meta object for the map '{@link gov.redhawk.model.sca.ScaDocumentRoot#getXMLNSPrefixMap
-	 * <em>XMLNS Prefix Map</em>}'.
+	 * Returns the meta object for the map '{@link gov.redhawk.model.sca.ScaDocumentRoot#getXMLNSPrefixMap <em>XMLNS
+	 * Prefix Map</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5653,8 +5653,8 @@ public interface ScaPackage extends EPackage {
 	EReference getScaDocumentRoot_XMLNSPrefixMap();
 
 	/**
-	 * Returns the meta object for the map '{@link gov.redhawk.model.sca.ScaDocumentRoot#getXSISchemaLocation
-	 * <em>XSI Schema Location</em>}'.
+	 * Returns the meta object for the map '{@link gov.redhawk.model.sca.ScaDocumentRoot#getXSISchemaLocation <em>XSI
+	 * Schema Location</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5666,8 +5666,8 @@ public interface ScaPackage extends EPackage {
 	EReference getScaDocumentRoot_XSISchemaLocation();
 
 	/**
-	 * Returns the meta object for the containment reference '
-	 * {@link gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry <em>Domain Manager Registry</em>}'.
+	 * Returns the meta object for the containment reference
+	 * '{@link gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry <em>Domain Manager Registry</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5690,8 +5690,8 @@ public interface ScaPackage extends EPackage {
 	EClass getScaDomainManager();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaDomainManager#getWaveformFactories <em>Waveform Factories</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.model.sca.ScaDomainManager#getWaveformFactories <em>Waveform Factories</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5703,8 +5703,8 @@ public interface ScaPackage extends EPackage {
 	EReference getScaDomainManager_WaveformFactories();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaDomainManager#getWaveforms <em>Waveforms</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.model.sca.ScaDomainManager#getWaveforms <em>Waveforms</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5716,8 +5716,8 @@ public interface ScaPackage extends EPackage {
 	EReference getScaDomainManager_Waveforms();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaDomainManager#getDeviceManagers <em>Device Managers</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.model.sca.ScaDomainManager#getDeviceManagers <em>Device Managers</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5729,8 +5729,8 @@ public interface ScaPackage extends EPackage {
 	EReference getScaDomainManager_DeviceManagers();
 
 	/**
-	 * Returns the meta object for the containment reference '
-	 * {@link gov.redhawk.model.sca.ScaDomainManager#getFileManager <em>File Manager</em>}'.
+	 * Returns the meta object for the containment reference
+	 * '{@link gov.redhawk.model.sca.ScaDomainManager#getFileManager <em>File Manager</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5742,9 +5742,9 @@ public interface ScaPackage extends EPackage {
 	EReference getScaDomainManager_FileManager();
 
 	/**
-	 * Returns the meta object for the containment reference '
-	 * {@link gov.redhawk.model.sca.ScaDomainManager#getConnectionPropertiesContainer
-	 * <em>Connection Properties Container</em>}'.
+	 * Returns the meta object for the containment reference
+	 * '{@link gov.redhawk.model.sca.ScaDomainManager#getConnectionPropertiesContainer <em>Connection Properties
+	 * Container</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5769,8 +5769,8 @@ public interface ScaPackage extends EPackage {
 	EReference getScaDomainManager_ConnectionProperties();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaDomainManager#isAutoConnect
-	 * <em>Auto Connect</em>}'.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaDomainManager#isAutoConnect <em>Auto
+	 * Connect</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5820,8 +5820,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaDomainManager_Name();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaDomainManager#getRootContext
-	 * <em>Root Context</em>}'.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaDomainManager#getRootContext <em>Root
+	 * Context</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5833,8 +5833,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaDomainManager_RootContext();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaDomainManager#getState <em>State</em>}
-	 * '.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaDomainManager#getState
+	 * <em>State</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5859,8 +5859,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaDomainManager_Profile();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaDomainManager#getEventChannels <em>Event Channels</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.model.sca.ScaDomainManager#getEventChannels <em>Event Channels</em>}'.
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
@@ -5873,8 +5873,8 @@ public interface ScaPackage extends EPackage {
 	EReference getScaDomainManager_EventChannels();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaDomainManager#getLocalName
-	 * <em>Local Name</em>}'.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaDomainManager#getLocalName <em>Local
+	 * Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
@@ -5887,8 +5887,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaDomainManager_LocalName();
 
 	/**
-	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaDomainManagerFileSystem
-	 * <em>Domain Manager File System</em>}'.
+	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaDomainManagerFileSystem <em>Domain Manager
+	 * File System</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5899,8 +5899,8 @@ public interface ScaPackage extends EPackage {
 	EClass getScaDomainManagerFileSystem();
 
 	/**
-	 * Returns the meta object for the container reference '
-	 * {@link gov.redhawk.model.sca.ScaDomainManagerFileSystem#getDomMgr <em>Dom Mgr</em>}'.
+	 * Returns the meta object for the container reference
+	 * '{@link gov.redhawk.model.sca.ScaDomainManagerFileSystem#getDomMgr <em>Dom Mgr</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5912,8 +5912,8 @@ public interface ScaPackage extends EPackage {
 	EReference getScaDomainManagerFileSystem_DomMgr();
 
 	/**
-	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaDomainManagerRegistry
-	 * <em>Domain Manager Registry</em>}'.
+	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaDomainManagerRegistry <em>Domain Manager
+	 * Registry</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5924,8 +5924,8 @@ public interface ScaPackage extends EPackage {
 	EClass getScaDomainManagerRegistry();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaDomainManagerRegistry#getDomains <em>Domains</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#getDomains <em>Domains</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5970,8 +5970,8 @@ public interface ScaPackage extends EPackage {
 	EClass getScaFileStore();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaFileStore#getFileStore
-	 * <em>File Store</em>}'.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaFileStore#getFileStore <em>File
+	 * Store</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -5996,8 +5996,8 @@ public interface ScaPackage extends EPackage {
 	EReference getScaFileStore_Children();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaFileStore#getImageDesc
-	 * <em>Image Desc</em>}'.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaFileStore#getImageDesc <em>Image
+	 * Desc</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6045,8 +6045,8 @@ public interface ScaPackage extends EPackage {
 	EClass getScaFileSystem();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaFileSystem#getFileSystemURI
-	 * <em>File System URI</em>}'.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaFileSystem#getFileSystemURI <em>File
+	 * System URI</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6092,8 +6092,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaPort_Name();
 
 	/**
-	 * Returns the meta object for the reference '{@link gov.redhawk.model.sca.ScaPort#getProfileObj
-	 * <em>Profile Obj</em>}'.
+	 * Returns the meta object for the reference '{@link gov.redhawk.model.sca.ScaPort#getProfileObj <em>Profile
+	 * Obj</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6152,8 +6152,8 @@ public interface ScaPackage extends EPackage {
 	EClass getScaSimpleProperty();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaSimpleProperty#getValue <em>Value</em>
-	 * }'.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaSimpleProperty#getValue
+	 * <em>Value</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6165,8 +6165,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaSimpleProperty_Value();
 
 	/**
-	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty
-	 * <em>Simple Sequence Property</em>}'.
+	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty <em>Simple Sequence
+	 * Property</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6201,8 +6201,8 @@ public interface ScaPackage extends EPackage {
 	EClass getScaStructProperty();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaStructProperty#getFields <em>Fields</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.model.sca.ScaStructProperty#getFields <em>Fields</em>}'.
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
@@ -6239,8 +6239,8 @@ public interface ScaPackage extends EPackage {
 	EClass getScaUsesPort();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaUsesPort#getConnections <em>Connections</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.model.sca.ScaUsesPort#getConnections <em>Connections</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6311,8 +6311,8 @@ public interface ScaPackage extends EPackage {
 	EClass getScaWaveform();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaWaveform#getComponents <em>Components</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.model.sca.ScaWaveform#getComponents <em>Components</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6337,8 +6337,8 @@ public interface ScaPackage extends EPackage {
 	EReference getScaWaveform_AssemblyController();
 
 	/**
-	 * Returns the meta object for the container reference '{@link gov.redhawk.model.sca.ScaWaveform#getDomMgr
-	 * <em>Dom Mgr</em>}'.
+	 * Returns the meta object for the container reference '{@link gov.redhawk.model.sca.ScaWaveform#getDomMgr <em>Dom
+	 * Mgr</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6375,8 +6375,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaWaveform_Name();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaWaveform#getStarted <em>Started</em>}
-	 * '.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaWaveform#getStarted
+	 * <em>Started</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6388,8 +6388,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaWaveform_Started();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaWaveform#getProfile <em>Profile</em>}
-	 * '.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaWaveform#getProfile
+	 * <em>Profile</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6438,8 +6438,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaWaveformFactory_Identifier();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaWaveformFactory#getName <em>Name</em>}
-	 * '.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaWaveformFactory#getName
+	 * <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6504,8 +6504,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getStringToStringMap_Value();
 
 	/**
-	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaStructSequenceProperty
-	 * <em>Struct Sequence Property</em>}'.
+	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaStructSequenceProperty <em>Struct Sequence
+	 * Property</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6516,8 +6516,8 @@ public interface ScaPackage extends EPackage {
 	EClass getScaStructSequenceProperty();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaStructSequenceProperty#getStructs <em>Structs</em>}'.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.model.sca.ScaStructSequenceProperty#getStructs <em>Structs</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6540,8 +6540,8 @@ public interface ScaPackage extends EPackage {
 	EClass getIStatusProvider();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.IStatusProvider#getStatus <em>Status</em>
-	 * }'.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.IStatusProvider#getStatus
+	 * <em>Status</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6643,12 +6643,12 @@ public interface ScaPackage extends EPackage {
 	EReference getStringToObjectMap_Value();
 
 	/**
-	 * Returns the meta object for class '{@link gov.redhawk.model.sca.WaveformsContainer <em>Waveforms Container</em>}
-	 * '.
+	 * Returns the meta object for class '{@link gov.redhawk.model.sca.WaveformsContainer <em>Waveforms
+	 * Container</em>}'.
 	 * <!-- begin-user-doc -->
-	 * @since 20.2
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.2
+	 *        <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Waveforms Container</em>'.
 	 * @see gov.redhawk.model.sca.WaveformsContainer
 	 * @generated
@@ -6659,9 +6659,9 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the reference list '{@link gov.redhawk.model.sca.WaveformsContainer#getSubContainers
 	 * <em>Sub Containers</em>}'.
 	 * <!-- begin-user-doc -->
-	 * @since 20.2
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.2
+	 *        <!-- end-user-doc -->
 	 * @return the meta object for the reference list '<em>Sub Containers</em>'.
 	 * @see gov.redhawk.model.sca.WaveformsContainer#getSubContainers()
 	 * @see #getWaveformsContainer()
@@ -6673,9 +6673,9 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the reference list '{@link gov.redhawk.model.sca.WaveformsContainer#getWaveforms
 	 * <em>Waveforms</em>}'.
 	 * <!-- begin-user-doc -->
-	 * @since 20.2
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.2
+	 *        <!-- end-user-doc -->
 	 * @return the meta object for the reference list '<em>Waveforms</em>'.
 	 * @see gov.redhawk.model.sca.WaveformsContainer#getWaveforms()
 	 * @see #getWaveformsContainer()
@@ -6687,9 +6687,9 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.WaveformsContainer#getContainerName
 	 * <em>Container Name</em>}'.
 	 * <!-- begin-user-doc -->
-	 * @since 20.2
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.2
+	 *        <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Container Name</em>'.
 	 * @see gov.redhawk.model.sca.WaveformsContainer#getContainerName()
 	 * @see #getWaveformsContainer()
@@ -6698,8 +6698,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getWaveformsContainer_ContainerName();
 
 	/**
-	 * Returns the meta object for enum '{@link gov.redhawk.model.sca.DomainConnectionState
-	 * <em>Domain Connection State</em>}'.
+	 * Returns the meta object for enum '{@link gov.redhawk.model.sca.DomainConnectionState <em>Domain Connection
+	 * State</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6734,8 +6734,8 @@ public interface ScaPackage extends EPackage {
 	EDataType getAdminType();
 
 	/**
-	 * Returns the meta object for data type '{@link gov.redhawk.model.sca.DomainConnectionException
-	 * <em>Domain Connection Exception</em>}'.
+	 * Returns the meta object for data type '{@link gov.redhawk.model.sca.DomainConnectionException <em>Domain
+	 * Connection Exception</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6747,8 +6747,8 @@ public interface ScaPackage extends EPackage {
 	EDataType getDomainConnectionException();
 
 	/**
-	 * Returns the meta object for data type '{@link gov.redhawk.model.sca.DomainConnectionState
-	 * <em>Domain Connection State Object</em>}'.
+	 * Returns the meta object for data type '{@link gov.redhawk.model.sca.DomainConnectionState <em>Domain Connection
+	 * State Object</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6774,8 +6774,8 @@ public interface ScaPackage extends EPackage {
 	EDataType getIFileStore();
 
 	/**
-	 * Returns the meta object for data type '{@link org.eclipse.core.runtime.IProgressMonitor
-	 * <em>IProgress Monitor</em>}'.
+	 * Returns the meta object for data type '{@link org.eclipse.core.runtime.IProgressMonitor <em>IProgress
+	 * Monitor</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6788,8 +6788,8 @@ public interface ScaPackage extends EPackage {
 	EDataType getIProgressMonitor();
 
 	/**
-	 * Returns the meta object for data type '{@link gov.redhawk.model.sca.services.IScaDataProvider
-	 * <em>ISca Data Provider</em>}'.
+	 * Returns the meta object for data type '{@link gov.redhawk.model.sca.services.IScaDataProvider <em>ISca Data
+	 * Provider</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6802,8 +6802,8 @@ public interface ScaPackage extends EPackage {
 	EDataType getIScaDataProvider();
 
 	/**
-	 * Returns the meta object for data type '{@link gov.redhawk.model.sca.services.IScaDataProviderService
-	 * <em>ISca Data Provider Service</em>}'.
+	 * Returns the meta object for data type '{@link gov.redhawk.model.sca.services.IScaDataProviderService <em>ISca
+	 * Data Provider Service</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6965,8 +6965,8 @@ public interface ScaPackage extends EPackage {
 	 */
 	interface Literals {
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl
-		 * <em>Corba Obj Wrapper</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl <em>Corba Obj
+		 * Wrapper</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7009,8 +7009,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EReference CORBA_OBJ_WRAPPER__FEATURE_DATA = eINSTANCE.getCorbaObjWrapper_FeatureData();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl
-		 * <em>Data Provider Object</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl <em>Data Provider
+		 * Object</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7063,8 +7063,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EAttribute IDISPOSABLE__DISPOSED = eINSTANCE.getIDisposable_Disposed();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.ProfileObjectWrapper
-		 * <em>Profile Object Wrapper</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.ProfileObjectWrapper <em>Profile Object
+		 * Wrapper</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7109,8 +7109,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EReference PROPERTIES__PROPERTY = eINSTANCE.getProperties_Property();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl
-		 * <em>Abstract Component</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl <em>Abstract
+		 * Component</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7145,8 +7145,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EAttribute SCA_ABSTRACT_COMPONENT__PROFILE = eINSTANCE.getScaAbstractComponent_Profile();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl
-		 * <em>Property Container</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl <em>Property
+		 * Container</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7183,8 +7183,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EReference SCA_PORT_CONTAINER__PORTS = eINSTANCE.getScaPortContainer_Ports();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl
-		 * <em>Abstract Property</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl <em>Abstract
+		 * Property</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7359,8 +7359,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EReference SCA_DEVICE__DEV_MGR = eINSTANCE.getScaDevice_DevMgr();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl
-		 * <em>Device Manager</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl <em>Device
+		 * Manager</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7477,8 +7477,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EReference SCA_SERVICE__DEV_MGR = eINSTANCE.getScaService_DevMgr();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaDeviceManagerFileSystemImpl
-		 * <em>Device Manager File System</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaDeviceManagerFileSystemImpl <em>Device
+		 * Manager File System</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7496,8 +7496,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EReference SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER = eINSTANCE.getScaDeviceManagerFileSystem_DeviceManager();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl <em>Document Root</em>
-		 * }' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl <em>Document
+		 * Root</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7539,8 +7539,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EReference SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY = eINSTANCE.getScaDocumentRoot_DomainManagerRegistry();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl
-		 * <em>Domain Manager</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl <em>Domain
+		 * Manager</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7673,8 +7673,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EAttribute SCA_DOMAIN_MANAGER__LOCAL_NAME = eINSTANCE.getScaDomainManager_LocalName();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaDomainManagerFileSystemImpl
-		 * <em>Domain Manager File System</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaDomainManagerFileSystemImpl <em>Domain
+		 * Manager File System</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7692,8 +7692,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EReference SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR = eINSTANCE.getScaDomainManagerFileSystem_DomMgr();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaDomainManagerRegistryImpl
-		 * <em>Domain Manager Registry</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaDomainManagerRegistryImpl <em>Domain
+		 * Manager Registry</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7711,8 +7711,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EReference SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS = eINSTANCE.getScaDomainManagerRegistry_Domains();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaExecutableDeviceImpl
-		 * <em>Executable Device</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaExecutableDeviceImpl <em>Executable
+		 * Device</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7803,8 +7803,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EAttribute SCA_FILE_SYSTEM__FILE_SYSTEM_URI = eINSTANCE.getScaFileSystem_FileSystemURI();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaLoadableDeviceImpl
-		 * <em>Loadable Device</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaLoadableDeviceImpl <em>Loadable
+		 * Device</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7856,8 +7856,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EReference SCA_PORT__PORT_CONTAINER = eINSTANCE.getScaPort_PortContainer();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaProvidesPortImpl <em>Provides Port</em>
-		 * }' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaProvidesPortImpl <em>Provides
+		 * Port</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7867,8 +7867,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EClass SCA_PROVIDES_PORT = eINSTANCE.getScaProvidesPort();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaSimplePropertyImpl
-		 * <em>Simple Property</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaSimplePropertyImpl <em>Simple
+		 * Property</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7886,8 +7886,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EAttribute SCA_SIMPLE_PROPERTY__VALUE = eINSTANCE.getScaSimpleProperty_Value();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaSimpleSequencePropertyImpl
-		 * <em>Simple Sequence Property</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaSimpleSequencePropertyImpl <em>Simple
+		 * Sequence Property</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -7905,8 +7905,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EAttribute SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES = eINSTANCE.getScaSimpleSequenceProperty_Values();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl
-		 * <em>Struct Property</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl <em>Struct
+		 * Property</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -8053,8 +8053,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EAttribute SCA_WAVEFORM__PROFILE = eINSTANCE.getScaWaveform_Profile();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl
-		 * <em>Waveform Factory</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl <em>Waveform
+		 * Factory</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -8096,8 +8096,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EAttribute SCA_WAVEFORM_FACTORY__PROFILE = eINSTANCE.getScaWaveformFactory_Profile();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.StringToStringMapImpl
-		 * <em>String To String Map</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.StringToStringMapImpl <em>String To String
+		 * Map</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -8123,8 +8123,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EAttribute STRING_TO_STRING_MAP__VALUE = eINSTANCE.getStringToStringMap_Value();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaStructSequencePropertyImpl
-		 * <em>Struct Sequence Property</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaStructSequencePropertyImpl <em>Struct
+		 * Sequence Property</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -8142,8 +8142,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EReference SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS = eINSTANCE.getScaStructSequenceProperty_Structs();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.IStatusProviderImpl
-		 * <em>IStatus Provider</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.IStatusProviderImpl <em>IStatus
+		 * Provider</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
@@ -8183,8 +8183,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EClass IREFRESHABLE = eINSTANCE.getIRefreshable();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaEventChannelImpl <em>Event Channel</em>
-		 * }' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaEventChannelImpl <em>Event
+		 * Channel</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * 
 		 * @since 19.0
@@ -8204,8 +8204,8 @@ public interface ScaPackage extends EPackage {
 		 */
 		EAttribute SCA_EVENT_CHANNEL__NAME = eINSTANCE.getScaEventChannel_Name();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.StringToObjectMapImpl
-		 * <em>String To Object Map</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.StringToObjectMapImpl <em>String To Object
+		 * Map</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * 
 		 * @since 19.0
@@ -8234,12 +8234,12 @@ public interface ScaPackage extends EPackage {
 		 */
 		EReference STRING_TO_OBJECT_MAP__VALUE = eINSTANCE.getStringToObjectMap_Value();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl
-		 * <em>Waveforms Container</em>}' class.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl <em>Waveforms
+		 * Container</em>}' class.
 		 * <!-- begin-user-doc -->
-		 * @since 20.2
-		 * <!-- end-user-doc -->
 		 * 
+		 * @since 20.2
+		 *        <!-- end-user-doc -->
 		 * @see gov.redhawk.model.sca.impl.WaveformsContainerImpl
 		 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getWaveformsContainer()
 		 * @generated
@@ -8248,33 +8248,33 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Sub Containers</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
-		 * @since 20.2
-		 * <!-- end-user-doc -->
 		 * 
+		 * @since 20.2
+		 *        <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference WAVEFORMS_CONTAINER__SUB_CONTAINERS = eINSTANCE.getWaveformsContainer_SubContainers();
 		/**
 		 * The meta object literal for the '<em><b>Waveforms</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
-		 * @since 20.2
-		 * <!-- end-user-doc -->
 		 * 
+		 * @since 20.2
+		 *        <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference WAVEFORMS_CONTAINER__WAVEFORMS = eINSTANCE.getWaveformsContainer_Waveforms();
 		/**
 		 * The meta object literal for the '<em><b>Container Name</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
-		 * @since 20.2
-		 * <!-- end-user-doc -->
 		 * 
+		 * @since 20.2
+		 *        <!-- end-user-doc -->
 		 * @generated
 		 */
 		EAttribute WAVEFORMS_CONTAINER__CONTAINER_NAME = eINSTANCE.getWaveformsContainer_ContainerName();
 		/**
-		 * The meta object literal for the '{@link gov.redhawk.model.sca.DomainConnectionState
-		 * <em>Domain Connection State</em>}' enum.
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.DomainConnectionState <em>Domain Connection
+		 * State</em>}' enum.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 

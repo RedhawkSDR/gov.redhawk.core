@@ -12,6 +12,7 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca;
 
+import mil.jpeojtrs.sca.scd.Interface;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 
 /**
@@ -31,8 +32,8 @@ import mil.jpeojtrs.sca.spd.SoftPkg;
  *              </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaService()
- * @model superTypes=
- *        "gov.redhawk.model.sca.ScaPropertyContainer<gov.redhawk.model.sca.Object, mil.jpeojtrs.sca.spd.SoftPkg> gov.redhawk.model.sca.ScaPortContainer"
+ * @model superTypes="gov.redhawk.model.sca.ScaPropertyContainer<gov.redhawk.model.sca.Object,
+ *        mil.jpeojtrs.sca.spd.SoftPkg> gov.redhawk.model.sca.ScaPortContainer"
  * @generated
  */
 public interface ScaService extends ScaPropertyContainer<org.omg.CORBA.Object, SoftPkg>, ScaPortContainer {
@@ -79,5 +80,14 @@ public interface ScaService extends ScaPropertyContainer<org.omg.CORBA.Object, S
 	 * @generated
 	 */
 	ScaDeviceManager getDevMgr();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean" intfRequired="true"
+	 * @generated
+	 */
+	boolean isInstance(Interface intf);
 
 } // ScaService

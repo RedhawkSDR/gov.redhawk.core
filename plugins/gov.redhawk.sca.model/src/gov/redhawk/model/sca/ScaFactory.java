@@ -272,9 +272,9 @@ public interface ScaFactory extends EFactory {
 	/**
 	 * Returns a new object of class '<em>Waveforms Container</em>'.
 	 * <!-- begin-user-doc -->
-	 * @since 20.2
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.2
+	 *        <!-- end-user-doc -->
 	 * @return a new object of class '<em>Waveforms Container</em>'.
 	 * @generated
 	 */
