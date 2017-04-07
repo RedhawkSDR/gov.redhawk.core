@@ -478,7 +478,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 	@Override
 	protected org.omg.CORBA.Object narrow(org.omg.CORBA.Object obj) {
-		// We don't know what to narrow to here so return the original object
+		// We can't narrow the service object since its type isn't known a priori
 		return obj;
 	}
 
@@ -639,9 +639,16 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 	private PortSupplierOperations getPortSupplier() {
 		if (portSupplier == null) {
-			// Narrow
+			// Cast or narrow
 			final org.omg.CORBA.Object corbaObj = obj;
-			final PortSupplier narrowedObj = PortSupplierHelper.narrow(corbaObj);
+			final PortSupplier narrowedObj;
+			if (corbaObj instanceof PortSupplier) {
+				narrowedObj = (PortSupplier) corbaObj;
+			} else if (corbaObj._is_a(PortSupplierHelper.id())) {
+				narrowedObj = PortSupplierHelper.unchecked_narrow(corbaObj);
+			} else {
+				return null;
+			}
 
 			// Update in protected context so that we don't hold on to incorrect information if the CORBA object was
 			// unset or changed
@@ -774,9 +781,16 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 	private PropertySetOperations getPropertySet() {
 		if (propertySetOp == null) {
-			// Narrow
+			// Cast or narrow
 			final org.omg.CORBA.Object corbaObj = obj;
-			final PropertySet narrowedObj = PropertySetHelper.narrow(corbaObj);
+			final PropertySet narrowedObj;
+			if (corbaObj instanceof PropertySet) {
+				narrowedObj = (PropertySet) corbaObj;
+			} else if (corbaObj._is_a(PropertySetHelper.id())) {
+				narrowedObj = PropertySetHelper.unchecked_narrow(corbaObj);
+			} else {
+				return null;
+			}
 
 			// Update in protected context so that we don't hold on to incorrect information if the CORBA object was
 			// unset or changed
@@ -794,9 +808,16 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 	private PropertyEmitterOperations getPropertyEmitter() {
 		if (propertyEmitterOp == null) {
-			// Narrow
+			// Cast or narrow
 			final org.omg.CORBA.Object corbaObj = obj;
-			final PropertyEmitter narrowedObj = PropertyEmitterHelper.narrow(corbaObj);
+			final PropertyEmitter narrowedObj;
+			if (corbaObj instanceof PropertyEmitter) {
+				narrowedObj = (PropertyEmitter) corbaObj;
+			} else if (corbaObj._is_a(PropertyEmitterHelper.id())) {
+				narrowedObj = PropertyEmitterHelper.narrow(corbaObj);
+			} else {
+				return null;
+			}
 
 			// Update in protected context so that we don't hold on to incorrect information if the CORBA object was
 			// unset or changed
