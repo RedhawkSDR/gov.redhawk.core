@@ -47,6 +47,7 @@ import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 
 /**
+ * A content provider for SCA model property objects. Supports both design time and runtime.
  * @since 9.0
  */
 public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentProvider {

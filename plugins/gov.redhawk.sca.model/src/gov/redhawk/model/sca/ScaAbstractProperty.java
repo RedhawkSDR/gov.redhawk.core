@@ -204,8 +204,8 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	 * Returns the value of the '<em><b>Ignore Remote Set</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Ignore Remote Set</em>' attribute isn't clear, there really should be more of a
-	 * description here...
+	 * This flag indicates that changes to the model object's value should <b>NOT</b> be sent via a
+	 * {@link CF.PropertySet#configure(DataType[])) call on the CORBA object.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * 
@@ -221,6 +221,10 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractProperty#isIgnoreRemoteSet
 	 * <em>Ignore Remote Set</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * <p/>
+	 * Sets a flag indicating that calls to {@link CF.PropertySet#configure(DataType[])} should be suppressed. This flag
+	 * defaults to <code>false</code>. Calls to this method are counted, i.e. two calls with <code>true</code> would
+	 * require two calls with <code>false</code> before the flag would again report <code>false</code>.
 	 * <!-- end-user-doc -->
 	 * 
 	 * @param value the new value of the '<em>Ignore Remote Set</em>' attribute.
@@ -240,6 +244,9 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Sets the model property's value and the status for its value based on the provided {@link Any}. No remote set
+	 * is performed. This method is typically used to set the model's value based on the results of querying the CORBA
+	 * object.
 	 * <!-- end-user-doc -->
 	 * 
 	 * @model anyDataType="gov.redhawk.model.sca.Any"
@@ -249,6 +256,7 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Performs a CORBA call ({@link CF.PropertySet#configure(DataType[])}) to set the remote object's value.
 	 * <!-- end-user-doc -->
 	 * 
 	 * @model exceptions="mil.jpeojtrs.sca.cf.PartialConfiguration mil.jpeojtrs.sca.cf.InvalidConfiguration"
