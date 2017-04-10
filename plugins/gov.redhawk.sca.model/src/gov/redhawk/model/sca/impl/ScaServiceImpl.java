@@ -72,14 +72,11 @@ import org.eclipse.emf.transaction.RunnableWithResult;
 import org.omg.CORBA.SystemException;
 
 import CF.DataType;
-import CF.PortSupplier;
 import CF.PortSupplierHelper;
 import CF.PortSupplierOperations;
 import CF.PropertiesHolder;
-import CF.PropertyEmitter;
 import CF.PropertyEmitterHelper;
 import CF.PropertyEmitterOperations;
-import CF.PropertySet;
 import CF.PropertySetHelper;
 import CF.PropertySetOperations;
 import CF.UnknownProperties;
@@ -137,6 +134,14 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * True if {@link #portSupplierOp}, {@link #propertySetOp} and {#propertyEmitterOp} have been narrowed from the
+	 * current CORBA object, if applicable. The values may be null if they cannot be narrowed to the appropriate type.
+	 */
+	private volatile boolean cfInterfacesNarrowed = false;
+
+	private PortSupplierOperations portSupplierOp;
 
 	private PropertySetOperations propertySetOp;
 
@@ -563,7 +568,6 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	// END GENERATED CODE
 
 	private final VersionedFeature portRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS);
-	private PortSupplierOperations portSupplier;
 
 	/**
 	 * EMF feature path from a {@link ScaService} to the ports in its SCD file.
@@ -638,30 +642,50 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	}
 
 	private PortSupplierOperations getPortSupplier() {
-		if (portSupplier == null) {
-			// Cast or narrow
-			final org.omg.CORBA.Object corbaObj = obj;
-			final PortSupplier narrowedObj;
-			if (corbaObj instanceof PortSupplier) {
-				narrowedObj = (PortSupplier) corbaObj;
-			} else if (corbaObj._is_a(PortSupplierHelper.id())) {
-				narrowedObj = PortSupplierHelper.unchecked_narrow(corbaObj);
-			} else {
-				return null;
-			}
-
-			// Update in protected context so that we don't hold on to incorrect information if the CORBA object was
-			// unset or changed
-			ScaModelCommand.execute(this, new ScaModelCommand() {
-				@Override
-				public void execute() {
-					if (obj == corbaObj) {
-						portSupplier = narrowedObj;
-					}
-				}
-			});
+		if (cfInterfacesNarrowed) {
+			return portSupplierOp;
 		}
-		return portSupplier;
+		narrowCFInterfaces();
+		return portSupplierOp;
+	}
+
+	private void narrowCFInterfaces() {
+		// Narrow CORBA objects
+		final org.omg.CORBA.Object corbaObj = obj;
+		PortSupplierOperations narrowedPortSupplier;
+		PropertySetOperations narrowedPropSet;
+		PropertyEmitterOperations narrowedPropEmitter;
+		try {
+			narrowedPortSupplier = PortSupplierHelper.narrow(corbaObj);
+		} catch (org.omg.CORBA.BAD_PARAM e) {
+			narrowedPortSupplier = null;
+		}
+		try {
+			narrowedPropSet = PropertySetHelper.narrow(corbaObj);
+		} catch (org.omg.CORBA.BAD_PARAM e) {
+			narrowedPropSet = null;
+		}
+		try {
+			narrowedPropEmitter = PropertyEmitterHelper.narrow(corbaObj);
+		} catch (org.omg.CORBA.BAD_PARAM e) {
+			narrowedPropEmitter = null;
+		}
+
+		// Update in protected context so that we don't have incorrect information if the CORBA object was unset/changed
+		final PortSupplierOperations finalPortSupplier = narrowedPortSupplier;
+		final PropertySetOperations finalPropSet = narrowedPropSet;
+		final PropertyEmitterOperations finalPropEmitter = narrowedPropEmitter;
+		ScaModelCommand.execute(this, new ScaModelCommand() {
+			@Override
+			public void execute() {
+				if (obj == corbaObj) {
+					portSupplierOp = finalPortSupplier;
+					propertySetOp = finalPropSet;
+					propertyEmitterOp = finalPropEmitter;
+					cfInterfacesNarrowed = true;
+				}
+			}
+		});
 	}
 
 	@Override
@@ -781,56 +805,18 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	}
 
 	private PropertySetOperations getPropertySet() {
-		if (propertySetOp == null) {
-			// Cast or narrow
-			final org.omg.CORBA.Object corbaObj = obj;
-			final PropertySet narrowedObj;
-			if (corbaObj instanceof PropertySet) {
-				narrowedObj = (PropertySet) corbaObj;
-			} else if (corbaObj._is_a(PropertySetHelper.id())) {
-				narrowedObj = PropertySetHelper.unchecked_narrow(corbaObj);
-			} else {
-				return null;
-			}
-
-			// Update in protected context so that we don't hold on to incorrect information if the CORBA object was
-			// unset or changed
-			ScaModelCommand.execute(this, new ScaModelCommand() {
-				@Override
-				public void execute() {
-					if (obj == corbaObj) {
-						propertySetOp = narrowedObj;
-					}
-				}
-			});
+		if (cfInterfacesNarrowed) {
+			return propertySetOp;
 		}
+		narrowCFInterfaces();
 		return propertySetOp;
 	}
 
 	private PropertyEmitterOperations getPropertyEmitter() {
-		if (propertyEmitterOp == null) {
-			// Cast or narrow
-			final org.omg.CORBA.Object corbaObj = obj;
-			final PropertyEmitter narrowedObj;
-			if (corbaObj instanceof PropertyEmitter) {
-				narrowedObj = (PropertyEmitter) corbaObj;
-			} else if (corbaObj._is_a(PropertyEmitterHelper.id())) {
-				narrowedObj = PropertyEmitterHelper.narrow(corbaObj);
-			} else {
-				return null;
-			}
-
-			// Update in protected context so that we don't hold on to incorrect information if the CORBA object was
-			// unset or changed
-			ScaModelCommand.execute(this, new ScaModelCommand() {
-				@Override
-				public void execute() {
-					if (obj == corbaObj) {
-						propertyEmitterOp = narrowedObj;
-					}
-				}
-			});
+		if (cfInterfacesNarrowed) {
+			return propertyEmitterOp;
 		}
+		narrowCFInterfaces();
 		return propertyEmitterOp;
 	}
 
@@ -896,9 +882,10 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		switch (msg.getFeatureID(ScaService.class)) {
 		case ScaPackage.SCA_SERVICE__CORBA_OBJ:
 			unsetPorts();
-			portSupplier = null;
+			portSupplierOp = null;
 			propertySetOp = null;
 			propertyEmitterOp = null;
+			cfInterfacesNarrowed = false;
 			break;
 		default:
 			break;
