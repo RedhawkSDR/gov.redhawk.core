@@ -2236,6 +2236,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			throw new IllegalStateException("CORBA Object is Null");
 		}
 		domMgr.configure(configProperties);
+		fetchProperties(null);
 		// BEGIN GENERATED CODE
 	}
 

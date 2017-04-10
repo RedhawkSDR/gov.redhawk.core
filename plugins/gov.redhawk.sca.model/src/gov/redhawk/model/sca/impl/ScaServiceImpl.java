@@ -777,6 +777,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 			throw new IllegalStateException("CORBA Object is null, or service does not support " + PropertySetHelper.id());
 		}
 		set.configure(configProperties);
+		fetchProperties(null);
 	}
 
 	private PropertySetOperations getPropertySet() {

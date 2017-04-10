@@ -93,8 +93,9 @@ public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentP
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
+							boolean okay = true;
 							try {
-								return CorbaUtils.invoke(new Callable<IStatus>() {
+								IStatus status = CorbaUtils.invoke(new Callable<IStatus>() {
 
 									@Override
 									public IStatus call() throws Exception {
@@ -108,25 +109,31 @@ public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentP
 										}
 									}
 								}, monitor);
+								okay = status.isOK();
+								return status;
 							} catch (CoreException e) {
+								okay = false;
 								return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getStatus().getMessage(), e);
 							} catch (InterruptedException e) {
 								return Status.CANCEL_STATUS;
 							} finally {
-								final ScaPropertyContainer< ? , ? > parent = ScaEcoreUtils.getEContainerOfType(prop, ScaPropertyContainer.class);
-								try {
-									CorbaUtils.invoke(new Callable<Object>() {
-
-										@Override
-										public Object call() throws Exception {
-											parent.fetchProperties(monitor);
-											return null;
-										}
-									}, monitor);
-								} catch (CoreException e) {
-									// PASS
-								} catch (InterruptedException e) {
-									// PASS
+								// If there was a problem, we fetch properties to try and get them back in a
+								// representative state
+								if (!okay) {
+									final ScaPropertyContainer< ? , ? > parent = ScaEcoreUtils.getEContainerOfType(prop, ScaPropertyContainer.class);
+									try {
+										CorbaUtils.invoke(new Callable<Object>() {
+											@Override
+											public Object call() throws Exception {
+												parent.fetchProperties(monitor);
+												return null;
+											}
+										}, monitor);
+									} catch (CoreException e) {
+										// PASS
+									} catch (InterruptedException e) {
+										// PASS
+									}
 								}
 							}
 						}
