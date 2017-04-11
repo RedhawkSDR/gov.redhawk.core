@@ -104,7 +104,6 @@ public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentP
 			}
 
 			// Use a job to set the remote value via CORBA call
-			final String description = String.format("property %s", prop.getId());
 			final String jobText = String.format("Setting value for property %s", prop.getId());
 			final Job setJob = new Job(jobText) {
 				@Override
@@ -116,9 +115,9 @@ public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentP
 								prop.setRemoteValue(any);
 								return Status.OK_STATUS;
 							} catch (final PartialConfiguration e) {
-								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e, description), e);
+								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
 							} catch (final InvalidConfiguration e) {
-								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e, description), e);
+								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
 							}
 						}, monitor);
 						okay = status.isOK();
