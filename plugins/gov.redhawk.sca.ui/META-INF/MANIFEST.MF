@@ -30,7 +30,7 @@ Require-Bundle: gov.redhawk.sca;bundle-version="1.0.0",
  mil.jpeojtrs.sca.scd,
  org.eclipse.swt,
  org.eclipse.jface
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.sca.internal.ui;x-internal:=true,
  gov.redhawk.sca.internal.ui.actions;x-internal:=true,

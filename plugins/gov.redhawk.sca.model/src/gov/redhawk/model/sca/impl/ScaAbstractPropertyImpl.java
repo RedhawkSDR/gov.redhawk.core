@@ -721,6 +721,10 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	// END GENERATED CODE
 
 	/**
+	 * Derived classes must implement this method to convert the {@link Any} and set their value. The status for the
+	 * value attribute should be updated appropriately (ok if no issue, error if something is wrong with the data in
+	 * the {@link Any}).
+	 * @param any The {@link Any} to use to set the model object's value
 	 * @since 13.0
 	 */
 	protected abstract void internalFromAny(Any any);

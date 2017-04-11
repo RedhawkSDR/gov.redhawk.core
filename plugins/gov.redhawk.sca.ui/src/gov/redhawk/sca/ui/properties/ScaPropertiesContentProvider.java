@@ -14,15 +14,12 @@ package gov.redhawk.sca.ui.properties;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaPropertyContainer;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
 import gov.redhawk.sca.internal.ui.properties.ScaSimplePropertyValuePropertyDescriptor;
 import gov.redhawk.sca.internal.ui.properties.SequencePropertyValueDescriptor;
 import gov.redhawk.sca.ui.ScaModelAdapterFactoryContentProvider;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 import mil.jpeojtrs.sca.util.CFErrorFormatter;
-
-import java.util.concurrent.Callable;
 
 import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
@@ -47,6 +44,7 @@ import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 
 /**
+ * A content provider for SCA model property objects. Supports both design time and runtime.
  * @since 9.0
  */
 public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentProvider {
@@ -74,74 +72,79 @@ public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentP
 		@Override
 		public void setPropertyValue(final Object propertyId, final Object value) {
 			final ScaAbstractProperty< ? > prop = (ScaAbstractProperty< ? >) this.object;
+
+			// The new model object's value, if different than the old, will be returned
 			final Any any = ScaModelCommandWithResult.execute(prop, new ScaModelCommandWithResult<Any>() {
 
 				@Override
 				public void execute() {
+					// Don't perform any CORBA calls
+					boolean originalIgnore = prop.isIgnoreRemoteSet();
 					prop.setIgnoreRemoteSet(true);
-					final Any oldValue = prop.toAny();
-					ValueWrapperPropertySource.super.setPropertyValue(propertyId, value);
-					if (!prop.valueEquals(oldValue)) {
-						setResult(prop.toAny());
+
+					try {
+						// Set the value; compare to the old value
+						final Any oldValue = prop.toAny();
+						ValueWrapperPropertySource.super.setPropertyValue(propertyId, value);
+						if (!originalIgnore && !prop.valueEquals(oldValue)) {
+							// New value is different than old, and setting the remote CORBA object wasn't already
+							// suppressed. Return the new value.
+							setResult(prop.toAny());
+						}
+					} finally {
+						// Restore flag
+						prop.setIgnoreRemoteSet(false);
 					}
 				}
 			});
-			try {
-				if (any != null) {
-					final Job setJob = new Job("Setting property value " + prop.getId()) {
 
-						@Override
-						protected IStatus run(final IProgressMonitor monitor) {
+			if (any == null) {
+				// Property value is not affected, or shouldn't be remotely set
+				return;
+			}
+
+			// Use a job to set the remote value via CORBA call
+			final String jobText = String.format("Setting value for property %s", prop.getId());
+			final Job setJob = new Job(jobText) {
+				@Override
+				protected IStatus run(final IProgressMonitor monitor) {
+					boolean okay = true;
+					try {
+						IStatus status = CorbaUtils.invoke(() -> {
 							try {
-								return CorbaUtils.invoke(new Callable<IStatus>() {
-
-									@Override
-									public IStatus call() throws Exception {
-										try {
-											prop.setRemoteValue(any);
-											return Status.OK_STATUS;
-										} catch (final PartialConfiguration e) {
-											return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
-										} catch (final InvalidConfiguration e) {
-											return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
-										}
-									}
+								prop.setRemoteValue(any);
+								return Status.OK_STATUS;
+							} catch (final PartialConfiguration e) {
+								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
+							} catch (final InvalidConfiguration e) {
+								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
+							}
+						}, monitor);
+						okay = status.isOK();
+						return status;
+					} catch (CoreException e) {
+						okay = false;
+						return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getStatus().getMessage(), e);
+					} catch (InterruptedException e) {
+						return Status.CANCEL_STATUS;
+					} finally {
+						// If there was a problem, we fetch properties to try and get them back in a representative
+						// state. If there wasn't a problem, the model should already be consistent.
+						if (!okay) {
+							final ScaPropertyContainer< ? , ? > parent = ScaEcoreUtils.getEContainerOfType(prop, ScaPropertyContainer.class);
+							try {
+								CorbaUtils.invoke(() -> {
+									parent.fetchProperties(monitor);
+									return null;
 								}, monitor);
-							} catch (CoreException e) {
-								return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getStatus().getMessage(), e);
-							} catch (InterruptedException e) {
-								return Status.CANCEL_STATUS;
-							} finally {
-								final ScaPropertyContainer< ? , ? > parent = ScaEcoreUtils.getEContainerOfType(prop, ScaPropertyContainer.class);
-								try {
-									CorbaUtils.invoke(new Callable<Object>() {
-
-										@Override
-										public Object call() throws Exception {
-											parent.fetchProperties(monitor);
-											return null;
-										}
-									}, monitor);
-								} catch (CoreException e) {
-									// PASS
-								} catch (InterruptedException e) {
-									// PASS
-								}
+							} catch (CoreException | InterruptedException e) {
+								// PASS
 							}
 						}
-
-					};
-					setJob.schedule();
-				}
-			} finally {
-				ScaModelCommand.execute(prop, new ScaModelCommand() {
-
-					@Override
-					public void execute() {
-						prop.setIgnoreRemoteSet(false);
 					}
-				});
-			}
+				}
+			};
+			setJob.schedule();
 		}
 	}
 

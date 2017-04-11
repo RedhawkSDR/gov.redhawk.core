@@ -14,10 +14,6 @@ package gov.redhawk.diagram.sheet.properties;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
-import gov.redhawk.model.sca.ScaStructProperty;
-import gov.redhawk.model.sca.ScaStructSequenceProperty;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 import mil.jpeojtrs.sca.partitioning.ComponentProperties;
 import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
@@ -29,12 +25,12 @@ import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
 import mil.jpeojtrs.sca.prf.StructRef;
 import mil.jpeojtrs.sca.prf.StructSequenceRef;
 import mil.jpeojtrs.sca.spd.SoftPkg;
+import mil.jpeojtrs.sca.util.collections.FeatureMapList;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.domain.IEditingDomainProvider;
@@ -117,29 +113,28 @@ public class ComponentInstantiationPropertyViewerAdapter {
 	}
 
 	public final void setInput(final ComponentInstantiation inst) {
+		if (inst == input) {
+			return;
+		}
+
 		ignore = true;
 		input = inst;
 		if (input != null) {
+			// Load profile
 			final SoftPkg spd = input.getPlacement().getComponentFileRef().getFile().getSoftPkg();
 			component.unsetProfileObj();
 			component.setProfileObj(spd);
-			component.fetchProperties(null);
+
+			// Load properties
+			for (ScaAbstractProperty< ? > prop : component.fetchProperties(null)) {
+				prop.setIgnoreRemoteSet(true);
+			}
+
+			// Set property overrides
 			if (input.getComponentProperties() != null) {
-				for (final ValueListIterator<Object> iterator = input.getComponentProperties().getProperties().valueListIterator(); iterator.hasNext();) {
-					final Object obj = iterator.next();
-					if (obj instanceof AbstractPropertyRef< ? >) {
-						final AbstractPropertyRef< ? > ref = (AbstractPropertyRef< ? >) obj;
-						final ScaAbstractProperty< ? > prop = component.getProperty(ref.getRefID());
-						if (ref instanceof SimpleRef && prop instanceof ScaSimpleProperty) {
-							setValue(ref, prop);
-						} else if (ref instanceof SimpleSequenceRef && prop instanceof ScaSimpleSequenceProperty) {
-							setValue(ref, prop);
-						} else if (ref instanceof StructRef && prop instanceof ScaStructProperty) {
-							setValue(ref, prop);
-						} else if (ref instanceof StructSequenceRef && prop instanceof ScaStructSequenceProperty) {
-							setValue(ref, prop);
-						}
-					}
+				for (AbstractPropertyRef< ? > ref : new FeatureMapList<AbstractPropertyRef>(input.getComponentProperties().getProperties(), AbstractPropertyRef.class)) {
+					final ScaAbstractProperty< ? > prop = component.getProperty(ref.getRefID());
+					prop.fromAny(ref.toAny());
 				}
 			}
 		} else {
@@ -147,10 +142,6 @@ public class ComponentInstantiationPropertyViewerAdapter {
 		}
 		ignore = false;
 		viewer.refresh();
-	}
-
-	private void setValue(final AbstractPropertyRef< ? > ref, final ScaAbstractProperty< ? > prop) {
-		prop.fromAny(ref.toAny());
 	}
 
 	/**
