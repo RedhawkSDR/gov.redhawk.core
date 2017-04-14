@@ -26,9 +26,6 @@ import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.LabelProviderChangedEvent;
 
-/**
- * 
- */
 public class RefreshDataProviderDecorator extends LabelProvider implements ILightweightLabelDecorator {
 
 	private class PropertyListener implements PropertyChangeListener {
@@ -47,7 +44,7 @@ public class RefreshDataProviderDecorator extends LabelProvider implements ILigh
 					return;
 				}
 			}
-			if (RefreshTasker.PROP_ACTIVE.equals(evt.getPropertyName())) {
+			if (IScaDataProvider.ENABLED_PROPERTY.equals(evt.getPropertyName())) {
 				fireStatusChanged(element);
 			}
 		}
@@ -66,9 +63,6 @@ public class RefreshDataProviderDecorator extends LabelProvider implements ILigh
 		super.dispose();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void decorate(final Object element, final IDecoration decoration) {
 		if (element instanceof DataProviderObject) {
@@ -87,7 +81,7 @@ public class RefreshDataProviderDecorator extends LabelProvider implements ILigh
 				}
 			});
 			if (task != null) {
-				if (!task.isActive()) {
+				if (!task.isEnabled()) {
 					decoration.addOverlay(RefreshProviderUIActivator.getDefault().getImageDescriptor("icons/stock-media-pause.png"), IDecoration.TOP_RIGHT);
 				}
 				// Don't add a second listener if we have already added one
