@@ -83,19 +83,16 @@ public class RefreshProviderPlugin extends Plugin {
 	public IPreferenceAccessor getPreferenceAccessor() {
 		return this.refreshPreferenceStore;
 	}
-	
+
 	/**
 	 * @since 5.0
+	 * @deprecated Do not use. No effect.
 	 */
+	@Deprecated
 	public static void setOverrideDepth(RefreshDepth depth) {
-		if (instance != null) {
-			final IPreferenceAccessor accessor = instance.getPreferenceAccessor();
-			if (accessor != null) {
-				accessor.setValue(RefreshPreferenceConstants.REFRESH_OVERRIDE_DEPTH, depth.toString());
-			}
-		}
+		// PASS
 	}
-	
+
 	/**
 	 * @since 5.0
 	 */
@@ -148,22 +145,10 @@ public class RefreshProviderPlugin extends Plugin {
 	
 	/**
 	 * @since 5.0
+	 * @deprecated Do not use. Returns null.
 	 */
+	@Deprecated
 	public static RefreshDepth getOverrideDepth() {
-		String depth = null;
-		if (instance != null) {
-			final IPreferenceAccessor accessor = instance.getPreferenceAccessor();
-			if (accessor != null) {
-				depth = accessor.getString(RefreshPreferenceConstants.REFRESH_OVERRIDE_DEPTH);
-			}
-		}
-		if (depth != null) {
-			try {
-				return RefreshDepth.valueOf(depth);
-			} catch (IllegalArgumentException e) {
-				// PASS
-			}
-		}
 		return null;
 	}
 }
