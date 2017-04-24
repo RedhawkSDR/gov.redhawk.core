@@ -1,253 +1,258 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- *
  */
 package gov.redhawk.sca.model.provider.refresh.internal;
 
-import gov.redhawk.model.sca.IDisposable;
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.model.sca.services.AbstractDataProvider;
-import gov.redhawk.sca.model.provider.refresh.RefreshProviderPlugin;
-import gov.redhawk.sca.util.Debug;
-
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import mil.jpeojtrs.sca.util.NamedThreadFactory;
-
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 
-public class RefreshTasker extends AbstractDataProvider implements Runnable {
-	private static final Debug DEBUG = new Debug(RefreshProviderPlugin.PLUGIN_ID, "tasker");
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.services.AbstractDataProvider;
+import gov.redhawk.sca.model.provider.refresh.RefreshProviderPlugin;
+
+/**
+ * Responsible for scheduling and performing periodic refreshes using a provided {@link IRefresher}.
+ */
+public class RefreshTasker extends AbstractDataProvider {
+
+	private static final long MAX_REFRESH_DELAY = 60000;
+	private static final IStatus STATUS_CANNOT_REFRESH = new Status(IStatus.WARNING, RefreshProviderPlugin.PLUGIN_ID, "Unable to refresh");
 
 	/**
-	 * One global tasking thread pool The actual CORBA invocation is handled by the refresher
+	 * This is the object being refreshed
 	 */
-	public static final ScheduledExecutorService TASKER_POOL = Executors.newScheduledThreadPool(1, new NamedThreadFactory(
-		ScaRefreshableDataProviderService.class.getName() + ":TaskerPool"));
+	private EObject objectToRefresh;
 
 	/**
-	 * @since 4.0
+	 * This object performs an appropriate refresh on {@link #objectToRefresh}
 	 */
-	public static final String PROP_ACTIVE = "active";
+	private IRefresher refresher;
 
-	public static final ExecutorService WORKER_POOL = new ThreadPoolExecutor(0, 20, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>(),
-		new NamedThreadFactory(ScaRefreshableDataProviderService.class.getName() + ":WorkerPool"));
+	/**
+	 * A {@link Runnable} which has the logic of the actual refresh operation. <b>NOTE: Access synchronization
+	 * required</b>.
+	 */
+	private RefreshTask doRefresh;
 
-	private final EObject eObject;
-	private final IRefresher refresher;
-	private ScheduledFuture< ? > schedule;
-	private boolean active = true;
-	private final Adapter listener = new AdapterImpl() {
+	/**
+	 * A {@link ScheduledFuture} for the next scheduled refresh, if any. <b>NOTE: Access synchronization required</b>.
+	 */
+	private ScheduledFuture< ? > scheduledRefresh = null;
+
+	/**
+	 * The delay of the last refresh. <b>NOTE: Access synchronization required</b>.
+	 */
+	private long lastDelay = 0;
+
+	/**
+	 * Handles the target object being disposed, or its CORBA object / profile URI changing
+	 */
+	private final Adapter objectToRefreshListener = new AdapterImpl() {
 		@Override
 		public void notifyChanged(final org.eclipse.emf.common.notify.Notification msg) {
-			if (msg.getFeature() == ScaPackage.Literals.IDISPOSABLE__DISPOSED) {
-				if (msg.getNewBooleanValue()) {
-					dispose();
-				}
-			} else if (msg.getFeature() == ScaPackage.Literals.CORBA_OBJ_WRAPPER__CORBA_OBJ && !msg.isTouch()) {
-				schedule();
-			} else if ((msg.getFeature() == ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI) && !msg.isTouch()) {
-				schedule();
+			Object feature = msg.getFeature();
+			if (feature == ScaPackage.Literals.IDISPOSABLE__DISPOSED && msg.getNewBooleanValue()) {
+				dispose();
+			} else if (feature == ScaPackage.Literals.CORBA_OBJ_WRAPPER__CORBA_OBJ && !msg.isTouch()) {
+				schedule(0);
+			} else if ((feature == ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI) && !msg.isTouch()) {
+				schedule(0);
 			}
 		}
 	};
 
-	private long lastDelay;
-
-	private Future< ? > workerJob;
-
-	public RefreshTasker(final EObject eObject, final IRefresher refresher) {
-		this.refresher = refresher;
-		this.eObject = eObject;
-		addListeners();
-		doSchedule(RefreshProviderPlugin.getRefreshInterval());
-	}
-
-	private void doSchedule(long delay) {
-		this.lastDelay = delay;
-		ScheduledFuture< ? > localSchedule = this.schedule;
-		if (localSchedule == null) {
-			if (DEBUG.enabled) {
-				DEBUG.enteringMethod(delay);
-				DEBUG.message("Scheduled (" + delay + " " + TimeUnit.MILLISECONDS + "): " + this.eObject);
-			}
-			this.schedule = TASKER_POOL.schedule(RefreshTasker.this, delay, TimeUnit.MILLISECONDS);
-		} else {
-			long remaining = localSchedule.getDelay(TimeUnit.MILLISECONDS);
-			if (remaining > delay) {
-				if (DEBUG.enabled) {
-					DEBUG.enteringMethod(delay);
-					DEBUG.message("ReScheduled (" + delay + " " + TimeUnit.MILLISECONDS + "): " + this.eObject);
-				}
-				localSchedule.cancel(false);
-				this.schedule = TASKER_POOL.schedule(RefreshTasker.this, delay, TimeUnit.MILLISECONDS);
-			}
-		}
-	}
-
-	public void schedule() {
-		schedule(0);
-	}
-
-	public synchronized void schedule(long delay) {
-		if (shouldSchedule()) {
-			doSchedule(delay);
-		} else if (DEBUG.enabled) {
-			DEBUG.message("Ignoring schedule on " + this.eObject);
-		}
-	}
-
-	protected boolean shouldSchedule() {
-		boolean shouldSchedule = shouldRun();
-		return DEBUG.exitingMethodWithResult(shouldSchedule);
-	}
-
-	protected boolean shouldRun() {
-		if (eObject instanceof IDisposable) {
-			if (((IDisposable) eObject).isDisposed()) {
-				setEnabled(false);
-				dispose();
-				return DEBUG.exitingMethodWithResult(false);
-			}
-		}
-
-		return DEBUG.exitingMethodWithResult(!isDisposed() && isEnabled() && this.active);
-	}
-
-	public void cancel() {
-		Future< ? > localWorkerJob = workerJob;
-		if (localWorkerJob != null) {
-			localWorkerJob.cancel(true);
-			workerJob = null;
-		}
-		ScheduledFuture< ? > localSchedule = schedule;
-		if (localSchedule != null) {
-			localSchedule.cancel(true);
-		}
-		this.schedule = null;
-	}
-
-	@Override
-	public void setEnabled(final boolean enabled) {
-		super.setEnabled(enabled);
-		if (enabled) {
-			schedule();
-		} else {
-			cancel();
-		}
-	}
-
 	private void addListeners() {
-		if (this.eObject instanceof EObject) {
-			ScaModelCommand.execute(this.eObject, new ScaModelCommand() {
+		ScaModelCommand.execute(objectToRefresh, new ScaModelCommand() {
+			@Override
+			public void execute() {
+				objectToRefresh.eAdapters().add(RefreshTasker.this.objectToRefreshListener);
+			}
+		});
+	}
 
-				@Override
-				public void execute() {
-					RefreshTasker.this.eObject.eAdapters().add(RefreshTasker.this.listener);
-				}
-			});
-		}
+	private void removeListeners() {
+		ScaModelCommand.execute(objectToRefresh, new ScaModelCommand() {
+			@Override
+			public void execute() {
+				objectToRefresh.eAdapters().remove(RefreshTasker.this.objectToRefreshListener);
+			}
+		});
+	}
+
+	public RefreshTasker(EObject objectToRefresh, IRefresher refresher) {
+		this.objectToRefresh = objectToRefresh;
+		this.refresher = refresher;
+		addListeners();
+		schedule(RefreshProviderPlugin.getRefreshInterval());
 	}
 
 	@Override
 	public void dispose() {
-		if (isDisposed()) {
-			return;
-		}
 		removeListeners();
-		cancel();
 		super.dispose();
-	}
-
-	private void removeListeners() {
-		if (this.eObject instanceof EObject) {
-			ScaModelCommand.execute(this.eObject, new ScaModelCommand() {
-
-				@Override
-				public void execute() {
-					RefreshTasker.this.eObject.eAdapters().remove(RefreshTasker.this.listener);
-				}
-			});
-		}
-	}
-
-	@Override
-	public void run() {
-		long nextScheduleDelay = RefreshProviderPlugin.getRefreshInterval();
-		try {
-			if (!shouldRun()) {
-				cancel();
-				return;
-			}
-
-			Future< ? > localWorker = WORKER_POOL.submit(new Runnable() {
-
-				@Override
-				public void run() {
-					RefreshTasker.this.refresher.refresh(null);
-				}
-			});
-			workerJob = localWorker;
-
-			localWorker.get(RefreshProviderPlugin.getRefreshTimeout(), TimeUnit.MILLISECONDS);
-			setStatus(Status.OK_STATUS);
-		} catch (final InterruptedException e) {
-			setStatus(Status.CANCEL_STATUS);
-		} catch (final ExecutionException e) {
-			long nextCall = lastDelay * 2;
-			setStatus(new Status(IStatus.ERROR, RefreshProviderPlugin.PLUGIN_ID, "Refresh failed: refreshing in (" + (nextCall / 1000) + " sec)", e));
-			nextScheduleDelay = lastDelay * 2;
-		} catch (final TimeoutException e) {
-			long nextCall = lastDelay * 2;
-			setStatus(new Status(IStatus.WARNING, RefreshProviderPlugin.PLUGIN_ID, "Refresh timed out: refreshing in (" + (nextCall / 1000) + " sec)", e));
-			nextScheduleDelay = lastDelay * 2;
-		} finally {
-			schedule = null;
-			schedule(nextScheduleDelay);
-			workerJob = null;
-		}
-
-	}
-
-	public void setActive(final boolean active) {
-		final boolean oldValue = this.active;
-		this.active = active;
-		if (this.active) {
-			schedule();
-		} else {
-			cancel();
-		}
-		firePropertyChange(RefreshTasker.PROP_ACTIVE, oldValue, this.active);
-	}
-
-	public boolean isActive() {
-		return this.active;
 	}
 
 	@Override
 	public String getID() {
 		return ScaRefreshableDataProviderService.ID;
+	}
+
+	/**
+	 * Schedules a refresh after a certain delay. If a refresh is already scheduled, its time will be adjusted if
+	 * the requested delay is sooner.
+	 * @param delay The delay in milliseconds before refreshing.
+	 */
+	private synchronized void schedule(long delay) {
+		if (delay < 0) {
+			throw new IllegalArgumentException("Delay must be 0 or greater");
+		}
+		if (!isEnabled()) { // TODO: Handle the "active" stuff
+			return;
+		}
+
+		// If a refresh is already scheduled
+		if (this.scheduledRefresh != null) {
+			// If the scheduled refresh will run at least a 1/2 second sooner, do nothing
+			if (this.scheduledRefresh.getDelay(TimeUnit.MILLISECONDS) < (delay + 500)) {
+				return;
+			}
+
+			// Cancel the pending refresh
+			this.scheduledRefresh.cancel(false);
+			this.doRefresh = null;
+			this.scheduledRefresh = null;
+		}
+
+		// Schedule a new refresh
+		this.lastDelay = delay;
+		this.doRefresh = new RefreshTask();
+		this.scheduledRefresh = RefreshThreadPools.getRefreshExecutor().schedule(this.doRefresh, delay, TimeUnit.MILLISECONDS);
+	}
+
+	private class RefreshTask implements Runnable {
+
+		@Override
+		public void run() {
+			// Make sure we're still scheduled to run
+			synchronized (this) {
+				if (doRefresh != this || !isEnabled()) {
+					return;
+				}
+			}
+
+			// Schedule a timeout that will cancel the refresh and update the status
+			final IProgressMonitor monitor = new NullProgressMonitor();
+			final AtomicBoolean completed = new AtomicBoolean(false);
+			final long REFRESH_TIMEOUT = RefreshProviderPlugin.getRefreshTimeout();
+			Future< ? > checkOnRefresh = RefreshThreadPools.getEventExecutor().schedule(() -> {
+				// If we beat the refresh, cancel it and update the status
+				if (completed.compareAndSet(false, true)) {
+					monitor.setCanceled(true);
+					String msg = String.format("Refresh timed out after %d milliseconds", REFRESH_TIMEOUT);
+					setStatus(new Status(IStatus.WARNING, RefreshProviderPlugin.PLUGIN_ID, msg));
+				}
+			}, REFRESH_TIMEOUT, TimeUnit.MILLISECONDS);
+
+			// Run the refresh, capture status / exception
+			IStatus refreshStatus = null;
+			Throwable refreshThrowable = null;
+			try {
+				refreshStatus = refresh(monitor);
+			} catch (OperationCanceledException e) {
+				refreshStatus = Status.CANCEL_STATUS;
+			} catch (Exception | LinkageError | AssertionError e) { // SUPPRESS CHECKSTYLE Catch all non-fatal
+				refreshThrowable = e;
+			}
+
+			// If we beat the timeout
+			boolean backOff = false;
+			try {
+				if (completed.compareAndSet(false, true)) {
+					// Our checkup/timeout task doesn't need to run (if it hasn't already)
+					checkOnRefresh.cancel(false);
+
+					// Set status as appropriate
+					if (refreshThrowable != null) {
+						backOff = true;
+						setStatus(new Status(IStatus.ERROR, RefreshProviderPlugin.PLUGIN_ID, "Refresh failed", refreshThrowable));
+					} else if (refreshStatus != null) {
+						backOff = (refreshStatus.getSeverity() == Status.CANCEL);
+						setStatus(refreshStatus);
+					} else {
+						// This should never occur - display the error AND log it
+						backOff = true;
+						IStatus status = new Status(IStatus.ERROR, RefreshProviderPlugin.PLUGIN_ID, "Received a null status from refresh");
+						setStatus(status);
+						RefreshProviderPlugin.getInstance().getLog().log(status);
+					}
+				} else {
+					// We took too long and the timeout cancelled us
+					backOff = true;
+				}
+			} finally {
+				// Reschedule
+				reschedule(backOff);
+			}
+		}
+	}
+
+	@Override
+	public IStatus refresh(IProgressMonitor monitor) {
+		if (refresher.canRefresh()) {
+			refresher.refresh(monitor);
+			return (monitor.isCanceled()) ? Status.CANCEL_STATUS : Status.OK_STATUS;
+		} else {
+			return (monitor.isCanceled()) ? Status.CANCEL_STATUS : STATUS_CANNOT_REFRESH;
+		}
+	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		boolean oldEnabled = isEnabled();
+		super.setEnabled(enabled);
+
+		// Schedule immediately if disabled -> enabled
+		if (!oldEnabled && enabled) {
+			schedule(0);
+		}
+	}
+
+	/**
+	 * Indicates that a refresh has completed and should be rescheduled.
+	 * @param backoff If true, indicates that the refresh should back off. False to use the default delay before the
+	 * next refresh.
+	 */
+	private synchronized void reschedule(boolean backOff) {
+		this.scheduledRefresh = null;
+		this.doRefresh = null;
+		final long REFRESH_DELAY = RefreshProviderPlugin.getRefreshInterval();
+		if (backOff) {
+			// We'll reschedule for the previous delay + delay (i.e. normal_delay, normal_delay*2, normal_delay*3). We
+			// bound this on the low end by 2 * normal delay, and on the high end by an absolute max delay.
+			long delay = Math.min(Math.max(this.lastDelay + REFRESH_DELAY, REFRESH_DELAY * 2), MAX_REFRESH_DELAY);
+			schedule(delay);
+		} else {
+			schedule(REFRESH_DELAY);
+		}
 	}
 
 }

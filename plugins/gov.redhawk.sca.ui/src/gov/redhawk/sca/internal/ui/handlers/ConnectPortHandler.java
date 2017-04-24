@@ -11,18 +11,7 @@
  */
 package gov.redhawk.sca.internal.ui.handlers;
 
-import gov.redhawk.model.sca.CorbaObjWrapper;
-import gov.redhawk.model.sca.ScaComponent;
-import gov.redhawk.model.sca.ScaProvidesPort;
-import gov.redhawk.model.sca.ScaUsesPort;
-import gov.redhawk.sca.ui.ConnectPortWizard;
-import gov.redhawk.sca.ui.ScaUiPlugin;
-import gov.redhawk.sca.util.PluginUtil;
-
 import java.util.concurrent.Callable;
-
-import mil.jpeojtrs.sca.scd.SupportsInterface;
-import mil.jpeojtrs.sca.util.CorbaUtils;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -44,6 +33,18 @@ import org.omg.CORBA.SystemException;
 
 import CF.PortPackage.InvalidPort;
 import CF.PortPackage.OccupiedPort;
+import gov.redhawk.model.sca.CorbaObjWrapper;
+import gov.redhawk.model.sca.ScaComponent;
+import gov.redhawk.model.sca.ScaProvidesPort;
+import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.model.sca.provider.ScaWaveformExternalPortsItemProvider;
+import gov.redhawk.sca.ui.ConnectPortWizard;
+import gov.redhawk.sca.ui.ScaContentProvider;
+import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.sca.util.PluginUtil;
+import mil.jpeojtrs.sca.scd.SupportsInterface;
+import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
  * 
@@ -108,7 +109,7 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 			ScaUsesPort usesPort = null;
 			CorbaObjWrapper< ? > target = null;
 			for (final Object obj : ss.toArray()) {
-				
+
 				if (PluginUtil.adapt(ScaUsesPort.class, obj, true) != null) {
 					usesPort = PluginUtil.adapt(ScaUsesPort.class, obj, true);
 				} else if (PluginUtil.adapt(ScaProvidesPort.class, obj, true) != null) {
@@ -122,17 +123,42 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 			} else {
 				ConnectPortWizard wizard = new ConnectPortWizard();
 				if (usesPort != null) {
+					ScaWaveformExternalPortsItemProvider externalPortsRoot = null;
+					if (usesPort.eContainer() instanceof ScaWaveform) {
+						externalPortsRoot = getExternalPortRoot(usesPort.eContainer());
+					}
+
 					wizard.setSource(usesPort);
-					wizard.setSourceInput(usesPort.eContainer());
+					wizard.setSourceInput((externalPortsRoot != null) ? externalPortsRoot : usesPort.eContainer());
 					wizard.setShowAllInputs(false);
 				}
 				if (target != null) {
+					ScaWaveformExternalPortsItemProvider externalPortsRoot = null;
+					if (target.eContainer() instanceof ScaWaveform) {
+						externalPortsRoot = getExternalPortRoot(target.eContainer());
+					}
+
 					wizard.setTarget(target);
-					wizard.setTargetInput(target.eContainer());
+					wizard.setTargetInput((externalPortsRoot != null) ? externalPortsRoot : target.eContainer());
 					wizard.setShowAllOutputs(false);
 				}
 				WizardDialog dialog = new WizardDialog(shell, wizard);
 				dialog.open();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * If {@link ConnectPortWizard} was opened by selecting an external port, make sure the proper viewer input is set.
+	 * @param port
+	 * @return
+	 */
+	private ScaWaveformExternalPortsItemProvider getExternalPortRoot(Object portContainer) {
+		ScaContentProvider scaContentProvider = new ScaContentProvider();
+		for (Object obj : scaContentProvider.getChildren(portContainer)) {
+			if (obj instanceof ScaWaveformExternalPortsItemProvider) {
+				return (ScaWaveformExternalPortsItemProvider) obj;
 			}
 		}
 		return null;

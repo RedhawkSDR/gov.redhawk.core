@@ -39,14 +39,17 @@
                commandId="gov.redhawk.sca.model.provider.refresh.ui.autoRefresh"
                style="toggle">
             <visibleWhen>
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <test
-                        forcePluginActivation="true"
-                        property="gov.redhawk.sca.model.provider.refresh.containsRefreshProvider">
-                  </test>
-               </iterate>
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <test
+                           forcePluginActivation="true"
+                           property="gov.redhawk.sca.model.provider.refresh.containsRefreshProvider">
+                     </test>
+                  </iterate>
+               </and>
             </visibleWhen>
          </command>
       </menuContribution>

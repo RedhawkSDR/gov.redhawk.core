@@ -37,9 +37,6 @@ public class SetStatusCommand< T extends IStatusProvider > extends ScaModelComma
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void execute() {
 		provider.setStatus(feature, status);

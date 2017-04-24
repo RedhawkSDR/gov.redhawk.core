@@ -1,13 +1,12 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- *
  */
 package gov.redhawk.sca.model.provider.refresh.internal;
 
@@ -20,7 +19,6 @@ import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.util.ScaSwitch;
-import gov.redhawk.sca.model.provider.refresh.RefreshProviderPlugin;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
@@ -29,7 +27,7 @@ import org.omg.CORBA.Object;
 import CF.Resource;
 
 /**
- * 
+ * Creates an {@link IRefresher} appropriate for the target {@link IRefreshable}.
  */
 public class RefresherSwitch extends ScaSwitch<IRefresher> {
 
@@ -63,44 +61,6 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 		return createRefresher(object, RefreshDepth.SELF);
 	}
 
-	private IRefresher createRefresher(final IRefreshable object, final RefreshDepth defaultDepth) {
-		final RefreshDepth depth;
-		RefreshDepth override = RefreshProviderPlugin.getOverrideDepth();
-		if (override != null) {
-			depth = override;
-		} else {
-			depth = defaultDepth;
-		}
-		return new IRefresher() {
-			@Override
-			public void refresh(final IProgressMonitor monitor) {
-				internalRefresh(object, depth, monitor);
-			}
-		};
-	}
-
-	private void internalRefresh(IRefreshable object, RefreshDepth depth, IProgressMonitor monitor) {
-		if (!(object instanceof ScaDomainManager) && object instanceof CorbaObjWrapper< ? >) {
-			CorbaObjWrapper< ? > wrapper = (CorbaObjWrapper< ? >) object;
-			if (!wrapper.exists()) {
-				EObject container = wrapper.eContainer();
-				if (container instanceof IRefreshable) {
-					IRefreshable parent = (IRefreshable) container;
-					internalRefresh(parent, RefreshDepth.CHILDREN, monitor);
-					return;
-				} else if (container == null) {
-					return;
-				}
-			}
-		}
-		
-		try {
-			object.refresh(monitor, depth);
-		} catch (final InterruptedException e) {
-			// PASS
-		}
-	}
-
 	@Override
 	public IRefresher defaultCase(EObject object) {
 		if (object instanceof IRefreshable) {
@@ -109,4 +69,43 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 		return super.defaultCase(object);
 	}
 
+	private IRefresher createRefresher(final IRefreshable refreshable, final RefreshDepth depth) {
+		return new IRefresher() {
+
+			@Override
+			public boolean canRefresh() {
+				// Assume true
+				return true;
+			}
+
+			@Override
+			public void refresh(final IProgressMonitor monitor) {
+				try {
+					refreshable.refresh(monitor, depth);
+				} catch (final InterruptedException e) {
+					// PASS
+				}
+			}
+		};
+	}
+
+	private IRefresher createRefresher(final CorbaObjWrapper< ? > refreshable, final RefreshDepth depth) {
+		return new IRefresher() {
+
+			@Override
+			public boolean canRefresh() {
+				// Check if the CORBA object exists
+				return refreshable.exists();
+			}
+
+			@Override
+			public void refresh(final IProgressMonitor monitor) {
+				try {
+					refreshable.refresh(monitor, depth);
+				} catch (final InterruptedException e) {
+					// PASS
+				}
+			}
+		};
+	}
 }
