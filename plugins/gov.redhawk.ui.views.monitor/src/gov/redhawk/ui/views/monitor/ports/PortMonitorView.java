@@ -24,6 +24,7 @@ import gov.redhawk.monitor.model.ports.PortSupplierMonitor;
 import gov.redhawk.monitor.model.ports.PortsPackage;
 import gov.redhawk.monitor.model.ports.provider.MonitorRegistryItemProvider;
 import gov.redhawk.monitor.model.ports.provider.PortsItemProviderAdapterFactory;
+import gov.redhawk.sca.ui.ScaModelAdapterFactoryContentProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,7 +33,6 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -113,7 +113,7 @@ public class PortMonitorView extends ViewPart {
 		this.adapterFactory = new ComposedAdapterFactory(new AdapterFactory[] {
 		        providesPortAdapterFactory, new ScaItemProviderAdapterFactory()
 		});
-		this.viewer.setContentProvider(new AdapterFactoryContentProvider(this.adapterFactory));
+		this.viewer.setContentProvider(new ScaModelAdapterFactoryContentProvider(this.adapterFactory));
 		this.input = MonitorPlugin.getDefault().getMonitorRegistry();
 		this.viewer.setInput(this.input);
 		makeActions();
