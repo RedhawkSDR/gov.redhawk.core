@@ -49,7 +49,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            categoryId="gov.redhawk.ide.ui.category"
+            categoryId="gov.redhawk.ui.commands.category.sca"
             defaultHandler="gov.redhawk.ui.views.event.handlers.EventChannelListenerHandler"
             id="gov.redhawk.ui.views.event.eventChannelListener"
             name="Listen to Event Channel">
