@@ -49,7 +49,7 @@ public abstract class AbstractGraphitiMultipageEditorActionBarContributor extend
 	private List<String> diagramActionIds = new ArrayList<String>();
 	private boolean actionsBuilt = false;
 	private ZoomComboContributionItem zoomCombo;
-	
+
 	/**
 	 * Build all actions to be used by the diagram. Actions <b>must</b> inherit from {@link RetargetAction}
 	 */
@@ -129,7 +129,7 @@ public abstract class AbstractGraphitiMultipageEditorActionBarContributor extend
 	protected RetargetAction getAction(String id) {
 		return (RetargetAction) registry.getAction(id);
 	}
-	
+
 	protected boolean getActionsBuilt() {
 		return actionsBuilt;
 	}
@@ -142,7 +142,10 @@ public abstract class AbstractGraphitiMultipageEditorActionBarContributor extend
 			return;
 		}
 
-
+		MenuManager viewMenu = new MenuManager("&View", "view");
+		viewMenu.add(getAction(GEFActionConstants.ZOOM_IN));
+		viewMenu.add(getAction(GEFActionConstants.ZOOM_OUT));
+		viewMenu.add(getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
 
 		IMenuManager editMenu = menuManager.findMenuUsingPath(IWorkbenchActionConstants.M_EDIT);
 		if (editMenu != null) {
@@ -158,15 +161,13 @@ public abstract class AbstractGraphitiMultipageEditorActionBarContributor extend
 			alignments.add(getAction(GEFActionConstants.MATCH_WIDTH));
 			alignments.add(getAction(GEFActionConstants.MATCH_HEIGHT));
 			editMenu.insertAfter(ActionFactory.SELECT_ALL.getId(), alignments);
-		}
 
-		MenuManager viewMenu = new MenuManager("&View", "view");
-		viewMenu.add(getAction(GEFActionConstants.ZOOM_IN));
-		viewMenu.add(getAction(GEFActionConstants.ZOOM_OUT));
-		viewMenu.add(getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
-		menuManager.insertAfter(IWorkbenchActionConstants.M_EDIT, viewMenu);
+			menuManager.insertAfter(IWorkbenchActionConstants.M_EDIT, viewMenu);
+		} else {
+			menuManager.add(viewMenu);
+		}
 	}
-	
+
 	@Override
 	public void setActivePage(IEditorPart newEditor) {
 		if (!(newEditor instanceof AbstractGraphitiDiagramEditor)) {
@@ -230,7 +231,7 @@ public abstract class AbstractGraphitiMultipageEditorActionBarContributor extend
 		toolbarManager.update(true);
 		menuManager.setVisible(setVisible);
 	}
-	
+
 	@Override
 	public void dispose() {
 		for (int i = 0; i < diagramActionIds.size(); i++) {
