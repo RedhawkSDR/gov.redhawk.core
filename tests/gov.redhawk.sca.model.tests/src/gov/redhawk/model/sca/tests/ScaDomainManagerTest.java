@@ -746,6 +746,15 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
+	 * Test that toString() is not being called on CORBA objects in a protected model context
+	 */
+	public void testToString() {
+		String rootContextStr = getFixture().getRootContext().toString();
+		String domMgrStr = getFixture().toString();
+		Assert.assertFalse(domMgrStr.contains(rootContextStr.toString()));
+	}
+
+	/**
 	 * Tests the '
 	 * {@link mil.jpeojtrs.sca.cf.DomainManagerOperations#unregisterFromEventChannel(java.lang.String, java.lang.String)
 	 * <em>Unregister From Event Channel</em>}' operation.
