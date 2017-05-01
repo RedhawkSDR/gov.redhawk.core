@@ -2186,8 +2186,10 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		result.append(", name: ");
 		result.append(name);
 		result.append(", rootContext: ");
+		// NOTE: DO NOT DO TO STRING on a CORBA Object, this is a potentially blocking operation. Just return if the
+		// value is set
 		if (rootContextESet)
-			result.append(rootContext);
+			result.append("<set>");
 		else
 			result.append("<unset>");
 		result.append(", state: ");
