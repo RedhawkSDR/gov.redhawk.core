@@ -22,6 +22,7 @@
             class="gov.redhawk.prf.internal.ui.editor.PropertiesEditor"
             contributorClass="gov.redhawk.prf.internal.ui.editor.PropertiesEditorActionBarContributor"
             default="true"
+            icon="platform:/plugin/org.eclipse.ui/icons/full/obj16/file_obj.gif"
             id="gov.redhawk.ide.ui.editor.properties"
             name="%editor.name">
          <contentTypeBinding
