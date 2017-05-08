@@ -28,6 +28,7 @@ import org.eclipse.jface.databinding.viewers.ViewersObservables;
 
 import gov.redhawk.prf.internal.ui.editor.PropertiesSection;
 import gov.redhawk.prf.internal.ui.editor.composite.BasicStructPropertyComposite;
+import gov.redhawk.prf.internal.ui.editor.composite.StructPropertyComposite;
 import mil.jpeojtrs.sca.prf.ConfigurationKind;
 import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.StructPropertyConfigurationType;
@@ -84,7 +85,7 @@ public abstract class BasicStructPropertyDetailsPage extends AbstractPropertyDet
 							// Message should only be shown as an option if the user explicitly enters it
 							if (kind.getType().equals(StructPropertyConfigurationType.MESSAGE)) {
 								BasicStructPropertyDetailsPage.this.getComposite().showMessage(true);
-							} else {
+							} else if (!(getComposite() instanceof StructPropertyComposite)) {
 								BasicStructPropertyDetailsPage.this.getComposite().showMessage(false);
 							}
 
@@ -145,7 +146,8 @@ public abstract class BasicStructPropertyDetailsPage extends AbstractPropertyDet
 
 					// Message should only be shown as an option if is already exists in the prf.xml
 					boolean isMessageShown = BasicStructPropertyDetailsPage.this.getComposite().isShowMessage();
-					if (!kindType.equals(StructPropertyConfigurationType.MESSAGE) && isMessageShown) {
+					boolean isStruct = getComposite() instanceof StructPropertyComposite;
+					if (!isStruct && !kindType.equals(StructPropertyConfigurationType.MESSAGE) && isMessageShown) {
 						BasicStructPropertyDetailsPage.this.getComposite().showMessage(false);
 					}
 

@@ -194,7 +194,8 @@ public class ScaFileStoreItemProvider extends IStatusProviderItemProvider {
 				IFileInfo fileInfo = fileStore.fetchInfo(EFS.NONE, progress.newChild(WORK_FETCH_INFO));
 
 				// If the file is too large, don't examine its content (which requires a copy or download).
-				if (fileInfo.getLength() > MAX_DOWNLOAD_SIZE) {
+				long length = fileInfo.getLength();
+				if (length == 0 || length > MAX_DOWNLOAD_SIZE) {
 					contentType = Platform.getContentTypeManager().findContentTypeFor(fileName);
 				} else {
 					try (InputStream is = fileStore.openInputStream(EFS.NONE, progress.newChild(WORK_FETCH_FILE))) {
