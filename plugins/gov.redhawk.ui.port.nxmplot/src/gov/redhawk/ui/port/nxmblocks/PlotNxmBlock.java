@@ -28,7 +28,6 @@ import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.PlatformUI;
-import org.omg.CORBA.Any;
 import org.omg.CORBA.BAD_OPERATION;
 
 import BULKIO.StreamSRI;
@@ -55,7 +54,8 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 	/** zero-length arrays are immutable. For more info see Effective Java, Item 27: Return zero-length arrays, not null. */
 	private static final StreamSRI[] EMPTY_STREAMSRI_ARRAY = new StreamSRI[0];
 	/** center frequency keywords from StreamSRI in highest to lowest order of precedence */
-	private static final String[] CENTER_FREQ_KEYWORDS = {"CHAN_RF", "COL_RF"};
+	private static final String CHAN_RF = "CHAN_RF"; //$NON-NLS-1$
+	private static final String COL_RF = "COL_RF"; //$NON-NLS-1$
 
 	/** using a "synchronized" LinkedHashMap to keep order of launched streams. */
 	private Map<String, StreamSRI> streamIdToSriMap = Collections.synchronizedMap(new LinkedHashMap<String, StreamSRI>());
@@ -628,36 +628,44 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 	 */
 	public String getCenterFreqInfo(@NonNull String streamId) {
 		final StreamSRI sri = streamIdToSriMap.get(streamId);
-		if (sri != null) { 
-			Object[] result = getCenterFreqFromKeyword(sri); // 1. use keywords in order of precedence
-			if (result != null && result.length == 2) {
-				return "" + result[0] + " : " + result[1]; 
-			}
-		}
-		return null; // 2. none (no sri, no keywords, no matching keywords, user specified override value)
+		Object[] result = getCenterFreqFromKeyword(sri);
+		return (result == null) ? null : result[0] + " : " + result[1];
 	}
-	
-	private Object[] getCenterFreqFromKeyword(@NonNull StreamSRI sri) {
-		if (sri.keywords != null) {
-			for (DataType kw : sri.keywords) { // use value from keywords in order of precedence
-				for (String centerFreqKeyword : CENTER_FREQ_KEYWORDS) {
-					if (centerFreqKeyword.equals(kw.id)) { // found matching keyword
-						if (kw.value instanceof Any) {
-							try {
-								double centerFreq = ((Any) (kw.value)).extract_double();
-								return new Object[] { kw.id, centerFreq };
-							} catch (BAD_OPERATION ex) {
-								TRACE_LOG.message("WARN: Unable to extract double from [{0}] keyword, value=[{1}]. Got exception: {2}", kw.id, kw.value, ex);
-							}
-						}
 
-					}
+	/**
+	 * Returns center frequency information as [String keywordId, Double centerFrequency].
+	 * @param sri
+	 * @return The center freq. information or null
+	 */
+	private Object[] getCenterFreqFromKeyword(@NonNull StreamSRI sri) {
+		if (sri == null || sri.keywords == null) {
+			return null;
+		}
+
+		Double colRf = null;
+		for (DataType kw : sri.keywords) {
+			if (CHAN_RF.equals(kw.id)) {
+				// CHAN_RF has priority over COL_RF - no need to continue looking
+				double centerFreq;
+				try {
+					centerFreq = kw.value.extract_double();
+				} catch (BAD_OPERATION e) {
+					continue;
+				}
+				return new Object[] { CHAN_RF, centerFreq };
+			}
+			if (COL_RF.equals(kw.id)) {
+				// Save off the value of COL_RF
+				try {
+					colRf = kw.value.extract_double();
+				} catch (BAD_OPERATION e) {
+					continue;
 				}
 			}
 		}
-		return null;
+		return (colRf == null) ? null : new Object[] { COL_RF, colRf };
 	}
-	
+
 	/** returns NaN if unable to calculate/figure out appropriate xstart value. */
 	private double calcXStart(double centerFreq, @Nullable StreamSRI sri) {
 		double xstart = Double.NaN;
