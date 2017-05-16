@@ -65,6 +65,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PatternFilter;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -89,7 +90,8 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 	private PropertiesBlock block;
 
 	public PropertiesSection(PropertiesBlock block, final Composite parent) {
-		super(block.getPage(), parent, Section.DESCRIPTION, new String[] { "Add Simple", "Add Sequence", "Add Struct", "Add StructSeq", "Browse...", "Remove" });
+		super(block.getPage(), parent, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR,
+			new String[] { "Add Simple", "Add Sequence", "Add Struct", "Add StructSeq", "Browse...", "Remove" });
 		this.fHandleDefaultButton = false;
 		this.block = block;
 	}

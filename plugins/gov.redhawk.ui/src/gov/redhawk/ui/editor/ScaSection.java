@@ -25,15 +25,20 @@ public abstract class ScaSection extends SectionPart implements IContextPart, IA
 	private final ScaFormPage fPage;
 
 	public ScaSection(final ScaFormPage page, final Composite parent, final int style) {
-		this(page, parent, style, true);
-	}
-
-	public ScaSection(final ScaFormPage page, final Composite parent, final int style, final boolean titleBar) {
-		super(parent, page.getManagedForm().getToolkit(), (titleBar) ? (ExpandableComposite.TITLE_BAR | style) : style); // SUPPRESS CHECKSTYLE AvoidInLine
+		super(parent, page.getManagedForm().getToolkit(), style);
 		fPage = page;
 		initialize(page.getManagedForm());
 		getSection().clientVerticalSpacing = FormLayoutFactory.SECTION_HEADER_VERTICAL_SPACING;
 		getSection().setData("part", this); //$NON-NLS-1$
+	}
+
+	/**
+	 * @deprecated Use {@link #ScaSection(ScaFormPage, Composite, int)}.
+	 * Deprecated in Redhawk 2.1.1.
+	 */
+	@Deprecated
+	public ScaSection(final ScaFormPage page, final Composite parent, final int style, final boolean titleBar) {
+		this(page, parent, (titleBar) ? (ExpandableComposite.TITLE_BAR | style) : style);
 	}
 
 	protected abstract void createClient(Section section, FormToolkit toolkit);

@@ -39,18 +39,18 @@ public abstract class StructuredViewerSection extends ScaSection {
 	 * @param buttonLabels the button labels
 	 */
 	public StructuredViewerSection(final ScaFormPage formPage, final Composite parent, final int style, final String[] buttonLabels) {
-		this(formPage, parent, style, true, buttonLabels);
+		super(formPage, parent, style);
+		this.fViewerPart = createViewerPart(buttonLabels);
+		this.fViewerPart.setMinimumSize(50, 50); // SUPPRESS CHECKSTYLE MagicNumber
+		final FormToolkit toolkit = formPage.getManagedForm().getToolkit();
+		createClient(getSection(), toolkit);
+		this.fDoSelection = true;
 	}
 
 	/**
-	 * Constructor for StructuredViewerSection.
-	 * 
-	 * @param formPage the form page
-	 * @param parent the parent
-	 * @param style the style
-	 * @param titleBar the title bar
-	 * @param buttonLabels the button labels
+	 * @deprecated Use {@link #StructuredViewerSection(ScaFormPage, Composite, int, String[])}.
 	 */
+	@Deprecated
 	public StructuredViewerSection(final ScaFormPage formPage, final Composite parent, final int style, final boolean titleBar, final String[] buttonLabels) {
 		super(formPage, parent, style, titleBar);
 		this.fViewerPart = createViewerPart(buttonLabels);
