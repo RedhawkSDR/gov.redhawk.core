@@ -26,6 +26,7 @@ import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.xmi.XMLResource;
 
 /**
  * <!-- begin-user-doc -->
@@ -220,7 +221,10 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 
 				if (uri != null) {
 					uri = uri.appendFragment(rootPath);
+
+					// Suppress the document root when loading
 					ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
+					resourceSet.getLoadOptions().put(XMLResource.OPTION_SUPPRESS_DOCUMENT_ROOT, Boolean.TRUE);
 
 					T profileObject = null;
 					IStatus status = null;
@@ -228,7 +232,8 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 						throw new OperationCanceledException();
 					}
 					try {
-						profileObject = type.cast(fetchProfileObject(resourceSet, uri));
+						EObject eObj = resourceSet.getEObject(uri, true);
+						profileObject = type.cast(eObj);
 						subMonitor.worked(1);
 					} catch (Exception e) {
 						status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch profile object from profile path: '" + uri + "'", e);
@@ -241,14 +246,6 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 			} finally {
 				subMonitor.done();
 			}
-		}
-
-		private static EObject fetchProfileObject(final ResourceSet resourceSet, final org.eclipse.emf.common.util.URI objectUri) throws Exception {
-			EObject newProfile = null;
-			if (resourceSet != null && objectUri != null) {
-				newProfile = resourceSet.getEObject(objectUri, true);
-			}
-			return newProfile;
 		}
 
 		public static void disposeResourceSet(ResourceSet oldValue) {
