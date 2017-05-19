@@ -27,7 +27,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -60,6 +59,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import gov.redhawk.core.graphiti.ui.GraphitiUIPlugin;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.ui.editor.SCAFormEditor;
+import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
 
 public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor implements ITabbedPropertySheetPageContributor, IViewerProvider {
 
@@ -301,8 +301,7 @@ public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor impl
 
 	@Override
 	protected TransactionalEditingDomain createEditingDomain() {
-
-		final ResourceSet resourceSet = new ResourceSetImpl();
+		final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
 		final IWorkspaceCommandStack workspaceCommandStack = new RHCommandStackImpl(new DefaultOperationHistory());
 
 		TransactionalEditingDomain domain = new TransactionalEditingDomainImpl(new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE),
