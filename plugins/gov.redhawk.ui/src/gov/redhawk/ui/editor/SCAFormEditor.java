@@ -84,9 +84,11 @@ import org.eclipse.emf.edit.ui.dnd.ViewerDragAdapter;
 import org.eclipse.emf.edit.ui.provider.UnwrappingSelectionProvider;
 import org.eclipse.emf.edit.ui.util.EditUIUtil;
 import org.eclipse.emf.transaction.NotificationFilter;
+import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.Transaction;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.impl.TransactionalEditingDomainImpl;
+import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -594,8 +596,22 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 					getContainer().getDisplay().asyncExec(new Runnable() {
 						@Override
 						public void run() {
-							if (getContainer() != null && !getContainer().isDisposed()) {
-								updateDocument(resource);
+							// Check again that we're not disposed
+							if (getContainer() == null || getContainer().isDisposed()) {
+								return;
+							}
+
+							// Make the update in a transaction so the resource can't change while we use it
+							TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(resource);
+							try {
+								TransactionUtil.runExclusive(domain, new RunnableWithResult.Impl<Void>() {
+									@Override
+									public void run() {
+										updateDocument(resource);
+									}
+								});
+							} catch (InterruptedException e) {
+								return;
 							}
 						}
 					});
