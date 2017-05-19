@@ -57,7 +57,7 @@ public class InterfacesUtilTest {
 		String query = QueryParser.createQuery(Collections.singletonMap(ScaFileSystemConstants.QUERY_PARAM_FS, "file://" + sdrDomDir.toString()));
 		URI sadURI = URI.createHierarchicalURI(ScaFileSystemConstants.SCHEME, null, null, new Path("/waveforms/InterfacesUtil/InterfacesUtil.sad.xml").segments(), query,
 			SoftwareAssembly.EOBJECT_PATH);
-		this.sad = (SoftwareAssembly) resourceSet.getEObject(sadURI, true);
+		this.sad = SoftwareAssembly.Util.getSoftwareAssembly(resourceSet.getResource(sadURI, true));
 	}
 
 	/**
