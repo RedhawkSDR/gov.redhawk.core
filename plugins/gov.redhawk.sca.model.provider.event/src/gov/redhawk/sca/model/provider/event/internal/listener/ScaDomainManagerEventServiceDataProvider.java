@@ -47,7 +47,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 
 	public ScaDomainManagerEventServiceDataProvider(final ScaDomainManager domain) {
 		super(domain, domain);
-		addChannel(domain.getLabel() + ".ODM_Channel");
+		addChannel(domain.getName() + ".ODM_Channel");
 	}
 	
 	@Override
