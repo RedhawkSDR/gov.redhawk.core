@@ -84,9 +84,11 @@ import org.eclipse.emf.edit.ui.dnd.ViewerDragAdapter;
 import org.eclipse.emf.edit.ui.provider.UnwrappingSelectionProvider;
 import org.eclipse.emf.edit.ui.util.EditUIUtil;
 import org.eclipse.emf.transaction.NotificationFilter;
+import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.Transaction;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.impl.TransactionalEditingDomainImpl;
+import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -334,9 +336,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			}
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void selectionChanged(final SelectionChangedEvent event) {
 			if (RedhawkUiActivator.getDefault().getPreferenceStore().getBoolean("ToggleLinkWithEditorAction.isChecked")) {
@@ -476,9 +475,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			super(multiPageEditor, editor);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public IWorkbenchPart getPart() {
 			return getMultiPageEditor();
@@ -514,9 +510,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		}
 	}
 
-	/**
-	 * Instantiates a new sCA form editor.
-	 */
 	public SCAFormEditor() {
 		this.bindingContext = new EMFDataBindingContext();
 	}
@@ -603,8 +596,22 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 					getContainer().getDisplay().asyncExec(new Runnable() {
 						@Override
 						public void run() {
-							if (getContainer() != null && !getContainer().isDisposed()) {
-								updateDocument(resource);
+							// Check again that we're not disposed
+							if (getContainer() == null || getContainer().isDisposed()) {
+								return;
+							}
+
+							// Make the update in a transaction so the resource can't change while we use it
+							TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(resource);
+							try {
+								TransactionUtil.runExclusive(domain, new RunnableWithResult.Impl<Void>() {
+									@Override
+									public void run() {
+										updateDocument(resource);
+									}
+								});
+							} catch (InterruptedException e) {
+								return;
 							}
 						}
 					});
@@ -677,21 +684,12 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		return this.editingDomain;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected FormToolkit createToolkit(final Display display) {
 		// Create a toolkit that shares colors between editors.
 		return new FormToolkit(RedhawkUiActivator.getDefault().getFormColors(display));
 	}
 
-	/*
-	 * When subclassed, don't forget to call 'super'
-	 */
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void createPages() {
 		this.clipboard = new Clipboard(getContainer().getDisplay());
@@ -728,16 +726,12 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		});
 	}
 
-	/**
-	 * @return
-	 */
 	protected Notifier getRootValidationNotifier() {
 		return this.getMainResource();
 	}
 
 	/**
-	 * If there is just one page in the multi-page editor part, this hides the single tab at the bottom. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * If there is just one page in the multi-page editor part, this hides the single tab at the bottom.
 	 */
 	protected void hideTabs() {
 		if (getPageCount() == 1) {
@@ -751,8 +745,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	}
 
 	/**
-	 * If there is more than one page in the multi-page editor part, this shows the tabs at the bottom. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * If there is more than one page in the multi-page editor part, this shows the tabs at the bottom.
 	 * 
 	 * @generated
 	 */
@@ -766,9 +759,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void pageChange(final int newPageIndex) {
 		super.pageChange(newPageIndex);
@@ -783,9 +773,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		validate();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void setFocus() {
 		super.setFocus();
@@ -853,9 +840,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		return ""; //$NON-NLS-1$
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void doSave(final IProgressMonitor monitor) {
 		try {
@@ -1006,9 +990,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void gotoMarker(final IMarker marker) {
 		final String uriAttribute = marker.getAttribute(EValidator.URI_ATTRIBUTE, null);
@@ -1153,17 +1134,11 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		throw new UnsupportedOperationException("Save as not supported");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean isSaveAsAllowed() {
 		return false;
 	}
 
-	/**
-	 * 
-	 */
 	private void storeDefaultPage() {
 		final IEditorInput input = getEditorInput();
 		final String pageId = Integer.toString(this.fLastActivePageIndex);
@@ -1284,9 +1259,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void dispose() {
 		this.disposed = true;
@@ -1332,9 +1304,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		super.dispose();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean isDirty() {
 		this.fLastDirtyState = computeDirtyState();
@@ -1405,9 +1374,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		return getSite().getSelectionProvider().getSelection();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public <T> T getAdapter(final Class<T> key) {
 		if (key.equals(IContentOutlinePage.class)) {
@@ -1487,9 +1453,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		this.fContentOutline.setPageActive(outline);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public IFormPage setActivePage(final String pageId) {
 		final IFormPage page = super.setActivePage(pageId);
@@ -1499,21 +1462,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		return page;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void init(final IEditorSite site, final IEditorInput input) throws PartInitException {
-		super.init(site, input);
-
-		// ResourcesPlugin.getWorkspace().addResourceChangeListener(this.resourceChangeListener,
-		// IResourceChangeEvent.POST_CHANGE);
-	}
-
 	@Override
 	protected void addPages() {
-		// TODO Auto-generated method stub
-
 	}
 
 	/**
@@ -1588,9 +1538,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		((IMenuListener) getEditorSite().getActionBarContributor()).menuAboutToShow(menuManager);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data) {
 		super.setInitializationData(config, propertyName, data);
@@ -1598,16 +1545,10 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		this.id = config.getAttribute("id");
 	}
 
-	/**
-	 * @return
-	 */
 	public DataBindingContext getDataBindingContext() {
 		return this.bindingContext;
 	}
 
-	/**
-	 * @return
-	 */
 	public AdapterFactory getAdapterFactory() {
 		if (getEditingDomain() instanceof AdapterFactoryEditingDomain) {
 			return ((AdapterFactoryEditingDomain) getEditingDomain()).getAdapterFactory();
@@ -1705,16 +1646,10 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 	}
 
-	/**
-	 * @return
-	 */
 	public boolean isDisposed() {
 		return this.disposed;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Viewer getViewer() {
 		final IFormPage page = this.getActivePageInstance();
