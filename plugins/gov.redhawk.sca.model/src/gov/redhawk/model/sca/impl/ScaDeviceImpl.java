@@ -989,7 +989,15 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		if (device == null) {
 			throw new IllegalStateException("CORBA Object is Null");
 		}
-		return device.allocateCapacity(capacities);
+
+		boolean result = device.allocateCapacity(capacities);
+		try {
+			this.refresh(null, RefreshDepth.SELF);
+		} catch (InterruptedException e) {
+			// PASS
+		}
+
+		return result;
 		// BEGIN GENERATED CODE
 	}
 
