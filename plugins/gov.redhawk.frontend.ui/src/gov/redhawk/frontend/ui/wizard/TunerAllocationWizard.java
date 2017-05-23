@@ -110,7 +110,7 @@ public class TunerAllocationWizard extends Wizard {
 
 		try {
 			TunerAllocationJob allocationJob = new TunerAllocationJob("Allocating: " + device.getLabel(), device, props);
-			if (allocatePage.isBackgroundJob()) {
+			if (allocatePage != null && allocatePage.isBackgroundJob()) {
 				// Run allocation as a background job
 				allocationJob.schedule();
 				return true;
