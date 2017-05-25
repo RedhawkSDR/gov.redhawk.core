@@ -281,6 +281,17 @@ public class FormEntry {
 	}
 
 	/**
+	 * @since 3.2
+	 * @param tooltip
+	 */
+	public void setTooltip(String tooltip) {
+		if (this.fLabel != null) {
+			this.fLabel.setToolTipText(tooltip);
+		}
+		this.fText.setToolTipText(tooltip);
+	}
+
+	/**
 	 * Returns the text control.
 	 * 
 	 * @return the text
