@@ -104,7 +104,6 @@ public class ClientInterceptor extends LocalObject implements ClientRequestInter
 		if (assertThread(thread)) {
 			final String msg = "Invoking CORBA call '" + getMethodString(ri) + "' within UI thread.";
 			final RuntimeException exception = new ClientInvalidThreadStateException(msg);
-			exception.fillInStackTrace();
 			exception.printStackTrace(); // SUPPRESS CHECKSTYLE DEBUG
 			throw exception;
 		}
