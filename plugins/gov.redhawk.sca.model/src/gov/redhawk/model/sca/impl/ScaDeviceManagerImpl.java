@@ -1686,13 +1686,10 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		newDevices.keySet().removeAll(scaDevices.keySet());
 
 		// Remove Devices
-		if (!removeDevices.isEmpty()) {
-			// TODO: We're using remove() rather than removeAll() because EMF only generates a notification for the
-			// FeatureMap, and not for the derived reference list. We need to figure out if we're doing something
-			// wrong, or if this is an EMF bug.
-			for (ScaDevice<?> removeDevice : removeDevices.values()) {
-				deviceList.remove(removeDevice);
-			}
+		// TODO: We're using remove() rather than removeAll(), because with otherwise EMF only generates a REMOVE_ALL
+		// notification for the FeatureMap, and not for the derived reference list. See Eclispe bug #516113.
+		for (ScaDevice<?> removeDevice : removeDevices.values()) {
+			deviceList.remove(removeDevice);
 		}
 
 		// Add devices
