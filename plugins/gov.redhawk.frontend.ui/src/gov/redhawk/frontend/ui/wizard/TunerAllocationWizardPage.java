@@ -97,6 +97,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private EMFDataBindingContext context;
 	private Button srAnyValue;
 	private Button bwAnyValue;
+	private Button bgJobButton;  // Background Job option
 	private List<Control> tunerControls = new ArrayList<Control>();
 	private NumberFormat nf = NumberFormat.getInstance();
 	private Double minBw;
@@ -808,64 +809,60 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private void createGroupControls(Composite parent) {
 		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(parent);
 
-		Composite comp1 = new Composite(parent, SWT.NONE);
-		comp1.setLayout(new FillLayout());
-		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(comp1);
+		Composite paddingComp = new Composite(parent, SWT.NONE);
+		paddingComp.setLayout(new FillLayout());
+		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(paddingComp);
 
-		Composite comp2 = new Composite(parent, SWT.NONE);
-		comp2.setLayout(new GridLayout(3, false));
-		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(comp2);
+		Composite allocTypeComp = new Composite(parent, SWT.NONE);
+		allocTypeComp.setLayout(new GridLayout(3, false));
+		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(allocTypeComp);
 
-		Label allocationComboViewerLabel = new Label(comp2, SWT.NONE);
+		Label allocationComboViewerLabel = new Label(allocTypeComp, SWT.NONE);
 		allocationComboViewerLabel.setText("Allocation:");
-		Combo allocationCombo = new Combo(comp2, SWT.READ_ONLY | SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+		Combo allocationCombo = new Combo(allocTypeComp, SWT.READ_ONLY | SWT.SINGLE | SWT.LEAD | SWT.BORDER);
 		allocationComboViewer = new ComboViewer(allocationCombo);
 		allocationComboViewer.setContentProvider(new ArrayContentProvider());
 		GridData allocationComboViewerGridData = GridDataFactory.fillDefaults().grab(false, false).create();
 
 		allocationComboViewer.getControl().setLayoutData(allocationComboViewerGridData);
 
-		Composite comp3 = new Composite(parent, SWT.NONE);
-		comp3.setLayout(new FillLayout());
-		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(comp3);
-
-		Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		group.setText("Allocation Properties");
-		group.setLayout(new GridLayout(2, false));
+		Group allocPropGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		allocPropGroup.setText("Allocation Properties");
+		allocPropGroup.setLayout(new GridLayout(2, false));
 		GridData groupGridData = GridDataFactory.fillDefaults().grab(true, false).create();
 		groupGridData.horizontalSpan = 2;
-		group.setLayoutData(groupGridData);
+		allocPropGroup.setLayoutData(groupGridData);
 
-		Label targetAllocLabel = new Label(group, SWT.NONE);
+		Label targetAllocLabel = new Label(allocPropGroup, SWT.NONE);
 		targetAllocLabel.setText("Existing Tuner Allocation ID");
-		targetAllocText = new Text(group, SWT.BORDER);
+		targetAllocText = new Text(allocPropGroup, SWT.BORDER);
 		targetAllocText.setToolTipText("If you would like to create a Listener allocation for a specific tuner, enter its Allocation ID here");
 		targetAllocText.setEnabled(false);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(targetAllocText);
 
-		Label allocIdLabel = new Label(group, SWT.NONE);
+		Label allocIdLabel = new Label(allocPropGroup, SWT.NONE);
 		allocIdLabel.setText("New Allocation ID");
-		allocIdText = new Text(group, SWT.BORDER);
+		allocIdText = new Text(allocPropGroup, SWT.BORDER);
 		allocIdText.setToolTipText("Enter any ID for ease of reference. Additional characters will be appended after this name, to ensure uniqueness");
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(allocIdText);
 
-		Label typeLabel = new Label(group, SWT.NONE);
+		Label typeLabel = new Label(allocPropGroup, SWT.NONE);
 		typeLabel.setText("Tuner Type");
-		typeCombo = new ComboViewer(group, SWT.NONE | SWT.READ_ONLY);
+		typeCombo = new ComboViewer(allocPropGroup, SWT.NONE | SWT.READ_ONLY);
 		typeCombo.setContentProvider(new ArrayContentProvider());
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(typeCombo.getControl());
 		tunerControls.add(typeCombo.getControl());
 
-		Label cfLabel = new Label(group, SWT.NONE);
+		Label cfLabel = new Label(allocPropGroup, SWT.NONE);
 		cfLabel.setText("Center Frequency (MHz)");
-		cfText = new Text(group, SWT.BORDER);
+		cfText = new Text(allocPropGroup, SWT.BORDER);
 		cfText.setToolTipText(TunerAllocationProperties.CENTER_FREQUENCY.getDescription());
 		tunerControls.add(cfText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(cfText);
 
-		Label bwLabel = new Label(group, SWT.NONE);
+		Label bwLabel = new Label(allocPropGroup, SWT.NONE);
 		bwLabel.setText("Bandwidth (MHz)");
-		Composite bwComp = new Composite(group, SWT.NONE);
+		Composite bwComp = new Composite(allocPropGroup, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(bwComp);
 		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(bwComp);
 		bwText = new Text(bwComp, SWT.BORDER);
@@ -878,9 +875,9 @@ public class TunerAllocationWizardPage extends WizardPage {
 		bwAnyValue.addSelectionListener(new UseAnyValueListener());
 		GridDataFactory.fillDefaults().grab(false, false).applyTo(bwAnyValue);
 
-		Label srLabel = new Label(group, SWT.NONE);
+		Label srLabel = new Label(allocPropGroup, SWT.NONE);
 		srLabel.setText("Sample Rate (Msps)");
-		Composite srComp = new Composite(group, SWT.NONE);
+		Composite srComp = new Composite(allocPropGroup, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(srComp);
 		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(srComp);
 		srText = new Text(srComp, SWT.BORDER);
@@ -893,33 +890,41 @@ public class TunerAllocationWizardPage extends WizardPage {
 		srAnyValue.addSelectionListener(new UseAnyValueListener());
 		GridDataFactory.fillDefaults().grab(false, false).applyTo(srAnyValue);
 
-		Label bwTolLabel = new Label(group, SWT.NONE);
+		Label bwTolLabel = new Label(allocPropGroup, SWT.NONE);
 		bwTolLabel.setText("Bandwidth Tolerance (%)");
-		bwTolText = new Text(group, SWT.BORDER);
+		bwTolText = new Text(allocPropGroup, SWT.BORDER);
 		bwTolText.setToolTipText(TunerAllocationProperties.BANDWIDTH_TOLERANCE.getDescription());
 		tunerControls.add(bwTolText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(bwTolText);
 
-		Label srTolLabel = new Label(group, SWT.NONE);
+		Label srTolLabel = new Label(allocPropGroup, SWT.NONE);
 		srTolLabel.setText("Sample Rate Tolerance (%)");
-		srTolText = new Text(group, SWT.BORDER);
+		srTolText = new Text(allocPropGroup, SWT.BORDER);
 		srTolText.setToolTipText(TunerAllocationProperties.SAMPLE_RATE_TOLERANCE.getDescription());
 		tunerControls.add(srTolText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(srTolText);
 
-		Label rfFlowIdLabel = new Label(group, SWT.NONE);
+		Label rfFlowIdLabel = new Label(allocPropGroup, SWT.NONE);
 		rfFlowIdLabel.setText("RF Flow ID");
-		rfFlowIdText = new Text(group, SWT.BORDER);
+		rfFlowIdText = new Text(allocPropGroup, SWT.BORDER);
 		rfFlowIdText.setToolTipText(TunerAllocationProperties.RF_FLOW_ID.getDescription());
 		tunerControls.add(rfFlowIdText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(rfFlowIdText);
 
-		Label groupIdLabel = new Label(group, SWT.NONE);
+		Label groupIdLabel = new Label(allocPropGroup, SWT.NONE);
 		groupIdLabel.setText("Group ID");
-		groupIdText = new Text(group, SWT.BORDER);
+		groupIdText = new Text(allocPropGroup, SWT.BORDER);
 		groupIdText.setToolTipText(TunerAllocationProperties.GROUP_ID.getDescription());
 		tunerControls.add(groupIdText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(groupIdText);
+
+		Composite bgJobComp = new Composite(parent, SWT.NONE);
+		bgJobComp.setLayout(new GridLayout(3, false));
+		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).align(SWT.END, SWT.CENTER).applyTo(bgJobComp);
+
+		bgJobButton = new Button(bgJobComp, SWT.CHECK);
+		bgJobButton.setText("Run in background");
+
 	}
 
 	private void setValueForProp(TunerAllocationProperties allocProp, ScaSimpleProperty simple) {
@@ -1205,6 +1210,14 @@ public class TunerAllocationWizardPage extends WizardPage {
 		default:
 			return null;
 		}
+	}
+
+	/**
+	 * Returns true if allocation is to be run in a background job
+	 * @return
+	 */
+	public boolean isBackgroundJob() {
+		return bgJobButton.getSelection();
 	}
 
 	public void setTunerAllocationStruct(ScaStructProperty tunerAllocationStruct) {
