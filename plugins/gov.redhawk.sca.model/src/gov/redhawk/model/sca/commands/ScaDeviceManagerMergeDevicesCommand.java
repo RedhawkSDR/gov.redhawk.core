@@ -105,8 +105,10 @@ public class ScaDeviceManagerMergeDevicesCommand extends SetStatusCommand<ScaDev
 		removeDevices.keySet().removeAll(newDevicesMap.keySet());
 
 		// Remove devices
-		if (!removeDevices.isEmpty()) {
-			providerDeviceList.removeAll(removeDevices.values());
+		// TODO: We're using remove() rather than removeAll(), because with otherwise EMF only generates a REMOVE_ALL
+		// notification for the FeatureMap, and not for the derived reference list. See Eclispe bug #516113.
+		for (ScaDevice<?> removeDevice : removeDevices.values()) {
+			providerDeviceList.remove(removeDevice);
 		}
 
 		// Remove duplicates
