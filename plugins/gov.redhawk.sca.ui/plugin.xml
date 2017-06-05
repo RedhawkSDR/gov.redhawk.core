@@ -409,6 +409,18 @@
             </input>
          </propertySection>
          <propertySection
+               class="gov.redhawk.sca.ui.properties.PortInterfacePropertiesSection"
+               enablesFor="1"
+               id="gov.redhawk.sca.ui.properties.propertySection.PortInterface"
+               tab="gov.redhawk.sca.ui.properties.propertyTab.PortDetails">
+            <input
+                  type="gov.redhawk.model.sca.ScaPort">
+            </input>
+            <input
+                  type="mil.jpeojtrs.sca.scd.AbstractPort">
+            </input>
+         </propertySection>
+         <propertySection
                class="org.eclipse.ui.views.properties.tabbed.AdvancedPropertySection"
                filter="gov.redhawk.sca.ui.filters.AdvancedPropertiesExtensibleFilter"
                id="CommonNavigator.section.Advanced"
