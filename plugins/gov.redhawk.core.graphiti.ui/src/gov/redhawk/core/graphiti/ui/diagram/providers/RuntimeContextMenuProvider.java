@@ -20,9 +20,12 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+import gov.redhawk.core.graphiti.ui.GraphitiUIPlugin;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 
 public class RuntimeContextMenuProvider extends BasicContextMenuProvider {
@@ -82,6 +85,8 @@ public class RuntimeContextMenuProvider extends BasicContextMenuProvider {
 
 		// Rename
 		deleteAction.setText("Release");
+		final ImageDescriptor imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(GraphitiUIPlugin.PLUGIN_ID, "icons/Release.gif");
+		deleteAction.setImageDescriptor(imageDescriptor);
 
 		// Place at the end of the control group
 		manager.remove(deleteContrib);

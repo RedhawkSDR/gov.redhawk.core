@@ -607,6 +607,7 @@
          </command>
          <command
                commandId="org.eclipse.ui.edit.delete"
+               icon="icons/clcl16/Release.gif"
                label="%command.label.0"
                style="push">
             <visibleWhen
