@@ -409,6 +409,7 @@
             </input>
          </propertySection>
          <propertySection
+               afterSection="200"
                class="gov.redhawk.sca.ui.properties.PortInterfacePropertiesSection"
                enablesFor="1"
                id="gov.redhawk.sca.ui.properties.propertySection.PortInterface"
