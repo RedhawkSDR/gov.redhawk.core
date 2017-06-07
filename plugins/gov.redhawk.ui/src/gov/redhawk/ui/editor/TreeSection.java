@@ -48,6 +48,9 @@ public abstract class TreeSection extends StructuredViewerSection {
 
 		protected void createButtons(Composite parent, FormToolkit toolkit) {
 			super.createButtons(parent, toolkit);
+			if (fButtonContainer == null) {
+				return;
+			}
 			enableButtons();
 			if (parent.getData("filtered") != null) { //$NON-NLS-1$
 				GridLayout layout = (GridLayout) fButtonContainer.getLayout();
