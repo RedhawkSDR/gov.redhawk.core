@@ -63,7 +63,7 @@ import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
 
 public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor implements ITabbedPropertySheetPageContributor, IViewerProvider {
 
-	private static final String DIAGRAM_PAGE_ID = "2";
+	private int diagramPageId;
 
 	/**
 	 * This is used to manually override the dirty state. It can be used to avoid marking the editor as dirty on trivial
@@ -114,7 +114,7 @@ public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor impl
 
 	@Override
 	protected String getDefaultPageKey() {
-		return DIAGRAM_PAGE_ID;
+		return Integer.toString(getDiagramPageId());
 	}
 
 	@Override
@@ -227,7 +227,7 @@ public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor impl
 			int pageIndex = addPage(this.diagramEditor, diagramInput);
 			setPageText(pageIndex, "Diagram");
 			DUtil.layout(this.diagramEditor);
-
+			setDiagramPageId(pageIndex);
 			this.textEditor = createTextEditor(getEditorInput());
 			if (this.textEditor != null) {
 				pageIndex = addPage(-1, textEditor, getEditorInput(), getMainResource());
@@ -326,6 +326,14 @@ public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor impl
 
 	public void setDirtyAllowed(boolean isDirtyAllowed) {
 		this.isDirtyAllowed = isDirtyAllowed;
+	}
+
+	public int getDiagramPageId() {
+		return this.diagramPageId;
+	}
+
+	public void setDiagramPageId(int diagramPageId) {
+		this.diagramPageId = diagramPageId;
 	}
 
 	/**
