@@ -10,16 +10,19 @@
  *******************************************************************************/
 package gov.redhawk.sca.sad.validation;
 
+import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
 import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.Properties;
 import mil.jpeojtrs.sca.sad.AssemblyController;
 import mil.jpeojtrs.sca.sad.ExternalProperty;
 import mil.jpeojtrs.sca.sad.SadComponentInstantiationRef;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
+import mil.jpeojtrs.sca.spd.SpdPackage;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.validation.AbstractModelConstraint;
 import org.eclipse.emf.validation.IValidationContext;
@@ -59,7 +62,14 @@ public class DuplicateAssemblyExternalPropertyIDConstraint extends AbstractModel
 			SadComponentInstantiationRef ref = asm.getComponentInstantiationRef();
 			if (ref != null) {
 				if (!ref.getRefid().equals(prop.getCompRefID())) {
-					Properties asmProps = ref.getInstantiation().getPlacement().getComponentFileRef().getFile().getSoftPkg().getPropertyFile().getProperties();
+					final EStructuralFeature[] PROPERTIES_PATH = new EStructuralFeature[] { PartitioningPackage.Literals.COMPONENT_INSTANTIATION_REF__INSTANTIATION , 
+						PartitioningPackage.Literals.COMPONENT_INSTANTIATION__PLACEMENT, PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF, 
+						PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE, PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG, SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE,
+						SpdPackage.Literals.PROPERTY_FILE__PROPERTIES };
+					Properties asmProps = ScaEcoreUtils.getFeature(ref, PROPERTIES_PATH);
+					if (asmProps == null) {
+						return true;
+					}
 					for (ValueListIterator<Object> i = asmProps.getProperties().valueListIterator(); i.hasNext();) {
 						Object obj = i.next();
 						if (obj instanceof AbstractProperty) {
