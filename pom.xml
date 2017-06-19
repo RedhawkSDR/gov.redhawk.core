@@ -21,7 +21,7 @@
 
   <properties>
     <tycho.scmUrl>scm:git:https://github.com/RedhawkSDR/eclipse-gov.redhawk.core.git</tycho.scmUrl>
-    <eclipse>http://download.eclipse.org/releases/neon</eclipse>
+    <eclipse>http://download.eclipse.org/releases/oxygen</eclipse>
     <orbit>http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository</orbit>
     <mil.jpeojtrs.sca>http://download.redhawksdr.org/mil.jpeojtrs.sca/releases/2.1</mil.jpeojtrs.sca>
     <nebula>http://download.eclipse.org/nebula/releases/1.0.0/</nebula>
