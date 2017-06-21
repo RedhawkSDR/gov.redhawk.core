@@ -73,7 +73,7 @@ public abstract class FormOutlinePage extends ScaOutlinePage {
 
 		@Override
 		public Object[] getElements(Object obj) {
-			List<Object> myList = getOutlineItems();
+			List< ? > myList = getOutlineItems();
 			if (myList != null) {
 				return myList.toArray();
 			}
@@ -369,7 +369,7 @@ public abstract class FormOutlinePage extends ScaOutlinePage {
 	/**
      * @since 2.0
      */
-	public List<Object>  getOutlineItems() {
+	public List< ? >  getOutlineItems() {
 		return this.fEditor.getOutlineItems();
 	}
 }

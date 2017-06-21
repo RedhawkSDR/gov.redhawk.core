@@ -1818,7 +1818,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	/**
 	 * @since 2.0
 	 */
-	public abstract List<Object> getOutlineItems();
+	public abstract List< ? > getOutlineItems();
 
 	/**
 	 * @return
