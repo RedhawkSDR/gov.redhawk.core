@@ -20,6 +20,7 @@ import org.eclipse.swt.graphics.Image;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 import mil.jpeojtrs.sca.partitioning.ProvidesPortStub;
 import mil.jpeojtrs.sca.partitioning.UsesPortStub;
+import mil.jpeojtrs.sca.sad.HostCollocation;
 
 public class PropertyPageLabelProvider extends BaseLabelProvider implements ILabelProvider {
 
@@ -50,6 +51,9 @@ public class PropertyPageLabelProvider extends BaseLabelProvider implements ILab
 		}
 		if (element instanceof ProvidesPortStub) {
 			return ((ProvidesPortStub) element).getName();
+		}
+		if (element instanceof HostCollocation) {
+			return ((HostCollocation) element).getName();
 		}
 		return null;
 	}
