@@ -11,92 +11,56 @@
  */
 package gov.redhawk.prf.internal.ui.editor;
 
-import gov.redhawk.prf.ui.editor.page.PropertiesFormPage;
-import gov.redhawk.prf.ui.provider.PropertiesEditorPrfItemProviderAdapterFactory;
-import gov.redhawk.ui.editor.FormOutlinePage;
-import gov.redhawk.ui.editor.SCAFormEditor;
-import mil.jpeojtrs.sca.prf.Properties;
-import mil.jpeojtrs.sca.prf.Simple;
-import mil.jpeojtrs.sca.prf.SimpleSequence;
-import mil.jpeojtrs.sca.prf.Struct;
-import mil.jpeojtrs.sca.prf.StructSequence;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
+import org.eclipse.jface.viewers.ILabelDecorator;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.ui.PlatformUI;
 
+import gov.redhawk.prf.ui.editor.page.PropertiesFormPage;
+import gov.redhawk.ui.editor.FormOutlinePage;
+import gov.redhawk.ui.editor.SCAFormEditor;
+import mil.jpeojtrs.sca.prf.Properties;
+import mil.jpeojtrs.sca.prf.Struct;
+import mil.jpeojtrs.sca.prf.StructSequence;
+
 /**
- * The Class PropertiesOutlinePage.
+ * Provides the outline for the PRF editor.
  */
 public class PropertiesOutlinePage extends FormOutlinePage {
 
-	/**
-	 * @since 2.0
-	 */
-	public class PropertiesOutlinePageAdapterFactoryLabelProvider extends AdapterFactoryLabelProvider {
-
-		public PropertiesOutlinePageAdapterFactoryLabelProvider(final AdapterFactory adapterFactory) {
-			super(adapterFactory);
-		}
-
-		@Override
-		public String getText(final Object object) {
-			if (object instanceof Properties) {
-				return "Properties";
-			}
-			return super.getText(object);
-		}
-
-	}
-
-	/**
-	 * The Constructor.
-	 * 
-	 * @param editor the editor
-	 */
 	public PropertiesOutlinePage(final SCAFormEditor editor) {
 		super(editor);
-		super.setLabelProvider(new DecoratingLabelProvider(new PropertiesOutlinePageAdapterFactoryLabelProvider(getAdapterFactory()), PlatformUI.getWorkbench()
-		        .getDecoratorManager().getLabelDecorator()));
+
+		// Create our own label provider that will decorate items that have warnings/errors.
+		// We re-use the editor's adapter factory so that objects are the same between the editor & outline
+		ILabelProvider provider = new AdapterFactoryLabelProvider(fEditor.getAdapterFactory());
+		ILabelDecorator decorator = PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator();
+		super.setLabelProvider(new DecoratingLabelProvider(provider, decorator));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void addItemProviders(final ComposedAdapterFactory adapterFactory) {
-		adapterFactory.addAdapterFactory(new PropertiesEditorPrfItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new EcoreItemProviderAdapterFactory());
+		// We override getAdapterFactory(), so this isn't necessary
+		throw new IllegalStateException("Internal error - this method should never be called");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
+	public AdapterFactory getAdapterFactory() {
+		// We re-use the editor's adapter factory
+		return fEditor.getAdapterFactory();
+	}
+
 	@Override
 	protected boolean getChildren(final Object parent) {
-		boolean retVal = false;
-		if (parent instanceof Properties || parent instanceof Struct || parent instanceof StructSequence) {
-			retVal = true;
-		}
-		return retVal;
+		return (parent instanceof Properties || parent instanceof Struct || parent instanceof StructSequence);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected String getParentPageId(final Object item) {
-		String pageId = null;
-		if (item instanceof Simple || item instanceof SimpleSequence || item instanceof Struct || item instanceof StructSequence) {
-			pageId = PropertiesFormPage.PAGE_ID;
-		}
-		if (pageId != null) {
-			return pageId;
-		}
-		return super.getParentPageId(item);
+		// Only one page in the editor
+		return PropertiesFormPage.PAGE_ID;
 	}
-
 }
