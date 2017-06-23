@@ -74,16 +74,20 @@ public class FindComponentConstraint extends AbstractModelConstraint {
 	}
 
 	private static IStatus valid(final FindComponent findComp, final IValidationContext ctx) {
+		if (findComp == null) {
+			return Status.OK_STATUS;
+		}
+
 		final SadComponentInstantiation parentInst = (SadComponentInstantiation) findComp.eContainer();
 
 		if ((findComp.getComponentResourceFactoryRef() == null) && (findComp.getNamingService() == null)) {
 			return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus(FindComponentConstraint.NO_ELEMENTS + parentInst.getId()),
-			        SadPackage.Literals.FIND_COMPONENT__NAMING_SERVICE);
+				SadPackage.Literals.FIND_COMPONENT__NAMING_SERVICE);
 		}
 
 		if ((findComp.getComponentResourceFactoryRef() != null) && (findComp.getNamingService() != null)) {
 			return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus(FindComponentConstraint.BOTH_ELEMENTS + parentInst.getId()),
-			        SadPackage.Literals.FIND_COMPONENT__NAMING_SERVICE);
+				SadPackage.Literals.FIND_COMPONENT__NAMING_SERVICE);
 		}
 
 		if (findComp.getNamingService() != null) {
@@ -91,13 +95,15 @@ public class FindComponentConstraint extends AbstractModelConstraint {
 			final String nsName = ns.getName();
 
 			if (nsName == null) {
-				return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus(FindComponentConstraint.NULL_NAMING_SERVICE_NAME
-				        + parentInst.getId()), PartitioningPackage.Literals.NAMING_SERVICE__NAME);
+				return new EnhancedConstraintStatus(
+					(ConstraintStatus) ctx.createFailureStatus(FindComponentConstraint.NULL_NAMING_SERVICE_NAME + parentInst.getId()),
+					PartitioningPackage.Literals.NAMING_SERVICE__NAME);
 			}
 
 			if (nsName.trim().length() == 0) {
-				return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus(FindComponentConstraint.BLANK_NAMING_SERVICE_NAME
-				        + parentInst.getId()), PartitioningPackage.Literals.NAMING_SERVICE__NAME);
+				return new EnhancedConstraintStatus(
+					(ConstraintStatus) ctx.createFailureStatus(FindComponentConstraint.BLANK_NAMING_SERVICE_NAME + parentInst.getId()),
+					PartitioningPackage.Literals.NAMING_SERVICE__NAME);
 			}
 
 		} else {
@@ -107,7 +113,7 @@ public class FindComponentConstraint extends AbstractModelConstraint {
 
 			if (status.getSeverity() == IStatus.ERROR) {
 				return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus(status.getMessage() + " for Component: " + parentInst.getId()),
-				        SadPackage.Literals.COMPONENT_RESOURCE_FACTORY_REF__REFID);
+					SadPackage.Literals.COMPONENT_RESOURCE_FACTORY_REF__REFID);
 			}
 		}
 
@@ -122,10 +128,16 @@ public class FindComponentConstraint extends AbstractModelConstraint {
 
 		for (final SadComponentPlacement sadCp : sad.getPartitioning().getComponentPlacement()) {
 			for (final SadComponentInstantiation sadInst : sadCp.getComponentInstantiation()) {
-				if (!(sadInst.getId().equals(parentInst.getId())) && (FindComponentConstraint.valid(sadInst.getFindComponent(), ctx) == Status.OK_STATUS)
-				        && (sadInst.getFindComponent().getNamingService().getName().equals(nsName))) {
-					return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus(FindComponentConstraint.DUPLICATE_NAMING_SERVICE_NAME
-					        + parentInst.getId() + " and " + sadInst.getId()), PartitioningPackage.Literals.NAMING_SERVICE__NAME);
+				FindComponent instFindComp = sadInst.getFindComponent();
+				if (instFindComp == null) {
+					return Status.OK_STATUS;
+				}
+				if (!(sadInst.getId().equals(parentInst.getId())) && (FindComponentConstraint.valid(instFindComp, ctx) == Status.OK_STATUS)
+					&& (instFindComp.getNamingService().getName().equals(nsName))) {
+					return new EnhancedConstraintStatus(
+						(ConstraintStatus) ctx.createFailureStatus(
+							FindComponentConstraint.DUPLICATE_NAMING_SERVICE_NAME + parentInst.getId() + " and " + sadInst.getId()),
+						PartitioningPackage.Literals.NAMING_SERVICE__NAME);
 				}
 			}
 		}
