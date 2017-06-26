@@ -48,6 +48,7 @@ import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.jacorb.naming.Name;
+import org.omg.CORBA.IntHolder;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.SystemException;
 import org.omg.CosEventChannelAdmin.EventChannelHelper;
@@ -75,7 +76,9 @@ import CF.FileManager;
 import CF.InvalidFileName;
 import CF.InvalidObjectReference;
 import CF.InvalidProfile;
+import CF.LogEvent;
 import CF.PropertiesHolder;
+import CF.UnknownIdentifier;
 import CF.UnknownProperties;
 import CF.ApplicationFactoryPackage.CreateApplicationError;
 import CF.ApplicationFactoryPackage.CreateApplicationInsufficientCapacityError;
@@ -2885,6 +2888,102 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		} else {
 			return getName();
 		}
+	}
+
+	/**
+	 * @since 20.4
+	 */
+	@Override
+	public LogEvent[] retrieve_records(IntHolder howMany, int startingRecord) {
+		return getObj().retrieve_records(howMany, startingRecord);
+	}
+
+	/**
+	 * @since 20.4
+	 */
+	@Override
+	public LogEvent[] retrieve_records_by_date(IntHolder howMany, long to_timeStamp) {
+		return getObj().retrieve_records_by_date(howMany, to_timeStamp);
+	}
+
+	/**
+	 * @since 20.4
+	 */
+	@Override
+	public LogEvent[] retrieve_records_from_date(IntHolder howMany, long from_timeStamp) {
+		return getObj().retrieve_records_from_date(howMany, from_timeStamp);
+	}
+
+	/**
+	 * @since 20.4
+	 */
+	@Override
+	public int log_level() {
+		DomainManager domMgr = fetchNarrowedObject(null);
+		if (domMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		return domMgr.log_level();
+	}
+
+	/**
+	 * @since 20.4
+	 */
+	@Override
+	public void log_level(int newLog_level) {
+		DomainManager domMgr = fetchNarrowedObject(null);
+		if (domMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		domMgr.log_level(newLog_level);
+	}
+
+	/**
+	 * @since 20.4
+	 */
+	@Override
+	public void setLogLevel(String logger_id, int newLevel) throws UnknownIdentifier {
+		DomainManager domMgr = fetchNarrowedObject(null);
+		if (domMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		domMgr.setLogLevel(logger_id, newLevel);
+	}
+
+	/**
+	 * @since 20.4
+	 */
+	@Override
+	public String getLogConfig() {
+		DomainManager domMgr = fetchNarrowedObject(null);
+		if (domMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		return domMgr.getLogConfig();
+	}
+
+	/**
+	 * @since 20.4
+	 */
+	@Override
+	public void setLogConfig(String config_contents) {
+		DomainManager domMgr = fetchNarrowedObject(null);
+		if (domMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		domMgr.setLogConfig(config_contents);
+	}
+
+	/**
+	 * @since 20.4
+	 */
+	@Override
+	public void setLogConfigURL(String config_url) {
+		DomainManager domMgr = fetchNarrowedObject(null);
+		if (domMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		domMgr.setLogConfigURL(config_url);
 	}
 
 } // ScaDomainManagerImpl
