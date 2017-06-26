@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EObject;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Waveforms Container</b></em>'.
+ * @since 20.2
  * <!-- end-user-doc -->
  *
  * <p>
@@ -34,7 +35,6 @@ import org.eclipse.emf.ecore.EObject;
  * @see gov.redhawk.model.sca.ScaPackage#getWaveformsContainer()
  * @model
  * @generated
- * @since 20.2
  */
 public interface WaveformsContainer extends EObject {
 	/**

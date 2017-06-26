@@ -39,9 +39,9 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 /**
  * This is the item provider adapter for a {@link gov.redhawk.model.sca.WaveformsContainer} object.
  * <!-- begin-user-doc -->
+ * @since 12.4
  * <!-- end-user-doc -->
  * @generated
- * @since 12.4
  */
 public class WaveformsContainerItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider,
 		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {

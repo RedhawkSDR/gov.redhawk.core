@@ -2162,10 +2162,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public String toString() {
+		// END GENERATED CODE
 		if (eIsProxy())
 			return super.toString();
 
@@ -2197,6 +2198,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		result.append(localName);
 		result.append(')');
 		return result.toString();
+		// BEGIN GENERATED CODE
 	}
 
 	@Override
