@@ -53,7 +53,7 @@ public class FindComponentConstraint extends AbstractModelConstraint {
 
 			return FindComponentConstraint.validate(findComp, ctx);
 		}
-
+		
 		return Status.OK_STATUS;
 	}
 
@@ -128,6 +128,7 @@ public class FindComponentConstraint extends AbstractModelConstraint {
 				if (instFindComp == null) {
 					continue;
 				}
+				
 				if (!(sadInst.getId().equals(parentInst.getId())) && (FindComponentConstraint.valid(instFindComp, ctx) == Status.OK_STATUS)
 					&& (instFindComp.getNamingService().getName().equals(nsName))) {
 					return new EnhancedConstraintStatus(
