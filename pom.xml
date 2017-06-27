@@ -173,6 +173,7 @@
     <module>tests/gov.redhawk.partitioning.validation.tests</module>
     <module>tests/gov.redhawk.prf.validation.tests</module>
     <module>tests/gov.redhawk.sca.launch.tests</module>
+    <module>tests/gov.redhawk.sca.sad.validation.tests</module>
     <module>tests/gov.redhawk.scd.validation.tests</module>
     <module>tests/gov.redhawk.swt.browser.tests</module>
     <module>tests/gov.redhawk.validation.tests</module>

@@ -11,6 +11,13 @@
  */
 package gov.redhawk.sca.sad.validation;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.validation.AbstractModelConstraint;
+import org.eclipse.emf.validation.IValidationContext;
+import org.eclipse.emf.validation.model.ConstraintStatus;
+
 import gov.redhawk.validation.DceUuidConstraint;
 import mil.jpeojtrs.sca.partitioning.NamingService;
 import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
@@ -21,13 +28,6 @@ import mil.jpeojtrs.sca.sad.SadComponentPlacement;
 import mil.jpeojtrs.sca.sad.SadPackage;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.validator.EnhancedConstraintStatus;
-
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.validation.AbstractModelConstraint;
-import org.eclipse.emf.validation.IValidationContext;
-import org.eclipse.emf.validation.model.ConstraintStatus;
 
 /**
  * @since 2.1
@@ -53,7 +53,7 @@ public class FindComponentConstraint extends AbstractModelConstraint {
 
 			return FindComponentConstraint.validate(findComp, ctx);
 		}
-
+		
 		return Status.OK_STATUS;
 	}
 
@@ -74,10 +74,6 @@ public class FindComponentConstraint extends AbstractModelConstraint {
 	}
 
 	private static IStatus valid(final FindComponent findComp, final IValidationContext ctx) {
-		if (findComp == null) {
-			return Status.OK_STATUS;
-		}
-
 		final SadComponentInstantiation parentInst = (SadComponentInstantiation) findComp.eContainer();
 
 		if ((findComp.getComponentResourceFactoryRef() == null) && (findComp.getNamingService() == null)) {
@@ -130,8 +126,9 @@ public class FindComponentConstraint extends AbstractModelConstraint {
 			for (final SadComponentInstantiation sadInst : sadCp.getComponentInstantiation()) {
 				FindComponent instFindComp = sadInst.getFindComponent();
 				if (instFindComp == null) {
-					return Status.OK_STATUS;
+					continue;
 				}
+				
 				if (!(sadInst.getId().equals(parentInst.getId())) && (FindComponentConstraint.valid(instFindComp, ctx) == Status.OK_STATUS)
 					&& (instFindComp.getNamingService().getName().equals(nsName))) {
 					return new EnhancedConstraintStatus(
