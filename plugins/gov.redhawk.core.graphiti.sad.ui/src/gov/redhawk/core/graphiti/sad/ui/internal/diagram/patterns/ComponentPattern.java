@@ -54,15 +54,19 @@ import gov.redhawk.core.graphiti.ui.util.StyleUtil;
 import gov.redhawk.core.graphiti.ui.util.UpdateUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentFile;
 import mil.jpeojtrs.sca.partitioning.ComponentSupportedInterfaceStub;
+import mil.jpeojtrs.sca.partitioning.NamingService;
+import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
 import mil.jpeojtrs.sca.partitioning.ProvidesPortStub;
 import mil.jpeojtrs.sca.partitioning.UsesPortStub;
 import mil.jpeojtrs.sca.sad.ExternalPorts;
 import mil.jpeojtrs.sca.sad.ExternalProperty;
+import mil.jpeojtrs.sca.sad.FindComponent;
 import mil.jpeojtrs.sca.sad.HostCollocation;
 import mil.jpeojtrs.sca.sad.Port;
 import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
 import mil.jpeojtrs.sca.sad.SadComponentPlacement;
 import mil.jpeojtrs.sca.sad.SadConnectInterface;
+import mil.jpeojtrs.sca.sad.SadFactory;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 
 public class ComponentPattern extends AbstractPortSupplierPattern {
@@ -573,6 +577,16 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 	@Override
 	protected void setInnerTitle(EObject businessObject, String value) {
 		((SadComponentInstantiation) businessObject).setUsageName(value);
+		FindComponent fc = ((SadComponentInstantiation) businessObject).getFindComponent();
+		if (fc != null && fc.getNamingService() != null) {
+			fc.getNamingService().setName(value);
+		} else {
+			fc = SadFactory.eINSTANCE.createFindComponent();
+			NamingService ns = PartitioningFactory.eINSTANCE.createNamingService();
+			ns.setName(value);
+			fc.setNamingService(ns);
+			((SadComponentInstantiation) businessObject).setFindComponent(fc);
+		}
 	}
 
 	@Override
