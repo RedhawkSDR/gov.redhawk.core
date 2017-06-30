@@ -23,7 +23,7 @@ import gov.redhawk.model.sca.ScaFileStore;
 import gov.redhawk.model.sca.ScaPackage;
 
 /**
- * @since 20.4
+ * @since 21.0
  */
 public class ScaFileStoreMergeChildrenCommand extends SetStatusCommand<ScaFileStore> {
 

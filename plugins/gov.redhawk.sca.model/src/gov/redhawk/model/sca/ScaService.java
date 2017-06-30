@@ -88,7 +88,7 @@ public interface ScaService extends ScaPropertyContainer<org.omg.CORBA.Object, S
 	 * <p/>
 	 * The profile should be present before invoking this method
 	 * ({@link #fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor)}) or it will return false.
-	 * @since 20.4
+	 * @since 21.0
 	 * <!-- end-user-doc -->
 	 * 
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean" intfRequired="true"
