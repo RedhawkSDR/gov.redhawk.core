@@ -21,8 +21,17 @@ import gov.redhawk.core.graphiti.ui.ext.RHGxPackage;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
+import org.eclipse.graphiti.mm.MmPackage;
+
+import org.eclipse.graphiti.mm.algorithms.AlgorithmsPackage;
+
+import org.eclipse.graphiti.mm.algorithms.styles.StylesPackage;
+
+import org.eclipse.graphiti.mm.pictograms.PictogramsPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -89,12 +98,18 @@ public class RHDeviceGxPackageImpl extends EPackageImpl implements RHDeviceGxPac
 
 		// Obtain or create and register package
 		RHDeviceGxPackageImpl theRHDeviceGxPackage = (RHDeviceGxPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof RHDeviceGxPackageImpl
-			? EPackage.Registry.INSTANCE.get(eNS_URI) : new RHDeviceGxPackageImpl());
+			? EPackage.Registry.INSTANCE.get(eNS_URI)
+			: new RHDeviceGxPackageImpl());
 
 		isInited = true;
 
 		// Initialize simple dependencies
 		RHGxPackage.eINSTANCE.eClass();
+		PictogramsPackage.eINSTANCE.eClass();
+		MmPackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
+		AlgorithmsPackage.eINSTANCE.eClass();
+		StylesPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theRHDeviceGxPackage.createPackageContents();

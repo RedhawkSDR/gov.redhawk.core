@@ -13,6 +13,7 @@ package gov.redhawk.frontend;
 
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
+
 import org.eclipse.emf.ecore.EFactory;
 
 /**
