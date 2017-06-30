@@ -1250,7 +1250,7 @@ public interface ScaPackage extends EPackage {
 	 * The feature id for the '<em><b>Component Instantiation</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 20.4
+	 * @since 21.0
 	 *        <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -2883,7 +2883,7 @@ public interface ScaPackage extends EPackage {
 	 * The feature id for the '<em><b>Component Instantiation</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 20.4
+	 * @since 21.0
 	 *        <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3122,7 +3122,7 @@ public interface ScaPackage extends EPackage {
 	 * The feature id for the '<em><b>Component Instantiation</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 20.4
+	 * @since 21.0
 	 *        <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -5447,7 +5447,7 @@ public interface ScaPackage extends EPackage {
 	 * <em>Component Instantiation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 20.4
+	 * @since 21.0
 	 *        <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Component Instantiation</em>'.
 	 * @see gov.redhawk.model.sca.ScaDevice#getComponentInstantiation()
@@ -7406,7 +7406,7 @@ public interface ScaPackage extends EPackage {
 		 * The meta object literal for the '<em><b>Component Instantiation</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * 
-		 * @since 20.4
+		 * @since 21.0
 		 *        <!-- end-user-doc -->
 		 * @generated
 		 */

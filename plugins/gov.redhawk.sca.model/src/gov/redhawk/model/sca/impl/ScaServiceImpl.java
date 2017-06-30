@@ -715,7 +715,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	/**
 	 * Retrieves the {@link VersionedFeature} for the profile URI feature.
 	 * 
-	 * @since 20.4
+	 * @since 21.0
 	 */
 	protected VersionedFeature getProfileURIVersionedFeature() {
 		return profileURIFeature;
