@@ -112,7 +112,7 @@ public class TunerStatusItemProvider extends ItemProviderAdapter
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_TunerStatus_tunerStatusStruct_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_tunerStatusStruct_feature", "_UI_TunerStatus_type"),
-			FrontendPackage.Literals.TUNER_STATUS__TUNER_STATUS_STRUCT, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+			FrontendPackage.Literals.TUNER_STATUS__TUNER_STATUS_STRUCT, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**

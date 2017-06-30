@@ -85,13 +85,8 @@ public interface TunerStatus extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Tuner Status Struct</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Tuner Status Struct</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * *
 	 * Direct reference to device struct
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Tuner Status Struct</em>' attribute.
