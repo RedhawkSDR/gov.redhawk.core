@@ -109,7 +109,8 @@ public class RHGxPackageImpl extends EPackageImpl implements RHGxPackage {
 
 		// Obtain or create and register package
 		RHGxPackageImpl theRHGxPackage = (RHGxPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof RHGxPackageImpl
-			? EPackage.Registry.INSTANCE.get(eNS_URI) : new RHGxPackageImpl());
+			? EPackage.Registry.INSTANCE.get(eNS_URI)
+			: new RHGxPackageImpl());
 
 		isInited = true;
 

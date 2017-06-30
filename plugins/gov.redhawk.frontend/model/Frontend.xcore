@@ -25,7 +25,7 @@ class UnallocatedTunerContainer {
 
 class TunerStatus { 
 	container TunerContainer tunerContainer opposite tunerStatus
-	/**
+	/*
 	 * Direct reference to device struct
 	 */
 	@GenModel(property="Readonly")
