@@ -13,11 +13,6 @@ package gov.redhawk.sca.sad.diagram.part;
 
 import java.math.BigInteger;
 
-import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
-import mil.jpeojtrs.sca.sad.SadComponentPlacement;
-import mil.jpeojtrs.sca.sad.SadPackage;
-import mil.jpeojtrs.sca.sad.SoftwareAssembly;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -31,6 +26,11 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.handlers.HandlerUtil;
+
+import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
+import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
+import mil.jpeojtrs.sca.sad.SadComponentPlacement;
+import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 
 /**
  * @since 2.0
@@ -63,9 +63,9 @@ public class MoveComponentEarlierInStartOrder extends AbstractHandler {
 
 					if (editingDomain != null) {
 						CompoundCommand changeOrderCmd = new CompoundCommand("Move Earlier");
-						changeOrderCmd.append(SetCommand.create(editingDomain, earlierComponentInstantiation, SadPackage.Literals.SAD_COMPONENT_INSTANTIATION__START_ORDER,
+						changeOrderCmd.append(SetCommand.create(editingDomain, earlierComponentInstantiation, PartitioningPackage.Literals.COMPONENT_INSTANTIATION__START_ORDER,
 						        laterStartOrder));
-						changeOrderCmd.append(SetCommand.create(editingDomain, selectedCi, SadPackage.Literals.SAD_COMPONENT_INSTANTIATION__START_ORDER, earlierStartOrder));
+						changeOrderCmd.append(SetCommand.create(editingDomain, selectedCi, PartitioningPackage.Literals.COMPONENT_INSTANTIATION__START_ORDER, earlierStartOrder));
 						editingDomain.getCommandStack().execute(changeOrderCmd);
 					} else {
 						earlierComponentInstantiation.setStartOrder(laterStartOrder);

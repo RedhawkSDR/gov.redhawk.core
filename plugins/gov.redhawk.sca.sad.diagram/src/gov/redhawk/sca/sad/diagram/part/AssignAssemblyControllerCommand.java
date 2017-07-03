@@ -15,6 +15,7 @@ import java.math.BigInteger;
 
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 import mil.jpeojtrs.sca.partitioning.ComponentPlacement;
+import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
 import mil.jpeojtrs.sca.sad.AssemblyController;
 import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
 import mil.jpeojtrs.sca.sad.SadComponentInstantiationRef;
@@ -89,12 +90,12 @@ public class AssignAssemblyControllerCommand extends AbstractHandler implements 
 						startOrder = newAssemblyController.getStartOrder().intValue();
 					}
 					assignAssemblyControllerCmd.append(SetCommand.create(editingDomain, originalAssemblyController,
-						SadPackage.Literals.SAD_COMPONENT_INSTANTIATION__START_ORDER, BigInteger.valueOf(startOrder)));
+						PartitioningPackage.Literals.COMPONENT_INSTANTIATION__START_ORDER, BigInteger.valueOf(startOrder)));
 				}
 
 				// Set the start order of the assembly controller to zero
 				assignAssemblyControllerCmd.append(SetCommand.create(editingDomain, newAssemblyController,
-					SadPackage.Literals.SAD_COMPONENT_INSTANTIATION__START_ORDER, BigInteger.valueOf(0)));
+					PartitioningPackage.Literals.COMPONENT_INSTANTIATION__START_ORDER, BigInteger.valueOf(0)));
 				assignAssemblyControllerCmd.append(SetCommand.create(editingDomain, sad, SadPackage.Literals.SOFTWARE_ASSEMBLY__ASSEMBLY_CONTROLLER, ac));
 				editingDomain.getCommandStack().execute(assignAssemblyControllerCmd);
 
