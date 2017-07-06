@@ -84,6 +84,7 @@
   </repositories>
 
   <modules>
+    <module>features/gov.redhawk.core.debug.feature</module>
     <module>features/gov.redhawk.core.feature</module>
     <module>features/gov.redhawk.core.ui.feature</module>
     <module>features/gov.redhawk.core.sdk</module>
