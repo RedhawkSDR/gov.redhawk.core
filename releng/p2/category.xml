@@ -25,5 +25,8 @@
    <feature url="features/gov.redhawk.validation.feature_0.0.0.qualifier.jar" id="gov.redhawk.validation.feature">
       <category name="gov.redhawk.core"/>
    </feature>
+   <feature url="features/gov.redhawk.core.debug_0.0.0.qualifier.jar" id="gov.redhawk.core.debug">
+      <category name="gov.redhawk.core"/>
+   </feature>
    <category-def name="gov.redhawk.core" label="REDHAWK Core"/>
 </site>
