@@ -20,18 +20,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Spinner;
 
-/**
- */
 public class DvalSliderDialog extends Dialog {
+
 	private Scale slider;
 
-	private Spinner spinner;
-
 	private Shell shell;
-
-	private GridLayout layout;
 
 	private Point size;
 
@@ -78,13 +72,6 @@ public class DvalSliderDialog extends Dialog {
 	 */
 	public Scale getSlider() {
 		return this.slider;
-	}
-
-	/**
-	 * @return Spinner fo the dialog
-	 */
-	public Spinner getSpinner() {
-		return this.spinner;
 	}
 
 	/**
@@ -188,11 +175,11 @@ public class DvalSliderDialog extends Dialog {
 	        final double pageIncrement) {
 		this.shell = new Shell(this.getParent(), SWT.TOOL);
 
-		this.layout = new GridLayout();
-		this.layout.numColumns = 2;
-		this.layout.marginBottom = 0;
-		this.layout.marginTop = 0;
-		this.shell.setLayout(this.layout);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 2;
+		layout.marginBottom = 0;
+		layout.marginTop = 0;
+		this.shell.setLayout(layout);
 
 		this.slider = new Scale(this.shell, SWT.NONE);
 		final GridData gd = new GridData(GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL | GridData.FILL_HORIZONTAL);
@@ -209,18 +196,11 @@ public class DvalSliderDialog extends Dialog {
 
 		// slider.setThumb(1);
 
-		// label = new Label(shell, style);
-		// label.setText("Increment");
-
-		// spinner = new Spinner(shell, SWT.BORDER);
-		// spinner.setMinimum(1);
-
 		this.shell.addFocusListener(new FocusListener() {
 
 			@Override
 			public void focusGained(final FocusEvent e) {
 				// Do nothing
-
 			}
 
 			@Override
