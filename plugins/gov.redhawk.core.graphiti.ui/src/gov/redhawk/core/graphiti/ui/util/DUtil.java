@@ -257,7 +257,7 @@ public class DUtil {
 	public static IDimension calculateTextSize(AbstractText text) {
 		return GraphitiUi.getUiLayoutService().calculateTextSize(text.getValue(), Graphiti.getGaService().getFont(text, true));
 	}
-
+	
 	/**
 	 * Creates a {@link FixPointAnchor} overlay for a shape, with the anchor point vertically centered at horizontal
 	 * position x. The returned anchor has no graphics algorithm.
