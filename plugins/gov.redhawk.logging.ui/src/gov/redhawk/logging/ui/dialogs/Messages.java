@@ -20,6 +20,11 @@ public class Messages extends NLS {
 	public static String LoggingDetailsDialog_3;
 	public static String LoggingDetailsDialog_4;
 	public static String LoggingDetailsDialog_5;
+	public static String SetLogLevelDialog_CurrentLevel;
+	public static String SetLogLevelDialog_Description;
+	public static String SetLogLevelDialog_DialogTitle;
+	public static String SetLogLevelDialog_NewLevel;
+	public static String SetLogLevelDialog_ShellTitle;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

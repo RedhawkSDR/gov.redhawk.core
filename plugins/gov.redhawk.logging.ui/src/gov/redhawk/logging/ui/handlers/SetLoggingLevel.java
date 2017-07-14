@@ -34,7 +34,7 @@ import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.TRANSIENT;
 
 import CF.LogConfigurationOperations;
-import gov.redhawk.logging.ui.SetLogLevelDialog;
+import gov.redhawk.logging.ui.dialogs.SetLogLevelDialog;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
 public class SetLoggingLevel extends AbstractHandler {
