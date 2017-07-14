@@ -40,8 +40,8 @@ public class SetLogLevelDialog extends TitleAreaDialog {
 	@Override
 	public void create() {
 		super.create();
-		setTitle("Set Debug Level");
-		setMessage("Select a new logging level for the resource from the drop down or select cancel to use the existing.");
+		setTitle(Messages.SetLogLevelDialog_DialogTitle);
+		setMessage(Messages.SetLogLevelDialog_Description);
 		setDialogHelpAvailable(false);
 		setHelpAvailable(false);
 	}
@@ -49,7 +49,7 @@ public class SetLogLevelDialog extends TitleAreaDialog {
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("Set Debug Level");
+		newShell.setText(Messages.SetLogLevelDialog_ShellTitle);
 	}
 
 	@Override
@@ -62,12 +62,12 @@ public class SetLogLevelDialog extends TitleAreaDialog {
 		container.setLayout(layout);
 
 		Label currentLogLevelLabel = new Label(container, SWT.READ_ONLY);
-		currentLogLevelLabel.setText("Current Log Level: ");
+		currentLogLevelLabel.setText(Messages.SetLogLevelDialog_CurrentLevel);
 		Label currentLogLevelValue = new Label(container, SWT.READ_ONLY);
 		currentLogLevelValue.setText(LogLevels.intToLogLevel(currentLogLevel).getLabel());
 
 		Label newLogLevelLabel = new Label(container, SWT.READ_ONLY);
-		newLogLevelLabel.setText("New Log Level: ");
+		newLogLevelLabel.setText(Messages.SetLogLevelDialog_NewLevel);
 		newLogLevelCombo = new ComboViewer(container, SWT.READ_ONLY | SWT.BORDER);
 		newLogLevelCombo.setContentProvider(new ArrayContentProvider());
 		newLogLevelCombo.setLabelProvider(new LabelProvider() {
