@@ -48,6 +48,7 @@ import org.eclipse.zest.layouts.exampleStructures.SimpleNode;
 
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
+import gov.redhawk.core.graphiti.ui.util.LayoutUtil;
 import mil.jpeojtrs.sca.sad.HostCollocation;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
@@ -99,7 +100,7 @@ public class LayoutDiagramFeature extends AbstractCustomFeature {
 				LayoutEntity[] entities = map.values().toArray(new LayoutEntity[0]);
 
 				// Determine the dimensions required to house all of our shapes
-				Point diagramBounds = DUtil.calculateDiagramBounds(getDiagram());
+				Point diagramBounds = LayoutUtil.calculateDiagramBounds(getDiagram());
 
 				// Apply the LayoutAlgorithmn
 				layoutAlgorithm.applyLayout(entities, connections, 0, 0, diagramBounds.getX(), diagramBounds.getY(), false, false);

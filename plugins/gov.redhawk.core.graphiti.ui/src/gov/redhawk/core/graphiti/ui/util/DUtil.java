@@ -41,7 +41,6 @@ import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalCommandStack;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.graphiti.datatypes.IDimension;
-import org.eclipse.graphiti.dt.IDiagramTypeProvider;
 import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.ILayoutFeature;
@@ -102,11 +101,6 @@ public class DUtil {
 	public static final String DIAGRAM_CONTEXT_EXPLORER = "explorer";
 	public static final String DIAGRAM_CONTEXT_LOCAL = "local";
 	public static final String DIAGRAM_CONTEXT_TARGET_SDR = "target-sdr";
-
-	// Spacing/distance constants
-	private static final int DIAGRAM_SHAPE_HORIZONTAL_PADDING = 100;
-	private static final int DIAGRAM_SHAPE_ROOT_VERTICAL_PADDING = 50;
-	private static final int DIAGRAM_SHAPE_SIBLING_VERTICAL_PADDING = 5;
 
 	protected DUtil() {
 	}
@@ -254,40 +248,6 @@ public class DUtil {
 		return true;
 	}
 
-	// do this because we need to pass it to layout diagram, assumes we already have shapes drawn of a certain
-	// size and that we are just moving them
-	public static Point calculateDiagramBounds(Diagram diagram) {
-		// get all shapes in diagram, components, findby's etc
-		List<RHContainerShape> rootShapes = new ArrayList<RHContainerShape>();
-		for (Shape shape : diagram.getChildren()) {
-			if (shape instanceof RHContainerShape) {
-				RHContainerShape rhContainerShape = (RHContainerShape) shape;
-				// if it has no provides ports or it has ports WITH NO CONNECTIONS than its a root in the tree
-				if (rhContainerShape.getProvidesPortStubs() != null
-					&& (rhContainerShape.getProvidesPortStubs().size() < 1 || getIncomingConnectionsContainedInContainerShape(rhContainerShape).size() < 1)) {
-					rootShapes.add(rhContainerShape);
-				}
-			}
-		}
-
-		// combine dimensions of each root tree to determine total dimension required to house all shapes in diagram
-		int height = 0;
-		int width = 0;
-		for (RHContainerShape shape : rootShapes) {
-			Point childTreeDimension = calculateTreeDimensions(shape);
-			height += childTreeDimension.getY();
-			// use largest width
-			width = Math.max(childTreeDimension.getX(), width);
-		}
-		// add padding between roots
-		height += DIAGRAM_SHAPE_ROOT_VERTICAL_PADDING * rootShapes.size() - 1;
-
-		Point point = StylesFactory.eINSTANCE.createPoint();
-		point.setX(width);
-		point.setY(height);
-		return point;
-	}
-
 	/**
 	 * Calculates the width and height of the given text in the font of the given text. Unlike Graphiti's layout
 	 * service, this method takes the text's style into account when getting the font.
@@ -296,55 +256,6 @@ public class DUtil {
 	 */
 	public static IDimension calculateTextSize(AbstractText text) {
 		return GraphitiUi.getUiLayoutService().calculateTextSize(text.getValue(), Graphiti.getGaService().getFont(text, true));
-	}
-
-	/**
-	 * Returns dimensions required to contain all shapes aligned in a horizontal tree diagram beginning with the
-	 * provided root shape.
-	 * @param rootShape
-	 * @return
-	 */
-	private static Point calculateTreeDimensions(RHContainerShape rootShape) {
-		return calculateTreeDimensions(rootShape, new HashSet<RHContainerShape>());
-	}
-
-	/**
-	 * Internal method used by {@link #calculateTreeDimensions(RHContainerShape)}.
-	 * @param rootShape
-	 * @return
-	 */
-	private static Point calculateTreeDimensions(RHContainerShape rootShape, Set<RHContainerShape> visitedShapes) {
-		// Keep track of the shape we're visiting; if we've been here, we're in a circular recursion
-		if (!visitedShapes.add(rootShape)) {
-			return null;
-		}
-
-		int height = rootShape.getGraphicsAlgorithm().getHeight();
-		int width = rootShape.getGraphicsAlgorithm().getWidth();
-		int childWidth = 0;
-		int childHeight = 0;
-
-		List<Connection> outs = getOutgoingConnectionsContainedInContainerShape(rootShape);
-		for (Connection conn : outs) {
-			RHContainerShape targetRHContainerShape = ScaEcoreUtils.getEContainerOfType(conn.getEnd(), RHContainerShape.class);
-			Point childDimension = calculateTreeDimensions(targetRHContainerShape, visitedShapes);
-			if (childDimension == null) {
-				continue;
-			}
-			childHeight += childDimension.getY() + DIAGRAM_SHAPE_SIBLING_VERTICAL_PADDING;
-			// use largest width but don't add
-			childWidth = Math.max(childDimension.getX(), childWidth);
-		}
-		if (outs.size() > 0) {
-			width += childWidth + DIAGRAM_SHAPE_HORIZONTAL_PADDING;
-		}
-		// choose the largest of parent height or combined child height
-		height = Math.max(childHeight, height);
-
-		Point point = StylesFactory.eINSTANCE.createPoint();
-		point.setX(width);
-		point.setY(height);
-		return point;
 	}
 
 	/**
@@ -636,7 +547,7 @@ public class DUtil {
 	 * @param containerShape
 	 * @return
 	 */
-	private static List<Connection> getOutgoingConnectionsContainedInContainerShape(ContainerShape containerShape) {
+	public static List<Connection> getOutgoingConnectionsContainedInContainerShape(ContainerShape containerShape) {
 		List<Connection> connections = new ArrayList<Connection>();
 		Diagram diagram = Graphiti.getPeService().getDiagramForShape(containerShape);
 		for (Connection conn : diagram.getConnections()) {
@@ -875,11 +786,6 @@ public class DUtil {
 		final String diagramName = diagramURI.lastSegment();
 		Diagram diagram = Graphiti.getPeCreateService().createDiagram(diagramTypeId, diagramName, true);
 		diagramResource.getContents().add(diagram);
-
-		// TODO:we will want to move this logic somewhere else
-		IDiagramTypeProvider dtp = GraphitiUi.getExtensionManager().createDiagramTypeProvider(diagram, diagramTypeProviderId);
-		IFeatureProvider featureProvider = dtp.getFeatureProvider();
-
 		if (buffer != null) {
 			diagramResource.save(buffer, options.getSaveOptions());
 		} else {
