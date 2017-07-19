@@ -32,6 +32,7 @@ public class LayoutUtil {
 
 	// Spacing/distance constants
 	private static final int DIAGRAM_SHAPE_HORIZONTAL_PADDING = 100;
+	private static final int HOST_COLLOCATION_SHAPE_HORIZONTAL_PADDING = 150;
 	private static final int DIAGRAM_SHAPE_SIBLING_VERTICAL_PADDING = 5;
 	private static final int DIAGRAM_SHAPE_ROOT_VERTICAL_PADDING = 50;
 
@@ -39,9 +40,15 @@ public class LayoutUtil {
 
 	}
 
-	// TODO: Potentially move this and all called util methods to a LayoutUtil class, to avoid code bloat here
-	// TODO: Change this back to working exclusively with Diagrams, since we are making a different one to handle host
-	// collocations
+	/**
+	 * @see {@link #calculateContainerBounds(ContainerShape, HostCollocation)}
+	 * @param containerShape
+	 * @return
+	 */
+	public static Point calculateContainerBounds(ContainerShape containerShape) {
+		return calculateContainerBounds(containerShape, null);
+	}
+
 	/**
 	 * Calculate the width/height boundaries for the container shape.<br/>
 	 * Used as part of the layout process to determine contained shape locations.
@@ -49,7 +56,8 @@ public class LayoutUtil {
 	 * @param containerShape - Should be either the Diagram or a HostCollocation
 	 * @return {@link Point} where x is the right-most bound and y is the bottom-most bound
 	 */
-	public static Point calculateDiagramBounds(ContainerShape containerShape) {
+	// TODO: Add comment
+	public static Point calculateContainerBounds(ContainerShape containerShape, HostCollocation hostCollocation) {
 		// get root all shapes in diagram, components, findby's etc
 		List<ContainerShape> rootShapes = new ArrayList<ContainerShape>();
 		for (Shape shape : containerShape.getChildren()) {
@@ -57,34 +65,6 @@ public class LayoutUtil {
 				checkIfRoot((RHContainerShape) shape, rootShapes, containerShape);
 			} else if (DUtil.getBusinessObject(shape) != null && DUtil.getBusinessObject(shape) instanceof HostCollocation) {
 				checkIfHostCoRoot((ContainerShape) shape, rootShapes);
-			}
-		}
-
-		// combine dimensions of each root tree to determine total dimension required to house all shapes in diagram
-		int height = 0;
-		int width = 0;
-		for (ContainerShape shape : rootShapes) {
-			Point childTreeDimension = calculateTreeDimensions(shape);
-			height += childTreeDimension.getY();
-			// use largest width
-			width = Math.max(childTreeDimension.getX(), width);
-		}
-
-		// add padding between roots
-		height += DIAGRAM_SHAPE_ROOT_VERTICAL_PADDING * (rootShapes.size() - 1);
-
-		Point point = StylesFactory.eINSTANCE.createPoint();
-		point.setX(width);
-		point.setY(height);
-		return point;
-	}
-
-	public static Point calculateHostCollocationBounds(ContainerShape hostCoShape, HostCollocation hostCollocation) {
-		// get root all shapes in diagram, components, findby's etc
-		List<ContainerShape> rootShapes = new ArrayList<ContainerShape>();
-		for (Shape shape : hostCoShape.getChildren()) {
-			if (shape instanceof RHContainerShape) {
-				checkIfRoot((RHContainerShape) shape, rootShapes, hostCoShape);
 			}
 		}
 
@@ -188,10 +168,15 @@ public class LayoutUtil {
 	 * Returns dimensions required to contain all shapes aligned in a horizontal tree diagram beginning with the
 	 * provided root shape.
 	 * @param rootShape
+	 * @param hostCollocation - may be null
 	 * @return
 	 */
 	private static Point calculateTreeDimensions(ContainerShape rootShape, HostCollocation hostCollocation) {
-		return calculateTreeDimensions(rootShape, new HashSet<ContainerShape>(), hostCollocation);
+		if (hostCollocation != null) {
+			return calculateTreeDimensions(rootShape, new HashSet<ContainerShape>(), hostCollocation);
+		} else {
+			return calculateTreeDimensions(rootShape, new HashSet<ContainerShape>());
+		}
 	}
 
 	/**
@@ -210,21 +195,17 @@ public class LayoutUtil {
 		int childWidth = 0;
 		int childHeight = 0;
 
-		// TODO: this probably needs to be broken out so HC are handled separately from non-HC
 		ContainerShape hostCoShape = null;
-		if (DUtil.getBusinessObject(rootShape.getContainer()) != null && DUtil.getBusinessObject(rootShape.getContainer()) instanceof HostCollocation) {
+		if (DUtil.getBusinessObject(rootShape.getContainer()) instanceof HostCollocation) {
 			hostCoShape = rootShape.getContainer();
 		}
 
-		// TODO: this seems terribly convoluted...
 		List<Connection> outs = DUtil.getOutgoingConnectionsContainedInContainerShape(rootShape);
 		for (Connection conn : outs) {
 			RHContainerShape targetRHContainerShape = ScaEcoreUtils.getEContainerOfType(conn.getEnd(), RHContainerShape.class);
 
-			// TODO: I might be able to remove this now the HC has its own methods
-			// TODO: Basically, this says if the source is in HC, and the target is NOT in THE SAME HC, than do not
-			// consider the relationship
-			// This works, because we come back through here again later and build a top-level tree between the entire
+			// If the source is in HC, and the target is NOT in THE SAME HC, than do not consider the relationship
+			// This works, because of the other calculateTreeDimensions which builds a top-level tree between the entire
 			// HC and the target component
 			if (hostCoShape != null && hostCoShape != targetRHContainerShape.getContainer()) {
 				continue;
@@ -232,20 +213,15 @@ public class LayoutUtil {
 
 			Point childDimension = null;
 			childDimension = calculateTreeDimensions(targetRHContainerShape, visitedShapes, hostCollocation);
-//			if (getBusinessObject(targetRHContainerShape.getContainer()) instanceof HostCollocation) {
-//				childDimension = calculateTreeDimensions(targetRHContainerShape.getContainer(), visitedShapes);
-//			} else {
-//				childDimension = calculateTreeDimensions(targetRHContainerShape, visitedShapes);
-//			}
 			if (childDimension == null) {
 				continue;
 			}
 			childHeight += childDimension.getY() + DIAGRAM_SHAPE_SIBLING_VERTICAL_PADDING;
+
 			// use largest width but don't add
 			childWidth = Math.max(childDimension.getX(), childWidth);
 		}
 		if (outs.size() > 0) {
-			// TODO: This is wrong, just a proof of concept
 			if (DUtil.getBusinessObject(rootShape.getContainer()) instanceof HostCollocation) {
 				width += childWidth;
 			} else {
@@ -259,16 +235,6 @@ public class LayoutUtil {
 		point.setX(width);
 		point.setY(height);
 		return point;
-	}
-
-	/**
-	 * Returns dimensions required to contain all shapes aligned in a horizontal tree diagram beginning with the
-	 * provided root shape.
-	 * @param rootShape
-	 * @return
-	 */
-	private static Point calculateTreeDimensions(ContainerShape rootShape) {
-		return calculateTreeDimensions(rootShape, new HashSet<ContainerShape>());
 	}
 
 	/**
@@ -287,26 +253,13 @@ public class LayoutUtil {
 		int childWidth = 0;
 		int childHeight = 0;
 
-		// TODO: this seems terribly convoluted...
 		List<Connection> outs = DUtil.getOutgoingConnectionsContainedInContainerShape(rootShape);
 		for (Connection conn : outs) {
 			RHContainerShape targetRHContainerShape = ScaEcoreUtils.getEContainerOfType(conn.getEnd(), RHContainerShape.class);
 			Point childDimension = null;
 
-			// TODO: If both nodes are in the same HostCollocation, then don't calc tree size here,
-			// this is already being done in the HC specific calc tree size method
-			if (DUtil.getBusinessObject(rootShape) instanceof HostCollocation && rootShape == targetRHContainerShape.getContainer()) {
-				// TODO: This may not be necessary, since the line below catches if the targetsContainer is a HC, and
-				// then
-				// passes that through the recursive call. Because of the circular check at the top of this method, we
-				// shouldn't
-				// ever calculate dimensions for the same HC more than once.
-				continue;
-			}
-
+			// At this level, we care about the dimensions of the HostCollocation, not of any contained shapes
 			if (DUtil.getBusinessObject(targetRHContainerShape.getContainer()) instanceof HostCollocation) {
-				// TODO: review this comment for accuracy
-				// At this level, we care about the dimensions of the HostCollocation, not of any contained shapes
 				childDimension = calculateTreeDimensions(targetRHContainerShape.getContainer(), visitedShapes);
 			} else {
 				childDimension = calculateTreeDimensions(targetRHContainerShape, visitedShapes);
@@ -315,14 +268,14 @@ public class LayoutUtil {
 				continue;
 			}
 			childHeight += childDimension.getY() + DIAGRAM_SHAPE_SIBLING_VERTICAL_PADDING;
+
 			// use largest width but don't add
 			childWidth = Math.max(childDimension.getX(), childWidth);
 		}
 		if (outs.size() > 0) {
-			// TODO: This is wrong, just a proof of concept
 			if (DUtil.getBusinessObject(rootShape) instanceof HostCollocation) {
-				// TODO: create a static padding size for HC based on num of children
-				width += childWidth + rootShape.getChildren().size() * 150;
+				// static padding size for HC based on num of children
+				width += childWidth + rootShape.getChildren().size() * HOST_COLLOCATION_SHAPE_HORIZONTAL_PADDING;
 			} else {
 				width += childWidth + DIAGRAM_SHAPE_HORIZONTAL_PADDING;
 			}
