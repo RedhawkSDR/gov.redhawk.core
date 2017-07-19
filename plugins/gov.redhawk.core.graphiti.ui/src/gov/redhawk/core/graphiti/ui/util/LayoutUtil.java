@@ -54,12 +54,15 @@ public class LayoutUtil {
 	 * Used as part of the layout process to determine contained shape locations.
 	 * 
 	 * @param containerShape - Should be either the Diagram or a HostCollocation
+	 * @param hostCollocation - Either the hostCollocation
 	 * @return {@link Point} where x is the right-most bound and y is the bottom-most bound
 	 */
-	// TODO: Add comment
 	public static Point calculateContainerBounds(ContainerShape containerShape, HostCollocation hostCollocation) {
+		// TODO: instead of taking a hostCollocation as an arg, just check for it here.
 		// get root all shapes in diagram, components, findby's etc
 		List<ContainerShape> rootShapes = new ArrayList<ContainerShape>();
+		List<Shape> unexaminedShapes = new ArrayList<>();
+		unexaminedShapes.addAll(containerShape.getChildren());
 		for (Shape shape : containerShape.getChildren()) {
 			if (shape instanceof RHContainerShape) {
 				checkIfRoot((RHContainerShape) shape, rootShapes, containerShape);
@@ -72,10 +75,21 @@ public class LayoutUtil {
 		int height = 0;
 		int width = 0;
 		for (ContainerShape shape : rootShapes) {
-			Point childTreeDimension = calculateTreeDimensions(shape, hostCollocation);
+			Point childTreeDimension = calculateTreeDimensions(shape, hostCollocation, unexaminedShapes);
 			height += childTreeDimension.getY();
 			// use largest width
 			width = Math.max(childTreeDimension.getX(), width);
+		}
+
+		// Account for any shapes that were not yet touched (possibly because they were in feedback loops)
+		for (int i = 0; i < unexaminedShapes.size(); i++) {
+			if (unexaminedShapes.get(i) instanceof ContainerShape) {
+				ContainerShape shape = (ContainerShape) unexaminedShapes.get(i);
+				Point childTreeDimension = calculateTreeDimensions(shape, hostCollocation, unexaminedShapes);
+				height += childTreeDimension.getY();
+				// use largest width
+				width = Math.max(childTreeDimension.getX(), width);
+			}
 		}
 
 		// add padding between roots
@@ -84,6 +98,7 @@ public class LayoutUtil {
 		Point point = StylesFactory.eINSTANCE.createPoint();
 		point.setX(width);
 		point.setY(height);
+
 		return point;
 	}
 
@@ -169,38 +184,43 @@ public class LayoutUtil {
 	 * provided root shape.
 	 * @param rootShape
 	 * @param hostCollocation - may be null
+	 * @param unexaminedShapes
 	 * @return
 	 */
-	private static Point calculateTreeDimensions(ContainerShape rootShape, HostCollocation hostCollocation) {
+	private static Point calculateTreeDimensions(ContainerShape rootShape, HostCollocation hostCollocation, List<Shape> unexaminedShapes) {
 		if (hostCollocation != null) {
-			return calculateTreeDimensions(rootShape, new HashSet<ContainerShape>(), hostCollocation);
+			return calculateTreeDimensions(rootShape, new HashSet<ContainerShape>(), hostCollocation, unexaminedShapes);
 		} else {
-			return calculateTreeDimensions(rootShape, new HashSet<ContainerShape>());
+			return calculateTreeDimensions(rootShape, new HashSet<ContainerShape>(), unexaminedShapes);
 		}
 	}
 
+	// TODO: collapse these somehow
+
 	/**
 	 * Internal method used by {@link #calculateTreeDimensions(RHContainerShape)}.
-	 * @param rootShape
+	 * @param currentShape
 	 * @return
 	 */
-	private static Point calculateTreeDimensions(ContainerShape rootShape, Set<ContainerShape> visitedShapes, HostCollocation hostCollocation) {
+	private static Point calculateTreeDimensions(ContainerShape currentShape, Set<ContainerShape> visitedShapes, HostCollocation hostCollocation,
+		List<Shape> unexaminedShapes) {
 		// Keep track of the shape we're visiting; if we've been here, we're in a circular recursion
-		if (!visitedShapes.add(rootShape)) {
+		if (!visitedShapes.add(currentShape)) {
 			return null;
 		}
+		unexaminedShapes.remove(currentShape);
 
-		int height = rootShape.getGraphicsAlgorithm().getHeight();
-		int width = rootShape.getGraphicsAlgorithm().getWidth();
+		int height = currentShape.getGraphicsAlgorithm().getHeight();
+		int width = currentShape.getGraphicsAlgorithm().getWidth();
 		int childWidth = 0;
 		int childHeight = 0;
 
 		ContainerShape hostCoShape = null;
-		if (DUtil.getBusinessObject(rootShape.getContainer()) instanceof HostCollocation) {
-			hostCoShape = rootShape.getContainer();
+		if (DUtil.getBusinessObject(currentShape.getContainer()) instanceof HostCollocation) {
+			hostCoShape = currentShape.getContainer();
 		}
 
-		List<Connection> outs = DUtil.getOutgoingConnectionsContainedInContainerShape(rootShape);
+		List<Connection> outs = DUtil.getOutgoingConnectionsContainedInContainerShape(currentShape);
 		for (Connection conn : outs) {
 			RHContainerShape targetRHContainerShape = ScaEcoreUtils.getEContainerOfType(conn.getEnd(), RHContainerShape.class);
 
@@ -212,7 +232,7 @@ public class LayoutUtil {
 			}
 
 			Point childDimension = null;
-			childDimension = calculateTreeDimensions(targetRHContainerShape, visitedShapes, hostCollocation);
+			childDimension = calculateTreeDimensions(targetRHContainerShape, visitedShapes, hostCollocation, unexaminedShapes);
 			if (childDimension == null) {
 				continue;
 			}
@@ -222,7 +242,7 @@ public class LayoutUtil {
 			childWidth = Math.max(childDimension.getX(), childWidth);
 		}
 		if (outs.size() > 0) {
-			if (DUtil.getBusinessObject(rootShape.getContainer()) instanceof HostCollocation) {
+			if (DUtil.getBusinessObject(currentShape.getContainer()) instanceof HostCollocation) {
 				width += childWidth;
 			} else {
 				width += childWidth + DIAGRAM_SHAPE_HORIZONTAL_PADDING;
@@ -239,30 +259,31 @@ public class LayoutUtil {
 
 	/**
 	 * Internal method used by {@link #calculateTreeDimensions(RHContainerShape)}.
-	 * @param rootShape
+	 * @param currentShape
 	 * @return
 	 */
-	private static Point calculateTreeDimensions(ContainerShape rootShape, Set<ContainerShape> visitedShapes) {
+	private static Point calculateTreeDimensions(ContainerShape currentShape, Set<ContainerShape> visitedShapes, List<Shape> unexaminedShapes) {
 		// Keep track of the shape we're visiting; if we've been here, we're in a circular recursion
-		if (!visitedShapes.add(rootShape)) {
+		if (!visitedShapes.add(currentShape)) {
 			return null;
 		}
+		unexaminedShapes.remove(currentShape);
 
-		int height = rootShape.getGraphicsAlgorithm().getHeight();
-		int width = rootShape.getGraphicsAlgorithm().getWidth();
+		int height = currentShape.getGraphicsAlgorithm().getHeight();
+		int width = currentShape.getGraphicsAlgorithm().getWidth();
 		int childWidth = 0;
 		int childHeight = 0;
 
-		List<Connection> outs = DUtil.getOutgoingConnectionsContainedInContainerShape(rootShape);
+		List<Connection> outs = DUtil.getOutgoingConnectionsContainedInContainerShape(currentShape);
 		for (Connection conn : outs) {
 			RHContainerShape targetRHContainerShape = ScaEcoreUtils.getEContainerOfType(conn.getEnd(), RHContainerShape.class);
 			Point childDimension = null;
 
 			// At this level, we care about the dimensions of the HostCollocation, not of any contained shapes
 			if (DUtil.getBusinessObject(targetRHContainerShape.getContainer()) instanceof HostCollocation) {
-				childDimension = calculateTreeDimensions(targetRHContainerShape.getContainer(), visitedShapes);
+				childDimension = calculateTreeDimensions(targetRHContainerShape.getContainer(), visitedShapes, unexaminedShapes);
 			} else {
-				childDimension = calculateTreeDimensions(targetRHContainerShape, visitedShapes);
+				childDimension = calculateTreeDimensions(targetRHContainerShape, visitedShapes, unexaminedShapes);
 			}
 			if (childDimension == null) {
 				continue;
@@ -273,9 +294,9 @@ public class LayoutUtil {
 			childWidth = Math.max(childDimension.getX(), childWidth);
 		}
 		if (outs.size() > 0) {
-			if (DUtil.getBusinessObject(rootShape) instanceof HostCollocation) {
+			if (DUtil.getBusinessObject(currentShape) instanceof HostCollocation) {
 				// static padding size for HC based on num of children
-				width += childWidth + rootShape.getChildren().size() * HOST_COLLOCATION_SHAPE_HORIZONTAL_PADDING;
+				width += childWidth + currentShape.getChildren().size() * HOST_COLLOCATION_SHAPE_HORIZONTAL_PADDING;
 			} else {
 				width += childWidth + DIAGRAM_SHAPE_HORIZONTAL_PADDING;
 			}
