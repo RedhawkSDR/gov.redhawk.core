@@ -133,7 +133,7 @@ public class LayoutDiagramFeature extends AbstractCustomFeature {
 			LayoutEntity[] hostCoEntities = hostCoMap.values().toArray(new LayoutEntity[0]);
 
 			// Set host collocation boundaries
-			Point bounds = LayoutUtil.calculateContainerBounds(hostCollocation, (HostCollocation) DUtil.getBusinessObject(hostCollocation));
+			Point bounds = LayoutUtil.calculateContainerBounds(hostCollocation);
 			hostCollocation.getGraphicsAlgorithm().setWidth(bounds.getX() + HORIZONTAL_PADDING);
 			hostCollocation.getGraphicsAlgorithm().setHeight(bounds.getY() + VERTICAL_PADDING);
 

@@ -41,24 +41,18 @@ public class LayoutUtil {
 	}
 
 	/**
-	 * @see {@link #calculateContainerBounds(ContainerShape, HostCollocation)}
-	 * @param containerShape
-	 * @return
-	 */
-	public static Point calculateContainerBounds(ContainerShape containerShape) {
-		return calculateContainerBounds(containerShape, null);
-	}
-
-	/**
 	 * Calculate the width/height boundaries for the container shape.<br/>
 	 * Used as part of the layout process to determine contained shape locations.
 	 * 
 	 * @param containerShape - Should be either the Diagram or a HostCollocation
-	 * @param hostCollocation - Either the hostCollocation
 	 * @return {@link Point} where x is the right-most bound and y is the bottom-most bound
 	 */
-	public static Point calculateContainerBounds(ContainerShape containerShape, HostCollocation hostCollocation) {
-		// TODO: instead of taking a hostCollocation as an arg, just check for it here.
+	public static Point calculateContainerBounds(ContainerShape containerShape) {
+		boolean isHostCo = false;
+		if (DUtil.getBusinessObject(containerShape) instanceof HostCollocation) {
+			isHostCo = true;
+		}
+
 		// get root all shapes in diagram, components, findby's etc
 		List<ContainerShape> rootShapes = new ArrayList<ContainerShape>();
 		List<Shape> unexaminedShapes = new ArrayList<>();
@@ -75,7 +69,7 @@ public class LayoutUtil {
 		int height = 0;
 		int width = 0;
 		for (ContainerShape shape : rootShapes) {
-			Point childTreeDimension = calculateTreeDimensions(shape, hostCollocation, unexaminedShapes);
+			Point childTreeDimension = calculateTreeDimensions(shape, isHostCo, unexaminedShapes);
 			height += childTreeDimension.getY();
 			// use largest width
 			width = Math.max(childTreeDimension.getX(), width);
@@ -85,7 +79,7 @@ public class LayoutUtil {
 		for (int i = 0; i < unexaminedShapes.size(); i++) {
 			if (unexaminedShapes.get(i) instanceof ContainerShape) {
 				ContainerShape shape = (ContainerShape) unexaminedShapes.get(i);
-				Point childTreeDimension = calculateTreeDimensions(shape, hostCollocation, unexaminedShapes);
+				Point childTreeDimension = calculateTreeDimensions(shape, isHostCo, unexaminedShapes);
 				height += childTreeDimension.getY();
 				// use largest width
 				width = Math.max(childTreeDimension.getX(), width);
@@ -183,27 +177,29 @@ public class LayoutUtil {
 	 * Returns dimensions required to contain all shapes aligned in a horizontal tree diagram beginning with the
 	 * provided root shape.
 	 * @param rootShape
-	 * @param hostCollocation - may be null
+	 * @param isHostCo - true is the ultimate container is a HostCollocation.  False if it is the Diagram.
 	 * @param unexaminedShapes
 	 * @return
 	 */
-	private static Point calculateTreeDimensions(ContainerShape rootShape, HostCollocation hostCollocation, List<Shape> unexaminedShapes) {
-		if (hostCollocation != null) {
-			return calculateTreeDimensions(rootShape, new HashSet<ContainerShape>(), hostCollocation, unexaminedShapes);
+	private static Point calculateTreeDimensions(ContainerShape rootShape, boolean isHostCo, List<Shape> unexaminedShapes) {
+		if (isHostCo) {
+			return calculateTreeDimensions(rootShape, unexaminedShapes, isHostCo, new HashSet<ContainerShape>());
 		} else {
-			return calculateTreeDimensions(rootShape, new HashSet<ContainerShape>(), unexaminedShapes);
+			return calculateTreeDimensions(rootShape, unexaminedShapes, new HashSet<ContainerShape>());
 		}
 	}
 
 	// TODO: collapse these somehow
-
 	/**
 	 * Internal method used by {@link #calculateTreeDimensions(RHContainerShape)}.
 	 * @param currentShape
+	 * @param unexaminedShapes
+	 * @param isHostCo - true is the ultimate container is a HostCollocation.  False if it is the Diagram.
+	 * @param visitedShapes
 	 * @return
 	 */
-	private static Point calculateTreeDimensions(ContainerShape currentShape, Set<ContainerShape> visitedShapes, HostCollocation hostCollocation,
-		List<Shape> unexaminedShapes) {
+	private static Point calculateTreeDimensions(ContainerShape currentShape, List<Shape> unexaminedShapes, boolean isHostCo,
+		Set<ContainerShape> visitedShapes) {
 		// Keep track of the shape we're visiting; if we've been here, we're in a circular recursion
 		if (!visitedShapes.add(currentShape)) {
 			return null;
@@ -223,6 +219,7 @@ public class LayoutUtil {
 		List<Connection> outs = DUtil.getOutgoingConnectionsContainedInContainerShape(currentShape);
 		for (Connection conn : outs) {
 			RHContainerShape targetRHContainerShape = ScaEcoreUtils.getEContainerOfType(conn.getEnd(), RHContainerShape.class);
+			Point childDimension = null;
 
 			// If the source is in HC, and the target is NOT in THE SAME HC, than do not consider the relationship
 			// This works, because of the other calculateTreeDimensions which builds a top-level tree between the entire
@@ -231,8 +228,7 @@ public class LayoutUtil {
 				continue;
 			}
 
-			Point childDimension = null;
-			childDimension = calculateTreeDimensions(targetRHContainerShape, visitedShapes, hostCollocation, unexaminedShapes);
+			childDimension = calculateTreeDimensions(targetRHContainerShape, unexaminedShapes, isHostCo, visitedShapes);
 			if (childDimension == null) {
 				continue;
 			}
@@ -262,7 +258,7 @@ public class LayoutUtil {
 	 * @param currentShape
 	 * @return
 	 */
-	private static Point calculateTreeDimensions(ContainerShape currentShape, Set<ContainerShape> visitedShapes, List<Shape> unexaminedShapes) {
+	private static Point calculateTreeDimensions(ContainerShape currentShape, List<Shape> unexaminedShapes, Set<ContainerShape> visitedShapes) {
 		// Keep track of the shape we're visiting; if we've been here, we're in a circular recursion
 		if (!visitedShapes.add(currentShape)) {
 			return null;
@@ -281,9 +277,9 @@ public class LayoutUtil {
 
 			// At this level, we care about the dimensions of the HostCollocation, not of any contained shapes
 			if (DUtil.getBusinessObject(targetRHContainerShape.getContainer()) instanceof HostCollocation) {
-				childDimension = calculateTreeDimensions(targetRHContainerShape.getContainer(), visitedShapes, unexaminedShapes);
+				childDimension = calculateTreeDimensions(targetRHContainerShape.getContainer(), unexaminedShapes, visitedShapes);
 			} else {
-				childDimension = calculateTreeDimensions(targetRHContainerShape, visitedShapes, unexaminedShapes);
+				childDimension = calculateTreeDimensions(targetRHContainerShape, unexaminedShapes, visitedShapes);
 			}
 			if (childDimension == null) {
 				continue;
