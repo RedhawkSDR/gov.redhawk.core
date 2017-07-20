@@ -54,7 +54,7 @@ import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public class LayoutDiagramFeature extends AbstractCustomFeature {
 
-	private static final int HORIZONTAL_PADDING = 100;
+	private static final int HORIZONTAL_PADDING = 50;
 	private static final int VERTICAL_PADDING = 50;
 
 	public LayoutDiagramFeature(IFeatureProvider fp) {
@@ -88,6 +88,8 @@ public class LayoutDiagramFeature extends AbstractCustomFeature {
 			// and dimensions of the HostCollocations for the next step.
 			layoutHostCollocationContents();
 
+			// Updates the layout for all shapes in the diagram, with HostCollocations being treated as a single shape
+			// (meaning that HC children are not considered)
 			layoutDiagramContents();
 
 		} catch (InvalidLayoutConfiguration e) {
@@ -107,9 +109,9 @@ public class LayoutDiagramFeature extends AbstractCustomFeature {
 			}
 		}
 
-		for (ContainerShape hostCollocation : hostCoList) {
+		for (ContainerShape hostCoShape : hostCoList) {
 			// Get all shapes and connections contained in the host collocation
-			Map<Shape, SimpleNode> hostCoMap = getLayoutEntities(hostCollocation);
+			Map<Shape, SimpleNode> hostCoMap = getLayoutEntities(hostCoShape);
 
 			EList<Connection> connections = getDiagram().getConnections();
 
@@ -120,10 +122,9 @@ public class LayoutDiagramFeature extends AbstractCustomFeature {
 
 				// We only care about connections where BOTH shapes are contained within the HostCollocation.
 				// Any connections that originate/terminate outside the HostCollocation will be handled at the diagram
-				// level
-				// and treated as connections to/from the HostCollocation itself (as opposed to to/from the contained
-				// shape)
-				if (source.getContainer() == hostCollocation && target.getContainer() == hostCollocation) {
+				// level and treated as connections to/from the HostCollocation itself (as opposed to to/from the
+				// contained shape)
+				if (source.getContainer() == hostCoShape && target.getContainer() == hostCoShape) {
 					hostCoConnections.add(connection);
 				}
 			}
@@ -132,14 +133,29 @@ public class LayoutDiagramFeature extends AbstractCustomFeature {
 			// Get all shapes to be considered by the layout algorithm
 			LayoutEntity[] hostCoEntities = hostCoMap.values().toArray(new LayoutEntity[0]);
 
-			// Set host collocation boundaries
-			Point bounds = LayoutUtil.calculateContainerBounds(hostCollocation);
-			hostCollocation.getGraphicsAlgorithm().setWidth(bounds.getX() + HORIZONTAL_PADDING);
-			hostCollocation.getGraphicsAlgorithm().setHeight(bounds.getY() + VERTICAL_PADDING);
+			// Calculate the bounds for the trees contained in the HostCollocation
+			Point bounds = LayoutUtil.calculateContainerBounds(hostCoShape);
 
 			// Apply the layout, and then update the shape coordinates
-			GraphicsAlgorithm hostCoGA = hostCollocation.getGraphicsAlgorithm();
-			hostCoLayoutAlgorithm.applyLayout(hostCoEntities, hostCoRelationships, 15, 0, hostCoGA.getWidth(), hostCoGA.getHeight(), false, false);
+			hostCoLayoutAlgorithm.applyLayout(hostCoEntities, hostCoRelationships, 15, 0, bounds.getX(), bounds.getY(), false, false);
+
+			// Make sure that the HostCollocation is large enough to fit all of the contained shapes (rather than just
+			// the top-left corner or each shape)
+			double leftBounds = 0;
+			double rightBounds = 0;
+			double topBounds = 0;
+			double bottomBounds = 0;
+			for (LayoutEntity entity : hostCoEntities) {
+				SimpleNode node = (SimpleNode) entity;
+				leftBounds = Math.min(node.getX(), leftBounds);
+				rightBounds = Math.max((node.getX() + node.getWidth()), rightBounds);
+				topBounds = Math.min(node.getY(), topBounds);
+				bottomBounds = Math.max((node.getY() + node.getHeight()), bottomBounds);
+			}
+			int finalWidth = (int) (rightBounds - leftBounds);
+			int finalHeight = (int) (bottomBounds - topBounds);
+			hostCoShape.getGraphicsAlgorithm().setWidth(finalWidth + HORIZONTAL_PADDING);
+			hostCoShape.getGraphicsAlgorithm().setHeight(finalHeight + VERTICAL_PADDING);
 
 			// Update all Graphiti Shapes and Connections with their new coordinates
 			updateShapeCoordinates(hostCoLayoutAlgorithm.getRoots(), hostCoEntities, hostCoRelationships);
@@ -211,8 +227,8 @@ public class LayoutDiagramFeature extends AbstractCustomFeature {
 	}
 
 	/**
-	 * @param map a {@link Map} of {@link SimpleNode} per {@link Shape} - used to link {@link ConnectionRelationship} to
-	 * source and target entities
+	 * @param map - a {@link Map} of {@link Shape} to {@link SimpleNode}
+	 * @param connections - a {@link EList} of connections wholly within the root container
 	 * @return an array of {@link LayoutRelationship}s
 	 */
 	private LayoutRelationship[] getLayoutRelationships(Map<Shape, SimpleNode> map, EList<Connection> connections) {
@@ -237,9 +253,6 @@ public class LayoutDiagramFeature extends AbstractCustomFeature {
 	 * root ContainerShape cares about
 	 * @param source - the true {@link RHContainerShape} that is the source of the connection
 	 * @param target - the true {@link RHContainerShape} that is the target of the connection
-	 * 
-	 * @param targetNode - the {@link SimpleNode} that we will treat as the the target of the connection (could refer to
-	 * a {@link RHContainerShape} or a {@link ContainerShape} representing a HostCollocation
 	 * @return {@link ConnectionRelationship} if one is created, null otherwise.
 	 */
 	private ConnectionRelationship createLayoutRelationship(Map<Shape, SimpleNode> map, RHContainerShape source, RHContainerShape target) {
@@ -288,7 +301,6 @@ public class LayoutDiagramFeature extends AbstractCustomFeature {
 	 * Populates {@link ConnectionRelationship} with connection specific data
 	 * @param relationship
 	 * @param connection
-	 * @param label
 	 * @return
 	 */
 	private ConnectionRelationship populateLayoutRelationship(ConnectionRelationship relationship, Connection connection) {
@@ -347,6 +359,7 @@ public class LayoutDiagramFeature extends AbstractCustomFeature {
 	/**
 	 * Reposition the Graphiti {@link PictogramElement}s and {@link Connection}s based on the
 	 * Zest {@link LayoutAlgorithm} computed locations
+	 * @param roots
 	 * @param entities
 	 * @param connections
 	 */

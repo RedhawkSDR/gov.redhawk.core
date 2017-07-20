@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.graphiti.mm.algorithms.styles.Point;
 import org.eclipse.graphiti.mm.algorithms.styles.StylesFactory;
 import org.eclipse.graphiti.mm.pictograms.Connection;
@@ -24,7 +23,6 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
-import mil.jpeojtrs.sca.partitioning.ProvidesPortStub;
 import mil.jpeojtrs.sca.sad.HostCollocation;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
@@ -68,8 +66,8 @@ public class LayoutUtil {
 		// combine dimensions of each root tree to determine total dimension required to house all shapes in diagram
 		int height = 0;
 		int width = 0;
-		for (ContainerShape shape : rootShapes) {
-			Point childTreeDimension = calculateTreeDimensions(shape, isHostCo, unexaminedShapes);
+		for (ContainerShape rootShape : rootShapes) {
+			Point childTreeDimension = calculateTreeDimensions(rootShape, unexaminedShapes, isHostCo, new HashSet<ContainerShape>());
 			height += childTreeDimension.getY();
 			// use largest width
 			width = Math.max(childTreeDimension.getX(), width);
@@ -79,7 +77,7 @@ public class LayoutUtil {
 		for (int i = 0; i < unexaminedShapes.size(); i++) {
 			if (unexaminedShapes.get(i) instanceof ContainerShape) {
 				ContainerShape shape = (ContainerShape) unexaminedShapes.get(i);
-				Point childTreeDimension = calculateTreeDimensions(shape, isHostCo, unexaminedShapes);
+				Point childTreeDimension = calculateTreeDimensions(shape, unexaminedShapes, isHostCo, new HashSet<ContainerShape>());
 				height += childTreeDimension.getY();
 				// use largest width
 				width = Math.max(childTreeDimension.getX(), width);
@@ -102,25 +100,22 @@ public class LayoutUtil {
 	 * 
 	 * @param rhContainerShape - Shape to be inspected
 	 * @param rootShapes - List of rootShapes for the parent container
-	 * @param containerShape
+	 * @param containerShape - Top-level container shape. Should be either the Diagram or a HostCollocation
 	 */
 	private static void checkIfRoot(RHContainerShape rhContainerShape, List<ContainerShape> rootShapes, ContainerShape containerShape) {
-		EObject bObj = DUtil.getBusinessObject(containerShape);
-		boolean isHostCollocation = (bObj != null && bObj instanceof HostCollocation) ? true : false;
+		boolean inHostCollocation = (DUtil.getBusinessObject(containerShape) instanceof HostCollocation) ? true : false;
 
-		if (!isHostCollocation) {
-			EList<ProvidesPortStub> providesStubs = rhContainerShape.getProvidesPortStubs();
+		if (!inHostCollocation) {
 			List<Connection> incomingConnections = DUtil.getIncomingConnectionsContainedInContainerShape(rhContainerShape);
-			if (providesStubs.size() < 1 || incomingConnections.size() < 1) {
+			if (incomingConnections.size() < 1) {
 				rootShapes.add(rhContainerShape);
 			}
 		} else {
 			// HostCo children are root relative to the HostCollocation only, other components won't be considered
-			EList<ProvidesPortStub> providesStubs = rhContainerShape.getProvidesPortStubs();
 			List<Connection> incomingConnections = DUtil.getIncomingConnectionsContainedInContainerShape(rhContainerShape);
 
-			// If there is no providesPort or incoming connections then this is automatically a root shape
-			if (providesStubs.size() < 1 || incomingConnections.size() < 1) {
+			// If there are no incoming connections then this is automatically a root shape
+			if (incomingConnections.size() < 1) {
 				rootShapes.add(rhContainerShape);
 				return;
 			}
@@ -174,27 +169,10 @@ public class LayoutUtil {
 	}
 
 	/**
-	 * Returns dimensions required to contain all shapes aligned in a horizontal tree diagram beginning with the
-	 * provided root shape.
-	 * @param rootShape
-	 * @param isHostCo - true is the ultimate container is a HostCollocation.  False if it is the Diagram.
-	 * @param unexaminedShapes
-	 * @return
-	 */
-	private static Point calculateTreeDimensions(ContainerShape rootShape, boolean isHostCo, List<Shape> unexaminedShapes) {
-		if (isHostCo) {
-			return calculateTreeDimensions(rootShape, unexaminedShapes, isHostCo, new HashSet<ContainerShape>());
-		} else {
-			return calculateTreeDimensions(rootShape, unexaminedShapes, new HashSet<ContainerShape>());
-		}
-	}
-
-	// TODO: collapse these somehow
-	/**
 	 * Internal method used by {@link #calculateTreeDimensions(RHContainerShape)}.
 	 * @param currentShape
 	 * @param unexaminedShapes
-	 * @param isHostCo - true is the ultimate container is a HostCollocation.  False if it is the Diagram.
+	 * @param isHostCo - true if the ultimate container is a HostCollocation. False if it is the Diagram.
 	 * @param visitedShapes
 	 * @return
 	 */
@@ -211,92 +189,45 @@ public class LayoutUtil {
 		int childWidth = 0;
 		int childHeight = 0;
 
-		ContainerShape hostCoShape = null;
-		if (DUtil.getBusinessObject(currentShape.getContainer()) instanceof HostCollocation) {
-			hostCoShape = currentShape.getContainer();
-		}
-
 		List<Connection> outs = DUtil.getOutgoingConnectionsContainedInContainerShape(currentShape);
 		for (Connection conn : outs) {
-			RHContainerShape targetRHContainerShape = ScaEcoreUtils.getEContainerOfType(conn.getEnd(), RHContainerShape.class);
+			ContainerShape targetContainerShape = ScaEcoreUtils.getEContainerOfType(conn.getEnd(), RHContainerShape.class);
 			Point childDimension = null;
 
-			// If the source is in HC, and the target is NOT in THE SAME HC, than do not consider the relationship
-			// This works, because of the other calculateTreeDimensions which builds a top-level tree between the entire
-			// HC and the target component
-			if (hostCoShape != null && hostCoShape != targetRHContainerShape.getContainer()) {
-				continue;
+			if (isHostCo) {
+				// If the root container is a HostCollocation then both the source and the target must be inside the
+				// same HostCollocation, other wise do not consider the relationship. This works, because of the else
+				// block which builds a top-level tree where the HostCollocation is treated as a single shape.
+				if (currentShape.getContainer() != targetContainerShape.getContainer()) {
+					continue;
+				}
+			} else {
+				// At this level we only care about the dimensions of the HostCollocation, not of any contained shapes
+				if (DUtil.getBusinessObject(targetContainerShape.getContainer()) instanceof HostCollocation) {
+					targetContainerShape = targetContainerShape.getContainer();
+				}
 			}
 
-			childDimension = calculateTreeDimensions(targetRHContainerShape, unexaminedShapes, isHostCo, visitedShapes);
+			childDimension = calculateTreeDimensions(targetContainerShape, unexaminedShapes, isHostCo, visitedShapes);
 			if (childDimension == null) {
 				continue;
 			}
 			childHeight += childDimension.getY() + DIAGRAM_SHAPE_SIBLING_VERTICAL_PADDING;
-
 			// use largest width but don't add
 			childWidth = Math.max(childDimension.getX(), childWidth);
 		}
-		if (outs.size() > 0) {
-			if (DUtil.getBusinessObject(currentShape.getContainer()) instanceof HostCollocation) {
-				width += childWidth;
-			} else {
-				width += childWidth + DIAGRAM_SHAPE_HORIZONTAL_PADDING;
-			}
-		}
-		// choose the largest of parent height or combined child height
-		height = Math.max(childHeight, height);
 
-		Point point = StylesFactory.eINSTANCE.createPoint();
-		point.setX(width);
-		point.setY(height);
-		return point;
-	}
-
-	/**
-	 * Internal method used by {@link #calculateTreeDimensions(RHContainerShape)}.
-	 * @param currentShape
-	 * @return
-	 */
-	private static Point calculateTreeDimensions(ContainerShape currentShape, List<Shape> unexaminedShapes, Set<ContainerShape> visitedShapes) {
-		// Keep track of the shape we're visiting; if we've been here, we're in a circular recursion
-		if (!visitedShapes.add(currentShape)) {
-			return null;
-		}
-		unexaminedShapes.remove(currentShape);
-
-		int height = currentShape.getGraphicsAlgorithm().getHeight();
-		int width = currentShape.getGraphicsAlgorithm().getWidth();
-		int childWidth = 0;
-		int childHeight = 0;
-
-		List<Connection> outs = DUtil.getOutgoingConnectionsContainedInContainerShape(currentShape);
-		for (Connection conn : outs) {
-			RHContainerShape targetRHContainerShape = ScaEcoreUtils.getEContainerOfType(conn.getEnd(), RHContainerShape.class);
-			Point childDimension = null;
-
-			// At this level, we care about the dimensions of the HostCollocation, not of any contained shapes
-			if (DUtil.getBusinessObject(targetRHContainerShape.getContainer()) instanceof HostCollocation) {
-				childDimension = calculateTreeDimensions(targetRHContainerShape.getContainer(), unexaminedShapes, visitedShapes);
-			} else {
-				childDimension = calculateTreeDimensions(targetRHContainerShape, unexaminedShapes, visitedShapes);
-			}
-			if (childDimension == null) {
-				continue;
-			}
-			childHeight += childDimension.getY() + DIAGRAM_SHAPE_SIBLING_VERTICAL_PADDING;
-
-			// use largest width but don't add
-			childWidth = Math.max(childDimension.getX(), childWidth);
-		}
+		// Add padding as necessary. This is somewhat of a hack, as it really should be handled by the layout algorithm.
 		if (outs.size() > 0) {
 			if (DUtil.getBusinessObject(currentShape) instanceof HostCollocation) {
-				// static padding size for HC based on num of children
-				width += childWidth + currentShape.getChildren().size() * HOST_COLLOCATION_SHAPE_HORIZONTAL_PADDING;
+				// Use a slightly larger padding when HC are involved, to try an minimize the overlapping cause by the
+				// algorithms deficiencies
+				width += childWidth + HOST_COLLOCATION_SHAPE_HORIZONTAL_PADDING;
 			} else {
 				width += childWidth + DIAGRAM_SHAPE_HORIZONTAL_PADDING;
 			}
 		}
+
 		// choose the largest of parent height or combined child height
 		height = Math.max(childHeight, height);
 
