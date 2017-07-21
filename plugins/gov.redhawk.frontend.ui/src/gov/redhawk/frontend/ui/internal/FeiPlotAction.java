@@ -10,26 +10,6 @@
  *******************************************************************************/
 package gov.redhawk.frontend.ui.internal;
 
-import gov.redhawk.frontend.FrontendPackage;
-import gov.redhawk.frontend.ListenerAllocation;
-import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.ui.FrontEndUIActivator;
-import gov.redhawk.frontend.ui.internal.section.FrontendSection;
-import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
-import gov.redhawk.frontend.util.TunerUtils;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaDomainManagerRegistry;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaPort;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaStructProperty;
-import gov.redhawk.model.sca.ScaUsesPort;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
-import gov.redhawk.ui.port.nxmplot.IPlotView;
-import gov.redhawk.ui.port.nxmplot.PlotActivator;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,12 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import mil.jpeojtrs.sca.prf.PrfFactory;
-import mil.jpeojtrs.sca.prf.PrfPackage;
-import mil.jpeojtrs.sca.prf.Simple;
-import mil.jpeojtrs.sca.util.CorbaUtils;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -79,6 +53,24 @@ import CF.PropertiesHelper;
 import CF.DevicePackage.InsufficientCapacity;
 import CF.DevicePackage.InvalidCapacity;
 import CF.DevicePackage.InvalidState;
+import gov.redhawk.frontend.FrontendPackage;
+import gov.redhawk.frontend.ListenerAllocation;
+import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.ui.FrontEndUIActivator;
+import gov.redhawk.frontend.ui.TunerStatusUtil;
+import gov.redhawk.frontend.ui.internal.section.FrontendSection;
+import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaDomainManagerRegistry;
+import gov.redhawk.model.sca.ScaPort;
+import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
+import gov.redhawk.ui.port.nxmplot.IPlotView;
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
+import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 /**
  * 
@@ -98,7 +90,9 @@ public class FeiPlotAction extends FrontendAction {
 		if (obj instanceof TunerStatus) {
 			final TunerStatus tuner = (TunerStatus) obj;
 			final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
-			final DataType[] props = createAllocationProperties(tuner);
+			String listenerAllocationID = "Plot_" + System.getProperty("user.name") + ":" + System.currentTimeMillis();
+			final DataType[] props = TunerStatusUtil.createAllocationProperties(listenerAllocationID, tuner);
+
 			Job job = new Job("Plotting tuner " + tuner.getAllocationID()) {
 				@Override
 				protected IStatus run(IProgressMonitor parentMonitor) {
@@ -164,38 +158,6 @@ public class FeiPlotAction extends FrontendAction {
 			job.setUser(true);
 			job.schedule();
 		}
-	}
-	
-	private DataType[] createAllocationProperties(TunerStatus tuner) {
-		List<DataType> listenerCapacity = new ArrayList<DataType>();
-		ScaStructProperty struct;
-		DataType dt = new DataType();
-		struct = ScaFactory.eINSTANCE.createScaStructProperty();
-		for (ListenerAllocationProperties allocProp : ListenerAllocationProperties.values()) {
-			ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
-			Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
-			definition.setType(allocProp.getType());
-			definition.setId(allocProp.getType().getLiteral());
-			definition.setName(allocProp.getType().getName());
-			simple.setDefinition(definition);
-			simple.setId(allocProp.getId());
-
-			switch (allocProp) {
-			case EXISTING_ALLOCATION_ID:
-				simple.setValue(TunerUtils.getControlId(tuner));
-				break;
-			case LISTENER_ALLOCATION_ID:
-				String listenerAllocationID = "Plot_" + System.getProperty("user.name") + ":" + System.currentTimeMillis();
-				simple.setValue(listenerAllocationID);
-				break;
-			default:
-			}
-			struct.getFields().add(simple);
-		}
-		dt.id = "FRONTEND::listener_allocation";
-		dt.value = struct.toAny();
-		listenerCapacity.add(dt);
-		return listenerCapacity.toArray(new DataType[0]);
 	}
 
 	private IStatus createPlotView(final DataType[] props, final ScaDevice< ? > device, final TunerStatus tuner)
