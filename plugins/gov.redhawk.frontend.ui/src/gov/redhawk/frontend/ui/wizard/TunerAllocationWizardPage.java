@@ -11,32 +11,12 @@
  */
 package gov.redhawk.frontend.ui.wizard;
 
-import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.ui.FrontEndUIActivator;
-import gov.redhawk.frontend.ui.FrontEndUIActivator.AllocationMode;
-import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
-import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperty;
-import gov.redhawk.frontend.util.TunerProperties.StatusProperties;
-import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperties;
-import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperty;
-import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaStructProperty;
-import gov.redhawk.model.sca.ScaStructSequenceProperty;
-import gov.redhawk.sca.observables.SCAObservables;
-
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import mil.jpeojtrs.sca.prf.PrfFactory;
-import mil.jpeojtrs.sca.prf.PrfPackage;
-import mil.jpeojtrs.sca.prf.Simple;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.UpdateValueStrategy;
@@ -72,6 +52,23 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+
+import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.ui.FrontEndUIActivator;
+import gov.redhawk.frontend.ui.FrontEndUIActivator.AllocationMode;
+import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
+import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperty;
+import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperties;
+import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperty;
+import gov.redhawk.frontend.util.TunerProperties.TunerStatusAllocationProperties;
+import gov.redhawk.frontend.util.TunerProperties.TunerStatusProperty;
+import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.model.sca.ScaStructProperty;
+import gov.redhawk.model.sca.ScaStructSequenceProperty;
+import gov.redhawk.sca.observables.SCAObservables;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public class TunerAllocationWizardPage extends WizardPage {
 
@@ -772,16 +769,10 @@ public class TunerAllocationWizardPage extends WizardPage {
 
 		tunerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
 		tunerAllocationStruct.setId(TunerAllocationProperty.INSTANCE.getId());
-		for (TunerAllocationProperties allocProp : TunerAllocationProperties.values()) {
-			ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
-			Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
-			definition.setType(allocProp.getType());
-			definition.setId(allocProp.getType().getLiteral());
-			definition.setName(allocProp.getType().getName());
-			simple.setDefinition(definition);
-			simple.setId(allocProp.getId());
-			setValueForProp(allocProp, simple);
-			tunerAllocationStruct.getFields().add(simple);
+		tunerAllocationStruct.setDefinition(TunerAllocationProperty.INSTANCE.createProperty());
+		for (TunerAllocationProperties propDetails : TunerAllocationProperties.values()) {
+			ScaSimpleProperty simple = tunerAllocationStruct.getSimple(propDetails.getId());
+			setValueForProp(propDetails, simple);
 		}
 	}
 
@@ -793,16 +784,10 @@ public class TunerAllocationWizardPage extends WizardPage {
 
 		listenerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
 		listenerAllocationStruct.setId(ListenerAllocationProperty.INSTANCE.getId());
-		for (ListenerAllocationProperties allocProp : ListenerAllocationProperties.values()) {
-			ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
-			Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
-			definition.setType(allocProp.getType());
-			definition.setId(allocProp.getType().getLiteral());
-			definition.setName(allocProp.getType().getName());
-			simple.setDefinition(definition);
-			simple.setId(allocProp.getId());
-			setValueForProp(allocProp, simple);
-			listenerAllocationStruct.getFields().add(simple);
+		listenerAllocationStruct.setDefinition(ListenerAllocationProperty.INSTANCE.createProperty());
+		for (ListenerAllocationProperties propDetails : ListenerAllocationProperties.values()) {
+			ScaSimpleProperty simple = listenerAllocationStruct.getSimple(propDetails.getId());
+			setValueForProp(propDetails, simple);
 		}
 	}
 
@@ -1068,17 +1053,17 @@ public class TunerAllocationWizardPage extends WizardPage {
 				new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Unable to add Allocation wizard page because no Device was found."));
 			return;
 		}
-		ScaStructSequenceProperty statusContainer = (ScaStructSequenceProperty) device.getProperty(StatusProperties.FRONTEND_TUNER_STATUS.getId());
+		ScaStructSequenceProperty statusContainer = (ScaStructSequenceProperty) device.getProperty(TunerStatusProperty.INSTANCE.getId());
 		for (ScaStructProperty struct : statusContainer.getStructs()) {
-			ScaSimpleProperty availFreqSimple = struct.getSimple(StatusProperties.AVAILABLE_FREQUENCY.getId());
+			ScaSimpleProperty availFreqSimple = struct.getSimple(TunerStatusAllocationProperties.AVAILABLE_FREQUENCY.getId());
 			if (availFreqSimple != null) {
 				updateMinMaxValues(availFreqSimple);
 			}
-			ScaSimpleProperty availBwSimple = struct.getSimple(StatusProperties.AVAILABLE_BANDWIDTH.getId());
+			ScaSimpleProperty availBwSimple = struct.getSimple(TunerStatusAllocationProperties.AVAILABLE_BANDWIDTH.getId());
 			if (availBwSimple != null) {
 				updateMinMaxValues(availBwSimple);
 			}
-			ScaSimpleProperty availSrSimple = struct.getSimple(StatusProperties.AVAILABLE_SAMPLE_RATE.getId());
+			ScaSimpleProperty availSrSimple = struct.getSimple(TunerStatusAllocationProperties.AVAILABLE_SAMPLE_RATE.getId());
 			if (availSrSimple != null) {
 				updateMinMaxValues(availSrSimple);
 			}
@@ -1086,7 +1071,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 	}
 
 	private void updateMinMaxValues(ScaSimpleProperty simple) {
-		StatusProperties property = StatusProperties.getValueFor(simple);
+		TunerStatusAllocationProperties property = TunerStatusAllocationProperties.fromPropID(simple.getId());
 		switch (property) {
 		case AVAILABLE_BANDWIDTH:
 			setMinMaxValue((String) simple.getValue(), property);
@@ -1101,7 +1086,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		}
 	}
 
-	private void setMinMaxValue(String value, StatusProperties prop) {
+	private void setMinMaxValue(String value, TunerStatusAllocationProperties prop) {
 		value = value.replaceAll("[^\\d\\.\\-,]", "");
 		String[] parts = value.split("\\-");
 		Double candMin = null;
@@ -1158,7 +1143,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		return map;
 	}
 
-	private void setMinMaxValue(StatusProperties prop, Double candidateMin, Double candidateMax) {
+	private void setMinMaxValue(TunerStatusAllocationProperties prop, Double candidateMin, Double candidateMax) {
 		switch (prop) {
 		case AVAILABLE_BANDWIDTH:
 			if (minBw == null || candidateMin < minBw) {

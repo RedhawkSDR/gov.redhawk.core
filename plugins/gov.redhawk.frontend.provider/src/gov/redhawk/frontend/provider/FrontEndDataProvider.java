@@ -10,32 +10,9 @@
  *******************************************************************************/
 package gov.redhawk.frontend.provider;
 
-import gov.redhawk.frontend.FrontendFactory;
-import gov.redhawk.frontend.FrontendPackage;
-import gov.redhawk.frontend.ListenerAllocation;
-import gov.redhawk.frontend.TunerContainer;
-import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.UnallocatedTunerContainer;
-import gov.redhawk.frontend.util.TunerProperties.StatusProperties;
-import gov.redhawk.frontend.util.TunerProperties.TunerStatusAllocationProperties;
-import gov.redhawk.frontend.util.TunerUtils;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaAbstractProperty;
-import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaStructSequenceProperty;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.model.sca.services.AbstractDataProvider;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import mil.jpeojtrs.sca.scd.Interface;
-import mil.jpeojtrs.sca.scd.ScdPackage;
-import mil.jpeojtrs.sca.spd.SpdPackage;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -51,6 +28,27 @@ import org.eclipse.emf.ecore.util.EContentAdapter;
 
 import FRONTEND.AnalogTunerHelper;
 import FRONTEND.DigitalTunerHelper;
+import gov.redhawk.frontend.FrontendFactory;
+import gov.redhawk.frontend.FrontendPackage;
+import gov.redhawk.frontend.ListenerAllocation;
+import gov.redhawk.frontend.TunerContainer;
+import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.UnallocatedTunerContainer;
+import gov.redhawk.frontend.util.TunerProperties.TunerStatusAllocationProperties;
+import gov.redhawk.frontend.util.TunerProperties.TunerStatusProperty;
+import gov.redhawk.frontend.util.TunerUtils;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.model.sca.ScaStructSequenceProperty;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.services.AbstractDataProvider;
+import mil.jpeojtrs.sca.scd.Interface;
+import mil.jpeojtrs.sca.scd.ScdPackage;
+import mil.jpeojtrs.sca.spd.SpdPackage;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 /**
  * 
@@ -298,13 +296,13 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 		}
 
 		// Fetch list of tuners
-		ScaStructSequenceProperty prop = (ScaStructSequenceProperty) device.getProperty(StatusProperties.FRONTEND_TUNER_STATUS.getId());
+		ScaStructSequenceProperty prop = (ScaStructSequenceProperty) device.getProperty(TunerStatusProperty.INSTANCE.getId());
 		if (prop == null) {
 			FrontEndDataActivator plugin = FrontEndDataActivator.getInstance();
 			if (plugin != null) {
 				plugin.getLog().log(
 					new Status(IStatus.ERROR, "Device " + device.getIdentifier() + " is not a valid FrontEnd device, missing property: "
-							+ StatusProperties.FRONTEND_TUNER_STATUS.getId(), null));
+							+ TunerStatusProperty.INSTANCE.getId(), null));
 			}
 			return;
 		}
@@ -388,7 +386,7 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 	}
 
 	private void updateAllocationListeners(final TunerStatus tuner) {
-		ScaSimpleProperty allocSimple = tuner.getSimple(StatusProperties.ALLOCATION_ID_CSV.getId());
+		ScaSimpleProperty allocSimple = tuner.getSimple(TunerStatusAllocationProperties.ALLOCATION_ID.getId());
 		if (allocSimple == null) {
 			tuner.getListenerAllocations().clear();
 			return;

@@ -11,39 +11,11 @@
  */
 package gov.redhawk.frontend.ui.internal;
 
-//TODO: reflection for access to the SriDataView code
-import gov.redhawk.bulkio.ui.views.SriDataView;
-import gov.redhawk.bulkio.util.BulkIOType;
-import gov.redhawk.frontend.FrontendPackage;
-import gov.redhawk.frontend.ListenerAllocation;
-import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.ui.FrontEndUIActivator;
-import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
-import gov.redhawk.frontend.util.TunerUtils;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaDomainManagerRegistry;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaPort;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaStructProperty;
-import gov.redhawk.model.sca.ScaUsesPort;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
-import gov.redhawk.ui.port.nxmplot.IPlotView;
-import gov.redhawk.ui.port.nxmplot.PlotSource;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
-
-import mil.jpeojtrs.sca.prf.PrfFactory;
-import mil.jpeojtrs.sca.prf.PrfPackage;
-import mil.jpeojtrs.sca.prf.Simple;
-import mil.jpeojtrs.sca.util.CorbaUtils;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -83,6 +55,25 @@ import CF.PropertiesHelper;
 import CF.DevicePackage.InsufficientCapacity;
 import CF.DevicePackage.InvalidCapacity;
 import CF.DevicePackage.InvalidState;
+import gov.redhawk.bulkio.ui.views.SriDataView;
+import gov.redhawk.bulkio.util.BulkIOType;
+import gov.redhawk.frontend.FrontendPackage;
+import gov.redhawk.frontend.ListenerAllocation;
+import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.ui.FrontEndUIActivator;
+import gov.redhawk.frontend.ui.TunerStatusUtil;
+import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaDomainManagerRegistry;
+import gov.redhawk.model.sca.ScaPort;
+import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
+import gov.redhawk.ui.port.nxmplot.IPlotView;
+import gov.redhawk.ui.port.nxmplot.PlotSource;
+import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public class FeiSriHandler extends AbstractHandler implements IHandler {
 	private SriDataView sriViewLocalRef; // Needed for declaration of dispose logic
@@ -126,7 +117,8 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 				final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
 
 				// Create the allocation property structure
-				final DataType[] props = createAllocationProperties(tuner);
+				String listenerAllocationID = "SRI_" + System.getProperty("user.name") + ":" + System.currentTimeMillis();
+				final DataType[] props = TunerStatusUtil.createAllocationProperties(listenerAllocationID, tuner);
 
 				// Core Job that handles capacity allocation and displaying the view
 				Job job = new Job("Displaying SRI Data for " + tuner.getAllocationID()) {
@@ -319,48 +311,6 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 		}
 
 		return retVal;
-	}
-
-	/**
-	 * Creates the allocation structure that can be passed to the allocateCapacity(DataType[] capacities) method.
-	 * Structure consists of a DataType containing a struct (cast to Any) which contains a single
-	 * ScaSimpleProperty which defines the listener allocation properties.
-	 * @param tuner - The containing tuner object to which the listener is tied
-	 * @return listenerCapacity as a DataType array. Contains values for Existing_Allocation_ID and
-	 * Listener_Allocation_ID
-	 */
-	private DataType[] createAllocationProperties(TunerStatus tuner) {
-		List<DataType> listenerCapacity = new ArrayList<DataType>();
-		DataType dt = new DataType();
-		ScaStructProperty struct = ScaFactory.eINSTANCE.createScaStructProperty();
-
-		// Cycle through enum of listener allocation properties and set values
-		for (ListenerAllocationProperties allocProp : ListenerAllocationProperties.values()) {
-			ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
-			Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
-			definition.setType(allocProp.getType());
-			definition.setId(allocProp.getType().getLiteral());
-			definition.setName(allocProp.getType().getName());
-			simple.setDefinition(definition);
-			simple.setId(allocProp.getId());
-
-			switch (allocProp) {
-			case EXISTING_ALLOCATION_ID:
-				simple.setValue(TunerUtils.getControlId(tuner));
-				break;
-			case LISTENER_ALLOCATION_ID:
-				String listenerAllocationID = "SRI_" + System.getProperty("user.name") + ":" + System.currentTimeMillis();
-				simple.setValue(listenerAllocationID);
-				break;
-			default:
-				break;
-			}
-			struct.getFields().add(simple);
-		}
-		dt.id = "FRONTEND::listener_allocation";
-		dt.value = struct.toAny();
-		listenerCapacity.add(dt);
-		return listenerCapacity.toArray(new DataType[0]);
 	}
 
 	/**
