@@ -19,32 +19,29 @@ import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.ui.filters.AdvancedPropertiesExtensibleFilter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-/**
- * The activator class controls the plug-in life cycle
- */
 public class FrontEndUIActivator extends AbstractUIPlugin {
 
-	// The plug-in ID
+	/**
+	 * The plug-in ID
+	 */
 	public static final String PLUGIN_ID = "gov.redhawk.frontend.ui"; //$NON-NLS-1$
 
-	// The shared instance
+	/**
+	 * The single activator instance for the plugin
+	 */
 	private static FrontEndUIActivator plugin;
 
-	/**
-	 * The constructor
-	 */
 	public FrontEndUIActivator() {
 	}
 
 	public static final List<String> SUPPORTED_TUNER_TYPES = getSupportedTuner();
-	
+
 	private static List<String> getSupportedTuner() {
 		List<String> supportedTunerTypes = new ArrayList<String>();
 		Collections.addAll(supportedTunerTypes, FRONTEND.TUNER_TYPE_RX_DIGITIZER.value, FRONTEND.TUNER_TYPE_RX_SCANNER_DIGITIZER.value,
@@ -58,42 +55,18 @@ public class FrontEndUIActivator extends AbstractUIPlugin {
 		LISTENER
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		FrontEndUIActivator.plugin = this;
 		if (ScaUiPlugin.getDefault() != null) {
-			AdvancedPropertiesExtensibleFilter.addSubFilter(new org.eclipse.jface.viewers.IFilter() {
-
-				@Override
-				public boolean select(Object toTest) {
-					if (toTest instanceof TunerStatus) {
-						return false;
-					}
-					if (toTest instanceof ListenerAllocation) {
-						return false;
-					}
-					if (toTest instanceof TunerContainer) {
-						return false;
-					}
-					if (toTest instanceof UnallocatedTunerContainer) {
-						return false;
-					}
-					return true;
-				}
-
+			AdvancedPropertiesExtensibleFilter.addSubFilter(toTest -> {
+				return !((toTest instanceof TunerStatus) || (toTest instanceof ListenerAllocation) || (toTest instanceof TunerContainer)
+					|| (toTest instanceof UnallocatedTunerContainer));
 			});
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		FrontEndUIActivator.plugin = null;
@@ -102,7 +75,6 @@ public class FrontEndUIActivator extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance
-	 *
 	 * @return the shared instance
 	 */
 	public static FrontEndUIActivator getDefault() {
