@@ -72,18 +72,14 @@ import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
-/**
- * 
- */
 public class FeiPlotAction extends FrontendAction {
 
 	private static final AtomicInteger SECONDARY_ID = new AtomicInteger();
-//	private IEvaluationContext context;
 
 	public FeiPlotAction(FrontendSection theSection) {
 		super(theSection, "Plot", "gov.redhawk.frontend.actions.plot", "gov.redhawk.ui.port.nxmplot.command.plot", "icons/plot.gif");
 	}
-	
+
 	@Override
 	public void run() {
 		EObject obj = getSection().getInput();
@@ -160,8 +156,7 @@ public class FeiPlotAction extends FrontendAction {
 		}
 	}
 
-	private IStatus createPlotView(final DataType[] props, final ScaDevice< ? > device, final TunerStatus tuner)
-			throws ExecutionException {
+	private IStatus createPlotView(final DataType[] props, final ScaDevice< ? > device, final TunerStatus tuner) throws ExecutionException {
 		List<ScaPort< ? , ? >> devicePorts = device.getPorts();
 		List<ScaUsesPort> usesPorts = new ArrayList<ScaUsesPort>();
 		for (ScaPort< ? , ? > port : devicePorts) {
