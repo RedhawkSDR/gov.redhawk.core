@@ -225,6 +225,10 @@ public class TunerAllocationWizardPage extends WizardPage {
 			if (s == null || s.trim().equals("")) {
 				return ValidationStatus.error(TunerAllocationWizardPage.TUNER_TYPE_MISSING_ERR_MSG);
 			}
+			if (FRONTEND.TUNER_TYPE_RX_SCANNER_DIGITIZER.value.equals(s)) {
+				// We don't support allocating these (yet)
+				return ValidationStatus.error(TunerAllocationWizardPage.TUNER_TYPE_NOT_SUPPORTED_ERR_MSG);
+			}
 			if (!FrontEndUIActivator.SUPPORTED_TUNER_TYPES.contains(s)) {
 				return ValidationStatus.error(TunerAllocationWizardPage.TUNER_TYPE_NOT_SUPPORTED_ERR_MSG);
 			}
