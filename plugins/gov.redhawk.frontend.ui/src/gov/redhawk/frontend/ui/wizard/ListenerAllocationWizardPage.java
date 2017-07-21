@@ -11,17 +11,7 @@
  */
 package gov.redhawk.frontend.ui.wizard;
 
-import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaStructProperty;
-import gov.redhawk.sca.observables.SCAObservables;
-
 import java.util.UUID;
-
-import mil.jpeojtrs.sca.prf.PrfFactory;
-import mil.jpeojtrs.sca.prf.PrfPackage;
-import mil.jpeojtrs.sca.prf.Simple;
 
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.validation.IValidator;
@@ -44,6 +34,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+
+import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
+import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperty;
+import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaStructProperty;
+import gov.redhawk.sca.observables.SCAObservables;
 
 public class ListenerAllocationWizardPage extends WizardPage {
 
@@ -186,17 +182,9 @@ public class ListenerAllocationWizardPage extends WizardPage {
 
 	private void initializeListenerAllocationStruct() {
 		listenerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
-		for (ListenerAllocationProperties allocProp : ListenerAllocationProperties.values()) {
-			ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
-			Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
-			definition.setType(allocProp.getType());
-			definition.setId(allocProp.getType().getLiteral());
-			definition.setName(allocProp.getType().getName());
-			simple.setDefinition(definition);
-			simple.setId(allocProp.getId());
-			setValueForProp(allocProp, simple);
-			listenerAllocationStruct.getFields().add(simple);
-		}
+		listenerAllocationStruct.setDefinition(ListenerAllocationProperty.INSTANCE.createProperty());
+		listenerAllocationStruct.getSimple(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.getId()).setValue(targetAllocText.getText());
+		listenerAllocationStruct.getSimple(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId()).setValue(allocIdText.getText());
 	}
 
 	private void createGroupControls(Composite parent) {
@@ -215,18 +203,6 @@ public class ListenerAllocationWizardPage extends WizardPage {
 		targetAllocText.setEnabled(false);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(targetAllocText);
 
-	}
-
-	private void setValueForProp(ListenerAllocationProperties allocProp, ScaSimpleProperty simple) {
-		switch (allocProp) {
-		case EXISTING_ALLOCATION_ID:
-			simple.setValue(targetAllocText.getText());
-			break;
-		case LISTENER_ALLOCATION_ID:
-			simple.setValue(allocIdText.getText());
-			break;
-		default:
-		}
 	}
 
 	public ScaStructProperty getListenerAllocationStruct() {

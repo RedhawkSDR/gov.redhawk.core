@@ -10,26 +10,7 @@
  *******************************************************************************/
 package gov.redhawk.frontend.ui;
 
-import gov.redhawk.frontend.ListenerAllocation;
-import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
-import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperty;
-import gov.redhawk.frontend.util.TunerUtils;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaStructProperty;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Callable;
-
-import mil.jpeojtrs.sca.prf.PrfFactory;
-import mil.jpeojtrs.sca.prf.PrfPackage;
-import mil.jpeojtrs.sca.prf.Simple;
-import mil.jpeojtrs.sca.util.CorbaUtils;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -43,44 +24,33 @@ import CF.PropertiesHelper;
 import CF.DevicePackage.InsufficientCapacity;
 import CF.DevicePackage.InvalidCapacity;
 import CF.DevicePackage.InvalidState;
+import gov.redhawk.frontend.ListenerAllocation;
+import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
+import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperty;
+import gov.redhawk.frontend.util.TunerUtils;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaStructProperty;
+import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
-/**
- * 
- */
 public final class TunerStatusUtil {
-	private TunerStatusUtil() {
 
+	private TunerStatusUtil() {
 	}
 
 	public static DataType[] createAllocationProperties(String listenerAllocationID, TunerStatus tuner) {
-		List<DataType> listenerCapacity = new ArrayList<DataType>();
-		ScaStructProperty struct;
-		DataType dt = new DataType();
-		struct = ScaFactory.eINSTANCE.createScaStructProperty();
-		for (ListenerAllocationProperties allocProp : ListenerAllocationProperties.values()) {
-			ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
-			Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
-			definition.setType(allocProp.getType());
-			definition.setId(allocProp.getType().getLiteral());
-			definition.setName(allocProp.getType().getName());
-			simple.setDefinition(definition);
-			simple.setId(allocProp.getId());
+		ScaStructProperty struct = ScaFactory.eINSTANCE.createScaStructProperty();
+		struct.setDefinition(ListenerAllocationProperty.INSTANCE.createProperty());
+		struct.getSimple(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.getId()).setValue(TunerUtils.getControlId(tuner));
+		struct.getSimple(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId()).setValue(listenerAllocationID);
 
-			switch (allocProp) {
-			case EXISTING_ALLOCATION_ID:
-				simple.setValue(TunerUtils.getControlId(tuner));
-				break;
-			case LISTENER_ALLOCATION_ID:
-				simple.setValue(listenerAllocationID);
-				break;
-			default:
-			}
-			struct.getFields().add(simple);
-		}
+		DataType dt = new DataType();
 		dt.id = ListenerAllocationProperty.INSTANCE.getId();
 		dt.value = struct.toAny();
-		listenerCapacity.add(dt);
-		return listenerCapacity.toArray(new DataType[0]);
+		return new DataType[] { dt };
 	}
 
 	public static String getListenerID(DataType[] props) {

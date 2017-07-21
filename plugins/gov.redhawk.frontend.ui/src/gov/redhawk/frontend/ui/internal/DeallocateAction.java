@@ -10,47 +10,28 @@
  *******************************************************************************/
 package gov.redhawk.frontend.ui.internal;
 
-import gov.redhawk.frontend.ListenerAllocation;
-import gov.redhawk.frontend.TunerContainer;
-import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.ui.FrontEndUIActivator;
-import gov.redhawk.frontend.ui.internal.section.FrontendSection;
-import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
-import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperties;
-import gov.redhawk.frontend.util.TunerUtils;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaStructProperty;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-
-import mil.jpeojtrs.sca.prf.PrfFactory;
-import mil.jpeojtrs.sca.prf.PrfPackage;
-import mil.jpeojtrs.sca.prf.Simple;
-import mil.jpeojtrs.sca.util.CorbaUtils;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 
 import CF.DataType;
-import CF.DevicePackage.InvalidCapacity;
-import CF.DevicePackage.InvalidState;
+import gov.redhawk.frontend.ListenerAllocation;
+import gov.redhawk.frontend.TunerContainer;
+import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.ui.internal.section.FrontendSection;
+import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperty;
+import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperty;
+import gov.redhawk.frontend.util.TunerUtils;
+import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.sca.model.jobs.DeallocateJob;
+import mil.jpeojtrs.sca.prf.Struct;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
-/**
- * 
- */
 public class DeallocateAction extends FrontendAction {
 
 	public DeallocateAction(FrontendSection theSection) {
@@ -110,39 +91,19 @@ public class DeallocateAction extends FrontendAction {
 			if (device == null) {
 				return;
 			}
-			final DataType[] props = new DataType[1];
-			DataType dt = new DataType();
-			dt.id = "FRONTEND::listener_allocation";
-			dt.value = getListenerAllocationStruct(listener).toAny();
-			props[0] = dt;
 
-			Job job = new Job("Deallocate FEI control") {
+			Struct allocProp = ListenerAllocationProperty.INSTANCE.createDeallocationStruct(listener);
+			DataType dt = new DataType(allocProp.getId(), allocProp.toAny());
 
+			Job job = new DeallocateJob(device, dt);
+			job.setName("Deallocate FEI listener");
+			job.setUser(true);
+			job.addJobChangeListener(new JobChangeAdapter() {
 				@Override
-				protected IStatus run(IProgressMonitor monitor) {
-					try {
-						monitor.beginTask("Deallocating", IProgressMonitor.UNKNOWN);
-						CorbaUtils.invoke(new Callable<Object>() {
-
-							@Override
-							public Object call() throws Exception {
-								try {
-									device.deallocateCapacity(props);
-								} catch (InvalidCapacity e) {
-									throw new CoreException(new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in control deallocation: " + e.msg, e));
-								} catch (InvalidState e) {
-									throw new CoreException(new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in control deallocation: " + e.msg, e));
-								} 
-								return null;
-							}
-							
-						}, monitor);
-						
-						device.refresh(null, RefreshDepth.SELF);
-					} catch (InterruptedException e) {
-						return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during control deallocation", e);
-					} catch (CoreException e) {
-						return new Status(e.getStatus().getSeverity(), FrontEndUIActivator.PLUGIN_ID, "Failed to deallocate.", e);
+				public void done(IJobChangeEvent event) {
+					IStatus result = event.getResult();
+					if (result == null || !result.isOK()) {
+						return;
 					}
 
 					final TunerStatus tunerStatus = listener.getTunerStatus();
@@ -154,11 +115,8 @@ public class DeallocateAction extends FrontendAction {
 							}
 						});
 					}
-					return Status.OK_STATUS;
 				}
-
-			};
-			job.setUser(true);
+			});
 			job.schedule();
 		}
 		if (removeSelection) {
@@ -186,84 +144,17 @@ public class DeallocateAction extends FrontendAction {
 		}
 		return true;
 	}
-	
+
 	private boolean deallocateTuner(TunerStatus tuner) {
 		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
-		final DataType[] props = createAllocationProperties(tuner);
+		Struct allocProp = TunerAllocationProperty.INSTANCE.createDeallocationStruct(tuner);
+		final DataType prop = new DataType(allocProp.getId(), allocProp.toAny());
 
-		Job job = new Job("Deallocate FEI control") {
-
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				try {
-					monitor.beginTask("Deallocating", IProgressMonitor.UNKNOWN);
-					device.deallocateCapacity(props);
-					device.refresh(null, RefreshDepth.SELF);
-				} catch (InvalidCapacity e) {
-					return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in control deallocation: " + e.msg, e);
-				} catch (InvalidState e) {
-					return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in control deallocation: " + e.msg, e);
-				} catch (InterruptedException e) {
-					return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during control deallocation", e);
-				}
-				return Status.OK_STATUS;
-			}
-
-		};
+		Job job = new DeallocateJob(device, prop);
+		job.setName("Deallocate FEI control");
 		job.setUser(true);
 		job.schedule();
 
 		return true;
-	}
-
-	private DataType[] createAllocationProperties(TunerStatus tuner) {
-		List<DataType> props = new ArrayList<DataType>();
-		ScaStructProperty struct;
-		DataType dt = new DataType();
-		struct = getTunerAllocationStruct(tuner);
-		dt.id = "FRONTEND::tuner_allocation";
-		dt.value = struct.toAny();
-		props.add(dt);
-		return props.toArray(new DataType[0]);
-	}
-
-	private ScaStructProperty getTunerAllocationStruct(TunerStatus tuner) {
-		ScaStructProperty tunerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
-		TunerAllocationProperties allocPropID = TunerAllocationProperties.valueOf("ALLOCATION_ID");
-		ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
-		Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
-		definition.setType(allocPropID.getType());
-		definition.setId(allocPropID.getType().getLiteral());
-		definition.setName(allocPropID.getType().getName());
-		simple.setDefinition(definition);
-		simple.setId(allocPropID.getId());
-		setValueForProp(tuner, allocPropID, simple);
-		tunerAllocationStruct.getFields().add(simple);
-		return tunerAllocationStruct;
-	}
-
-	private ScaStructProperty getListenerAllocationStruct(ListenerAllocation listener) {
-		ScaStructProperty listenerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
-		ListenerAllocationProperties allocPropID = ListenerAllocationProperties.LISTENER_ALLOCATION_ID;
-		ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
-		Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
-		definition.setType(allocPropID.getType());
-		definition.setId(allocPropID.getType().getLiteral());
-		definition.setName(allocPropID.getType().getName());
-		simple.setDefinition(definition);
-		simple.setId(allocPropID.getId());
-		simple.setValue(listener.getListenerID());
-		listenerAllocationStruct.getFields().add(simple);
-		return listenerAllocationStruct;
-	}
-
-	private void setValueForProp(TunerStatus tuner, TunerAllocationProperties allocPropID, ScaSimpleProperty simple) {
-		// Deallocates control id and all listeners
-		String value = tuner.getTunerStatusStruct().getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue().toString();
-		int endControlIndex = value.indexOf(',');
-		if (endControlIndex > 0) {
-			value = value.substring(0, endControlIndex);
-		}
-		simple.setValue(value);
 	}
 }
