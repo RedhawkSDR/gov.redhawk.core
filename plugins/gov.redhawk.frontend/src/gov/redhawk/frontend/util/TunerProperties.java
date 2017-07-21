@@ -11,9 +11,8 @@
  */
 package gov.redhawk.frontend.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import org.eclipse.core.runtime.CoreException;
@@ -23,7 +22,12 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import FRONTEND.AnalogTuner;
 import FRONTEND.AnalogTunerHelper;
@@ -41,14 +45,16 @@ import gov.redhawk.model.sca.ScaProvidesPort;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.sca.util.SubMonitor;
-import mil.jpeojtrs.sca.prf.ConfigurationKind;
+import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.PrfFactory;
+import mil.jpeojtrs.sca.prf.Properties;
 import mil.jpeojtrs.sca.prf.PropertyValueType;
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.Struct;
-import mil.jpeojtrs.sca.prf.StructPropertyConfigurationType;
+import mil.jpeojtrs.sca.prf.StructSequence;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
+import mil.jpeojtrs.sca.util.collections.FeatureMapList;
 
 /**
  * Enum of available tuner status properties as defined by specification.
@@ -57,8 +63,68 @@ import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 public enum TunerProperties {
 	INSTANCE;
 
-	public static enum TunerStatusAllocationProperties {
+	/**
+	 * Contains required FEI property definitions mapped by ID.
+	 */
+	private Map<String, AbstractProperty> requiredProps;
 
+	/**
+	 * Contains optional FEI property definitions mapped by ID.
+	 */
+	private Map<String, AbstractProperty> optionalProps;
+
+	TunerProperties() {
+		ResourceSet resourceSet = new ResourceSetImpl();
+
+		URI uri = URI.createPlatformPluginURI("/gov.redhawk.frontend/xml/fei_required.prf.xml", false);
+		Resource resource = resourceSet.getResource(uri, true);
+		Properties props = Properties.Util.getProperties(resource);
+		requiredProps = new HashMap<>();
+		for (AbstractProperty prop : new FeatureMapList<AbstractProperty>(props.getProperties(), AbstractProperty.class)) {
+			requiredProps.put(prop.getId(), prop);
+		}
+
+		uri = URI.createPlatformPluginURI("/gov.redhawk.frontend/xml/fei_optional.prf.xml", false);
+		resource = resourceSet.getResource(uri, true);
+		props = Properties.Util.getProperties(resource);
+		optionalProps = new HashMap<>();
+		for (AbstractProperty prop : new FeatureMapList<AbstractProperty>(props.getProperties(), AbstractProperty.class)) {
+			optionalProps.put(prop.getId(), prop);
+		}
+	}
+
+	/**
+	 * Used to create the <code>FRONTEND::tuner_status</code> property.
+	 * @since 2.0
+	 */
+	public static enum TunerStatusProperty {
+		INSTANCE;
+
+		/**
+		 * @return The fully qualified ID of the property
+		 */
+		public String getId() {
+			return "FRONTEND::tuner_status";
+		}
+
+		/**
+		 * @return A new {@link StructSequence} instance of the property containing only the required fields.
+		 */
+		public StructSequence createProperty() {
+			StructSequence prop = (StructSequence) TunerProperties.INSTANCE.requiredProps.get(getId());
+			return EcoreUtil.copy(prop);
+		}
+	}
+
+	/**
+	 * Required and optional fields within the FRONTEND::tuner_status property. Note that it is not an
+	 * allocation property (this <code>enum</code> is misnamed).
+	 * <p/>
+	 * The name ({@link #getName()}) and FEI package reference ({@link #getFeiAttribute()}) are used by the property
+	 * view for displaying and editing a tuner status.
+	 * @see TunerStatusProperty
+	 */
+	public static enum TunerStatusAllocationProperties {
 		// required properties
 		// instance name ID PRF type Human Readable Name
 		TUNER_TYPE("FRONTEND::tuner_status::tuner_type", PropertyValueType.STRING, "Tuner Type", FrontendPackage.Literals.TUNER_STATUS__TUNER_TYPE, false),
@@ -79,6 +145,14 @@ public enum TunerProperties {
 		GROUP_ID("FRONTEND::tuner_status::group_id", PropertyValueType.STRING, "Group ID", FrontendPackage.Literals.TUNER_STATUS__GROUP_ID, false),
 		RF_FLOW_ID("FRONTEND::tuner_status::rf_flow_id", PropertyValueType.STRING, "RF Flow ID", FrontendPackage.Literals.TUNER_STATUS__RF_FLOW_ID, false),
 		ENABLED("FRONTEND::tuner_status::enabled", PropertyValueType.BOOLEAN, "Enabled", FrontendPackage.Literals.TUNER_STATUS__ENABLED, true),
+		/**
+		 * @since 2.0
+		 */
+		SCAN_MODE_ENABLED("FRONTEND::tuner_status::scan_mode_enabled", PropertyValueType.BOOLEAN, "Scan Mode Enabled"),
+		/**
+		 * @since 2.0
+		 */
+		SUPPORTS_SCAN("FRONTEND::tuner_status::supports_scan", PropertyValueType.BOOLEAN, "Supports scanning"),
 
 		// optional properties
 		// instance name ID PRF type
@@ -110,6 +184,8 @@ public enum TunerProperties {
 		private final String name;
 		private final EAttribute feiAttr;
 		private final boolean editable;
+		private final AbstractProperty property;
+		private final boolean required;
 
 		TunerStatusAllocationProperties(String id, PropertyValueType prfType, String name, EAttribute feiAttr, boolean editable) {
 			this.id = id;
@@ -117,12 +193,34 @@ public enum TunerProperties {
 			this.name = name;
 			this.feiAttr = feiAttr;
 			this.editable = editable;
+
+			// Look for it in the required properties section, then in the optional properties section
+			StructSequence ss = (StructSequence) TunerProperties.INSTANCE.requiredProps.get(TunerStatusProperty.INSTANCE.getId());
+			AbstractProperty tmpProp = ss.getStruct().getProperty(id);
+			if (tmpProp != null) {
+				this.property = tmpProp;
+				this.required = true;
+				return;
+			}
+			ss = (StructSequence) TunerProperties.INSTANCE.optionalProps.get(TunerStatusProperty.INSTANCE.getId());
+			tmpProp = ss.getStruct().getProperty(id);
+			if (tmpProp != null) {
+				this.property = tmpProp;
+				this.required = false;
+				return;
+			}
+
+			// This should never occur
+			throw new IllegalStateException("No PRF definition found for " + toString());
 		}
 
 		TunerStatusAllocationProperties(String id, PropertyValueType prfType, String name) {
 			this(id, prfType, name, null, false);
 		}
 
+		/**
+		 * @return True if the FEI IDL provides a method to change this value
+		 */
 		public boolean isEditable() {
 			return editable;
 		}
@@ -131,16 +229,38 @@ public enum TunerProperties {
 			return this.id;
 		}
 
+		/**
+		 * @deprecated Do not use
+		 */
+		@Deprecated
 		public PropertyValueType getType() {
 			return this.type;
 		}
 
+		/**
+		 * @return A human-readable name for the property
+		 */
 		public String getName() {
 			return this.name;
 		}
 
 		public EAttribute getFeiAttribute() {
 			return feiAttr;
+		}
+
+		/**
+		 * @return Whether this property is required or optional per the FEI spec
+		 * @since 2.0
+		 */
+		public boolean isRequired() {
+			return this.required;
+		}
+
+		/**
+		 * @since 2.0
+		 */
+		public AbstractProperty createProperty() {
+			return EcoreUtil.copy(this.property);
 		}
 
 		public static TunerStatusAllocationProperties fromPropID(String propID) {
@@ -313,6 +433,9 @@ public enum TunerProperties {
 		}
 	}
 
+	/**
+	 * Used to create the <code>FRONTEND::listener_allocation</code> property.
+	 */
 	public static enum ListenerAllocationProperty {
 		INSTANCE;
 
@@ -331,19 +454,20 @@ public enum TunerProperties {
 		}
 
 		/**
-		 * @return A new {@link Struct} instance for the property
+		 * @deprecated Use {@link #createProperty()}
 		 */
+		@Deprecated
 		public Struct createStruct() {
-			Struct listenerAllocStruct = PrfFactory.eINSTANCE.createStruct();
-			listenerAllocStruct.setDescription(getDescription());
-			listenerAllocStruct.setId(getId());
-			listenerAllocStruct.setName("frontend_listener_allocation");
-			final ConfigurationKind kind = PrfFactory.eINSTANCE.createConfigurationKind();
-			kind.setType(StructPropertyConfigurationType.ALLOCATION);
-			listenerAllocStruct.getConfigurationKind().add(kind);
-			listenerAllocStruct.getSimple().addAll(createListenerAllocationSimples());
+			return createProperty();
+		}
 
-			return listenerAllocStruct;
+		/**
+		 * @return A new {@link Struct} instance of the property
+		 * @since 2.0
+		 */
+		public Struct createProperty() {
+			Struct prop = (Struct) TunerProperties.INSTANCE.requiredProps.get(getId());
+			return EcoreUtil.copy(prop);
 		}
 
 		/**
@@ -352,22 +476,17 @@ public enum TunerProperties {
 		 * @since 1.1
 		 */
 		public Struct createDeallocationStruct(ListenerAllocation listenerAllocation) {
-			Struct struct = createStruct();
+			Struct struct = createProperty();
 			String allocationId = listenerAllocation.getTunerStatus().getAllocationID().split(",")[0];
 			((Simple) struct.getProperty(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.getId())).setValue(allocationId);
 			((Simple) struct.getProperty(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId())).setValue(listenerAllocation.getListenerID());
 			return struct;
 		}
-
-		private Collection< ? extends Simple> createListenerAllocationSimples() {
-			List<Simple> listenerAllocSimpleList = new ArrayList<Simple>();
-			listenerAllocSimpleList.add(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.createSimple());
-			listenerAllocSimpleList.add(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.createSimple());
-
-			return listenerAllocSimpleList;
-		}
 	}
 
+	/**
+	 * Used to create the <code>FRONTEND::tuner_allocation</code> property.
+	 */
 	public static enum TunerAllocationProperty {
 		INSTANCE;
 
@@ -386,19 +505,20 @@ public enum TunerProperties {
 		}
 
 		/**
-		 * @return A new {@link Struct} instance for the property
+		 * @deprecated Use {@link #createProperty()}.
 		 */
+		@Deprecated
 		public Struct createStruct() {
-			Struct tunerAllocStruct = PrfFactory.eINSTANCE.createStruct();
-			tunerAllocStruct.setDescription(getDescription());
-			tunerAllocStruct.setId(getId());
-			tunerAllocStruct.setName("frontend_tuner_allocation");
-			final ConfigurationKind kind = PrfFactory.eINSTANCE.createConfigurationKind();
-			kind.setType(StructPropertyConfigurationType.ALLOCATION);
-			tunerAllocStruct.getConfigurationKind().add(kind);
-			tunerAllocStruct.getSimple().addAll(createTunerAllocationSimples());
+			return createProperty();
+		}
 
-			return tunerAllocStruct;
+		/**
+		 * @return A new {@link Struct} instance for the property
+		 * @since 2.0
+		 */
+		public Struct createProperty() {
+			Struct prop = (Struct) TunerProperties.INSTANCE.requiredProps.get(getId());
+			return EcoreUtil.copy(prop);
 		}
 
 		/**
@@ -408,7 +528,7 @@ public enum TunerProperties {
 		 */
 		public Struct createDeallocationStruct(TunerStatus tuner) {
 			// Only the allocation ID needs to have a valid value per FEI docs; other fields are ignored
-			Struct struct = createStruct();
+			Struct struct = createProperty();
 			String allocationId = tuner.getAllocationID().split(",")[0];
 			((Simple) struct.getProperty(TunerAllocationProperties.TUNER_TYPE.getId())).setValue("");
 			((Simple) struct.getProperty(TunerAllocationProperties.ALLOCATION_ID.getId())).setValue(allocationId);
@@ -422,23 +542,12 @@ public enum TunerProperties {
 			((Simple) struct.getProperty(TunerAllocationProperties.RF_FLOW_ID.getId())).setValue("");
 			return struct;
 		}
-
-		private Collection< ? extends Simple> createTunerAllocationSimples() {
-			List<Simple> tunerAllocSimpleList = new ArrayList<Simple>();
-			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.TUNER_TYPE.createSimple());
-			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.ALLOCATION_ID.createSimple());
-			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.CENTER_FREQUENCY.createSimple());
-			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.BANDWIDTH.createSimple());
-			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.BANDWIDTH_TOLERANCE.createSimple());
-			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.SAMPLE_RATE.createSimple());
-			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.SAMPLE_RATE_TOLERANCE.createSimple());
-			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.DEVICE_CONTROL.createSimple());
-			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.GROUP_ID.createSimple());
-			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.RF_FLOW_ID.createSimple());
-			return tunerAllocSimpleList;
-		}
 	}
 
+	/**
+	 * Fields within the <code>FRONTEND::tuner_allocation</code> property.
+	 * @see TunerAllocationProperty
+	 */
 	public static enum TunerAllocationProperties {
 		// instance name ID PRF type
 		TUNER_TYPE(
@@ -517,14 +626,15 @@ public enum TunerProperties {
 		}
 
 		/**
-		 * @return The property's type
+		 * @deprecated Do not use
 		 */
+		@Deprecated
 		public PropertyValueType getType() {
 			return this.type;
 		}
 
 		/**
-		 * @return A human-readable name
+		 * @return A human-readable name for the property
 		 */
 		public String getName() {
 			return this.name;
@@ -538,8 +648,9 @@ public enum TunerProperties {
 		}
 
 		/**
-		 * @return A new {@link Simple} instance for the specified property
+		 * @deprecated Do not use. All fields are required, not just some.
 		 */
+		@Deprecated
 		public Simple createSimple() {
 			Simple simple = PrfFactory.eINSTANCE.createSimple();
 			simple.setId(this.id);
@@ -553,6 +664,10 @@ public enum TunerProperties {
 		}
 	}
 
+	/**
+	 * Fields within the <code>FRONTEND::listener_allocation</code> property.
+	 * @see ListenerAllocationProperty
+	 */
 	public static enum ListenerAllocationProperties {
 		// instance name ID PRF type
 		EXISTING_ALLOCATION_ID("FRONTEND::listener_allocation::existing_allocation_id", PropertyValueType.STRING),
@@ -574,15 +689,17 @@ public enum TunerProperties {
 		}
 
 		/**
-		 * @return The property's type
+		 * @deprecated Do not use
 		 */
+		@Deprecated
 		public PropertyValueType getType() {
 			return this.type;
 		}
 
 		/**
-		 * @return A new {@link Simple} instance for the specified property
+		 * @deprecated Do not use. All fields are required, not just some.
 		 */
+		@Deprecated
 		public Simple createSimple() {
 			Simple simple = PrfFactory.eINSTANCE.createSimple();
 			simple.setId(this.id);
@@ -591,6 +708,33 @@ public enum TunerProperties {
 		}
 	}
 
+	/**
+	 * Used to create the <code>connectionTable</code> property.
+	 * @since 2.0
+	 */
+	public enum ConnectionTableProperty {
+		INSTANCE;
+
+		/**
+		 * @return The fully qualified ID of the property
+		 */
+		public String getId() {
+			return "connectionTable";
+		}
+
+		/**
+		 * @return A new {@link StructSequence} instance for the property
+		 */
+		public StructSequence createProperty() {
+			StructSequence prop = (StructSequence) TunerProperties.INSTANCE.requiredProps.get(getId());
+			return EcoreUtil.copy(prop);
+		}
+	}
+
+	/**
+	 * @deprecated Use {@link TunerStatusProperty} or {@link TunerStatusAllocationProperties}.
+	 */
+	@Deprecated
 	public static enum StatusProperties {
 		// instance name ID PRF type
 		FRONTEND_TUNER_STATUS("FRONTEND::tuner_status", PropertyValueType.OBJREF),
