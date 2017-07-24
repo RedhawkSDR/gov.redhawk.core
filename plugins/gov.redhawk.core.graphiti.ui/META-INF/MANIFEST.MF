@@ -74,4 +74,3 @@ Export-Package: gov.redhawk.core.graphiti.ui.adapters,
    gov.redhawk.ide.graphiti.dcd.ui,
    gov.redhawk.ide.graphiti.sad.ui,
    gov.redhawk.ide.graphiti.ui"
-Import-Package: org.junit
