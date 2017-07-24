@@ -15,12 +15,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.graphiti.datatypes.IDimension;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
-import org.eclipse.graphiti.internal.datatypes.impl.DimensionImpl;
 import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
 import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.algorithms.styles.Point;
@@ -45,14 +44,18 @@ import org.eclipse.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.dataStructures.BendPoint;
 import org.eclipse.zest.layouts.exampleStructures.SimpleNode;
+import org.eclipse.zest.layouts.exampleStructures.SimpleRelationship;
 
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
+import gov.redhawk.core.graphiti.ui.util.LayoutUtil;
 import mil.jpeojtrs.sca.sad.HostCollocation;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
-@SuppressWarnings("restriction")
 public class LayoutDiagramFeature extends AbstractCustomFeature {
+
+	private static final int HORIZONTAL_PADDING = 50;
+	private static final int VERTICAL_PADDING = 50;
 
 	public LayoutDiagramFeature(IFeatureProvider fp) {
 		super(fp);
@@ -79,60 +82,255 @@ public class LayoutDiagramFeature extends AbstractCustomFeature {
 
 	@Override
 	public void execute(ICustomContext context) {
-		// get a map of the self connection anchor locations
-		final Map<Connection, Point> selves = getSelfConnections();
+		try {
 
-		// Use the Horizontal Tree Layout
-		LayoutAlgorithm layoutAlgorithm = new HorizontalTreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
-		LayoutAlgorithm hostCoLayoutAlgorithm = new HorizontalTreeLayoutAlgorithm(LayoutStyles.ENFORCE_BOUNDS | LayoutStyles.NO_LAYOUT_NODE_RESIZING);
+			// Updates the layout for all shapes within a HostCollocation. Need to do this first so we know the size
+			// and dimensions of the HostCollocations for the next step.
+			layoutHostCollocationContents();
 
-		if (layoutAlgorithm != null) {
-			try {
+			// Updates the layout for all shapes in the diagram, with HostCollocations being treated as a single shape
+			// (meaning that HC children are not considered)
+			layoutDiagramContents();
 
-				// Get the map of SimpleNode per Shapes
-				Map<Shape, SimpleNode> map = getLayoutEntities();
+		} catch (InvalidLayoutConfiguration e) {
+			e.printStackTrace(); // SUPPRESS CHECKSTYLE handle exception
+		}
+	}
 
-				// Get the array of Connection LayoutRelationships
-				LayoutRelationship[] connections = getConnectionEntities(map);
+	private void layoutHostCollocationContents() throws InvalidLayoutConfiguration {
+		TreeLayoutAlgorithm hostCoLayoutAlgorithm = new HorizontalTreeLayoutAlgorithm(LayoutStyles.ENFORCE_BOUNDS | LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 
-				// Setup the array of Shape LayoutEntity
-				LayoutEntity[] entities = map.values().toArray(new LayoutEntity[0]);
-
-				// Determine the dimensions required to house all of our shapes
-				Point diagramBounds = DUtil.calculateDiagramBounds(getDiagram());
-
-				// Apply the LayoutAlgorithmn
-				layoutAlgorithm.applyLayout(entities, connections, 0, 0, diagramBounds.getX(), diagramBounds.getY(), false, false);
-
-				// Update the Graphiti Shapes and Connections locations
-				updateGraphCoordinates(((TreeLayoutAlgorithm) layoutAlgorithm).getRoots(), entities, connections);
-
-				// TODO: Break this out into it's own method
-				List<ContainerShape> hostCoList = new ArrayList<ContainerShape>();
-				EList<Shape> children = getDiagram().getChildren();
-				for (Shape shape : children) {
-					if (DUtil.getBusinessObject(shape) instanceof HostCollocation) {
-						hostCoList.add((ContainerShape) shape);
-					}
-				}
-				for (ContainerShape hostCollocation : hostCoList) {
-					Map<Shape, SimpleNode> hostCoMap = getLayoutEntitiesInHostCollocation(hostCollocation);
-					LayoutRelationship[] hostCoConnections = getConnectionEntities(hostCoMap);
-					LayoutEntity[] hostCoEntities = hostCoMap.values().toArray(new LayoutEntity[0]);
-					GraphicsAlgorithm hostCoGA = hostCollocation.getGraphicsAlgorithm();
-					IDimension hostCoBounds = new DimensionImpl(hostCoGA.getWidth(), hostCoGA.getHeight());
-					hostCoLayoutAlgorithm.applyLayout(hostCoEntities, hostCoConnections, 15, 0, hostCoBounds.getWidth(), hostCoBounds.getHeight(), false,
-						false);
-					updateGraphCoordinates(((TreeLayoutAlgorithm) hostCoLayoutAlgorithm).getRoots(), hostCoEntities, hostCoConnections);
-				}
-
-				// Reposition the self connections bendpoints:
-				adaptSelfBendPoints(selves);
-
-			} catch (InvalidLayoutConfiguration e) {
-				e.printStackTrace(); // SUPPRESS CHECKSTYLE handle exception
+		// Get a list of all host collocations
+		List<ContainerShape> hostCoList = new ArrayList<ContainerShape>();
+		EList<Shape> children = getDiagram().getChildren();
+		for (Shape shape : children) {
+			if (DUtil.getBusinessObject(shape) instanceof HostCollocation) {
+				hostCoList.add((ContainerShape) shape);
 			}
 		}
+
+		for (ContainerShape hostCoShape : hostCoList) {
+			// Get all shapes and connections contained in the host collocation
+			Map<Shape, SimpleNode> hostCoMap = getLayoutEntities(hostCoShape);
+
+			EList<Connection> connections = getDiagram().getConnections();
+
+			EList<Connection> hostCoConnections = new BasicEList<>();
+			for (Connection connection : connections) {
+				RHContainerShape source = ScaEcoreUtils.getEContainerOfType(connection.getStart(), RHContainerShape.class);
+				RHContainerShape target = ScaEcoreUtils.getEContainerOfType(connection.getEnd(), RHContainerShape.class);
+
+				// We only care about connections where BOTH shapes are contained within the HostCollocation.
+				// Any connections that originate/terminate outside the HostCollocation will be handled at the diagram
+				// level and treated as connections to/from the HostCollocation itself (as opposed to to/from the
+				// contained shape)
+				if (source.getContainer() == hostCoShape && target.getContainer() == hostCoShape) {
+					hostCoConnections.add(connection);
+				}
+			}
+			LayoutRelationship[] hostCoRelationships = getLayoutRelationships(hostCoMap, hostCoConnections);
+
+			// Get all shapes to be considered by the layout algorithm
+			LayoutEntity[] hostCoEntities = hostCoMap.values().toArray(new LayoutEntity[0]);
+
+			// Calculate the bounds for the trees contained in the HostCollocation
+			Point bounds = LayoutUtil.calculateContainerBounds(hostCoShape);
+
+			// Apply the layout, and then update the shape coordinates
+			hostCoLayoutAlgorithm.applyLayout(hostCoEntities, hostCoRelationships, 15, 0, bounds.getX(), bounds.getY(), false, false);
+
+			// Make sure that the HostCollocation is large enough to fit all of the contained shapes (rather than just
+			// the top-left corner or each shape)
+			double leftBounds = 0;
+			double rightBounds = 0;
+			double topBounds = 0;
+			double bottomBounds = 0;
+			for (LayoutEntity entity : hostCoEntities) {
+				SimpleNode node = (SimpleNode) entity;
+				leftBounds = Math.min(node.getX(), leftBounds);
+				rightBounds = Math.max((node.getX() + node.getWidth()), rightBounds);
+				topBounds = Math.min(node.getY(), topBounds);
+				bottomBounds = Math.max((node.getY() + node.getHeight()), bottomBounds);
+			}
+			int finalWidth = (int) (rightBounds - leftBounds);
+			int finalHeight = (int) (bottomBounds - topBounds);
+			hostCoShape.getGraphicsAlgorithm().setWidth(finalWidth + HORIZONTAL_PADDING);
+			hostCoShape.getGraphicsAlgorithm().setHeight(finalHeight + VERTICAL_PADDING);
+
+			// Update all Graphiti Shapes and Connections with their new coordinates
+			updateShapeCoordinates(hostCoLayoutAlgorithm.getRoots(), hostCoEntities, hostCoRelationships);
+		}
+	}
+
+	/**
+	 * Update the layout for all top-level shapes in the diagram. HostCollocations are treated as a single shape.
+	 * @throws InvalidLayoutConfiguration
+	 */
+	private void layoutDiagramContents() throws InvalidLayoutConfiguration {
+		TreeLayoutAlgorithm layoutAlgorithm = new HorizontalTreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
+
+		// Get the map of SimpleNode per Shapes (not including shapes contained in HostCollocations)
+		Map<Shape, SimpleNode> map = getLayoutEntities(getDiagram());
+
+		// Get LayoutRelationships (i.e. connections) which will be used to sort shapes into different trees
+		EList<Connection> connections = getDiagram().getConnections();
+		EList<Connection> diagramConnections = new BasicEList<>();
+		for (Connection connection : connections) {
+			RHContainerShape source = ScaEcoreUtils.getEContainerOfType(connection.getStart(), RHContainerShape.class);
+			RHContainerShape target = ScaEcoreUtils.getEContainerOfType(connection.getEnd(), RHContainerShape.class);
+
+			// We only care about connections where both shapes are NOT contained within the SAME HostCollocation.
+			// Any connections that originate/terminate within the same HostCollocation will be handled at the
+			// HostCollocation level and ignored at this point.
+			if (DUtil.getBusinessObject(source.getContainer()) instanceof HostCollocation
+				&& DUtil.getBusinessObject(target.getContainer()) instanceof HostCollocation) {
+				if (source.getContainer() == target.getContainer()) {
+					continue;
+				}
+			}
+			diagramConnections.add(connection);
+		}
+		LayoutRelationship[] diagramRelationships = getLayoutRelationships(map, diagramConnections);
+
+		// Get all shapes to be considered by the layout algorithm
+		LayoutEntity[] entities = map.values().toArray(new LayoutEntity[0]);
+
+		// Get a map of the self connection anchor locations
+		final Map<Connection, Point> selves = getSelfConnections();
+
+		// Determine the dimensions required to house all of our shapes
+		Point diagramBounds = LayoutUtil.calculateContainerBounds(getDiagram());
+
+		// Apply the LayoutAlgorithmn
+		layoutAlgorithm.applyLayout(entities, diagramRelationships, 0, 0, diagramBounds.getX(), diagramBounds.getY(), false, false);
+
+		// Update all Graphiti Shapes and Connections with their new coordinates
+		updateShapeCoordinates(layoutAlgorithm.getRoots(), entities, diagramRelationships);
+
+		// Reposition the self connections bendpoints
+		adaptSelfBendPoints(selves);
+	}
+
+	/**
+	 * Build map for all contained shapes. Creates a new {@link SimpleNode} for
+	 * @return a {@link Map} of {@link SimpleNode} per {@link Shape}
+	 */
+	private Map<Shape, SimpleNode> getLayoutEntities(ContainerShape containerShape) {
+		Map<Shape, SimpleNode> map = new HashMap<Shape, SimpleNode>();
+		EList<Shape> children = containerShape.getChildren();
+		for (Shape shape : children) {
+			GraphicsAlgorithm ga = shape.getGraphicsAlgorithm();
+			SimpleNode entity = new SimpleNode(shape, ga.getX(), ga.getY(), ga.getWidth(), ga.getHeight());
+			map.put(shape, entity);
+		}
+		return map;
+	}
+
+	/**
+	 * @param map - a {@link Map} of {@link Shape} to {@link SimpleNode}
+	 * @param connections - a {@link EList} of connections wholly within the root container
+	 * @return an array of {@link LayoutRelationship}s
+	 */
+	private LayoutRelationship[] getLayoutRelationships(Map<Shape, SimpleNode> map, EList<Connection> connections) {
+		List<LayoutRelationship> list = new ArrayList<LayoutRelationship>();
+		for (Connection connection : connections) {
+			RHContainerShape source = ScaEcoreUtils.getEContainerOfType(connection.getStart(), RHContainerShape.class);
+			RHContainerShape target = ScaEcoreUtils.getEContainerOfType(connection.getEnd(), RHContainerShape.class);
+
+			// Create a relationship
+			ConnectionRelationship relationship = createLayoutRelationship(map, source, target);
+			if (relationship != null) {
+				list.add(populateLayoutRelationship(relationship, connection));
+			}
+		}
+
+		return list.toArray(new LayoutRelationship[0]);
+	}
+
+	/**
+	 * Create a {@link ConnectionRelationship} relationships between the source and target, if appropriate.
+	 * @param map - a map of {@link SimpleNode} to {@link Shape}, which has been populated with all the shapes that the
+	 * root ContainerShape cares about
+	 * @param source - the true {@link RHContainerShape} that is the source of the connection
+	 * @param target - the true {@link RHContainerShape} that is the target of the connection
+	 * @return {@link ConnectionRelationship} if one is created, null otherwise.
+	 */
+	private ConnectionRelationship createLayoutRelationship(Map<Shape, SimpleNode> map, RHContainerShape source, RHContainerShape target) {
+
+		// The SimpleNode that we will treat as the connection source, either a ComponentShape or HostCollocation
+		SimpleNode sourceNode = null;
+
+		// The SimpleNode that we will treat as the connection target, either a ComponentShape or HostCollocation
+		SimpleNode targetNode = null;
+
+		// Check to see if the source/target are inside a HostCollocation
+		HostCollocation sourceHostCo = ScaEcoreUtils.getEContainerOfType(DUtil.getBusinessObject(source.getContainer()), HostCollocation.class);
+		HostCollocation targetHostCo = ScaEcoreUtils.getEContainerOfType(DUtil.getBusinessObject(target.getContainer()), HostCollocation.class);
+
+		/**
+		 * Possible relationships:
+		 * - Both entities are in the same container and thus have a normal relationship.
+		 * - Both entities are in a HostCollocation, but in DIFFERENT HostCollocations. Treat each HostCollocation as an
+		 * end-point for the relationship.
+		 * - Only the source is in a HostCollocation. Make the relationship between the HostCollocation and the target.
+		 * - Only target is in a HostCollocation. Make relationship between the HostCollocation and the source.
+		 */
+		if ((sourceHostCo == targetHostCo)) {
+			sourceNode = map.get(source);
+			targetNode = map.get(target);
+		} else if (sourceHostCo != null && targetHostCo != null) {
+			sourceNode = map.get((Shape) source.getContainer());
+			targetNode = map.get((Shape) target.getContainer());
+		} else if (sourceHostCo != null) {
+			sourceNode = map.get((Shape) source.getContainer());
+			targetNode = map.get(target);
+		} else if (targetHostCo != null) {
+			sourceNode = map.get(source);
+			targetNode = map.get((Shape) target.getContainer());
+		}
+
+		// we don't add self relations to avoid Cycle errors
+		if (source != target) {
+			return new ConnectionRelationship(sourceNode, targetNode, (source != target));
+		}
+
+		return null;
+	}
+
+	/**
+	 * Populates {@link ConnectionRelationship} with connection specific data
+	 * @param relationship
+	 * @param connection
+	 * @return
+	 */
+	private ConnectionRelationship populateLayoutRelationship(ConnectionRelationship relationship, Connection connection) {
+		relationship.setGraphData(connection);
+		relationship.clearBendPoints();
+		EList<ConnectionDecorator> decorators = connection.getConnectionDecorators();
+		for (ConnectionDecorator decorator : decorators) {
+			if (decorator.getGraphicsAlgorithm() instanceof Text) {
+				String label = ((Text) decorator.getGraphicsAlgorithm()).getValue();
+				relationship.setLabel(label);
+			}
+		}
+
+		FreeFormConnection ffcon = (FreeFormConnection) connection;
+		EList<Point> pointList = ffcon.getBendpoints();
+		List<LayoutBendPoint> bendPoints = new ArrayList<LayoutBendPoint>();
+		for (int i = 0; i < pointList.size(); i++) {
+			Point point = pointList.get(i);
+			boolean isControlPoint = (i != 0) && (i != pointList.size() - 1);
+			LayoutBendPoint bendPoint = new BendPoint(point.getX(), point.getY(), isControlPoint);
+			bendPoints.add(bendPoint);
+		}
+		relationship.setBendPoints(bendPoints.toArray(new LayoutBendPoint[0]));
+
+		SimpleNode sourceNode = (SimpleNode) relationship.getSourceInLayout();
+		SimpleNode targetNode = (SimpleNode) relationship.getDestinationInLayout();
+		sourceNode.addRelationship(relationship);
+		targetNode.addRelationship(relationship);
+
+		return relationship;
 	}
 
 	/**
@@ -156,6 +354,39 @@ public class LayoutDiagramFeature extends AbstractCustomFeature {
 			}
 		}
 		return selves;
+	}
+
+	/**
+	 * Reposition the Graphiti {@link PictogramElement}s and {@link Connection}s based on the
+	 * Zest {@link LayoutAlgorithm} computed locations
+	 * @param roots
+	 * @param entities
+	 * @param connections
+	 */
+	private void updateShapeCoordinates(List< ? > roots, LayoutEntity[] entities, LayoutRelationship[] connections) {
+		for (LayoutEntity entity : entities) {
+			SimpleNode node = (SimpleNode) entity;
+			Shape shape = (Shape) node.getRealObject();
+			Double x = node.getX();
+			Double y = node.getY();
+			shape.getGraphicsAlgorithm().setX(x.intValue());
+			shape.getGraphicsAlgorithm().setY(y.intValue());
+		}
+
+		IGaService gaService = Graphiti.getGaService();
+		for (LayoutRelationship relationship : connections) {
+			ConnectionRelationship rel = (ConnectionRelationship) relationship;
+			// Using FreeFormConnections with BendPoints, we reset them to the Zest computed locations
+			FreeFormConnection connection = (FreeFormConnection) rel.getGraphData();
+			connection.getBendpoints().clear();
+			LayoutBendPoint[] bendPoints = rel.getBendPoints();
+			for (LayoutBendPoint bendPoint : bendPoints) {
+				Double x = bendPoint.getX();
+				Double y = bendPoint.getY();
+				Point p = gaService.createPoint(x.intValue(), y.intValue());
+				connection.getBendpoints().add(p);
+			}
+		}
 	}
 
 	/**
@@ -183,157 +414,13 @@ public class LayoutDiagramFeature extends AbstractCustomFeature {
 	}
 
 	/**
-	 * Reposition the Graphiti {@link PictogramElement}s and {@link Connection}s based on the
-	 * Zest {@link LayoutAlgorithm} computed locations
-	 * @param entities
-	 * @param connections
+	 * A {@link SimpleRelationship} subclass used to hold the Graphiti connection reference
 	 */
-	private void updateGraphCoordinates(List< ? > roots, LayoutEntity[] entities, LayoutRelationship[] connections) {
-
-		for (LayoutEntity entity : entities) {
-			SimpleNode node = (SimpleNode) entity;
-			Shape shape = (Shape) node.getRealObject();
-			Double x = node.getX();
-			Double y = node.getY();
-			shape.getGraphicsAlgorithm().setX(x.intValue());
-			shape.getGraphicsAlgorithm().setY(y.intValue());
-			Double width = node.getWidth();
-			Double height = node.getHeight();
-			shape.getGraphicsAlgorithm().setWidth(width.intValue());
-			shape.getGraphicsAlgorithm().setHeight(height.intValue());
-		}
-
-		IGaService gaService = Graphiti.getGaService();
-		for (LayoutRelationship relationship : connections) {
-			SimpleRelationship rel = (SimpleRelationship) relationship;
-			// Using FreeFormConnections with BendPoints, we reset them to the Zest computed locations
-			FreeFormConnection connection = (FreeFormConnection) rel.getGraphData();
-			connection.getBendpoints().clear();
-			LayoutBendPoint[] bendPoints = rel.getBendPoints();
-			for (LayoutBendPoint bendPoint : bendPoints) {
-				Double x = bendPoint.getX();
-				Double y = bendPoint.getY();
-				Point p = gaService.createPoint(x.intValue(), y.intValue());
-				connection.getBendpoints().add(p);
-			}
-		}
-	}
-
-	/**
-	 * @return a {@link Map} of {@link SimpleNode} per {@link Shape}
-	 */
-	private Map<Shape, SimpleNode> getLayoutEntities() {
-		Map<Shape, SimpleNode> map = new HashMap<Shape, SimpleNode>();
-		EList<Shape> children = getDiagram().getChildren();
-		for (Shape shape : children) {
-			if (DUtil.getBusinessObject(shape) instanceof HostCollocation) {
-				map.putAll(getLayoutEntitiesInHostCollocation(shape));
-			}
-
-			GraphicsAlgorithm ga = shape.getGraphicsAlgorithm();
-			SimpleNode entity = new SimpleNode(shape, ga.getX(), ga.getY(), ga.getWidth(), ga.getHeight());
-			map.put(shape, entity);
-
-		}
-		return map;
-	}
-
-	private Map<Shape, SimpleNode> getLayoutEntitiesInHostCollocation(Shape hostCollocation) {
-		Map<Shape, SimpleNode> map = new HashMap<Shape, SimpleNode>();
-		EList<Shape> children = ((ContainerShape) hostCollocation).getChildren();
-		int aggregateChildrenWidth = 0;
-		int tallestChild = 0;
-		for (Shape shape : children) {
-			GraphicsAlgorithm ga = shape.getGraphicsAlgorithm();
-			SimpleNode entity = new SimpleNode(shape, ga.getX(), ga.getY(), ga.getWidth(), ga.getHeight());
-			map.put(shape, entity);
-			aggregateChildrenWidth += ga.getWidth();
-			tallestChild = (tallestChild < ga.getHeight()) ? ga.getHeight() : tallestChild;
-		}
-
-		// Update Host Collocation Boundaries
-		hostCollocation.getGraphicsAlgorithm().setWidth(aggregateChildrenWidth + 100);
-		hostCollocation.getGraphicsAlgorithm().setHeight(tallestChild + 40);
-		return map;
-	}
-
-	/**
-	 * @param map a {@link Map} of {@link SimpleNode} per {@link Shape} - used to link {@link SimpleRelationship} to
-	 * source and target entities
-	 * @return the array of {@link LayoutRelationship}s to compute
-	 */
-	private LayoutRelationship[] getConnectionEntities(Map<Shape, SimpleNode> map) {
-		List<LayoutRelationship> list = new ArrayList<LayoutRelationship>();
-		EList<Connection> connections = getDiagram().getConnections();
-		for (Connection connection : connections) {
-
-			String label = null;
-			EList<ConnectionDecorator> decorators = connection.getConnectionDecorators();
-			for (ConnectionDecorator decorator : decorators) {
-				if (decorator.getGraphicsAlgorithm() instanceof Text) {
-					label = ((Text) decorator.getGraphicsAlgorithm()).getValue();
-				}
-			}
-
-			// Modified from Spray code to handle the nested nature of the Component Shapes. Code prior to change looked
-			// like: connection.getStart().getParent()
-			// get the SimpleNode already created from the map:
-			RHContainerShape source = ScaEcoreUtils.getEContainerOfType(connection.getStart(), RHContainerShape.class);
-			RHContainerShape target = ScaEcoreUtils.getEContainerOfType(connection.getEnd(), RHContainerShape.class);
-
-			HostCollocation sourceHostCo = ScaEcoreUtils.getEContainerOfType(source.getContainer(), HostCollocation.class);
-			HostCollocation targetHostCo = ScaEcoreUtils.getEContainerOfType(target.getContainer(), HostCollocation.class);
-
-			SimpleNode sourceEntity = null;
-			SimpleNode targetEntity = null;
-			if ((sourceHostCo == targetHostCo)) {
-				// Both entities are in the same host collocation or in the diagram, normal relationship
-				sourceEntity = map.get(source);
-				targetEntity = map.get(target);
-			} else if (sourceHostCo != null) {
-				// Only source is in host collocation, make relationship between hostCo and target
-				sourceEntity = map.get(source);
-				targetEntity = map.get(target);
-			} else if (targetHostCo != null) {
-				// Only target is in host collocation, make relationship between hostCo and source
-				sourceEntity = map.get(source);
-				targetEntity = map.get((Shape) target.getContainer());
-			}
-
-			if (source != target && sourceEntity != null && targetEntity != null) { // we don't add self relations to
-																					// avoid Cycle errors
-				SimpleRelationship relationship = new SimpleRelationship(sourceEntity, targetEntity, (source != target));
-				relationship.setGraphData(connection);
-				relationship.clearBendPoints();
-				relationship.setLabel(label);
-				FreeFormConnection ffcon = (FreeFormConnection) connection;
-
-				EList<Point> pointList = ffcon.getBendpoints();
-				List<LayoutBendPoint> bendPoints = new ArrayList<LayoutBendPoint>();
-				for (int i = 0; i < pointList.size(); i++) {
-					Point point = pointList.get(i);
-					boolean isControlPoint = (i != 0) && (i != pointList.size() - 1);
-					LayoutBendPoint bendPoint = new BendPoint(point.getX(), point.getY(), isControlPoint);
-					bendPoints.add(bendPoint);
-				}
-				relationship.setBendPoints(bendPoints.toArray(new LayoutBendPoint[0]));
-				list.add(relationship);
-				sourceEntity.addRelationship(relationship);
-				targetEntity.addRelationship(relationship);
-			}
-		}
-		return list.toArray(new LayoutRelationship[0]);
-	}
-
-	/**
-	 * A {@link org.eclipse.zest.layouts.exampleStructures.SimpleRelationship} subclass
-	 * used to hold the Graphiti connection reference
-	 */
-	private class SimpleRelationship extends org.eclipse.zest.layouts.exampleStructures.SimpleRelationship {
+	private class ConnectionRelationship extends SimpleRelationship {
 
 		private Object graphData;
 
-		public SimpleRelationship(LayoutEntity sourceEntity, LayoutEntity destinationEntity, boolean bidirectional) {
+		public ConnectionRelationship(LayoutEntity sourceEntity, LayoutEntity destinationEntity, boolean bidirectional) {
 			super(sourceEntity, destinationEntity, bidirectional);
 		}
 
@@ -347,5 +434,4 @@ public class LayoutDiagramFeature extends AbstractCustomFeature {
 			this.graphData = o;
 		}
 	}
-
 }
