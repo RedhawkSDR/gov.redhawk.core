@@ -29,7 +29,7 @@
         <units>sps</units>
       </simple>
       <simple id="FRONTEND::tuner_status::tuner_type" name="tuner_type" type="string">
-        <description>Example Tuner Types: TX, RX, CHANNELIZER, DDC, RX_DIGITIZER, RX_DIGTIZIER_CHANNELIZER</description>
+        <description>Example Tuner Types: TX, RX, CHANNELIZER, DDC, RX_DIGITIZER, RX_DIGITIZIER_CHANNELIZER</description>
       </simple>
       <simple id="FRONTEND::tuner_status::scan_mode_enabled" name="scan_mode_enabled" type="boolean">
         <description>True if scan mode is enabled. False if Manual Tune is enabled</description>
@@ -41,13 +41,17 @@
     <configurationkind kindtype="property"/>
   </structsequence>
   <struct id="FRONTEND::listener_allocation" name="frontend_listener_allocation">
-    <description>Frontend Interfaces v2 listener allocation structure</description>
-    <simple id="FRONTEND::listener_allocation::existing_allocation_id" type="string"/>
-    <simple id="FRONTEND::listener_allocation::listener_allocation_id" type="string"/>
+    <description>Allocation structure to acquire "listener" capability on a tuner based off a previous allocation. "Listeners" have the ability to receive the data but can not modify the settings of the tuner.</description>
+    <simple id="FRONTEND::listener_allocation::existing_allocation_id" name="existing_allocation_id" type="string">
+      <description>Allocation ID for an existing allocation. Could be either control or listener.</description>
+    </simple>
+    <simple id="FRONTEND::listener_allocation::listener_allocation_id" name="listener_allocation_id" type="string">
+      <description>New Listener ID</description>
+    </simple>
     <configurationkind kindtype="allocation"/>
   </struct>
   <struct id="FRONTEND::tuner_allocation" name="frontend_tuner_allocation">
-    <description>Frontend Interfaces v2 main allocation structure</description>
+    <description>Allocation structure to acquire capability on a tuner based off tuner settings</description>
     <simple id="FRONTEND::tuner_allocation::tuner_type" name="tuner_type" type="string">
       <description>Example Tuner Types: TX, RX, CHANNELIZER, DDC, RX_DIGITIZER, RX_DIGTIZIER_CHANNELIZER</description>
     </simple>
