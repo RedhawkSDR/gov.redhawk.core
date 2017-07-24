@@ -29,7 +29,7 @@
         <units>sps</units>
       </simple>
       <simple id="FRONTEND::tuner_status::tuner_type" name="tuner_type" type="string">
-        <description>Example Tuner Types: TX, RX, CHANNELIZER, DDC, RX_DIGITIZER, RX_DIGTIZIER_CHANNELIZER</description>
+        <description>Example Tuner Types: TX, RX, CHANNELIZER, DDC, RX_DIGITIZER, RX_DIGITIZIER_CHANNELIZER</description>
       </simple>
     </struct>
     <configurationkind kindtype="property"/>
