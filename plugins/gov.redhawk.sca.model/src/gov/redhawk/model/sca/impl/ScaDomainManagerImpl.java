@@ -2173,33 +2173,37 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	public String toString() {
 		// END GENERATED CODE
-		if (eIsProxy())
+		if (eIsProxy()) {
 			return super.toString();
+		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (autoConnect: ");
 		result.append(autoConnect);
 		result.append(", identifier: ");
-		if (identifierESet)
+		if (identifierESet) {
 			result.append(identifier);
-		else
+		} else {
 			result.append("<unset>");
+		}
 		result.append(", name: ");
 		result.append(name);
 		result.append(", rootContext: ");
 		// NOTE: DO NOT DO TO STRING on a CORBA Object, this is a potentially blocking operation. Just return if the
 		// value is set
-		if (rootContextESet)
+		if (rootContextESet) {
 			result.append("<set>");
-		else
+		} else {
 			result.append("<unset>");
+		}
 		result.append(", state: ");
 		result.append(state);
 		result.append(", profile: ");
-		if (profileESet)
+		if (profileESet) {
 			result.append(profile);
-		else
+		} else {
 			result.append("<unset>");
+		}
 		result.append(", localName: ");
 		result.append(localName);
 		result.append(')');
