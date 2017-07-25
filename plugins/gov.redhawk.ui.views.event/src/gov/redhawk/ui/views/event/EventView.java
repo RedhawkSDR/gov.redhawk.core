@@ -103,14 +103,8 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 
 		@Override
 		public void run() {
-			List<ChannelListener> listeners = EventView.this.channelListeners;
-			for (int i = 0; i < listeners.size(); i++) {
-				if (listeners.get(i).getFullChannelName().equals(EventView.this.eventChannelId)) {
-					listeners.get(i).disconnect();
-					listeners.remove(i);
-					this.setEnabled(false);
-				}
-			}
+			disconnectAll(true);
+			setEnabled(false);
 		};
 	};
 
@@ -123,8 +117,6 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 	private ScaItemProviderAdapterFactory factory;
 
 	private EventViewerContentProvider contentProvider;
-
-	private String eventChannelId;
 
 	public EventView() {
 	}
@@ -182,12 +174,16 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 			factory.dispose();
 		}
 
-		Job disconnectAll = new Job("Disconnect All Channels") {
+		disconnectAll(false);
+	}
+
+	private void disconnectAll(boolean user) {
+		Job disconnectAll = new Job("Disconnect all event channels") {
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				synchronized (EventView.this) {
-					SubMonitor subMonitor = SubMonitor.convert(monitor, "Disconnecting all channels...", IProgressMonitor.UNKNOWN);
+					SubMonitor subMonitor = SubMonitor.convert(monitor, channelListeners.size());
 					for (final ChannelListener listener : channelListeners) {
 						try {
 							CorbaUtils.invoke(new Callable<Object>() {
@@ -204,7 +200,6 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 						} catch (InterruptedException e) {
 							// PASS
 						}
-
 					}
 					channelListeners.clear();
 					session.dispose();
@@ -213,13 +208,11 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 			}
 
 		};
-		disconnectAll.setUser(false);
+		disconnectAll.setUser(user);
 		disconnectAll.schedule();
 	}
 
 	public synchronized void connect(String channel, final EventChannel eventChannel) throws CoreException {
-		this.eventChannelId = channel;
-
 		// Don't add duplicate listeners
 		for (ChannelListener l : channelListeners) {
 			if (l.getFullChannelName().equals(channel)) {
@@ -238,8 +231,6 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 	}
 
 	public synchronized void connect(final ScaDomainManager domain, final String channel) throws CoreException {
-		this.eventChannelId = domain.getLabel() + "/" + channel;
-
 		// Don't add duplicate listeners
 		for (ChannelListener l : channelListeners) {
 			if (l.getFullChannelName().equals(domain.getLabel() + "/" + channel)) {
