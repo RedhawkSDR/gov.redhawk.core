@@ -13,38 +13,38 @@ package gov.redhawk.ui.views.namebrowser.internal.command;
 import gov.redhawk.ui.views.namebrowser.view.BindingNode;
 
 import org.eclipse.core.expressions.PropertyTester;
+import org.jacorb.orb.ORB;
+import org.jacorb.orb.ParsedIOR;
+import org.omg.CORBA.SystemException;
 
-/**
- * 
- */
 public class BindingNodeRepIDTester extends PropertyTester {
 
-	/**
-	 * 
-	 */
 	public BindingNodeRepIDTester() {
-		// TODO Auto-generated constructor stub
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.expressions.IPropertyTester#test(java.lang.Object, java.lang.String, java.lang.Object[], java.lang.Object)
-	 */
 	@Override
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-		if (receiver instanceof BindingNode) {
-			BindingNode node = (BindingNode) receiver;
-			if (args != null && args.length > 0) {
-				for (Object obj : args) {
-					if (obj instanceof String) {
-						if (!node.is_a((String) obj)) {
-							return false;
-						}
-					}
-				}
+		if (!(receiver instanceof BindingNode)) {
+			return false;
+		}
+		BindingNode node = (BindingNode) receiver;
+
+		// Parse the IOR
+		ParsedIOR parsedIOR;
+		try {
+			parsedIOR = new ParsedIOR((ORB) node.getOrb(), node.getIOR());
+		} catch (IllegalArgumentException | SystemException e) {
+			return false;
+		}
+		String typeId = parsedIOR.getIOR().type_id;
+
+		// If any arg matches, return true
+		for (Object arg : args) {
+			if (typeId.equals(arg)) {
 				return true;
 			}
 		}
+
 		return false;
 	}
-
 }

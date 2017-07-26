@@ -131,8 +131,17 @@ public class BindingNode implements IPropertySource {
 	}
 
 	/**
-	 * @since 1.3
+	 * @since 1.4
 	 */
+	public String getIOR() {
+		return ior;
+	}
+
+	/**
+	 * @since 1.3
+	 * @deprecated Do not use.
+	 */
+	@Deprecated
 	public boolean is_a(final String repID) {
 		Boolean retVal = knownRepIds.get(repID);
 		if (retVal != null) {

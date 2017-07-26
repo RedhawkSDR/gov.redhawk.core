@@ -11,27 +11,17 @@
  */
 package gov.redhawk.ui.views.namebrowser.internal.command;
 
-import gov.redhawk.ui.views.namebrowser.view.BindingNode;
-
 import org.eclipse.core.expressions.PropertyTester;
 
-/**
- * 
- */
+import gov.redhawk.ui.views.namebrowser.view.BindingNode;
+
 public class BindingNodeTypeTester extends PropertyTester {
 
 	public static final String ID = "gov.redhawk.ui.views.namebrowser.command.BindingNodeTypeTester";
 
-	/**
-	 * 
-	 */
 	public BindingNodeTypeTester() {
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {
 		if (!(receiver instanceof BindingNode)) {
