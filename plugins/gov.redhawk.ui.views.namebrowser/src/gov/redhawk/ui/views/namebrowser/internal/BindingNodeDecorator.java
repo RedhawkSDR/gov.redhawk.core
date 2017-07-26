@@ -10,58 +10,84 @@
  *******************************************************************************/
 package gov.redhawk.ui.views.namebrowser.internal;
 
-import gov.redhawk.model.sca.provider.ScaEditPlugin;
-import gov.redhawk.ui.views.namebrowser.view.BindingNode;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.emf.edit.ui.provider.ExtendedImageRegistry;
 import org.eclipse.jface.viewers.ILabelDecorator;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
+import org.jacorb.orb.ORB;
+import org.jacorb.orb.ParsedIOR;
+import org.omg.CORBA.SystemException;
 import org.omg.CosEventChannelAdmin.EventChannelHelper;
 
+import CF.AggregateExecutableDeviceHelper;
+import CF.AggregateLoadableDeviceHelper;
+import CF.AggregatePlainDeviceHelper;
 import CF.ApplicationHelper;
 import CF.DeviceHelper;
 import CF.DeviceManagerHelper;
 import CF.DomainManagerHelper;
+import CF.ExecutableDeviceHelper;
+import CF.LoadableDeviceHelper;
 import CF.ResourceHelper;
+import ExtendedEvent.MessageEventHelper;
+import gov.redhawk.model.sca.provider.ScaEditPlugin;
+import gov.redhawk.ui.views.namebrowser.view.BindingNode;
 
-/**
- * 
- */
 public class BindingNodeDecorator extends LabelProvider implements ILabelDecorator {
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ILabelDecorator#decorateImage(org.eclipse.swt.graphics.Image, java.lang.Object)
-	 */
-	@Override
-	public Image decorateImage(Image image, Object element) {
-		if (element instanceof BindingNode) {
-			BindingNode node = (BindingNode) element;
-			if (node.getType() == BindingNode.Type.OBJECT) {
-				if (node.is_a(DomainManagerHelper.id())) {
-					return ExtendedImageRegistry.INSTANCE.getImage(ScaEditPlugin.INSTANCE.getImage("full/obj16/ScaDomainManager"));
-				} else if (node.is_a(DeviceManagerHelper.id())) {
-					return ExtendedImageRegistry.INSTANCE.getImage(ScaEditPlugin.INSTANCE.getImage("full/obj16/ScaDeviceManager"));
-				} else if (node.is_a(EventChannelHelper.id())) {
-					return ExtendedImageRegistry.INSTANCE.getImage(ScaEditPlugin.INSTANCE.getImage("full/obj16/ScaEventChannel"));
-				} else if (node.is_a(ApplicationHelper.id())) {
-					return ExtendedImageRegistry.INSTANCE.getImage(ScaEditPlugin.INSTANCE.getImage("full/obj16/ScaWaveform"));
-				} else if (node.is_a(DeviceHelper.id())) {
-					return ExtendedImageRegistry.INSTANCE.getImage(ScaEditPlugin.INSTANCE.getImage("full/obj16/ScaDevice"));
-				} else if (node.is_a(ResourceHelper.id())) {
-					return ExtendedImageRegistry.INSTANCE.getImage(ScaEditPlugin.INSTANCE.getImage("full/obj16/ScaComponent"));
-				}
-			}
-		}
-		return null;
+	private Map<String, String> idlTypeToImage;
+
+	public BindingNodeDecorator() {
+		// This map obviously doesn't handle inheritance of interfaces, but an is_a check entails CORBA calls
+		idlTypeToImage = new HashMap<>();
+		idlTypeToImage.put(DomainManagerHelper.id(), "full/obj16/ScaDomainManager");
+		idlTypeToImage.put(DeviceManagerHelper.id(), "full/obj16/ScaDeviceManager");
+		idlTypeToImage.put(EventChannelHelper.id(), "full/obj16/ScaEventChannel");
+		idlTypeToImage.put(MessageEventHelper.id(), "full/obj16/ScaEventChannel");
+		idlTypeToImage.put(ApplicationHelper.id(), "full/obj16/ScaWaveform");
+		final String devicePath = "full/obj16/ScaDevice";
+		idlTypeToImage.put(DeviceHelper.id(), devicePath);
+		idlTypeToImage.put(AggregatePlainDeviceHelper.id(), devicePath);
+		idlTypeToImage.put(LoadableDeviceHelper.id(), devicePath);
+		idlTypeToImage.put(AggregateLoadableDeviceHelper.id(), devicePath);
+		idlTypeToImage.put(ExecutableDeviceHelper.id(), devicePath);
+		idlTypeToImage.put(AggregateExecutableDeviceHelper.id(), devicePath);
+		idlTypeToImage.put(ResourceHelper.id(), "full/obj16/ScaComponent");
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ILabelDecorator#decorateText(java.lang.String, java.lang.Object)
-	 */
+	@Override
+	public Image decorateImage(Image image, Object element) {
+		if (!(element instanceof BindingNode)) {
+			return null;
+		}
+		BindingNode node = (BindingNode) element;
+
+		if (node.getType() != BindingNode.Type.OBJECT) {
+			return null;
+		}
+
+		// Parse the IOR
+		ParsedIOR parsedIOR;
+		try {
+			parsedIOR = new ParsedIOR((ORB) node.getOrb(), node.getIOR());
+		} catch (IllegalArgumentException | SystemException e) {
+			return null;
+		}
+		String typeId = parsedIOR.getIOR().type_id;
+
+		// If we recognize the type ID from the IOR, show an icon for it
+		String imagePath = idlTypeToImage.get(typeId);
+		if (imagePath == null) {
+			return null;
+		}
+		return ExtendedImageRegistry.INSTANCE.getImage(ScaEditPlugin.INSTANCE.getImage(imagePath));
+	}
+
 	@Override
 	public String decorateText(String text, Object element) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

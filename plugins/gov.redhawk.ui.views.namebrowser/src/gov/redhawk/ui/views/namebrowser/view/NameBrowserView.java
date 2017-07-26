@@ -497,6 +497,10 @@ public class NameBrowserView extends ViewPart {
 		}
 	}
 
+	/**
+	 * @deprecated Do not use.
+	 */
+	@Deprecated
 	public static boolean isDomainManager(final BindingNode node) {
 		return node.is_a(DomainManagerHelper.id());
 	}

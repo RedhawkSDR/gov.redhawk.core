@@ -11,16 +11,22 @@
  */
 package gov.redhawk.ui.views.namebrowser.internal.command;
 
+import gov.redhawk.ui.views.namebrowser.NameBrowserPlugin;
 import gov.redhawk.ui.views.namebrowser.view.BindingNode;
 import gov.redhawk.ui.views.namebrowser.view.NameBrowserView;
 
 import org.eclipse.core.expressions.PropertyTester;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 public class DomainManagerTester extends PropertyTester {
 	public static final String ID = "gov.redhawk.ui.views.namebrowser.command.DomainManagerTester";
 
 	@Override
 	public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, NameBrowserPlugin.PLUGIN_ID,
+			"The property tester gov.redhawk.ui.views.namebrowser.isDomainManager is deprecated and should not be used"), StatusManager.LOG);
 		if (!(receiver instanceof BindingNode)) {
 			return false;
 		}
