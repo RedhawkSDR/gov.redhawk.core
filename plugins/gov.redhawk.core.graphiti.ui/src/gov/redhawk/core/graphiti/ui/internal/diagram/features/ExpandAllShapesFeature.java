@@ -13,10 +13,14 @@ package gov.redhawk.core.graphiti.ui.internal.diagram.features;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
+import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
+import org.eclipse.graphiti.mm.pictograms.Shape;
 
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
+import mil.jpeojtrs.sca.sad.HostCollocation;
 
 public class ExpandAllShapesFeature extends AbstractCustomFeature {
 
@@ -48,13 +52,25 @@ public class ExpandAllShapesFeature extends AbstractCustomFeature {
 		final Diagram diagram = getDiagram();
 
 		// expand existing shapes in diagram
-		for (PictogramElement p : diagram.getChildren()) { // TODO: need to handle inside host collocation
-			RHContainerShape rhContainerShape = (RHContainerShape) p;
-			rhContainerShape.setCollapsed(false);
-			updatePictogramElement(rhContainerShape);
-			layoutPictogramElement(rhContainerShape);
-		}
+		for (Shape shape : diagram.getChildren()) {
+			if (DUtil.getBusinessObject(shape) instanceof HostCollocation) {
+				for (Shape hcChildShape : ((ContainerShape) shape).getChildren()) {
+					if (hcChildShape instanceof RHContainerShape) {
+						expandShape((RHContainerShape) hcChildShape);
+					}
+				}
 
+			} else if (shape instanceof RHContainerShape) {
+				expandShape((RHContainerShape) shape);
+			}
+
+		}
 		updatePictogramElement(diagram);
+	}
+
+	private void expandShape(RHContainerShape rhContainerShape) {
+		rhContainerShape.setCollapsed(false);
+		updatePictogramElement(rhContainerShape);
+		layoutPictogramElement(rhContainerShape);
 	}
 }
