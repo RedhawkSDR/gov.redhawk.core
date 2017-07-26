@@ -907,8 +907,10 @@ public class TunerAllocationWizardPage extends WizardPage {
 		bgJobComp.setLayout(new GridLayout(3, false));
 		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).align(SWT.END, SWT.CENTER).applyTo(bgJobComp);
 
-		bgJobButton = new Button(bgJobComp, SWT.CHECK);
-		bgJobButton.setText("Run in background");
+		if (getWizard() instanceof TunerAllocationWizard) {
+			bgJobButton = new Button(bgJobComp, SWT.CHECK);
+			bgJobButton.setText("Run in background");
+		}
 
 	}
 
