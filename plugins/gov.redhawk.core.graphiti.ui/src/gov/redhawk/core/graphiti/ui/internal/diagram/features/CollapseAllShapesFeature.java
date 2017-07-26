@@ -13,11 +13,15 @@ package gov.redhawk.core.graphiti.ui.internal.diagram.features;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
+import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
+import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
 
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
+import mil.jpeojtrs.sca.sad.HostCollocation;
 
 public class CollapseAllShapesFeature extends AbstractCustomFeature {
 
@@ -49,16 +53,28 @@ public class CollapseAllShapesFeature extends AbstractCustomFeature {
 		final Diagram diagram = getDiagram();
 
 		// collapse existing shapes in diagram
-		for (PictogramElement p : diagram.getChildren()) { // TODO: need to handle inside host collocation
-			RHContainerShape rhContainerShape = (RHContainerShape) p;
-			rhContainerShape.setCollapsed(true);
-			updatePictogramElement(rhContainerShape);
+		for (Shape shape : diagram.getChildren()) {
+			if (DUtil.getBusinessObject(shape) instanceof HostCollocation) {
+				for (Shape hcChildShape : ((ContainerShape) shape).getChildren()) {
+					if (hcChildShape instanceof RHContainerShape) {
+						collapseShape((RHContainerShape) hcChildShape);
+					}
+				}
 
-			// Force the layout to use the minimum width and height
-			Graphiti.getGaLayoutService().setSize(rhContainerShape.getGraphicsAlgorithm(), 0, 0);
-			layoutPictogramElement(rhContainerShape);
+			} else if (shape instanceof RHContainerShape) {
+				collapseShape((RHContainerShape) shape);
+			}
+
 		}
-
 		updatePictogramElement(diagram);
+	}
+
+	private void collapseShape(RHContainerShape rhContainerShape) {
+		rhContainerShape.setCollapsed(true);
+		updatePictogramElement(rhContainerShape);
+
+		// Force the layout to use the minimum width and height
+		Graphiti.getGaLayoutService().setSize(rhContainerShape.getGraphicsAlgorithm(), 0, 0);
+		layoutPictogramElement(rhContainerShape);
 	}
 }
