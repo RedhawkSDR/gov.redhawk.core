@@ -24,8 +24,8 @@ import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.util.PluginUtil;
 
 /**
+ * Action that releases resources (via a call to <code>releaseObject()</code>).
  * @since 3.0
- * 
  */
 public class ReleaseAction extends Action {
 	private Object context;
