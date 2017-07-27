@@ -55,8 +55,8 @@ import CF.PropertySetPackage.PartialConfiguration;
  *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getId <em>Id</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getMode <em>Mode</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getName <em>Name</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#isIgnoreRemoteSet <em>Ignore Remote Set</em>}
- *        </li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#isIgnoreRemoteSet <em>Ignore Remote
+ *        Set</em>}</li>
  *        </ul>
  *
  * @generated
@@ -191,6 +191,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 
 		/**
 		 * Sets the {@link Any} that will be used to set the remote value when the job is run.
+		 * 
 		 * @param newValue
 		 * @since 20.3
 		 */
@@ -724,6 +725,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * Derived classes must implement this method to convert the {@link Any} and set their value. The status for the
 	 * value attribute should be updated appropriately (ok if no issue, error if something is wrong with the data in
 	 * the {@link Any}).
+	 * 
 	 * @param any The {@link Any} to use to set the model object's value
 	 * @since 13.0
 	 */

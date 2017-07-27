@@ -573,7 +573,8 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 		final int WORK_FETCH_CHILD_STORES = 45;
 		final int WORK_FETCH_CHILD_INFOS = 45;
 		final int WORK_MODEL_UPDATE = 5;
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching children of " + store.getName(), WORK_FETCH_CHILD_STORES + WORK_FETCH_CHILD_INFOS + WORK_MODEL_UPDATE);
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching children of " + store.getName(),
+			WORK_FETCH_CHILD_STORES + WORK_FETCH_CHILD_INFOS + WORK_MODEL_UPDATE);
 
 		try {
 			final IFileStore[] childStores = store.childStores(EFS.NONE, subMonitor.split(WORK_FETCH_CHILD_STORES));

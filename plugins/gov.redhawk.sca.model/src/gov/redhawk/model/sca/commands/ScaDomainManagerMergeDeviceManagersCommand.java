@@ -23,7 +23,6 @@ import CF.DeviceManager;
 
 /**
  * @since 14.0
- * 
  */
 public class ScaDomainManagerMergeDeviceManagersCommand extends SetStatusCommand<ScaDomainManager> {
 

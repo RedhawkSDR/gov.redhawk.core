@@ -31,7 +31,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.omg.CORBA.Any;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Simple Property</b></em>'.
+ * <!-- begin-user-doc -->
+ * An implementation of the model object ' <em><b>Simple Property</b></em>'.
  * 
  * @since 12.0
  *        <!-- end-user-doc -->
@@ -112,6 +113,19 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	@Override
 	protected EClass eStaticClass() {
 		return ScaPackage.Literals.SCA_SIMPLE_PROPERTY;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 18.0
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setDefinition(Simple newDefinition) {
+		super.setDefinition(newDefinition);
 	}
 
 	/**

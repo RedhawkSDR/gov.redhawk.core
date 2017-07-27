@@ -23,26 +23,25 @@ import CF.ApplicationOperations;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Waveform</b></em>'.
- * 
- * @noimplement This interface is not intended to be implemented by clients.
- *              <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaWaveform#getComponents <em>Components</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController <em>Assembly Controller</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaWaveform#getDomMgr <em>Dom Mgr</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaWaveform#getIdentifier <em>Identifier</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaWaveform#getName <em>Name</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaWaveform#getStarted <em>Started</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaWaveform#getProfile <em>Profile</em>}</li>
- *              </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getComponents <em>Components</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController <em>Assembly Controller</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getDomMgr <em>Dom Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getIdentifier <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getStarted <em>Started</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getProfile <em>Profile</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaWaveform()
- * @model superTypes=
- *        "gov.redhawk.model.sca.ScaPropertyContainer<mil.jpeojtrs.sca.cf.Application, mil.jpeojtrs.sca.sad.SoftwareAssembly> mil.jpeojtrs.sca.cf.ApplicationOperations gov.redhawk.model.sca.ScaPortContainer"
+ * @model superTypes="gov.redhawk.model.sca.ScaPropertyContainer&lt;mil.jpeojtrs.sca.cf.Application,
+ *        mil.jpeojtrs.sca.sad.SoftwareAssembly&gt; mil.jpeojtrs.sca.cf.ApplicationOperations
+ *        gov.redhawk.model.sca.ScaPortContainer"
  *        extendedMetaData="name='ScaWaveform' kind='elementOnly'"
  * @generated
  */
@@ -51,8 +50,8 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	/**
 	 * Returns the value of the '<em><b>Components</b></em>' containment reference list.
 	 * The list contents are of type {@link gov.redhawk.model.sca.ScaComponent}.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaComponent#getWaveform <em>Waveform</em>}
-	 * '.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaComponent#getWaveform
+	 * <em>Waveform</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Components</em>' containment reference list isn't clear, there really should be more
@@ -117,8 +116,8 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	ScaComponent getAssemblyController();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController
-	 * <em>Assembly Controller</em>}' reference.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController <em>Assembly
+	 * Controller</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -131,8 +130,8 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	void setAssemblyController(ScaComponent value);
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController
-	 * <em>Assembly Controller</em>}' reference.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController <em>Assembly
+	 * Controller</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -144,8 +143,8 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	void unsetAssemblyController();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController
-	 * <em>Assembly Controller</em>}' reference is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController <em>Assembly
+	 * Controller</em>}' reference is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 

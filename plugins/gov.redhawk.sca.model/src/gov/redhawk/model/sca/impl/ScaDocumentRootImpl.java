@@ -41,10 +41,10 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getMixed <em>Mixed</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getXSISchemaLocation <em>XSI Schema Location</em>}
- *        </li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getDomainManagerRegistry
- *        <em>Domain Manager Registry</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getXSISchemaLocation <em>XSI Schema
+ *        Location</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getDomainManagerRegistry <em>Domain Manager
+ *        Registry</em>}</li>
  *        </ul>
  *
  * @generated

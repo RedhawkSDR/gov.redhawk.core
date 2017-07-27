@@ -25,20 +25,19 @@ import CF.PropertySetOperations;
  * A representation of the model object '<em><b>Struct Property</b></em>'.
  * 
  * @since 9.0
- * @noimplement This interface is not intended to be implemented by clients.
- *              <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaStructProperty#getFields <em>Fields</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSimples <em>Simples</em>}</li>
- *              </ul>
+ *        <p>
+ *        The following features are supported:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.ScaStructProperty#getFields <em>Fields</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSimples <em>Simples</em>}</li>
+ *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaStructProperty()
- * @model superTypes=
- *        "gov.redhawk.model.sca.ScaAbstractProperty<mil.jpeojtrs.sca.prf.Struct> mil.jpeojtrs.sca.cf.PropertySetOperations"
+ * @model superTypes="gov.redhawk.model.sca.ScaAbstractProperty&lt;mil.jpeojtrs.sca.prf.Struct&gt;
+ *        mil.jpeojtrs.sca.cf.PropertySetOperations"
  *        extendedMetaData="name='ScaStructProperty' kind='empty'"
  * @generated
  */
@@ -46,7 +45,7 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 
 	/**
 	 * Returns the value of the '<em><b>Fields</b></em>' containment reference list.
-	 * The list contents are of type {@link gov.redhawk.model.sca.ScaAbstractProperty}&lt;?>.
+	 * The list contents are of type {@link gov.redhawk.model.sca.ScaAbstractProperty}<code>&lt;?&gt;</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Fields</em>' containment reference list isn't clear,

@@ -19,7 +19,9 @@ import org.eclipse.emf.common.command.AbstractCommand;
 
 /**
  * @since 14.0
+ * @deprecated No longer used.
  */
+@Deprecated
 public class DisposeCommand extends AbstractCommand {
 
 	private final IDisposable disposable;
@@ -33,9 +35,6 @@ public class DisposeCommand extends AbstractCommand {
 		return this.disposable != null && !this.disposable.isDisposed();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void execute() {
 		SafeRunner.run(new ISafeRunnable() {
@@ -48,7 +47,6 @@ public class DisposeCommand extends AbstractCommand {
 			@Override
 			public void handleException(Throwable exception) {
 				// TODO Auto-generated method stub
-
 			}
 
 		});
@@ -59,13 +57,8 @@ public class DisposeCommand extends AbstractCommand {
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void redo() {
-		// TODO Auto-generated method stub
-
 	}
 
 }

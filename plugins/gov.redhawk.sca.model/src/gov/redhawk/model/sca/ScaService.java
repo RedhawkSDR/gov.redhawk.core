@@ -20,20 +20,19 @@ import mil.jpeojtrs.sca.spd.SoftPkg;
  * A representation of the model object '<em><b>Service</b></em>'.
  * 
  * @since 12.0
- * @noimplement This interface is not intended to be implemented by clients.
- *              <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaService#getName <em>Name</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaService#getDevMgr <em>Dev Mgr</em>}</li>
- *              </ul>
+ *        <p>
+ *        The following features are supported:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.ScaService#getName <em>Name</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.ScaService#getDevMgr <em>Dev Mgr</em>}</li>
+ *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaService()
- * @model superTypes="gov.redhawk.model.sca.ScaPropertyContainer<gov.redhawk.model.sca.Object,
- *        mil.jpeojtrs.sca.spd.SoftPkg> gov.redhawk.model.sca.ScaPortContainer"
+ * @model superTypes="gov.redhawk.model.sca.ScaPropertyContainer&lt;gov.redhawk.model.sca.Object,
+ *        mil.jpeojtrs.sca.spd.SoftPkg&gt; gov.redhawk.model.sca.ScaPortContainer"
  * @generated
  */
 public interface ScaService extends ScaPropertyContainer<org.omg.CORBA.Object, SoftPkg>, ScaPortContainer {

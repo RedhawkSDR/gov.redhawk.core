@@ -20,7 +20,6 @@ import org.eclipse.emf.common.util.EList;
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Data Provider Object</b></em>'.
  * 
- * @noimplement This interface is not intended to be implemented by clients.
  * @since 9.0
  *        <!-- end-user-doc -->
  *
@@ -29,15 +28,15 @@ import org.eclipse.emf.common.util.EList;
  *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.DataProviderObject#getDataProviders <em>Data Providers</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.DataProviderObject#isDataProvidersEnabled <em>Data Providers Enabled</em>}
- *        </li>
- *        <li>{@link gov.redhawk.model.sca.DataProviderObject#getEnabledDataProviders <em>Enabled Data Providers</em>}
- *        </li>
+ *        <li>{@link gov.redhawk.model.sca.DataProviderObject#isDataProvidersEnabled <em>Data Providers
+ *        Enabled</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.DataProviderObject#getEnabledDataProviders <em>Enabled Data
+ *        Providers</em>}</li>
  *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getDataProviderObject()
- * @model abstract="true" superTypes=
- *        "gov.redhawk.model.sca.IStatusProvider gov.redhawk.model.sca.IDisposable gov.redhawk.model.sca.IRefreshable"
+ * @model abstract="true" superTypes="gov.redhawk.model.sca.IStatusProvider gov.redhawk.model.sca.IDisposable
+ *        gov.redhawk.model.sca.IRefreshable"
  *        extendedMetaData="name='DataProviderObject' kind='empty'"
  * @generated
  */
@@ -64,8 +63,8 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	EList<IScaDataProvider> getDataProviders();
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.DataProviderObject#getDataProviders <em>Data Providers</em>
-	 * }' attribute list.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.DataProviderObject#getDataProviders <em>Data
+	 * Providers</em>}' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -76,8 +75,8 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	void unsetDataProviders();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.DataProviderObject#getDataProviders
-	 * <em>Data Providers</em>}' attribute list is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.DataProviderObject#getDataProviders <em>Data
+	 * Providers</em>}' attribute list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -107,8 +106,8 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	boolean isDataProvidersEnabled();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.DataProviderObject#isDataProvidersEnabled
-	 * <em>Data Providers Enabled</em>}' attribute.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.DataProviderObject#isDataProvidersEnabled <em>Data Providers
+	 * Enabled</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 

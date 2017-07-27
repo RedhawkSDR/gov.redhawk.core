@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * @since 14.0
- * 
  */
 public class SetLocalAttributeCommand extends SetStatusCommand<IStatusProvider> {
 
@@ -37,9 +36,6 @@ public class SetLocalAttributeCommand extends SetStatusCommand<IStatusProvider> 
 		this.newValue = newValue;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void execute() {
 		if (status.isOK()) {

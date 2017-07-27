@@ -135,7 +135,8 @@ import mil.jpeojtrs.sca.util.NamedThreadFactory;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Domain Manager</b></em>'.
+ * <!-- begin-user-doc -->
+ * An implementation of the model object ' <em><b>Domain Manager</b></em>'.
  * 
  * @since 12.0
  *        <!-- end-user-doc -->
@@ -143,15 +144,15 @@ import mil.jpeojtrs.sca.util.ScaEcoreUtils;
  *        The following features are implemented:
  *        </p>
  *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getWaveformFactories <em>Waveform Factories</em>}
- *        </li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getWaveformFactories <em>Waveform
+ *        Factories</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getWaveforms <em>Waveforms</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getDeviceManagers <em>Device Managers</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getFileManager <em>File Manager</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getConnectionPropertiesContainer
- *        <em>Connection Properties Container</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getConnectionProperties
- *        <em>Connection Properties</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getConnectionPropertiesContainer <em>Connection
+ *        Properties Container</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getConnectionProperties <em>Connection
+ *        Properties</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#isAutoConnect <em>Auto Connect</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#isConnected <em>Connected</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getIdentifier <em>Identifier</em>}</li>

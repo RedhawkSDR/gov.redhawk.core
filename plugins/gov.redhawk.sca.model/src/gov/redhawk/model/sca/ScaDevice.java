@@ -25,27 +25,23 @@ import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Device</b></em>'.
- * 
- * @noimplement This interface is not intended to be implemented by clients.
- *              <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaDevice#getChildDevices <em>Child Devices</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDevice#getAdminState <em>Admin State</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDevice#getLabel <em>Label</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDevice#getOperationalState <em>Operational State</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDevice#getUsageState <em>Usage State</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDevice#getParentDevice <em>Parent Device</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDevice#getDevMgr <em>Dev Mgr</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDevice#getComponentInstantiation <em>Component
- *              Instantiation</em>}</li>
- *              </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getChildDevices <em>Child Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getAdminState <em>Admin State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getLabel <em>Label</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getOperationalState <em>Operational State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getUsageState <em>Usage State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getParentDevice <em>Parent Device</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getDevMgr <em>Dev Mgr</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDevice()
- * @model superTypes="gov.redhawk.model.sca.ScaAbstractComponent<D> mil.jpeojtrs.sca.cf.DeviceOperations"
+ * @model superTypes="gov.redhawk.model.sca.ScaAbstractComponent&lt;D&gt; mil.jpeojtrs.sca.cf.DeviceOperations"
  *        DBounds="mil.jpeojtrs.sca.cf.Device"
  *        extendedMetaData="name='ScaDevice' kind='elementOnly'"
  * @generated
@@ -54,7 +50,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 
 	/**
 	 * Returns the value of the '<em><b>Child Devices</b></em>' reference list.
-	 * The list contents are of type {@link gov.redhawk.model.sca.ScaDevice}&lt;?>.
+	 * The list contents are of type {@link gov.redhawk.model.sca.ScaDevice}<code>&lt;?&gt;</code>.
 	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDevice#getParentDevice <em>Parent
 	 * Device</em>}'.
 	 * <!-- begin-user-doc -->

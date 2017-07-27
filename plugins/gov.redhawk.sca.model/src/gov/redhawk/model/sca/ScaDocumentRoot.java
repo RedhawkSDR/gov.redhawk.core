@@ -21,19 +21,18 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  * A representation of the model object '<em><b>Document Root</b></em>'.
  * 
  * @since 8.0
- * @noimplement This interface is not intended to be implemented by clients.
- *              <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getMixed <em>Mixed</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getXSISchemaLocation <em>XSI Schema Location</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry
- *              <em>Domain Manager Registry</em>}</li>
- *              </ul>
+ *        <p>
+ *        The following features are supported:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getMixed <em>Mixed</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getXSISchemaLocation <em>XSI Schema Location</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry <em>Domain Manager
+ *        Registry</em>}</li>
+ *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDocumentRoot()
  * @model extendedMetaData="name='' kind='mixed'"
@@ -72,9 +71,8 @@ public interface ScaDocumentRoot extends EObject {
 	 * 
 	 * @return the value of the '<em>XMLNS Prefix Map</em>' map.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDocumentRoot_XMLNSPrefixMap()
-	 * @model mapType=
-	 *        "org.eclipse.emf.ecore.EStringToStringMapEntry<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString>"
-	 *        transient="true"
+	 * @model mapType="org.eclipse.emf.ecore.EStringToStringMapEntry&lt;org.eclipse.emf.ecore.EString,
+	 *        org.eclipse.emf.ecore.EString&gt;" transient="true"
 	 *        extendedMetaData="kind='attribute' name='xmlns:prefix'"
 	 * @generated
 	 */
@@ -93,9 +91,8 @@ public interface ScaDocumentRoot extends EObject {
 	 * 
 	 * @return the value of the '<em>XSI Schema Location</em>' map.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDocumentRoot_XSISchemaLocation()
-	 * @model mapType=
-	 *        "org.eclipse.emf.ecore.EStringToStringMapEntry<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString>"
-	 *        transient="true"
+	 * @model mapType="org.eclipse.emf.ecore.EStringToStringMapEntry&lt;org.eclipse.emf.ecore.EString,
+	 *        org.eclipse.emf.ecore.EString&gt;" transient="true"
 	 *        extendedMetaData="kind='attribute' name='xsi:schemaLocation'"
 	 * @generated
 	 */
@@ -120,8 +117,8 @@ public interface ScaDocumentRoot extends EObject {
 	ScaDomainManagerRegistry getDomainManagerRegistry();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry
-	 * <em>Domain Manager Registry</em>}' containment reference.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry <em>Domain Manager
+	 * Registry</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 

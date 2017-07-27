@@ -15,7 +15,6 @@ import java.util.List;
 
 /**
  * @since 9.0
- * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface IDataProviderServiceRegistry {
 	/**

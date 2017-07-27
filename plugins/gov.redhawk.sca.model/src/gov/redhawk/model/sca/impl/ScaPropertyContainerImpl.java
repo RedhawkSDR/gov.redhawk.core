@@ -60,7 +60,8 @@ import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Property Container</b></em>'.
+ * <!-- begin-user-doc -->
+ * An implementation of the model object ' <em><b>Property Container</b></em>'.
  * 
  * @since 12.0
  *        <!-- end-user-doc -->

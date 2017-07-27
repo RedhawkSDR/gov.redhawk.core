@@ -72,7 +72,8 @@ import CF.DevicePackage.OperationalType;
 import CF.DevicePackage.UsageType;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Device</b></em>'.
+ * <!-- begin-user-doc -->
+ * An implementation of the model object ' <em><b>Device</b></em>'.
  * 
  * @since 12.0
  *        <!-- end-user-doc -->

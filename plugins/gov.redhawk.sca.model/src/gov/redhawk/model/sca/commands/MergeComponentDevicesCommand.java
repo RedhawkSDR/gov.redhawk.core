@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.IStatus;
 
 /**
  * @since 14.0
- * 
  */
 public class MergeComponentDevicesCommand extends SetStatusCommand<ScaComponent> {
 

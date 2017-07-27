@@ -36,7 +36,8 @@ import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.omg.CORBA.Any;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Simple Sequence Property</b></em>'.
+ * <!-- begin-user-doc -->
+ * An implementation of the model object ' <em><b>Simple Sequence Property</b></em>'.
  * 
  * @since 12.0
  *        <!-- end-user-doc -->

@@ -64,6 +64,8 @@ import mil.jpeojtrs.sca.cf.CfPackage;
 import mil.jpeojtrs.sca.cf.extended.ExtendedPackage;
 import mil.jpeojtrs.sca.dcd.DcdPackage;
 import mil.jpeojtrs.sca.dmd.DmdPackage;
+import mil.jpeojtrs.sca.dpd.DpdPackage;
+import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
 import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.sad.SadPackage;
 import mil.jpeojtrs.sca.scd.ScdPackage;
@@ -561,15 +563,22 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 		// Obtain or create and register package
 		ScaPackageImpl theScaPackage = (ScaPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof ScaPackageImpl
-			? EPackage.Registry.INSTANCE.get(eNS_URI) : new ScaPackageImpl());
+			? EPackage.Registry.INSTANCE.get(eNS_URI)
+			: new ScaPackageImpl());
 
 		isInited = true;
 
 		// Initialize simple dependencies
 		CfPackage.eINSTANCE.eClass();
+		SpdPackage.eINSTANCE.eClass();
+		ScdPackage.eINSTANCE.eClass();
+		PrfPackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
 		SadPackage.eINSTANCE.eClass();
 		DcdPackage.eINSTANCE.eClass();
 		DmdPackage.eINSTANCE.eClass();
+		DpdPackage.eINSTANCE.eClass();
+		PartitioningPackage.eINSTANCE.eClass();
 		ExtendedPackage.eINSTANCE.eClass();
 		XMLTypePackage.eINSTANCE.eClass();
 

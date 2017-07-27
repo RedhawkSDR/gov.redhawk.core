@@ -19,7 +19,6 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * @since 9.1
- * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface ICompatibilityUtil {
 

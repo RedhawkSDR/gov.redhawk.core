@@ -71,11 +71,11 @@ import CF.ResourceHelper;
  *        The following features are implemented:
  *        </p>
  *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getComponentInstantiation
- *        <em>Component Instantiation</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getComponentInstantiation <em>Component
+ *        Instantiation</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getDevices <em>Devices</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getInstantiationIdentifier
- *        <em>Instantiation Identifier</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getInstantiationIdentifier <em>Instantiation
+ *        Identifier</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getWaveform <em>Waveform</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getName <em>Name</em>}</li>
  *        </ul>

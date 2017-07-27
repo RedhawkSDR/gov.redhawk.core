@@ -21,19 +21,18 @@ import org.eclipse.emf.common.util.EList;
  * A representation of the model object '<em><b>Property Container</b></em>'.
  * 
  * @since 11.0
- * @noimplement This interface is not intended to be implemented by clients.
- *              <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaPropertyContainer#getProperties <em>Properties</em>}</li>
- *              </ul>
+ *        <p>
+ *        The following features are supported:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.ScaPropertyContainer#getProperties <em>Properties</em>}</li>
+ *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaPropertyContainer()
- * @model abstract="true" superTypes=
- *        "gov.redhawk.model.sca.CorbaObjWrapper<P> gov.redhawk.model.sca.ProfileObjectWrapper<E> mil.jpeojtrs.sca.cf.PropertyEmitterOperations"
+ * @model abstract="true" superTypes="gov.redhawk.model.sca.CorbaObjWrapper&lt;P&gt;
+ *        gov.redhawk.model.sca.ProfileObjectWrapper&lt;E&gt; mil.jpeojtrs.sca.cf.PropertyEmitterOperations"
  *        PBounds="gov.redhawk.model.sca.Object" EBounds="org.eclipse.emf.ecore.EJavaObject"
  *        extendedMetaData="name='ScaPropertyContainer' kind='elementOnly'"
  * @generated
@@ -42,7 +41,7 @@ public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends
 		extends CorbaObjWrapper<P>, ProfileObjectWrapper<E>, PropertyEmitterOperations {
 	/**
 	 * Returns the value of the '<em><b>Properties</b></em>' containment reference list.
-	 * The list contents are of type {@link gov.redhawk.model.sca.ScaAbstractProperty}&lt;?>.
+	 * The list contents are of type {@link gov.redhawk.model.sca.ScaAbstractProperty}<code>&lt;?&gt;</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Properties</em>' containment reference list isn't clear, there really should be more

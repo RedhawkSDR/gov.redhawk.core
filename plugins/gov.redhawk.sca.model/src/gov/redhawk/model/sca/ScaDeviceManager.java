@@ -25,29 +25,27 @@ import CF.InvalidObjectReference;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Device Manager</b></em>'.
- * 
- * @noimplement This interface is not intended to be implemented by clients.
- *              <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getDevices <em>Devices</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getRootDevices <em>Root Devices</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getChildDevices <em>Child Devices</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getAllDevices <em>All Devices</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getFileSystem <em>File System</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getDomMgr <em>Dom Mgr</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getIdentifier <em>Identifier</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getLabel <em>Label</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getServices <em>Services</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getProfile <em>Profile</em>}</li>
- *              </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getDevices <em>Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getRootDevices <em>Root Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getChildDevices <em>Child Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getAllDevices <em>All Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getFileSystem <em>File System</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getDomMgr <em>Dom Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getIdentifier <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getLabel <em>Label</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getServices <em>Services</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getProfile <em>Profile</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManager()
- * @model superTypes="gov.redhawk.model.sca.ScaPropertyContainer<mil.jpeojtrs.sca.cf.DeviceManager,
- *        mil.jpeojtrs.sca.dcd.DeviceConfiguration> mil.jpeojtrs.sca.cf.DeviceManagerOperations
+ * @model superTypes="gov.redhawk.model.sca.ScaPropertyContainer&lt;mil.jpeojtrs.sca.cf.DeviceManager,
+ *        mil.jpeojtrs.sca.dcd.DeviceConfiguration&gt; mil.jpeojtrs.sca.cf.DeviceManagerOperations
  *        gov.redhawk.model.sca.ScaPortContainer"
  *        extendedMetaData="name='ScaDeviceManager' kind='elementOnly'"
  * @generated
@@ -102,7 +100,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 
 	/**
 	 * Returns the value of the '<em><b>Root Devices</b></em>' containment reference list.
-	 * The list contents are of type {@link gov.redhawk.model.sca.ScaDevice}&lt;?>.
+	 * The list contents are of type {@link gov.redhawk.model.sca.ScaDevice}<code>&lt;?&gt;</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Root Devices</em>' containment reference list isn't clear, there really should be more
@@ -120,7 +118,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 
 	/**
 	 * Returns the value of the '<em><b>Child Devices</b></em>' containment reference list.
-	 * The list contents are of type {@link gov.redhawk.model.sca.ScaDevice}&lt;?>.
+	 * The list contents are of type {@link gov.redhawk.model.sca.ScaDevice}<code>&lt;?&gt;</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Child Devices</em>' containment reference list isn't clear, there really should be
@@ -138,11 +136,11 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 
 	/**
 	 * Returns the value of the '<em><b>All Devices</b></em>' containment reference list.
-	 * The list contents are of type {@link gov.redhawk.model.sca.ScaDevice}&lt;?>.
+	 * The list contents are of type {@link gov.redhawk.model.sca.ScaDevice}<code>&lt;?&gt;</code>.
 	 * <!-- begin-user-doc -->
-	 * @deprecated Use {@link #getDevices()}, or {@link #getRootDevices()} and {@link #getChildDevices()}.
-	 * <!-- end-user-doc -->
 	 * 
+	 * @deprecated Use {@link #getDevices()}, or {@link #getRootDevices()} and {@link #getChildDevices()}.
+	 *             <!-- end-user-doc -->
 	 * @return the value of the '<em>All Devices</em>' containment reference list.
 	 * @see #isSetAllDevices()
 	 * @see #unsetAllDevices()
@@ -157,9 +155,9 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDeviceManager#getAllDevices <em>All Devices</em>}'
 	 * containment reference list.
 	 * <!-- begin-user-doc -->
-	 * @deprecated Use {@link #unsetDevices()}
-	 * <!-- end-user-doc -->
 	 * 
+	 * @deprecated Use {@link #unsetDevices()}
+	 *             <!-- end-user-doc -->
 	 * @see #isSetAllDevices()
 	 * @see #getAllDevices()
 	 * @generated
@@ -171,9 +169,9 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDeviceManager#getAllDevices <em>All
 	 * Devices</em>}' containment reference list is set.
 	 * <!-- begin-user-doc -->
-	 * @deprecated Use {@link #isSetDevices()}
-	 * <!-- end-user-doc -->
 	 * 
+	 * @deprecated Use {@link #isSetDevices()}
+	 *             <!-- end-user-doc -->
 	 * @return whether the value of the '<em>All Devices</em>' containment reference list is set.
 	 * @see #unsetAllDevices()
 	 * @see #getAllDevices()

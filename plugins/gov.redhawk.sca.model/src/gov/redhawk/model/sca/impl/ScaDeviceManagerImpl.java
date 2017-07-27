@@ -552,7 +552,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * 
 	 * @since 14.0
 	 * @deprecated
-	 *        <!-- end-user-doc -->
+	 * 			<!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Deprecated
@@ -568,7 +568,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * 
 	 * @since 14.0
 	 * @deprecated
-	 *        <!-- end-user-doc -->
+	 * 			<!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Deprecated
@@ -1669,7 +1669,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		// Remove Devices
 		// TODO: We're using remove() rather than removeAll(), because with otherwise EMF only generates a REMOVE_ALL
 		// notification for the FeatureMap, and not for the derived reference list. See Eclispe bug #516113.
-		for (ScaDevice<?> removeDevice : removeDevices.values()) {
+		for (ScaDevice< ? > removeDevice : removeDevices.values()) {
 			deviceList.remove(removeDevice);
 		}
 
@@ -1759,7 +1759,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	private static final EStructuralFeature[] DEV_MGR_TO_PORTS_PATH = { ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
 		DcdPackage.Literals.DEVICE_CONFIGURATION__DEVICE_MANAGER_SOFT_PKG, DcdPackage.Literals.DEVICE_MANAGER_SOFT_PKG__SOFT_PKG,
 		SpdPackage.Literals.SOFT_PKG__DESCRIPTOR, SpdPackage.Literals.DESCRIPTOR__COMPONENT, ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES,
-		ScdPackage.Literals.COMPONENT_FEATURES__PORTS};
+		ScdPackage.Literals.COMPONENT_FEATURES__PORTS };
 
 	private final VersionedFeature portsRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS);
 

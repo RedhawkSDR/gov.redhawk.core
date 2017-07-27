@@ -59,7 +59,8 @@ import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Waveform Factory</b></em>'.
+ * <!-- begin-user-doc -->
+ * An implementation of the model object ' <em><b>Waveform Factory</b></em>'.
  * 
  * @since 12.0
  *        <!-- end-user-doc -->

@@ -24,20 +24,18 @@ import CF.PortPackage.InvalidPort;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Uses Port</b></em>'.
- * 
- * @noimplement This interface is not intended to be implemented by clients.
- *              <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaUsesPort#getConnections <em>Connections</em>}</li>
- *              </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaUsesPort#getConnections <em>Connections</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaUsesPort()
- * @model superTypes=
- *        "gov.redhawk.model.sca.ScaPort<mil.jpeojtrs.sca.scd.Uses, mil.jpeojtrs.sca.cf.Port> mil.jpeojtrs.sca.cf.PortOperations"
+ * @model superTypes="gov.redhawk.model.sca.ScaPort&lt;mil.jpeojtrs.sca.scd.Uses, mil.jpeojtrs.sca.cf.Port&gt;
+ *        mil.jpeojtrs.sca.cf.PortOperations"
  *        extendedMetaData="name='ScaUsesPort' kind='empty'"
  * @generated
  */

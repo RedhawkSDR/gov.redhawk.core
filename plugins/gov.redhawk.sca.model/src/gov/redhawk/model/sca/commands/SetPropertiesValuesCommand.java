@@ -32,7 +32,6 @@ import CF.PropertiesHolder;
 
 /**
  * @since 14.0
- * 
  */
 public class SetPropertiesValuesCommand extends SetStatusCommand<ScaPropertyContainer< ? , ? >> {
 
@@ -48,9 +47,6 @@ public class SetPropertiesValuesCommand extends SetStatusCommand<ScaPropertyCont
 		this.defs = defs;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void execute() {

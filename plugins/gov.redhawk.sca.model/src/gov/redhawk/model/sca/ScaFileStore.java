@@ -19,20 +19,18 @@ import org.eclipse.emf.common.util.EList;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>File Store</b></em>'.
- * 
- * @noimplement This interface is not intended to be implemented by clients.
- *              <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaFileStore#getFileStore <em>File Store</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaFileStore#getChildren <em>Children</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaFileStore#getImageDesc <em>Image Desc</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaFileStore#isDirectory <em>Directory</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaFileStore#getName <em>Name</em>}</li>
- *              </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaFileStore#getFileStore <em>File Store</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaFileStore#getChildren <em>Children</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaFileStore#getImageDesc <em>Image Desc</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaFileStore#isDirectory <em>Directory</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaFileStore#getName <em>Name</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaFileStore()
  * @model superTypes="gov.redhawk.model.sca.IStatusProvider gov.redhawk.model.sca.IRefreshable"

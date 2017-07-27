@@ -23,7 +23,6 @@ import CF.DeviceManagerPackage.ServiceType;
 
 /**
  * @since 14.0
- * 
  */
 public class MergeServicesCommand extends SetStatusCommand<ScaDeviceManager> {
 	private final Map<String, ServiceType> newServices;
@@ -33,9 +32,6 @@ public class MergeServicesCommand extends SetStatusCommand<ScaDeviceManager> {
 		this.newServices = newServices;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void execute() {
 		// Setup current Service Map

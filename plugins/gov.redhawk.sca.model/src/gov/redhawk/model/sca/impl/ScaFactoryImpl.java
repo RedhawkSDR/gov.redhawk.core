@@ -56,7 +56,8 @@ import CF.DevicePackage.OperationalType;
 import CF.DevicePackage.UsageType;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>.
+ * <!-- begin-user-doc -->
+ * An implementation of the model <b>Factory</b>.
  * 
  * @since 12.0
  *        <!-- end-user-doc -->

@@ -28,7 +28,7 @@ import org.omg.CosEventChannelAdmin.EventChannel;
  *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaEventChannel()
- * @model superTypes="gov.redhawk.model.sca.CorbaObjWrapper<gov.redhawk.model.sca.EventChannel>"
+ * @model superTypes="gov.redhawk.model.sca.CorbaObjWrapper&lt;gov.redhawk.model.sca.EventChannel&gt;"
  * @generated
  */
 public interface ScaEventChannel extends CorbaObjWrapper<EventChannel> {

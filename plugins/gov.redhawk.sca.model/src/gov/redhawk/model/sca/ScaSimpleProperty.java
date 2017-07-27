@@ -20,15 +20,14 @@ import mil.jpeojtrs.sca.prf.SimpleRef;
  * A representation of the model object '<em><b>Simple Property</b></em>'.
  * 
  * @since 9.0
- * @noimplement This interface is not intended to be implemented by clients.
- *              <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaSimpleProperty#getValue <em>Value</em>}</li>
- *              </ul>
+ *        <p>
+ *        The following features are supported:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.ScaSimpleProperty#getValue <em>Value</em>}</li>
+ *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaSimpleProperty()
  * @model extendedMetaData="name='ScaSimpleProperty' kind='empty'"

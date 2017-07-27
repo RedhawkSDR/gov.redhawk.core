@@ -66,7 +66,8 @@ import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Struct Property</b></em>'.
+ * <!-- begin-user-doc -->
+ * An implementation of the model object ' <em><b>Struct Property</b></em>'.
  * 
  * @since 13.0
  *        <!-- end-user-doc -->

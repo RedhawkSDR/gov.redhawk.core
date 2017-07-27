@@ -24,19 +24,18 @@ import CF.PropertySetOperations;
  * A representation of the model object '<em><b>Struct Sequence Property</b></em>'.
  * 
  * @since 11.0
- * @noimplement This interface is not intended to be implemented by clients.
- *              <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaStructSequenceProperty#getStructs <em>Structs</em>}</li>
- *              </ul>
+ *        <p>
+ *        The following features are supported:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.ScaStructSequenceProperty#getStructs <em>Structs</em>}</li>
+ *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaStructSequenceProperty()
- * @model superTypes=
- *        "gov.redhawk.model.sca.ScaAbstractProperty<mil.jpeojtrs.sca.prf.StructSequence> mil.jpeojtrs.sca.cf.PropertySetOperations"
+ * @model superTypes="gov.redhawk.model.sca.ScaAbstractProperty&lt;mil.jpeojtrs.sca.prf.StructSequence&gt;
+ *        mil.jpeojtrs.sca.cf.PropertySetOperations"
  *        extendedMetaData="name='ScaStructSequenceProperty' kind='empty'"
  * @generated
  */

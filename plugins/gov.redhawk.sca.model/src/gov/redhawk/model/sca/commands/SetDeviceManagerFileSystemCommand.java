@@ -18,7 +18,6 @@ import CF.FileSystem;
 
 /**
  * @since 14.0
- * 
  */
 public class SetDeviceManagerFileSystemCommand extends SetStatusCommand<ScaDeviceManager> {
 
