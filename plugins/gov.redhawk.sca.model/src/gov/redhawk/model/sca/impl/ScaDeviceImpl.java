@@ -236,9 +236,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * The cached value of the '{@link #getComponentInstantiation() <em>Component Instantiation</em>}' reference.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 21.0
+	 *        <!-- end-user-doc -->
 	 * @see #getComponentInstantiation()
 	 * @generated
 	 * @ordered
@@ -247,9 +247,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * This is true if the Component Instantiation reference has been set.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 21.0
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -947,9 +947,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.4
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.4
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public DcdComponentInstantiation getComponentInstantiation() {
@@ -967,9 +967,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 21.0
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public DcdComponentInstantiation basicGetComponentInstantiation() {
@@ -978,9 +978,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.4
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.4
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setComponentInstantiation(DcdComponentInstantiation newComponentInstantiation) {
@@ -995,9 +995,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.4
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.4
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void unsetComponentInstantiation() {
@@ -1012,9 +1012,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.4
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.4
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isSetComponentInstantiation() {

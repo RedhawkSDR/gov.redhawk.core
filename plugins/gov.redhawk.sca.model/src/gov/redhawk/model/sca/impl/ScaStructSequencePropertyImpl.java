@@ -203,10 +203,10 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 14.0
-	 * <!-- end-user-doc -->
-	 * This is specialized for the more specific type known in this context.
 	 * 
+	 * @since 14.0
+	 *        <!-- end-user-doc -->
+	 *        This is specialized for the more specific type known in this context.
 	 * @generated
 	 */
 	@Override

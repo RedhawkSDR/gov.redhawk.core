@@ -38,6 +38,7 @@ import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
  * <li>{@link gov.redhawk.model.sca.ScaDevice#getUsageState <em>Usage State</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDevice#getParentDevice <em>Parent Device</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDevice#getDevMgr <em>Dev Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getComponentInstantiation <em>Component Instantiation</em>}</li>
  * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDevice()
@@ -395,9 +396,9 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * <p>
 	 * Gets the component instantiation for this device (from the DCD XML).
 	 * </p>
-	 * @since 21.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 21.0
+	 *        <!-- end-user-doc -->
 	 * @return the value of the '<em>Component Instantiation</em>' reference.
 	 * @see #isSetComponentInstantiation()
 	 * @see #unsetComponentInstantiation()
@@ -412,9 +413,9 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getComponentInstantiation <em>Component
 	 * Instantiation</em>}' reference.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 21.0
+	 *        <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Component Instantiation</em>' reference.
 	 * @see #isSetComponentInstantiation()
 	 * @see #unsetComponentInstantiation()
@@ -427,9 +428,9 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getComponentInstantiation <em>Component
 	 * Instantiation</em>}' reference.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 21.0
+	 *        <!-- end-user-doc -->
 	 * @see #isSetComponentInstantiation()
 	 * @see #getComponentInstantiation()
 	 * @see #setComponentInstantiation(DcdComponentInstantiation)
@@ -441,9 +442,9 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDevice#getComponentInstantiation <em>Component
 	 * Instantiation</em>}' reference is set.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 21.0
+	 *        <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Component Instantiation</em>' reference is set.
 	 * @see #unsetComponentInstantiation()
 	 * @see #getComponentInstantiation()
