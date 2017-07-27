@@ -32,7 +32,6 @@ import org.eclipse.emf.ecore.EReference;
  * </ul>
  * 
  * @since 2.0
- * @noimplement This interface is not intended to be implemented by clients.
  *              <!-- end-user-doc -->
  * @see gov.redhawk.model.sca.ScaFactory
  * @model kind="package"

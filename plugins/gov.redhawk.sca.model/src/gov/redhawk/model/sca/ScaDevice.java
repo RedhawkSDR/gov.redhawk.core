@@ -24,8 +24,6 @@ import CF.DevicePackage.UsageType;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Device</b></em>'.
- * 
- * @noimplement This interface is not intended to be implemented by clients.
  *              <!-- end-user-doc -->
  *
  *              <p>

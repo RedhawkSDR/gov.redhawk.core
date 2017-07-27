@@ -25,9 +25,7 @@ import CF.PropertySetPackage.PartialConfiguration;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Abstract Property</b></em>'.
- * 
  * @since 9.0
- * @noimplement This interface is not intended to be implemented by clients.
  *              <!-- end-user-doc -->
  *
  *              <p>

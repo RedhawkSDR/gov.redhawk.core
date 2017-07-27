@@ -19,8 +19,6 @@ import org.eclipse.emf.common.util.EList;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Data Provider Object</b></em>'.
- * 
- * @noimplement This interface is not intended to be implemented by clients.
  * @since 9.0
  *        <!-- end-user-doc -->
  *

@@ -19,9 +19,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>IStatus Provider</b></em>'.
- * 
  * @since 14.0
- * @noimplement This interface is not intended to be implemented by clients.
  *              <!-- end-user-doc -->
  *
  *              <p>

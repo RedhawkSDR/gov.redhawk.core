@@ -28,8 +28,6 @@ import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Waveform Factory</b></em>'.
- * 
- * @noimplement This interface is not intended to be implemented by clients.
  *              <!-- end-user-doc -->
  *
  *              <p>

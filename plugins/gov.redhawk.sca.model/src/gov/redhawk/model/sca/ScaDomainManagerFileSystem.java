@@ -15,9 +15,7 @@ package gov.redhawk.model.sca;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Domain Manager File System</b></em>'.
- * 
  * @since 10.0
- * @noimplement This interface is not intended to be implemented by clients.
  *              <!-- end-user-doc -->
  *
  *              <p>

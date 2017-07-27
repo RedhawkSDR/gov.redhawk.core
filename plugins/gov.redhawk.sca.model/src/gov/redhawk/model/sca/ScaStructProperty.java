@@ -23,9 +23,7 @@ import CF.PropertySetOperations;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Struct Property</b></em>'.
- * 
  * @since 9.0
- * @noimplement This interface is not intended to be implemented by clients.
  *              <!-- end-user-doc -->
  *
  *              <p>

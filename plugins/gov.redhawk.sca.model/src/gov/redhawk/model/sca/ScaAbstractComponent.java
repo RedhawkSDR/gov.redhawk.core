@@ -22,9 +22,7 @@ import CF.ResourceOperations;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Abstract Component</b></em>'.
- * 
  * @since 2.0
- * @noimplement This interface is not intended to be implemented by clients.
  *              <!-- end-user-doc -->
  *
  *              <p>
