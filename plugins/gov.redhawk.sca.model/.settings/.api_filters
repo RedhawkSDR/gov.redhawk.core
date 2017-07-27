@@ -8,29 +8,7 @@
             </message_arguments>
         </filter>
     </resource>
-    <resource path="src/gov/redhawk/model/sca/impl/ScaAbstractPropertyImpl.java" type="gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl">
-        <filter id="421572723">
-            <message_arguments>
-                <message_argument value="gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl"/>
-                <message_argument value="updateAttributes()"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/gov/redhawk/model/sca/impl/ScaAbstractPropertyImpl.java" type="gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl$PushValueJob">
-        <filter id="388018290">
-            <message_arguments>
-                <message_argument value="gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl.PushValueJob"/>
-                <message_argument value="newRemoteValue"/>
-            </message_arguments>
-        </filter>
-    </resource>
     <resource path="src/gov/redhawk/model/sca/impl/ScaSimplePropertyImpl.java" type="gov.redhawk.model.sca.impl.ScaSimplePropertyImpl">
-        <filter id="338792546">
-            <message_arguments>
-                <message_argument value="gov.redhawk.model.sca.impl.ScaSimplePropertyImpl"/>
-                <message_argument value="setDefinition(Simple)"/>
-            </message_arguments>
-        </filter>
         <filter comment="Reverted removal" id="1141899266">
             <message_arguments>
                 <message_argument value="18.0"/>
@@ -40,12 +18,6 @@
         </filter>
     </resource>
     <resource path="src/gov/redhawk/model/sca/impl/ScaStructSequencePropertyImpl.java" type="gov.redhawk.model.sca.impl.ScaStructSequencePropertyImpl">
-        <filter id="338792546">
-            <message_arguments>
-                <message_argument value="gov.redhawk.model.sca.impl.ScaStructSequencePropertyImpl"/>
-                <message_argument value="setDefinition(StructSequence)"/>
-            </message_arguments>
-        </filter>
         <filter comment="Revert removal" id="1141899266">
             <message_arguments>
                 <message_argument value="14.0"/>

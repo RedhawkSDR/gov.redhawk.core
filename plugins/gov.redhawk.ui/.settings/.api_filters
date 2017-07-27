@@ -9,12 +9,4 @@
             </message_arguments>
         </filter>
     </resource>
-    <resource path="src/gov/redhawk/ui/editor/SCAFormEditor.java" type="gov.redhawk.ui.editor.SCAFormEditor">
-        <filter id="338792546">
-            <message_arguments>
-                <message_argument value="gov.redhawk.ui.editor.SCAFormEditor"/>
-                <message_argument value="handleStructuredModelChange(EventObject)"/>
-            </message_arguments>
-        </filter>
-    </resource>
 </component>
