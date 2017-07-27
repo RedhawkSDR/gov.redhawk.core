@@ -19,7 +19,9 @@ import org.eclipse.emf.common.command.AbstractCommand;
 
 /**
  * @since 14.0
+ * @deprecated No longer used.
  */
+@Deprecated
 public class DisposeCommand extends AbstractCommand {
 
 	private final IDisposable disposable;
