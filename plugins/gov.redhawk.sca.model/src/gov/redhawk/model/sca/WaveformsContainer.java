@@ -20,17 +20,18 @@ import org.eclipse.emf.ecore.EObject;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Waveforms Container</b></em>'.
+ * 
  * @since 20.2
- * <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * </p>
- * <ul>
- * <li>{@link gov.redhawk.model.sca.WaveformsContainer#getSubContainers <em>Sub Containers</em>}</li>
- * <li>{@link gov.redhawk.model.sca.WaveformsContainer#getWaveforms <em>Waveforms</em>}</li>
- * <li>{@link gov.redhawk.model.sca.WaveformsContainer#getContainerName <em>Container Name</em>}</li>
- * </ul>
+ *        <p>
+ *        The following features are supported:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.WaveformsContainer#getSubContainers <em>Sub Containers</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.WaveformsContainer#getWaveforms <em>Waveforms</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.WaveformsContainer#getContainerName <em>Container Name</em>}</li>
+ *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getWaveformsContainer()
  * @model

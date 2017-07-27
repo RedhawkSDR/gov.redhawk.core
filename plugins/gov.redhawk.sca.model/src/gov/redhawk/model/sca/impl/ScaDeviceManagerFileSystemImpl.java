@@ -40,8 +40,8 @@ import CF.FileSystemHelper;
  *        The following features are implemented:
  *        </p>
  *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerFileSystemImpl#getDeviceManager <em>Device Manager</em>}
- *        </li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerFileSystemImpl#getDeviceManager <em>Device
+ *        Manager</em>}</li>
  *        </ul>
  *
  * @generated

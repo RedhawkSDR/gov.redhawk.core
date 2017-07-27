@@ -20,15 +20,16 @@ import org.eclipse.emf.common.util.EList;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Simple Sequence Property</b></em>'.
+ * 
  * @since 9.0
- *              <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#getValues <em>Values</em>}</li>
- *              </ul>
+ *        <p>
+ *        The following features are supported:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#getValues <em>Values</em>}</li>
+ *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaSimpleSequenceProperty()
  * @model extendedMetaData="name='ScaSimpleSequenceProperty' kind='empty'"

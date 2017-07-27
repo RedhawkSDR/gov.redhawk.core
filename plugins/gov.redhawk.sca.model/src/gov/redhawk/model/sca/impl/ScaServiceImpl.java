@@ -274,8 +274,9 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 20.4
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */

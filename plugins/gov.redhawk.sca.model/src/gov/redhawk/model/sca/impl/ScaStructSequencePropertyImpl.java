@@ -62,7 +62,8 @@ import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Struct Sequence Property</b></em>'.
+ * <!-- begin-user-doc -->
+ * An implementation of the model object ' <em><b>Struct Sequence Property</b></em>'.
  * 
  * @since 12.0
  *        <!-- end-user-doc -->
@@ -198,6 +199,19 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	@Override
 	protected EClass eStaticClass() {
 		return ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 14.0
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setDefinition(StructSequence newDefinition) {
+		super.setDefinition(newDefinition);
 	}
 
 	/**

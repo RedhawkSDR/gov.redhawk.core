@@ -22,23 +22,21 @@ import CF.Resource;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Component</b></em>'.
- *              <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaComponent#getComponentInstantiation <em>Component Instantiation</em>
- *              }</li>
- *              <li>{@link gov.redhawk.model.sca.ScaComponent#getDevices <em>Devices</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaComponent#getInstantiationIdentifier
- *              <em>Instantiation Identifier</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaComponent#getWaveform <em>Waveform</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaComponent#getName <em>Name</em>}</li>
- *              </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaComponent#getComponentInstantiation <em>Component Instantiation</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaComponent#getDevices <em>Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaComponent#getInstantiationIdentifier <em>Instantiation Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaComponent#getWaveform <em>Waveform</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaComponent#getName <em>Name</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaComponent()
- * @model superTypes="gov.redhawk.model.sca.ScaAbstractComponent<mil.jpeojtrs.sca.cf.Resource>"
+ * @model superTypes="gov.redhawk.model.sca.ScaAbstractComponent&lt;mil.jpeojtrs.sca.cf.Resource&gt;"
  *        extendedMetaData="name='ScaComponent' kind='elementOnly'"
  * @generated
  */
@@ -65,8 +63,8 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	SadComponentInstantiation getComponentInstantiation();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaComponent#getComponentInstantiation
-	 * <em>Component Instantiation</em>}' reference.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaComponent#getComponentInstantiation <em>Component
+	 * Instantiation</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -79,8 +77,8 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	void setComponentInstantiation(SadComponentInstantiation value);
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaComponent#getComponentInstantiation
-	 * <em>Component Instantiation</em>}' reference.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaComponent#getComponentInstantiation <em>Component
+	 * Instantiation</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -107,7 +105,7 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 
 	/**
 	 * Returns the value of the '<em><b>Devices</b></em>' reference list.
-	 * The list contents are of type {@link gov.redhawk.model.sca.ScaDevice}&lt;?>.
+	 * The list contents are of type {@link gov.redhawk.model.sca.ScaDevice}<code>&lt;?&gt;</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Devices</em>' reference list isn't clear, there really should be more of a description

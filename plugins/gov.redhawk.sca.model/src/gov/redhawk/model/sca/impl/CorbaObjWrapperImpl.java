@@ -50,9 +50,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.omg.CORBA.SystemException;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Corba Obj Wrapper</b></em>'.
+ * <!-- begin-user-doc -->
+ * An implementation of the model object ' <em><b>Corba Obj Wrapper</b></em>'.
  * 
- * @since 12.0 <!-- end-user-doc -->
+ * @since 12.0
+ *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
  *        </p>

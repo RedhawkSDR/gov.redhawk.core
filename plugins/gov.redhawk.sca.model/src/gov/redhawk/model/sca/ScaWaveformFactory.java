@@ -28,21 +28,22 @@ import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Waveform Factory</b></em>'.
- *              <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getDomMgr <em>Dom Mgr</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getIdentifier <em>Identifier</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getName <em>Name</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getProfile <em>Profile</em>}</li>
- *              </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getDomMgr <em>Dom Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getIdentifier <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getProfile <em>Profile</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaWaveformFactory()
- * @model superTypes=
- *        "gov.redhawk.model.sca.CorbaObjWrapper<mil.jpeojtrs.sca.cf.ApplicationFactory> mil.jpeojtrs.sca.cf.ApplicationFactoryOperations gov.redhawk.model.sca.ProfileObjectWrapper<mil.jpeojtrs.sca.sad.SoftwareAssembly>"
+ * @model superTypes="gov.redhawk.model.sca.CorbaObjWrapper&lt;mil.jpeojtrs.sca.cf.ApplicationFactory&gt;
+ *        mil.jpeojtrs.sca.cf.ApplicationFactoryOperations
+ *        gov.redhawk.model.sca.ProfileObjectWrapper&lt;mil.jpeojtrs.sca.sad.SoftwareAssembly&gt;"
  *        extendedMetaData="name='ScaWaveformFactory' kind='empty'"
  * @generated
  */
@@ -267,8 +268,9 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
-	 * @model exceptions=
-	 *        "mil.jpeojtrs.sca.cf.CreateApplicationError mil.jpeojtrs.sca.cf.CreateApplicationRequestError mil.jpeojtrs.sca.cf.InvalidInitConfiguration mil.jpeojtrs.sca.cf.CreateApplicationInsufficientCapacityError"
+	 * @model exceptions="mil.jpeojtrs.sca.cf.CreateApplicationError mil.jpeojtrs.sca.cf.CreateApplicationRequestError
+	 *        mil.jpeojtrs.sca.cf.InvalidInitConfiguration
+	 *        mil.jpeojtrs.sca.cf.CreateApplicationInsufficientCapacityError"
 	 *        monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 *        initConfigurationDataType="mil.jpeojtrs.sca.cf.DataTypeArray"
 	 *        deviceAssignmentsDataType="mil.jpeojtrs.sca.cf.DeviceAssignmentTypeArray"

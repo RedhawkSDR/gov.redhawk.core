@@ -30,17 +30,17 @@ import org.eclipse.emf.common.util.EList;
  *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaPortContainer()
- * @model interface="true" abstract="true" superTypes=
- *        "gov.redhawk.model.sca.IRefreshable gov.redhawk.model.sca.IStatusProvider"
+ * @model interface="true" abstract="true" superTypes="gov.redhawk.model.sca.IRefreshable
+ *        gov.redhawk.model.sca.IStatusProvider"
  * @generated
  */
 public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 
 	/**
 	 * Returns the value of the '<em><b>Ports</b></em>' containment reference list.
-	 * The list contents are of type {@link gov.redhawk.model.sca.ScaPort}&lt;?, ?>.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaPort#getPortContainer
-	 * <em>Port Container</em>}'.
+	 * The list contents are of type {@link gov.redhawk.model.sca.ScaPort}<code>&lt;?, ?&gt;</code>.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaPort#getPortContainer <em>Port
+	 * Container</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Ports</em>' containment reference list isn't clear, there really should be more of a

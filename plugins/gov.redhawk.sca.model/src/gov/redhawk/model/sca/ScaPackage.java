@@ -32,7 +32,7 @@ import org.eclipse.emf.ecore.EReference;
  * </ul>
  * 
  * @since 2.0
- *              <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  * @see gov.redhawk.model.sca.ScaFactory
  * @model kind="package"
  * @generated

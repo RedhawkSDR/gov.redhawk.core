@@ -24,7 +24,6 @@ import CF.ApplicationFactory;
 
 /**
  * @since 14.0
- * 
  */
 public class ScaDomainManagerMergeWaveformFactoriesCommand extends SetStatusCommand<ScaDomainManager> {
 

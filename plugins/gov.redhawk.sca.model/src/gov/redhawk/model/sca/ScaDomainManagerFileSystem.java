@@ -15,15 +15,16 @@ package gov.redhawk.model.sca;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Domain Manager File System</b></em>'.
+ * 
  * @since 10.0
- *              <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaDomainManagerFileSystem#getDomMgr <em>Dom Mgr</em>}</li>
- *              </ul>
+ *        <p>
+ *        The following features are supported:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.ScaDomainManagerFileSystem#getDomMgr <em>Dom Mgr</em>}</li>
+ *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManagerFileSystem()
  * @model extendedMetaData="name='ScaDomainManagerFileSystem' kind='empty'"
@@ -33,8 +34,8 @@ public interface ScaDomainManagerFileSystem extends ScaFileManager {
 
 	/**
 	 * Returns the value of the '<em><b>Dom Mgr</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDomainManager#getFileManager
-	 * <em>File Manager</em>}'.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDomainManager#getFileManager <em>File
+	 * Manager</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Dom Mgr</em>' container reference isn't clear, there really should be more of a

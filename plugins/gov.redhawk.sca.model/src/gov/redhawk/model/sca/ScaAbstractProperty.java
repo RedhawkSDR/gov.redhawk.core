@@ -25,20 +25,21 @@ import CF.PropertySetPackage.PartialConfiguration;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Abstract Property</b></em>'.
+ * 
  * @since 9.0
- *              <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getDefinition <em>Definition</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getDescription <em>Description</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getId <em>Id</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getMode <em>Mode</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getName <em>Name</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#isIgnoreRemoteSet <em>Ignore Remote Set</em>}</li>
- *              </ul>
+ *        <p>
+ *        The following features are supported:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getDefinition <em>Definition</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getDescription <em>Description</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getId <em>Id</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getMode <em>Mode</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getName <em>Name</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#isIgnoreRemoteSet <em>Ignore Remote Set</em>}</li>
+ *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaAbstractProperty()
  * @model abstract="true"
@@ -216,8 +217,8 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	boolean isIgnoreRemoteSet();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractProperty#isIgnoreRemoteSet
-	 * <em>Ignore Remote Set</em>}' attribute.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractProperty#isIgnoreRemoteSet <em>Ignore Remote
+	 * Set</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p/>
 	 * Sets a flag indicating that calls to {@link CF.PropertySet#configure(DataType[])} should be suppressed. This flag

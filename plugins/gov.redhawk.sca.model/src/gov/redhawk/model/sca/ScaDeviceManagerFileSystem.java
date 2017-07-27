@@ -17,19 +17,19 @@ import CF.FileSystem;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Device Manager File System</b></em>'.
+ * 
  * @since 10.0
- *              <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager <em>Device Manager</em>}
- *              </li>
- *              </ul>
+ *        <p>
+ *        The following features are supported:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager <em>Device Manager</em>}</li>
+ *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManagerFileSystem()
- * @model superTypes="gov.redhawk.model.sca.ScaFileSystem<mil.jpeojtrs.sca.cf.FileSystem>"
+ * @model superTypes="gov.redhawk.model.sca.ScaFileSystem&lt;mil.jpeojtrs.sca.cf.FileSystem&gt;"
  *        extendedMetaData="name='ScaDeviceManagerFileSystem' kind='empty'"
  * @generated
  */
@@ -37,8 +37,8 @@ public interface ScaDeviceManagerFileSystem extends ScaFileSystem<FileSystem> {
 
 	/**
 	 * Returns the value of the '<em><b>Device Manager</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDeviceManager#getFileSystem
-	 * <em>File System</em>}'.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDeviceManager#getFileSystem <em>File
+	 * System</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Device Manager</em>' container reference isn't clear, there really should be more of a
@@ -56,8 +56,8 @@ public interface ScaDeviceManagerFileSystem extends ScaFileSystem<FileSystem> {
 	ScaDeviceManager getDeviceManager();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager
-	 * <em>Device Manager</em>}' container reference.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager <em>Device
+	 * Manager</em>}' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 

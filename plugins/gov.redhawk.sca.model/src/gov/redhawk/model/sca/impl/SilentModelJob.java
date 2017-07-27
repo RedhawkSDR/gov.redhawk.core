@@ -83,13 +83,11 @@ public abstract class SilentModelJob extends SilentJob {
 	@Override
 	public boolean shouldSchedule() {
 		return validState() && super.shouldSchedule();
-		//		return false;
 	}
 
 	@Override
 	public boolean shouldRun() {
 		return shouldRun && validState() && super.shouldRun();
-		//		return false;
 	}
 
 	@Override

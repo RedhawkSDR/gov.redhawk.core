@@ -21,15 +21,16 @@ import org.eclipse.emf.ecore.resource.Resource;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Domain Manager Registry</b></em>'.
+ * 
  * @since 8.0
- *              <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#getDomains <em>Domains</em>}</li>
- *              </ul>
+ *        <p>
+ *        The following features are supported:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#getDomains <em>Domains</em>}</li>
+ *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManagerRegistry()
  * @model extendedMetaData="name='ScaDomainManagerRegistry' kind='elementOnly'"

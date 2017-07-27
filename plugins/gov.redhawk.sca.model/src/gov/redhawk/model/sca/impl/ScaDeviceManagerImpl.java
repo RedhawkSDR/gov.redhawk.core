@@ -102,7 +102,7 @@ import CF.ExecutableDeviceHelper;
 import CF.FileSystem;
 import CF.InvalidObjectReference;
 import CF.LoadableDeviceHelper;
-import CF.PortSupplierOperations;
+import CF.PortSetOperations;
 import CF.PropertiesHolder;
 import CF.UnknownProperties;
 import CF.DeviceManagerPackage.ServiceType;
@@ -137,7 +137,7 @@ import CF.PropertySetPackage.PartialConfiguration;
  *
  * @generated
  */
-public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager, DeviceConfiguration>implements ScaDeviceManager {
+public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager, DeviceConfiguration> implements ScaDeviceManager {
 
 	/**
 	 * The cached value of the '{@link #getPorts() <em>Ports</em>}' containment reference list.
@@ -553,7 +553,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * 
 	 * @since 14.0
 	 * @deprecated
-	 *        <!-- end-user-doc -->
+	 * 			<!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Deprecated
@@ -569,7 +569,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * 
 	 * @since 14.0
 	 * @deprecated
-	 *        <!-- end-user-doc -->
+	 * 			<!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Deprecated
@@ -1428,7 +1428,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class< ? > baseClass) {
-		if (baseClass == PortSupplierOperations.class) {
+		if (baseClass == PortSetOperations.class) {
 			switch (derivedFeatureID) {
 			default:
 				return -1;
@@ -1459,7 +1459,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class< ? > baseClass) {
-		if (baseClass == PortSupplierOperations.class) {
+		if (baseClass == PortSetOperations.class) {
 			switch (baseFeatureID) {
 			default:
 				return -1;
@@ -1688,7 +1688,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		// Remove Devices
 		// TODO: We're using remove() rather than removeAll(), because with otherwise EMF only generates a REMOVE_ALL
 		// notification for the FeatureMap, and not for the derived reference list. See Eclispe bug #516113.
-		for (ScaDevice<?> removeDevice : removeDevices.values()) {
+		for (ScaDevice< ? > removeDevice : removeDevices.values()) {
 			deviceList.remove(removeDevice);
 		}
 
@@ -1703,6 +1703,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	/**
 	 * Performs CORBA {@link org.omg.CORBA.Object#_is_a(String)} checks to determine the appropriate {@link EClass}
 	 * for the object. Note that these have the potential to be blocking and/or make a CORBA call.
+	 * 
 	 * @since 18.0
 	 */
 	protected EClass getType(Device dev) {
@@ -1777,7 +1778,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	private static final EStructuralFeature[] DEV_MGR_TO_PORTS_PATH = { ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
 		DcdPackage.Literals.DEVICE_CONFIGURATION__DEVICE_MANAGER_SOFT_PKG, DcdPackage.Literals.DEVICE_MANAGER_SOFT_PKG__SOFT_PKG,
 		SpdPackage.Literals.SOFT_PKG__DESCRIPTOR, SpdPackage.Literals.DESCRIPTOR__COMPONENT, ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES,
-		ScdPackage.Literals.COMPONENT_FEATURES__PORTS};
+		ScdPackage.Literals.COMPONENT_FEATURES__PORTS };
 
 	private final VersionedFeature portsRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS);
 

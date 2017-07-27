@@ -18,20 +18,21 @@ import mil.jpeojtrs.sca.spd.SoftPkg;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Service</b></em>'.
+ * 
  * @since 12.0
- *              <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaService#getName <em>Name</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaService#getDevMgr <em>Dev Mgr</em>}</li>
- *              </ul>
+ *        <p>
+ *        The following features are supported:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.ScaService#getName <em>Name</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.ScaService#getDevMgr <em>Dev Mgr</em>}</li>
+ *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaService()
- * @model superTypes="gov.redhawk.model.sca.ScaPropertyContainer<gov.redhawk.model.sca.Object,
- *        mil.jpeojtrs.sca.spd.SoftPkg> gov.redhawk.model.sca.ScaPortContainer"
+ * @model superTypes="gov.redhawk.model.sca.ScaPropertyContainer&lt;gov.redhawk.model.sca.Object,
+ *        mil.jpeojtrs.sca.spd.SoftPkg&gt; gov.redhawk.model.sca.ScaPortContainer"
  * @generated
  */
 public interface ScaService extends ScaPropertyContainer<org.omg.CORBA.Object, SoftPkg>, ScaPortContainer {
@@ -86,9 +87,9 @@ public interface ScaService extends ScaPropertyContainer<org.omg.CORBA.Object, S
 	 * <p/>
 	 * The profile should be present before invoking this method
 	 * ({@link #fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor)}) or it will return false.
-	 * @since 20.4
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.4
+	 *        <!-- end-user-doc -->
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean" intfRequired="true"
 	 * @generated
 	 */

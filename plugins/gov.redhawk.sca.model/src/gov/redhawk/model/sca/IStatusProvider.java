@@ -19,15 +19,16 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>IStatus Provider</b></em>'.
+ * 
  * @since 14.0
- *              <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.IStatusProvider#getStatus <em>Status</em>}</li>
- *              </ul>
+ *        <p>
+ *        The following features are supported:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.IStatusProvider#getStatus <em>Status</em>}</li>
+ *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getIStatusProvider()
  * @model abstract="true"

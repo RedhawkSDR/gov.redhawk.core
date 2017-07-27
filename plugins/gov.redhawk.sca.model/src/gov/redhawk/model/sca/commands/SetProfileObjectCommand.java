@@ -19,7 +19,6 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * @since 14.0
- * 
  */
 public class SetProfileObjectCommand< T extends EObject > extends SetStatusCommand<ProfileObjectWrapper<T>> {
 

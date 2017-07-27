@@ -96,8 +96,8 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	void unsetProfileURI();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI
-	 * <em>Profile URI</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI <em>Profile
+	 * URI</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -157,8 +157,8 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	void unsetProfileObj();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj
-	 * <em>Profile Obj</em>}' reference is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj <em>Profile
+	 * Obj</em>}' reference is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 

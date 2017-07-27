@@ -18,12 +18,12 @@ import CF.ExecutableDeviceOperations;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Executable Device</b></em>'.
- *              <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaExecutableDevice()
- * @model superTypes=
- *        "gov.redhawk.model.sca.ScaLoadableDevice<mil.jpeojtrs.sca.cf.ExecutableDevice> mil.jpeojtrs.sca.cf.ExecutableDeviceOperations"
+ * @model superTypes="gov.redhawk.model.sca.ScaLoadableDevice&lt;mil.jpeojtrs.sca.cf.ExecutableDevice&gt;
+ *        mil.jpeojtrs.sca.cf.ExecutableDeviceOperations"
  *        extendedMetaData="name='ScaExecutableDevice' kind='elementOnly'"
  * @generated
  */

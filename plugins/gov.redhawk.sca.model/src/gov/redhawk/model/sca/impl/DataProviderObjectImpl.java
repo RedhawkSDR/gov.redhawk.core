@@ -60,10 +60,10 @@ import org.eclipse.emf.transaction.RunnableWithResult;
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#isDisposed <em>Disposed</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#getDataProviders <em>Data Providers</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#isDataProvidersEnabled
- *        <em>Data Providers Enabled</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#getEnabledDataProviders
- *        <em>Enabled Data Providers</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#isDataProvidersEnabled <em>Data Providers
+ *        Enabled</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#getEnabledDataProviders <em>Enabled Data
+ *        Providers</em>}</li>
  *        </ul>
  *
  * @generated

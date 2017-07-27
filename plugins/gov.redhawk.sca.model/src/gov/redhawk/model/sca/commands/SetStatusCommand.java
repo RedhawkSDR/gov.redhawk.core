@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * @since 14.0
- * 
  */
 public class SetStatusCommand< T extends IStatusProvider > extends ScaModelCommand {
 

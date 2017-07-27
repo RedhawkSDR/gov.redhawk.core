@@ -18,15 +18,16 @@ import org.eclipse.emf.ecore.EObject;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Properties</b></em>'.
+ * 
  * @since 8.0
- *              <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.Properties#getProperty <em>Property</em>}</li>
- *              </ul>
+ *        <p>
+ *        The following features are supported:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.Properties#getProperty <em>Property</em>}</li>
+ *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getProperties()
  * @model extendedMetaData="name='Properties' kind='elementOnly'"
@@ -46,8 +47,8 @@ public interface Properties extends EObject {
 	 * 
 	 * @return the value of the '<em>Property</em>' map.
 	 * @see gov.redhawk.model.sca.ScaPackage#getProperties_Property()
-	 * @model mapType=
-	 *        "gov.redhawk.model.sca.StringToStringMap<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString>"
+	 * @model mapType="gov.redhawk.model.sca.StringToStringMap&lt;org.eclipse.emf.ecore.EString,
+	 *        org.eclipse.emf.ecore.EString&gt;"
 	 *        extendedMetaData="kind='element' name='property'"
 	 * @generated
 	 */

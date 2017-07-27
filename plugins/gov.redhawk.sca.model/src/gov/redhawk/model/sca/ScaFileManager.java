@@ -18,12 +18,12 @@ import CF.FileManagerOperations;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>File Manager</b></em>'.
- *              <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaFileManager()
- * @model abstract="true" superTypes=
- *        "gov.redhawk.model.sca.ScaFileSystem<mil.jpeojtrs.sca.cf.FileManager> mil.jpeojtrs.sca.cf.FileManagerOperations"
+ * @model abstract="true" superTypes="gov.redhawk.model.sca.ScaFileSystem&lt;mil.jpeojtrs.sca.cf.FileManager&gt;
+ *        mil.jpeojtrs.sca.cf.FileManagerOperations"
  *        extendedMetaData="name='ScaFileManager' kind='empty'"
  * @generated
  */

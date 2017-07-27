@@ -30,9 +30,6 @@ public class ScaDomainManagerMergeEventChannelsCommand extends SetStatusCommand<
 		this.channels = channels;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.emf.common.command.Command#execute()
-	 */
 	@Override
 	public void execute() {
 		final Map<String, ScaEventChannel> newChannelMap = new HashMap<String, ScaEventChannel>();

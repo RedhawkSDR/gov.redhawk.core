@@ -32,16 +32,17 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Waveforms Container</b></em>'.
+ * 
  * @since 20.2
- * <!-- end-user-doc -->
- * <p>
- * The following features are implemented:
- * </p>
- * <ul>
- * <li>{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl#getSubContainers <em>Sub Containers</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl#getWaveforms <em>Waveforms</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl#getContainerName <em>Container Name</em>}</li>
- * </ul>
+ *        <!-- end-user-doc -->
+ *        <p>
+ *        The following features are implemented:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl#getSubContainers <em>Sub Containers</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl#getWaveforms <em>Waveforms</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl#getContainerName <em>Container Name</em>}</li>
+ *        </ul>
  *
  * @generated
  */

@@ -24,23 +24,23 @@ import CF.DevicePackage.UsageType;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Device</b></em>'.
- *              <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaDevice#getChildDevices <em>Child Devices</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDevice#getAdminState <em>Admin State</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDevice#getLabel <em>Label</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDevice#getOperationalState <em>Operational State</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDevice#getUsageState <em>Usage State</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDevice#getParentDevice <em>Parent Device</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDevice#getDevMgr <em>Dev Mgr</em>}</li>
- *              </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getChildDevices <em>Child Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getAdminState <em>Admin State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getLabel <em>Label</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getOperationalState <em>Operational State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getUsageState <em>Usage State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getParentDevice <em>Parent Device</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getDevMgr <em>Dev Mgr</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDevice()
- * @model superTypes="gov.redhawk.model.sca.ScaAbstractComponent<D> mil.jpeojtrs.sca.cf.DeviceOperations"
+ * @model superTypes="gov.redhawk.model.sca.ScaAbstractComponent&lt;D&gt; mil.jpeojtrs.sca.cf.DeviceOperations"
  *        DBounds="mil.jpeojtrs.sca.cf.Device"
  *        extendedMetaData="name='ScaDevice' kind='elementOnly'"
  * @generated
@@ -49,9 +49,9 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 
 	/**
 	 * Returns the value of the '<em><b>Child Devices</b></em>' reference list.
-	 * The list contents are of type {@link gov.redhawk.model.sca.ScaDevice}&lt;?>.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDevice#getParentDevice
-	 * <em>Parent Device</em>}'.
+	 * The list contents are of type {@link gov.redhawk.model.sca.ScaDevice}<code>&lt;?&gt;</code>.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDevice#getParentDevice <em>Parent
+	 * Device</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Child Devices</em>' reference list isn't clear, there really should be more of a
@@ -267,8 +267,8 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	void unsetOperationalState();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDevice#getOperationalState
-	 * <em>Operational State</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDevice#getOperationalState <em>Operational
+	 * State</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -343,8 +343,8 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 
 	/**
 	 * Returns the value of the '<em><b>Parent Device</b></em>' reference.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDevice#getChildDevices
-	 * <em>Child Devices</em>}'.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDevice#getChildDevices <em>Child
+	 * Devices</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Parent Device</em>' reference isn't clear, there really should be more of a

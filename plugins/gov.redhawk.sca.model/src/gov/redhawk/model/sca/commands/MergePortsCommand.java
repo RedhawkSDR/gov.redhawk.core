@@ -143,9 +143,6 @@ public class MergePortsCommand extends SetStatusCommand<ScaPortContainer> {
 		this.newPorts = newPorts;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.emf.common.command.Command#execute()
-	 */
 	@Override
 	public void execute() {
 		// If status is not in error we can continue. Warnings may exist if UnknownPort exception was thrown

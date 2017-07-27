@@ -25,18 +25,18 @@ import CF.FileSystemOperations;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>File System</b></em>'.
- *              <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaFileSystem#getFileSystemURI <em>File System URI</em>}</li>
- *              </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaFileSystem#getFileSystemURI <em>File System URI</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaFileSystem()
- * @model abstract="true" superTypes=
- *        "gov.redhawk.model.sca.CorbaObjWrapper<F> mil.jpeojtrs.sca.cf.FileSystemOperations gov.redhawk.model.sca.ScaFileStore"
+ * @model abstract="true" superTypes="gov.redhawk.model.sca.CorbaObjWrapper&lt;F&gt;
+ *        mil.jpeojtrs.sca.cf.FileSystemOperations gov.redhawk.model.sca.ScaFileStore"
  *        FBounds="mil.jpeojtrs.sca.cf.FileSystem"
  *        extendedMetaData="name='ScaFileSystem' kind='empty'"
  * @generated

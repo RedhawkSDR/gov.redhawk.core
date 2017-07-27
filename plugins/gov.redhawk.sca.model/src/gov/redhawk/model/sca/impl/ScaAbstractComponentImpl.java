@@ -90,7 +90,8 @@ import CF.ResourcePackage.StopError;
 import CF.TestableObjectPackage.UnknownTest;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Abstract Component</b></em>'.
+ * <!-- begin-user-doc -->
+ * An implementation of the model object ' <em><b>Abstract Component</b></em>'.
  * 
  * @since 12.0
  *        <!-- end-user-doc -->
@@ -1011,7 +1012,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	private static final EStructuralFeature[] RESOURCE_TO_PORTS_PATH = { ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
 		SpdPackage.Literals.SOFT_PKG__DESCRIPTOR, SpdPackage.Literals.DESCRIPTOR__COMPONENT, ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES,
-		ScdPackage.Literals.COMPONENT_FEATURES__PORTS};
+		ScdPackage.Literals.COMPONENT_FEATURES__PORTS };
 
 	private final VersionedFeature portRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS);
 

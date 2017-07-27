@@ -18,11 +18,11 @@ import CF.LoadableDeviceOperations;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Loadable Device</b></em>'.
- *              <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaLoadableDevice()
- * @model superTypes="gov.redhawk.model.sca.ScaDevice<L> mil.jpeojtrs.sca.cf.LoadableDeviceOperations"
+ * @model superTypes="gov.redhawk.model.sca.ScaDevice&lt;L&gt; mil.jpeojtrs.sca.cf.LoadableDeviceOperations"
  *        LBounds="mil.jpeojtrs.sca.cf.LoadableDevice"
  *        extendedMetaData="name='ScaLoadableDevice' kind='elementOnly'"
  * @generated

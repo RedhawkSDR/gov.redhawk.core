@@ -22,21 +22,22 @@ import CF.ResourceOperations;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Abstract Component</b></em>'.
+ * 
  * @since 2.0
- *              <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- *              <p>
- *              The following features are supported:
- *              </p>
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier <em>Identifier</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getStarted <em>Started</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}</li>
- *              </ul>
+ *        <p>
+ *        The following features are supported:
+ *        </p>
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier <em>Identifier</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getStarted <em>Started</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}</li>
+ *        </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaAbstractComponent()
- * @model abstract="true" superTypes=
- *        "gov.redhawk.model.sca.ScaPropertyContainer<R, mil.jpeojtrs.sca.spd.SoftPkg> mil.jpeojtrs.sca.cf.ResourceOperations gov.redhawk.model.sca.ScaPortContainer"
+ * @model abstract="true" superTypes="gov.redhawk.model.sca.ScaPropertyContainer&lt;R, mil.jpeojtrs.sca.spd.SoftPkg&gt;
+ *        mil.jpeojtrs.sca.cf.ResourceOperations gov.redhawk.model.sca.ScaPortContainer"
  *        RBounds="mil.jpeojtrs.sca.cf.Resource"
  *        extendedMetaData="name='ScaAbstractComponent' kind='elementOnly'"
  * @generated
