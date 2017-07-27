@@ -23,15 +23,11 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
- * The Class ReleaseHandler.
+ * Handler that releases resources (via a call to <code>releaseObject()</code>).
  */
 public class ReleaseHandler extends AbstractHandler implements IHandler {
 
 	private final ReleaseAction action = new ReleaseAction();
-
-	/**
-	 * {@inheritDoc}
-	 */
 
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
