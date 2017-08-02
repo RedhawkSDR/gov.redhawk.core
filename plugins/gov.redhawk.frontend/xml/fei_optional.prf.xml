@@ -75,6 +75,12 @@
         <description>Allowable percentage over requested sample rate. This value is provided by the requester during allocation.</description>
         <units>%</units>
       </simple>
+      <simple id="FRONTEND::tuner_status::scan_mode_enabled" name="scan_mode_enabled" type="boolean">
+        <description>True if scan mode is enabled. False if Manual Tune is enabled</description>
+      </simple>
+      <simple id="FRONTEND::tuner_status::supports_scan" name="supports_scan" type="boolean">
+        <description>True if scan is supported</description>
+      </simple>
       <simple id="FRONTEND::tuner_status::tuner_number" name="tuner_number" type="short">
         <description>Physical tuner ID.</description>
       </simple>
