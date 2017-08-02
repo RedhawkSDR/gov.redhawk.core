@@ -87,7 +87,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private String defaultAllocationType = ALLOCATE_TUNER;
 	private static final double FREQUENCY_VALUE_CONVERSION_FACTOR = 1e6;
 	private static final double TOLERANCE_CONVERSION = 0.01;
-	private UUID uuid;
 	private ComboViewer typeCombo;
 	private ComboViewer allocationComboViewer;
 	private AllocationMode allocationMode = AllocationMode.TUNER;
@@ -411,7 +410,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 
 		setTitle("Tuner Allocation");
 		setDescription("Specify the parameters for the tuner you would like to allocate.");
-		this.uuid = UUID.randomUUID();
 
 		initializeTunerAllocationStruct();
 		initializeListenerAllocationStruct();
@@ -462,7 +460,13 @@ public class TunerAllocationWizardPage extends WizardPage {
 			allocIdStrategy, null), SWT.TOP | SWT.LEFT);
 		if (allocIdText.getText().isEmpty()) {
 			// initialize and color cyan
-			allocIdText.setText(getUsername() + ":" + uuid.toString());
+			String allocId;
+			if (isRuntime()) {
+				allocId = System.getProperty("user.name") + ":" + UUID.randomUUID().toString();
+			} else {
+				allocId = UUID.randomUUID().toString();
+			}
+			allocIdText.setText(allocId);
 			allocIdText.setBackground(allocIdText.getDisplay().getSystemColor(SWT.COLOR_CYAN));
 		}
 		allocIdText.addListener(SWT.FocusIn, event -> {
@@ -757,10 +761,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 		addGroupIdBindings();
 	}
 
-	private String getUsername() {
-		return System.getProperty("user.name");
-	}
-
 	private void initializeTunerAllocationStruct() {
 		// if not null it was provided in constructor
 		if (tunerAllocationStruct != null) {
@@ -907,11 +907,17 @@ public class TunerAllocationWizardPage extends WizardPage {
 		bgJobComp.setLayout(new GridLayout(3, false));
 		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).align(SWT.END, SWT.CENTER).applyTo(bgJobComp);
 
-		if (getWizard() instanceof TunerAllocationWizard) {
+		if (isRuntime()) {
 			bgJobButton = new Button(bgJobComp, SWT.CHECK);
 			bgJobButton.setText("Run in background");
 		}
+	}
 
+	/**
+	 * @return True if this page is being used in a runtime (not design-time) context.
+	 */
+	private boolean isRuntime() {
+		return (getWizard() instanceof TunerAllocationWizard);
 	}
 
 	private void setValueForProp(TunerAllocationProperties allocProp, ScaSimpleProperty simple) {
