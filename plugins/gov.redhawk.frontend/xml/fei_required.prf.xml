@@ -31,12 +31,6 @@
       <simple id="FRONTEND::tuner_status::tuner_type" name="tuner_type" type="string">
         <description>Example Tuner Types: TX, RX, CHANNELIZER, DDC, RX_DIGITIZER, RX_DIGITIZIER_CHANNELIZER</description>
       </simple>
-      <simple id="FRONTEND::tuner_status::scan_mode_enabled" name="scan_mode_enabled" type="boolean">
-        <description>True if scan mode is enabled. False if Manual Tune is enabled</description>
-      </simple>
-      <simple id="FRONTEND::tuner_status::supports_scan" name="supports_scan" type="boolean">
-        <description>True if scan is supported</description>
-      </simple>
     </struct>
     <configurationkind kindtype="property"/>
   </structsequence>
