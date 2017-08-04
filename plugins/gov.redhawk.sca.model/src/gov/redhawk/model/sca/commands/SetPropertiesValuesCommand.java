@@ -61,7 +61,7 @@ public class SetPropertiesValuesCommand extends SetStatusCommand<ScaPropertyCont
 				if (prop != null) {
 					if (prop.getDefinition() == null) {
 						AbstractProperty def = getDefinition(prop.getId());
-						((ScaAbstractProperty) prop).setDefinition(def);
+						((ScaAbstractProperty<AbstractProperty>) prop).setDefinition(def);
 					}
 					prop.fromAny(dt.value);
 				} else {
