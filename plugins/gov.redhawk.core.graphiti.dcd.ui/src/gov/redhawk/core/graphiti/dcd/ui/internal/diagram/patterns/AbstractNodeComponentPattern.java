@@ -191,6 +191,10 @@ public abstract class AbstractNodeComponentPattern extends AbstractPortSupplierP
 			dcd.getComponentFiles().getComponentFile().remove(componentFileToRemove);
 		}
 
+		if (dcd.getComponentFiles().getComponentFile().isEmpty()) {
+			dcd.setComponentFiles(null);
+		}
+
 		// delete component placement
 		EcoreUtil.delete(placement);
 	}
