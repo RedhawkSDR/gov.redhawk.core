@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalCommandStack;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
@@ -27,11 +28,25 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 
 import gov.redhawk.core.graphiti.sad.ui.ext.ComponentShape;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
+import gov.redhawk.sca.util.PluginUtil;
+import mil.jpeojtrs.sca.partitioning.ComponentFile;
+import mil.jpeojtrs.sca.partitioning.ComponentFileRef;
+import mil.jpeojtrs.sca.partitioning.ComponentFiles;
+import mil.jpeojtrs.sca.partitioning.NamingService;
+import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
 import mil.jpeojtrs.sca.sad.AssemblyController;
+import mil.jpeojtrs.sca.sad.ExternalProperty;
+import mil.jpeojtrs.sca.sad.FindComponent;
+import mil.jpeojtrs.sca.sad.HostCollocation;
+import mil.jpeojtrs.sca.sad.Port;
 import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
 import mil.jpeojtrs.sca.sad.SadComponentInstantiationRef;
+import mil.jpeojtrs.sca.sad.SadComponentPlacement;
+import mil.jpeojtrs.sca.sad.SadConnectInterface;
 import mil.jpeojtrs.sca.sad.SadFactory;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
+import mil.jpeojtrs.sca.spd.SoftPkg;
+import mil.jpeojtrs.sca.util.ScaUriHelpers;
 
 public class SADUtils {
 
@@ -182,6 +197,210 @@ public class SADUtils {
 	}
 
 	/**
+	 * Create SadComponentInstantiation and corresponding SadComponentPlacement business object in a SoftwareAssembly
+	 * This method should be executed within a RecordingCommand.
+	 * 
+	 * @param spd
+	 * @param sad
+	 * @param hostCollocation - Target hostCollocation if this is to be the component container, otherwise null
+	 * @param usageName - Usage name override, may be null
+	 * @param instantiationId - Instantiation ID override, may be null
+	 * @param implementationId - may be null
+	 * @return
+	 */
+	public static SadComponentInstantiation createComponentInstantiation(final SoftPkg spd, final SoftwareAssembly sad, final HostCollocation hostCollocation,
+		String usageName, String instantiationId, String implementationId) {
+
+		// add component files if necessary
+		ComponentFiles componentFiles = sad.getComponentFiles();
+		if (componentFiles == null) {
+			componentFiles = PartitioningFactory.eINSTANCE.createComponentFiles();
+			sad.setComponentFiles(componentFiles);
+		}
+
+		// find a compatible component file, or create a new one
+		final String spdPath = ScaUriHelpers.getLocalFilePath(componentFiles, spd);
+		ComponentFile componentFile = null;
+		for (final ComponentFile f : componentFiles.getComponentFile()) {
+			final SoftPkg fSpd = f.getSoftPkg();
+			if (fSpd != null && PluginUtil.equals(spdPath, f.getLocalFile().getName())) {
+				componentFile = f;
+				break;
+			}
+		}
+		if (componentFile == null) {
+			componentFile = SadFactory.eINSTANCE.createComponentFile();
+			componentFile.setSoftPkg(spd);
+			componentFiles.getComponentFile().add(componentFile);
+		}
+
+		// create component placement and add to list
+		final SadComponentPlacement componentPlacement = SadFactory.eINSTANCE.createSadComponentPlacement();
+		if (hostCollocation != null) {
+			hostCollocation.getComponentPlacement().add(componentPlacement);
+		} else {
+			sad.getPartitioning().getComponentPlacement().add(componentPlacement);
+		}
+
+		// create component file ref
+		final ComponentFileRef ref = PartitioningFactory.eINSTANCE.createComponentFileRef();
+		ref.setFile(componentFile);
+		componentPlacement.setComponentFileRef(ref);
+
+		// create component instantiation
+		SadComponentInstantiation sadComponentInstantiation = SadFactory.eINSTANCE.createSadComponentInstantiation();
+
+		// use provided name/id if provided otherwise generate
+		String id = (instantiationId != null) ? instantiationId : SoftwareAssembly.Util.createComponentIdentifier(sad, spd.getName());
+		String compName = (usageName != null) ? usageName : SoftwareAssembly.Util.createComponentUsageName(sad, id);
+		sadComponentInstantiation.setUsageName(compName);
+		sadComponentInstantiation.setId(id);
+
+		final FindComponent findComponent = SadFactory.eINSTANCE.createFindComponent();
+		final NamingService namingService = PartitioningFactory.eINSTANCE.createNamingService();
+		namingService.setName(compName);
+		findComponent.setNamingService(namingService);
+		sadComponentInstantiation.setFindComponent(findComponent);
+		if (implementationId == null) {
+			implementationId = spd.getImplementation().get(0).getId();
+		}
+		sadComponentInstantiation.setImplID(implementationId);
+		componentPlacement.getComponentInstantiation().add(sadComponentInstantiation);
+
+		// determine start order
+		int startOrder = 0;
+		for (SadComponentInstantiation comp : sad.getComponentInstantiationsInStartOrder()) {
+			if (comp.getStartOrder() == null) {
+				break;
+			}
+			startOrder = comp.getStartOrder().intValue() + 1;
+		}
+		sadComponentInstantiation.setStartOrder(BigInteger.valueOf(startOrder));
+
+		// determine if component should be the assembly controller
+		if (sadComponentInstantiation.getStartOrder().compareTo(BigInteger.ZERO) == 0) {
+			// create assembly controller
+			AssemblyController assemblyController = SadFactory.eINSTANCE.createAssemblyController();
+			SadComponentInstantiationRef sadComponentInstantiationRef = SadFactory.eINSTANCE.createSadComponentInstantiationRef();
+			sadComponentInstantiationRef.setInstantiation(sadComponentInstantiation);
+			assemblyController.setComponentInstantiationRef(sadComponentInstantiationRef);
+			sad.setAssemblyController(assemblyController);
+		}
+
+		return sadComponentInstantiation;
+	}
+
+	/**
+	 * Delete SadComponentInstantiation and corresponding SadComponentPlacement business object from SoftwareAssembly
+	 * This method should be executed within a RecordingCommand.
+	 * @param ciToDelete
+	 * @param sad
+	 */
+	public static void deleteComponentInstantiation(final SadComponentInstantiation ciToDelete, final SoftwareAssembly sad) {
+
+		// assembly controller may reference componentInstantiation
+		// delete reference if applicable
+		if (sad.getAssemblyController() != null && sad.getAssemblyController().getComponentInstantiationRef() != null
+			&& sad.getAssemblyController().getComponentInstantiationRef().getInstantiation().equals(ciToDelete)) {
+			EcoreUtil.delete(sad.getAssemblyController().getComponentInstantiationRef());
+			sad.getAssemblyController().setComponentInstantiationRef(null);
+		}
+
+		// get placement for instantiation and delete it from sad partitioning after we look at removing the component
+		// file ref.
+		SadComponentPlacement placement = (SadComponentPlacement) ciToDelete.getPlacement();
+
+		// find and remove any attached connections
+		// gather connections
+		List<SadConnectInterface> connectionsToRemove = new ArrayList<SadConnectInterface>();
+		if (sad.getConnections() != null) {
+			for (SadConnectInterface connectionInterface : sad.getConnections().getConnectInterface()) {
+				// we need to do thorough null checks here because of the many connection possibilities. Firstly a
+				// connection requires only a usesPort and either (providesPort || componentSupportedInterface)
+				// and therefore null checks need to be performed.
+				// FindBy connections don't have ComponentInstantiationRefs and so they can also be null
+				if ((connectionInterface.getComponentSupportedInterface() != null
+					&& connectionInterface.getComponentSupportedInterface().getComponentInstantiationRef() != null
+					&& ciToDelete.getId().equals(connectionInterface.getComponentSupportedInterface().getComponentInstantiationRef().getRefid()))
+					|| (connectionInterface.getUsesPort() != null && connectionInterface.getUsesPort().getComponentInstantiationRef() != null
+						&& ciToDelete.getId().equals(connectionInterface.getUsesPort().getComponentInstantiationRef().getRefid()))
+					|| (connectionInterface.getProvidesPort() != null && connectionInterface.getProvidesPort().getComponentInstantiationRef() != null
+						&& ciToDelete.getId().equals(connectionInterface.getProvidesPort().getComponentInstantiationRef().getRefid()))) {
+					connectionsToRemove.add(connectionInterface);
+				}
+			}
+		}
+		// remove gathered connections
+		if (sad.getConnections() != null) {
+			sad.getConnections().getConnectInterface().removeAll(connectionsToRemove);
+		}
+
+		// remove any associated external ports
+		if (sad.getExternalPorts() != null) {
+			List<Port> externalPortsToRemove = new ArrayList<Port>();
+			for (Port port : sad.getExternalPorts().getPort()) {
+				if (port.getComponentInstantiationRef().getRefid().equals(ciToDelete.getId())) {
+					externalPortsToRemove.add(port);
+				}
+			}
+
+			for (Port port : externalPortsToRemove) {
+				sad.getExternalPorts().getPort().remove(port);
+			}
+
+			if (sad.getExternalPorts().getPort().isEmpty()) {
+				sad.setExternalPorts(null);
+			}
+		}
+
+		// remove any associated external properties
+		if (sad.getExternalProperties() != null) {
+			List<ExternalProperty> externalPropertiesToRemove = new ArrayList<ExternalProperty>();
+			for (ExternalProperty property : sad.getExternalProperties().getProperties()) {
+				if (property.getCompRefID().equals(ciToDelete.getId())) {
+					externalPropertiesToRemove.add(property);
+				}
+			}
+
+			for (ExternalProperty property : externalPropertiesToRemove) {
+				sad.getExternalProperties().getProperties().remove(property);
+			}
+
+			if (sad.getExternalProperties().getProperties().isEmpty()) {
+				sad.setExternalProperties(null);
+			}
+		}
+		// delete component file if applicable
+		// figure out which component file we are using and if no other component placements using it then remove it.
+		ComponentFile componentFileToRemove = placement.getComponentFileRef().getFile();
+		// check components (not in host collocation)
+		for (SadComponentPlacement p : sad.getPartitioning().getComponentPlacement()) {
+			if (p != placement && p.getComponentFileRef().getRefid().equals(placement.getComponentFileRef().getRefid())) {
+				componentFileToRemove = null;
+				break;
+			}
+		}
+		// check components in host collocation
+		for (HostCollocation hc : sad.getPartitioning().getHostCollocation()) {
+			for (SadComponentPlacement p : hc.getComponentPlacement()) {
+				if (p != placement && p.getComponentFileRef().getRefid().equals(placement.getComponentFileRef().getRefid())) {
+					componentFileToRemove = null;
+					break;
+				}
+			}
+			if (componentFileToRemove == null) {
+				break;
+			}
+		}
+		if (componentFileToRemove != null) {
+			sad.getComponentFiles().getComponentFile().remove(componentFileToRemove);
+		}
+
+		// delete component placement
+		EcoreUtil.delete(placement);
+	}
+
+	/**
 	 * Swap start order of provided components. Change assembly controller if start order zero.
 	 * @param sad
 	 * @param featureProvider
@@ -217,4 +436,6 @@ public class SADUtils {
 			}
 		});
 	}
+	
+	
 }
