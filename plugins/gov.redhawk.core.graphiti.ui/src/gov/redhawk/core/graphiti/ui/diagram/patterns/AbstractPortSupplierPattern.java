@@ -436,6 +436,10 @@ public abstract class AbstractPortSupplierPattern extends AbstractContainerPatte
 
 		// Link all top-level business objects
 		EObject newObject = (EObject) context.getNewObject();
+//		System.err.println("ContainerShape: " + containerShape);
+//		for (Object bo : getBusinessObjectsToLink(newObject).toArray()) {
+//			System.err.println("Obj: " + bo);
+//		}
 		link(containerShape, getBusinessObjectsToLink(newObject).toArray());
 
 		// Initialize shape contents
