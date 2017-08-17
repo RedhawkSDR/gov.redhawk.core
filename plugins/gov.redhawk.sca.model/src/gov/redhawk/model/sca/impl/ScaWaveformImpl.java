@@ -64,6 +64,7 @@ import CF.UnknownIdentifier;
 import CF.UnknownProperties;
 import CF.ApplicationPackage.ComponentElementType;
 import CF.ApplicationPackage.ComponentProcessIdType;
+import CF.ApplicationPackage.InvalidMetric;
 import CF.LifeCyclePackage.InitializeError;
 import CF.LifeCyclePackage.ReleaseError;
 import CF.PortSetPackage.PortInfoType;
@@ -2227,4 +2228,11 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		return getObj().aware();
 	}
 
+	/**
+	 * @since 21.0
+	 */
+	@Override
+	public DataType[] metrics(String[] components, String[] attributes) throws InvalidMetric {
+		return getObj().metrics(components, attributes);
+	}
 } // ScaWaveformImpl

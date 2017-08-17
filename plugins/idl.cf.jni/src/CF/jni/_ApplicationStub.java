@@ -203,6 +203,12 @@ public class _ApplicationStub extends omnijni.ObjectImpl implements CF.Applicati
   }
   private static native boolean _get_aware (long __ref__);
 
+  public CF.DataType[] metrics (String[] components, String[] attributes)
+  {
+    return metrics(this.ref_, components, attributes);
+  }
+  private static native CF.DataType[] metrics (long __ref__, String[] components, String[] attributes);
+
   private static String __ids[] = {
     "IDL:CF/Application:1.0",
     "IDL:CF/Resource:1.0",
