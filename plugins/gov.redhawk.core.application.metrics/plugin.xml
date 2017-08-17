@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
+      <propertyTabs
+            contributorId="gov.redhawk.ui.sca_explorer">
+         <propertyTab
+               afterTab="gov.redhawk.sca.ui.properties.propertyTab"
+               category="general"
+               id="gov.redhawk.core.application.metrics.metricsTab"
+               label="%propertyTab.label">
+         </propertyTab>
+      </propertyTabs>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertySections">
+      <propertySections
+            contributorId="gov.redhawk.ui.sca_explorer">
+         <propertySection
+               class="gov.redhawk.core.application.metrics.MetricsSection"
+               id="gov.redhawk.core.application.metrics.metricsSection"
+               tab="gov.redhawk.core.application.metrics.metricsTab">
+            <input
+                  type="gov.redhawk.model.sca.ScaWaveform">
+            </input>
+         </propertySection>
+      </propertySections>
+   </extension>
+
+</plugin>

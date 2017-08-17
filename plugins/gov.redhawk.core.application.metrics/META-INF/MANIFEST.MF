@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: gov.redhawk.core.application.metrics;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: %providerName
+Require-Bundle: org.eclipse.ui.views.properties.tabbed,
+ org.eclipse.nebula.widgets.xviewer;bundle-version="1.0.0",
+ org.eclipse.nebula.widgets.xviewer.core;bundle-version="1.0.0",
+ gov.redhawk.sca.model;bundle-version="21.0.0"
