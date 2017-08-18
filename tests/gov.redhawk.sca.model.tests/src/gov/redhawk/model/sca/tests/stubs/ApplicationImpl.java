@@ -24,11 +24,13 @@ import org.omg.PortableServer.POAPackage.WrongPolicy;
 import CF.ApplicationOperations;
 import CF.ComponentEnumType;
 import CF.ComponentType;
+import CF.DataType;
 import CF.DeviceAssignmentType;
 import CF.PortType;
 import CF.Resource;
 import CF.ApplicationPackage.ComponentElementType;
 import CF.ApplicationPackage.ComponentProcessIdType;
+import CF.ApplicationPackage.InvalidMetric;
 import CF.LifeCyclePackage.ReleaseError;
 import CF.ResourcePackage.StartError;
 import CF.ResourcePackage.StopError;
@@ -206,5 +208,10 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 		return true;
 	}
 
+	@Override
+	public DataType[] metrics(String[] components, String[] attributes) throws InvalidMetric {
+		// TODO
+		return new DataType[0];
+	}
 
 }
