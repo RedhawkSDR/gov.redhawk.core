@@ -32,7 +32,7 @@ public class MetricsRefreshJob extends Job {
 	private ScaWaveform waveform;
 
 	public MetricsRefreshJob(XViewer xviewer, ScaWaveform waveform) {
-		super("Metrics refresh");
+		super(Messages.MetricsRefreshJob_JobName);
 		this.xviewer = xviewer;
 		this.waveform = waveform;
 		setUser(false);

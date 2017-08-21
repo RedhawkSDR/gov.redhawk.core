@@ -17,34 +17,36 @@ import org.eclipse.nebula.widgets.xviewer.core.model.XViewerColumn;
 
 class MetricsViewerFactory extends XViewerFactory {
 
-	private static final String NAMESPACE = "gov.redhawk.core.application.metrics.MetricsViewerFactory";
+	private static final String NAMESPACE = "gov.redhawk.core.application.metrics.MetricsViewerFactory"; //$NON-NLS-1$
 
-	static final String ID_ID = "gov.redhawk.core.application.metrics.MetricsViewerFactory.id";
-	static final String ID_CORES = "gov.redhawk.core.application.metrics.MetricsViewerFactory.cores";
-	static final String ID_MEMORY = "gov.redhawk.core.application.metrics.MetricsViewerFactory.memory";
-	static final String ID_VALID = "gov.redhawk.core.application.metrics.MetricsViewerFactory.valid";
-	static final String ID_SHARED = "gov.redhawk.core.application.metrics.MetricsViewerFactory.shared";
-	static final String ID_PROCESSES = "gov.redhawk.core.application.metrics.MetricsViewerFactory.processes";
-	static final String ID_THREADS = "gov.redhawk.core.application.metrics.MetricsViewerFactory.threads";
-	static final String ID_FILES = "gov.redhawk.core.application.metrics.MetricsViewerFactory.files";
-	static final String ID_COMPONENT_HOST = "gov.redhawk.core.application.metrics.MetricsViewerFactory.componenthost";
+	static final String ID_ID = "gov.redhawk.core.application.metrics.MetricsViewerFactory.id"; //$NON-NLS-1$
+	static final String ID_CORES = "gov.redhawk.core.application.metrics.MetricsViewerFactory.cores"; //$NON-NLS-1$
+	static final String ID_MEMORY = "gov.redhawk.core.application.metrics.MetricsViewerFactory.memory"; //$NON-NLS-1$
+	static final String ID_VALID = "gov.redhawk.core.application.metrics.MetricsViewerFactory.valid"; //$NON-NLS-1$
+	static final String ID_SHARED = "gov.redhawk.core.application.metrics.MetricsViewerFactory.shared"; //$NON-NLS-1$
+	static final String ID_PROCESSES = "gov.redhawk.core.application.metrics.MetricsViewerFactory.processes"; //$NON-NLS-1$
+	static final String ID_THREADS = "gov.redhawk.core.application.metrics.MetricsViewerFactory.threads"; //$NON-NLS-1$
+	static final String ID_FILES = "gov.redhawk.core.application.metrics.MetricsViewerFactory.files"; //$NON-NLS-1$
+	static final String ID_COMPONENT_HOST = "gov.redhawk.core.application.metrics.MetricsViewerFactory.componenthost"; //$NON-NLS-1$
 
-	private static final XViewerColumn COL_ID = new XViewerColumn(ID_ID, "ID", 250, XViewerAlign.Left, true, SortDataType.String, false, "ID");
-	private static final XViewerColumn COL_CORES = new XViewerColumn(ID_CORES, "Cores", 80, XViewerAlign.Left, true, SortDataType.Float, false, "CPU Cores");
-	private static final XViewerColumn COL_MEMORY = new XViewerColumn(ID_MEMORY, "Memory", 80, XViewerAlign.Left, true, SortDataType.Float, false,
-		"Memory (MBs)");
-	private static final XViewerColumn COL_VALID = new XViewerColumn(ID_VALID, "Valid", 50, XViewerAlign.Left, false, SortDataType.Boolean, false,
-		"Valid metric");
-	private static final XViewerColumn COL_SHARED = new XViewerColumn(ID_SHARED, "Shared", 50, XViewerAlign.Left, true, SortDataType.Boolean, false,
-		"Shared process space");
-	private static final XViewerColumn COL_PROCESSES = new XViewerColumn(ID_PROCESSES, "Processes", 80, XViewerAlign.Left, true, SortDataType.Long, false,
-		"Process count");
-	private static final XViewerColumn COL_THREADS = new XViewerColumn(ID_THREADS, "Threads", 80, XViewerAlign.Left, true, SortDataType.Long, false,
-		"Thread count");
-	private static final XViewerColumn COL_FILES = new XViewerColumn(ID_FILES, "Files", 80, XViewerAlign.Left, true, SortDataType.Long, false,
-		"Open file descriptors");
-	private static final XViewerColumn COL_COMPONENT_HOST = new XViewerColumn(ID_COMPONENT_HOST, "Component Host", 250, XViewerAlign.Left, false,
-		SortDataType.String, false, "Component Host");
+	private static final XViewerColumn COL_ID = new XViewerColumn(ID_ID, Messages.MetricsViewerFactory_ColumnTitle_ID, 250, XViewerAlign.Left, true,
+		SortDataType.String, false, Messages.MetricsViewerFactory_ColumnDesc_ID);
+	private static final XViewerColumn COL_CORES = new XViewerColumn(ID_CORES, Messages.MetricsViewerFactory_ColumnTitle_Cores, 80, XViewerAlign.Left, true,
+		SortDataType.Float, false, Messages.MetricsViewerFactory_ColumnDesc_Cores);
+	private static final XViewerColumn COL_MEMORY = new XViewerColumn(ID_MEMORY, Messages.MetricsViewerFactory_ColumnTitle_Memory, 80, XViewerAlign.Left, true,
+		SortDataType.Float, false, Messages.MetricsViewerFactory_ColumnDesc_Memory);
+	private static final XViewerColumn COL_VALID = new XViewerColumn(ID_VALID, Messages.MetricsViewerFactory_ColumnTitle_Valid, 50, XViewerAlign.Left, false,
+		SortDataType.Boolean, false, Messages.MetricsViewerFactory_ColumnDesc_Valid);
+	private static final XViewerColumn COL_SHARED = new XViewerColumn(ID_SHARED, Messages.MetricsViewerFactory_ColumnTitle_Shared, 50, XViewerAlign.Left, true,
+		SortDataType.Boolean, false, Messages.MetricsViewerFactory_ColumnDesc_Shared);
+	private static final XViewerColumn COL_PROCESSES = new XViewerColumn(ID_PROCESSES, Messages.MetricsViewerFactory_ColumnTitle_Processes, 80,
+		XViewerAlign.Left, true, SortDataType.Long, false, Messages.MetricsViewerFactory_ColumnDesc_Processes);
+	private static final XViewerColumn COL_THREADS = new XViewerColumn(ID_THREADS, Messages.MetricsViewerFactory_ColumnTitle_Threads, 80, XViewerAlign.Left,
+		true, SortDataType.Long, false, Messages.MetricsViewerFactory_ColumnDesc_Threads);
+	private static final XViewerColumn COL_FILES = new XViewerColumn(ID_FILES, Messages.MetricsViewerFactory_ColumnTitle_Files, 80, XViewerAlign.Left, true,
+		SortDataType.Long, false, Messages.MetricsViewerFactory_ColumnDesc_Files);
+	private static final XViewerColumn COL_COMPONENT_HOST = new XViewerColumn(ID_COMPONENT_HOST, Messages.MetricsViewerFactory_ColumnTitle_ComponentHost, 250,
+		XViewerAlign.Left, false, SortDataType.String, false, Messages.MetricsViewerFactory_ColumnDesc_ComponentHost);
 
 	public MetricsViewerFactory() {
 		super(NAMESPACE);
