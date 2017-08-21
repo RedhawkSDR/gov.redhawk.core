@@ -44,31 +44,41 @@ public class MetricsSection extends AbstractPropertySection {
 	public void setInput(IWorkbenchPart part, ISelection selection) {
 		super.setInput(part, selection);
 
-		// Unwrap the ScaWaveform selection
+		// Unwrap the selection; if it isn't an ScaWaveform, we can't use it
 		if (!(selection instanceof IStructuredSelection)) {
+			cancelRefreshJob();
 			xviewer.setInput(null);
 			return;
 		}
 		Object obj = ((IStructuredSelection) selection).getFirstElement();
 		if (!(obj instanceof ScaWaveform)) {
+			cancelRefreshJob();
 			xviewer.setInput(null);
 			return;
 		}
 
-		// Avoid double-set
+		// Ignore double-set of same input object
 		if (this.waveform == obj) {
 			return;
 		}
-		this.waveform = (ScaWaveform) obj;
 
-		// Cancel any existing refresh, schedule new refresh
-		if (refreshJob != null) {
-			refreshJob.cancel();
-		}
-		refreshJob = new MetricsRefreshJob(xviewer, waveform);
-		refreshJob.schedule();
+		this.waveform = (ScaWaveform) obj;
+		cancelRefreshJob();
 	}
-	
+
+	@Override
+	public void refresh() {
+		if (refreshJob == null) {
+			refreshJob = new MetricsRefreshJob(xviewer, waveform);
+			refreshJob.schedule();
+		}
+	}
+
+	@Override
+	public void aboutToBeHidden() {
+		cancelRefreshJob();
+	}
+
 	@Override
 	public void dispose() {
 		if (refreshJob != null) {
@@ -80,4 +90,10 @@ public class MetricsSection extends AbstractPropertySection {
 		super.dispose();
 	}
 
+	private void cancelRefreshJob() {
+		if (refreshJob != null) {
+			refreshJob.cancel();
+			refreshJob = null;
+		}
+	}
 }
