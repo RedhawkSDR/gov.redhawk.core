@@ -18,17 +18,22 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.graphiti.datatypes.IDimension;
+import org.eclipse.graphiti.features.IDeleteFeature;
 import org.eclipse.graphiti.features.IReason;
 import org.eclipse.graphiti.features.context.IAddContext;
+import org.eclipse.graphiti.features.context.IDeleteContext;
 import org.eclipse.graphiti.features.context.IDirectEditingContext;
 import org.eclipse.graphiti.features.context.ILayoutContext;
 import org.eclipse.graphiti.features.context.IUpdateContext;
+import org.eclipse.graphiti.features.context.impl.DeleteContext;
 import org.eclipse.graphiti.features.impl.Reason;
 import org.eclipse.graphiti.mm.Property;
 import org.eclipse.graphiti.mm.algorithms.Ellipse;
@@ -58,6 +63,7 @@ import gov.redhawk.core.graphiti.ui.preferences.DiagramPreferenceConstants;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.core.graphiti.ui.util.StyleUtil;
 import gov.redhawk.core.graphiti.ui.util.UpdateUtil;
+import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 import mil.jpeojtrs.sca.partitioning.ComponentSupportedInterfaceStub;
 import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
 import mil.jpeojtrs.sca.partitioning.ProvidesPortStub;
@@ -436,10 +442,7 @@ public abstract class AbstractPortSupplierPattern extends AbstractContainerPatte
 
 		// Link all top-level business objects
 		EObject newObject = (EObject) context.getNewObject();
-//		System.err.println("ContainerShape: " + containerShape);
-//		for (Object bo : getBusinessObjectsToLink(newObject).toArray()) {
-//			System.err.println("Obj: " + bo);
-//		}
+		addListener(containerShape, newObject);
 		link(containerShape, getBusinessObjectsToLink(newObject).toArray());
 
 		// Initialize shape contents
@@ -475,6 +478,31 @@ public abstract class AbstractPortSupplierPattern extends AbstractContainerPatte
 		adjustShapeLocation(containerShape, context.getTargetContainer());
 
 		return containerShape;
+	}
+
+	/**
+	 * Add listener to new device/service shapes so that they clean up if the linked object is deleted from under them
+	 */
+	private void addListener(final RHContainerShape containerShape, EObject obj) {
+		if (obj instanceof ComponentInstantiation) {
+			ComponentInstantiation compInst = (ComponentInstantiation) obj;
+			compInst.eAdapters().add(new AdapterImpl() {
+				@Override
+				public void notifyChanged(final Notification notification) {
+					super.notifyChanged(notification);
+					switch (notification.getEventType()) {
+					case Notification.REMOVE:
+						IDeleteContext deleteContext = new DeleteContext(containerShape);
+						IDeleteFeature deleteFeature = getFeatureProvider().getDeleteFeature(deleteContext);
+						if (deleteFeature != null && deleteFeature.canDelete(deleteContext)) {
+							deleteFeature.delete(deleteContext);
+						}
+						break;
+					default:
+					}
+				}
+			});
+		}
 	}
 
 	/**
