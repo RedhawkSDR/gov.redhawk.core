@@ -13,13 +13,18 @@ package gov.redhawk.core.graphiti.dcd.ui.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.emf.ecore.util.EcoreUtil;
-
+import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.dcd.DcdComponentPlacement;
 import mil.jpeojtrs.sca.dcd.DcdConnectInterface;
+import mil.jpeojtrs.sca.dcd.DcdFactory;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.partitioning.ComponentFile;
+import mil.jpeojtrs.sca.partitioning.ComponentFileRef;
+import mil.jpeojtrs.sca.partitioning.ComponentFiles;
+import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
+import mil.jpeojtrs.sca.spd.SoftPkg;
+import mil.jpeojtrs.sca.util.ScaUriHelpers;
 
 /**
  * @since 1.0
@@ -27,9 +32,62 @@ import mil.jpeojtrs.sca.partitioning.ComponentFile;
 public class DCDUtils {
 
 	private DCDUtils() {
-		
+
 	}
-	
+
+	public static DcdComponentInstantiation createComponentInstantiation(final SoftPkg spd, final DeviceConfiguration dcd, String usageName,
+		String instantiationId, String implementationId) {
+
+		// add component files if necessary
+		ComponentFiles componentFiles = dcd.getComponentFiles();
+		if (componentFiles == null) {
+			componentFiles = PartitioningFactory.eINSTANCE.createComponentFiles();
+			dcd.setComponentFiles(componentFiles);
+		}
+
+		// find a compatible component file, or create a new one
+		final String spdPath = ScaUriHelpers.getLocalFilePath(componentFiles, spd);
+		ComponentFile componentFile = null;
+		for (final ComponentFile f : componentFiles.getComponentFile()) {
+			final SoftPkg fSpd = f.getSoftPkg();
+			if (fSpd != null && PluginUtil.equals(spdPath, f.getLocalFile().getName())) {
+				componentFile = f;
+				break;
+			}
+		}
+
+		if (componentFile == null) {
+			componentFile = DcdFactory.eINSTANCE.createComponentFile();
+			componentFile.setSoftPkg(spd);
+			componentFiles.getComponentFile().add(componentFile);
+		}
+
+		// create component placement and add to list
+		final DcdComponentPlacement componentPlacement = DcdFactory.eINSTANCE.createDcdComponentPlacement();
+		dcd.getPartitioning().getComponentPlacement().add(componentPlacement);
+
+		// create component file ref
+		final ComponentFileRef ref = PartitioningFactory.eINSTANCE.createComponentFileRef();
+		ref.setFile(componentFile);
+		componentPlacement.setComponentFileRef(ref);
+
+		// create component instantiation
+		DcdComponentInstantiation dcdComponentInstantiation = DcdFactory.eINSTANCE.createDcdComponentInstantiation();
+
+		// use provided name/id/implId if provided otherwise generate
+		String id = (instantiationId != null) ? instantiationId : DeviceConfiguration.Util.createDeviceIdentifier(dcd, spd.getName());
+		String deviceName = (usageName != null) ? usageName : DeviceConfiguration.Util.createDeviceUsageName(dcd, spd.getName());
+		implementationId = (implementationId != null) ? implementationId : spd.getImplementation().get(0).getId();
+		dcdComponentInstantiation.setUsageName(deviceName);
+		dcdComponentInstantiation.setId(id);
+		dcdComponentInstantiation.setImplID(implementationId);
+
+		// add to placement
+		componentPlacement.getComponentInstantiation().add(dcdComponentInstantiation);
+
+		return dcdComponentInstantiation;
+	}
+
 	/**
 	 * Delete DcdComponentInstantiation and corresponding DcdComponentPlacement business object from DeviceConfiguration
 	 * This method should be executed within a RecordingCommand.
@@ -86,7 +144,8 @@ public class DCDUtils {
 		}
 
 		// delete component placement
-		EcoreUtil.delete(placement);
+		dcd.getPartitioning().getComponentPlacement().remove(placement);
+		placement.getComponentInstantiation().remove(ciToDelete);
 	}
-	
+
 }
