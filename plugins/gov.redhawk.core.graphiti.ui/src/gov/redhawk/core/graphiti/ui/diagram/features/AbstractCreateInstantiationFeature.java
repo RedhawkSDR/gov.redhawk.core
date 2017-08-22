@@ -20,12 +20,12 @@ import mil.jpeojtrs.sca.sad.SadFactory;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.util.ScaUriHelpers;
 
-public abstract class AbstractCreateInstatiationFeature extends AbstractCreateFeature {
+public abstract class AbstractCreateInstantiationFeature extends AbstractCreateFeature {
 
 	private SoftPkg spd = null;
 	private String implId = null;
 
-	public AbstractCreateInstatiationFeature(IFeatureProvider fp, SoftPkg spd, String implId) {
+	public AbstractCreateInstantiationFeature(IFeatureProvider fp, SoftPkg spd, String implId) {
 		super(fp, spd.getName(), spd.getDescription());
 		this.spd = spd;
 		this.implId = implId;

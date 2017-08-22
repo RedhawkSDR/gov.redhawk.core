@@ -22,7 +22,7 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 
 import gov.redhawk.core.graphiti.sad.ui.ext.ComponentShape;
 import gov.redhawk.core.graphiti.sad.ui.internal.diagram.patterns.ComponentPattern;
-import gov.redhawk.core.graphiti.ui.diagram.features.AbstractCreateInstatiationFeature;
+import gov.redhawk.core.graphiti.ui.diagram.features.AbstractCreateInstantiationFeature;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentFile;
 import mil.jpeojtrs.sca.partitioning.ComponentFileRef;
@@ -39,7 +39,7 @@ import mil.jpeojtrs.sca.sad.SadFactory;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 
-public class ComponentCreateFeature extends AbstractCreateInstatiationFeature {
+public class ComponentCreateFeature extends AbstractCreateInstantiationFeature {
 
 	public static final String OVERRIDE_USAGE_NAME = "OverrideUsageName";
 	public static final String OVERRIDE_INSTANTIATION_ID = "OverrideInstantiationId";

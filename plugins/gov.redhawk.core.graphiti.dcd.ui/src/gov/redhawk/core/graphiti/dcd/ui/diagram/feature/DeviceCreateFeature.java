@@ -20,13 +20,13 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import gov.redhawk.core.graphiti.dcd.ui.diagram.providers.DeviceManagerImageProvider;
 import gov.redhawk.core.graphiti.dcd.ui.ext.DeviceShape;
 import gov.redhawk.core.graphiti.dcd.ui.utils.DCDUtils;
-import gov.redhawk.core.graphiti.ui.diagram.features.AbstractCreateInstatiationFeature;
+import gov.redhawk.core.graphiti.ui.diagram.features.AbstractCreateInstantiationFeature;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 
-public class DeviceCreateFeature extends AbstractCreateInstatiationFeature {
+public class DeviceCreateFeature extends AbstractCreateInstantiationFeature {
 
 	public static final String SHAPE_TYPE = "deviceShape";
 	public static final String OVERRIDE_USAGE_NAME = "OverrideUsageName";
