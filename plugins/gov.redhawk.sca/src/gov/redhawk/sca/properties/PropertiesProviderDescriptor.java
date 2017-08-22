@@ -13,10 +13,13 @@ package gov.redhawk.sca.properties;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+
+import gov.redhawk.sca.ScaPlugin;
 
 /**
  * @since 5.0
- * 
  */
 public class PropertiesProviderDescriptor implements IPropertiesProviderDescriptor {
 
@@ -27,7 +30,6 @@ public class PropertiesProviderDescriptor implements IPropertiesProviderDescript
 	private final IConfigurationElement element;
 	private final String name;
 	private final String id;
-	private IPropertiesProvider provider;
 
 	public PropertiesProviderDescriptor(final IConfigurationElement element) {
 		this.element = element;
@@ -35,35 +37,25 @@ public class PropertiesProviderDescriptor implements IPropertiesProviderDescript
 		this.id = this.element.getAttribute(PropertiesProviderDescriptor.ID_ATTRIBUTE);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String getName() {
 		return this.name;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String getId() {
 		return this.id;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public IPropertiesProvider getProvider() {
-		if (this.provider == null) {
-			try {
-				this.provider = (IPropertiesProvider) this.element.createExecutableExtension(PropertiesProviderDescriptor.CLASS_ATTRIBUTE);
-			} catch (final CoreException e) {
-				//PASS
-			}
+		try {
+			return (IPropertiesProvider) this.element.createExecutableExtension(PropertiesProviderDescriptor.CLASS_ATTRIBUTE);
+		} catch (final CoreException e) {
+			IStatus status = new Status(IStatus.ERROR, ScaPlugin.PLUGIN_ID, "Unable to create properties provider", e);
+			ScaPlugin.getDefault().getLog().log(status);
+			return null;
 		}
-		return this.provider;
 	}
 
 }

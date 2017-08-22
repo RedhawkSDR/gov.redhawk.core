@@ -11,8 +11,6 @@
  */
 package gov.redhawk.sca.properties;
 
-import gov.redhawk.sca.ScaPlugin;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,64 +18,27 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.dynamichelpers.ExtensionTracker;
-import org.eclipse.core.runtime.dynamichelpers.IExtensionChangeHandler;
-import org.eclipse.core.runtime.dynamichelpers.IExtensionTracker;
-import org.eclipse.core.runtime.dynamichelpers.IFilter;
+
+import gov.redhawk.sca.ScaPlugin;
 
 /**
  * @since 5.0
  */
-public enum PropertiesProviderRegistry implements IExtensionChangeHandler, IPropertiesProviderRegistry {
+public enum PropertiesProviderRegistry implements IPropertiesProviderRegistry {
 	INSTANCE;
 
 	public static final String PROPERTIES_PROVIDER_EP_ID = "propertiesProvider";
 	private final List<IPropertiesProviderDescriptor> propertiesProviderDescriptors = new ArrayList<IPropertiesProviderDescriptor>();
-	private final List<IPropertiesProvider> propertiesProviders = new ArrayList<IPropertiesProvider>();
 	private final Map<IPropertiesProvider, String> nameMap = new HashMap<IPropertiesProvider, String>();
-	private final ExtensionTracker tracker;
 
 	private PropertiesProviderRegistry() {
-		final IExtensionRegistry reg = Platform.getExtensionRegistry();
-
-		final IExtensionPoint ep = reg.getExtensionPoint(ScaPlugin.PLUGIN_ID, PropertiesProviderRegistry.PROPERTIES_PROVIDER_EP_ID);
-
-		this.tracker = new ExtensionTracker(reg);
-
-		if (ep != null) {
-			final IFilter filter = ExtensionTracker.createExtensionPointFilter(ep);
-			this.tracker.registerHandler(this, filter);
-			final IExtension[] extensions = ep.getExtensions();
-			for (final IExtension extension : extensions) {
-				addExtension(this.tracker, extension);
-			}
-		}
-	}
-
-	@Override
-	public void addExtension(final IExtensionTracker tracker, final IExtension extension) {
-		for (final IConfigurationElement element : extension.getConfigurationElements()) {
-			final IPropertiesProviderDescriptor descriptor = new PropertiesProviderDescriptor(element);
+		IConfigurationElement[] configElements = Platform.getExtensionRegistry().getConfigurationElementsFor(ScaPlugin.PLUGIN_ID,
+			PropertiesProviderRegistry.PROPERTIES_PROVIDER_EP_ID);
+		for (IConfigurationElement configElement : configElements) {
+			final IPropertiesProviderDescriptor descriptor = new PropertiesProviderDescriptor(configElement);
 			this.propertiesProviderDescriptors.add(descriptor);
-			tracker.registerObject(extension, descriptor, IExtensionTracker.REF_SOFT);
 		}
-	}
-
-	@Override
-	public void removeExtension(final IExtension extension, final Object[] objects) {
-		for (final Object obj : objects) {
-			if (obj instanceof IPropertiesProviderDescriptor) {
-				this.propertiesProviderDescriptors.remove(obj);
-			}
-		}
-	}
-
-	public void clearPropertiesProviders() {
-		this.propertiesProviderDescriptors.clear();
 	}
 
 	@Override
@@ -85,23 +46,17 @@ public enum PropertiesProviderRegistry implements IExtensionChangeHandler, IProp
 		return Collections.unmodifiableList(this.propertiesProviderDescriptors);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public List<IPropertiesProvider> getPropertiesProviders() {
-		this.propertiesProviders.clear();
+		List<IPropertiesProvider> propertiesProviders = new ArrayList<IPropertiesProvider>();
 		this.nameMap.clear();
 		for (IPropertiesProviderDescriptor descriptor : this.propertiesProviderDescriptors) {
-			this.propertiesProviders.add(descriptor.getProvider());
+			propertiesProviders.add(descriptor.getProvider());
 			this.nameMap.put(descriptor.getProvider(), descriptor.getName());
 		}
-		return this.propertiesProviders;
+		return propertiesProviders;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String getName(IPropertiesProvider provider) {
 		return this.nameMap.get(provider);

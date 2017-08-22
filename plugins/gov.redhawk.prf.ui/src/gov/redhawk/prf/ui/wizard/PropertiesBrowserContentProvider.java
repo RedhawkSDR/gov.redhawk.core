@@ -11,23 +11,12 @@
  */
 package gov.redhawk.prf.ui.wizard;
 
-import gov.redhawk.sca.properties.Category;
-import gov.redhawk.sca.properties.IPropertiesProvider;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import mil.jpeojtrs.sca.prf.Properties;
-import mil.jpeojtrs.sca.prf.Struct;
-import mil.jpeojtrs.sca.prf.StructSequence;
-
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
@@ -35,6 +24,14 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.progress.DeferredTreeContentManager;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.PendingUpdateAdapter;
+
+import gov.redhawk.sca.properties.Category;
+import gov.redhawk.sca.properties.IPropertiesProvider;
+import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.prf.Properties;
+import mil.jpeojtrs.sca.prf.Struct;
+import mil.jpeojtrs.sca.prf.StructSequence;
+import mil.jpeojtrs.sca.util.collections.FeatureMapList;
 
 /**
  * @since 4.0
@@ -44,63 +41,13 @@ public class PropertiesBrowserContentProvider extends AdapterFactoryContentProvi
 	private DeferredTreeContentManager deferredContentManager;
 	private final Map<Object, List<IPropertiesProvider>> map = new HashMap<Object, List<IPropertiesProvider>>();
 
-	private final Set<IJobChangeListener> jobListeners = new HashSet<IJobChangeListener>();
-	private final IJobChangeListener mainListener = new IJobChangeListener() {
-
-		@Override
-		public void sleeping(final IJobChangeEvent event) {
-			for (final IJobChangeListener listener : PropertiesBrowserContentProvider.this.jobListeners) {
-				listener.sleeping(event);
-			}
-		}
-
-		@Override
-		public void scheduled(final IJobChangeEvent event) {
-			for (final IJobChangeListener listener : PropertiesBrowserContentProvider.this.jobListeners) {
-				listener.scheduled(event);
-			}
-		}
-
-		@Override
-		public void running(final IJobChangeEvent event) {
-			for (final IJobChangeListener listener : PropertiesBrowserContentProvider.this.jobListeners) {
-				listener.running(event);
-			}
-		}
-
-		@Override
-		public void done(final IJobChangeEvent event) {
-			for (final IJobChangeListener listener : PropertiesBrowserContentProvider.this.jobListeners) {
-				listener.done(event);
-			}
-		}
-
-		@Override
-		public void awake(final IJobChangeEvent event) {
-			for (final IJobChangeListener listener : PropertiesBrowserContentProvider.this.jobListeners) {
-				listener.awake(event);
-			}
-		}
-
-		@Override
-		public void aboutToRun(final IJobChangeEvent event) {
-			for (final IJobChangeListener listener : PropertiesBrowserContentProvider.this.jobListeners) {
-				listener.aboutToRun(event);
-			}
-		}
-	};
-
 	/**
-	 * 
 	 * @param adapterFactory
 	 */
 	public PropertiesBrowserContentProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof List) {
@@ -111,7 +58,7 @@ public class PropertiesBrowserContentProvider extends AdapterFactoryContentProvi
 			List<Object> children = new ArrayList<Object>();
 			children.addAll(((Category) parentElement).getCategories());
 			for (Properties props : ((Category) parentElement).getProperties()) {
-				children.addAll(this.getPropertiesChildren(props));
+				children.addAll(new FeatureMapList<AbstractProperty>(props.getProperties(), AbstractProperty.class));
 			}
 			return children.toArray();
 		} else if (parentElement instanceof Struct) {
@@ -127,42 +74,27 @@ public class PropertiesBrowserContentProvider extends AdapterFactoryContentProvi
 		return super.getChildren(parentElement);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Object getParent(Object element) {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean hasChildren(Object element) {
 		return element instanceof IPropertiesProvider || element instanceof Category || element instanceof Struct || element instanceof StructSequence;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void dispose() {
 		//Nothing to do
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		super.inputChanged(viewer, oldInput, newInput);
 		this.deferredContentManager = createDeferredContentManager((AbstractTreeViewer) viewer);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Object[] getElements(Object inputElement) {
 		final List<IPropertiesProvider> providers = this.map.get(inputElement);
@@ -178,32 +110,16 @@ public class PropertiesBrowserContentProvider extends AdapterFactoryContentProvi
 	private DeferredTreeContentManager createDeferredContentManager(final AbstractTreeViewer viewer) {
 
 		final DeferredTreeContentManager contentManager = new DeferredTreeContentManager(viewer) {
-			/**
-			 * {@inheritDoc}
-			 */
 			@Override
 			protected IDeferredWorkbenchAdapter getAdapter(final Object element) {
 				return new PropertiesBrowserDeferredWorkbenchAdapter(map);
 			}
 
-			/**
-			 * {@inheritDoc}
-			 */
 			@Override
 			protected PendingUpdateAdapter createPendingUpdateAdapter() {
 				return new PropertiesPendingUpdateAdapter();
 			}
 		};
-		contentManager.addUpdateCompleteListener(this.mainListener);
 		return contentManager;
-	}
-
-	private List<Object> getPropertiesChildren(Properties props) {
-		List<Object> children = new ArrayList<Object>();
-		children.addAll(props.getSimple());
-		children.addAll(props.getSimpleSequence());
-		children.addAll(props.getStruct());
-		children.addAll(props.getStructSequence());
-		return children;
 	}
 }

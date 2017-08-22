@@ -18,6 +18,18 @@ import java.util.Arrays;
 import java.util.List;
 
 import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.prf.Action;
+import mil.jpeojtrs.sca.prf.ActionType;
+import mil.jpeojtrs.sca.prf.ConfigurationKind;
+import mil.jpeojtrs.sca.prf.Kind;
+import mil.jpeojtrs.sca.prf.PrfFactory;
+import mil.jpeojtrs.sca.prf.PrfPackage;
+import mil.jpeojtrs.sca.prf.PropertyConfigurationType;
+import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.SimpleSequence;
+import mil.jpeojtrs.sca.prf.Struct;
+import mil.jpeojtrs.sca.prf.StructPropertyConfigurationType;
+import mil.jpeojtrs.sca.prf.StructSequence;
 import mil.jpeojtrs.sca.prf.provider.PrfItemProviderAdapterFactory;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -84,7 +96,7 @@ public class BrowsePropertiesWizardPage extends WizardPage {
 		client.setLayout(new GridLayout(2, false));
 
 		final Control tree = createPropertyTree(client);
-		tree.setLayoutData(this.dataFactory.hint(400, SWT.DEFAULT).grab(true, true).create()); // SUPPRESS CHECKSTYLE MagicNumber
+		tree.setLayoutData(this.dataFactory.hint(400, SWT.DEFAULT).grab(true, true).create());
 		setPageComplete(false);
 		this.setControl(client);
 	}
@@ -117,11 +129,73 @@ public class BrowsePropertiesWizardPage extends WizardPage {
 				for (Object obj : selection) {
 					if (obj instanceof AbstractProperty) {
 						AbstractProperty prop = (AbstractProperty) obj;
-						//If children of a selection are also selected, don't add them too.
-						if (!selection.contains(prop.eContainer())) {
-							properties.add(EcoreUtil.copy((EObject) obj));
-						}
+						switch (prop.eClass().getClassifierID()) {
+						case PrfPackage.SIMPLE:
+							if (prop.eContainer() instanceof Struct) {
+								// Don't use if the parent struct is also selected
+								if (selection.contains(prop.eContainer())) {
+									continue;
+								}
 
+								// Copy the simple, set its kind to 'property', action to 'external'
+								Simple propCopy = (Simple) EcoreUtil.copy(prop);
+								propCopy.getKind().clear();
+								Kind kind = PrfFactory.eINSTANCE.createKind();
+								kind.setType(PropertyConfigurationType.PROPERTY);
+								propCopy.getKind().add(kind);
+								Action action = PrfFactory.eINSTANCE.createAction();
+								action.setType(ActionType.EXTERNAL);
+								propCopy.setAction(action);
+								properties.add(propCopy);
+							} else {
+								properties.add(EcoreUtil.copy(prop));
+							}
+							break;
+						case PrfPackage.SIMPLE_SEQUENCE:
+							if (prop.eContainer() instanceof Struct) {
+								// Don't use if the parent of the property is also selected
+								if (selection.contains(prop.eContainer())) {
+									continue;
+								}
+
+								// Copy the simple seq, set its kind to 'property', action to 'external'
+								SimpleSequence propCopy = (SimpleSequence) EcoreUtil.copy(prop);
+								propCopy.getKind().clear();
+								Kind kind = PrfFactory.eINSTANCE.createKind();
+								kind.setType(PropertyConfigurationType.PROPERTY);
+								propCopy.getKind().add(kind);
+								Action action = PrfFactory.eINSTANCE.createAction();
+								action.setType(ActionType.EXTERNAL);
+								propCopy.setAction(action);
+								properties.add(propCopy);
+							} else {
+								properties.add(EcoreUtil.copy(prop));
+							}
+							break;
+						case PrfPackage.STRUCT:
+							if (prop.eContainer() instanceof StructSequence) {
+								// Don't use if the parent of the property is also selected
+								if (selection.contains(prop.eContainer())) {
+									continue;
+								}
+
+								// Copy the struct, set its configurationkind to 'property'
+								Struct propCopy = (Struct) EcoreUtil.copy(prop);
+								propCopy.getConfigurationKind().clear();
+								ConfigurationKind configKind = PrfFactory.eINSTANCE.createConfigurationKind();
+								configKind.setType(StructPropertyConfigurationType.PROPERTY);
+								propCopy.getConfigurationKind().add(configKind);
+								properties.add(propCopy);
+							} else {
+								properties.add(EcoreUtil.copy(prop));
+							}
+							break;
+						case PrfPackage.STRUCT_SEQUENCE:
+							properties.add(EcoreUtil.copy(prop));
+							break;
+						default:
+							break;
+						}
 					}
 				}
 				if (properties.isEmpty()) {
