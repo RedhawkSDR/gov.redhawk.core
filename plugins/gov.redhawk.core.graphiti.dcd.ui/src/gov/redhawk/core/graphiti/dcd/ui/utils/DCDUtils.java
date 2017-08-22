@@ -27,7 +27,7 @@ import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.util.ScaUriHelpers;
 
 /**
- * @since 1.0
+ * @since 1.1
  */
 public class DCDUtils {
 
@@ -75,10 +75,10 @@ public class DCDUtils {
 		DcdComponentInstantiation dcdComponentInstantiation = DcdFactory.eINSTANCE.createDcdComponentInstantiation();
 
 		// use provided name/id/implId if provided otherwise generate
-		String id = (instantiationId != null) ? instantiationId : DeviceConfiguration.Util.createDeviceIdentifier(dcd, spd.getName());
-		String deviceName = (usageName != null) ? usageName : DeviceConfiguration.Util.createDeviceUsageName(dcd, spd.getName());
+		usageName = (usageName != null) ? usageName : DeviceConfiguration.Util.createDeviceUsageName(dcd, spd.getName());
+		String id = (instantiationId != null) ? instantiationId : dcd.getName() + ":" + usageName;
 		implementationId = (implementationId != null) ? implementationId : spd.getImplementation().get(0).getId();
-		dcdComponentInstantiation.setUsageName(deviceName);
+		dcdComponentInstantiation.setUsageName(usageName);
 		dcdComponentInstantiation.setId(id);
 		dcdComponentInstantiation.setImplID(implementationId);
 
@@ -95,7 +95,6 @@ public class DCDUtils {
 	 * @param diagram
 	 */
 	public static void deleteComponentInstantiation(final DcdComponentInstantiation ciToDelete, final DeviceConfiguration dcd) {
-
 		// get placement for instantiation and delete it from dcd partitioning after we look at removing the component
 		// file ref
 		DcdComponentPlacement placement = (DcdComponentPlacement) ciToDelete.getPlacement();
@@ -126,7 +125,7 @@ public class DCDUtils {
 		}
 
 		// delete component file if applicable
-		// figure out which component file we are using and if no other component placements using it then remove it.
+		// figure out which component file we are using, if no other component placements using it then remove it.
 		ComponentFile componentFileToRemove = placement.getComponentFileRef().getFile();
 		// check components (not in host collocation)
 		for (DcdComponentPlacement p : dcd.getPartitioning().getComponentPlacement()) {
@@ -145,7 +144,6 @@ public class DCDUtils {
 
 		// delete component placement
 		dcd.getPartitioning().getComponentPlacement().remove(placement);
-		placement.getComponentInstantiation().remove(ciToDelete);
 	}
 
 }

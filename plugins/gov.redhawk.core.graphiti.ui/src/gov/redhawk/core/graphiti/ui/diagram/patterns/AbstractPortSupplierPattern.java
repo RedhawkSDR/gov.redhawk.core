@@ -489,6 +489,11 @@ public abstract class AbstractPortSupplierPattern extends AbstractContainerPatte
 			compInst.eAdapters().add(new AdapterImpl() {
 				@Override
 				public void notifyChanged(final Notification notification) {
+					if (notification.getNotifier() instanceof EObject) {
+						if (((EObject) notification.getNotifier()).eContainer() == null) {
+							return;
+						}
+					}
 					super.notifyChanged(notification);
 					switch (notification.getEventType()) {
 					case Notification.REMOVE:
