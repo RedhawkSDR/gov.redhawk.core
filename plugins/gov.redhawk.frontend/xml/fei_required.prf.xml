@@ -44,7 +44,7 @@
     </simple>
     <configurationkind kindtype="allocation"/>
   </struct>
-  <struct id="FRONTEND::tuner_allocation" name="frontend_tuner_allocation">
+  <struct id="FRONTEND::tuner_allocation" mode="writeonly" name="frontend_tuner_allocation">
     <description>Allocation structure to acquire capability on a tuner based off tuner settings</description>
     <simple id="FRONTEND::tuner_allocation::tuner_type" name="tuner_type" type="string">
       <description>Example Tuner Types: TX, RX, CHANNELIZER, DDC, RX_DIGITIZER, RX_DIGTIZIER_CHANNELIZER</description>
