@@ -10,7 +10,6 @@
  */
 package gov.redhawk.core.graphiti.dcd.ui.diagram.feature;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalCommandStack;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
@@ -20,19 +19,14 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 
 import gov.redhawk.core.graphiti.dcd.ui.diagram.providers.DeviceManagerImageProvider;
 import gov.redhawk.core.graphiti.dcd.ui.ext.ServiceShape;
-import gov.redhawk.core.graphiti.ui.diagram.features.AbstractCreateInstatiationFeature;
+import gov.redhawk.core.graphiti.dcd.ui.utils.DCDUtils;
+import gov.redhawk.core.graphiti.ui.diagram.features.AbstractCreateInstantiationFeature;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
-import mil.jpeojtrs.sca.dcd.DcdComponentPlacement;
-import mil.jpeojtrs.sca.dcd.DcdFactory;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
-import mil.jpeojtrs.sca.partitioning.ComponentFile;
-import mil.jpeojtrs.sca.partitioning.ComponentFileRef;
-import mil.jpeojtrs.sca.partitioning.ComponentFiles;
-import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 
-public class ServiceCreateFeature extends AbstractCreateInstatiationFeature {
+public class ServiceCreateFeature extends AbstractCreateInstantiationFeature {
 
 	public static final String SHAPE_TYPE = "serviceShape";
 	public static final String OVERRIDE_USAGE_NAME = "OverrideUsageName";
@@ -75,9 +69,6 @@ public class ServiceCreateFeature extends AbstractCreateInstatiationFeature {
 		// Get dcd from diagram
 		final DeviceConfiguration dcd = DUtil.getDiagramDCD(getDiagram());
 
-		// Add to dcd partitioning
-		final EList<DcdComponentPlacement> componentPlacementList = dcd.getPartitioning().getComponentPlacement();
-
 		// container for new component instantiation, necessary for reference after command execution
 		final DcdComponentInstantiation[] componentInstantiations = new DcdComponentInstantiation[1];
 
@@ -86,20 +77,7 @@ public class ServiceCreateFeature extends AbstractCreateInstatiationFeature {
 		stack.execute(new RecordingCommand(editingDomain) {
 			@Override
 			protected void doExecute() {
-				// add component file
-				ComponentFile componentFile = createComponentFile(dcd);
-
-				// create component placement and add to list
-				final DcdComponentPlacement componentPlacement = DcdFactory.eINSTANCE.createDcdComponentPlacement();
-				componentPlacementList.add(componentPlacement);
-
-				// create component file ref
-				final ComponentFileRef ref = PartitioningFactory.eINSTANCE.createComponentFileRef();
-				ref.setFile(componentFile);
-				componentPlacement.setComponentFileRef(ref);
-
-				// component instantiation
-				componentInstantiations[0] = createComponentInstantiation(dcd, componentPlacement, usageName, instantiationId, implementationId);
+				componentInstantiations[0] = DCDUtils.createComponentInstantiation(getSoftPkg(), dcd, usageName, instantiationId, implementationId);
 			}
 		});
 
@@ -112,38 +90,6 @@ public class ServiceCreateFeature extends AbstractCreateInstatiationFeature {
 		}
 
 		return new Object[] { componentInstantiations[0] };
-	}
-
-	// adds corresponding component file to sad if not already present
-	private ComponentFile createComponentFile(final DeviceConfiguration dcd) {
-		// Create the componentfiles element if it doesn't exist already
-		ComponentFiles componentFiles = dcd.getComponentFiles();
-		if (componentFiles == null) {
-			componentFiles = PartitioningFactory.eINSTANCE.createComponentFiles();
-			dcd.setComponentFiles(componentFiles);
-		}
-
-		// Find the matching component file, or create if necessary
-		return getComponentFile(componentFiles);
-	}
-
-	// create ComponentInstantiation
-	private DcdComponentInstantiation createComponentInstantiation(final DeviceConfiguration dcd, DcdComponentPlacement componentPlacement,
-		final String providedUsageName, final String providedInstantiationId, final String providedImplId) {
-		DcdComponentInstantiation dcdComponentInstantiation = DcdFactory.eINSTANCE.createDcdComponentInstantiation();
-
-		String serviceName = (providedUsageName != null) ? providedUsageName : DeviceConfiguration.Util.createDeviceUsageName(dcd, getSoftPkg().getName());
-		String id = (providedInstantiationId != null) ? providedInstantiationId : dcd.getName() + ":" + serviceName;
-		String implementationId = (providedImplId != null) ? providedImplId : getImplementationId();
-
-		dcdComponentInstantiation.setUsageName(serviceName);
-		dcdComponentInstantiation.setId(id);
-		dcdComponentInstantiation.setImplID(implementationId);
-
-		// add to placement
-		componentPlacement.getComponentInstantiation().add(dcdComponentInstantiation);
-
-		return dcdComponentInstantiation;
 	}
 
 	@Override

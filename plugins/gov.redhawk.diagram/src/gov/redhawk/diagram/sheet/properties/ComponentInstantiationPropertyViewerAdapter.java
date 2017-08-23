@@ -119,7 +119,7 @@ public class ComponentInstantiationPropertyViewerAdapter {
 
 		ignore = true;
 		input = inst;
-		if (input != null) {
+		if (input != null && input.getPlacement() != null) {
 			// Load profile
 			final SoftPkg spd = input.getPlacement().getComponentFileRef().getFile().getSoftPkg();
 			component.unsetProfileObj();
