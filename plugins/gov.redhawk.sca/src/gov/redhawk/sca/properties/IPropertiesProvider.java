@@ -20,9 +20,33 @@ import java.util.List;
 public interface IPropertiesProvider {
 
 	/**
+	 * @return The name of the property provider
+	 * @since 9.0
+	 */
+	String getName();
+
+	/**
+	 * @return A description of the property provider
+	 * @since 9.0
+	 */
+	String getDescription();
+
+	/**
+	 * @return The plug-in ID containing the icon for the provider
+	 * @since 9.0
+	 */
+	public String getIconPluginId();
+
+	/**
+	 * @return The path to the icon for the provider (within a plug-in)
+	 * @since 9.0
+	 */
+	public String getIconPath();
+
+	/**
 	 * Returns a List of {@link gov.redhawk.sca.properties.Category} contributed by this provider.
 	 * 
-	 * @return the list of {@link gov.redhawk.sca.properties.Category} 
+	 * @return the list of {@link gov.redhawk.sca.properties.Category}
 	 */
 	public List<Category> getCategories();
 

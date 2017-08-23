@@ -11,10 +11,8 @@
  */
 package gov.redhawk.prf.ui.wizard;
 
-import gov.redhawk.prf.ui.PrfUiPlugin;
 import gov.redhawk.sca.properties.Category;
 import gov.redhawk.sca.properties.IPropertiesProvider;
-import gov.redhawk.sca.properties.PropertiesProviderRegistry;
 import gov.redhawk.sca.util.PluginUtil;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -67,10 +65,12 @@ public class PropertiesBrowserLabelProvider extends AdapterFactoryLabelProvider 
 				return null;
 			}
 		} else if (object instanceof IPropertiesProvider) {
-			ImageDescriptor desc = AbstractUIPlugin.imageDescriptorFromPlugin(PrfUiPlugin.PLUGIN_ID, "icons/folder.gif");
+			IPropertiesProvider provider = (IPropertiesProvider) object;
+			ImageDescriptor desc = AbstractUIPlugin.imageDescriptorFromPlugin(provider.getIconPluginId(), provider.getIconPath());
 			return (Image) getResourceManager().get(desc);
 		} else if (object instanceof Category) {
-			ImageDescriptor desc = AbstractUIPlugin.imageDescriptorFromPlugin(PrfUiPlugin.PLUGIN_ID, "icons/folder.gif");
+			Category category = (Category) object;
+			ImageDescriptor desc = AbstractUIPlugin.imageDescriptorFromPlugin(category.getIconPluginId(), category.getIconPath());
 			return (Image) getResourceManager().get(desc);
 		}
 		return super.getImage(object);
@@ -82,7 +82,7 @@ public class PropertiesBrowserLabelProvider extends AdapterFactoryLabelProvider 
 		if (workbenchAdapter != null) {
 			return workbenchAdapter.getLabel(object);
 		} else if (object instanceof IPropertiesProvider) {
-			return PropertiesProviderRegistry.INSTANCE.getName((IPropertiesProvider) object);
+			return ((IPropertiesProvider) object).getName();
 		} else if (object instanceof Category) {
 			return ((Category) object).getName();
 		}
