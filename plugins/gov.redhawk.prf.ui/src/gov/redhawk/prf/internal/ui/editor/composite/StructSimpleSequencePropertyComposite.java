@@ -34,8 +34,8 @@ public class StructSimpleSequencePropertyComposite extends SimpleSequencePropert
 	protected void createControls(Composite parent, FormToolkit toolkit) {
 		parent.setLayout(FormLayoutFactory.createSectionClientGridLayout(false, NUM_COLUMNS));
 
-		createIDEntryField(toolkit, parent);
 		createNameEntryField(toolkit, parent);
+		createIDEntryField(toolkit, parent);
 		createTypeViewer(parent, toolkit);
 		createValues(parent, toolkit);
 		createUnitsEntry(parent, toolkit);

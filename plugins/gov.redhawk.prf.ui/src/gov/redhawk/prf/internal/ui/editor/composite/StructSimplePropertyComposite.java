@@ -36,8 +36,8 @@ public class StructSimplePropertyComposite extends SimplePropertyComposite {
 	protected void createControls(Composite parent, FormToolkit toolkit) {
 		parent.setLayout(FormLayoutFactory.createSectionClientGridLayout(false, NUM_COLUMNS));
 
-		createIDEntryField(toolkit, parent).getText();
 		createNameEntryField(toolkit, parent);
+		createIDEntryField(toolkit, parent).getText();
 		createTypeViewer(parent, toolkit);
 		createValueEntry(parent, toolkit);
 		createUnitsEntry(parent, toolkit);

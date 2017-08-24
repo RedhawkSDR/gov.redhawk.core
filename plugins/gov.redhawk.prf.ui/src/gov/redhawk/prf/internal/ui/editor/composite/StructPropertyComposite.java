@@ -36,8 +36,8 @@ public class StructPropertyComposite extends BasicStructPropertyComposite {
 		
 		ArrayList<Control> tabList = new ArrayList<Control>();
 
-		createIDEntryField(toolkit, parent);
 		createNameEntryField(toolkit, parent);
+		createIDEntryField(toolkit, parent);
 		createConfigurationKindViewer(parent, toolkit);
 		createModeViewer(parent, toolkit);
 		createDescription(parent, toolkit);

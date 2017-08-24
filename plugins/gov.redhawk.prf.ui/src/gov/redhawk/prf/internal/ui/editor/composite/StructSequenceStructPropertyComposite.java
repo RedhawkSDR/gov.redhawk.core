@@ -38,8 +38,8 @@ public class StructSequenceStructPropertyComposite extends StructPropertyComposi
 		
 		ArrayList<Control> tabList = new ArrayList<Control>();
 
-		createIDEntryField(toolkit, parent);
 		createNameEntryField(toolkit, parent);
+		createIDEntryField(toolkit, parent);
 		createDescription(parent, toolkit);
 		
 		tabList.add(getIdEntry().getText());

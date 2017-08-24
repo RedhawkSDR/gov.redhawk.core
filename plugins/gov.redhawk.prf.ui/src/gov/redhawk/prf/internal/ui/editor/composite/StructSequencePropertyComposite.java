@@ -67,8 +67,8 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 	protected void createControls(Composite parent, FormToolkit toolkit) {
 		parent.setLayout(FormLayoutFactory.createSectionClientGridLayout(false, AbstractPropertyComposite.NUM_COLUMNS));
 
-		createIDEntryField(toolkit, parent);
 		createNameEntryField(toolkit, parent);
+		createIDEntryField(toolkit, parent);
 		createStructValueViewer(toolkit);
 		createConfigurationKindViewer(parent, toolkit);
 		createModeViewer(parent, toolkit);

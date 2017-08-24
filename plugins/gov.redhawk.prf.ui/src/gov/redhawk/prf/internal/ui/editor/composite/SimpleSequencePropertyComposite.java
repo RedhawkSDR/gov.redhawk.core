@@ -72,8 +72,8 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 	protected void createControls(Composite parent, FormToolkit toolkit) {
 		parent.setLayout(FormLayoutFactory.createSectionClientGridLayout(false, SimpleSequencePropertyComposite.NUM_COLUMNS));
 		
-		createIDEntryField(toolkit, parent);
 		createNameEntryField(toolkit, parent);
+		createIDEntryField(toolkit, parent);
 		createTypeViewer(parent, toolkit);
 		createValues(parent, toolkit);
 		createUnitsEntry(parent, toolkit);
