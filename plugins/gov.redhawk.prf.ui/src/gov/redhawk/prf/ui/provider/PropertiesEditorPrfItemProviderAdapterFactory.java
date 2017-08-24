@@ -30,22 +30,30 @@ public class PropertiesEditorPrfItemProviderAdapterFactory extends PrfItemProvid
 
 	@Override
 	public Adapter createSimpleAdapter() {
-		return new PropertiesEditorSimpleItemProvider(this);
+		PropertiesEditorSimpleItemProvider adapter = new PropertiesEditorSimpleItemProvider(this);
+		adapter.setIdScoping(true);
+		return adapter;
 	}
 
 	@Override
 	public Adapter createSimpleSequenceAdapter() {
-		return new PropertiesEditorSimpleSequenceItemProvider(this);
+		PropertiesEditorSimpleSequenceItemProvider adapter = new PropertiesEditorSimpleSequenceItemProvider(this);
+		adapter.setIdScoping(true);
+		return adapter;
 	}
 
 	@Override
 	public Adapter createStructAdapter() {
-		return new PropertiesEditorStructItemProvider(this);
+		PropertiesEditorStructItemProvider adapter = new PropertiesEditorStructItemProvider(this);
+		adapter.setIdScoping(true);
+		return adapter;
 	}
 
 	@Override
 	public Adapter createStructSequenceAdapter() {
-		return new PropertiesEditorStructSequenceItemProvider(this);
+		PropertiesEditorStructSequenceItemProvider adapter = new PropertiesEditorStructSequenceItemProvider(this);
+		adapter.setIdScoping(true);
+		return adapter;
 	}
 
 	@Override
