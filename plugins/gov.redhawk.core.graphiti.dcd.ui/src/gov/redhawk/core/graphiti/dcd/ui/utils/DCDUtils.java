@@ -127,7 +127,6 @@ public class DCDUtils {
 		// delete component file if applicable
 		// figure out which component file we are using, if no other component placements using it then remove it.
 		ComponentFile componentFileToRemove = placement.getComponentFileRef().getFile();
-		// check components (not in host collocation)
 		for (DcdComponentPlacement p : dcd.getPartitioning().getComponentPlacement()) {
 			if (p != placement && p.getComponentFileRef().getRefid().equals(placement.getComponentFileRef().getRefid())) {
 				componentFileToRemove = null;
@@ -140,6 +139,12 @@ public class DCDUtils {
 
 		if (dcd.getComponentFiles().getComponentFile().isEmpty()) {
 			dcd.setComponentFiles(null);
+		}
+
+		for (DcdComponentPlacement p : dcd.getPartitioning().getComponentPlacement()) {
+			if (p.getCompositePartOfDevice() != null && ciToDelete.getId().equals(p.getCompositePartOfDevice().getRefID())) {
+				p.setCompositePartOfDevice(null);
+			}
 		}
 
 		// delete component placement
