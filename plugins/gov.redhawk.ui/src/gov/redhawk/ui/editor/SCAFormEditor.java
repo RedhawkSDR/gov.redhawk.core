@@ -12,9 +12,15 @@
 package gov.redhawk.ui.editor;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.FileSystems;
+import java.nio.file.StandardWatchEventKinds;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,6 +36,8 @@ import java.util.concurrent.Callable;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.IObservable;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -44,6 +52,7 @@ import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -141,6 +150,7 @@ import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.IFormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
@@ -204,6 +214,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 		@Override
 		public void resourceChanged(final IResourceChangeEvent event) {
+
 			final IResourceDelta delta = event.getDelta();
 			switch (event.getType()) {
 			case IResourceChangeEvent.POST_CHANGE:
@@ -271,9 +282,9 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 				// If the resource has been changed on disk and the editor is dirty we will prompt the user before
 				// blowing away its changes.
 				if (SCAFormEditor.this.isDirty() && !SCAFormEditor.this.editorSaving) {
-					boolean confirmOverwrite = MessageDialog.openConfirm(SCAFormEditor.this.getSite().getShell(), "File Changed", "The file '"
-						+ delta.getResource().getFullPath().toOSString()
-						+ "' has been changed on the file system. Do you want to replace the editor contents with these changes?");
+					boolean confirmOverwrite = MessageDialog.openConfirm(SCAFormEditor.this.getSite().getShell(), "File Changed",
+						"The file '" + delta.getResource().getFullPath().toOSString()
+							+ "' has been changed on the file system. Do you want to replace the editor contents with these changes?");
 
 					SCAFormEditor.this.setFocus();
 
@@ -369,6 +380,11 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 	private WorkbenchJob updateTitleJob;
 
+	/**
+	 * Watch for deletion of resources in the Target SDR
+	 */
+	private Job resourceWatcherJob;
+
 	@Override
 	protected void setSite(final org.eclipse.ui.IWorkbenchPartSite site) {
 		this.updateTitleJob = new WorkbenchJob(site.getShell().getDisplay(), "UpdateTitle") {
@@ -456,7 +472,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	/**
 	 * @since 8.0
 	 */
-	protected boolean editorSaving;
+	protected boolean editorSaving; // SUPPRESS CHECKSTYLE INLINE
 
 	private RefreshIdlLibraryJob reloadLibraryJob;
 
@@ -904,8 +920,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 							try {
 								resource.save(saveOptions);
 							} catch (final Exception exception) { // SUPPRESS CHECKSTYLE Logged Catch all exception
-								throw new CoreException(new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Failed to save resource: " + resource,
-									exception));
+								throw new CoreException(
+									new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Failed to save resource: " + resource, exception));
 							}
 						}
 
@@ -953,8 +969,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		} catch (final Exception exception) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			// Something went wrong that shouldn't.
 			//
-			StatusManager.getManager().handle(
-				new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Error occured while attempting to save.", exception),
+			StatusManager.getManager().handle(new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Error occured while attempting to save.", exception),
 				StatusManager.SHOW | StatusManager.LOG);
 		}
 	}
@@ -1239,7 +1254,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	protected String getDefaultPageKey() {
 		return null;
 	}
-	
+
 	/**
 	 * Gets the property editor page key.
 	 * 
@@ -1300,6 +1315,10 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		if (this.resourceTracker != null) {
 			this.resourceTracker.clearTrackedResources();
 			this.resourceTracker = null;
+		}
+		if (this.resourceWatcherJob != null) {
+			resourceWatcherJob.done(Status.OK_STATUS);
+			resourceWatcherJob = null;
 		}
 		super.dispose();
 	}
@@ -1375,7 +1394,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	}
 
 	@Override
-	public <T> T getAdapter(final Class<T> key) {
+	public < T > T getAdapter(final Class<T> key) {
 		if (key.equals(IContentOutlinePage.class)) {
 			return key.cast(getContentOutline());
 		}
@@ -1472,6 +1491,17 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 */
 	@Override
 	protected void setInput(final IEditorInput input) {
+
+		// If the input is FileStoreEditorInput, it is in the SCA file system, and needs to be tracked differently
+		if (input instanceof FileStoreEditorInput) {
+			resourceWatcherJob = getResourceWatcherJob((FileStoreEditorInput) input);
+			if (resourceWatcherJob != null) {
+				resourceWatcherJob.setSystem(false);
+				resourceWatcherJob.setUser(false);
+				resourceWatcherJob.schedule();
+			}
+		}
+
 		IFile file = null;
 		if (input instanceof IFileEditorInput) {
 			file = ((IFileEditorInput) input).getFile();
@@ -1482,8 +1512,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			previousFile = ((IFileEditorInput) getEditorInput()).getFile();
 		}
 
-		// Remove the previous tracker...not technically necessary but
-		// implemented for the sake of completeness
+		// Remove the previous tracker...not technically necessary but implemented for the sake of completeness
 		if (previousFile != null) {
 			this.resourceTracker.clearTrackedResources();
 			previousFile.getWorkspace().removeResourceChangeListener(this.resourceTracker);
@@ -1497,6 +1526,59 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			this.resourceTracker.addTrackedResource(file);
 			file.getWorkspace().addResourceChangeListener(this.resourceTracker);
 		}
+	}
+
+	private Job getResourceWatcherJob(FileStoreEditorInput fsInput) {
+		try {
+			final WatchService watcher = FileSystems.getDefault().newWatchService();
+
+			IFileStore fs = EFS.getStore(fsInput.getURI());
+			File tmpFile = fs.toLocalFile(0, new NullProgressMonitor());
+			final java.nio.file.Path resourcePath = tmpFile.getParentFile().toPath();
+			final java.nio.file.Path fileName = tmpFile.toPath().getFileName();
+			resourcePath.register(watcher, StandardWatchEventKinds.ENTRY_DELETE);
+
+			Job tmpJob = new Job("watch Job") {
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					for (;;) {
+						try {
+							WatchKey wk = watcher.take();
+							for (WatchEvent< ? > event : wk.pollEvents()) {
+								java.nio.file.Path changed = (java.nio.file.Path) event.context();
+								if (fileName.equals(changed)) {
+									Display.getDefault().asyncExec(new Runnable() {
+
+										@Override
+										public void run() {
+											closeEditor(false);
+										}
+									});
+								}
+							}
+
+							// reset the key
+							boolean valid = wk.reset();
+							if (!valid) {
+								break;
+							}
+						} catch (InterruptedException e) {
+							// PASS
+						}
+					}
+
+					return Status.OK_STATUS;
+				}
+			};
+			return tmpJob;
+		} catch (CoreException e) {
+			StatusManager.getManager().handle(new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Error occured while tracking resouce", e),
+				StatusManager.SHOW | StatusManager.LOG);
+		} catch (IOException e) {
+			StatusManager.getManager().handle(new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Error occured while tracking resouce", e),
+				StatusManager.SHOW | StatusManager.LOG);
+		}
+		return null;
 	}
 
 	/**
