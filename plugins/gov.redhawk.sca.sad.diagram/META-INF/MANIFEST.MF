@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.sca.sad.diagram;singleton:=true
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-Activator: gov.redhawk.sca.sad.diagram.RedhawkSadDiagramPlugin
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.ui;bundle-version="3.6.1",
@@ -37,7 +37,6 @@ Export-Package: gov.redhawk.sca.sad.diagram,
  gov.redhawk.sca.sad.diagram.edit.parts,
  gov.redhawk.sca.sad.diagram.edit.policies,
  gov.redhawk.sca.sad.diagram.factories,
- gov.redhawk.sca.sad.diagram.palette,
  gov.redhawk.sca.sad.diagram.part,
  gov.redhawk.sca.sad.diagram.providers,
  gov.redhawk.sca.sad.diagram.sheet.properties;x-internal:=true

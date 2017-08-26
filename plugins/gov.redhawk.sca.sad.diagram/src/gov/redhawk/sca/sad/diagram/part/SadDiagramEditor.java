@@ -11,8 +11,6 @@
  */
 package gov.redhawk.sca.sad.diagram.part;
 
-import gov.redhawk.sca.sad.diagram.palette.LabelEditPart;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -61,11 +59,11 @@ public class SadDiagramEditor extends mil.jpeojtrs.sca.sad.diagram.part.SadDiagr
 	public static final String EDITING_DOMAIN_ID = "mil.jpeojtrs.sca.sad.diagram.EditingDomain";
 
 	public SadDiagramEditor(final boolean hasflyoutPalette) {
-		super(hasflyoutPalette);
+		super(false);
 	}
 
 	public SadDiagramEditor() {
-		super(true);
+		super(false);
 	}
 
 	
@@ -199,10 +197,6 @@ public class SadDiagramEditor extends mil.jpeojtrs.sca.sad.diagram.part.SadDiagr
 					 */
 					@Override
 					protected EditPart createChild(Object model) {
-						if ("Text".equals(model)) {
-							LabelEditPart label = new LabelEditPart(paletteViewer);
-							return label;
-						}
 						return super.createChild(model);
 					}
 					

@@ -11,8 +11,6 @@
  */
 package gov.redhawk.sca.dcd.diagram.part;
 
-import gov.redhawk.sca.sad.diagram.palette.LabelEditPart;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -59,11 +57,11 @@ public class DcdDiagramEditor extends mil.jpeojtrs.sca.dcd.diagram.part.DcdDiagr
 	public static final String EDITING_DOMAIN_ID = "mil.jpeojtrs.sca.dcd.diagram.EditingDomain";
 
 	public DcdDiagramEditor(final boolean hasFlyoutPalette) {
-		super(hasFlyoutPalette);
+		super(false);
 	}
 
 	public DcdDiagramEditor() {
-		super(true);
+		super(false);
 	}
 
 	@Override
@@ -211,10 +209,6 @@ public class DcdDiagramEditor extends mil.jpeojtrs.sca.dcd.diagram.part.DcdDiagr
 					 */
 					@Override
 					protected EditPart createChild(Object model) {
-						if ("Text".equals(model)) {
-							LabelEditPart label = new LabelEditPart(paletteViewer);
-							return label;
-						}
 						return super.createChild(model);
 					}
 					
