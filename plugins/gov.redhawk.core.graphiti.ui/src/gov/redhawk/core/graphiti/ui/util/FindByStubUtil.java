@@ -21,7 +21,7 @@ public class FindByStubUtil {
 
 	private FindByStubUtil() {
 	}
-	
+
 	/**
 	 * Return true if findByStub represents findBy domain manager
 	 * @param findByStub
@@ -33,7 +33,7 @@ public class FindByStubUtil {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Return true if findByStub represents findBy file manager
 	 * @param findByStub
@@ -45,7 +45,7 @@ public class FindByStubUtil {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Return true if findByStub represents findBy event channel
 	 * @param findByStub
@@ -57,21 +57,20 @@ public class FindByStubUtil {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Return true if findByStub represents findBy service
 	 * @param findByStub
 	 * @return
 	 */
 	public static boolean isFindByStubService(FindByStub findByStub) {
-		if (findByStub.getDomainFinder() != null
-				&& (findByStub.getDomainFinder().getType().equals(DomainFinderType.SERVICENAME) || findByStub.getDomainFinder().getType().equals(
-					DomainFinderType.SERVICETYPE))) {
+		if (findByStub.getDomainFinder() != null && (findByStub.getDomainFinder().getType().equals(DomainFinderType.SERVICENAME)
+			|| findByStub.getDomainFinder().getType().equals(DomainFinderType.SERVICETYPE))) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Return true if findByStub represents findBy name
 	 * @param findByStub
