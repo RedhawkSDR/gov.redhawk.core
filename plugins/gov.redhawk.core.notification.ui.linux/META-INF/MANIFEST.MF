@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Linux Desktop Notifications
+Bundle-SymbolicName: gov.redhawk.core.notification.ui.linux
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: REDHAWK
+Fragment-Host: gov.redhawk.core.notification.ui;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Eclipse-PlatformFilter: (& (osgi.os=linux))
