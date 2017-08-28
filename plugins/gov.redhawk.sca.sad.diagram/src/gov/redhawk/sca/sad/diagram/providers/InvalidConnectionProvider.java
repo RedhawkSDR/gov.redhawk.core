@@ -11,34 +11,28 @@
  */
 package gov.redhawk.sca.sad.diagram.providers;
 
-import gov.redhawk.diagram.util.InterfacesUtil;
-import gov.redhawk.sca.sad.diagram.RedhawkSadDiagramPlugin;
-import gov.redhawk.sca.sad.diagram.edit.parts.SadConnectInterfaceEditPart;
-import gov.redhawk.sca.sad.diagram.part.SadDiagramEditor;
-import mil.jpeojtrs.sca.sad.SadConnectInterface;
-import mil.jpeojtrs.sca.sad.SadPackage;
-import mil.jpeojtrs.sca.sad.SoftwareAssembly;
-import mil.jpeojtrs.sca.sad.diagram.part.SadVisualIDRegistry;
-
 import org.eclipse.draw2d.Label;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gmf.runtime.common.core.service.AbstractProvider;
 import org.eclipse.gmf.runtime.common.core.service.IOperation;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.parts.DiagramEditDomain;
 import org.eclipse.gmf.runtime.diagram.ui.services.decorator.AbstractDecorator;
 import org.eclipse.gmf.runtime.diagram.ui.services.decorator.CreateDecoratorsOperation;
 import org.eclipse.gmf.runtime.diagram.ui.services.decorator.IDecoratorProvider;
 import org.eclipse.gmf.runtime.diagram.ui.services.decorator.IDecoratorTarget;
 import org.eclipse.gmf.runtime.draw2d.ui.mapmode.MapModeUtil;
-import org.eclipse.gmf.runtime.notation.Edge;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Image;
+
+import gov.redhawk.diagram.util.InterfacesUtil;
+import gov.redhawk.sca.sad.diagram.RedhawkSadDiagramPlugin;
+import gov.redhawk.sca.sad.diagram.edit.parts.SadConnectInterfaceEditPart;
+import mil.jpeojtrs.sca.sad.SadConnectInterface;
+import mil.jpeojtrs.sca.sad.SadPackage;
+import mil.jpeojtrs.sca.sad.SoftwareAssembly;
+import mil.jpeojtrs.sca.sad.diagram.part.SadVisualIDRegistry;
 
 /**
  * @since 2.0
@@ -136,24 +130,7 @@ public class InvalidConnectionProvider extends AbstractProvider implements IDeco
 	 */
 	@Override
 	public void createDecorators(final IDecoratorTarget decoratorTarget) {
-		final EditPart editPart = (EditPart) decoratorTarget.getAdapter(EditPart.class);
-		if (editPart instanceof GraphicalEditPart || editPart instanceof AbstractConnectionEditPart) {
-			final Object model = editPart.getModel();
-			if ((model instanceof View)) {
-				final View view = (View) model;
-				if (!(view instanceof Edge) && !view.isSetElement()) {
-					return;
-				} else if (view.getElement() instanceof SadConnectInterface) {
-					final EditDomain editDomain = editPart.getViewer().getEditDomain();
-					if (!(editDomain instanceof DiagramEditDomain)) {
-						return;
-					}
-					if (((DiagramEditDomain) editDomain).getEditorPart() instanceof SadDiagramEditor) {
-						decoratorTarget.installDecorator(InvalidConnectionProvider.KEY, new InvalidConnectProvider(decoratorTarget));
-					}
-				}
-			}
-		}
+		return;
 	}
 
 	/**

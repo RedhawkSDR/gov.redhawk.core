@@ -11,13 +11,33 @@
  */
 package gov.redhawk.sca.sad.diagram.providers;
 
+import java.util.List;
+
+import org.eclipse.draw2d.Label;
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gmf.runtime.common.core.service.AbstractProvider;
+import org.eclipse.gmf.runtime.common.core.service.IOperation;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.INodeEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.parts.IDiagramGraphicalViewer;
+import org.eclipse.gmf.runtime.diagram.ui.services.decorator.AbstractDecorator;
+import org.eclipse.gmf.runtime.diagram.ui.services.decorator.CreateDecoratorsOperation;
+import org.eclipse.gmf.runtime.diagram.ui.services.decorator.IDecoratorProvider;
+import org.eclipse.gmf.runtime.diagram.ui.services.decorator.IDecoratorTarget;
+import org.eclipse.gmf.runtime.draw2d.ui.mapmode.MapModeUtil;
+import org.eclipse.gmf.runtime.emf.core.util.EMFCoreUtil;
+import org.eclipse.gmf.runtime.notation.View;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
+
 import gov.redhawk.diagram.DiagramUtil;
 import gov.redhawk.sca.sad.diagram.RedhawkSadDiagramPlugin;
 import gov.redhawk.sca.sad.diagram.edit.parts.SadComponentInstantiationEditPart;
-import gov.redhawk.sca.sad.diagram.part.SadDiagramEditor;
-
-import java.util.List;
-
 import mil.jpeojtrs.sca.diagram.figures.ComponentInstantiationFigure;
 import mil.jpeojtrs.sca.partitioning.ComponentFile;
 import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
@@ -26,33 +46,6 @@ import mil.jpeojtrs.sca.sad.SadPackage;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.sad.diagram.edit.parts.ComponentPlacementEditPart;
 import mil.jpeojtrs.sca.sad.diagram.part.SadVisualIDRegistry;
-
-import org.eclipse.draw2d.Label;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EContentAdapter;
-import org.eclipse.gef.EditDomain;
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.editparts.AbstractConnectionEditPart;
-import org.eclipse.gmf.runtime.common.core.service.AbstractProvider;
-import org.eclipse.gmf.runtime.common.core.service.IOperation;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.INodeEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.parts.DiagramEditDomain;
-import org.eclipse.gmf.runtime.diagram.ui.parts.IDiagramGraphicalViewer;
-import org.eclipse.gmf.runtime.diagram.ui.services.decorator.AbstractDecorator;
-import org.eclipse.gmf.runtime.diagram.ui.services.decorator.CreateDecoratorsOperation;
-import org.eclipse.gmf.runtime.diagram.ui.services.decorator.IDecoratorProvider;
-import org.eclipse.gmf.runtime.diagram.ui.services.decorator.IDecoratorTarget;
-import org.eclipse.gmf.runtime.draw2d.ui.mapmode.MapModeUtil;
-import org.eclipse.gmf.runtime.emf.core.util.EMFCoreUtil;
-import org.eclipse.gmf.runtime.notation.Edge;
-import org.eclipse.gmf.runtime.notation.View;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * @since 2.0
@@ -205,24 +198,7 @@ public class MissingSoftPkgDecoratorProvider extends AbstractProvider implements
 	 */
 	@Override
 	public void createDecorators(final IDecoratorTarget decoratorTarget) {
-		final EditPart editPart = (EditPart) decoratorTarget.getAdapter(EditPart.class);
-		if (editPart instanceof GraphicalEditPart || editPart instanceof AbstractConnectionEditPart) {
-			final Object model = editPart.getModel();
-			if ((model instanceof View)) {
-				final View view = (View) model;
-				if (!(view instanceof Edge) && !view.isSetElement()) {
-					return;
-				} else if (view.getElement() instanceof SadComponentPlacement) {
-					final EditDomain editDomain = editPart.getViewer().getEditDomain();
-					if (!(editDomain instanceof DiagramEditDomain)) {
-						return;
-					}
-					if (((DiagramEditDomain) editDomain).getEditorPart() instanceof SadDiagramEditor) {
-						decoratorTarget.installDecorator(MissingSoftPkgDecoratorProvider.KEY, new MissingSoftPkgProvider(decoratorTarget));
-					}
-				}
-			}
-		}
+		return;
 	}
 
 	/**
