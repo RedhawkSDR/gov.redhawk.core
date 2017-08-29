@@ -151,7 +151,6 @@
     <module>plugins/gov.redhawk.swt.browser</module>
     <module>plugins/gov.redhawk.ui</module>
     <module>plugins/gov.redhawk.ui.dcd.editor</module>
-    <module>plugins/gov.redhawk.ui.sad.editor</module>
     <module>plugins/gov.redhawk.ui.port.nxmplot.rcp</module>
     <module>plugins/gov.redhawk.ui.port.playaudio</module>
     <module>plugins/gov.redhawk.validation</module>
