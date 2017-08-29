@@ -99,6 +99,8 @@
     <module>plugins/gov.redhawk.core.graphiti.dcd.ui</module>
     <module>plugins/gov.redhawk.core.graphiti.sad.ui</module>
     <module>plugins/gov.redhawk.core.graphiti.ui</module>
+    <module>plugins/gov.redhawk.core.notification.ui</module>
+    <module>plugins/gov.redhawk.core.notification.ui.linux</module>
     <module>plugins/gov.redhawk.sca.model.provider.event</module>
     <module>plugins/gov.redhawk.sca.model.provider.refresh</module>
     <module>plugins/gov.redhawk.core.resourceFactory</module>
