@@ -17,49 +17,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.eclipse.gmf.runtime.diagram.ui.editpolicyProviders">
-      <editpolicyProvider
-            class="gov.redhawk.sca.sad.diagram.providers.SadEditPolicyProvider">
-         <Priority
-               name="Low">
-         </Priority>
-      </editpolicyProvider>
-   </extension>
-   <extension
-         point="org.eclipse.gmf.runtime.diagram.ui.editpartProviders">
-      <editpartProvider
-            class="gov.redhawk.sca.sad.diagram.providers.SadEditPartProvider">
-         <Priority
-               name="Low">
-         </Priority>
-      </editpartProvider>
-   </extension>
-   <extension
-         point="org.eclipse.gmf.runtime.diagram.core.viewProviders">
-      <viewProvider
-            class="gov.redhawk.sca.sad.diagram.providers.SadViewProvider">
-         <Priority
-               name="Low">
-         </Priority>
-         <context
-               semanticHints="Sad"
-               viewClass="org.eclipse.gmf.runtime.notation.Diagram">
-         </context>
-         <context
-               semanticHints="4001"
-               viewClass="org.eclipse.gmf.runtime.notation.Edge">
-         </context>
-         <context
-               semanticHints="3001,3003,3004,3005,3006,3007"
-               viewClass="org.eclipse.gmf.runtime.notation.Node">
-         </context>
-         <context
-               semanticHints="12002,13011,13012"
-               viewClass="org.eclipse.gmf.runtime.notation.Node">
-         </context>
-      </viewProvider>
-   </extension>
-   <extension
          point="org.eclipse.gmf.runtime.emf.type.core.elementTypes">
       <metamodel
             nsURI="http://sca.jpeojtrs.mil/sad">
@@ -122,48 +79,9 @@
          </elementType>
       </binding>
    </extension>
-   <extension
-         point="org.eclipse.gmf.runtime.emf.ui.modelingAssistantProviders">
-      <modelingAssistantProvider
-            class="gov.redhawk.sca.sad.diagram.providers.SadModelingAssistantProvider">
-         <Priority
-               name="Low">
-         </Priority>
-      </modelingAssistantProvider>
-   </extension>
    
-   <extension
-      point="org.eclipse.gmf.runtime.diagram.ui.layoutProviders">
-   <layoutProvider
-         class="gov.redhawk.sca.sad.diagram.providers.SadLayoutProvider">
-      <Priority
-            name="Medium">
-      </Priority>
-   </layoutProvider>
-</extension>
 
    
-    <extension
-         point="org.eclipse.gmf.runtime.diagram.ui.paletteProviders">
-      <paletteProvider
-            class="gov.redhawk.sca.sad.diagram.providers.SadPaletteProvider">
-         <Priority
-               name="Low">
-         </Priority>
-         <editor
-               class="mil.jpeojtrs.sca.sad.diagram.part.SadDiagramEditor(mil.jpeojtrs.sca.sad.diagram)">
-         </editor>
-      </paletteProvider>
-   </extension>
-    <extension
-          point="org.eclipse.gmf.runtime.common.ui.services.parserProviders">
-       <ParserProvider
-             class="gov.redhawk.sca.sad.diagram.providers.SadParserProvider">
-          <Priority
-                name="Low">
-          </Priority>
-       </ParserProvider>
-    </extension>
     
    <extension
          point="org.eclipse.core.runtime.adapters">
@@ -341,60 +259,6 @@
       </command>
    </extension>
    <extension
-         id="gov.redhawk.sca.sad.diagram.assemblyControllerDecorator"
-         name="Assembly Controller Decorator"
-         point="org.eclipse.gmf.runtime.diagram.ui.decoratorProviders">
-      <decoratorProvider
-            class="gov.redhawk.sca.sad.diagram.providers.AssemblyControllerDecoratorProvider">
-         <Priority
-               name="Low">
-         </Priority>
-         <object
-               class="org.eclipse.gmf.runtime.diagram.ui.editparts.IPrimaryEditPart(org.eclipse.gmf.runtime.diagram.ui)"
-               id="PRIMARY_VIEW">
-         </object>
-         <context
-               decoratorTargets="PRIMARY_VIEW">
-         </context>
-      </decoratorProvider>
-   </extension>
-   <extension
-         id="gov.redhawk.sca.sad.diagram.missingSoftPkgDecorator"
-         name="Missing SoftPkg Decorator"
-         point="org.eclipse.gmf.runtime.diagram.ui.decoratorProviders">
-      <decoratorProvider
-            class="gov.redhawk.sca.sad.diagram.providers.MissingSoftPkgDecoratorProvider">
-         <Priority
-               name="Low">
-         </Priority>
-         <object
-               class="org.eclipse.gmf.runtime.diagram.ui.editparts.IPrimaryEditPart(org.eclipse.gmf.runtime.diagram.ui)"
-               id="PRIMARY_VIEW">
-         </object>
-         <context
-               decoratorTargets="PRIMARY_VIEW">
-         </context>
-      </decoratorProvider>
-   </extension>
-   <extension
-         id="gov.redhawk.sca.sad.diagram.hostCollocationDecorator"
-         name="Host Collocation Decorator"
-         point="org.eclipse.gmf.runtime.diagram.ui.decoratorProviders">
-      <decoratorProvider
-            class="gov.redhawk.sca.sad.diagram.providers.HostCollocationDecoratorProvider">
-         <Priority
-               name="Low">
-         </Priority>
-         <object
-               class="org.eclipse.gmf.runtime.diagram.ui.editparts.IPrimaryEditPart(org.eclipse.gmf.runtime.diagram.ui)"
-               id="PRIMARY_VIEW">
-         </object>
-         <context
-               decoratorTargets="PRIMARY_VIEW">
-         </context>
-      </decoratorProvider>
-   </extension>
-   <extension
          point="org.eclipse.gmf.runtime.common.ui.services.action.contributionItemProviders">
       <contributionItemProvider
             checkPluginLoaded="false"
@@ -420,53 +284,5 @@
          	</popupPredefinedItem>
          </popupContribution>
       </contributionItemProvider>
-   </extension>
-   <extension
-         point="org.eclipse.gmf.runtime.diagram.ui.decoratorProviders">
-      <decoratorProvider
-            class="gov.redhawk.sca.sad.diagram.providers.InvalidConnectionProvider">
-         <Priority
-               name="Low">
-         </Priority>
-         <object
-               class="org.eclipse.gmf.runtime.diagram.ui.editparts.IPrimaryEditPart(org.eclipse.gmf.runtime.diagram.ui)"
-               id="PRIMARY_VIEW">
-         </object>
-         <context
-               decoratorTargets="PRIMARY_VIEW">
-         </context>
-      </decoratorProvider>
-   </extension>
-   <extension
-         point="org.eclipse.gmf.runtime.diagram.ui.decoratorProviders">
-      <decoratorProvider
-            class="gov.redhawk.sca.sad.diagram.providers.RedundantConnectionsProvider">
-         <Priority
-               name="Low">
-         </Priority>
-         <object
-               class="org.eclipse.gmf.runtime.diagram.ui.editparts.IPrimaryEditPart(org.eclipse.gmf.runtime.diagram.ui)"
-               id="PRIMARY_VIEW">
-         </object>
-         <context
-               decoratorTargets="PRIMARY_VIEW">
-         </context>
-      </decoratorProvider>
-   </extension>
-   <extension
-         point="org.eclipse.gmf.runtime.diagram.ui.decoratorProviders">
-      <decoratorProvider
-            class="gov.redhawk.sca.sad.diagram.providers.StartOrderDecoratorProvider">
-         <Priority
-               name="Low">
-         </Priority>
-         <object
-               class="org.eclipse.gmf.runtime.diagram.ui.editparts.IPrimaryEditPart(org.eclipse.gmf.runtime.diagram.ui)"
-               id="PRIMARY_VIEW">
-         </object>
-         <context
-               decoratorTargets="PRIMARY_VIEW">
-         </context>
-      </decoratorProvider>
    </extension>
 </plugin>
