@@ -1,4 +1,3 @@
-package gov.redhawk.sca.tests;
 /**
  * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
@@ -10,6 +9,7 @@ package gov.redhawk.sca.tests;
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
+package gov.redhawk.sca.tests;
 
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.sca.ScaPlugin;
