@@ -56,6 +56,8 @@ import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.jacorb.JacorbUtil;
 import org.omg.CORBA.Any;
+import org.omg.CORBA.SystemException;
+
 import CF.DataType;
 import CF.InvalidObjectReference;
 import CF.PropertiesHelper;
@@ -540,9 +542,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 				restoreDefaultValue();
 			}
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, Status.OK_STATUS);
-		} catch (Exception e) {
+		} catch (SystemException e) {
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS,
-				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
+				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to demarshal value of property '" + getName() + "'", e));
 		}
 	}
 

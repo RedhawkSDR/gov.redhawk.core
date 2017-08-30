@@ -368,9 +368,12 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 				getValues().restoreDefaultValue();
 			}
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, Status.OK_STATUS);
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES,
-				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
+				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to demarshal value of property '" + getName() + "'", e));
+		} catch (ClassCastException e) {
+			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES,
+				new Status(Status.ERROR, ScaModelPlugin.ID, "Received a value of incorrect type for property '" + getName() + "'", e));
 		}
 	}
 

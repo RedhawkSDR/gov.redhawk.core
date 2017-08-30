@@ -52,6 +52,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.jacorb.JacorbUtil;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.AnySeqHelper;
+import org.omg.CORBA.SystemException;
 import org.omg.CORBA.TCKind;
 import CF.DataType;
 import CF.InvalidObjectReference;
@@ -476,9 +477,9 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 				getStructs().remove(i);
 			}
 			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, Status.OK_STATUS);
-		} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
+		} catch (SystemException e) {
 			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS,
-				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
+				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to demarshal value of property '" + getName() + "'", e));
 		}
 	}
 
