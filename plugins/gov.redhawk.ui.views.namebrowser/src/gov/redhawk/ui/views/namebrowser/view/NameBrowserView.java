@@ -28,6 +28,9 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposal;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
@@ -36,16 +39,13 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
@@ -66,6 +66,7 @@ import org.omg.CosNaming.NamingContextExtHelper;
 import CF.DomainManagerHelper;
 import gov.redhawk.sca.ui.compatibility.CompatibilityFactory;
 import gov.redhawk.sca.util.Debug;
+import gov.redhawk.sca.validation.NamingServiceValidator;
 import gov.redhawk.ui.views.namebrowser.NameBrowserPlugin;
 import gov.redhawk.ui.views.namebrowser.view.internal.BindingContentProvider;
 
@@ -115,7 +116,6 @@ public class NameBrowserView extends ViewPart {
 
 	@Override
 	public void createPartControl(final Composite parent) {
-
 		final GridLayout gridLayout = new GridLayout(3, false);
 		parent.setLayout(gridLayout);
 
@@ -124,6 +124,7 @@ public class NameBrowserView extends ViewPart {
 		nameServerLabel.setText("Name Server:");
 
 		this.nameServerField = new Combo(parent, SWT.BORDER);
+		ControlDecoration nameServerDecoration = new ControlDecoration(nameServerField, SWT.TOP | SWT.LEFT);
 		final ComboContentAdapter controlAdapter = new ComboContentAdapter();
 		final ContentProposalAdapter contentProposalAdapter = CompatibilityFactory.createContentProposalAdapter(this.nameServerField, controlAdapter,
 			this.proposalProvider, null);
@@ -131,37 +132,48 @@ public class NameBrowserView extends ViewPart {
 		this.nameServerField.setToolTipText("The CORBA URI of the NameServer");
 		this.nameServerField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
 		this.nameServerField.setText("");
-		// disable connect button when name server text empty
-		nameServerField.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				final String newRef = NameBrowserView.this.nameServerField.getText().trim();
-				connectButton.setEnabled(!newRef.isEmpty());
-			}
-		});
-		// this listener doesn't seem to do anything.
-		this.nameServerField.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetDefaultSelected(final SelectionEvent e) {
-				final String newRef = NameBrowserView.this.nameServerField.getText().trim();
-				if ("".equals(newRef)) {
-					return;
+
+		// When the user changes the text, validate. Also disable the connect button if the field is empty.
+		nameServerField.addModifyListener(event -> {
+			final String newRef = NameBrowserView.this.nameServerField.getText().trim();
+			IStatus status = new NamingServiceValidator().validate(newRef);
+			if (status.isOK() || newRef.isEmpty()) {
+				nameServerDecoration.hide();
+			} else {
+				nameServerDecoration.setDescriptionText(status.getMessage());
+				FieldDecoration fieldDecoration;
+				switch (status.getSeverity()) {
+				case IStatus.ERROR:
+					fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR);
+					nameServerDecoration.setImage(fieldDecoration.getImage());
+					break;
+				case IStatus.WARNING:
+					fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_WARNING);
+					nameServerDecoration.setImage(fieldDecoration.getImage());
+					break;
+				default:
+					break;
 				}
-				addConnection(newRef);
+				nameServerDecoration.show();
 			}
+			connectButton.setEnabled(!newRef.isEmpty());
 		});
 
 		connectButton = new Button(parent, SWT.PUSH);
 		connectButton.setImage(NameBrowserPlugin.getDefault().getImageRegistry().get(NameBrowserPlugin.CONNECT));
 		connectButton.setToolTipText("Connect to the specified host");
 		connectButton.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 1, 1));
-		connectButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final String newRef = NameBrowserView.this.nameServerField.getText().trim();
-				addConnection(newRef);
+
+		// Handle enter key for the combo box / clicking the connect button
+		Listener listener = event -> {
+			final String newRef = NameBrowserView.this.nameServerField.getText().trim();
+			if (newRef.isEmpty()) {
+				return;
 			}
-		});
+			addConnection(newRef);
+		};
+		nameServerField.addListener(SWT.DefaultSelection, listener);
+		connectButton.addListener(SWT.Selection, listener);
 
 		this.treeViewer = new TreeViewer(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.VIRTUAL);
 		this.treeViewer.getControl().setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 3, 1));
