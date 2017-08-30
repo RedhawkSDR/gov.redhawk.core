@@ -41,7 +41,7 @@ import mil.jpeojtrs.sca.spd.provider.SpdItemProviderAdapterFactory;
  */
 public abstract class AbstractGraphitiSADEditor extends AbstractGraphitiMultiPageEditor {
 
-	public static final String EDITING_DOMAIN_ID = "mil.jpeojtrs.sca.sad.diagram.EditingDomain";
+	public static final String EDITING_DOMAIN_ID = "gov.redhawk.core.graphiti.sad.ui.EditingDomain";
 
 	public AbstractGraphitiSADEditor() {
 		super();

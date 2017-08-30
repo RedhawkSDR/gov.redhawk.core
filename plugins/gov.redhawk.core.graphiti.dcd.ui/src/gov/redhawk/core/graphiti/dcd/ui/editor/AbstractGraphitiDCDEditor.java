@@ -43,7 +43,7 @@ public abstract class AbstractGraphitiDCDEditor extends AbstractGraphitiMultiPag
 
 	public static final String ID = "gov.redhawk.ide.graphiti.dcd.ui.editor.DcdEditor";
 
-	public static final String EDITING_DOMAIN_ID = "mil.jpeojtrs.sca.dcd.diagram.EditingDomain";
+	public static final String EDITING_DOMAIN_ID = "gov.redhawk.core.graphiti.dcd.ui.EditingDomain";
 
 	public AbstractGraphitiDCDEditor() {
 		super();
