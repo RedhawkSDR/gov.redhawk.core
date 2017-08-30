@@ -17,42 +17,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.eclipse.gmf.runtime.emf.type.core.elementTypes">
-      <metamodel
-            nsURI="http://sca.jpeojtrs.mil/sad">
-         <adviceBinding
-               class="gov.redhawk.sca.sad.diagram.edit.helpers.SadConnectInterfaceEditHelperAdvice"
-               id="gov.redhawk.sca.sad.diagram.edit.helpers.SadConnectInterface"
-               inheritance="none"
-               typeId="mil.jpeojtrs.sca.sad.diagram.SadConnectInterface_4001">
-         </adviceBinding>
-         <adviceBinding
-               class="gov.redhawk.sca.sad.diagram.edit.helpers.SadComponentInstantiationEditHelperAdvice"
-               id="gov.redhawk.sca.sad.diagram.edit.helpers.SadComponentInstantiation"
-               inheritance="none"
-               typeId="mil.jpeojtrs.sca.sad.diagram.SadComponentInstantiation_3002">
-         </adviceBinding>
-         <adviceBinding
-               class="gov.redhawk.sca.sad.diagram.edit.helpers.SoftwareAssemblyEditHelperAdvice"
-               id="gov.redhawk.sca.sad.diagram.edit.helpers.SoftwareAssembly_1000"
-               inheritance="none"
-               typeId="mil.jpeojtrs.sca.sad.diagram.SoftwareAssembly_1000">
-         </adviceBinding>
-         <adviceBinding
-               class="gov.redhawk.sca.sad.diagram.edit.helpers.SadComponentPlacementEditHelperAdvice"
-               id="gov.redhawk.sca.sad.diagram.edit.helpers.SadComponentPlacement"
-               inheritance="none"
-               typeId="mil.jpeojtrs.sca.sad.diagram.SadComponentPlacement_3001">
-         </adviceBinding>
-         <adviceBinding
-               class="gov.redhawk.sca.sad.diagram.edit.HostCollocationEditHelperAdvice"
-               id="gov.redhawk.sca.sad.diagram.edit.helpers.HostCollocation"
-               inheritance="none"
-               typeId="mil.jpeojtrs.sca.sad.diagram.HostCollocation_3006">
-         </adviceBinding>
-      </metamodel>
-   </extension>
-   <extension
          point="org.eclipse.gmf.runtime.emf.type.core.elementTypeBindings">
       <clientContext
             id="mil.jpeojtrs.sca.sad.diagram.TypeContext">
@@ -185,13 +149,9 @@
                         value="1">
                   </count>
                   <iterate>
-                     <or>
-                        <instanceof
-                              value="mil.jpeojtrs.sca.sad.diagram.edit.parts.ComponentPlacementEditPart">
-                        </instanceof>
-                        <instanceof
-                              value="gov.redhawk.sca.sad.diagram.edit.parts.SadComponentInstantiationEditPart">
-                        </instanceof></or>
+                     <instanceof
+                           value="mil.jpeojtrs.sca.sad.diagram.edit.parts.ComponentPlacementEditPart">
+                     </instanceof>
                   </iterate>
                </and>
             </visibleWhen>
@@ -210,14 +170,9 @@
                         value="1">
                   </count>
                   <iterate>
-                     <or>
-                        <instanceof
-                              value="mil.jpeojtrs.sca.sad.diagram.edit.parts.ComponentPlacementEditPart">
-                        </instanceof>
-                        <instanceof
-                              value="gov.redhawk.sca.sad.diagram.edit.parts.SadComponentInstantiationEditPart">
-                        </instanceof>
-                     </or>
+                     <instanceof
+                           value="mil.jpeojtrs.sca.sad.diagram.edit.parts.ComponentPlacementEditPart">
+                     </instanceof>
                   </iterate>
                </and>
             </visibleWhen>
