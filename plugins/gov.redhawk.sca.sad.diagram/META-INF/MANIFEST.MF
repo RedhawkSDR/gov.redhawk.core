@@ -31,8 +31,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Export-Package: gov.redhawk.sca.sad.diagram,
  gov.redhawk.sca.sad.diagram.adapters,
- gov.redhawk.sca.sad.diagram.edit.commands,
  gov.redhawk.sca.sad.diagram.factories,
- gov.redhawk.sca.sad.diagram.part,
- gov.redhawk.sca.sad.diagram.providers,
- gov.redhawk.sca.sad.diagram.sheet.properties;x-internal:=true
+ gov.redhawk.sca.sad.diagram.part
