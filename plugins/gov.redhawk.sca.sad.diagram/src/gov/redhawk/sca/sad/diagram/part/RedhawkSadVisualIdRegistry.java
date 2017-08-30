@@ -13,7 +13,6 @@ package gov.redhawk.sca.sad.diagram.part;
 
 import gov.redhawk.diagram.edit.parts.FindByStubEditPart;
 import gov.redhawk.diagram.part.PartitioningVisualIDRegistry;
-import gov.redhawk.sca.sad.diagram.edit.parts.SoftwareAssemblyEditPart;
 import mil.jpeojtrs.sca.sad.diagram.edit.parts.ComponentPlacement2EditPart;
 import mil.jpeojtrs.sca.sad.diagram.edit.parts.ComponentPlacementCompartmentEditPart;
 import mil.jpeojtrs.sca.sad.diagram.edit.parts.ComponentPlacementEditPart;
@@ -24,6 +23,7 @@ import mil.jpeojtrs.sca.sad.diagram.edit.parts.ProvidesPortStubEditPart;
 import mil.jpeojtrs.sca.sad.diagram.edit.parts.ProvidesPortStubNameEditPart;
 import mil.jpeojtrs.sca.sad.diagram.edit.parts.SadComponentInstantiationEditPart;
 import mil.jpeojtrs.sca.sad.diagram.edit.parts.SadConnectInterfaceEditPart;
+import mil.jpeojtrs.sca.sad.diagram.edit.parts.SoftwareAssemblyEditPart;
 import mil.jpeojtrs.sca.sad.diagram.edit.parts.UsesPortStubEditPart;
 import mil.jpeojtrs.sca.sad.diagram.edit.parts.UsesPortStubNameEditPart;
 import mil.jpeojtrs.sca.sad.diagram.part.SadVisualIDRegistry;
