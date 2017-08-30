@@ -11,9 +11,6 @@
  */
 package gov.redhawk.sca.ui.preferences;
 
-import gov.redhawk.sca.ui.preferences.DomainSettingModel.ConnectionMode;
-import gov.redhawk.sca.util.CorbaURIUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +18,7 @@ import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
@@ -39,6 +37,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+
+import gov.redhawk.sca.ui.preferences.DomainSettingModel.ConnectionMode;
+import gov.redhawk.sca.util.CorbaURIUtil;
+import gov.redhawk.sca.validation.NamingServiceValidator;
 
 /**
  * @since 7.0
@@ -159,7 +161,8 @@ public class DomainEntryWizardPage extends WizardPage {
 		ControlDecorationSupport.create(binding, SWT.TOP | SWT.LEFT);
 
 		validator = new UpdateValueStrategy();
-		validator.setAfterConvertValidator(NON_EMPTY_STRING);
+		validator.setConverter(IConverter.create(String.class, String.class, fromObject -> ((String) fromObject).trim()));
+		validator.setAfterGetValidator(new NamingServiceValidator());
 		binding = this.context.bindValue(WidgetProperties.text(SWT.Modify).observe(nameServiceField),
 			BeanProperties.value(this.model.getClass(), DomainSettingModel.PROP_NAME_SERVICE_INIT_REF).observe(this.model),
 			validator, null);
