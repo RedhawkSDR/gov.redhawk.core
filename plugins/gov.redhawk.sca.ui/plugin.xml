@@ -927,30 +927,6 @@
       </propertySections>
    </extension>
    <extension
-         point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
-      <propertyTabs
-            contributorId="mil.jpeojtrs.sca.sad.diagram">
-         <propertyTab
-               category="domain"
-               id="property.tab.runtime"
-               label="%propertyTab.label.1">
-         </propertyTab>
-      </propertyTabs>
-   </extension>
-   <extension
-         point="org.eclipse.ui.views.properties.tabbed.propertySections">
-      <propertySections
-            contributorId="mil.jpeojtrs.sca.sad.diagram">
-         <propertySection
-               class="gov.redhawk.sca.ui.properties.ComponentPropertiesPropertySection"
-               enablesFor="1"
-               filter="gov.redhawk.sca.ui.properties.ComponentPlacementRuntimePropertyFilter"
-               id="property.section.runtime"
-               tab="property.tab.runtime">
-         </propertySection>
-      </propertySections>
-   </extension>
-   <extension
          point="gov.redhawk.sca.ui.scaContentTypes">
       <contentType
             id="mil.jpeojtrs.sca.sad.contentType"
