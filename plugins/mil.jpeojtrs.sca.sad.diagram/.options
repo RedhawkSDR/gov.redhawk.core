@@ -1,7 +1,0 @@
-# Tracing options for the mil.jpeojtrs.sca.sad.diagram plug-in
-
-# Common issues
-mil.jpeojtrs.sca.sad.diagram/debug=false
-
-# Visual IDs
-mil.jpeojtrs.sca.sad.diagram/debug/visualID=false

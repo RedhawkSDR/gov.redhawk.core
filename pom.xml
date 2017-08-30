@@ -155,7 +155,6 @@
     <module>plugins/gov.redhawk.validation</module>
     <module>plugins/mil.jpeojtrs.sca.dcd.diagram</module>
     <module>plugins/mil.jpeojtrs.sca.diagram</module>
-    <module>plugins/mil.jpeojtrs.sca.sad.diagram</module>
     <module>plugins/org.anarres.cpp</module>
 
     <module>tests/gov.redhawk.core.filemanager.tests</module>
