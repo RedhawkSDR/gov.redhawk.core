@@ -139,7 +139,6 @@
     <module>plugins/gov.redhawk.partitioning.validation</module>
     <module>plugins/gov.redhawk.prf.ui</module>
     <module>plugins/gov.redhawk.prf.validation</module>
-    <module>plugins/gov.redhawk.sca.dcd.diagram</module>
     <module>plugins/gov.redhawk.sca.dcd.validation</module>
     <module>plugins/gov.redhawk.sca.launch</module>
     <module>plugins/gov.redhawk.sca.launch.ui</module>
