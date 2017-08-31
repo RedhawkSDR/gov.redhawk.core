@@ -1,16 +1,17 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- *
  */
 package gov.redhawk.sca.ui.preferences;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,14 +20,27 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.conversion.IConverter;
-import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -37,32 +51,76 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.ListDialog;
 
+import gov.redhawk.sca.jobs.FindDomainsJob;
+import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.ui.preferences.DomainSettingModel.ConnectionMode;
 import gov.redhawk.sca.util.CorbaURIUtil;
 import gov.redhawk.sca.validation.NamingServiceValidator;
 
 /**
  * @since 7.0
- * 
  */
 public class DomainEntryWizardPage extends WizardPage {
+
+	/**
+	 * Delay between animation updates of the progress icons.
+	 */
+	private static final int ANIMATION_DELAY_MS = 250;
+
+	/**
+	 * Delay between the user typing a syntactically valid name service ref, and the IDE searching for domains. This
+	 * helps ensure we don't try to search for domains after every single keystroke a user might make.
+	 */
+	private static final long DOMAIN_SEARCH_DELAY_MS = 1000;
 
 	private final DomainSettingModel model = new DomainSettingModel();
 	private boolean showExtraSettings;
 	private final DataBindingContext context = new DataBindingContext();
-	private List<String> domainNames;
-	private String editLocalDomainName = null;
-	private static final IValidator NON_EMPTY_STRING = new IValidator() {
 
-		@Override
-		public IStatus validate(Object value) {
-			if (((String) value).isEmpty()) {
-				return ValidationStatus.error("Missing value.");
-			}
-			return ValidationStatus.ok();
-		}
-	};
+	/**
+	 * The list of existing domain display names (used to avoid a UI name collision).
+	 */
+	private List<String> existingDisplayNames;
+
+	private String editLocalDomainName = null;
+
+	private ResourceManager resourceManager;
+
+	private static final String PATH_IMAGE_NO_DOMAINS = "/icons/clcl16/uninstall.gif"; //$NON-NLS-1$
+
+	/**
+	 * Image displayed on the button when there are no domains.
+	 */
+	private ImageDescriptor imageNoDomains;
+
+	private static final String PATH_IMAGE_DOMAINS = "/icons/clcl16/add.gif"; //$NON-NLS-1$
+
+	/**
+	 * Image displayed on the button when there are domains that can be selected.
+	 */
+	private ImageDescriptor imageDomains;
+
+	private static final String PATH_IMAGES_PROGRESS = "/icons/domainEntryWizard/%d.png"; //$NON-NLS-1$
+
+	/**
+	 * Images that are displayed on the button when a search for domains is in progress.
+	 */
+	private ImageDescriptor[] imagesProgress;
+
+	/**
+	 * Index of the image within {@link #imagesProgress} that is being displayed.
+	 */
+	private int imageIndex = 0;
+
+	private Text displayNameText;
+	private Text domainNameText;
+	private Button domainSelectButton;
+	private Text nameServiceText;
+	private Binding nameServiceBinding;
+
+	private FindDomainsJob findDomainsJob = null;
 
 	/**
 	 * Instantiates a host entry dialog.
@@ -71,9 +129,9 @@ public class DomainEntryWizardPage extends WizardPage {
 	 * @since 4.0
 	 */
 	public DomainEntryWizardPage(final String pageName) {
-		super(pageName, "Domain Manager Connection Settings", null);
-		this.setDescription("Enter the settings for the Domain Manager.");
-		this.domainNames = new ArrayList<String>();
+		super(pageName, Messages.DomainEntryWizardPage_PageTitle, null);
+		this.setDescription(Messages.DomainEntryWizardPage_PageDescription);
+		this.existingDisplayNames = new ArrayList<String>();
 	}
 
 	public void setShowExtraSettings(final boolean showExtraSettings) {
@@ -87,86 +145,110 @@ public class DomainEntryWizardPage extends WizardPage {
 	@Override
 	public void dispose() {
 		super.dispose();
+		resourceManager.dispose();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void createControl(final Composite parent) {
+		createImageDescriptors();
+
 		final Composite container = new Composite(parent, SWT.NONE);
-		final GridLayout gridLayout = new GridLayout(2, false);
+		final GridLayout gridLayout = new GridLayout(3, false);
 		container.setLayout(gridLayout);
 		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final Label localDomainNameLabel = new Label(container, SWT.NONE);
-		localDomainNameLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-		localDomainNameLabel.setText("Display Name:");
+		// Display Name
+		final Label displayNameLabel = new Label(container, SWT.NONE);
+		displayNameLabel.setText(Messages.DomainEntryWizardPage_DisplayName);
+		GridDataFactory labelGdf = GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER);
+		displayNameLabel.setLayoutData(labelGdf.create());
 
-		final Text localDomainNameField = new Text(container, SWT.BORDER);
-		localDomainNameField.setToolTipText("Name that this domain will be displayed as locally.");
-		localDomainNameField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
+		displayNameText = new Text(container, SWT.BORDER);
+		displayNameText.setToolTipText(Messages.DomainEntryWizardPage_DisplayNameTooltip);
+		GridDataFactory textGdf = GridDataFactory.fillDefaults().grab(true, false).span(2, 1);
+		displayNameText.setLayoutData(textGdf.create());
 
+		// Domain name
 		final Label domainNameLabel = new Label(container, SWT.NONE);
-		domainNameLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-		domainNameLabel.setText("Domain Name:");
+		domainNameLabel.setText(Messages.DomainEntryWizardPage_DomainName);
+		domainNameLabel.setLayoutData(labelGdf.create());
 
-		final Text domainNameField = new Text(container, SWT.BORDER);
-		domainNameField.setToolTipText("Name the domain is registered as within the naming service.");
-		domainNameField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
+		domainNameText = new Text(container, SWT.BORDER);
+		domainNameText.setToolTipText(Messages.DomainEntryWizardPage_DomainNameTooltip);
+		domainNameText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		context.bindValue(WidgetProperties.text(SWT.Modify).observe(localDomainNameField), WidgetProperties.text(SWT.Modify).observe(domainNameField), null,
-			new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
+		domainSelectButton = new Button(container, SWT.PUSH);
+		domainSelectButton.setImage(resourceManager.createImage(imageNoDomains));
+		domainSelectButton.setToolTipText(Messages.DomainEntryWizardPage_DomainButtonTooltip_InvalidNameServiceRef);
+		domainSelectButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 
+		// Name service
 		final Label nameServiceLabel = new Label(container, SWT.NONE);
-		nameServiceLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-		nameServiceLabel.setText("Name Service:");
+		nameServiceLabel.setText(Messages.DomainEntryWizardPage_NameService);
+		nameServiceLabel.setLayoutData(labelGdf.create());
 
-		final Text nameServiceField = new Text(container, SWT.BORDER);
-		nameServiceField.setToolTipText("The CORBA URI that points to the naming service.  This is usually of the form 'corbaname::<hostname>'");
-		nameServiceField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		nameServiceText = new Text(container, SWT.BORDER);
+		nameServiceText.setToolTipText(Messages.DomainEntryWizardPage_NameServiceTooltip);
+		nameServiceText.setLayoutData(textGdf.create());
 
-		// Add the domainName validator, needs to reference the initref
+		// Display name binding & validation
 		UpdateValueStrategy validator = new UpdateValueStrategy();
-		validator.setAfterConvertValidator(new IValidator() {
-
-			@Override
-			public IStatus validate(final Object value) {
-				final String name = (String) value;
-				if ((name == null) || (name.length() == 0)) {
-					return ValidationStatus.error("Must enter a domain name.");
-				}
-
-				// if we're not editing, the domain name must be different
-				if (name.equals(DomainEntryWizardPage.this.editLocalDomainName)) {
-					return ValidationStatus.ok();
-				} else if (DomainEntryWizardPage.this.domainNames.contains(name)) {
-					return ValidationStatus.error("Domain Name already exists, please enter another.");
-				}
-
-				return ValidationStatus.ok();
+		validator.setAfterConvertValidator(value -> {
+			final String name = (String) value;
+			if ((name == null) || (name.length() == 0)) {
+				return ValidationStatus.error(Messages.DomainEntryWizardPage_DomainName_NoName);
 			}
+
+			// if we're not editing, the domain name must be different
+			if (name.equals(editLocalDomainName)) {
+				return ValidationStatus.ok();
+			} else if (existingDisplayNames.contains(name)) {
+				return ValidationStatus.error(Messages.DomainEntryWizardPage_DomainName_AlreadyExists);
+			}
+
+			return ValidationStatus.ok();
 		});
-		Binding binding = this.context.bindValue(WidgetProperties.text(SWT.Modify).observe(localDomainNameField),
-			BeanProperties.value(this.model.getClass(), DomainSettingModel.PROP_LOCAL_DOMAIN_NAME).observe(this.model),
-			validator, null);
+		Binding binding = this.context.bindValue(WidgetProperties.text(SWT.Modify).observe(displayNameText),
+			BeanProperties.value(this.model.getClass(), DomainSettingModel.PROP_LOCAL_DOMAIN_NAME).observe(this.model), validator, null);
 		ControlDecorationSupport.create(binding, SWT.TOP | SWT.LEFT);
 
+		// Domain name binding & validation
 		validator = new UpdateValueStrategy();
-		validator.setAfterConvertValidator(NON_EMPTY_STRING);
-		binding = this.context.bindValue(WidgetProperties.text(SWT.Modify).observe(domainNameField),
-			BeanProperties.value(this.model.getClass(), DomainSettingModel.PROP_DOMAIN_NAME).observe(this.model),
-			validator, null);
+		validator.setAfterConvertValidator(value -> {
+			if (((String) value).isEmpty()) {
+				return ValidationStatus.error(Messages.DomainEntryWizardPage_Validation_MissingValue);
+			}
+			return ValidationStatus.ok();
+		});
+		binding = this.context.bindValue(WidgetProperties.text(SWT.Modify).observe(domainNameText),
+			BeanProperties.value(this.model.getClass(), DomainSettingModel.PROP_DOMAIN_NAME).observe(this.model), validator, null);
 		ControlDecorationSupport.create(binding, SWT.TOP | SWT.LEFT);
 
+		// Name service binding & validation
 		validator = new UpdateValueStrategy();
 		validator.setConverter(IConverter.create(String.class, String.class, fromObject -> ((String) fromObject).trim()));
 		validator.setAfterGetValidator(new NamingServiceValidator());
-		binding = this.context.bindValue(WidgetProperties.text(SWT.Modify).observe(nameServiceField),
-			BeanProperties.value(this.model.getClass(), DomainSettingModel.PROP_NAME_SERVICE_INIT_REF).observe(this.model),
-			validator, null);
+		nameServiceBinding = this.context.bindValue(WidgetProperties.text(SWT.Modify).observe(nameServiceText),
+			BeanProperties.value(this.model.getClass(), DomainSettingModel.PROP_NAME_SERVICE_INIT_REF).observe(this.model), validator, null);
 		ControlDecorationSupport.create(binding, SWT.TOP | SWT.LEFT);
+
+		// Setting display name -> sets domain name
+		context.bindValue(WidgetProperties.text(SWT.Modify).observe(displayNameText), WidgetProperties.text(SWT.Modify).observe(domainNameText), null,
+			new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
+
+		// Setting the name service reference -> search for domains
+		nameServiceText.addModifyListener(event -> {
+			doDomainSearch();
+		});
+
+		// Clicking the domain selection button
+		domainSelectButton.addListener(SWT.Selection, event -> {
+			domainSelectionButtonClicked();
+		});
+
+		// Start an initial search
+		doDomainSearch();
 
 		if (this.showExtraSettings) {
 			createConnectionSettingsGroup(container);
@@ -177,14 +259,149 @@ public class DomainEntryWizardPage extends WizardPage {
 		WizardPageSupport.create(this, context);
 	}
 
+	private void createImageDescriptors() {
+		resourceManager = new LocalResourceManager(JFaceResources.getResources());
+		try {
+			IPath path = new Path(ScaUiPlugin.PLUGIN_ID).append(PATH_IMAGE_NO_DOMAINS);
+			imageNoDomains = ImageDescriptor.createFromURL(new URL(URI.createPlatformPluginURI(path.toString(), false).toString()));
+			path = new Path(ScaUiPlugin.PLUGIN_ID).append(PATH_IMAGE_DOMAINS);
+			imageDomains = ImageDescriptor.createFromURL(new URL(URI.createPlatformPluginURI(path.toString(), false).toString()));
+			imagesProgress = new ImageDescriptor[8];
+			for (int i = 0; i < 8; i++) {
+				path = new Path(ScaUiPlugin.PLUGIN_ID).append(String.format(PATH_IMAGES_PROGRESS, i + 1));
+				imagesProgress[i] = ImageDescriptor.createFromURL(new URL(URI.createPlatformPluginURI(path.toString(), false).toString()));
+				resourceManager.createImage(imagesProgress[i]);
+			}
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Kicks off the process that searches for domains. Any existing search is canceled / its results are removed.
+	 */
+	private void doDomainSearch() {
+		// Cancel & remove an existing search job
+		if (findDomainsJob != null) {
+			if (findDomainsJob.getResult() == null) {
+				findDomainsJob.cancel();
+			}
+			findDomainsJob = null;
+		}
+
+		// If the field doesn't validate, we can't search for domains
+		IStatus status = (IStatus) nameServiceBinding.getValidationStatus().getValue();
+		if (!status.isOK()) {
+			domainSelectButton.setImage(resourceManager.createImage(imageNoDomains));
+			domainSelectButton.setToolTipText(Messages.DomainEntryWizardPage_DomainButtonTooltip_InvalidNameServiceRef);
+			return;
+		}
+
+		FindDomainsJob newJob = new FindDomainsJob(nameServiceText.getText(), true);
+		findDomainsJob = newJob;
+
+		// On job completion, update the UI
+		Runnable updateDomainList = () -> {
+			// Ensure the control hasn't been disposed, and a new job wasn't started
+			if (domainSelectButton.isDisposed() || findDomainsJob != newJob) {
+				return;
+			}
+
+			if (!findDomainsJob.getResult().isOK()) {
+				// Job encountered problems
+				domainSelectButton.setImage(resourceManager.createImage(imageNoDomains));
+				domainSelectButton.setToolTipText(findDomainsJob.getResult().getMessage());
+			} else if (findDomainsJob.getDomainNames().isEmpty()) {
+				// Job completed, but no domains found
+				domainSelectButton.setImage(resourceManager.createImage(imageNoDomains));
+				domainSelectButton.setToolTipText(Messages.DomainEntryWizardPage_DomainButtonTooltip_NoDomainsFound);
+			} else {
+				// Domains were found
+				domainSelectButton.setImage(resourceManager.createImage(imageDomains));
+				domainSelectButton.setToolTipText(Messages.DomainEntryWizardPage_DomainButtonTooltip_ClickToSelect);
+			}
+		};
+		findDomainsJob.addJobChangeListener(new JobChangeAdapter() {
+			@Override
+			public void done(IJobChangeEvent event) {
+				if (event.getResult().getSeverity() == IStatus.CANCEL) {
+					return;
+				}
+				try {
+					domainSelectButton.getDisplay().asyncExec(updateDomainList);
+				} catch (SWTException e) {
+					// Widget was likely disposed in the interim (wizard has been closed)
+				}
+			}
+		});
+
+		// Show a progress indicator on the button while the job runs
+		Runnable progressIndicator = new Runnable() {
+			@Override
+			public void run() {
+				// Ensure the control hasn't been disposed, and the job is still running
+				if (domainSelectButton.isDisposed() || findDomainsJob == null || findDomainsJob.getResult() != null) {
+					return;
+				}
+
+				// Advanced the image
+				imageIndex = (imageIndex + 1) % imagesProgress.length;
+				domainSelectButton.setImage(resourceManager.createImage(imagesProgress[imageIndex]));
+				domainSelectButton.setToolTipText(Messages.DomainEntryWizardPage_DomainButtonTooltip_Searching);
+				getShell().getDisplay().timerExec(ANIMATION_DELAY_MS, this);
+			}
+		};
+		getShell().getDisplay().timerExec(ANIMATION_DELAY_MS, progressIndicator);
+
+		findDomainsJob.schedule(DOMAIN_SEARCH_DELAY_MS);
+	}
+
+	/**
+	 * Called when the domain selection button is clicked.
+	 */
+	private void domainSelectionButtonClicked() {
+		// Nothing to do if the search hasn't run, or hasn't completed yet
+		if (findDomainsJob == null || findDomainsJob.getResult() == null) {
+			return;
+		}
+
+		List<String> runningDomainNames = findDomainsJob.getDomainNames();
+		if (runningDomainNames.isEmpty()) {
+			// No domains - run the search again
+			doDomainSearch();
+		} else {
+			// Let the user choose a domain
+			ListDialog dialog = new ListDialog(getShell());
+			dialog.setTitle(Messages.DomainEntryWizardPage_DomainSelectionDialog_Title);
+			dialog.setMessage(Messages.DomainEntryWizardPage_DomainSelectionDialog_Message);
+			dialog.setContentProvider(ArrayContentProvider.getInstance());
+			dialog.setLabelProvider(new LabelProvider());
+			dialog.setInput(runningDomainNames);
+			if (dialog.open() != Window.OK) {
+				return;
+			}
+
+			// Ensure the display name is unique
+			String domainName = (String) dialog.getResult()[0];
+			String displayName = domainName;
+			for (int i = 2; existingDisplayNames.contains(displayName); i++) {
+				displayName = domainName + "_" + i; //$NON-NLS-1$
+			}
+
+			// Be sure to set the display name first, since it will adjust the domain name
+			displayNameText.setText(displayName);
+			domainNameText.setText(domainName);
+		}
+	}
+
 	private void createConnectionSettingsGroup(final Composite parent) {
 		final Group connectionSettings = new Group(parent, SWT.BORDER);
-		connectionSettings.setText("Connection Settings");
-		connectionSettings.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		connectionSettings.setText(Messages.DomainEntryWizardPage_ConnectionSettingsGroup);
+		connectionSettings.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		connectionSettings.setLayout(new RowLayout(SWT.VERTICAL));
 
 		final Button manualConnect = new Button(connectionSettings, SWT.RADIO);
-		manualConnect.setText("Don't connect");
+		manualConnect.setText(Messages.DomainEntryWizardPage_DontConnect);
 		manualConnect.setSelection(this.model.getConnectionMode() == ConnectionMode.MANUAL);
 		manualConnect.addSelectionListener(new SelectionListener() {
 
@@ -201,7 +418,7 @@ public class DomainEntryWizardPage extends WizardPage {
 		});
 
 		final Button connectNow = new Button(connectionSettings, SWT.RADIO);
-		connectNow.setText("Connect once");
+		connectNow.setText(Messages.DomainEntryWizardPage_ConnectOnce);
 		connectNow.setSelection(this.model.getConnectionMode() == ConnectionMode.NOW);
 		connectNow.addSelectionListener(new SelectionListener() {
 
@@ -218,7 +435,7 @@ public class DomainEntryWizardPage extends WizardPage {
 		});
 
 		final Button connectAuto = new Button(connectionSettings, SWT.RADIO);
-		connectAuto.setText("Always connect");
+		connectAuto.setText(Messages.DomainEntryWizardPage_AlwaysConnect);
 		connectAuto.setSelection(this.model.getConnectionMode() == ConnectionMode.AUTO);
 		connectAuto.addSelectionListener(new SelectionListener() {
 
@@ -284,7 +501,7 @@ public class DomainEntryWizardPage extends WizardPage {
 	 * @since 8.0
 	 */
 	public void setDomains(final List<String> domainNames) {
-		this.domainNames = domainNames;
+		this.existingDisplayNames = domainNames;
 	}
 
 	/**
@@ -307,7 +524,7 @@ public class DomainEntryWizardPage extends WizardPage {
 		this.model.setDomainName(domainName);
 		this.model.setNameServiceInitRef(initRef);
 	}
-	
+
 	/**
 	 * 
 	 * This configures the wizard page to edit a connection, as opposed to
