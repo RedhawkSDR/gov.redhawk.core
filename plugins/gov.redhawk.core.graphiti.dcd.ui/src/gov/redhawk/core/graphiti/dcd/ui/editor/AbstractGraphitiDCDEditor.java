@@ -107,10 +107,6 @@ public abstract class AbstractGraphitiDCDEditor extends AbstractGraphitiMultiPag
 	@Override
 	protected AdapterFactory getSpecificAdapterFactory() {
 		final ComposedAdapterFactory factory = new ComposedAdapterFactory();
-		// TODO: How to handle this?
-//		final DcdItemProviderAdapterFactoryAdapter dcdAdapter = new DcdItemProviderAdapterFactoryAdapter();
-//		dcdAdapter.setComponentPlacementAdapter(new DevicesSectionComponentPlacementItemProvider(dcdAdapter));
-//		factory.addAdapterFactory(dcdAdapter);
 		factory.addAdapterFactory(new DcdItemProviderAdapterFactory());
 		factory.addAdapterFactory(new EcoreItemProviderAdapterFactory());
 		factory.addAdapterFactory(new SpdItemProviderAdapterFactory());
