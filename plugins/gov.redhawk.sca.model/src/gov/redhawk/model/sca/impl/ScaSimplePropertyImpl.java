@@ -315,7 +315,10 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, Status.OK_STATUS);
 		} catch (IllegalArgumentException e) {
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE,
-				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
+				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to demarshal value of property '" + getName() + "'", e));
+		} catch (ClassCastException e) {
+			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE,
+				new Status(Status.ERROR, ScaModelPlugin.ID, "Received a value of incorrect type for property '" + getName() + "'", e));
 		}
 	}
 
