@@ -1,29 +1,40 @@
 cache:
   key: "$CI_BUILD_REF_NAME"
   paths:
-    - cache/maven.repository
+    - .m2/repository
+
 variables:
-  DOCKER_REGISTRY_URL: ''
-  P2_PATH: $CI_PROJECT_NAME/updates
-mvn:
-  image: ${DOCKER_REGISTRY_URL}redhawk/maven:3-jdk-8
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+build:
+  image: ${docker_registry}redhawk/maven:3-jdk-8
   stage: build
   script:
-    - mvn install sonar:sonar -P sign -P develop-2.0 -P with-metadata -Dmaven.repo.local=`pwd`/cache/maven.repository
+    - mvn install sonar:sonar -P sign -P develop-2.0 -P with-metadata
   artifacts:
     paths:
-      - releng/p2/target/*.zip
-      - releng/p2/target/repository/**/*
-      - releng/p2/target/repository/*.jar
-    expire_in: 3 days
-deploy:
-  image: ${DOCKER_REGISTRY_URL}redhawk/deploy
+      - tests/*/target/surefire-reports/*.xml
+    expire_in: 1 day
+
+jenkins:
+  image: centos:7
   stage: deploy
-  tags:
-    - deployment
-  dependencies:
-    - mvn
+  dependencies: []
+  before_script:
+    - echo "Deploying to $jenkins_url/job/$CI_PROJECT_NAMESPACE/job/$CI_PROJECT_NAME-$CI_COMMIT_REF_NAME"
   script:
-    - eval "$(ssh-agent -s)"
-    - ssh-add
-    - rsync -avz --delete releng/p2/target/repository/* $PUBLISH_URL:$PUBLISH_PATH/$P2_PATH/$CI_BUILD_REF_NAME/
+    - if [ -n "$jenkins_url" ]; then
+        curl --insecure -X POST $jenkins_url/job/$CI_PROJECT_NAMESPACE/job/$CI_PROJECT_NAME-$CI_COMMIT_REF_NAME/buildWithParameters?pipeline_id=$CI_PIPELINE_ID --user $jenkins_user:$jenkins_api_token;
+      fi
+
+trigger-product:
+  image: centos:7
+  stage: deploy
+  dependencies: []
+  script:
+    - curl --insecure -X POST -F ref=$CI_COMMIT_REF_NAME
+                              -F token=$product_token
+                              -F "variables[triggering_project]=$CI_PROJECT_NAME"
+                              -F "variables[triggering_ref]=$CI_COMMIT_SHA"
+                              -F "variables[triggering_ref_name]=$CI_COMMIT_REF_NAME"
+                              $product_url
