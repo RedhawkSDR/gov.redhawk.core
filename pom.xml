@@ -151,7 +151,6 @@
     <module>plugins/gov.redhawk.ui.port.nxmplot.rcp</module>
     <module>plugins/gov.redhawk.ui.port.playaudio</module>
     <module>plugins/gov.redhawk.validation</module>
-    <module>plugins/mil.jpeojtrs.sca.dcd.diagram</module>
     <module>plugins/mil.jpeojtrs.sca.diagram</module>
     <module>plugins/org.anarres.cpp</module>
 
