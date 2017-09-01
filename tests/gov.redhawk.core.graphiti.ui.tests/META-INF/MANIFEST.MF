@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: gov.redhawk.core.graphiti.ui.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: mil.jpeojtrs.sca.sad,
+ org.junit,
+ org.eclipse.core.runtime,
+ gov.redhawk.core.graphiti.ui

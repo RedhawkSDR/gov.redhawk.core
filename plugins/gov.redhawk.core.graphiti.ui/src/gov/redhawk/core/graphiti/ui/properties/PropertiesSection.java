@@ -27,8 +27,8 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
+import gov.redhawk.core.graphiti.ui.adapters.ComponentInstantiationPropertyViewerAdapter;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
-import gov.redhawk.diagram.sheet.properties.ComponentInstantiationPropertyViewerAdapter;
 import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.sca.ui.ScaComponentFactory;

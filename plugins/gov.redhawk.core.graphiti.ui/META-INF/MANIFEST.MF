@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: gov.redhawk.core.graphiti.ui;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -25,7 +25,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.zest.layouts;bundle-version="1.1.200",
  gov.redhawk.monitor,
  idl.bulkio,
- gov.redhawk.diagram,
  gov.redhawk.sca.ui
 Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.core.graphiti.ui.adapters,
@@ -75,4 +74,5 @@ Export-Package: gov.redhawk.core.graphiti.ui.adapters,
    gov.redhawk.ide.graphiti.dcd.ui,
    gov.redhawk.ide.graphiti.sad.ui,
    gov.redhawk.ide.graphiti.ui,
-   gov.redhawk.ide.swtbot"
+   gov.redhawk.ide.swtbot,
+   gov.redhawk.core.graphiti.ui.tests"
