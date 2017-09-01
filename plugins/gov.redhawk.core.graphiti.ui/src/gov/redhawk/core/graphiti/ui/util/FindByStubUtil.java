@@ -21,7 +21,7 @@ public class FindByStubUtil {
 
 	private FindByStubUtil() {
 	}
- 
+
 	/**
 	 * Return true if findByStub represents findBy domain manager
 	 * @param findByStub
