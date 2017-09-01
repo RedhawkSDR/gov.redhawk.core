@@ -80,7 +80,6 @@ import gov.redhawk.core.graphiti.ui.diagram.features.LayoutDiagramFeature;
 import gov.redhawk.core.graphiti.ui.editor.IDiagramUtilHelper;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.internal.diagram.wizards.SuperPortConnectionWizard;
-import gov.redhawk.diagram.util.InterfacesUtil;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.partitioning.ConnectInterface;
 import mil.jpeojtrs.sca.partitioning.ConnectionTarget;

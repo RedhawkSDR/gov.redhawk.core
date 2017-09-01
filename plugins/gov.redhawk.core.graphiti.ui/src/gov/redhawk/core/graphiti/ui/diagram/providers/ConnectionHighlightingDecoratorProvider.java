@@ -17,8 +17,8 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.tb.ColorDecorator;
 import org.eclipse.graphiti.tb.IDecorator;
 
+import gov.redhawk.core.graphiti.ui.util.InterfacesUtil;
 import gov.redhawk.core.graphiti.ui.util.StyleUtil;
-import gov.redhawk.diagram.util.InterfacesUtil;
 import mil.jpeojtrs.sca.partitioning.UsesPortStub;
 
 public class ConnectionHighlightingDecoratorProvider implements IDecoratorProvider {
