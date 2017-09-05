@@ -34,7 +34,7 @@
     </struct>
     <configurationkind kindtype="property"/>
   </structsequence>
-  <struct id="FRONTEND::listener_allocation" name="frontend_listener_allocation">
+  <struct id="FRONTEND::listener_allocation" mode="writeonly" name="frontend_listener_allocation">
     <description>Allocation structure to acquire "listener" capability on a tuner based off a previous allocation. "Listeners" have the ability to receive the data but can not modify the settings of the tuner.</description>
     <simple id="FRONTEND::listener_allocation::existing_allocation_id" name="existing_allocation_id" type="string">
       <description>Allocation ID for an existing allocation. Could be either control or listener.</description>
