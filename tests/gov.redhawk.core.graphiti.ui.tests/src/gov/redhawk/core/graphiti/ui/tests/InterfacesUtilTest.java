@@ -49,7 +49,7 @@ public class InterfacesUtilTest {
 	public void before() throws IOException, URISyntaxException {
 		// Get SDR location within our bundle
 		Bundle bundle = Platform.getBundle("gov.redhawk.core.graphiti.ui.tests");
-		java.net.URL sdrDomURL = bundle.getEntry("sdr/dom");
+		java.net.URL sdrDomURL = bundle.getEntry("testFiles/sdr/dom");
 		File sdrDomDir = new File(FileLocator.resolve(sdrDomURL).toURI());
 
 		// Load SAD
