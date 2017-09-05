@@ -11,33 +11,15 @@
  */
 package gov.redhawk.sca;
 
-import gov.redhawk.model.sca.ScaDomainManager;
-import gov.redhawk.model.sca.ScaDomainManagerRegistry;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.model.sca.services.IScaObjectLocator;
-import gov.redhawk.sca.compatibility.ICompatibilityUtil;
-import gov.redhawk.sca.internal.ScaDomainRegistryObjectLocator;
-import gov.redhawk.sca.preferences.ScaPreferenceConstants;
-import gov.redhawk.sca.properties.IPropertiesProviderRegistry;
-import gov.redhawk.sca.properties.PropertiesProviderRegistry;
-import gov.redhawk.sca.util.CorbaURIUtil;
-import gov.redhawk.sca.util.IPreferenceAccessor;
-import gov.redhawk.sca.util.ORBUtil;
-import gov.redhawk.sca.util.OrbSession;
-import gov.redhawk.sca.util.ScopedPreferenceAccessor;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import mil.jpeojtrs.sca.util.CorbaUtils;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.common.notify.Notification;
@@ -47,20 +29,32 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.jacorb.JacorbActivator;
-import org.omg.CosNaming.Binding;
-import org.omg.CosNaming.BindingIteratorHolder;
-import org.omg.CosNaming.BindingListHolder;
-import org.omg.CosNaming.BindingType;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
 
-import CF.DomainManagerHelper;
+import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaDomainManagerRegistry;
+import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.services.IScaObjectLocator;
+import gov.redhawk.sca.compatibility.ICompatibilityUtil;
+import gov.redhawk.sca.internal.ScaDomainRegistryObjectLocator;
+import gov.redhawk.sca.jobs.FindDomainsJob;
+import gov.redhawk.sca.preferences.ScaPreferenceConstants;
+import gov.redhawk.sca.properties.IPropertiesProviderRegistry;
+import gov.redhawk.sca.properties.PropertiesProviderRegistry;
+import gov.redhawk.sca.util.CorbaURIUtil;
+import gov.redhawk.sca.util.IPreferenceAccessor;
+import gov.redhawk.sca.util.ORBUtil;
+import gov.redhawk.sca.util.OrbSession;
+import gov.redhawk.sca.util.ScopedPreferenceAccessor;
+import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
  * The activator class controls the plug-in life cycle.
@@ -387,66 +381,21 @@ public class ScaPlugin extends Plugin {
 	 * Scan the naming service to find available domains
 	 * @throws InterruptedException
 	 * @throws CoreException
-	 * 
+	 * @see FindDomainsJob
 	 * @since 7.0
 	 */
-	public static String[] findDomainNamesOnNameServer(final String nameServiceInitRef, IProgressMonitor monitor) throws CoreException,
-		InterruptedException {
-		final int WORK_OTHER = 4;
-		final int WORK_ALL_BINDINGS = 10;
-		final int WORK_EACH_BINDING = 4;
-		final SubMonitor progress = SubMonitor.convert(monitor, "Finding domains on name server...", WORK_OTHER + WORK_ALL_BINDINGS);
-		final ArrayList<String> retVal = new ArrayList<String>();
-
+	public static String[] findDomainNamesOnNameServer(final String nameServiceInitRef, IProgressMonitor monitor) throws CoreException, InterruptedException {
 		final String nameServiceRef = CorbaURIUtil.addDefaultPort(nameServiceInitRef);
-		OrbSession session = OrbSession.createSession();
-		NamingContextExt rootContext = null;
-		try {
-			final org.omg.CORBA.Object rootContextRef = CorbaUtils.string_to_object(session.getOrb(), nameServiceRef, progress.newChild(1));
-			rootContext = CorbaUtils.invoke(new Callable<NamingContextExt>() {
-
-				@Override
-				public NamingContextExt call() throws Exception {
-					return NamingContextExtHelper.narrow(rootContextRef);
-				}
-
-			}, progress.newChild(1));
-
-			// Get a listing of root names
-			final BindingListHolder bl = new BindingListHolder();
-			rootContext.list(-1, bl, new BindingIteratorHolder());
-			progress.worked(1);
-
-			final SubMonitor progressBindings = progress.newChild(WORK_ALL_BINDINGS).setWorkRemaining(bl.value.length * WORK_EACH_BINDING);
-			for (Binding b : bl.value) {
-				// Domains are always bound in a context with the same name as the domain
-				if (b.binding_type.value() == BindingType._ncontext) {
-					String guessedDomainName = b.binding_name[0].id + "/" + b.binding_name[0].id;
-					org.omg.CORBA.Object object = null;
-					try {
-						object = CorbaUtils.resolve_str(rootContext, guessedDomainName, progressBindings.newChild(1));
-						if (!CorbaUtils.non_existent(object, progressBindings.newChild(1))
-							&& CorbaUtils.is_a(object, DomainManagerHelper.id(), progressBindings.newChild(1))) {
-							retVal.add(b.binding_name[0].id);
-						}
-					} catch (CoreException ex) {
-						if (!(ex.getCause() instanceof NotFound)) {
-							throw ex;
-						}
-					} finally {
-						ORBUtil.release(object);
-						object = null;
-						progressBindings.worked(1);
-					}
-				}
-			}
-			return retVal.toArray(new String[retVal.size()]);
-		} finally {
-			if (rootContext != null) {
-				ORBUtil.release(rootContext);
-			}
-			session.dispose();
-			progress.worked(1);
+		FindDomainsJob findDomainsJob = new FindDomainsJob(nameServiceRef, true);
+		findDomainsJob.schedule();
+		findDomainsJob.join();
+		IStatus status = findDomainsJob.getResult();
+		if (status.isOK()) {
+			return findDomainsJob.getDomainNames().toArray(new String[0]);
+		} else if (status.getSeverity() == Status.CANCEL) {
+			throw new InterruptedException();
+		} else {
+			throw new CoreException(new Status(status.getSeverity(), ScaPlugin.PLUGIN_ID, "Unable to retrieve domain names", status.getException()));
 		}
 	}
 }
