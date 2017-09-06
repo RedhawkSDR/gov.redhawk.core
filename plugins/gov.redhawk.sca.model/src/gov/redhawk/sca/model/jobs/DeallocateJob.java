@@ -10,8 +10,6 @@
  */
 package gov.redhawk.sca.model.jobs;
 
-import java.util.concurrent.Callable;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -29,6 +27,7 @@ import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
  * Performs a deallocation against a device.
+ *
  * @since 20.2
  */
 public class DeallocateJob extends Job {
@@ -36,10 +35,13 @@ public class DeallocateJob extends Job {
 	private static final String PLUGIN_ID = "gov.redhawk.frontend";
 
 	private ScaDevice< ? > device;
-	private DataType deallocation;
+	private DataType[] deallocation;
 	private String label;
 
-	public DeallocateJob(ScaDevice< ? > device, DataType deallocation) {
+	/**
+	 * @since 20.4
+	 */
+	public DeallocateJob(ScaDevice< ? > device, DataType... deallocation) {
 		super("Deallocating");
 		this.device = device;
 		this.deallocation = deallocation;
@@ -57,25 +59,20 @@ public class DeallocateJob extends Job {
 		SubMonitor progress = SubMonitor.convert(monitor, "Deallocating", WORK_DEALLOCATE + WORK_REFRESH);
 
 		try {
-			CorbaUtils.invoke(new Callable<Object>() {
-
-				@Override
-				public Object call() throws Exception {
-					try {
-						device.deallocateCapacity(new DataType[] { deallocation });
-					} catch (InvalidCapacity e) {
-						throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, CFErrorFormatter.format(e, label), e));
-					} catch (InvalidState e) {
-						throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, CFErrorFormatter.format(e, label), e));
-					}
-					return null;
+			CorbaUtils.invoke(() -> {
+				try {
+					device.deallocateCapacity(deallocation);
+				} catch (InvalidCapacity e) {
+					throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, CFErrorFormatter.format(e, label), e));
+				} catch (InvalidState e) {
+					throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, CFErrorFormatter.format(e, label), e));
 				}
-
+				return null;
 			}, progress.newChild(WORK_DEALLOCATE));
 
 			device.refresh(progress.newChild(WORK_REFRESH), RefreshDepth.SELF);
 		} catch (InterruptedException e) {
-			return new Status(IStatus.ERROR, PLUGIN_ID, "Interrupted during deallocation", e);
+			return Status.CANCEL_STATUS;
 		} catch (CoreException e) {
 			return new Status(e.getStatus().getSeverity(), PLUGIN_ID, "Failed to deallocate", e);
 		}
