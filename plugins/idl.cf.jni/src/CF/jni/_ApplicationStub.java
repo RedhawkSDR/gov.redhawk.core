@@ -203,6 +203,18 @@ public class _ApplicationStub extends omnijni.ObjectImpl implements CF.Applicati
   }
   private static native boolean _get_aware (long __ref__);
 
+  public float stopTimeout ()
+  {
+    return _get_stopTimeout(this.ref_);
+  }
+  private static native float _get_stopTimeout (long __ref__);
+
+  public void stopTimeout (float value)
+  {
+    _set_stopTimeout(this.ref_, value);
+  }
+  private static native void _set_stopTimeout (long __ref__, float value);
+
   public CF.DataType[] metrics (String[] components, String[] attributes)
   {
     return metrics(this.ref_, components, attributes);
