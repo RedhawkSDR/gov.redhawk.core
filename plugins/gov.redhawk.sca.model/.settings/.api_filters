@@ -18,12 +18,4 @@
             </message_arguments>
         </filter>
     </resource>
-    <resource path="src/gov/redhawk/sca/model/jobs/DeallocateJob.java" type="gov.redhawk.sca.model.jobs.DeallocateJob">
-        <filter comment="Changing to varargs" id="338722907">
-            <message_arguments>
-                <message_argument value="gov.redhawk.sca.model.jobs.DeallocateJob"/>
-                <message_argument value="DeallocateJob(ScaDevice&lt;?&gt;, DataType)"/>
-            </message_arguments>
-        </filter>
-    </resource>
 </component>
