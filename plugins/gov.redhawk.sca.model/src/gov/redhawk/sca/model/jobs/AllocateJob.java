@@ -18,63 +18,60 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 
 import CF.DataType;
+import CF.DevicePackage.InsufficientCapacity;
 import CF.DevicePackage.InvalidCapacity;
 import CF.DevicePackage.InvalidState;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaModelPlugin;
 import mil.jpeojtrs.sca.util.CFErrorFormatter;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
- * Performs a deallocation against a device.
- *
- * @since 20.2
+ * @since 20.4
  */
-public class DeallocateJob extends Job {
-
-	private static final String PLUGIN_ID = "gov.redhawk.frontend";
+public class AllocateJob extends Job {
 
 	private ScaDevice< ? > device;
-	private DataType[] deallocation;
+	private DataType[] allocation;
 	private String label;
 
-	/**
-	 * @since 20.4
-	 */
-	public DeallocateJob(ScaDevice< ? > device, DataType... deallocation) {
-		super("Deallocating");
+	public AllocateJob(ScaDevice< ? > device, DataType... allocation) {
+		super("Allocating");
 		this.device = device;
-		this.deallocation = deallocation;
+		this.allocation = allocation;
 		if (this.device.isSetLabel()) {
-			label = "device " + this.device.getLabel();
+			this.label = "device " + this.device.getLabel();
 		} else {
-			label = "device";
+			this.label = "device";
 		}
 	}
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		final int WORK_DEALLOCATE = 9;
+		final int WORK_ALLOCATE = 9;
 		final int WORK_REFRESH = 1;
-		SubMonitor progress = SubMonitor.convert(monitor, "Deallocating", WORK_DEALLOCATE + WORK_REFRESH);
+		SubMonitor progress = SubMonitor.convert(monitor, "Allocating", WORK_ALLOCATE + WORK_REFRESH);
 
 		try {
 			CorbaUtils.invoke(() -> {
 				try {
-					device.deallocateCapacity(deallocation);
+					device.allocateCapacity(allocation);
 				} catch (InvalidCapacity e) {
-					throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, CFErrorFormatter.format(e, label), e));
+					throw new CoreException(new Status(IStatus.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e, label), e));
 				} catch (InvalidState e) {
-					throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, CFErrorFormatter.format(e, label), e));
+					throw new CoreException(new Status(IStatus.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e, label), e));
+				} catch (InsufficientCapacity e) {
+					throw new CoreException(new Status(IStatus.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e, label), e));
 				}
 				return null;
-			}, progress.newChild(WORK_DEALLOCATE));
+			}, progress.newChild(WORK_ALLOCATE));
 
 			device.refresh(progress.newChild(WORK_REFRESH), RefreshDepth.SELF);
 		} catch (InterruptedException e) {
 			return Status.CANCEL_STATUS;
 		} catch (CoreException e) {
-			return new Status(e.getStatus().getSeverity(), PLUGIN_ID, "Failed to deallocate", e);
+			return new Status(e.getStatus().getSeverity(), ScaModelPlugin.ID, "Failed to allocate", e);
 		}
 
 		return Status.OK_STATUS;

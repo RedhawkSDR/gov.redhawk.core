@@ -6,7 +6,7 @@ Bundle-Version: 21.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: gov.redhawk.model.sca,
  gov.redhawk.model.sca.commands,
  gov.redhawk.model.sca.impl,
