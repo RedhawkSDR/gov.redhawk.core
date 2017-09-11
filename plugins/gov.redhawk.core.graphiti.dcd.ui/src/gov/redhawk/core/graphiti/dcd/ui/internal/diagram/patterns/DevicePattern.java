@@ -103,6 +103,7 @@ public class DevicePattern extends AbstractNodeComponentPattern implements IPatt
 	/**
 	 * Returns device, dcd, ports. Order does matter.
 	 */
+	@Override
 	protected List<EObject> getBusinessObjectsToLink(EObject componentInstantiation) {
 		// get dcd from diagram, we need to link it to all shapes so the diagram will update when changes occur
 		List<EObject> businessObjectsToLink = new ArrayList<EObject>();

@@ -665,6 +665,7 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 	/**
 	 * Returns component, sad, and external ports. Order does matter.
 	 */
+	@Override
 	protected List<EObject> getBusinessObjectsToLink(EObject componentInstantiation) {
 		// get external ports
 		ExternalPorts externalPorts = DUtil.getDiagramSAD(getDiagram()).getExternalPorts();
