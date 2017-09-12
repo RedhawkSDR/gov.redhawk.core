@@ -137,7 +137,7 @@ public class DCDUtils {
 			dcd.getConnections().getConnectInterface().removeAll(connectionsToRemove);
 		}
 
-		// If the placement continues more than one instantiation, then don't remove it or the component file
+		// If the placement contains more than one instantiation, then don't remove it or the component file
 		ComponentFile componentFileToRemove = placement.getComponentFileRef().getFile();
 		boolean removePlacement = true;
 		if (placement.getComponentInstantiation().size() > 1) {
