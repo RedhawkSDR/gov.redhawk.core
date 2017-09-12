@@ -18,10 +18,13 @@ import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.dcd.DcdComponentPlacement;
 import mil.jpeojtrs.sca.dcd.DcdConnectInterface;
 import mil.jpeojtrs.sca.dcd.DcdFactory;
+import mil.jpeojtrs.sca.dcd.DcdProvidesPort;
+import mil.jpeojtrs.sca.dcd.DcdUsesPort;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.partitioning.ComponentFile;
 import mil.jpeojtrs.sca.partitioning.ComponentFileRef;
 import mil.jpeojtrs.sca.partitioning.ComponentFiles;
+import mil.jpeojtrs.sca.partitioning.ComponentSupportedInterface;
 import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.util.ScaUriHelpers;
@@ -100,22 +103,32 @@ public class DCDUtils {
 		DcdComponentPlacement placement = (DcdComponentPlacement) ciToDelete.getPlacement();
 
 		// find and remove any attached connections
-		// gather connections
 		List<DcdConnectInterface> connectionsToRemove = new ArrayList<DcdConnectInterface>();
 		if (dcd.getConnections() != null) {
-			for (DcdConnectInterface connectionInterface : dcd.getConnections().getConnectInterface()) {
-				// we need to do thorough null checks here because of the many connection possibilities. Firstly a
-				// connection requires only a usesPort and either (providesPort || componentSupportedInterface)
-				// and therefore null checks need to be performed.
+			for (DcdConnectInterface connection : dcd.getConnections().getConnectInterface()) {
+				// Check for a connection to the component's ComponentSupportedInterface
+				// A connection can target a providesPort or componentSupportedInterface, so either could be null
 				// FindBy connections don't have ComponentInstantiationRefs and so they can also be null
-				if ((connectionInterface.getComponentSupportedInterface() != null
-					&& connectionInterface.getComponentSupportedInterface().getComponentInstantiationRef() != null
-					&& ciToDelete.getId().equals(connectionInterface.getComponentSupportedInterface().getComponentInstantiationRef().getRefid()))
-					|| (connectionInterface.getUsesPort() != null && connectionInterface.getUsesPort().getComponentInstantiationRef() != null
-						&& ciToDelete.getId().equals(connectionInterface.getUsesPort().getComponentInstantiationRef().getRefid()))
-					|| (connectionInterface.getProvidesPort() != null && connectionInterface.getProvidesPort().getComponentInstantiationRef() != null
-						&& ciToDelete.getId().equals(connectionInterface.getProvidesPort().getComponentInstantiationRef().getRefid()))) {
-					connectionsToRemove.add(connectionInterface);
+				ComponentSupportedInterface csi = connection.getComponentSupportedInterface();
+				if (csi != null && csi.getComponentInstantiationRef() != null && ciToDelete.getId().equals(csi.getComponentInstantiationRef().getRefid())) {
+					connectionsToRemove.add(connection);
+					continue;
+				}
+
+				// Check for a connection to the targets Provides port
+				// A connection can target a providesPort or componentSupportedInterface, so either could be null
+				DcdProvidesPort provides = connection.getProvidesPort();
+				if (provides != null && provides.getComponentInstantiationRef() != null
+					&& ciToDelete.getId().equals(provides.getComponentInstantiationRef().getRefid())) {
+					connectionsToRemove.add(connection);
+					continue;
+				}
+
+				// Check for a connection to the uses port
+				DcdUsesPort uses = connection.getUsesPort();
+				if (uses != null && uses.getComponentInstantiationRef() != null && ciToDelete.getId().equals(uses.getComponentInstantiationRef().getRefid())) {
+					connectionsToRemove.add(connection);
+					continue;
 				}
 			}
 		}
@@ -124,12 +137,26 @@ public class DCDUtils {
 			dcd.getConnections().getConnectInterface().removeAll(connectionsToRemove);
 		}
 
-		// delete component file if applicable
-		// figure out which component file we are using, if no other component placements using it then remove it.
+		// If the placement continues more than one instantiation, then don't remove it or the component file
 		ComponentFile componentFileToRemove = placement.getComponentFileRef().getFile();
-		for (DcdComponentPlacement p : dcd.getPartitioning().getComponentPlacement()) {
-			if (p != placement && p.getComponentFileRef().getRefid().equals(placement.getComponentFileRef().getRefid())) {
-				componentFileToRemove = null;
+		boolean removePlacement = true;
+		if (placement.getComponentInstantiation().size() > 1) {
+			removePlacement = false;
+			componentFileToRemove = null;
+		}
+
+		// If we are removing the placement, then see if other component placements are using the component file.
+		// If not, mark it for removal
+		if (removePlacement) {
+			String placementRefID = placement.getComponentFileRef().getRefid();
+			for (DcdComponentPlacement tempPlacement : dcd.getPartitioning().getComponentPlacement()) {
+				if (tempPlacement == placement) {
+					continue;
+				}
+				String tempRefID = tempPlacement.getComponentFileRef().getRefid();
+				if (tempRefID.equals(placementRefID)) {
+					componentFileToRemove = null;
+				}
 			}
 		}
 
@@ -147,8 +174,12 @@ public class DCDUtils {
 			}
 		}
 
-		// delete component placement
-		dcd.getPartitioning().getComponentPlacement().remove(placement);
-	}
+		// delete component instantiation
+		placement.getComponentInstantiation().remove(ciToDelete);
 
+		// delete component placement
+		if (removePlacement) {
+			dcd.getPartitioning().getComponentPlacement().remove(placement);
+		}
+	}
 }
