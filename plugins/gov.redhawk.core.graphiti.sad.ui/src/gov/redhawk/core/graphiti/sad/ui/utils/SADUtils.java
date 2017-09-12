@@ -27,6 +27,7 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 
 import gov.redhawk.core.graphiti.sad.ui.ext.ComponentShape;
+import gov.redhawk.core.graphiti.sad.ui.internal.diagram.patterns.ComponentPattern;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentFile;
@@ -270,15 +271,20 @@ public class SADUtils {
 		sadComponentInstantiation.setImplID(implementationId);
 		componentPlacement.getComponentInstantiation().add(sadComponentInstantiation);
 
-		// determine start order
-		int startOrder = 0;
-		for (SadComponentInstantiation comp : sad.getComponentInstantiationsInStartOrder()) {
-			if (comp.getStartOrder() == null) {
-				break;
-			}
-			startOrder = comp.getStartOrder().intValue() + 1;
+		// determine start order for existing components
+		BigInteger highestStartOrder = ComponentPattern.determineHighestStartOrder(sad);
+
+		// increment start order for new component
+		BigInteger startOrder = null;
+		if (highestStartOrder == null) {
+			// Should only get here if no other components exist
+			// Assume assembly controller and assign start order of 0
+			startOrder = BigInteger.ZERO;
+		} else {
+			startOrder = highestStartOrder.add(BigInteger.ONE);
 		}
-		sadComponentInstantiation.setStartOrder(BigInteger.valueOf(startOrder));
+
+		sadComponentInstantiation.setStartOrder(startOrder);
 
 		// determine if component should be the assembly controller
 		if (sadComponentInstantiation.getStartOrder().compareTo(BigInteger.ZERO) == 0) {
