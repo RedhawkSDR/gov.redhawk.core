@@ -32,6 +32,7 @@ import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentFile;
 import mil.jpeojtrs.sca.partitioning.ComponentFileRef;
 import mil.jpeojtrs.sca.partitioning.ComponentFiles;
+import mil.jpeojtrs.sca.partitioning.ComponentSupportedInterface;
 import mil.jpeojtrs.sca.partitioning.NamingService;
 import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
 import mil.jpeojtrs.sca.sad.AssemblyController;
@@ -44,6 +45,8 @@ import mil.jpeojtrs.sca.sad.SadComponentInstantiationRef;
 import mil.jpeojtrs.sca.sad.SadComponentPlacement;
 import mil.jpeojtrs.sca.sad.SadConnectInterface;
 import mil.jpeojtrs.sca.sad.SadFactory;
+import mil.jpeojtrs.sca.sad.SadProvidesPort;
+import mil.jpeojtrs.sca.sad.SadUsesPort;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.util.ScaUriHelpers;
@@ -311,22 +314,31 @@ public class SADUtils {
 		SadComponentPlacement placement = (SadComponentPlacement) ciToDelete.getPlacement();
 
 		// find and remove any attached connections
-		// gather connections
 		List<SadConnectInterface> connectionsToRemove = new ArrayList<SadConnectInterface>();
 		if (sad.getConnections() != null) {
-			for (SadConnectInterface connectionInterface : sad.getConnections().getConnectInterface()) {
-				// we need to do thorough null checks here because of the many connection possibilities. Firstly a
-				// connection requires only a usesPort and either (providesPort || componentSupportedInterface)
-				// and therefore null checks need to be performed.
+			for (SadConnectInterface connection : sad.getConnections().getConnectInterface()) {
+				// Check for a connection to the component's ComponentSupportedInterface
+				// A connection can target a providesPort or componentSupportedInterface, so either could be null
 				// FindBy connections don't have ComponentInstantiationRefs and so they can also be null
-				if ((connectionInterface.getComponentSupportedInterface() != null
-					&& connectionInterface.getComponentSupportedInterface().getComponentInstantiationRef() != null
-					&& ciToDelete.getId().equals(connectionInterface.getComponentSupportedInterface().getComponentInstantiationRef().getRefid()))
-					|| (connectionInterface.getUsesPort() != null && connectionInterface.getUsesPort().getComponentInstantiationRef() != null
-						&& ciToDelete.getId().equals(connectionInterface.getUsesPort().getComponentInstantiationRef().getRefid()))
-					|| (connectionInterface.getProvidesPort() != null && connectionInterface.getProvidesPort().getComponentInstantiationRef() != null
-						&& ciToDelete.getId().equals(connectionInterface.getProvidesPort().getComponentInstantiationRef().getRefid()))) {
-					connectionsToRemove.add(connectionInterface);
+				ComponentSupportedInterface csi = connection.getComponentSupportedInterface();
+				if (csi != null && csi.getComponentInstantiationRef() != null && ciToDelete.getId().equals(csi.getComponentInstantiationRef().getRefid())) {
+					connectionsToRemove.add(connection);
+				}
+
+				// Check for a connection to the targets Provides port
+				// A connection can target a providesPort or componentSupportedInterface, so either could be null
+				SadProvidesPort provides = connection.getProvidesPort();
+				if (provides != null && provides.getComponentInstantiationRef() != null
+					&& ciToDelete.getId().equals(provides.getComponentInstantiationRef().getRefid())) {
+					connectionsToRemove.add(connection);
+					continue;
+				}
+
+				// Check for a connection to the uses port
+				SadUsesPort uses = connection.getUsesPort();
+				if (uses != null && uses.getComponentInstantiationRef() != null && ciToDelete.getId().equals(uses.getComponentInstantiationRef().getRefid())) {
+					connectionsToRemove.add(connection);
+					continue;
 				}
 			}
 		}
@@ -370,34 +382,58 @@ public class SADUtils {
 				sad.setExternalProperties(null);
 			}
 		}
-		// delete component file if applicable
-		// figure out which component file we are using and if no other component placements using it then remove it.
+
+		// If the placement contains more than one instantiation, then don't remove it or the component file
 		ComponentFile componentFileToRemove = placement.getComponentFileRef().getFile();
-		// check components (not in host collocation)
-		for (SadComponentPlacement p : sad.getPartitioning().getComponentPlacement()) {
-			if (p != placement && p.getComponentFileRef().getRefid().equals(placement.getComponentFileRef().getRefid())) {
-				componentFileToRemove = null;
-				break;
-			}
+		boolean removePlacement = true;
+		if (placement.getComponentInstantiation().size() > 1) {
+			removePlacement = false;
+			componentFileToRemove = null;
 		}
-		// check components in host collocation
-		for (HostCollocation hc : sad.getPartitioning().getHostCollocation()) {
-			for (SadComponentPlacement p : hc.getComponentPlacement()) {
-				if (p != placement && p.getComponentFileRef().getRefid().equals(placement.getComponentFileRef().getRefid())) {
+
+		// If we are removing the placement, then see if other component placements are using the component file.
+		// If not, mark it for removal;
+		if (removePlacement) {
+			String placementRefID = placement.getComponentFileRef().getRefid();
+
+			// check top-level components (not in host collocation)
+			for (SadComponentPlacement tmpPlacement : sad.getPartitioning().getComponentPlacement()) {
+				if (tmpPlacement == placement) {
+					continue;
+				}
+				String tmpRefID = tmpPlacement.getComponentFileRef().getRefid();
+				if (tmpRefID.equals(placementRefID)) {
 					componentFileToRemove = null;
 					break;
 				}
 			}
-			if (componentFileToRemove == null) {
-				break;
+
+			// check components in a host collocation
+			out: for (HostCollocation hostCol : sad.getPartitioning().getHostCollocation()) {
+				for (SadComponentPlacement tmpPlacement : hostCol.getComponentPlacement()) {
+					if (tmpPlacement == placement) {
+						continue;
+					}
+					String tmpRefID = tmpPlacement.getComponentFileRef().getRefid();
+					if (tmpRefID.equals(placementRefID)) {
+						componentFileToRemove = null;
+						break out;
+					}
+				}
 			}
 		}
+
 		if (componentFileToRemove != null) {
 			sad.getComponentFiles().getComponentFile().remove(componentFileToRemove);
 		}
 
+		// delete component instantiation
+		placement.getComponentInstantiation().remove(ciToDelete);
+
 		// delete component placement
-		EcoreUtil.delete(placement);
+		if (removePlacement) {
+			sad.getPartitioning().getComponentPlacement().remove(placement);
+		}
 	}
 
 	/**
@@ -436,6 +472,5 @@ public class SADUtils {
 			}
 		});
 	}
-	
-	
+
 }
