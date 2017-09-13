@@ -2232,6 +2232,22 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * @since 21.0
 	 */
 	@Override
+	public float stopTimeout() {
+		return getObj().stopTimeout();
+	}
+
+	/**
+	 * @since 21.0
+	 */
+	@Override
+	public void stopTimeout(float newStopTimeout) {
+		getObj().stopTimeout(newStopTimeout);
+	}
+
+	/**
+	 * @since 21.0
+	 */
+	@Override
 	public DataType[] metrics(String[] components, String[] attributes) throws InvalidMetric {
 		return getObj().metrics(components, attributes);
 	}

@@ -46,6 +46,9 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 			.synchronizedList(new ArrayList<ResourceRef>());
 	private Resource assemblyController;
 
+	private boolean aware = false;
+	private float stopTimeout = 3.0f;
+
 	public ApplicationImpl(final SoftwareAssembly sad, final String name,
 			final String identifier, DomainManagerImpl dmd) throws ServantNotActive,
 			WrongPolicy {
@@ -204,8 +207,17 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 
 	@Override
 	public boolean aware() {
-		// TODO
-		return true;
+		return aware;
+	}
+
+	@Override
+	public float stopTimeout() {
+		return stopTimeout;
+	}
+
+	@Override
+	public void stopTimeout(float newStopTimeout) {
+		stopTimeout = newStopTimeout;
 	}
 
 	@Override
