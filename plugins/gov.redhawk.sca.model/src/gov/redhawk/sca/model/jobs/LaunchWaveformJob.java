@@ -62,17 +62,12 @@ public class LaunchWaveformJob extends SilentJob {
 	private final DeviceAssignmentType[] deviceAssn;
 	private final DataType[] configProps;
 	private final boolean autoStart;
-	private final boolean uninstallExistingApplicationFactory;
-	private final Object waitLock;
+	private boolean uninstallExistingApplicationFactory = false;
+	private Object waitLock = null;
 	private ScaWaveform waveform = null;
 
 	public LaunchWaveformJob(final ScaDomainManager domMgr, final String waveformName, final IPath waveformPath, final DeviceAssignmentType[] deviceAssn,
-		final DataType[] configProps, final boolean autoStart, final Object waitLock) {
-		this(domMgr, waveformName, waveformPath, deviceAssn, configProps, autoStart, waitLock, false);
-	}
-
-	public LaunchWaveformJob(final ScaDomainManager domMgr, final String waveformName, final IPath waveformPath, final DeviceAssignmentType[] deviceAssn,
-		final DataType[] configProps, final boolean autoStart, final Object waitLock, final boolean uninstallExistingAppFactory) {
+		final DataType[] configProps, final boolean autoStart) {
 		super("Launching waveform " + waveformName);
 		this.domMgr = domMgr;
 		this.waveformName = waveformName;
@@ -80,11 +75,28 @@ public class LaunchWaveformJob extends SilentJob {
 		this.deviceAssn = deviceAssn;
 		this.configProps = configProps;
 		this.autoStart = autoStart;
-		this.uninstallExistingApplicationFactory = uninstallExistingAppFactory;
-		this.waitLock = waitLock;
 		this.setSystem(true);
 		this.setUser(false);
 		this.setPriority(Job.LONG);
+	}
+
+	/**
+	 * For pre-2.0 domains only, determines if any existing application factory will be uninstalled.
+	 * @param uninstall
+	 */
+	public void setUninstallExistingAppFactory(boolean uninstall) {
+		this.uninstallExistingApplicationFactory = uninstall;
+	}
+
+	/**
+	 * The job will lock the provided object and call {@link Object#notifyAll()} when it completes.
+	 * @param waitLock
+	 * @deprecated Use {@link Job#addJobChangeListener(org.eclipse.core.runtime.jobs.IJobChangeListener) addJobChangeListener} or
+	 * {@link Job#join(long, IProgressMonitor) join}
+	 */
+	@Deprecated
+	public void setWaitLock(Object waitLock) {
+		this.waitLock = waitLock;
 	}
 
 	public ScaWaveform getWaveform() {
@@ -241,8 +253,10 @@ public class LaunchWaveformJob extends SilentJob {
 					}
 				}
 			} finally {
-				synchronized (this.waitLock) {
-					this.waitLock.notifyAll();
+				if (this.waitLock != null) {
+					synchronized (this.waitLock) {
+						this.waitLock.notifyAll();
+					}
 				}
 				subMonitor.done();
 			}
@@ -250,5 +264,4 @@ public class LaunchWaveformJob extends SilentJob {
 
 		return Status.OK_STATUS;
 	}
-
 }

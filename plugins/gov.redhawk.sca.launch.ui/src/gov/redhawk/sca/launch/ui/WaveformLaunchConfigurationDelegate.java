@@ -11,19 +11,6 @@
  */
 package gov.redhawk.sca.launch.ui;
 
-import gov.redhawk.model.sca.DomainConnectionException;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaAbstractProperty;
-import gov.redhawk.model.sca.ScaComponent;
-import gov.redhawk.model.sca.ScaDomainManager;
-import gov.redhawk.model.sca.ScaDomainManagerRegistry;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.util.LaunchWaveformJob;
-import gov.redhawk.sca.ScaPlugin;
-import gov.redhawk.sca.launch.ScaLaunchConfigurationConstants;
-import gov.redhawk.sca.launch.ScaLaunchConfigurationUtil;
-import gov.redhawk.sca.ui.ScaUI;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,6 +36,18 @@ import org.eclipse.ui.progress.UIJob;
 
 import CF.DataType;
 import CF.DeviceAssignmentType;
+import gov.redhawk.model.sca.DomainConnectionException;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaComponent;
+import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaDomainManagerRegistry;
+import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.sca.ScaPlugin;
+import gov.redhawk.sca.launch.ScaLaunchConfigurationConstants;
+import gov.redhawk.sca.launch.ScaLaunchConfigurationUtil;
+import gov.redhawk.sca.model.jobs.LaunchWaveformJob;
+import gov.redhawk.sca.ui.ScaUI;
 
 /**
  * @since 8.0
@@ -101,7 +100,8 @@ public class WaveformLaunchConfigurationDelegate extends LaunchConfigurationDele
 					final boolean openEditor = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_OPEN,
 					        ScaLaunchConfigurationConstants.DEFAULT_VALUE_ATT_OPEN);
 
-					final LaunchWaveformJob job = new LaunchWaveformJob(domain, waveformName, waveformPath, deviceAssn, configProps, autoStart, waitLock);
+					final LaunchWaveformJob job = new LaunchWaveformJob(domain, waveformName, waveformPath, deviceAssn, configProps, autoStart);
+					job.setWaitLock(waitLock);
 					try {
 						job.schedule();
 

@@ -21,7 +21,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import CF.ResourceOperations;
-import gov.redhawk.model.sca.util.StartJob;
+import gov.redhawk.sca.model.jobs.StartJob;
 import gov.redhawk.sca.util.PluginUtil;
 
 public class StartResouceOpHandler extends AbstractHandler {
