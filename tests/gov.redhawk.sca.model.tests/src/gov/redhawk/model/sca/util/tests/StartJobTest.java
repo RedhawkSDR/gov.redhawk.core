@@ -17,7 +17,7 @@ import CF.ErrorNumberType;
 import CF.ResourceOperations;
 import CF.ResourcePackage.StartError;
 import gov.redhawk.model.sca.tests.stubs.AbstractResourceImpl;
-import gov.redhawk.model.sca.util.StartJob;
+import gov.redhawk.sca.model.jobs.StartJob;
 
 public class StartJobTest {
 

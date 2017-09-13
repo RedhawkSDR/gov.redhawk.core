@@ -26,7 +26,7 @@ public class LaunchWaveformJob extends gov.redhawk.sca.model.jobs.LaunchWaveform
 
 	public LaunchWaveformJob(ScaDomainManager domMgr, String waveformName, IPath waveformPath, DeviceAssignmentType[] deviceAssn, DataType[] configProps,
 		boolean autoStart, Object waitLock) {
-		super(domMgr, waveformName, waveformPath, deviceAssn, configProps, autoStart, waitLock, false);
+		this(domMgr, waveformName, waveformPath, deviceAssn, configProps, autoStart, waitLock, false);
 	}
 
 	/**
@@ -34,7 +34,9 @@ public class LaunchWaveformJob extends gov.redhawk.sca.model.jobs.LaunchWaveform
 	 */
 	public LaunchWaveformJob(ScaDomainManager domMgr, String waveformName, IPath waveformPath, DeviceAssignmentType[] deviceAssn, DataType[] configProps,
 		boolean autoStart, Object waitLock, boolean uninstallExistingAppFactory) {
-		super(domMgr, waveformName, waveformPath, deviceAssn, configProps, autoStart, waitLock, uninstallExistingAppFactory);
+		super(domMgr, waveformName, waveformPath, deviceAssn, configProps, autoStart);
+		this.setWaitLock(waitLock);
+		this.setUninstallExistingAppFactory(uninstallExistingAppFactory);
 	}
 
 }

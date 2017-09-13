@@ -44,7 +44,7 @@ import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.ScaProvidesPort;
 import gov.redhawk.model.sca.ScaService;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.model.sca.util.ReleaseJob;
+import gov.redhawk.sca.model.jobs.ReleaseJob;
 import gov.redhawk.sca.util.SubMonitor;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;

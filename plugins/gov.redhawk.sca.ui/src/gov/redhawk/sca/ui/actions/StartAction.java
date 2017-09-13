@@ -16,7 +16,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import CF.ResourceOperations;
-import gov.redhawk.model.sca.util.StartJob;
+import gov.redhawk.sca.model.jobs.StartJob;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.util.PluginUtil;
 

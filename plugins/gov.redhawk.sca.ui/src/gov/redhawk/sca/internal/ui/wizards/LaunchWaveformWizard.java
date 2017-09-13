@@ -11,15 +11,7 @@
  */
 package gov.redhawk.sca.internal.ui.wizards;
 
-import gov.redhawk.model.sca.ScaDomainManager;
-import gov.redhawk.model.sca.util.LaunchWaveformJob;
-import gov.redhawk.sca.ScaPlugin;
-import gov.redhawk.sca.ui.ScaUI;
-import gov.redhawk.sca.ui.ScaUiPlugin;
-
 import java.lang.reflect.InvocationTargetException;
-
-import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -36,6 +28,12 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import CF.DataType;
 import CF.DeviceAssignmentType;
+import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.sca.ScaPlugin;
+import gov.redhawk.sca.model.jobs.LaunchWaveformJob;
+import gov.redhawk.sca.ui.ScaUI;
+import gov.redhawk.sca.ui.ScaUiPlugin;
+import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 
 public class LaunchWaveformWizard extends Wizard {
 	private static final String PROPERTY_PAGE = "propertyPage";
@@ -121,9 +119,9 @@ public class LaunchWaveformWizard extends Wizard {
 		        new Path(sad.eResource().getURI().path()),
 		        deviceAssn,
 		        configProps,
-		        autoStart,
-		        waitLock,
-		        uninstallExistingApplicationFactory);
+		        autoStart);
+		job.setWaitLock(waitLock);
+		job.setUninstallExistingAppFactory(uninstallExistingApplicationFactory);
 
 		try {
 			getContainer().run(true, true, new IRunnableWithProgress() {

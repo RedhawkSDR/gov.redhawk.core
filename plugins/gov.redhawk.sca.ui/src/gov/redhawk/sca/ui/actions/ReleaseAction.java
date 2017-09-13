@@ -19,7 +19,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import CF.LifeCycleOperations;
-import gov.redhawk.model.sca.util.ReleaseJob;
+import gov.redhawk.sca.model.jobs.ReleaseJob;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.util.PluginUtil;
 
