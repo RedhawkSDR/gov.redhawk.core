@@ -55,8 +55,7 @@ Export-Package: gov.redhawk.core.graphiti.ui.adapters,
  gov.redhawk.core.graphiti.ui.ext,
  gov.redhawk.core.graphiti.ui.ext.impl,
  gov.redhawk.core.graphiti.ui.ext.util,
- gov.redhawk.core.graphiti.ui.internal.preferences;
-  x-friends:="gov.redhawk.ide.graphiti.sad.ui.tests",
+ gov.redhawk.core.graphiti.ui.internal.preferences;x-friends:="gov.redhawk.ide.graphiti.sad.ui.tests",
  gov.redhawk.core.graphiti.ui.modelmap;
   x-friends:="gov.redhawk.core.graphiti.dcd.ui,
    gov.redhawk.core.graphiti.sad.ui,
@@ -75,4 +74,7 @@ Export-Package: gov.redhawk.core.graphiti.ui.adapters,
    gov.redhawk.ide.graphiti.sad.ui,
    gov.redhawk.ide.graphiti.ui,
    gov.redhawk.ide.swtbot,
-   gov.redhawk.core.graphiti.ui.tests"
+   gov.redhawk.core.graphiti.ui.tests,
+   gov.redhawk.ide.graphiti.sad.ui.tests,
+   gov.redhawk.ide.graphiti.dcd.ui.tests,
+   gov.redhawk.ide.graphiti.sad.ui.runtime.chalkboard.tests"
