@@ -239,7 +239,7 @@ public class DomainEntryWizardPage extends WizardPage {
 
 		// Setting the name service reference -> search for domains
 		nameServiceText.addModifyListener(event -> {
-			doDomainSearch();
+			doDomainSearch(false);
 		});
 
 		// Clicking the domain selection button
@@ -248,7 +248,7 @@ public class DomainEntryWizardPage extends WizardPage {
 		});
 
 		// Start an initial search
-		doDomainSearch();
+		doDomainSearch(true);
 
 		if (this.showExtraSettings) {
 			createConnectionSettingsGroup(container);
@@ -279,8 +279,10 @@ public class DomainEntryWizardPage extends WizardPage {
 
 	/**
 	 * Kicks off the process that searches for domains. Any existing search is canceled / its results are removed.
+	 * @param immediate True if the search should begin immediately. False to schedule the search with a slight delay
+	 * which helps avoid prematurely searching while a user might still be typing the naming service name.
 	 */
-	private void doDomainSearch() {
+	private void doDomainSearch(boolean immediate) {
 		// Cancel & remove an existing search job
 		if (findDomainsJob != null) {
 			if (findDomainsJob.getResult() == null) {
@@ -340,7 +342,7 @@ public class DomainEntryWizardPage extends WizardPage {
 			@Override
 			public void run() {
 				// Ensure the control hasn't been disposed, and the job is still running
-				if (domainSelectButton.isDisposed() || findDomainsJob == null || findDomainsJob.getResult() != null) {
+				if (domainSelectButton.isDisposed() || findDomainsJob != newJob || findDomainsJob.getResult() != null) {
 					return;
 				}
 
@@ -368,7 +370,7 @@ public class DomainEntryWizardPage extends WizardPage {
 		List<String> runningDomainNames = findDomainsJob.getDomainNames();
 		if (runningDomainNames.isEmpty()) {
 			// No domains - run the search again
-			doDomainSearch();
+			doDomainSearch(true);
 		} else {
 			// Let the user choose a domain
 			ListDialog dialog = new ListDialog(getShell());
