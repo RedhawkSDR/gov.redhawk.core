@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IDialogSettings;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPage;
@@ -113,56 +112,37 @@ public class LaunchWaveformWizard extends Wizard {
 
 		final IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-		final Object waitLock = new Object();
 		final LaunchWaveformJob job = new LaunchWaveformJob(getDomMgr(),
 		        name,
 		        new Path(sad.eResource().getURI().path()),
 		        deviceAssn,
 		        configProps,
 		        autoStart);
-		job.setWaitLock(waitLock);
 		job.setUninstallExistingAppFactory(uninstallExistingApplicationFactory);
 
 		try {
-			getContainer().run(true, true, new IRunnableWithProgress() {
+			getContainer().run(true, true, monitor -> {
+				monitor.beginTask("Launching waveform " + name, IProgressMonitor.UNKNOWN);
+				job.schedule();
+				job.join(0, monitor);
 
-				@Override
-				public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-
-					monitor.beginTask("Launching waveform " + name, IProgressMonitor.UNKNOWN);
-					try {
-						job.schedule();
-
-						synchronized (waitLock) {
-							while (job.getResult() == null) {
-								if (monitor.isCanceled()) {
-									job.cancel();
-									throw new InterruptedException();
-								} else {
-									waitLock.wait(1000);
-								}
-							}
-						}
-
-						if (job.getWaveform() != null) {
-							activePage.getWorkbenchWindow().getShell().getDisplay().asyncExec(new Runnable() {
-
-								@Override
-								public void run() {
-									try {
-										final boolean useUri = !SWT.getPlatform().startsWith("rap");
-										ScaUI.openEditorOnEObject(activePage, job.getWaveform(), useUri);
-									} catch (final CoreException e) {
-										StatusManager.getManager().handle(e, ScaUiPlugin.PLUGIN_ID);
-									}
-								}
-
-							});
-						}
-					} finally {
-						monitor.done();
-					}
+				if (job.getWaveform() == null) {
+					return;
 				}
+
+				activePage.getWorkbenchWindow().getShell().getDisplay().asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						try {
+							final boolean useUri = !SWT.getPlatform().startsWith("rap");
+							ScaUI.openEditorOnEObject(activePage, job.getWaveform(), useUri);
+						} catch (final CoreException e) {
+							StatusManager.getManager().handle(e, ScaUiPlugin.PLUGIN_ID);
+						}
+					}
+
+				});
 			});
 		} catch (final InvocationTargetException e) {
 			String msg = e.getMessage();
