@@ -64,8 +64,11 @@ import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 
 import CF.DomainManagerHelper;
+import gov.redhawk.sca.ScaPlugin;
+import gov.redhawk.sca.preferences.ScaPreferenceConstants;
 import gov.redhawk.sca.ui.compatibility.CompatibilityFactory;
 import gov.redhawk.sca.util.Debug;
+import gov.redhawk.sca.util.IPreferenceAccessor;
 import gov.redhawk.sca.validation.NamingServiceValidator;
 import gov.redhawk.ui.views.namebrowser.NameBrowserPlugin;
 import gov.redhawk.ui.views.namebrowser.view.internal.BindingContentProvider;
@@ -131,7 +134,12 @@ public class NameBrowserView extends ViewPart {
 		contentProposalAdapter.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
 		this.nameServerField.setToolTipText("The CORBA URI of the NameServer");
 		this.nameServerField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		this.nameServerField.setText("");
+
+		connectButton = new Button(parent, SWT.PUSH);
+		connectButton.setImage(NameBrowserPlugin.getDefault().getImageRegistry().get(NameBrowserPlugin.CONNECT));
+		connectButton.setToolTipText("Connect to the specified host");
+		connectButton.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 1, 1));
+		connectButton.setEnabled(false);
 
 		// When the user changes the text, validate. Also disable the connect button if the field is empty.
 		nameServerField.addModifyListener(event -> {
@@ -159,10 +167,10 @@ public class NameBrowserView extends ViewPart {
 			connectButton.setEnabled(!newRef.isEmpty());
 		});
 
-		connectButton = new Button(parent, SWT.PUSH);
-		connectButton.setImage(NameBrowserPlugin.getDefault().getImageRegistry().get(NameBrowserPlugin.CONNECT));
-		connectButton.setToolTipText("Connect to the specified host");
-		connectButton.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 1, 1));
+		// Set initial text to the default name service. This should trigger validation.
+		IPreferenceAccessor prefs = ScaPlugin.getDefault().getScaPreferenceAccessor();
+		final String defaultNamingService = prefs.getString(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE);
+		this.nameServerField.setText(defaultNamingService);
 
 		// Handle enter key for the combo box / clicking the connect button
 		Listener listener = event -> {
@@ -246,9 +254,9 @@ public class NameBrowserView extends ViewPart {
 				final BindingNode newRootNode = new BindingNode(newRef);
 				try {
 					newRootNode.connect();
-				} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
+				} catch (SystemException e) {
 					newRootNode.dispose();
-					return new Status(IStatus.ERROR, NameBrowserPlugin.PLUGIN_ID, "Error connecting to the name server, see Error Log for details.", e);
+					return new Status(IStatus.ERROR, NameBrowserPlugin.PLUGIN_ID, "CORBA exception while attempting to connect to the naming service. See the error log for details.", e);
 				}
 				NameBrowserView.this.connectedHosts.add(newRootNode);
 
@@ -321,35 +329,15 @@ public class NameBrowserView extends ViewPart {
 	}
 
 	private void addConnection(final String initRef) {
-		String newRef = this.nameServerField.getText().trim();
-		if (!(newRef.startsWith("IOR:") || newRef.startsWith("corbaloc::") || newRef.startsWith("corbaname::"))) {
-			newRef = "corbaname::" + newRef;
-		}
-
 		// No need to reconnect to the same thing
 		for (final BindingNode node : this.connectedHosts) {
-			if (node.getHost().equals(newRef)) {
+			if (node.getHost().equals(initRef)) {
 				return;
 			}
 		}
 
-		// Local-host can be connected to by multiple strings.
-		// Check to make sure duplicate connections are not made to local-host.
-		List<String> localhostVariants = new ArrayList<String>(Arrays.asList("corbaname::", "corbaname::localhost", "corbaname::127.0.0.1"));
-		for (String localhostVariant : localhostVariants) {
-			if (localhostVariant.equals(newRef)) {
-				for (final BindingNode node : this.connectedHosts) {
-					if (localhostVariants.contains(node.getHost())) {
-						return;
-					}
-				}
-				// Set all local-host connections to the same string
-				newRef = "corbaname::127.0.0.1";
-			}
-		}
-
-		connect(newRef);
-		this.nameServerHistory.add(newRef);
+		connect(initRef);
+		this.nameServerHistory.add(initRef);
 		final List<String> tmpList = new ArrayList<String>(this.nameServerHistory);
 		Collections.sort(tmpList);
 		this.nameServerField.setItems(tmpList.toArray(new String[tmpList.size()]));
