@@ -23,10 +23,10 @@ import java.util.concurrent.TimeoutException;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
+import org.jacorb.naming.Name;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.SystemException;
 import org.omg.CORBA.UserException;
-import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.Binding;
 import org.omg.CosNaming.BindingIteratorHolder;
 import org.omg.CosNaming.BindingListHolder;
@@ -34,6 +34,7 @@ import org.omg.CosNaming.BindingType;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
+import org.omg.CosNaming.NamingContextPackage.InvalidName;
 
 import gov.redhawk.sca.util.CorbaURIUtil;
 import gov.redhawk.sca.util.Debug;
@@ -106,7 +107,7 @@ public class BindingNode implements IPropertySource {
 
 	private final Binding binding;
 	private final BindingNode parent;
-	private final String ior;
+	private String ior;
 	private BindingNode[] contents = null;
 	private final SessionInfo info;
 
@@ -172,7 +173,7 @@ public class BindingNode implements IPropertySource {
 		return retVal;
 	}
 
-	public void connect() throws InvalidName {
+	public void connect() {
 		// Create the CORBA ORB, overriding the Java ORB's default port if necessary
 		if (BindingNode.DEBUG.enabled) {
 			BindingNode.DEBUG.enteringMethod();
@@ -182,7 +183,9 @@ public class BindingNode implements IPropertySource {
 		this.info.session = OrbSession.createSession();
 
 		// Lookup the NameService
-		this.info.namingContext = NamingContextExtHelper.narrow(this.info.session.getOrb().string_to_object(nameRef));
+		org.omg.CORBA.Object namingContextObj = this.info.session.getOrb().string_to_object(nameRef);
+		this.ior = namingContextObj.toString();
+		this.info.namingContext = NamingContextExtHelper.narrow(namingContextObj);
 		this.contents = null;
 		if (BindingNode.DEBUG.enabled) {
 			BindingNode.DEBUG.exitingMethod();
@@ -247,8 +250,8 @@ public class BindingNode implements IPropertySource {
 
 	public String getPath() {
 		try {
-			return this.getNamingContext().to_string(this.getPathToNode());
-		} catch (UserException e) {
+			return Name.toString(this.getPathToNode());
+		} catch (InvalidName e) {
 			return "";
 		}
 	}
