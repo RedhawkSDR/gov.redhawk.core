@@ -15,6 +15,9 @@ build:
     paths:
       - tests/*/target/surefire-reports/*.xml
     expire_in: 1 day
+  #Skip on tag of following format
+  except:
+    - /^(\d+\.)?(\d+)?(\.\d+)$/
 
 jenkins:
   image: centos:7
@@ -26,6 +29,8 @@ jenkins:
     - if [ -n "$jenkins_url" ]; then
         curl --insecure -X POST $jenkins_url/job/$CI_PROJECT_NAMESPACE/job/$CI_PROJECT_NAME-$CI_COMMIT_REF_NAME/buildWithParameters?pipeline_id=$CI_PIPELINE_ID --user $jenkins_user:$jenkins_api_token;
       fi
+  only:
+    - branches
 
 trigger-product:
   image: centos:7
@@ -38,3 +43,5 @@ trigger-product:
                               -F "variables[triggering_ref]=$CI_COMMIT_SHA"
                               -F "variables[triggering_ref_name]=$CI_COMMIT_REF_NAME"
                               $product_url
+  only:
+    - branches
