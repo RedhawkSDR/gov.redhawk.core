@@ -37,7 +37,9 @@ import CF.LifeCyclePackage.ReleaseError;
 
 /**
  * @since 14.0
+ * @deprecated Use {@link gov.redhawk.sca.model.jobs.LaunchWaveformJob LaunchWaveformJob}.
  */
+@Deprecated
 public class LaunchWaveformCallable implements Callable<ScaWaveform> {
 	private static final Debug DEBUG = new Debug(ScaModelPlugin.ID, "launch/waveform");
 
