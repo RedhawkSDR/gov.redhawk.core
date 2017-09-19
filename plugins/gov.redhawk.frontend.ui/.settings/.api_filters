@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="gov.redhawk.frontend.ui" version="2">
+    <resource path="META-INF/MANIFEST.MF" type="gov.redhawk.frontend.ui.wizard.AllocateMultipleRxDigitizerWizardPage">
+        <filter comment="An old redmine ticket dropped these from the handler back in early 2014" id="305324134">
+            <message_arguments>
+                <message_argument value="gov.redhawk.frontend.ui.wizard.AllocateMultipleRxDigitizerWizardPage"/>
+                <message_argument value="gov.redhawk.frontend.ui_1.1.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="gov.redhawk.frontend.ui.wizard.AllocateRxDigitizerWizardPage">
+        <filter comment="An old redmine ticket dropped these from the handler back in early 2014" id="305324134">
+            <message_arguments>
+                <message_argument value="gov.redhawk.frontend.ui.wizard.AllocateRxDigitizerWizardPage"/>
+                <message_argument value="gov.redhawk.frontend.ui_1.1.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="META-INF/MANIFEST.MF" type="gov.redhawk.frontend.ui.wizard.TunerAllocationDetailWizard">
+        <filter comment="An old redmine ticket dropped these from the handler back in early 2014" id="305324134">
+            <message_arguments>
+                <message_argument value="gov.redhawk.frontend.ui.wizard.TunerAllocationDetailWizard"/>
+                <message_argument value="gov.redhawk.frontend.ui_1.1.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>

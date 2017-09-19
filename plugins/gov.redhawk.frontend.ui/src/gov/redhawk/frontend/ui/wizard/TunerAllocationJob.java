@@ -27,6 +27,7 @@ import gov.redhawk.model.sca.ScaDevice;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
+ * @since 1.1
  * 
  */
 public class TunerAllocationJob extends Job {

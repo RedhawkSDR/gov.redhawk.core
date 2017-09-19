@@ -1210,8 +1210,8 @@ public class TunerAllocationWizardPage extends WizardPage {
 	}
 
 	/**
-	 * Returns true if allocation is to be run in a background job
-	 * @return
+	 * @return True if allocation is to be run in a background job
+	 * @since 1.1
 	 */
 	public boolean isBackgroundJob() {
 		return bgJobButton.getSelection();
