@@ -388,7 +388,7 @@
          <propertyTab
                category="advanced"
                id="CommonNavigator.tab.Advanced"
-               label="%propertyTab.label">
+               label="%propertyTab.label.1">
          </propertyTab>
       </propertyTabs>
    </extension>
