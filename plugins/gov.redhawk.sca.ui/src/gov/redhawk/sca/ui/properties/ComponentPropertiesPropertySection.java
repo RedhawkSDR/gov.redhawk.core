@@ -11,13 +11,18 @@
  */
 package gov.redhawk.sca.ui.properties;
 
+import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.sca.ui.ScaComponentFactory;
+import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.prf.util.PropertiesUtil;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPart;
@@ -45,24 +50,26 @@ public class ComponentPropertiesPropertySection extends AbstractPropertySection 
 		if (this.adapterFactory != null) {
 			this.adapterFactory.dispose();
 		}
-		// TODO Auto-generated method stub
 		super.dispose();
 	}
 
-	/**
-	 * @see org.eclipse.ui.views.properties.tabbed.ISection#createControls(org.eclipse.swt.widgets.Composite,
-	 *      org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage)
-	 */
 	@Override
 	public void createControls(final Composite parent, final TabbedPropertySheetPage atabbedPropertySheetPage) {
 		super.createControls(parent, atabbedPropertySheetPage);
 		this.viewer = ScaComponentFactory.createPropertyTable(getWidgetFactory(), parent, SWT.SINGLE, this.adapterFactory);
+		this.viewer.addFilter(new ViewerFilter() {
+
+			@Override
+			public boolean select(Viewer viewer, Object parentElement, Object element) {
+				if (element instanceof ScaAbstractProperty< ? >) {
+					AbstractProperty propDef = ((ScaAbstractProperty< ? >) element).getDefinition();
+					return (propDef == null) || PropertiesUtil.canConfigureOrQuery(propDef);
+				}
+				return false;
+			}
+		});
 	}
 
-	/**
-	 * @see org.eclipse.ui.views.properties.tabbed.ISection#setInput(org.eclipse.ui.IWorkbenchPart,
-	 *      org.eclipse.jface.viewers.ISelection)
-	 */
 	@Override
 	public void setInput(final IWorkbenchPart part, final ISelection selection) {
 		super.setInput(part, selection);
@@ -86,9 +93,6 @@ public class ComponentPropertiesPropertySection extends AbstractPropertySection 
 		}
 	}
 
-	/**
-	 * @see org.eclipse.ui.views.properties.tabbed.ISection#refresh()
-	 */
 	@Override
 	public void refresh() {
 		if (this.viewer != null && !this.viewer.isCellEditorActive()) {
@@ -96,9 +100,6 @@ public class ComponentPropertiesPropertySection extends AbstractPropertySection 
 		}
 	}
 
-	/**
-	 * @see org.eclipse.ui.views.properties.tabbed.ISection#shouldUseExtraSpace()
-	 */
 	@Override
 	public boolean shouldUseExtraSpace() {
 		return true;
