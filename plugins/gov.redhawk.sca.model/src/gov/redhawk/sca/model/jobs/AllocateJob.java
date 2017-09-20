@@ -54,9 +54,9 @@ public class AllocateJob extends Job {
 		SubMonitor progress = SubMonitor.convert(monitor, "Allocating", WORK_ALLOCATE + WORK_REFRESH);
 
 		try {
-			CorbaUtils.invoke(() -> {
+			Boolean result = CorbaUtils.invoke(() -> {
 				try {
-					device.allocateCapacity(allocation);
+					return device.allocateCapacity(allocation);
 				} catch (InvalidCapacity e) {
 					throw new CoreException(new Status(IStatus.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e, label), e));
 				} catch (InvalidState e) {
@@ -64,8 +64,10 @@ public class AllocateJob extends Job {
 				} catch (InsufficientCapacity e) {
 					throw new CoreException(new Status(IStatus.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e, label), e));
 				}
-				return null;
 			}, progress.newChild(WORK_ALLOCATE));
+			if (!result.booleanValue()) {
+				return new Status(IStatus.ERROR, ScaModelPlugin.ID, "Allocation failed. Device return 'false' to allocation requestion.");
+			}
 
 			device.refresh(progress.newChild(WORK_REFRESH), RefreshDepth.SELF);
 		} catch (InterruptedException e) {
