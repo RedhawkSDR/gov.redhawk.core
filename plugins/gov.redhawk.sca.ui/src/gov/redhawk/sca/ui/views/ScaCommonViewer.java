@@ -192,7 +192,7 @@ public class ScaCommonViewer extends CommonViewer {
 
 						@Override
 						public IStatus runInUIThread(IProgressMonitor monitor) {
-							if (parent.isDisposed()) {
+							if (parent.isDisposed() || parent.getData() == null) {
 								return Status.OK_STATUS;
 							}
 							preservingSelection(new Runnable() {
