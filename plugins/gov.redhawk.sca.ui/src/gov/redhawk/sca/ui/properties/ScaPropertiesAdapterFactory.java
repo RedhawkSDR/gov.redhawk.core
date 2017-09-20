@@ -119,11 +119,13 @@ public class ScaPropertiesAdapterFactory extends ScaItemProviderAdapterFactory {
 		return new ScaSimpleSequencePropertyItemProvider(this) {
 			@Override
 			public Collection< ? > getChildren(final Object object) {
+				// Don't show the simple sequence's values as children
 				return Collections.emptyList();
 			}
 
 			@Override
 			public boolean hasChildren(final Object object) {
+				// Don't show the simple sequence's values as children
 				return false;
 			}
 
@@ -133,6 +135,7 @@ public class ScaPropertiesAdapterFactory extends ScaItemProviderAdapterFactory {
 
 				switch (notification.getFeatureID(ScaSimpleSequenceProperty.class)) {
 				case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES:
+					// Report changes to values as a label change for the simple sequence, not a content change
 					fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 					return;
 				default:
@@ -157,6 +160,7 @@ public class ScaPropertiesAdapterFactory extends ScaItemProviderAdapterFactory {
 
 				switch (notification.getFeatureID(ScaStructSequenceProperty.class)) {
 				case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS:
+					// TODO: Why does this override parent behavior? We're adding a label update here
 					fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, true));
 					return;
 				default:

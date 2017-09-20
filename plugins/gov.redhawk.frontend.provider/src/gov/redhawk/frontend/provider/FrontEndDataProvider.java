@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -37,7 +38,6 @@ import gov.redhawk.frontend.UnallocatedTunerContainer;
 import gov.redhawk.frontend.util.TunerProperties.TunerStatusAllocationProperties;
 import gov.redhawk.frontend.util.TunerProperties.TunerStatusProperty;
 import gov.redhawk.frontend.util.TunerUtils;
-import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaPackage;
@@ -85,6 +85,7 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 
 		@Override
 		protected void addAdapter(final Notifier notifier) {
+			// The only child objects of the device we care to listen to are FRONTEND properties
 			if (notifier instanceof ScaAbstractProperty< ? >) {
 				ScaAbstractProperty< ? > prop = (ScaAbstractProperty< ? >) notifier;
 				if (FrontEndDataProvider.PROP_PATTERN.matcher(prop.getId()).matches()) {
@@ -156,20 +157,15 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
-			if (isDisposed()) {
+			SubMonitor progress = SubMonitor.convert(monitor, 3);
+			if (isDisposed() || device.isDisposed()) {
 				return Status.CANCEL_STATUS;
 			}
-			if (!device.isDisposed()) {
-				try {
-					device.refresh(monitor, RefreshDepth.FULL);
-				} catch (InterruptedException e) {
-					return Status.CANCEL_STATUS;
-				}
-//				device.fetchPorts(monitor);
-//				device.fetchProperties(monitor);
-			} else {
-				return Status.CANCEL_STATUS;
-			}
+
+			// Fetch properties, and by extension, the profile object
+			device.fetchProperties(progress.newChild(1));
+
+			// Wait for the profile object to be available, if necessary
 			if (device.getProfileObj() == null) {
 				ScaModelCommand.execute(device, new ScaModelCommand() {
 					
@@ -197,6 +193,9 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 				});
 				return Status.CANCEL_STATUS;
 			}
+			progress.worked(1);
+
+			// If the device supports FEI, listen for changes we care about and update tuner info
 			supportsFei = calculateSupport();
 			if (supportsFei) {
 				ScaModelCommand.execute(device, new ScaModelCommand() {
@@ -208,6 +207,8 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 					}
 				});
 			}
+			progress.worked(1);
+
 			return Status.OK_STATUS;
 		}
 
@@ -217,8 +218,11 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 		this.device = device;
 	}
 
+	/**
+	 * Removes the tuner container from the device's feature data. Must be called in an SCA command.
+	 */
 	private void removeTunerContainer() {
-		device.getFeatureData().remove(TunerUtils.TUNER_CONTAINER_ID);
+		device.getFeatureData().removeKey(TunerUtils.TUNER_CONTAINER_ID);
 	}
 
 	@Override
@@ -281,6 +285,9 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 		return false;
 	}
 
+	/**
+	 * Updates tuner container information. Must be called in an SCA command.
+	 */
 	private void updateTunerContainer() {
 		if (isDisposed()) {
 			removeTunerContainer();
