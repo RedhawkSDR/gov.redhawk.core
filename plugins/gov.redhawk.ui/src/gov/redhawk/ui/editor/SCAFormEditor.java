@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.FileSystems;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
@@ -383,7 +382,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	/**
 	 * Watch for deletion of resources in the Target SDR
 	 */
-	private Job resourceWatcherJob;
+	private Thread resourceWatcherThread;
 
 	@Override
 	protected void setSite(final org.eclipse.ui.IWorkbenchPartSite site) {
@@ -1316,9 +1315,9 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			this.resourceTracker.clearTrackedResources();
 			this.resourceTracker = null;
 		}
-		if (this.resourceWatcherJob != null) {
-			resourceWatcherJob.done(Status.OK_STATUS);
-			resourceWatcherJob = null;
+		if (this.resourceWatcherThread != null) {
+			resourceWatcherThread.interrupt();
+			resourceWatcherThread = null;
 		}
 		super.dispose();
 	}
@@ -1491,14 +1490,11 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 */
 	@Override
 	protected void setInput(final IEditorInput input) {
-
 		// If the input is FileStoreEditorInput, it is in the SCA file system, and needs to be tracked differently
 		if (input instanceof FileStoreEditorInput) {
-			resourceWatcherJob = getResourceWatcherJob((FileStoreEditorInput) input);
-			if (resourceWatcherJob != null) {
-				resourceWatcherJob.setSystem(false);
-				resourceWatcherJob.setUser(false);
-				resourceWatcherJob.schedule();
+			resourceWatcherThread = getResourceWatcherThread((FileStoreEditorInput) input);
+			if (resourceWatcherThread != null) {
+				resourceWatcherThread.start();
 			}
 		}
 
@@ -1528,49 +1524,53 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		}
 	}
 
-	private Job getResourceWatcherJob(FileStoreEditorInput fsInput) {
+	private Thread getResourceWatcherThread(FileStoreEditorInput fsInput) {
 		try {
-			final WatchService watcher = FileSystems.getDefault().newWatchService();
-
 			IFileStore fs = EFS.getStore(fsInput.getURI());
 			File tmpFile = fs.toLocalFile(0, new NullProgressMonitor());
 			final java.nio.file.Path resourcePath = tmpFile.getParentFile().toPath();
 			final java.nio.file.Path fileName = tmpFile.toPath().getFileName();
-			resourcePath.register(watcher, StandardWatchEventKinds.ENTRY_DELETE);
 
-			Job tmpJob = new Job("watch Job") {
-				@Override
-				protected IStatus run(IProgressMonitor monitor) {
-					for (;;) {
-						try {
-							WatchKey wk = watcher.take();
-							for (WatchEvent< ? > event : wk.pollEvents()) {
-								java.nio.file.Path changed = (java.nio.file.Path) event.context();
-								if (fileName.equals(changed)) {
-									Display.getDefault().asyncExec(new Runnable() {
+			final WatchService watcher;
+			try {
+				watcher = resourcePath.getFileSystem().newWatchService();
+				resourcePath.register(watcher, StandardWatchEventKinds.ENTRY_DELETE);
+			} catch (UnsupportedOperationException e) {
+				return null;
+			}
 
-										@Override
-										public void run() {
-											closeEditor(false);
-										}
-									});
+			Thread thread = new Thread(() -> {
+				WatchKey wk;
+				for (;;) {
+					try {
+						wk = watcher.take();
+					} catch (InterruptedException e) {
+						return;
+					}
+
+					for (WatchEvent< ? > event : wk.pollEvents()) {
+						java.nio.file.Path changed = (java.nio.file.Path) event.context();
+						if (fileName.equals(changed)) {
+							Display.getDefault().asyncExec(new Runnable() {
+
+								@Override
+								public void run() {
+									closeEditor(false);
 								}
-							}
-
-							// reset the key
-							boolean valid = wk.reset();
-							if (!valid) {
-								break;
-							}
-						} catch (InterruptedException e) {
-							// PASS
+							});
+							return;
 						}
 					}
 
-					return Status.OK_STATUS;
+					// reset the key
+					boolean valid = wk.reset();
+					if (!valid) {
+						break;
+					}
 				}
-			};
-			return tmpJob;
+			}, "Watch filesystem " + resourcePath.toString());
+			thread.setDaemon(true);
+			return thread;
 		} catch (CoreException e) {
 			StatusManager.getManager().handle(new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Error occured while tracking resouce", e),
 				StatusManager.SHOW | StatusManager.LOG);
