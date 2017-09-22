@@ -10,23 +10,21 @@
  */
 package gov.redhawk.core.graphiti.ui.properties;
 
-import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.graphiti.ui.platform.AbstractPropertySectionFilter;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.viewers.IFilter;
 
-import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
-import gov.redhawk.core.graphiti.ui.util.DUtil;
+import gov.redhawk.model.sca.ScaPropertyContainer;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 
 /**
- * Selects only {@link ComponentInstantiation}s, representing either design-time or runtime instances of
- * components/devices/services.
+ * Selects only {@link ComponentInstantiation}s (representing a component/device/service) in design-time diagrams.
  * @see {@link PropertiesSection}
  */
-public class PropertyContainerFilter extends AbstractPropertySectionFilter {
+public class PropertyContainerFilter implements IFilter {
 
 	@Override
-	protected boolean accept(PictogramElement pictogramElement) {
-		return (pictogramElement instanceof RHContainerShape) && DUtil.getBusinessObject(pictogramElement, ComponentInstantiation.class) != null;
+	public boolean select(Object toTest) {
+		return Platform.getAdapterManager().getAdapter(toTest, ScaPropertyContainer.class) != null;
 	}
 
 }
