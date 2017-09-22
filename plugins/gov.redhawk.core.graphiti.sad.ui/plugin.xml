@@ -224,8 +224,7 @@
       <propertySections
             contributorId="SADDiagram.PropertyContributor">
          <propertySection
-               afterSection="100"
-               class="gov.redhawk.core.graphiti.ui.properties.PropertiesSection"
+               class="gov.redhawk.sca.ui.properties.ComponentPropertiesPropertySection"
                filter="gov.redhawk.core.graphiti.ui.properties.PropertyContainerFilter"
                id="gov.redhawk.core.graphiti.sad.ui.propertySection.properties"
                tab="gov.redhawk.core.graphiti.sad.ui.propertyTab.properties">
