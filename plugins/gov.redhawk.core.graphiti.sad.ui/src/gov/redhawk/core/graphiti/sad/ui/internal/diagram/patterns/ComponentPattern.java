@@ -10,7 +10,6 @@
  */
 package gov.redhawk.core.graphiti.sad.ui.internal.diagram.patterns;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,29 +19,18 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalCommandStack;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
-import org.eclipse.graphiti.datatypes.IDimension;
 import org.eclipse.graphiti.features.IFeatureProvider;
-import org.eclipse.graphiti.features.IReason;
 import org.eclipse.graphiti.features.IRemoveFeature;
 import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.features.context.IDeleteContext;
-import org.eclipse.graphiti.features.context.ILayoutContext;
 import org.eclipse.graphiti.features.context.IMoveShapeContext;
 import org.eclipse.graphiti.features.context.IRemoveContext;
 import org.eclipse.graphiti.features.context.IResizeShapeContext;
-import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
-import org.eclipse.graphiti.features.impl.Reason;
-import org.eclipse.graphiti.mm.algorithms.Ellipse;
-import org.eclipse.graphiti.mm.algorithms.Text;
-import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.graphiti.mm.pictograms.Shape;
-import org.eclipse.graphiti.services.Graphiti;
 
 import gov.redhawk.core.graphiti.sad.ui.diagram.providers.WaveformImageProvider;
-import gov.redhawk.core.graphiti.sad.ui.ext.ComponentShape;
 import gov.redhawk.core.graphiti.sad.ui.ext.RHSadGxFactory;
 import gov.redhawk.core.graphiti.sad.ui.utils.SADUtils;
 import gov.redhawk.core.graphiti.ui.diagram.patterns.AbstractPortSupplierPattern;
@@ -50,7 +38,6 @@ import gov.redhawk.core.graphiti.ui.diagram.providers.ImageProvider;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.core.graphiti.ui.util.StyleUtil;
-import gov.redhawk.core.graphiti.ui.util.UpdateUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentSupportedInterfaceStub;
 import mil.jpeojtrs.sca.partitioning.NamingService;
 import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
@@ -65,25 +52,6 @@ import mil.jpeojtrs.sca.sad.SadFactory;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 
 public class ComponentPattern extends AbstractPortSupplierPattern {
-
-	// Property key/value pairs help us identify Shapes to enable/disable user actions (move, resize, delete, remove
-	// etc.)
-	public static final String SHAPE_START_ORDER_ELLIPSE_SHAPE = "startOrderEllipseShape";
-
-	// These are property key/value pairs that help us resize an existing shape by properly identifying
-	// graphicsAlgorithms
-	public static final String GA_START_ORDER_TEXT = "startOrderText";
-	public static final String GA_START_ORDER_ELLIPSE = "startOrderEllipse";
-
-	// Shape size constants
-	private static final int START_ORDER_ELLIPSE_DIAMETER = 17;
-	private static final int START_ORDER_TOP_TEXT_PADDING = 0;
-	private static final int START_ORDER_ELLIPSE_LEFT_PADDING = 20;
-	private static final int START_ORDER_ELLIPSE_RIGHT_PADDING = 5;
-	private static final int START_ORDER_ELLIPSE_TOP_PADDING = 5;
-
-	// Default start order text value for components that do not have a start order declared
-	private static final String NO_START_ORDER_STRING = "";
 
 	private URI spdUri = null;
 
@@ -179,7 +147,6 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 
 				// re-organize start order
 				SADUtils.organizeStartOrder(sad, getDiagram(), getFeatureProvider());
-
 			}
 		});
 
@@ -190,9 +157,6 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 		if (removeFeature != null) {
 			removeFeature.remove(rc);
 		}
-
-		// redraw start order
-		// DUtil.organizeDiagramStartOrder(diagram);
 	}
 
 	@Override
@@ -203,114 +167,6 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 	@Override
 	protected RHContainerShape createContainerShape() {
 		return RHSadGxFactory.eINSTANCE.createComponentShape();
-	}
-
-	@Override
-	protected void initializeShape(RHContainerShape shape, IAddContext context) {
-		if (!DUtil.isDiagramRuntime(getDiagram())) {
-			createStartOrderEllipse(shape.getInnerContainerShape(), (SadComponentInstantiation) context.getNewObject());
-		}
-	}
-
-	protected ContainerShape createStartOrderEllipse(ContainerShape parentShape, SadComponentInstantiation instantiation) {
-		// Create ellipse shape to display component start order
-		ContainerShape startOrderEllipseShape = Graphiti.getCreateService().createContainerShape(parentShape, false);
-		Graphiti.getPeService().setPropertyValue(startOrderEllipseShape, DUtil.SHAPE_TYPE, ComponentPattern.SHAPE_START_ORDER_ELLIPSE_SHAPE);
-		Ellipse startOrderEllipse = Graphiti.getCreateService().createEllipse(startOrderEllipseShape);
-		StyleUtil.setStyle(startOrderEllipse, getStartOrderStyle(instantiation));
-		Graphiti.getPeService().setPropertyValue(startOrderEllipse, DUtil.GA_TYPE, ComponentPattern.GA_START_ORDER_ELLIPSE);
-		Graphiti.getGaLayoutService().setSize(startOrderEllipse, START_ORDER_ELLIPSE_DIAMETER, START_ORDER_ELLIPSE_DIAMETER);
-
-		// Create text shape to display start order
-		Shape startOrderTextShape = Graphiti.getPeCreateService().createShape(startOrderEllipseShape, false);
-		Text startOrderText = Graphiti.getCreateService().createText(startOrderTextShape, getStartOrderValue(instantiation));
-		Graphiti.getPeService().setPropertyValue(startOrderText, DUtil.GA_TYPE, ComponentPattern.GA_START_ORDER_TEXT);
-		StyleUtil.setStyle(startOrderText, StyleUtil.START_ORDER);
-		Graphiti.getGaLayoutService().setSize(startOrderText, START_ORDER_ELLIPSE_DIAMETER, START_ORDER_ELLIPSE_DIAMETER);
-
-		return startOrderEllipseShape;
-	}
-
-	@Override
-	public boolean layout(ILayoutContext context) {
-		boolean layoutApplied = super.layout(context);
-
-		// Layout the start order ellipse, if any
-		ComponentShape componentShape = (ComponentShape) context.getPictogramElement();
-		ContainerShape startOrderEllipse = componentShape.getStartOrderEllipseShape();
-		if (startOrderEllipse != null) {
-			// Move the ellipse to the upper right corner of its parent
-			int xOffset = startOrderEllipse.getContainer().getGraphicsAlgorithm().getWidth()
-				- (START_ORDER_ELLIPSE_DIAMETER + START_ORDER_ELLIPSE_RIGHT_PADDING);
-			if (UpdateUtil.moveIfNeeded(startOrderEllipse.getGraphicsAlgorithm(), xOffset, START_ORDER_ELLIPSE_TOP_PADDING)) {
-				layoutApplied = true;
-			}
-
-			// Position the text in the center of the ellipse
-			Text startOrderText = componentShape.getStartOrderText();
-			IDimension textDimension = DUtil.calculateTextSize(startOrderText);
-			int textX = START_ORDER_ELLIPSE_DIAMETER / 2 - textDimension.getWidth() / 2;
-			if (UpdateUtil.moveIfNeeded(startOrderText, textX, START_ORDER_TOP_TEXT_PADDING)) {
-				layoutApplied = true;
-			}
-		}
-		return layoutApplied;
-	}
-
-	@Override
-	public IReason updateNeeded(IUpdateContext context) {
-		IReason reason = super.updateNeeded(context);
-		if (reason.toBoolean()) {
-			return reason;
-		}
-
-		// Check the start order ellipse, if any
-		ComponentShape componentShape = (ComponentShape) context.getPictogramElement();
-		ContainerShape startOrderEllipse = componentShape.getStartOrderEllipseShape();
-		if (startOrderEllipse != null) {
-			// Check the ellipse style
-			SadComponentInstantiation instantiation = (SadComponentInstantiation) getBusinessObjectForPictogramElement(context.getPictogramElement());
-			String startOrderStyle = getStartOrderStyle(instantiation);
-			if (!StyleUtil.isStyleSet(startOrderEllipse.getGraphicsAlgorithm(), startOrderStyle)) {
-				return Reason.createTrueReason("Start order ellipse needs update");
-			}
-
-			// Check the text value
-			Text startOrderText = componentShape.getStartOrderText();
-			if (!startOrderText.getValue().equals(getStartOrderValue(instantiation))) {
-				return Reason.createTrueReason("Start order number needs update");
-			}
-		}
-
-		return Reason.createFalseReason();
-	}
-
-	@Override
-	public boolean update(IUpdateContext context) {
-		boolean updateStatus = super.update(context);
-
-		// Check the start order ellipse, if any
-		ComponentShape componentShape = (ComponentShape) context.getPictogramElement();
-		ContainerShape startOrderEllipse = componentShape.getStartOrderEllipseShape();
-		if (startOrderEllipse != null) {
-			// Check the ellipse style
-			SadComponentInstantiation instantiation = (SadComponentInstantiation) getBusinessObjectForPictogramElement(context.getPictogramElement());
-			String startOrderStyle = getStartOrderStyle(instantiation);
-			if (!StyleUtil.isStyleSet(startOrderEllipse.getGraphicsAlgorithm(), startOrderStyle)) {
-				StyleUtil.setStyle(startOrderEllipse.getGraphicsAlgorithm(), startOrderStyle);
-				updateStatus = true;
-			}
-
-			// Check the text value
-			Text startOrderText = componentShape.getStartOrderText();
-			String startOrderValue = getStartOrderValue(instantiation);
-			if (!startOrderText.getValue().equals(startOrderValue)) {
-				startOrderText.setValue(startOrderValue);
-				updateStatus = true;
-			}
-		}
-
-		return updateStatus;
 	}
 
 	public boolean canMoveShape(IMoveShapeContext context) {
@@ -363,61 +219,6 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 			sourceHostCollocation.getComponentPlacement().remove((SadComponentPlacement) ci.getPlacement());
 			super.moveShape(context);
 		}
-	}
-
-	/**
-	 * Return the highest start order for all components in the SAD.
-	 * Returns null if no components are found
-	 * @param sad
-	 * @return
-	 */
-	public static BigInteger determineHighestStartOrder(final SoftwareAssembly sad) {
-
-		BigInteger highestStartOrder = null;
-		List<SadComponentInstantiation> cis = getAllComponents(sad);
-		if (cis != null && cis.size() > 0) {
-			highestStartOrder = cis.get(0).getStartOrder();
-
-		}
-		for (int i = 1; i < cis.size(); i++) {
-			SadComponentInstantiation c = cis.get(i);
-
-			// If a component is found, and it's start order is null, assume it is the assembly controller
-			// Assembly controllers should always be at the beginning of the start order, so mark highest start order as
-			// zero
-			if (highestStartOrder == null) {
-				highestStartOrder = BigInteger.ZERO;
-			}
-
-			// check for higher start order
-			if (c.getStartOrder() != null && c.getStartOrder().compareTo(highestStartOrder) >= 0) {
-				highestStartOrder = c.getStartOrder();
-			}
-		}
-
-		// If there are no components, highestStartOrder will be null
-		return highestStartOrder;
-	}
-
-	/**
-	 * Get all components in sad
-	 * @param sad
-	 * @return
-	 */
-	public static List<SadComponentInstantiation> getAllComponents(final SoftwareAssembly sad) {
-		final List<SadComponentInstantiation> retVal = new ArrayList<SadComponentInstantiation>();
-		if (sad.getPartitioning() != null) {
-			for (final SadComponentPlacement cp : sad.getPartitioning().getComponentPlacement()) {
-				retVal.addAll(cp.getComponentInstantiation());
-			}
-			for (final HostCollocation h : sad.getPartitioning().getHostCollocation()) {
-				for (final SadComponentPlacement cp : h.getComponentPlacement()) {
-					retVal.addAll(cp.getComponentInstantiation());
-				}
-			}
-		}
-
-		return retVal;
 	}
 
 	@Override
@@ -516,35 +317,6 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 	@Override
 	protected String getStyleForInner() {
 		return StyleUtil.COMPONENT_INNER;
-	}
-
-	protected String getStartOrderStyle(SadComponentInstantiation instantiation) {
-		if (SoftwareAssembly.Util.isAssemblyController(instantiation)) {
-			return StyleUtil.ASSEMBLY_CONTROLLER_ELLIPSE;
-		} else {
-			return StyleUtil.START_ORDER_ELLIPSE;
-		}
-	}
-
-	protected String getStartOrderValue(SadComponentInstantiation instantiation) {
-		if (instantiation.getStartOrder() == null) {
-			return ComponentPattern.NO_START_ORDER_STRING;
-		} else {
-			return instantiation.getStartOrder().toString();
-		}
-	}
-
-	@Override
-	protected int getMinimumInnerWidth(RHContainerShape shape) {
-		int minimumWidth = super.getMinimumInnerWidth(shape);
-
-		// If the component shape has a start order ellipse, take the required size and padding into account
-		ContainerShape ellipseShape = ((ComponentShape) shape).getStartOrderEllipseShape();
-		if (ellipseShape != null) {
-			minimumWidth += ComponentPattern.START_ORDER_ELLIPSE_LEFT_PADDING + ellipseShape.getGraphicsAlgorithm().getWidth()
-				+ ComponentPattern.START_ORDER_ELLIPSE_RIGHT_PADDING;
-		}
-		return minimumWidth;
 	}
 
 	/**

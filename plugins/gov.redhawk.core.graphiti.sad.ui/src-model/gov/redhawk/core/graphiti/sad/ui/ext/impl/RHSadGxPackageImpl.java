@@ -99,8 +99,8 @@ public class RHSadGxPackageImpl extends EPackageImpl implements RHSadGxPackage {
 		RHGxPackage.eINSTANCE.eClass();
 		PictogramsPackage.eINSTANCE.eClass();
 		MmPackage.eINSTANCE.eClass();
-		AlgorithmsPackage.eINSTANCE.eClass();
 		EcorePackage.eINSTANCE.eClass();
+		AlgorithmsPackage.eINSTANCE.eClass();
 		StylesPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
@@ -184,8 +184,6 @@ public class RHSadGxPackageImpl extends EPackageImpl implements RHSadGxPackage {
 
 		// Obtain other dependent packages
 		RHGxPackage theRHGxPackage = (RHGxPackage) EPackage.Registry.INSTANCE.getEPackage(RHGxPackage.eNS_URI);
-		PictogramsPackage thePictogramsPackage = (PictogramsPackage) EPackage.Registry.INSTANCE.getEPackage(PictogramsPackage.eNS_URI);
-		AlgorithmsPackage theAlgorithmsPackage = (AlgorithmsPackage) EPackage.Registry.INSTANCE.getEPackage(AlgorithmsPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -196,10 +194,6 @@ public class RHSadGxPackageImpl extends EPackageImpl implements RHSadGxPackage {
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(componentShapeEClass, ComponentShape.class, "ComponentShape", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		addEOperation(componentShapeEClass, thePictogramsPackage.getContainerShape(), "getStartOrderEllipseShape", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
-		addEOperation(componentShapeEClass, theAlgorithmsPackage.getText(), "getStartOrderText", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

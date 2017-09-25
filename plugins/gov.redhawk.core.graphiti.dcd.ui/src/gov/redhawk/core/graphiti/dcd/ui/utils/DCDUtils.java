@@ -10,9 +10,24 @@
  *******************************************************************************/
 package gov.redhawk.core.graphiti.dcd.ui.utils;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalCommandStack;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.graphiti.features.IFeatureProvider;
+import org.eclipse.graphiti.features.IUpdateFeature;
+import org.eclipse.graphiti.features.context.impl.UpdateContext;
+import org.eclipse.graphiti.mm.pictograms.Diagram;
+
+import CF.ResourceHelper;
+import gov.redhawk.core.graphiti.ui.diagram.patterns.AbstractPortSupplierPattern;
+import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.dcd.DcdComponentPlacement;
@@ -26,7 +41,12 @@ import mil.jpeojtrs.sca.partitioning.ComponentFileRef;
 import mil.jpeojtrs.sca.partitioning.ComponentFiles;
 import mil.jpeojtrs.sca.partitioning.ComponentSupportedInterface;
 import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
+import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
+import mil.jpeojtrs.sca.scd.Interface;
+import mil.jpeojtrs.sca.scd.ScdFactory;
+import mil.jpeojtrs.sca.scd.SoftwareComponent;
 import mil.jpeojtrs.sca.spd.SoftPkg;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 import mil.jpeojtrs.sca.util.ScaUriHelpers;
 
 /**
@@ -36,6 +56,92 @@ public class DCDUtils {
 
 	private DCDUtils() {
 
+	}
+
+	/**
+	 * Finds a component instantiation with the provided start order.
+	 * @param sad
+	 * @param startOrder
+	 * @return
+	 */
+	public static DcdComponentInstantiation getComponentInstantiationViaStartOrder(final DeviceConfiguration dcd, final BigInteger startOrder) {
+		for (DcdComponentInstantiation ci : dcd.getAllComponentInstantiations()) {
+			if (ci.getStartOrder() != null && ci.getStartOrder().compareTo(startOrder) == 0) {
+				return ci;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Organize start order.
+	 * <ul>
+	 * <li>Components with start orders may have them modified so that each component is only +1 ahead of the previous
+	 * component</li>
+	 * </ul>
+	 */
+	public static void organizeStartOrder(final DeviceConfiguration dcd, final Diagram diagram, final IFeatureProvider featureProvider) {
+		BigInteger startOrder = BigInteger.ZERO;
+
+		// get instantiations by start order
+		EList<DcdComponentInstantiation> componentInstantiationsInStartOrder = dcd.getComponentInstantiationsInStartOrder();
+
+		// set start order
+		for (final DcdComponentInstantiation ci : componentInstantiationsInStartOrder) {
+			// Don't update start order if it has not already been declared for this component
+			if (ci.getStartOrder() != null) {
+				// Only call the update if a change is needed
+				if (ci.getStartOrder().intValue() != startOrder.intValue()) {
+					final BigInteger newStartOrder = startOrder;
+					TransactionalEditingDomain editingDomain = featureProvider.getDiagramTypeProvider().getDiagramBehavior().getEditingDomain();
+					TransactionalCommandStack stack = (TransactionalCommandStack) editingDomain.getCommandStack();
+					stack.execute(new RecordingCommand(editingDomain) {
+
+						@Override
+						protected void doExecute() {
+							ci.setStartOrder(newStartOrder);
+
+							// Force pictogram elements to update
+							RHContainerShape componentShape = (RHContainerShape) DUtil.getPictogramElementForBusinessObject(diagram, ci,
+								RHContainerShape.class);
+							UpdateContext context = new UpdateContext(componentShape);
+							IUpdateFeature feature = featureProvider.getUpdateFeature(context);
+							feature.execute(context);
+						}
+					});
+				}
+
+				// Increment start order for next pass
+				startOrder = startOrder.add(BigInteger.ONE);
+			}
+		}
+	}
+
+	/**
+	 * Swap start order of provided components. Change assembly controller if start order zero.
+	 * @param sad
+	 * @param featureProvider
+	 * @param lowerCi - The component that currently has the lower start order
+	 * @param higherCi - The component that currently has the higher start order
+	 */
+	public static void swapStartOrder(DeviceConfiguration sad, IFeatureProvider featureProvider, final DcdComponentInstantiation lowerCi,
+		final DcdComponentInstantiation higherCi) {
+
+		// editing domain for our transaction
+		TransactionalEditingDomain editingDomain = featureProvider.getDiagramTypeProvider().getDiagramBehavior().getEditingDomain();
+
+		// Perform business object manipulation in a Command
+		TransactionalCommandStack stack = (TransactionalCommandStack) editingDomain.getCommandStack();
+		stack.execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+
+				// Increment start order
+				lowerCi.setStartOrder(higherCi.getStartOrder());
+				// Decrement start order
+				higherCi.setStartOrder(higherCi.getStartOrder().subtract(BigInteger.ONE));
+			}
+		});
 	}
 
 	public static DcdComponentInstantiation createComponentInstantiation(final SoftPkg spd, final DeviceConfiguration dcd, String usageName,
@@ -88,7 +194,49 @@ public class DCDUtils {
 		// add to placement
 		componentPlacement.getComponentInstantiation().add(dcdComponentInstantiation);
 
+		// determine start order
+		addStartOrder(dcd, dcdComponentInstantiation);
+
 		return dcdComponentInstantiation;
+	}
+
+	private static void addStartOrder(DeviceConfiguration dcd, DcdComponentInstantiation dcdComponentInstantiation) {
+		final EStructuralFeature[] COMP_TO_SPD = new EStructuralFeature[] { PartitioningPackage.Literals.COMPONENT_INSTANTIATION__PLACEMENT,
+			PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF, PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE,
+			PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG };
+		SoftPkg spd = ScaEcoreUtils.getFeature(dcdComponentInstantiation, COMP_TO_SPD);
+		if (spd == null) {
+			return;
+		}
+
+		Interface tmpInterface = ScdFactory.eINSTANCE.createInterface();
+		tmpInterface.setRepid(ResourceHelper.id());
+		SoftwareComponent scd = spd.getDescriptor().getComponent();
+		boolean implementsResource = false;
+		for (Interface serviceInterface : scd.getInterfaces().getInterface()) {
+			if (serviceInterface.isInstance(tmpInterface)) {
+				implementsResource = true;
+			}
+		}
+
+		if (!implementsResource) {
+			return;
+		}
+
+		// determine start order for existing components
+		BigInteger highestStartOrder = AbstractPortSupplierPattern.determineHighestStartOrder(dcd.getAllComponentInstantiations());
+
+		// increment start order for new component
+		BigInteger startOrder = null;
+		if (highestStartOrder == null) {
+			// Should only get here if no other components exist
+			// Assume assembly controller and assign start order of 0
+			startOrder = BigInteger.ZERO;
+		} else {
+			startOrder = highestStartOrder.add(BigInteger.ONE);
+		}
+
+		dcdComponentInstantiation.setStartOrder(startOrder);
 	}
 
 	/**

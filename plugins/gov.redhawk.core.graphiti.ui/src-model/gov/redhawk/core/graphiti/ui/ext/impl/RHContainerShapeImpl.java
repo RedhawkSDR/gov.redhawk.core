@@ -641,6 +641,24 @@ public class RHContainerShapeImpl extends ContainerShapeImpl implements RHContai
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public ContainerShape getStartOrderEllipseShape() {
+		return (ContainerShape) DUtil.findChildShapeByProperty(getInnerContainerShape(), DUtil.SHAPE_TYPE, SHAPE_START_ORDER_ELLIPSE_SHAPE);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public Text getStartOrderText() {
+		return (Text) DUtil.findFirstPropertyContainer(getStartOrderEllipseShape(), GA_START_ORDER_TEXT);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override

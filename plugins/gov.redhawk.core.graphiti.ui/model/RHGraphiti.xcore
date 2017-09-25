@@ -90,4 +90,10 @@ class RHContainerShape extends ContainerShape {
 
 	/*Return the collapsed uses ports container*/
 	op ContainerShape getSuperUsesPortsContainerShape()
+
+	/*Returns the start order ellipse*/
+	op ContainerShape getStartOrderEllipseShape()
+
+	/*Returns the start order text*/
+	op Text getStartOrderText()
 }

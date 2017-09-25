@@ -122,6 +122,8 @@ public abstract class AbstractNodeComponentPattern extends AbstractPortSupplierP
 				// delete component from DeviceConfiguration
 				DCDUtils.deleteComponentInstantiation(ciToDelete, dcd);
 
+				// re-organize start order
+				DCDUtils.organizeStartOrder(dcd, getDiagram(), getFeatureProvider());
 			}
 		});
 

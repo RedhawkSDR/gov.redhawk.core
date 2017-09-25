@@ -359,6 +359,10 @@ public class RHGxPackageImpl extends EPackageImpl implements RHGxPackage {
 
 		addEOperation(rhContainerShapeEClass, thePictogramsPackage.getContainerShape(), "getSuperUsesPortsContainerShape", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
+		addEOperation(rhContainerShapeEClass, thePictogramsPackage.getContainerShape(), "getStartOrderEllipseShape", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(rhContainerShapeEClass, theAlgorithmsPackage.getText(), "getStartOrderText", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
 		// Initialize data types
 		initEDataType(usesPortStubEDataType, UsesPortStub.class, "UsesPortStub", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(providesPortStubEDataType, ProvidesPortStub.class, "ProvidesPortStub", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

@@ -59,6 +59,19 @@ public interface RHContainerShape extends ContainerShape {
 	public static final String SUPER_PROVIDES_PORTS_RECTANGLE = "superProvidesPortsContainer";
 	public static final String SUPER_USES_PORTS_RECTANGLE = "superUsesPortsContainer";
 
+	/**
+	 * @since 2.0
+	 */
+	public static final String SHAPE_START_ORDER_ELLIPSE_SHAPE = "startOrderEllipseShape";
+	/**
+	 * @since 2.0
+	 */
+	public static final String GA_START_ORDER_TEXT = "startOrderText";
+	/**
+	 * @since 2.0
+	 */
+	public static final String GA_START_ORDER_ELLIPSE = "startOrderEllipse";
+
 	// BEGIN GENERATED CODE
 
 	/**
@@ -401,5 +414,29 @@ public interface RHContainerShape extends ContainerShape {
 	 * @generated
 	 */
 	ContainerShape getSuperUsesPortsContainerShape();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 2.0
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Returns the start order ellipse
+	 * <!-- end-model-doc -->
+	 * @model kind="operation" unique="false"
+	 * @generated
+	 */
+	ContainerShape getStartOrderEllipseShape();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 2.0
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Returns the start order text
+	 * <!-- end-model-doc -->
+	 * @model kind="operation" unique="false"
+	 * @generated
+	 */
+	Text getStartOrderText();
 
 } // RHContainerShape

@@ -14,10 +14,6 @@ package gov.redhawk.core.graphiti.sad.ui.ext;
 
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 
-import org.eclipse.graphiti.mm.algorithms.Text;
-
-import org.eclipse.graphiti.mm.pictograms.ContainerShape;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Component Shape</b></em>'.
@@ -29,26 +25,5 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
  * @generated
  */
 public interface ComponentShape extends RHContainerShape {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Returns the start order ellipse
-	 * <!-- end-model-doc -->
-	 * @model kind="operation" unique="false"
-	 * @generated
-	 */
-	ContainerShape getStartOrderEllipseShape();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Returns the start order text
-	 * <!-- end-model-doc -->
-	 * @model kind="operation" unique="false"
-	 * @generated
-	 */
-	Text getStartOrderText();
 
 } // ComponentShape
