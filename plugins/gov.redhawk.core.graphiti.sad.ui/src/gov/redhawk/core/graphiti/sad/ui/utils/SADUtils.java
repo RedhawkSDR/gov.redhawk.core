@@ -27,7 +27,6 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 
 import gov.redhawk.core.graphiti.sad.ui.ext.ComponentShape;
-import gov.redhawk.core.graphiti.ui.diagram.patterns.AbstractPortSupplierPattern;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentFile;
@@ -272,14 +271,19 @@ public class SADUtils {
 		componentPlacement.getComponentInstantiation().add(sadComponentInstantiation);
 
 		// determine start order for existing components
-		BigInteger highestStartOrder = AbstractPortSupplierPattern.determineHighestStartOrder(sad.getAllComponentInstantiations());
+		EList<SadComponentInstantiation> cis = sad.getComponentInstantiationsInStartOrder();
+		BigInteger highestStartOrder = cis.get(cis.size() - 1).getStartOrder();
 
 		// increment start order for new component
 		BigInteger startOrder = null;
 		if (highestStartOrder == null) {
-			// Should only get here if no other components exist
-			// Assume assembly controller and assign start order of 0
-			startOrder = BigInteger.ZERO;
+			if (cis.size() <= 1) {
+				// Should only get here if no other components exist
+				// Assume assembly controller and assign start order of 0
+				startOrder = BigInteger.ZERO;
+			} else {
+				startOrder = BigInteger.ONE;
+			}
 		} else {
 			startOrder = highestStartOrder.add(BigInteger.ONE);
 		}

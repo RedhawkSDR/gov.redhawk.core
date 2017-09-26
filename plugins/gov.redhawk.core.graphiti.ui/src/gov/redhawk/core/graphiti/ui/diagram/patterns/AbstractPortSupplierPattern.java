@@ -10,7 +10,6 @@
  */
 package gov.redhawk.core.graphiti.ui.diagram.patterns;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -1036,38 +1035,5 @@ public abstract class AbstractPortSupplierPattern extends AbstractContainerPatte
 			providesPortStub.setName(providesPortName);
 			getProvides(portSupplier).add(providesPortStub);
 		}
-	}
-
-	/**
-	 * Return the highest start order for all components in the SAD.
-	 * Returns null if no components are found
-	 * @param sad
-	 * @return
-	 */
-	public static BigInteger determineHighestStartOrder(EList< ? extends ComponentInstantiation> cis) {
-
-		BigInteger highestStartOrder = null;
-		if (cis != null && cis.size() > 0) {
-			highestStartOrder = cis.get(0).getStartOrder();
-
-		}
-		for (int i = 1; i < cis.size(); i++) {
-			ComponentInstantiation c = cis.get(i);
-
-			// If a component is found, and it's start order is null, assume it is the assembly controller
-			// Assembly controllers should always be at the beginning of the start order, so mark highest start order as
-			// zero
-			if (highestStartOrder == null) {
-				highestStartOrder = BigInteger.ZERO;
-			}
-
-			// check for higher start order
-			if (c.getStartOrder() != null && c.getStartOrder().compareTo(highestStartOrder) >= 0) {
-				highestStartOrder = c.getStartOrder();
-			}
-		}
-
-		// If there are no components, highestStartOrder will be null
-		return highestStartOrder;
 	}
 }
