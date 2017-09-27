@@ -16,10 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.StandardWatchEventKinds;
-import java.nio.file.WatchEvent;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -123,6 +119,7 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.DND;
@@ -162,6 +159,7 @@ import org.xml.sax.InputSource;
 import gov.redhawk.eclipsecorba.library.IdlLibrary;
 import gov.redhawk.eclipsecorba.library.util.RefreshIdlLibraryJob;
 import gov.redhawk.internal.ui.ScaIdeConstants;
+import gov.redhawk.internal.ui.editor.DeletionWatcher;
 import gov.redhawk.internal.ui.editor.validation.ValidatingEContentAdapter;
 import gov.redhawk.ui.RedhawkUiActivator;
 import gov.redhawk.ui.util.ViewerUtil;
@@ -382,7 +380,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	/**
 	 * Watch for deletion of resources in the Target SDR
 	 */
-	private Thread resourceWatcherThread;
+	private DeletionWatcher watchService;
 
 	@Override
 	protected void setSite(final org.eclipse.ui.IWorkbenchPartSite site) {
@@ -1315,9 +1313,9 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			this.resourceTracker.clearTrackedResources();
 			this.resourceTracker = null;
 		}
-		if (this.resourceWatcherThread != null) {
-			resourceWatcherThread.interrupt();
-			resourceWatcherThread = null;
+		if (this.watchService != null) {
+			this.watchService.close();
+			this.watchService = null;
 		}
 		super.dispose();
 	}
@@ -1490,95 +1488,68 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 */
 	@Override
 	protected void setInput(final IEditorInput input) {
-		// If the input is FileStoreEditorInput, it is in the SCA file system, and needs to be tracked differently
-		if (input instanceof FileStoreEditorInput) {
-			resourceWatcherThread = getResourceWatcherThread((FileStoreEditorInput) input);
-			if (resourceWatcherThread != null) {
-				resourceWatcherThread.start();
-			}
-		}
-
-		IFile file = null;
-		if (input instanceof IFileEditorInput) {
-			file = ((IFileEditorInput) input).getFile();
-		}
-
-		IFile previousFile = null;
-		if ((getEditorInput() != null) && (getEditorInput() instanceof IFileEditorInput)) {
-			previousFile = ((IFileEditorInput) getEditorInput()).getFile();
-		}
-
 		// Remove the previous tracker...not technically necessary but implemented for the sake of completeness
-		if (previousFile != null) {
-			this.resourceTracker.clearTrackedResources();
-			previousFile.getWorkspace().removeResourceChangeListener(this.resourceTracker);
+		if (getEditorInput() instanceof IFileEditorInput) {
+			IFile previousFile = ((IFileEditorInput) getEditorInput()).getFile();
+			if (previousFile != null) {
+				this.resourceTracker.clearTrackedResources();
+				previousFile.getWorkspace().removeResourceChangeListener(this.resourceTracker);
+			}
+		} else if (getEditorInput() instanceof FileStoreEditorInput) {
+			if (watchService != null) {
+				watchService.close();
+				watchService = null;
+			}
 		}
 
 		initializeEditingDomain();
 		super.setInput(input);
 		createModel();
 
-		if (file != null) {
+		// Watch for changes
+		if (input instanceof IFileEditorInput) {
+			IFile file = ((IFileEditorInput) input).getFile();
 			this.resourceTracker.addTrackedResource(file);
 			file.getWorkspace().addResourceChangeListener(this.resourceTracker);
+		} else if (input instanceof FileStoreEditorInput) {
+			watchService = watchFileStore((FileStoreEditorInput) input);
 		}
 	}
 
-	private Thread getResourceWatcherThread(FileStoreEditorInput fsInput) {
+	/**
+	 * Begins watching a {@link FileStoreEditorInput} for deletion. Must be closed when no longer needed.
+	 * @param fsInput The file store to watch
+	 * @return The deletion watcher.
+	 */
+	private DeletionWatcher watchFileStore(FileStoreEditorInput fsInput) {
+		java.nio.file.Path directory;
+		java.nio.file.Path fileName;
 		try {
 			IFileStore fs = EFS.getStore(fsInput.getURI());
 			File tmpFile = fs.toLocalFile(0, new NullProgressMonitor());
-			final java.nio.file.Path resourcePath = tmpFile.getParentFile().toPath();
-			final java.nio.file.Path fileName = tmpFile.toPath().getFileName();
-
-			final WatchService watcher;
-			try {
-				watcher = resourcePath.getFileSystem().newWatchService();
-				resourcePath.register(watcher, StandardWatchEventKinds.ENTRY_DELETE);
-			} catch (UnsupportedOperationException e) {
-				return null;
-			}
-
-			Thread thread = new Thread(() -> {
-				WatchKey wk;
-				for (;;) {
-					try {
-						wk = watcher.take();
-					} catch (InterruptedException e) {
-						return;
-					}
-
-					for (WatchEvent< ? > event : wk.pollEvents()) {
-						java.nio.file.Path changed = (java.nio.file.Path) event.context();
-						if (fileName.equals(changed)) {
-							Display.getDefault().asyncExec(new Runnable() {
-
-								@Override
-								public void run() {
-									closeEditor(false);
-								}
-							});
-							return;
-						}
-					}
-
-					// reset the key
-					boolean valid = wk.reset();
-					if (!valid) {
-						break;
-					}
-				}
-			}, "Watch filesystem " + resourcePath.toString());
-			thread.setDaemon(true);
-			return thread;
+			directory = tmpFile.getParentFile().toPath();
+			fileName = tmpFile.toPath().getFileName();
 		} catch (CoreException e) {
-			StatusManager.getManager().handle(new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Error occured while tracking resouce", e),
-				StatusManager.SHOW | StatusManager.LOG);
-		} catch (IOException e) {
-			StatusManager.getManager().handle(new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Error occured while tracking resouce", e),
-				StatusManager.SHOW | StatusManager.LOG);
+			IStatus status = new Status(IStatus.ERROR, RedhawkUiActivator.PLUGIN_ID, "Unable to find local file for file store", e);
+			RedhawkUiActivator.getDefault().getLog().log(status);
+			return null;
 		}
-		return null;
+		Set<java.nio.file.Path> files = new HashSet<>();
+		files.add(fileName);
+
+		return new DeletionWatcher(directory, files, () -> {
+			try {
+				getContainer().getDisplay().asyncExec(() -> {
+					closeEditor(false);
+				});
+			} catch (SWTException e) {
+				if (e.code == SWT.ERROR_WIDGET_DISPOSED) {
+					return;
+				}
+				IStatus status = new Status(IStatus.ERROR, RedhawkUiActivator.PLUGIN_ID, "Error while trying to close editor", e);
+				RedhawkUiActivator.getDefault().getLog().log(status);
+			}
+		});
 	}
 
 	/**
