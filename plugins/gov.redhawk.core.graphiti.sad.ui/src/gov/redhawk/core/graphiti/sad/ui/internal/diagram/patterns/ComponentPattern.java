@@ -342,7 +342,11 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 
 		// delete component placement
 		if (removePlacement) {
-			sad.getPartitioning().getComponentPlacement().remove(placement);
+			if (placement.eContainer() instanceof HostCollocation) {
+				((HostCollocation) placement.eContainer()).getComponentPlacement().remove(placement);
+			} else {
+				sad.getPartitioning().getComponentPlacement().remove(placement);
+			}
 		}
 	}
 
