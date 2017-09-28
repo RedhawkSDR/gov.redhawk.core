@@ -75,4 +75,14 @@ public interface ScaSimpleProperty extends ScaAbstractProperty<Simple> {
 	@Override
 	SimpleRef createPropertyRef();
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * See {@link ScaAbstractProperty#setValueFromRef(mil.jpeojtrs.sca.prf.AbstractPropertyRef)}
+	 * @since 21.0
+	 *        <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void setValueFromRef(SimpleRef refValue);
+
 } // ScaSimpleProperty

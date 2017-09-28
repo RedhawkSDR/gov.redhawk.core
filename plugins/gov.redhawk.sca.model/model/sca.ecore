@@ -340,6 +340,13 @@
         <eTypeArguments eTypeParameter="#//ScaAbstractProperty/T"/>
       </eGenericType>
     </eOperations>
+    <eOperations name="setValueFromRef">
+      <eParameters name="refValue">
+        <eGenericType eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//AbstractPropertyRef">
+          <eTypeArguments/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" transient="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
@@ -1019,6 +1026,9 @@
       <details key="kind" value="empty"/>
     </eAnnotations>
     <eOperations name="createPropertyRef" eType="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//SimpleRef"/>
+    <eOperations name="setValueFromRef">
+      <eParameters name="refValue" eType="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//SimpleRef"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"
         transient="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
@@ -1040,6 +1050,9 @@
     </eOperations>
     <eOperations name="getValue" eType="#//ObjectArray"/>
     <eOperations name="createPropertyRef" eType="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//SimpleSequenceRef"/>
+    <eOperations name="setValueFromRef">
+      <eParameters name="refValue" eType="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//SimpleSequenceRef"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="values" unique="false"
         upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"
         transient="true">
@@ -1067,6 +1080,9 @@
       <eParameters name="id" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eOperations>
     <eOperations name="createPropertyRef" eType="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//StructRef"/>
+    <eOperations name="setValueFromRef">
+      <eParameters name="refValue" eType="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//StructRef"/>
+    </eOperations>
     <eOperations name="createStructValue" eType="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//StructValue"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="fields" upperBound="-1"
         transient="true" containment="true">
@@ -1284,6 +1300,9 @@
     </eAnnotations>
     <eOperations name="createScaStructProperty" eType="#//ScaStructProperty"/>
     <eOperations name="createPropertyRef" eType="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//StructSequenceRef"/>
+    <eOperations name="setValueFromRef">
+      <eParameters name="refValue" eType="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//StructSequenceRef"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="structs" upperBound="-1"
         eType="#//ScaStructProperty" transient="true" containment="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">

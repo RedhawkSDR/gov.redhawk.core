@@ -3080,6 +3080,12 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		g1.getETypeArguments().add(g2);
 		initEOperation(op, g1);
 
+		op = addEOperation(scaAbstractPropertyEClass, null, "setValueFromRef", 0, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(thePrfPackage.getAbstractPropertyRef());
+		g2 = createEGenericType();
+		g1.getETypeArguments().add(g2);
+		addEParameter(op, g1, "refValue", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(scaComponentEClass, ScaComponent.class, "ScaComponent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getScaComponent_ComponentInstantiation(), theSadPackage.getSadComponentInstantiation(), null, "componentInstantiation", null, 1, 1,
 			ScaComponent.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
@@ -3414,6 +3420,9 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 		addEOperation(scaSimplePropertyEClass, thePrfPackage.getSimpleRef(), "createPropertyRef", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		op = addEOperation(scaSimplePropertyEClass, null, "setValueFromRef", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, thePrfPackage.getSimpleRef(), "refValue", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(scaSimpleSequencePropertyEClass, ScaSimpleSequenceProperty.class, "ScaSimpleSequenceProperty", !IS_ABSTRACT, !IS_INTERFACE,
 			IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getScaSimpleSequenceProperty_Values(), ecorePackage.getEJavaObject(), "values", null, 0, -1, ScaSimpleSequenceProperty.class,
@@ -3425,6 +3434,9 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		addEOperation(scaSimpleSequencePropertyEClass, this.getObjectArray(), "getValue", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		addEOperation(scaSimpleSequencePropertyEClass, thePrfPackage.getSimpleSequenceRef(), "createPropertyRef", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(scaSimpleSequencePropertyEClass, null, "setValueFromRef", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, thePrfPackage.getSimpleSequenceRef(), "refValue", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(scaStructPropertyEClass, ScaStructProperty.class, "ScaStructProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		g1 = createEGenericType(this.getScaAbstractProperty());
@@ -3446,6 +3458,9 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		initEOperation(op, g1);
 
 		addEOperation(scaStructPropertyEClass, thePrfPackage.getStructRef(), "createPropertyRef", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(scaStructPropertyEClass, null, "setValueFromRef", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, thePrfPackage.getStructRef(), "refValue", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		addEOperation(scaStructPropertyEClass, thePrfPackage.getStructValue(), "createStructValue", 0, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -3556,6 +3571,9 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		addEOperation(scaStructSequencePropertyEClass, this.getScaStructProperty(), "createScaStructProperty", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		addEOperation(scaStructSequencePropertyEClass, thePrfPackage.getStructSequenceRef(), "createPropertyRef", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(scaStructSequencePropertyEClass, null, "setValueFromRef", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, thePrfPackage.getStructSequenceRef(), "refValue", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(iStatusProviderEClass, IStatusProvider.class, "IStatusProvider", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIStatusProvider_Status(), this.getIStatus(), "status", null, 0, 1, IStatusProvider.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE,

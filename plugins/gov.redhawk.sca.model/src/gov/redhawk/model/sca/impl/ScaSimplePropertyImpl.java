@@ -16,6 +16,7 @@ import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.sca.util.PluginUtil;
+import mil.jpeojtrs.sca.prf.AbstractPropertyRef;
 import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.PropertyValueType;
 import mil.jpeojtrs.sca.prf.Simple;
@@ -190,6 +191,37 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 		final String stringValue = (getValue() == null) ? null : getValue().toString();
 		simpleRef.setValue(stringValue);
 		return simpleRef;
+		// BEGIN GENERATED CODE
+	}
+
+	@Override
+	public void setValueFromRef(AbstractPropertyRef< ? > refValue) {
+		if (!(refValue instanceof SimpleRef)) {
+			String msg = String.format("Property ref of type '%s' does not match type of property '%s'", refValue.getClass().getSimpleName(), getName());
+			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, new Status(Status.ERROR, ScaModelPlugin.ID, msg));
+			return;
+		}
+		setValueFromRef((SimpleRef) refValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 21.0
+	 *        <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	public void setValueFromRef(SimpleRef refValue) {
+		// END GENERATED CODE
+		try {
+			Object newValue = AnyUtils.convertString(refValue.getValue(), getType(), isComplex());
+			setValue(newValue);
+			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, Status.OK_STATUS);
+		} catch (ClassCastException | IllegalArgumentException e) {
+			String msg = String.format("Failed to demarshal value of property '%s' from simpleref", getName());
+			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, new Status(Status.ERROR, ScaModelPlugin.ID, msg, e));
+		}
 		// BEGIN GENERATED CODE
 	}
 

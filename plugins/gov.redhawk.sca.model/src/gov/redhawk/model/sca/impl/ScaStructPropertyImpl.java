@@ -261,6 +261,85 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
+	public void setValueFromRef(AbstractPropertyRef< ? > refValue) {
+		if (!(refValue instanceof StructRef)) {
+			String msg = String.format("Property ref of type '%s' does not match type of property '%s'", refValue.getClass().getSimpleName(), getName());
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, new Status(Status.ERROR, ScaModelPlugin.ID, msg));
+			return;
+		}
+		setValueFromRef((StructRef) refValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 21.0
+	 *        <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	public void setValueFromRef(StructRef refValue) {
+		// END GENERATED CODE
+		List<String> missingFields = setSimpleValuesFromRefs(refValue.getSimpleRef());
+		missingFields.addAll(setSimpleSeqValuesFromRefs(refValue.getSimpleSequenceRef()));
+		if (missingFields.size() > 0) {
+			String msg = String.format("Invalid struct field(s) in property reference(s): %s", missingFields.toString());
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, new Status(Status.ERROR, ScaModelPlugin.ID, msg));
+		} else {
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, Status.OK_STATUS);
+		}
+		// BEGIN GENERATED CODE
+	}
+
+	// END GENERATED CODE
+
+	/**
+	 * Set the value of this struct from a structvalue. Used by {@link ScaStructSequenceProperty}.
+	 * 
+	 * @since 21.0
+	 */
+	protected void setValueFromRef(StructValue refValue) {
+		// END GENERATED CODE
+		List<String> missingFields = setSimpleValuesFromRefs(refValue.getSimpleRef());
+		missingFields.addAll(setSimpleSeqValuesFromRefs(refValue.getSimpleSequenceRef()));
+		if (missingFields.size() > 0) {
+			String msg = String.format("Invalid struct field(s) in property reference(s): %s", missingFields.toString());
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, new Status(Status.ERROR, ScaModelPlugin.ID, msg));
+		} else {
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, Status.OK_STATUS);
+		}
+		// BEGIN GENERATED CODE
+	}
+
+	private List<String> setSimpleValuesFromRefs(List<SimpleRef> refValues) {
+		List<String> missingFields = new ArrayList<>();
+		for (SimpleRef simpleRef : refValues) {
+			ScaSimpleProperty simple = (ScaSimpleProperty) getField(simpleRef.getRefID());
+			if (simple != null) {
+				simple.setValueFromRef(simpleRef);
+			} else {
+				missingFields.add(simpleRef.getRefID());
+			}
+		}
+		return missingFields;
+	}
+
+	private List<String> setSimpleSeqValuesFromRefs(List<SimpleSequenceRef> refValues) {
+		List<String> missingFields = new ArrayList<>();
+		for (SimpleSequenceRef simpleSeqRef : refValues) {
+			ScaSimpleSequenceProperty simpleSeq = (ScaSimpleSequenceProperty) getField(simpleSeqRef.getRefID());
+			if (simpleSeq != null) {
+				simpleSeq.setValueFromRef(simpleSeqRef);
+			} else {
+				missingFields.add(simpleSeqRef.getRefID());
+			}
+		}
+		return missingFields;
+	}
+
+	// BEGIN GENERATED CODE
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
