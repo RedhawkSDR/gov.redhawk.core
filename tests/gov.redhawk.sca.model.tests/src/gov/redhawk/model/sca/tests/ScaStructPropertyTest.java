@@ -24,6 +24,7 @@ import CF.PropertySetPackage.PartialConfiguration;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaComponent;
+import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
@@ -33,9 +34,16 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.textui.TestRunner;
 import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.prf.PrfFactory;
+import mil.jpeojtrs.sca.prf.PropertyValueType;
+import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.SimpleRef;
+import mil.jpeojtrs.sca.prf.SimpleSequence;
+import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructRef;
 import mil.jpeojtrs.sca.prf.StructValue;
+import mil.jpeojtrs.sca.prf.Values;
 
 /**
  * <!-- begin-user-doc -->
@@ -53,6 +61,8 @@ import mil.jpeojtrs.sca.prf.StructValue;
  * <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSimple(java.lang.String) <em>Get Simple</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaStructProperty#getField(java.lang.String) <em>Get Field</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaStructProperty#createPropertyRef() <em>Create Property Ref</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaStructProperty#setValueFromRef(mil.jpeojtrs.sca.prf.StructRef) <em>Set Value From
+ * Ref</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaStructProperty#createStructValue() <em>Create Struct Value</em>}</li>
  * <li>{@link CF.PropertySetOperations#configure(CF.DataType[]) <em>Configure</em>}</li>
  * <li>{@link CF.PropertySetOperations#query(CF.PropertiesHolder) <em>Query</em>}</li>
@@ -237,6 +247,87 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 		});
 		ref = prop.createPropertyRef();
 		Assert.assertEquals(1, ref.getRefs().size());
+	}
+
+	// END GENERATED CODE
+
+	private ScaStructProperty pre_testSetValueFromRef() {
+		final String ID = "abc";
+		final String ID_MEMBER1 = "def";
+		final String ID_MEMBER2 = "ghi";
+
+		ScaStructProperty prop = ScaFactory.eINSTANCE.createScaStructProperty();
+		Struct struct = PrfFactory.eINSTANCE.createStruct();
+		struct.setId(ID);
+		Simple member1 = PrfFactory.eINSTANCE.createSimple();
+		member1.setId(ID_MEMBER1);
+		member1.setType(PropertyValueType.LONG);
+		member1.setValue("123");
+		struct.getSimple().add(member1);
+		SimpleSequence member2 = PrfFactory.eINSTANCE.createSimpleSequence();
+		member2.setId(ID_MEMBER2);
+		member2.setType(PropertyValueType.LONG);
+		Values values = PrfFactory.eINSTANCE.createValues("456", "789");
+		member2.setValues(values);
+		struct.getSimpleSequence().add(member2);
+		prop.setDefinition(struct);
+		Assert.assertNotNull(prop.getField(ID_MEMBER1));
+		Assert.assertEquals(123, prop.getSimple(ID_MEMBER1).getValue());
+		Assert.assertNotNull(prop.getField(ID_MEMBER2));
+		Assert.assertArrayEquals(new Object[] { 456, 789 }, ((ScaSimpleSequenceProperty) prop.getField(ID_MEMBER2)).getValue());
+		Assert.assertTrue(prop.getStatus().isOK());
+
+		return prop;
+	}
+
+	public void testSetValueFromRef__AbstractPropertyRef() {
+		final String ID = "abc";
+		final String ID_MEMBER1 = "def";
+		final String ID_MEMBER2 = "ghi";
+
+		ScaStructProperty prop = pre_testSetValueFromRef();
+
+		SimpleRef simpleRef = PrfFactory.eINSTANCE.createSimpleRef(ID, "13579");
+		prop.setValueFromRef(simpleRef);
+		Assert.assertEquals(123, prop.getSimple(ID_MEMBER1).getValue());
+		Assert.assertArrayEquals(new Object[] { 456, 789 }, ((ScaSimpleSequenceProperty) prop.getField(ID_MEMBER2)).getValue());
+		Assert.assertFalse(prop.getStatus().isOK());
+	}
+
+	// BEGIN GENERATED CODE
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaStructProperty#setValueFromRef(mil.jpeojtrs.sca.prf.StructRef) <em>Set
+	 * Value From Ref</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaStructProperty#setValueFromRef(mil.jpeojtrs.sca.prf.StructRef)
+	 * @generated
+	 */
+	public void testSetValueFromRef__StructRef() {
+		// END GENERATED CODE
+		final String ID = "abc";
+		final String ID_MEMBER1 = "def";
+		final String ID_MEMBER2 = "ghi";
+
+		ScaStructProperty prop = pre_testSetValueFromRef();
+
+		StructRef structRef = PrfFactory.eINSTANCE.createStructRef(ID);
+		SimpleRef simpleRef = PrfFactory.eINSTANCE.createSimpleRef(ID_MEMBER1, "456");
+		SimpleSequenceRef simpleSeqRef = PrfFactory.eINSTANCE.createSimpleSequenceRef(ID_MEMBER2, "321");
+		structRef.getSimpleRef().add(simpleRef);
+		structRef.getSimpleSequenceRef().add(simpleSeqRef);
+		prop.setValueFromRef(structRef);
+		Assert.assertEquals(456, prop.getSimple(ID_MEMBER1).getValue());
+		Assert.assertArrayEquals(new Object[] { 321 }, ((ScaSimpleSequenceProperty) prop.getField(ID_MEMBER2)).getValue());
+		Assert.assertTrue(prop.getStatus().isOK());
+
+		simpleRef.setValue("bad");
+		prop.setValueFromRef(structRef);
+		Assert.assertEquals(456, prop.getSimple(ID_MEMBER1).getValue());
+		Assert.assertArrayEquals(new Object[] { 321 }, ((ScaSimpleSequenceProperty) prop.getField(ID_MEMBER2)).getValue());
+		Assert.assertFalse(prop.getStatus().isOK());
+		// BEGIN GENERATED CODE
 	}
 
 	/**
