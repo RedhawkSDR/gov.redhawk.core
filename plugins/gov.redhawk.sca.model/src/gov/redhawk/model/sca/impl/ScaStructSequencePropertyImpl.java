@@ -23,6 +23,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import mil.jpeojtrs.sca.prf.AbstractPropertyRef;
 import mil.jpeojtrs.sca.prf.ConfigurationKind;
 import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.Simple;
@@ -262,6 +264,43 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 			structSequenceRef.getStructValue().add(value);
 		}
 		return structSequenceRef;
+		// BEGIN GENERATED CODE
+	}
+
+	@Override
+	public void setValueFromRef(AbstractPropertyRef< ? > refValue) {
+		if (!(refValue instanceof StructSequenceRef)) {
+			String msg = String.format("Property ref of type '%s' does not match type of property '%s'", refValue.getClass().getSimpleName(), getName());
+			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, new Status(Status.ERROR, ScaModelPlugin.ID, msg));
+			return;
+		}
+		setValueFromRef((StructSequenceRef) refValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 21.0
+	 *        <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	public void setValueFromRef(StructSequenceRef refValue) {
+		// END GENERATED CODE
+		for (int i = 0; i < refValue.getStructValue().size(); i++) {
+			ScaStructProperty structProp;
+			if (i < getStructs().size()) {
+				structProp = getStructs().get(i);
+				((ScaStructPropertyImpl) structProp).setValueFromRef(refValue.getStructValue().get(i));
+			} else {
+				structProp = createStructValue(getDefinition(), refValue.getStructValue().get(i));
+				getStructs().add(structProp);
+			}
+		}
+		for (int i = refValue.getStructValue().size(); i < getStructs().size();) {
+			getStructs().remove(i);
+		}
+		setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, Status.OK_STATUS);
 		// BEGIN GENERATED CODE
 	}
 

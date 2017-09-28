@@ -310,4 +310,19 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	 */
 	AbstractPropertyRef<T> createPropertyRef();
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * Sets the value of this property based on the override in a property ref. The status for the value is also
+	 * updated.
+	 * <p/>
+	 * If the ref's type doesn't appropriately match the property (e.g. ScaSimpleProperty with StructRef), then the
+	 * status for the property will indicate an error.
+	 * @since 21.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @model
+	 * @generated
+	 */
+	void setValueFromRef(AbstractPropertyRef< ? > refValue);
+
 } // ScaAbstractProperty

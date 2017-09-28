@@ -113,6 +113,16 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
+	 * @since 21.0
+	 *        <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void setValueFromRef(StructRef refValue);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * See {@link ScaAbstractProperty#setValueFromRef(mil.jpeojtrs.sca.prf.AbstractPropertyRef)}
 	 * @since 20.0
 	 *        <!-- end-user-doc -->
 	 * @model

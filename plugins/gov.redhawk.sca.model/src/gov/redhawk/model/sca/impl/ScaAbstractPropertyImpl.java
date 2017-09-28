@@ -584,6 +584,14 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
+	 * @generated NOT
+	 */
+	public abstract void setValueFromRef(AbstractPropertyRef< ? > refValue);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

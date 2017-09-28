@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import mil.jpeojtrs.sca.prf.AbstractPropertyRef;
 import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
@@ -220,6 +221,37 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
+	public void setValueFromRef(AbstractPropertyRef< ? > refValue) {
+		if (!(refValue instanceof SimpleSequenceRef)) {
+			String msg = String.format("Property ref of type '%s' does not match type of property '%s'", refValue.getClass().getSimpleName(), getName());
+			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, new Status(Status.ERROR, ScaModelPlugin.ID, msg));
+			return;
+		}
+		setValueFromRef((SimpleSequenceRef) refValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 21.0
+	 *        <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	public void setValueFromRef(SimpleSequenceRef refValue) {
+		// END GENERATED CODE
+		try {
+			final Object[] newValues = AnyUtils.convertStringArray(refValue.getValues().getValue().toArray(), getType(), isComplex());
+			setValue(newValues);
+			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, Status.OK_STATUS);
+		} catch (ClassCastException | IllegalArgumentException e) {
+			String msg = String.format("Failed to demarshal value of property '%s' from simplesequenceref", getName());
+			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, new Status(Status.ERROR, ScaModelPlugin.ID, msg, e));
+		}
+		// BEGIN GENERATED CODE
+	}
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -343,7 +375,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 
 	@Override
 	public Any toAny() {
-		return AnyUtils.toAnySequence(getValues().toArray(), getType(), isComplex());
+		return AnyUtils.toAnySequence(values.toArray(), getType(), isComplex());
 	}
 
 	@Override
