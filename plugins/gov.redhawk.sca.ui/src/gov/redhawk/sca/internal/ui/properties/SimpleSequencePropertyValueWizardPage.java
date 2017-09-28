@@ -13,7 +13,6 @@ package gov.redhawk.sca.internal.ui.properties;
 
 import java.util.List;
 
-import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.IWrapperItemProvider;
@@ -37,21 +36,13 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Widget;
 
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
-import gov.redhawk.model.sca.provider.ScaSimpleSequencePropertyItemProvider;
-import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
+import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
+import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.provider.RadixLabelProviderUtil;
 
 public class SimpleSequencePropertyValueWizardPage extends AbstractSequencePropertyValueWizardPage {
 
-	protected final ScaPropertiesAdapterFactory adapterFactory = new ScaPropertiesAdapterFactory() {
-
-		@Override
-		public Adapter createScaSimpleSequencePropertyAdapter() {
-			// We need to return our own instance of ScaSimpleSequencePropertyItemProvider here because the default
-			// factory creates an overridden one that does not return any children.
-			return new ScaSimpleSequencePropertyItemProvider(this);
-		}
-	};
+	private final ScaItemProviderAdapterFactory adapterFactory = new ScaItemProviderAdapterFactory();
 
 	protected SimpleSequencePropertyValueWizardPage(final ScaSimpleSequenceProperty property) {
 		super(property);
@@ -71,7 +62,8 @@ public class SimpleSequencePropertyValueWizardPage extends AbstractSequencePrope
 	@Override
 	protected void handleAddValue() {
 		final ScaSimpleSequenceProperty seqProperty = (ScaSimpleSequenceProperty) property;
-		Object value = getDefaultValue(seqProperty.getDefinition().getType(), seqProperty.getDefinition().isComplex());
+		SimpleSequence definition = seqProperty.getDefinition();
+		Object value = getDefaultValue(definition.getType(), definition.isComplex());
 		seqProperty.getValues().add(value);
 	}
 

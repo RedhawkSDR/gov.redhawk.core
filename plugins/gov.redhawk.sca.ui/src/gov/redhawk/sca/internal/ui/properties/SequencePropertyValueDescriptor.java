@@ -68,8 +68,8 @@ public class SequencePropertyValueDescriptor extends PropertyDescriptor {
 
 	private ScaAbstractProperty< ? > copyProperty(final ScaAbstractProperty< ? > property) {
 		final ScaAbstractProperty< ? > retVal = EcoreUtil.copy(property);
-		// Recopy the value since it is overriden during the copy process
-		retVal.fromAny(property.toAny());
+		// Values are transient and hence aren't copied. They must be manually applied.
+		retVal.setValueFromRef(property.createPropertyRef());
 		return retVal;
 	}
 }
