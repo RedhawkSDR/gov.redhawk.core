@@ -44,13 +44,15 @@ import mil.jpeojtrs.sca.prf.AccessType;
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#toAny() <em>To Any</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#fromAny(org.omg.CORBA.Any) <em>From Any</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#setRemoteValue(org.omg.CORBA.Any) <em>Set Remote Value</em>}
- * </li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#setRemoteValue(org.omg.CORBA.Any) <em>Set Remote
+ * Value</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getProperty() <em>Get Property</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#isDefaultValue() <em>Is Default Value</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#restoreDefaultValue() <em>Restore Default Value</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#valueEquals(org.omg.CORBA.Any) <em>Value Equals</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#createPropertyRef() <em>Create Property Ref</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#setValueFromRef(mil.jpeojtrs.sca.prf.AbstractPropertyRef)
+ * <em>Set Value From Ref</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -308,6 +310,17 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	public abstract void testCreatePropertyRef();
 
 	/**
+	 * Tests the
+	 * '{@link gov.redhawk.model.sca.ScaAbstractProperty#setValueFromRef(mil.jpeojtrs.sca.prf.AbstractPropertyRef)
+	 * <em>Set Value From Ref</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaAbstractProperty#setValueFromRef(mil.jpeojtrs.sca.prf.AbstractPropertyRef)
+	 * @generated NOT
+	 */
+	public abstract void testSetValueFromRef__AbstractPropertyRef();
+
+	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#getDescription() <em>Description</em>}' feature
 	 * getter.
 	 * <!-- begin-user-doc -->
@@ -462,4 +475,4 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	 */
 	protected abstract void clearAndResetDefintion();
 
-} //ScaAbstractPropertyTest
+} // ScaAbstractPropertyTest

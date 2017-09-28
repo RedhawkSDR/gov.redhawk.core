@@ -19,13 +19,19 @@ import CF.PropertySetPackage.PartialConfiguration;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaComponent;
+import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.textui.TestRunner;
+import mil.jpeojtrs.sca.prf.PrfFactory;
+import mil.jpeojtrs.sca.prf.PropertyValueType;
+import mil.jpeojtrs.sca.prf.SimpleRef;
 import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
+import mil.jpeojtrs.sca.prf.StructRef;
+import mil.jpeojtrs.sca.prf.Values;
 
 /**
  * <!-- begin-user-doc -->
@@ -37,6 +43,8 @@ import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
  * <li>{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#setValue(java.lang.Object[]) <em>Set Value</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#getValue() <em>Get Value</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#createPropertyRef() <em>Create Property Ref</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#setValueFromRef(mil.jpeojtrs.sca.prf.SimpleSequenceRef)
+ * <em>Set Value From Ref</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -155,6 +163,67 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 		SimpleSequenceRef ref = prop.createPropertyRef();
 		Assert.assertEquals(prop.getId(), ref.getRefID());
 		Assert.assertEquals(prop.getValues().size(), ref.getValues().getValue().size());
+	}
+
+	// END GENERATED CODE
+
+	private ScaSimpleSequenceProperty pre_testSetValueFromRef() {
+		final String ID = "abc";
+
+		ScaSimpleSequenceProperty prop = ScaFactory.eINSTANCE.createScaSimpleSequenceProperty();
+		SimpleSequence simpleSeq = PrfFactory.eINSTANCE.createSimpleSequence();
+		simpleSeq.setId(ID);
+		simpleSeq.setType(PropertyValueType.LONG);
+		Values values = PrfFactory.eINSTANCE.createValues("123", "456");
+		simpleSeq.setValues(values);
+		prop.setDefinition(simpleSeq);
+		Assert.assertArrayEquals(new Object[] { 123, 456 }, prop.getValue());
+		Assert.assertTrue(prop.getStatus().isOK());
+
+		return prop;
+	}
+
+	public void testSetValueFromRef__AbstractPropertyRef() {
+		final String ID = "abc";
+
+		ScaSimpleSequenceProperty prop = pre_testSetValueFromRef();
+
+		StructRef structRef = PrfFactory.eINSTANCE.createStructRef();
+		structRef.setRefID(ID);
+		SimpleRef member = PrfFactory.eINSTANCE.createSimpleRef("somememberid", "123");
+		structRef.getSimpleRef().add(member);
+		prop.setValueFromRef(structRef);
+		Assert.assertArrayEquals(new Object[] { 123, 456 }, prop.getValue());
+		Assert.assertFalse(prop.getStatus().isOK());
+	}
+
+	// BEGIN GENERATED CODE
+
+	/**
+	 * Tests the
+	 * '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#setValueFromRef(mil.jpeojtrs.sca.prf.SimpleSequenceRef)
+	 * <em>Set Value From Ref</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaSimpleSequenceProperty#setValueFromRef(mil.jpeojtrs.sca.prf.SimpleSequenceRef)
+	 * @generated NOT
+	 */
+	public void testSetValueFromRef__SimpleSequenceRef() {
+		// END GENERATED CODE
+		final String ID = "abc";
+
+		ScaSimpleSequenceProperty prop = pre_testSetValueFromRef();
+
+		SimpleSequenceRef simpleSeqRef = PrfFactory.eINSTANCE.createSimpleSequenceRef(ID, "789");
+		prop.setValueFromRef(simpleSeqRef);
+		Assert.assertArrayEquals(new Object[] { 789 }, prop.getValue());
+		Assert.assertTrue(prop.getStatus().isOK());
+
+		simpleSeqRef = PrfFactory.eINSTANCE.createSimpleSequenceRef(ID, "bad");
+		prop.setValueFromRef(simpleSeqRef);
+		Assert.assertArrayEquals(new Object[] { 789 }, prop.getValue());
+		Assert.assertFalse(prop.getStatus().isOK());
+		// BEGIN GENERATED CODE
 	}
 
 	/**
