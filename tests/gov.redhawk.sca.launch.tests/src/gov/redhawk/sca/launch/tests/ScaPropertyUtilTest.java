@@ -33,6 +33,7 @@ import mil.jpeojtrs.sca.util.math.ComplexULong;
 import mil.jpeojtrs.sca.util.math.ComplexULongLong;
 import mil.jpeojtrs.sca.util.math.ComplexUShort;
 import mil.jpeojtrs.sca.util.time.UTCTime;
+import mil.jpeojtrs.sca.util.time.UTCTimeNow;
 
 /**
  * Tests the {@link #ScaPropertyUtil} class's serializing/de-serializing of
@@ -64,6 +65,7 @@ public class ScaPropertyUtilTest {
 		((ScaSimpleProperty) component1.getProperty("ulonglong")).setValue(new BigInteger("9"));
 		((ScaSimpleProperty) component1.getProperty("ushort")).setValue(new Integer(10));
 		((ScaSimpleProperty) component1.getProperty("utctime")).setValue(new UTCTime((short) 1, 2.0, 0.3));
+		((ScaSimpleProperty) component1.getProperty("utctime_now")).setValue(new UTCTimeNow());
 
 		// Verify properties are different
 		assertProps(component1, component2, false);
