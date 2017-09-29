@@ -106,7 +106,7 @@ public class StructSequencePropertyValueWizardPage extends AbstractSequencePrope
 				final ScaSimpleProperty simple = (ScaSimpleProperty) field;
 				if (simple.getValue() == null) {
 					final Simple definition = simple.getDefinition();
-					final Object value = getDefaultValue(definition.getType(), definition.isComplex());
+					final Object value = definition.getType().getDefaultValue(definition.isComplex());
 					simple.setValue(value);
 				}
 			}

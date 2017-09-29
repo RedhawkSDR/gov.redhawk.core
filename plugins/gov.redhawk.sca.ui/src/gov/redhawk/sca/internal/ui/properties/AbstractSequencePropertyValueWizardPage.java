@@ -11,7 +11,6 @@
  */
 package gov.redhawk.sca.internal.ui.properties;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,16 +36,6 @@ import org.eclipse.ui.PlatformUI;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.sca.ui.ScaUiPlugin;
-import mil.jpeojtrs.sca.prf.PropertyValueType;
-import mil.jpeojtrs.sca.util.math.ComplexBoolean;
-import mil.jpeojtrs.sca.util.math.ComplexDouble;
-import mil.jpeojtrs.sca.util.math.ComplexFloat;
-import mil.jpeojtrs.sca.util.math.ComplexLong;
-import mil.jpeojtrs.sca.util.math.ComplexLongLong;
-import mil.jpeojtrs.sca.util.math.ComplexShort;
-import mil.jpeojtrs.sca.util.math.ComplexULong;
-import mil.jpeojtrs.sca.util.math.ComplexULongLong;
-import mil.jpeojtrs.sca.util.math.ComplexUShort;
 
 public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage {
 
@@ -91,68 +80,6 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 		buttonComposite.setLayoutData(GridDataFactory.fillDefaults().span(1, 1).grab(false, false).create());
 
 		setControl(root);
-	}
-
-	protected Object getDefaultValue(final PropertyValueType type, boolean isComplex) {
-		if (isComplex) {
-			switch (type) {
-			case BOOLEAN:
-				return new ComplexBoolean();
-			case DOUBLE:
-				return new ComplexDouble();
-			case FLOAT:
-				return new ComplexFloat();
-			case LONG:
-				return new ComplexLong();
-			case LONGLONG:
-				return new ComplexLongLong();
-			case SHORT:
-				return new ComplexShort();
-			case ULONG:
-				return new ComplexULong();
-			case USHORT:
-				return new ComplexUShort();
-			case ULONGLONG:
-				return new ComplexULongLong();
-			case STRING:
-			case OCTET:
-			case OBJREF:
-			case CHAR:
-			default:
-				throw new IllegalArgumentException("Unhandled property type");
-			}
-		} else {
-			switch (type) {
-			case BOOLEAN:
-				return Boolean.FALSE;
-			case CHAR:
-				return 'a';
-			case DOUBLE:
-				return 0.00d;
-			case FLOAT:
-				return 0.00f;
-			case LONG:
-				return 0;
-			case LONGLONG:
-				return 0L;
-			case OBJREF:
-				return null;
-			case OCTET:
-				return (short) 0;
-			case SHORT:
-				return (short) 0;
-			case STRING:
-				return "newString";
-			case ULONG:
-				return 0L;
-			case USHORT:
-				return 0;
-			case ULONGLONG:
-				return BigInteger.ZERO;
-			default:
-				throw new IllegalArgumentException("Unhandled property type");
-			}
-		}
 	}
 
 	protected abstract EList< ? > getList();

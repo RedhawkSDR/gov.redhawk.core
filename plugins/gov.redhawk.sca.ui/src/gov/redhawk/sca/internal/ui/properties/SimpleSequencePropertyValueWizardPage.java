@@ -63,7 +63,7 @@ public class SimpleSequencePropertyValueWizardPage extends AbstractSequencePrope
 	protected void handleAddValue() {
 		final ScaSimpleSequenceProperty seqProperty = (ScaSimpleSequenceProperty) property;
 		SimpleSequence definition = seqProperty.getDefinition();
-		Object value = getDefaultValue(definition.getType(), definition.isComplex());
+		Object value = definition.getType().getDefaultValue(definition.isComplex());
 		seqProperty.getValues().add(value);
 	}
 
