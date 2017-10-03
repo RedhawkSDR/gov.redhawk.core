@@ -102,7 +102,7 @@ public class ScaPropertyUtilTest {
 		((ScaSimpleSequenceProperty) component1.getProperty("ulonglong")).setValue(new Object[] { new BigInteger("19"), new BigInteger("20") });
 		((ScaSimpleSequenceProperty) component1.getProperty("ushort")).setValue(new Object[] { new Integer(21), new Integer(22) });
 		((ScaSimpleSequenceProperty) component1.getProperty("utctime")).setValue(
-			new Object[] { new UTCTime((short) 1, 2.0, 0.3), new UTCTime((short) 1, 4.0, 0.5) });
+			new Object[] { new UTCTime((short) 1, 2.0, 0.3), new UTCTime((short) 1, 4.0, 0.5), new UTCTimeNow() });
 
 		// Verify properties are different
 		assertProps(component1, component2, false);
