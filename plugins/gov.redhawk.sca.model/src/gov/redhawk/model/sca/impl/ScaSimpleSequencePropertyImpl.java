@@ -393,9 +393,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 		try {
 			if (newAny != null) {
 				final Object value = AnyUtils.convertAny(newAny);
-				if (value != null && value.getClass().isArray()) {
-					setValue((Object[]) value);
-				}
+				setValue((Object[]) value);
 			} else {
 				getValues().restoreDefaultValue();
 			}
