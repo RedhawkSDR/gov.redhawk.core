@@ -17,9 +17,11 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.preferences.ScaPreferenceConstants;
 import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.sca.validation.NamingServiceValidator;
 
 import java.io.IOException;
 
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -27,6 +29,7 @@ import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
@@ -40,7 +43,23 @@ public class RedhawkScaPreferencePage extends FieldEditorPreferencePage implemen
 	@Override
 	protected void createFieldEditors() {
 		final StringFieldEditor field = new StringFieldEditor(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE, "Default Naming Service:",
-				getFieldEditorParent());
+				getFieldEditorParent()) {
+			private IValidator validator = new NamingServiceValidator();
+
+			@Override
+			protected boolean doCheckState() {
+				Text text = getTextControl();
+				if (text == null) {
+					return true;
+				}
+				IStatus status = validator.validate(text.getText().trim());
+				if (!status.isOK()) {
+					setErrorMessage(status.getMessage());
+					return false;
+				}
+				return true;
+			}
+		};
 		addField(field);
 
 		this.registry = ScaPlugin.getDefault().getDomainManagerRegistry(getFieldEditorParent().getDisplay());
