@@ -231,7 +231,7 @@ public class DomainEntryWizardPage extends WizardPage {
 		validator.setAfterGetValidator(new NamingServiceValidator());
 		nameServiceBinding = this.context.bindValue(WidgetProperties.text(SWT.Modify).observe(nameServiceText),
 			BeanProperties.value(this.model.getClass(), DomainSettingModel.PROP_NAME_SERVICE_INIT_REF).observe(this.model), validator, null);
-		ControlDecorationSupport.create(binding, SWT.TOP | SWT.LEFT);
+		ControlDecorationSupport.create(nameServiceBinding, SWT.TOP | SWT.LEFT);
 
 		// Setting display name -> sets domain name
 		context.bindValue(WidgetProperties.text(SWT.Modify).observe(displayNameText), WidgetProperties.text(SWT.Modify).observe(domainNameText), null,
