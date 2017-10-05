@@ -123,38 +123,6 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
-	 * This is used to connect to an arbitrary Uses port to play audio.
-	 * 
-	 * @param portList the map of Ports and Names to connect
-	 * @deprecated Use {@link #playPorts(List)}
-	 */
-	@Deprecated
-	public void playPort(final Map<ScaUsesPort, String> portList) {
-		final UIJob job = new UIJob("Starting Play Port") {
-			@Override
-			public IStatus runInUIThread(final IProgressMonitor monitor) {
-				monitor.beginTask("Opening Play Port View", IProgressMonitor.UNKNOWN);
-				final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-				if (page != null) {
-					PlayAudioView view;
-					try {
-						view = (PlayAudioView) page.showView(PlayAudioView.ID);
-						for (ScaUsesPort port : portList.keySet()) {
-							view.playPort(port);
-						}
-						PortHelper.refreshPorts(portList.keySet(), monitor);
-					} catch (final PartInitException e) {
-						getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error finding Play Port View", e));
-					}
-				}
-				return Status.OK_STATUS;
-			}
-		};
-		job.setSystem(true);
-		job.schedule();
-	}
-
-	/**
 	 * This will log the given error message
 	 * 
 	 * @param msg the error message to log

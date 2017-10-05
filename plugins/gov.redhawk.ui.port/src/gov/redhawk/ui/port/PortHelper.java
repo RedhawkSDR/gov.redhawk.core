@@ -40,6 +40,8 @@ import org.eclipse.ui.handlers.IHandlerService;
  */
 public class PortHelper {
 
+	private static final String PLUGIN_ID = "gov.redhawk.ui.port";
+
 	private PortHelper() {
 	}
 
@@ -130,7 +132,7 @@ public class PortHelper {
 						
 					}, monitor);
 				} catch (CoreException e1) {
-					return new Status(e1.getStatus().getSeverity(), Activator.PLUGIN_ID, e1.getLocalizedMessage(), e1);
+					return new Status(e1.getStatus().getSeverity(), PLUGIN_ID, e1.getLocalizedMessage(), e1);
 				} catch (InterruptedException e1) {
 					return Status.CANCEL_STATUS;
 				}

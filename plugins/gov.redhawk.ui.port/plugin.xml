@@ -16,7 +16,6 @@
  -->
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="gov.redhawk.ui.portHandler" name="%extension-point.name" schema="schema/gov.redhawk.ui.portHandler.exsd"/>
       <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
