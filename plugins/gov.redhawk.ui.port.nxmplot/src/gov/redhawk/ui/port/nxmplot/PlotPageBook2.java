@@ -17,9 +17,9 @@ import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.sca.model.jobs.RefreshJob;
 import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.PropertyChangeSupport;
-import gov.redhawk.ui.port.PortHelper;
 import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlock;
 import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.BulkIOSddsNxmBlock;
@@ -46,6 +46,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -165,8 +166,6 @@ public class PlotPageBook2 extends Composite {
 			}
 		}
 	};
-
-	private List<PlotSource> sources = Collections.synchronizedList(new ArrayList<PlotSource>());
 
 	private final Map<PlotSource, List<INxmBlock>> source2NxmBlocks = new ConcurrentHashMap<PlotSource, List<INxmBlock>>();
 
@@ -395,7 +394,8 @@ public class PlotPageBook2 extends Composite {
 			}
 		};
 
-		PortHelper.refreshPort(scaPort, null, PlotPageBook2.PORT_REFRESH_DELAY_MS);
+		RefreshJob.create(scaPort).schedule(PlotPageBook2.PORT_REFRESH_DELAY_MS);
+
 		PlotPageBook2.TRACE_LOG.exitingMethod();
 		pcs.firePropertyChange(PlotPageBook2.PROP_SOURCES, null, plotSource);
 		return retVal;
@@ -499,23 +499,18 @@ public class PlotPageBook2 extends Composite {
 		}
 		this.plots.clear();
 
-		for (final PlotSource source : this.sources) {
-			PortHelper.refreshPort(source.getInput(), null, PlotPageBook2.PORT_REFRESH_DELAY_MS);
-		}
-		this.sources.clear();
+		PlotSource[] plotSources = this.source2NxmBlocks.keySet().toArray(new PlotSource[0]);
+		for (final PlotSource plotSource : plotSources) {
+			Job.create("Disposing Source " + plotSource, monitor -> {
+				SubMonitor progress = SubMonitor.convert(monitor, 1);
 
-		for (final PlotSource plotSource : this.source2NxmBlocks.keySet().toArray(new PlotSource[0])) {
-			Job job = new Job("Disposing Source " + plotSource) {
+				removeSource2(plotSource);
+				progress.worked(1);
 
-				@Override
-				protected IStatus run(IProgressMonitor monitor) {
-					removeSource2(plotSource);
-					PortHelper.refreshPort(plotSource.getInput(), null, PlotPageBook2.PORT_REFRESH_DELAY_MS);
-					return Status.OK_STATUS;
-				}
+				RefreshJob.create(plotSource.getInput()).schedule(PlotPageBook2.PORT_REFRESH_DELAY_MS);
 
-			};
-			job.schedule();
+				return Status.OK_STATUS;
+			}).schedule();
 		}
 	}
 
@@ -553,7 +548,6 @@ public class PlotPageBook2 extends Composite {
 
 	public List<PlotSource> getSources() {
 		List<PlotSource> plotSources = new ArrayList<PlotSource>(this.source2NxmBlocks.keySet());
-		plotSources.addAll(this.sources);
 		return plotSources;
 	}
 

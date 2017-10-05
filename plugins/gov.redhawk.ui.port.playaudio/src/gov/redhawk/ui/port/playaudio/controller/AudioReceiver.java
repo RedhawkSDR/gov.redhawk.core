@@ -14,11 +14,12 @@ import gov.redhawk.bulkio.util.AbstractBulkIOPort;
 import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
 import gov.redhawk.bulkio.util.StreamSRIUtil;
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.sca.model.jobs.RefreshJob;
 import gov.redhawk.sca.util.PropertyChangeSupport;
-import gov.redhawk.ui.port.PortHelper;
 import gov.redhawk.ui.port.playaudio.internal.Activator;
 
 import java.beans.PropertyChangeEvent;
@@ -45,7 +46,10 @@ import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jdt.annotation.Nullable;
@@ -136,21 +140,21 @@ dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperati
 			}
 		});
 
-		Job connectJob = new Job("Connecting...") {
-
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				try {
-					connect(monitor);
-				} catch (CoreException e) {
-					return new Status(e.getStatus().getSeverity(), Activator.PLUGIN_ID, "Failed to connect.", e);
-				}
-				return Status.OK_STATUS;
+		Job connectJob = Job.create("Connecting...", monitor -> {
+			try {
+				connect(monitor);
+			} catch (CoreException e) {
+				return new Status(e.getStatus().getSeverity(), Activator.PLUGIN_ID, "Failed to connect.", e);
 			}
-			
-		};
+			return Status.OK_STATUS;
+		});
+		connectJob.addJobChangeListener(new JobChangeAdapter() {
+			@Override
+			public void done(IJobChangeEvent event) {
+				RefreshJob.create(port).schedule();
+			}
+		});
 		connectJob.schedule();
-
 	}
 
 	private void connect(IProgressMonitor monitor) throws CoreException {
@@ -518,17 +522,18 @@ dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperati
 			return;
 		}
 		disposed = true;
-		Job job = new Job("Disconnect") {
+		Job.create("Disconnect", monitor -> {
+			SubMonitor progress = SubMonitor.convert(monitor, 2);
+			disconnect(progress.split(1));
 
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				disconnect(monitor);
-				PortHelper.refreshPort(port, monitor);
-				return Status.OK_STATUS;
+			try {
+				port.refresh(progress.split(1), RefreshDepth.FULL);
+			} catch (InterruptedException e) {
+				return Status.CANCEL_STATUS;
 			}
-			
-		};
-		job.schedule();
+
+			return Status.OK_STATUS;
+		}).schedule();
 
 		setAudioFormat(null);
 		ScaModelCommand.execute(port, new ScaModelCommand() {
