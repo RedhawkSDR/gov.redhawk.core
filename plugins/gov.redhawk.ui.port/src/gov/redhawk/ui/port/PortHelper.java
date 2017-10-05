@@ -37,7 +37,9 @@ import org.eclipse.ui.handlers.IHandlerService;
 
 /**
  * @since 4.0
+ * @deprecated No replacement
  */
+@Deprecated
 public class PortHelper {
 
 	private static final String PLUGIN_ID = "gov.redhawk.ui.port";
@@ -45,14 +47,26 @@ public class PortHelper {
 	private PortHelper() {
 	}
 
+	/**
+	 * @deprecated No replacement
+	 */
+	@Deprecated
 	public static boolean executeCommand(final IWorkbenchPartSite site, final String commandId) throws CommandException {
 		return PortHelper.executeCommand(site, commandId, null, null, null);
 	}
 
+	/**
+	 * @deprecated No replacement
+	 */
+	@Deprecated
 	public static boolean executeCommand(final IWorkbenchPartSite site, final String commandId, final Map<String, String> paramMap) throws CommandException {
 		return PortHelper.executeCommand(site, commandId, paramMap, null, null);
 	}
 
+	/**
+	 * @deprecated No replacement
+	 */
+	@Deprecated
 	public static boolean executeCommand(final IWorkbenchPartSite site, final String commandId, final Map<String, String> paramMap, final String varName,
 			final Object variable) throws CommandException {
 		final IHandlerService handlerService = (IHandlerService) site.getService(IHandlerService.class);
@@ -92,15 +106,18 @@ public class PortHelper {
 	/**
 	 * @param monitor Monitor to report status to, may be null.
 	 * @since 5.2
+	 * @deprecated No replacement
 	 */
+	@Deprecated
 	public static void refreshPort(final IRefreshable refreshable, IProgressMonitor monitor) {
 		refreshPort(refreshable, monitor, 0);
 	}
 
-	/** utility method to refresh Port in background job.
-	 * @param monitor Monitor to report status to, may be null.
+	/**
 	 * @since 5.2
+	 * @deprecated No replacement
 	 */
+	@Deprecated
 	public static void refreshPort(final IRefreshable refreshable, IProgressMonitor monitor, long delay) {
 		if (!PlatformUI.isWorkbenchRunning()) {
 			return;
@@ -144,9 +161,10 @@ public class PortHelper {
 	}
 
 	/**
-	 * @param monitor Monitor to report status to, may be null.
 	 * @since 5.2
+	 * @deprecated No replacement
 	 */
+	@Deprecated
 	public static void refreshPorts(Collection< ? > ports, IProgressMonitor monitor) {
 		for (Object port : ports) {
 			if (port instanceof IRefreshable) {
