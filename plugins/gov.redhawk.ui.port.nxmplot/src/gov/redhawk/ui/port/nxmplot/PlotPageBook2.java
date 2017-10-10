@@ -31,7 +31,6 @@ import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 import gov.redhawk.ui.port.nxmplot.preferences.Preference;
 
-import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -320,7 +319,6 @@ public class PlotPageBook2 extends Composite {
 			SddsNxmBlockSettings sddsSettings = plotSource.getSddsBlockSettings();
 			if (sddsSettings == null) {
 				sddsSettings = new SddsNxmBlockSettings();
-				sddsSettings.setDataByteOrder(ByteOrder.nativeOrder()); // workaround for REDHAWK SinkNic Component
 			}
 			startingBlock = new BulkIOSddsNxmBlock(currentPlotWidget, scaPort, sddsSettings);
 		} else if (PlotPortHandler.isBulkIOPortSupported(idl)) {
