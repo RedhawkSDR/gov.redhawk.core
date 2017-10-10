@@ -141,8 +141,16 @@ public class GetSriHandler extends AbstractHandler {
 							
 							PlotSource source = portToPlotSourceMap.get(port);
 							
-							if (source != null) { 
-								String connectionId = source.getBulkIOBlockSettings().getConnectionID();
+							if (source != null) {
+								String connectionId;
+								if (source.getBulkIOBlockSettings() != null) {
+									connectionId = source.getBulkIOBlockSettings().getConnectionID();
+								} else if (source.getSddsBlockSettings() != null) {
+									return new Status(IStatus.ERROR, BulkIOUIActivator.PLUGIN_ID, "Can't display SRI for SDDS ports");
+								} else {
+									return new Status(IStatus.ERROR, BulkIOUIActivator.PLUGIN_ID, "Can't get a connection ID from plot settings");
+								}
+
 								sriView.activateReceiver(port, connectionId);
 							} else {
 								sriView.activateReceiver(port);
