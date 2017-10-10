@@ -11,6 +11,7 @@
  */
 package gov.redhawk.ui.port.nxmblocks;
 
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.preferences.SddsPreferences;
 
 import java.nio.ByteOrder;
@@ -23,7 +24,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.4
  */
-public class SddsNxmBlockSettings implements Cloneable {
+public class SddsNxmBlockSettings extends CommonBulkIONxmBlockSettings implements Cloneable {
+
 	public static final String PROP_DATA_BYTE_ORDER = "dataByteOrder";
 
 	// SOURCENIC switches
@@ -59,9 +61,12 @@ public class SddsNxmBlockSettings implements Cloneable {
 	private ByteOrder dataByteOrder = ByteOrder.BIG_ENDIAN;
 
 	public SddsNxmBlockSettings() {
+		this(PlotActivator.getDefault().getPreferenceStore());
 	}
 
 	public SddsNxmBlockSettings(IPreferenceStore preferences) {
+		super(preferences);
+
 		this.mcastAddress = SddsPreferences.MCAST_ADDRESS.getValue(preferences);
 		this.port = SddsPreferences.PORT.getValue(preferences);
 		this.vlan = SddsPreferences.VLAN.getValue(preferences);

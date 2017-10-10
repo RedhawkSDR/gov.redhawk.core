@@ -126,6 +126,7 @@ public class PlotPortHandler extends AbstractHandler {
 			}
 			if (containsSDDSPort) {
 				sddsBlockSettings = new SddsNxmBlockSettings();
+				sddsBlockSettings.setConnectionID(event.getParameter(IPlotView.PARAM_CONNECTION_ID));
 			} else {
 				sddsBlockSettings = null;
 			}
@@ -142,6 +143,10 @@ public class PlotPortHandler extends AbstractHandler {
 			if (bulkIOBlockSettings != null) {
 				bulkIOBlockSettings.setConnectionID(event.getParameter(IPlotView.PARAM_CONNECTION_ID));
 			}
+			sddsBlockSettings = wizard.getSddsBlockSettings();
+			if (sddsBlockSettings != null) {
+				sddsBlockSettings.setConnectionID(event.getParameter(IPlotView.PARAM_CONNECTION_ID));
+			}
 
 			WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), wizard);
 			if (dialog.open() != Window.OK) {
@@ -155,7 +160,6 @@ public class PlotPortHandler extends AbstractHandler {
 				fftBlockSettings = null;
 			}
 
-			sddsBlockSettings = wizard.getSddsBlockSettings();
 			plotBlockSettings = wizard.getPlotBlockSettings();
 		}
 

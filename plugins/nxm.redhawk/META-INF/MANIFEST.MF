@@ -18,7 +18,7 @@ Require-Bundle: mil.jpeojtrs.sca.cf;bundle-version="2.2.2",
 DynamicImport-Package: *
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: nxm.sys
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .
 Export-Package: nxm.redhawk.lib,
  nxm.redhawk.prim,

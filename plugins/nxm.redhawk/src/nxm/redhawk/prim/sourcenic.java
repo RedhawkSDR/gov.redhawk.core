@@ -398,6 +398,21 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 		}
 	}
 
+	/**
+	 * Change output file's pipe size (immediately)
+	 * @param newValue new pipe size for output data file/pipe (in bytes)
+	 */
+	public synchronized void setPipeSize(int newValue) {
+		if (newValue <= 0) {
+			throw new IllegalArgumentException("pipe size (bytes) must be greater than 0");
+		}
+		DataFile df = this.outputFile;
+		if (df != null && df.getPipeSize() != newValue) {
+			TRACE_LOGGER.message("{0}: changing pipe size from {1} to {2} bytes for {3}", getID(), df.getPipeSize(), newValue, df);
+			df.setPipeSize(newValue);
+		}
+	}
+
 	/** get packet data byte order
 	 * @since 10.2
 	 */

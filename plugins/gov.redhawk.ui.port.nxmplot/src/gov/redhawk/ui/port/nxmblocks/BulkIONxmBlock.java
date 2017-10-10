@@ -45,7 +45,7 @@ import BULKIO.StreamSRI;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.4
  */
-public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
+public class BulkIONxmBlock extends CommonBulkIONxmBlock<corbareceiver2> {
 
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, BulkIONxmBlock.class.getSimpleName());
 
@@ -161,33 +161,40 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		return Preference.initStoreFromWorkbench(BulkIOPreferences.getAllPreferences());
 	}
 
-	public boolean isRemoveOnEndOfStream() {
-		return BulkIOPreferences.REMOVE_ON_EOS.getValue(getPreferences());
-	}
-
 	public BulkIONxmBlockSettings getSettings() {
 		BulkIONxmBlockSettings clone = new BulkIONxmBlockSettings(getPreferences());
 		return clone;
 	}
 
-	public void applySettings(@NonNull BulkIONxmBlockSettings newSettings) {
-		Integer sampleRate = newSettings.getSampleRate();
-		Integer pipeSize = newSettings.getPipeSize();
+	/**
+	 * @since 5.0
+	 */
+	public BlockingOption getBlockingOption() {
+		try {
+			String blockingOptAsStr = BulkIOPreferences.BLOCKING_OPTION.getValue(getPreferences());
+			return BlockingOption.valueOf(blockingOptAsStr);
+		} catch (IllegalArgumentException e) {
+			return BlockingOption.FROMSRI; // fall-back scenario in case a bad value was stored in preferences
+		}
+	}
 
-		setBlockingOption(newSettings.getBlockingOption());
-		if (sampleRate != null) {
-			setSampleRate(sampleRate);
-		} else {
-			unsetSampleRate();
-		}
-		if (pipeSize != null) {
-			setPipeSize(pipeSize);
-		}
-		setRemoveOnEndOfStream(newSettings.isRemoveOnEndOfStream());
-		if (newSettings.getConnectionID() != null && !newSettings.getConnectionID().isEmpty()) {
-			setConnectionID(newSettings.getConnectionID());
-		}
-		setTimelineLength(newSettings.getTimelineLength());
+	/**
+	 * @since 5.0
+	 */
+	public void setBlockingOption(@NonNull BlockingOption blocking) {
+		BulkIOPreferences.BLOCKING_OPTION.setValue(getPreferences(), blocking.name());
+	}
+
+	public void setRemoveOnEndOfStream(boolean removeOnEndOfStream) {
+		BulkIOPreferences.REMOVE_ON_EOS.setValue(getPreferences(), removeOnEndOfStream);
+	}
+
+	public boolean isRemoveOnEndOfStream() {
+		return BulkIOPreferences.REMOVE_ON_EOS.getValue(getPreferences());
+	}
+
+	public int getSampleRate() {
+		return BulkIOPreferences.SAMPLE_RATE.getValue(getPreferences());
 	}
 
 	public void setSampleRate(int sampleRate) {
@@ -204,46 +211,32 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		return BulkIOPreferences.SAMPLE_RATE_OVERRIDE.getValue(getPreferences());
 	}
 
-	public int getSampleRate() {
-		return BulkIOPreferences.SAMPLE_RATE.getValue(getPreferences());
+	public int getTimelineLength() {
+		return BulkIOPreferences.TLL.getValue(getPreferences());
 	}
 
-	/** @since 5.0 */
-	public void setBlockingOption(@NonNull BlockingOption blocking) {
-		BulkIOPreferences.BLOCKING_OPTION.setValue(getPreferences(), blocking.name());
-	}
-	
-	/** @since 5.0 */
-	public BlockingOption getBlockingOption() {
-		try {
-			String blockingOptAsStr = BulkIOPreferences.BLOCKING_OPTION.getValue(getPreferences());
-			return BlockingOption.valueOf(blockingOptAsStr);
-		} catch (IllegalArgumentException e) {
-			return BlockingOption.FROMSRI; // fall-back scenario in case a bad value was stored in preferences
-		}
+	public void setTimelineLength(int tll) {
+		BulkIOPreferences.TLL.setValue(getPreferences(), tll);
 	}
 
-	@Override
-	public void start() throws CoreException {
-		this.originalConnectionID = getConnectionID();
-		if (this.originalConnectionID != null && originalConnectionID.isEmpty()) {
-			this.originalConnectionID = null;
+	public void applySettings(@NonNull BulkIONxmBlockSettings newSettings) {
+		if (newSettings.getPipeSize() != null) {
+			setPipeSize(newSettings.getPipeSize());
 		}
-		String connectionID = BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior, bulkIOType, bulkIOPort, this.originalConnectionID);
-		if (connectionID == null) {
-			connectionID = ""; // set non-null value so that Connection ID field in adjust settings is read-only
+		if (newSettings.getConnectionID() != null && !newSettings.getConnectionID().isEmpty()) {
+			setConnectionID(newSettings.getConnectionID());
 		}
-		setConnectionID(connectionID);
-	}
 
-	@Override
-	public void stop() {
-		BulkIONxmBlock.TRACE_LOG.enteringMethod();
-		if (scaPort != null) {
-			BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior, bulkIOType, bulkIOPort, this.originalConnectionID);
-			scaPort = null;
-			this.originalConnectionID = null;
+		setBlockingOption(newSettings.getBlockingOption());
+		setRemoveOnEndOfStream(newSettings.isRemoveOnEndOfStream());
+		if (newSettings.getSampleRate() != null) {
+			setSampleRate(newSettings.getSampleRate());
+		} else {
+			unsetSampleRate();
 		}
+		setTimelineLength(newSettings.getTimelineLength());
+		// TODO: CAN_GROW_PIPE?
+		// TODO: PIPE_SIZE_MULTIPLIER?
 	}
 
 	@Override
@@ -289,42 +282,35 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		return cmdLine;
 	}
 
-	public String getConnectionID() {
-		return BulkIOPreferences.CONNECTION_ID.getValue(getPreferences());
+	@Override
+	public void start() throws CoreException {
+		this.originalConnectionID = getConnectionID();
+		if (this.originalConnectionID != null && originalConnectionID.isEmpty()) {
+			this.originalConnectionID = null;
+		}
+		String connectionID = BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior, bulkIOType, bulkIOPort, this.originalConnectionID);
+		if (connectionID == null) {
+			connectionID = ""; // set non-null value so that Connection ID field in adjust settings is read-only
+		}
+		setConnectionID(connectionID);
 	}
 
-	public void setConnectionID(String connectionID) {
-		BulkIOPreferences.CONNECTION_ID.setValue(getPreferences(), connectionID);
-	}
+	@Override
+	public void stop() {
+		BulkIONxmBlock.TRACE_LOG.enteringMethod();
 
-	public int getTimelineLength() {
-		return BulkIOPreferences.TLL.getValue(getPreferences());
-	}
+		if (isStopped()) {
+			return; // It is valid to attempt to stop a block more than once, so just return
+		}
+		super.stop();
 
-	public void setTimelineLength(int tll) {
-		BulkIOPreferences.TLL.setValue(getPreferences(), tll);
-	}
+		if (scaPort != null) {
+			BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior, bulkIOType, bulkIOPort, this.originalConnectionID);
+			scaPort = null;
+			this.originalConnectionID = null;
+		}
 
-	public int getPipeSize() {
-		return BulkIOPreferences.PIPE_SIZE.getValue(getPreferences());
-	}
-
-	public void setRemoveOnEndOfStream(boolean removeOnEndOfStream) {
-		BulkIOPreferences.REMOVE_ON_EOS.setValue(getPreferences(), removeOnEndOfStream);
-	}
-
-	public void setPipeSize(int pipeSize) {
-		BulkIOPreferences.PIPE_SIZE.setValue(getPreferences(), pipeSize);
-		BulkIOPreferences.PIPE_SIZE_OVERRIDE.setValue(getPreferences(), true);
-	}
-
-	public boolean isSetPipeSize() {
-		return BulkIOPreferences.PIPE_SIZE_OVERRIDE.getValue(getPreferences());
-	}
-
-	public void unsetPipeSize() {
-		BulkIOPreferences.PIPE_SIZE.setToDefault(getPreferences());
-		BulkIOPreferences.PIPE_SIZE_OVERRIDE.setToDefault(getPreferences());
+		BulkIONxmBlock.TRACE_LOG.exitingMethod();
 	}
 
 	@Override

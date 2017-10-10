@@ -59,7 +59,6 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 
 	private ScaUsesPort scaUsesPort;
 	private org.omg.CORBA.Object corbaObjRef;
-	private String connectionId;
 	private SddsPort sddsPort;
 
 	class SddsPort extends AbstractBulkIOSDDSPort {
@@ -180,7 +179,11 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 
 		try {
 			corbaObjRef = BulkIOSddsNxmBlock.orbSession.getPOA().servant_to_reference(sddsPortServant);
-			connectionId = BulkIOSddsNxmBlock.createConnectionID();
+			String connectionId = getConnectionID();
+			if (connectionId == null || connectionId.isEmpty()) {
+				connectionId = BulkIOSddsNxmBlock.createConnectionID();
+				setConnectionID(connectionId);
+			}
 
 			scaUsesPort.connectPort(corbaObjRef, connectionId);
 		} catch (ServantNotActive e) {

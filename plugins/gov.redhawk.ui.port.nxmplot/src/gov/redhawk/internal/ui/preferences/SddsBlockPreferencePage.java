@@ -33,6 +33,7 @@ public class SddsBlockPreferencePage extends FieldEditorPreferencePage implement
 
 	@Override
 	protected void createFieldEditors() {
+		addField(new ReadOnlyStringFieldEditor(SddsPreferences.CONNECTION_ID.getName(), "&Connection ID:", getFieldEditorParent()));
 		String[][] byteOrderEntryNamesAndValues = new String[][] {
 			{"Native (current machine's endianiness)", "NATIVE"},
 			{"Little endian", "LITTLE_ENDIAN"},

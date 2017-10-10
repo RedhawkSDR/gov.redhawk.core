@@ -16,6 +16,7 @@ import java.nio.ByteOrder;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -25,6 +26,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * Adjust/override SDDS NXM block settings user entry dialog.
@@ -37,6 +39,7 @@ public class SddsNxmBlockControls {
 	private final DataBindingContext dataBindingCtx;
 
 	// widgets
+	private Text connectionIDField;
 	private ComboViewer dataByteOrderField;
 
 	public SddsNxmBlockControls(SddsNxmBlockSettings settings, DataBindingContext dataBindingCtx) {
@@ -47,6 +50,18 @@ public class SddsNxmBlockControls {
 	public void createControls(final Composite container) {
 		container.setLayout(new GridLayout(2, false));
 		Label label;
+
+		// === connection ID ==
+		label = new Label(container, SWT.None);
+		label.setText("Connection ID:");
+		connectionIDField = new Text(container, SWT.BORDER);
+		connectionIDField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		connectionIDField.setToolTipText("Custom Port connection ID to use vs a generated one.");
+		if (this.settings.getConnectionID() != null && !this.settings.getConnectionID().isEmpty()) {
+			// Can't change the ID after it has been set
+			connectionIDField.setEditable(false);
+			connectionIDField.setEnabled(false);
+		}
 
 		// === data byte order ===
 		label = new Label(container, SWT.NONE);
@@ -62,9 +77,13 @@ public class SddsNxmBlockControls {
 	}
 
 	protected void addDataBindings() {
-		IObservableValue boTargetObservableValue = ViewerProperties.singleSelection().observe(this.dataByteOrderField);
-		IObservableValue boModelObservableValue = PojoProperties.value(SddsNxmBlockSettings.PROP_DATA_BYTE_ORDER).observe(this.settings);
-		dataBindingCtx.bindValue(boTargetObservableValue, boModelObservableValue);
+		IObservableValue target = WidgetProperties.text(SWT.Modify).observe(connectionIDField);
+		IObservableValue model = PojoProperties.value(SddsNxmBlockSettings.PROP_CONNECTION_ID).observe(settings);
+		dataBindingCtx.bindValue(target, model);
+
+		target = ViewerProperties.singleSelection().observe(this.dataByteOrderField);
+		model = PojoProperties.value(SddsNxmBlockSettings.PROP_DATA_BYTE_ORDER).observe(this.settings);
+		dataBindingCtx.bindValue(target, model);
 	}
 
 }
