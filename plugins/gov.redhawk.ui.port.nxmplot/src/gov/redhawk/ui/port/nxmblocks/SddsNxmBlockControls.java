@@ -16,6 +16,7 @@ import java.nio.ByteOrder;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -25,6 +26,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * Adjust/override SDDS NXM block settings user entry dialog.
@@ -35,8 +37,9 @@ public class SddsNxmBlockControls {
 
 	private final SddsNxmBlockSettings settings;
 	private final DataBindingContext dataBindingCtx;
-	
+
 	// widgets
+	private Text connectionIDField;
 	private ComboViewer dataByteOrderField;
 
 	public SddsNxmBlockControls(SddsNxmBlockSettings settings, DataBindingContext dataBindingCtx) {
@@ -48,25 +51,40 @@ public class SddsNxmBlockControls {
 		container.setLayout(new GridLayout(2, false));
 		Label label;
 
+		// === connection ID ==
+		label = new Label(container, SWT.None);
+		label.setText("Connection ID:");
+		connectionIDField = new Text(container, SWT.BORDER);
+		connectionIDField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		connectionIDField.setToolTipText("Custom Port connection ID to use vs a generated one.");
+		if (this.settings.getConnectionID() != null && !this.settings.getConnectionID().isEmpty()) {
+			// Can't change the ID after it has been set
+			connectionIDField.setEditable(false);
+			connectionIDField.setEnabled(false);
+		}
+
 		// === data byte order ===
 		label = new Label(container, SWT.NONE);
 		label.setText("Data Byte Order:");
-		this.dataByteOrderField = new ComboViewer(container, SWT.READ_ONLY);
-		this.dataByteOrderField.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
-		this.dataByteOrderField.getCombo().setToolTipText("Custom data byte order to override value in SDDS packets.");
-		this.dataByteOrderField.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
-		this.dataByteOrderField.setLabelProvider(new LabelProvider());
-		this.dataByteOrderField.setInput(new ByteOrder[] { ByteOrder.BIG_ENDIAN, ByteOrder.LITTLE_ENDIAN});
-		
+		dataByteOrderField = new ComboViewer(container, SWT.READ_ONLY);
+		dataByteOrderField.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		dataByteOrderField.getCombo().setToolTipText("Custom data byte order to override value in SDDS packets.");
+		dataByteOrderField.setContentProvider(ArrayContentProvider.getInstance());
+		dataByteOrderField.setLabelProvider(new LabelProvider());
+		dataByteOrderField.setInput(new ByteOrder[] { ByteOrder.BIG_ENDIAN, ByteOrder.LITTLE_ENDIAN });
+
 		addDataBindings();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void addDataBindings() {
-		@SuppressWarnings({ "rawtypes" })
-		IObservableValue boTargetObservableValue = ViewerProperties.singleSelection().observe(this.dataByteOrderField);
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		IObservableValue boModelObservableValue = PojoProperties.value(SddsNxmBlockSettings.PROP_DATA_BYTE_ORDER).observe(this.settings);
-		dataBindingCtx.bindValue(boTargetObservableValue, boModelObservableValue);
+		IObservableValue< ? > target = WidgetProperties.text(SWT.Modify).observe(connectionIDField);
+		IObservableValue< ? > model = PojoProperties.value(SddsNxmBlockSettings.PROP_CONNECTION_ID).observe(settings);
+		dataBindingCtx.bindValue(target, model);
+
+		target = ViewerProperties.singleSelection().observe(this.dataByteOrderField);
+		model = PojoProperties.value(SddsNxmBlockSettings.PROP_DATA_BYTE_ORDER).observe(this.settings);
+		dataBindingCtx.bindValue(target, model);
 	}
 
 }

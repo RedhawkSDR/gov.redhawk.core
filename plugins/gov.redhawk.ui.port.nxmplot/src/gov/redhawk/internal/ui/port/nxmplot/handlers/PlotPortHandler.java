@@ -44,6 +44,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -125,6 +126,7 @@ public class PlotPortHandler extends AbstractHandler {
 			}
 			if (containsSDDSPort) {
 				sddsBlockSettings = new SddsNxmBlockSettings();
+				sddsBlockSettings.setConnectionID(event.getParameter(IPlotView.PARAM_CONNECTION_ID));
 			} else {
 				sddsBlockSettings = null;
 			}
@@ -141,6 +143,10 @@ public class PlotPortHandler extends AbstractHandler {
 			if (bulkIOBlockSettings != null) {
 				bulkIOBlockSettings.setConnectionID(event.getParameter(IPlotView.PARAM_CONNECTION_ID));
 			}
+			sddsBlockSettings = wizard.getSddsBlockSettings();
+			if (sddsBlockSettings != null) {
+				sddsBlockSettings.setConnectionID(event.getParameter(IPlotView.PARAM_CONNECTION_ID));
+			}
 
 			WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), wizard);
 			if (dialog.open() != Window.OK) {
@@ -154,7 +160,6 @@ public class PlotPortHandler extends AbstractHandler {
 				fftBlockSettings = null;
 			}
 
-			sddsBlockSettings = wizard.getSddsBlockSettings();
 			plotBlockSettings = wizard.getPlotBlockSettings();
 		}
 
@@ -201,32 +206,7 @@ public class PlotPortHandler extends AbstractHandler {
 		for (ScaUsesPort port : ports) {
 			port.fetchAttributes(progress.newChild(1));
 
-			List<String> tmpList4Tooltip = new LinkedList<String>();
-			for (EObject eObj = port; !(eObj instanceof ScaDomainManagerRegistry) && eObj != null; eObj = eObj.eContainer()) {
-				Adapter adapter = factory.adapt(eObj, IItemLabelProvider.class);
-				if (adapter instanceof IItemLabelProvider) {
-					IItemLabelProvider lp = (IItemLabelProvider) adapter;
-					String text = lp.getText(eObj);
-					if (text != null && !text.isEmpty()) {
-						tmpList4Tooltip.add(0, text);
-					}
-				}
-			}
-
-			String nameStr = port.getName();
-			if (nameStr != null && !nameStr.isEmpty()) {
-				name.append(nameStr).append(" ");
-			}
-
-			if (!tmpList4Tooltip.isEmpty()) {
-				for (Iterator<String> i = tmpList4Tooltip.iterator(); i.hasNext();) {
-					tooltip.append(i.next());
-					if (i.hasNext()) {
-						tooltip.append(" -> ");
-					}
-				}
-				tooltip.append("\n");
-			}
+			getNameAndTooltip(port, factory, name, tooltip);
 
 			final PlotSource plotSource;
 			final String idl = port.getRepid();
@@ -260,5 +240,34 @@ public class PlotPortHandler extends AbstractHandler {
 			});
 		}
 		return Status.OK_STATUS;
+	}
+
+	private static void getNameAndTooltip(ScaUsesPort port, AdapterFactory factory, StringBuilder name, StringBuilder tooltip) {
+		List<String> tmpList4Tooltip = new LinkedList<String>();
+		for (EObject eObj = port; !(eObj instanceof ScaDomainManagerRegistry) && eObj != null; eObj = eObj.eContainer()) {
+			Adapter adapter = factory.adapt(eObj, IItemLabelProvider.class);
+			if (adapter instanceof IItemLabelProvider) {
+				IItemLabelProvider lp = (IItemLabelProvider) adapter;
+				String text = lp.getText(eObj);
+				if (text != null && !text.isEmpty()) {
+					tmpList4Tooltip.add(0, text);
+				}
+			}
+		}
+
+		String nameStr = port.getName();
+		if (nameStr != null && !nameStr.isEmpty()) {
+			name.append(nameStr).append(" ");
+		}
+
+		if (!tmpList4Tooltip.isEmpty()) {
+			for (Iterator<String> i = tmpList4Tooltip.iterator(); i.hasNext();) {
+				tooltip.append(i.next());
+				if (i.hasNext()) {
+					tooltip.append(" -> ");
+				}
+			}
+			tooltip.append("\n");
+		}
 	}
 }

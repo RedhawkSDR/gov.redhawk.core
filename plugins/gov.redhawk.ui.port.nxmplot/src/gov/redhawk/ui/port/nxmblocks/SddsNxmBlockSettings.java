@@ -11,6 +11,7 @@
  */
 package gov.redhawk.ui.port.nxmblocks;
 
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.preferences.SddsPreferences;
 
 import java.nio.ByteOrder;
@@ -23,48 +24,66 @@ import org.eclipse.jface.preference.IPreferenceStore;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.4
  */
-public class SddsNxmBlockSettings implements Cloneable {
+public class SddsNxmBlockSettings extends CommonBulkIONxmBlockSettings implements Cloneable {
+
 	public static final String PROP_DATA_BYTE_ORDER = "dataByteOrder";
 
 	// SOURCENIC switches
-	private String mcastAddress;  // /MGRP=      [DEF=null] // MUST be multicast addresss (224.0.x.x - 239.255.x.x)
-	private int port;             // /PORT=      [DEF=29495]
-	private int vlan;             // /VLAN=      [DEF=0]
-	private String outputFormat;  // /FC=        [DEF=SI]
 
-	private String interfaceName; // /INTERFACE= [DEF=null]
-	// private int    mode;       // /ALT=       [DEF=0] only SDDS_MODE_COMPAT=0 is supported at this time
-	
-	/** multi-byte data defaults to big-endian/network byte order per SDDS spec. */
-	private ByteOrder dataByteOrder = ByteOrder.BIG_ENDIAN; // /BYTEORDER=          [DEF=BIG_ENDIAN]
+	/**
+	 * MGRP switch. MUST be multicast addresss (224.0.x.x - 239.255.x.x)
+	 */
+	private String mcastAddress;
 
-	private int pipeSize;         // /PS=
+	/**
+	 * PORT switch
+	 */
+	private int port;
+
+	/**
+	 * VLAN switch
+	 */
+	private int vlan;
+
+	/**
+	 * FC switch
+	 */
+	private String outputFormat;
+
+	/**
+	 * INTERFACE switch
+	 */
+	private String interfaceName;
+
+	/**
+	 * BYTEORDER switch. Byte order is big-endian by default in the SDDS spec.
+	 */
+	private ByteOrder dataByteOrder = ByteOrder.BIG_ENDIAN;
 
 	public SddsNxmBlockSettings() {
+		this(PlotActivator.getDefault().getPreferenceStore());
 	}
 
 	public SddsNxmBlockSettings(IPreferenceStore preferences) {
+		super(preferences);
+
 		this.mcastAddress = SddsPreferences.MCAST_ADDRESS.getValue(preferences);
 		this.port = SddsPreferences.PORT.getValue(preferences);
 		this.vlan = SddsPreferences.VLAN.getValue(preferences);
-		this.outputFormat = SddsPreferences.OUTPUT_FORMAT.getValue(preferences);
 		this.interfaceName = SddsPreferences.INTERFACE_NAME.getValue(preferences);
-		this.pipeSize = SddsPreferences.PIPE_SIZE.getValue(preferences);
-		String newValue = SddsPreferences.BYTE_ORDER.getValue(preferences);
-		if (ByteOrder.BIG_ENDIAN.toString().equals(newValue)) {
+		this.outputFormat = SddsPreferences.OUTPUT_FORMAT.getValue(preferences);
+		String byteOrderStr = SddsPreferences.BYTE_ORDER.getValue(preferences);
+		if (ByteOrder.BIG_ENDIAN.toString().equals(byteOrderStr)) {
 			dataByteOrder = ByteOrder.BIG_ENDIAN;
-		} else if (ByteOrder.LITTLE_ENDIAN.toString().equals(newValue)) {
+		} else if (ByteOrder.LITTLE_ENDIAN.toString().equals(byteOrderStr)) {
 			dataByteOrder = ByteOrder.LITTLE_ENDIAN;
-		} else if ("NATIVE".equals(newValue)) {
+		} else if ("NATIVE".equals(byteOrderStr)) {
 			dataByteOrder = ByteOrder.nativeOrder();
 		} else {
 			dataByteOrder = null;
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#clone()
-	 */
 	@NonNull
 	@Override
 	public SddsNxmBlockSettings clone() {
@@ -75,98 +94,70 @@ public class SddsNxmBlockSettings implements Cloneable {
 		}
 	}
 
-	/**
-	 * @return the mcastAddress
-	 */
 	public String getMcastAddress() {
 		return mcastAddress;
 	}
 
-	/**
-	 * @param mcastAddress the mcastAddress to set
-	 */
 	public void setMcastAddress(String mcastAddress) {
 		this.mcastAddress = mcastAddress;
 	}
 
-	/**
-	 * @return the port
-	 */
 	public int getPort() {
 		return port;
 	}
 
-	/**
-	 * @param port the port to set
-	 */
 	public void setPort(int port) {
 		this.port = port;
 	}
 
-	/**
-	 * @return the vlan
-	 */
 	public int getVlan() {
 		return vlan;
 	}
 
-	/**
-	 * @param vlan the vlan to set
-	 */
 	public void setVlan(int vlan) {
 		this.vlan = vlan;
 	}
 
 	/**
-	 * @return the output format (MIDAS digraph, e.g. SI)
-	 */
-	public String getOutputFormat() {
-		return outputFormat;
-	}
-
-	/**
-	 * @param format the format to set (MIDAS digraph, e.g. SI)
-	 */
-	public void setOutputFormat(String outputFormat) {
-		this.outputFormat = outputFormat;
-	}
-
-	/**
-	 * @return the interfaceName
+	 * @return the NIC name
 	 */
 	public String getInterfaceName() {
 		return interfaceName;
 	}
 
 	/**
-	 * @param interfaceName the interfaceName to set
+	 * @param interfaceName the NIC name
 	 */
 	public void setInterfaceName(String interfaceName) {
 		this.interfaceName = interfaceName;
 	}
 
 	/**
-	 * @return the pipeSize
+	 * @return the output format (MIDAS digraph, e.g. "SI")
 	 */
-	public int getPipeSize() {
-		return pipeSize;
+	public String getOutputFormat() {
+		return outputFormat;
 	}
 
 	/**
-	 * @param pipeSize the pipeSize to set
+	 * @param format the format to set (MIDAS digraph, e.g. "SI")
 	 */
-	public void setPipeSize(int pipeSize) {
-		this.pipeSize = pipeSize;
+	public void setOutputFormat(String outputFormat) {
+		this.outputFormat = outputFormat;
 	}
 
-	/** data byte-order for multi-byte data formats. */
+	/**
+	 * @return Data byte order for multi-byte data formats
+	 */
 	@NonNull
 	public ByteOrder getDataByteOrder() {
 		return dataByteOrder;
 	}
 
+	/**
+	 * @param byteOrder Data byte order for multi-byte data formats
+	 */
 	public void setDataByteOrder(@NonNull ByteOrder byteOrder) {
 		this.dataByteOrder = byteOrder;
 	}
-
 }

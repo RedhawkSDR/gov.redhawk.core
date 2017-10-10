@@ -31,7 +31,6 @@ import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 import gov.redhawk.ui.port.nxmplot.preferences.Preference;
 
-import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -320,17 +319,14 @@ public class PlotPageBook2 extends Composite {
 			SddsNxmBlockSettings sddsSettings = plotSource.getSddsBlockSettings();
 			if (sddsSettings == null) {
 				sddsSettings = new SddsNxmBlockSettings();
-				sddsSettings.setDataByteOrder(ByteOrder.nativeOrder()); // workaround for REDHAWK SinkNic Component
 			}
-			BulkIOSddsNxmBlock sddsBlock = new BulkIOSddsNxmBlock(currentPlotWidget, scaPort, sddsSettings);
-			startingBlock = sddsBlock;
+			startingBlock = new BulkIOSddsNxmBlock(currentPlotWidget, scaPort, sddsSettings);
 		} else if (PlotPortHandler.isBulkIOPortSupported(idl)) {
 			BulkIONxmBlockSettings bulkioSettings = plotSource.getBulkIOBlockSettings();
 			if (bulkioSettings == null) {
 				bulkioSettings = new BulkIONxmBlockSettings();
 			}
-			BulkIONxmBlock bulkioBlock = new BulkIONxmBlock(currentPlotWidget, scaPort, bulkioSettings);
-			startingBlock = bulkioBlock;
+			startingBlock = new BulkIONxmBlock(currentPlotWidget, scaPort, bulkioSettings);
 		} else {
 			StatusManager.getManager().handle(new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID, "Not adding source for unsupported Port: " + idl),
 				StatusManager.LOG);

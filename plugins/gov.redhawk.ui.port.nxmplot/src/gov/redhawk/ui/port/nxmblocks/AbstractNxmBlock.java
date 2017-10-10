@@ -44,7 +44,7 @@ import BULKIO.StreamSRI;
  * This class provides a skeletal implementation of the {@link INxmBlock} interface,
  * to minimize the effort required to implement this interface.
  * <br>
- * C is the NeXtMidas Command that should have been launch.
+ * @param <C> The type of the NeXtMidas {@link Command} that will be launched
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.4
  */

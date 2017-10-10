@@ -16,8 +16,6 @@ import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.PlotSettings;
 
-import java.nio.ByteOrder;
-
 import org.eclipse.jface.wizard.Wizard;
 
 /**
@@ -33,9 +31,7 @@ public class PlotWizard extends Wizard {
 			page.setBulkIOBlockSettings(new BulkIONxmBlockSettings());
 		}
 		if (containsSDDSPort) {
-			SddsNxmBlockSettings sddsSettings = new SddsNxmBlockSettings();
-			sddsSettings.setDataByteOrder(ByteOrder.nativeOrder()); // <-- workaround for REDHAWK SinkNic Component
-			page.setSddsBlockSettings(sddsSettings);
+			page.setSddsBlockSettings(new SddsNxmBlockSettings());
 		}
 	}
 
@@ -44,9 +40,6 @@ public class PlotWizard extends Wizard {
 		addPage(page);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
-	 */
 	@Override
 	public boolean performFinish() {
 		return true;

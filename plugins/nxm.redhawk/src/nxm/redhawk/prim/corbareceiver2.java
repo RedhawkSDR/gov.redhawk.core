@@ -119,12 +119,18 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	/** blocking option when output pipe is full. */
 	private BlockingOption blockingOption;
 	
-	/** override SRI's sample rate (1/xdelta for type 1000, 1/ydelta for type 2000). zero for none. */
+	/**
+	 * If non-zero, override for SRI's sample rate (1/xdelta for type 1000, 1/ydelta for type 2000)
+	 */
 	private int sampleRate = 0;
+
 	private boolean connected;
 	private String portIor;
 	private BulkIOType bulkioType;
-	/** custom Port connection ID to use (when not null). */
+
+	/**
+	 * If non-null, connection ID to use for port connection
+	 */
 	private String connectionId;
 
 	/** allow increasing the pipe size when pushPacket data is larger than it. */

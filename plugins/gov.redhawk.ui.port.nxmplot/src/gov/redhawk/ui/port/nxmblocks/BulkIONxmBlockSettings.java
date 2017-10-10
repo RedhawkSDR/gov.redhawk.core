@@ -22,10 +22,9 @@ import org.eclipse.jface.preference.IPreferenceStore;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.4
  */
-public class BulkIONxmBlockSettings implements Cloneable {
+public class BulkIONxmBlockSettings extends CommonBulkIONxmBlockSettings implements Cloneable {
+
 	public static final String PROP_BLOCKING_OPTION = "blockingOption";
-	public static final String PROP_CONNECTION_ID = "connectionID";
-	public static final String PROP_PIPE_SIZE = "pipeSize";
 	public static final String PROP_SAMPLE_RATE = "sampleRate";
 	public static final String PROP_REMOVE_ON_EOS = "removeOnEndOfStream";
 
@@ -47,37 +46,38 @@ public class BulkIONxmBlockSettings implements Cloneable {
 		}
 	}
 
-	/** custom connection ID to use. */
-	private String connectionID;
-	/** null (or zero) to use default from StreamSRI. */
-	private Integer sampleRate;
 	private BlockingOption blocking;
-	/** null to use default pipe size from NeXtMidas (128K) */
-	private Integer pipeSize;
-	/** time line length for output data pipe. */
+
+	/**
+	 * Null/zero to use default from StreamSRI
+	 */
+	private Integer sampleRate;
+
+	/**
+	 * Time line length for output data pipe
+	 */
 	private int timelineLength;
-	/** remove stream from PLOT (by calling shutdown(streamID) on end-of-stream (EOS) is received in pushPacket */
+
+	/**
+	 * Remove stream from PLOT (by calling shutdown(streamID) when an end-of-stream (EOS) is received in pushPacket
+	 */
 	private boolean removeOnEndOfStream = true;
 
 	public BulkIONxmBlockSettings() {
-		this(null);
+		this(PlotActivator.getDefault().getPreferenceStore());
 	}
 
 	public BulkIONxmBlockSettings(IPreferenceStore store) {
-		if (store == null) {
-			store = PlotActivator.getDefault().getPreferenceStore();
-		}
-		connectionID = BulkIOPreferences.CONNECTION_ID.getValue(store);
+		super(store);
 
+		blocking = BlockingOption.valueOf(BulkIOPreferences.BLOCKING_OPTION.getValue(store));
+		// TODO: REMOVE_ON_EOS?
 		if (BulkIOPreferences.SAMPLE_RATE_OVERRIDE.getValue(store)) {
 			sampleRate = BulkIOPreferences.SAMPLE_RATE.getValue(store);
 		}
-
-		blocking = BlockingOption.valueOf(BulkIOPreferences.BLOCKING_OPTION.getValue(store));
-
-		if (BulkIOPreferences.PIPE_SIZE_OVERRIDE.getValue(store)) {
-			pipeSize = BulkIOPreferences.PIPE_SIZE.getValue(store);
-		}
+		// TODO: TLL?
+		// TODO: CAN_GROW_PIPE?
+		// TODO: PIPE_SIZE_MULTIPLIER?
 	}
 
 	@NonNull
@@ -90,62 +90,32 @@ public class BulkIONxmBlockSettings implements Cloneable {
 		}
 	}
 
-	public String getConnectionID() {
-		return connectionID;
-	}
-
-	public void setConnectionID(String connectionID) {
-		this.connectionID = connectionID;
-	}
-
 	/**
-	 * @return the current sample rate (null to use default)
+	 * @since 5.0
 	 */
-	public Integer getSampleRate() {
-		return sampleRate;
-	}
-
-	/**
-	 * @param sampleRate the sampleRate to set (null to use default)
-	 */
-	public void setSampleRate(Integer sampleRate) {
-		this.sampleRate = sampleRate;
-	}
-
-	/** @since 5.0 */
 	public BlockingOption getBlockingOption() {
 		return this.blocking;
 	}
 
-	/** @since 5.0 */
+	/**
+	 * @since 5.0
+	 */
 	public void setBlockingOption(BlockingOption blocking) {
 		this.blocking = blocking;
 	}
 
-	/**
-	 * @return the pipeSize
-	 */
-	public Integer getPipeSize() {
-		return pipeSize;
+	public Integer getSampleRate() {
+		return sampleRate;
 	}
 
-	/**
-	 * @param pipeSize the pipeSize to set
-	 */
-	public void setPipeSize(Integer pipeSize) {
-		this.pipeSize = pipeSize;
+	public void setSampleRate(Integer sampleRate) {
+		this.sampleRate = sampleRate;
 	}
 
-	/**
-	 * @return the timelineLength
-	 */
 	public int getTimelineLength() {
 		return timelineLength;
 	}
 
-	/**
-	 * @param timelineLength the timelineLength to set
-	 */
 	public void setTimelineLength(int timelineLength) {
 		this.timelineLength = timelineLength;
 	}
@@ -157,5 +127,4 @@ public class BulkIONxmBlockSettings implements Cloneable {
 	public void setRemoveOnEndOfStream(boolean removeOnEndOfStream) {
 		this.removeOnEndOfStream = removeOnEndOfStream;
 	}
-
 }
