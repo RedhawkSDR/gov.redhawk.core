@@ -190,6 +190,24 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 		}
 	}
 
+	private void disconnect() {
+		ScaUsesPort port = scaUsesPort;
+		try {
+			if (port != null && !port.isDisposed()) {
+				port.disconnectPort(getConnectionID()); // disconnect from BULKIO dataSddsOut Port
+			}
+		} catch (InvalidPort e) {
+			// PASS
+		} catch (SystemException e) {
+			// PASS
+		}
+		if (corbaObjRef != null) {
+			ORBUtil.release(corbaObjRef); // release corba object reference
+			corbaObjRef = null;
+		}
+		sddsPort = null;
+	}
+
 	@Override
 	public void start() throws CoreException {
 		BulkIOSddsNxmBlock.TRACE_LOG.enteringMethod();
@@ -204,66 +222,47 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 	@Override
 	public void stop() {
 		BulkIOSddsNxmBlock.TRACE_LOG.enteringMethod(isStopped());
+
 		if (isStopped()) {
 			return; // It is valid to attempt to stop a block more than once, so just return
 		}
 		super.stop();
-		try {
-			ScaUsesPort scaPort;
-			synchronized (this) {
-				scaPort = scaUsesPort;
-				if (scaUsesPort != null) {
-					scaUsesPort = null;
-				}
-			}
-			if (!scaPort.isDisposed()) {
-				scaPort.disconnectPort(connectionId); // disconnect from BULKIO dataSddsOut Port
-			}
-		} catch (InvalidPort e) {
-			// PASS
-		} catch (SystemException e) {
-			// PASS
-		}
-		if (corbaObjRef != null) {
-			ORBUtil.release(corbaObjRef); // release corba object reference
-			corbaObjRef = null;
-		}
-		if (sddsPort != null) {
-			sddsPort = null;
-		}
+
+		disconnect();
+		scaUsesPort = null;
+
 		BulkIOSddsNxmBlock.TRACE_LOG.exitingMethod();
 	}
 
 	private static String sddsDigraph2MidasFormatType(SDDSDataDigraph sddsDataFormat) {
-		String format = null;
-		if (SDDSDataDigraph.SDDS_SF.equals(sddsDataFormat)) {
-			format = "SF";
-		} else if (SDDSDataDigraph.SDDS_SI.equals(sddsDataFormat)) {
-			format = "SI";
-		} else if (SDDSDataDigraph.SDDS_SB.equals(sddsDataFormat)) {
-			format = "SB";
-		} else if (SDDSDataDigraph.SDDS_SL.equals(sddsDataFormat)) {
-			format = "SL";
-		} else if (SDDSDataDigraph.SDDS_SX.equals(sddsDataFormat)) {
-			format = "SX";
-		} else if (SDDSDataDigraph.SDDS_SD.equals(sddsDataFormat)) {
-			format = "SD";
-		} else if (SDDSDataDigraph.SDDS_CB.equals(sddsDataFormat)) {
-			format = "CB";
-		} else if (SDDSDataDigraph.SDDS_CI.equals(sddsDataFormat)) {
-			format = "CI";
-		} else if (SDDSDataDigraph.SDDS_CL.equals(sddsDataFormat)) {
-			format = "CL";
-		} else if (SDDSDataDigraph.SDDS_CX.equals(sddsDataFormat)) {
-			format = "CX";
-		} else if (SDDSDataDigraph.SDDS_CF.equals(sddsDataFormat)) {
-			format = "CF";
-		} else if (SDDSDataDigraph.SDDS_CD.equals(sddsDataFormat)) {
-			format = "CD";
-		} else {
-			format = ""; // unknown ?TODO: throw exception? or return empty string?
+		switch (sddsDataFormat.value()) {
+		case SDDSDataDigraph._SDDS_SF:
+			return "SF";
+		case SDDSDataDigraph._SDDS_SI:
+			return "SI";
+		case SDDSDataDigraph._SDDS_SB:
+			return "SB";
+		case SDDSDataDigraph._SDDS_SL:
+			return "SL";
+		case SDDSDataDigraph._SDDS_SX:
+			return "SX";
+		case SDDSDataDigraph._SDDS_SD:
+			return "SD";
+		case SDDSDataDigraph._SDDS_CB:
+			return "CB";
+		case SDDSDataDigraph._SDDS_CI:
+			return "CI";
+		case SDDSDataDigraph._SDDS_CL:
+			return "CL";
+		case SDDSDataDigraph._SDDS_CX:
+			return "CX";
+		case SDDSDataDigraph._SDDS_CF:
+			return "CF";
+		case SDDSDataDigraph._SDDS_CD:
+			return "CD";
+		default:
+			return ""; // TODO: throw exception? or return empty string?
 		}
-		return format;
 	}
 
 	private static String createConnectionID() {
