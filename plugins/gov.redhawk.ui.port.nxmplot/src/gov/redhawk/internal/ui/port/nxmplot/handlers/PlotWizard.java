@@ -44,9 +44,6 @@ public class PlotWizard extends Wizard {
 		addPage(page);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
-	 */
 	@Override
 	public boolean performFinish() {
 		return true;

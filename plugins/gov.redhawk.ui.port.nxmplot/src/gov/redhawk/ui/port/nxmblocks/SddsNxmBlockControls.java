@@ -35,7 +35,7 @@ public class SddsNxmBlockControls {
 
 	private final SddsNxmBlockSettings settings;
 	private final DataBindingContext dataBindingCtx;
-	
+
 	// widgets
 	private ComboViewer dataByteOrderField;
 
@@ -51,13 +51,13 @@ public class SddsNxmBlockControls {
 		// === data byte order ===
 		label = new Label(container, SWT.NONE);
 		label.setText("Data Byte Order:");
-		this.dataByteOrderField = new ComboViewer(container, SWT.READ_ONLY);
-		this.dataByteOrderField.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
-		this.dataByteOrderField.getCombo().setToolTipText("Custom data byte order to override value in SDDS packets.");
-		this.dataByteOrderField.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
-		this.dataByteOrderField.setLabelProvider(new LabelProvider());
-		this.dataByteOrderField.setInput(new ByteOrder[] { ByteOrder.BIG_ENDIAN, ByteOrder.LITTLE_ENDIAN});
-		
+		dataByteOrderField = new ComboViewer(container, SWT.READ_ONLY);
+		dataByteOrderField.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		dataByteOrderField.getCombo().setToolTipText("Custom data byte order to override value in SDDS packets.");
+		dataByteOrderField.setContentProvider(ArrayContentProvider.getInstance());
+		dataByteOrderField.setLabelProvider(new LabelProvider());
+		dataByteOrderField.setInput(new ByteOrder[] { ByteOrder.BIG_ENDIAN, ByteOrder.LITTLE_ENDIAN });
+
 		addDataBindings();
 	}
 

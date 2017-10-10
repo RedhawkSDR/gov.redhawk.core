@@ -20,8 +20,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class SddsBlockPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-	private IWorkbench workbench;
-
 	public SddsBlockPreferencePage() {
 		super("SDDS", FieldEditorPreferencePage.GRID);
 		setDescription("Modify how the data is being received via BulkIO SDDS Data.");
@@ -29,7 +27,6 @@ public class SddsBlockPreferencePage extends FieldEditorPreferencePage implement
 
 	@Override
 	public void init(IWorkbench workbench) {
-		this.workbench = workbench;
 		setPreferenceStore(PlotActivator.getDefault().getPreferenceStore());
 		setDescription("Change various default settings for how the data is being received via BulkIO SDDS.");
 	}
@@ -37,9 +34,9 @@ public class SddsBlockPreferencePage extends FieldEditorPreferencePage implement
 	@Override
 	protected void createFieldEditors() {
 		String[][] byteOrderEntryNamesAndValues = new String[][] {
-			{"native (current machine's endianiness)", "NATIVE"},
-			{"little endian", "LITTLE_ENDIAN"},
-			{"big endian", "BIG_ENDIAN",    },
+			{"Native (current machine's endianiness)", "NATIVE"},
+			{"Little endian", "LITTLE_ENDIAN"},
+			{"Big endian", "BIG_ENDIAN"},
 		};
 		ComboFieldEditor byteOrderField = new ComboFieldEditor(SddsPreferences.BYTE_ORDER.getName(), "Data Byte Order:", byteOrderEntryNamesAndValues, getFieldEditorParent());
 		addField(byteOrderField);

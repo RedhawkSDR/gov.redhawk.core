@@ -70,7 +70,10 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	private DatagramPacket packet;
 
 	/** warning bit fields to display first warning msg of a particular type per instance session. */
-	private static enum WarnBit { WARN1, WARN2, WARN3 };
+	private static enum WarnBit {
+		WARN1,
+		WARN2,
+	};
 	private final EnumSet<WarnBit> warnedSet = EnumSet.noneOf(WarnBit.class);
 	private boolean warn;
 
@@ -92,83 +95,86 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 		}
 		warn = MA.getState("/WARN", true);
 		verbose = MA.getState("/VERBOSE", false);
+
 		int ret = super.open();
+		if (ret != NORMAL) {
+			return ret;
+		}
 
-		if (ret == NORMAL) {
-			// Parse arguments and switches
-			String interfaceBaseName = MA.getS("/INTERFACE", null);
-			String mgrp = MA.getS("/MGRP", null);
-			int vlan = MA.getL("/VLAN", 0);
-			this.port = MA.getL("/PORT", DEFAULT_MCAST_PORT);
-			String fc = MA.getS("/FC", "SI");
-			int sddsPacketAlt = MA.getL("/ALT", SDDS_PACKET_ALT_DEFAULT);
-			sddsHeader = new SDDSHeader(sddsPacketAlt);
+		// Parse arguments and switches
+		String mgrp = MA.getS("/MGRP", null);
+		this.port = MA.getL("/PORT", DEFAULT_MCAST_PORT);
+		int vlan = MA.getL("/VLAN", 0);
+		String interfaceBaseName = MA.getS("/INTERFACE", null);
 
-			outputFile = MA.getDataFile("OUT", "1000", fc, DataFile.OUTPUT, 0, null);
-			outputFile.open(BaseFile.OUTPUT);
+		String fc = MA.getS("/FC", "SI");
+		int sddsPacketAlt = MA.getL("/ALT", SDDS_PACKET_ALT_DEFAULT);
+		sddsHeader = new SDDSHeader(sddsPacketAlt);
 
-			// allocate data buffer with enough room for SDDS packet header + SDDS data + 8 (bytes extra to detect non-standard SDDS packets)
-			final int numDataElements = SDDS_PAYLOAD_SIZE / outputFile.bpa;
-			outputData = outputFile.getDataBuffer(numDataElements + (SDDS_HEADER_SIZE + 8) / outputFile.bpa); // SUPPRESS CHECKSTYLE MagicNumber
-			outputData.boff = SDDS_HEADER_SIZE;  // move byte offset pass SDDS header in outputData's byte buffer
-			outputData.setSize(numDataElements); // reset size to number of SDDS data samples/elements
-			packet = new DatagramPacket(outputData.getBuf(), outputData.buf.length); // use dataBuffer
+		outputFile = MA.getDataFile("OUT", "1000", fc, DataFile.OUTPUT, 0, null);
+		outputFile.open(BaseFile.OUTPUT);
 
-			// switch to allow workaround for REDHAWK SinkNic Component sending data in little-endian byte order
-			setByteOrder(MA.getS("/BYTEORDER", DEFAULT_SDDS_DATA_BYTE_ORDER.toString()));
+		// allocate data buffer with enough room for SDDS packet header + SDDS data + 8 (bytes extra to detect non-standard SDDS packets)
+		final int numDataElements = SDDS_PAYLOAD_SIZE / outputFile.bpa;
+		outputData = outputFile.getDataBuffer(numDataElements + (SDDS_HEADER_SIZE + 8) / outputFile.bpa); // SUPPRESS CHECKSTYLE MagicNumber
+		outputData.boff = SDDS_HEADER_SIZE;  // move byte offset pass SDDS header in outputData's byte buffer
+		outputData.setSize(numDataElements); // reset size to number of SDDS data samples/elements
+		packet = new DatagramPacket(outputData.getBuf(), outputData.buf.length); // use dataBuffer
 
-			// SDDS 4-bit data is packed in NXM IEEE sub-byte order, i,e. byte0:(sample0, sample1), byte1:(sample2, sample3),...
-			if (outputFile.getFormatType() == Data.NIBBLE) {
-				outputFile.setDataRep("IEEE");
-				outputData.rep = Data.IEEE;
+		// switch to allow workaround for REDHAWK SinkNic Component sending data in little-endian byte order
+		setByteOrder(MA.getS("/BYTEORDER", DEFAULT_SDDS_DATA_BYTE_ORDER.toString()));
+
+		// SDDS 4-bit data is packed in NXM IEEE sub-byte order, i,e. byte0:(sample0, sample1), byte1:(sample2, sample3),...
+		if (outputFile.getFormatType() == Data.NIBBLE) {
+			outputFile.setDataRep("IEEE");
+			outputData.rep = Data.IEEE;
+		}
+
+		// Make sure the user provided a reasonable network interface
+		if (interfaceBaseName != null) {
+			try {
+				this.ni = getNetworkInterface(interfaceBaseName, vlan);
+				if (this.ni == null) {
+					M.error("Could not locate interface " + interfaceBaseName + " for vlan " + vlan);
+				}
+				if (!this.ni.isUp()) {
+					M.error("Specified interface is not up, cowardly refusing to continue");
+				}
+				if (!this.ni.supportsMulticast()) {
+					M.error("Specified interface does not support multicast, cowardly refusing to continue");
+				}
+			} catch (SocketException e) {
+				M.error(e);
 			}
-
-			// Make sure the user provided a reasonable network interface
-			if (interfaceBaseName != null) {
+		} else {
+			// If a vlan was provided attempt to find a valid interface
+			if (vlan > 0) {
 				try {
-					this.ni = getNetworkInterface(interfaceBaseName, vlan);
-					if (this.ni == null) {
-						M.error("Could not locate interface " + interfaceBaseName + " for vlan " + vlan);
-					}
-					if (!this.ni.isUp()) {
-						M.error("Specified interface is not up, cowardly refusing to continue");
-					}
-					if (!this.ni.supportsMulticast()) {
-						M.error("Specified interface does not support multicast, cowardly refusing to continue");
-					}
+					this.ni = findUsableNetworkInterface(vlan);
 				} catch (SocketException e) {
 					M.error(e);
 				}
-			} else {
-				// If a vlan was provided attempt to find a valid interface
-				if (vlan > 0) {
-					try {
-						this.ni = findUsableNetworkInterface(vlan);
-					} catch (SocketException e) {
-						M.error(e);
-					}
-					if (this.ni == null) {
-						M.error("Couldn't find usable network interface for vlan, try using the INTERFACE switch");
-					}
-				}
-				if (verbose) {
-					M.info("Using default multicast interface");
-				}
-				if (TRACE_LOGGER.enabled) {
-					TRACE_LOGGER.message("Using default multicast interface");
+				if (this.ni == null) {
+					M.error("Couldn't find usable network interface for vlan, try using the INTERFACE switch");
 				}
 			}
+			if (verbose) {
+				M.info("Using default multicast interface");
+			}
+			if (TRACE_LOGGER.enabled) {
+				TRACE_LOGGER.message("Using default multicast interface");
+			}
+		}
 
-			// If requested, join the group immediately
-			if (mgrp != null) {
-				if (verbose) {
-					M.info("Joining " + mgrp);
-				}
-				if (TRACE_LOGGER.enabled) {
-					TRACE_LOGGER.message("Joining " + mgrp);
-				}
-				this.setMgrp(mgrp);
+		// If requested, join the group immediately
+		if (mgrp != null) {
+			if (verbose) {
+				M.info("Joining " + mgrp);
 			}
+			if (TRACE_LOGGER.enabled) {
+				TRACE_LOGGER.message("Joining " + mgrp);
+			}
+			this.setMgrp(mgrp);
 		}
 
 	    return ret;
@@ -312,7 +318,6 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	 * @param buf The buffer to swap byte order
 	 */
 	private void intSwap(byte[] buf) {
-		// CHECKSTYLE:OFF
 		for (int i = 0; i < buf.length; i += 4) {
 			byte tmp1 = buf[i];
 			byte tmp2 = buf[i + 1];
@@ -321,7 +326,6 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			buf[i + 2] = tmp1;
 			buf[i + 3] = tmp2;
 		}
-		// CHECKSTYLE:ON
 	}
 
 	private NetworkInterface getNetworkInterface(String baseName, int vlan) throws SocketException {

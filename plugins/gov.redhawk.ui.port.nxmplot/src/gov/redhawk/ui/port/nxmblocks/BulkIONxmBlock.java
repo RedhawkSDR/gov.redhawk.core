@@ -89,10 +89,6 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		}
 
 		private void handlePushPacket(int length, PrecisionUTCTime time, boolean endOfStream, String streamID) {
-//			BulkIONxmBlock.TRACE_LOG.message("BulkIO block got pushPacket: {0} len={1} eos={2}", streamID, length, endOfStream);
-//			if (time != null && Double.isInfinite(time.twsec)) {
-//				BulkIONxmBlock.TRACE_LOG.message("WARN: streamID={0} BAD twsec={1}", streamID, time.twsec);
-//			}
 			super.pushPacket(length, time, endOfStream, streamID);
 			if (endOfStream && isRemoveOnEndOfStream()) {
 				shutdown(streamID);
@@ -262,7 +258,8 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		String outputName = AbstractNxmPlotWidget.createUniqueName(true);
 		putOutputNameMapping(0, streamID, outputName); // save output name mapping
 
-		final StringBuilder switches = new StringBuilder("/POLL=0.1"); // reading & writing of data is done in thread calling pushPacket(..)
+		// Reading & writing of data is done in thread calling pushPacket(..)
+		final StringBuilder switches = new StringBuilder("/POLL=0.1");
 		final int pipeSize = getPipeSize(); // in bytes
 		if (pipeSize > 0) {
 			switches.append("/PS=").append(pipeSize);
@@ -380,15 +377,12 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 			if (pipeSize != null) {
 				cmd.setPipeSize(pipeSize);
 			}
-
 			if (canGrowPipe != null) {
 				cmd.setCanGrowPipe(canGrowPipe);
 			}
-
 			if (pipeSizeMultiplier != null) {
 				cmd.setPipeSizeMultiplier(pipeSizeMultiplier);
 			}
-
 			if (sampleRate != null) {
 				cmd.setSampleRate(sampleRate);
 			}
@@ -401,5 +395,4 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		retVal.setPreferenceStore(getPreferences());
 		return retVal;
 	}
-
 }
