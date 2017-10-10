@@ -38,32 +38,15 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 
-	/**
-	 * The constructor
-	 */
 	public Activator() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
-	 * )
-	 */
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
-	 * )
-	 */
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		Activator.plugin = null;
@@ -102,7 +85,7 @@ public class Activator extends AbstractUIPlugin {
 				monitor.beginTask("Opening Play Port View", IProgressMonitor.UNKNOWN);
 				final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 				if (page == null) {
-					return new Status(IStatus.ERROR, PLUGIN_ID, "Unable to open play port view");
+					return new Status(IStatus.ERROR, PLUGIN_ID, "Unable to open play port view. No workbench page.");
 				}
 
 				PlayAudioView view;

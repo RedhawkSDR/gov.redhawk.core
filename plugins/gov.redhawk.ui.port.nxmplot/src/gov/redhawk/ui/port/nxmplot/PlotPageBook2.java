@@ -106,7 +106,7 @@ public class PlotPageBook2 extends Composite {
 	/** The plots. */
 	private Map<PlotType, PlotPage> plots = new HashMap<PlotType, PlotPage>();
 
-	private ListenerList<IPlotWidgetListener> plotListeners = new ListenerList<IPlotWidgetListener>();
+	private ListenerList<IPlotWidgetListener> plotListeners = new ListenerList<>();
 
 	private IPlotWidgetListener plotListener = new IPlotWidgetListener() {
 

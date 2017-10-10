@@ -190,7 +190,7 @@ public class PlotPortHandler extends AbstractHandler {
 		return false;
 	}
 
-	private static IStatus addPlotSources(final List< ScaUsesPort > ports, final BulkIONxmBlockSettings bulkIOBlockSettings,
+	private static IStatus addPlotSources(final List<ScaUsesPort> ports, final BulkIONxmBlockSettings bulkIOBlockSettings,
 		final SddsNxmBlockSettings sddsBlockSettings, final FftNxmBlockSettings fftBlockSettings, final PlotNxmBlockSettings plotBlockSettings,
 		final String pipeQualifiers, final PlotView2 plotView, IProgressMonitor monitor) {
 		final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
