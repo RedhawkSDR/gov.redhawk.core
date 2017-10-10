@@ -16,9 +16,9 @@ import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
+import gov.redhawk.sca.model.jobs.RefreshJob;
 import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.sca.util.SubMonitor;
-import gov.redhawk.ui.port.PortHelper;
 import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
@@ -34,6 +34,7 @@ import gov.redhawk.ui.port.nxmplot.preferences.FftPreferences;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -84,7 +85,10 @@ public class PlotPortHandler extends AbstractHandler {
 		if (selection == null) {
 			return null;
 		}
-		final List< ? > elements = selection.toList();
+		List<ScaUsesPort> ports = ((List< ? >) selection.toList()).stream() //
+				.map(element -> PluginUtil.adapt(ScaUsesPort.class, element, true)) //
+				.filter(element -> element != null) //
+				.collect(Collectors.toList());
 
 		// Both of these are always set (below)
 		final boolean isFFT;
@@ -99,15 +103,12 @@ public class PlotPortHandler extends AbstractHandler {
 
 		boolean containsBulkIOPort = false;
 		boolean containsSDDSPort = false;
-		for (Object obj : elements) {
-			ScaUsesPort port = PluginUtil.adapt(ScaUsesPort.class, obj, true);
-			if (port != null) {
-				String idl = port.getRepid();
-				if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
-					containsSDDSPort = true;
-				} else if (PlotPortHandler.isBulkIOPortSupported(idl)) { // BULKIO data Port
-					containsBulkIOPort = true;
-				}
+		for (ScaUsesPort port : ports) {
+			String idl = port.getRepid();
+			if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
+				containsSDDSPort = true;
+			} else if (PlotPortHandler.isBulkIOPortSupported(idl)) { // BULKIO data Port
+				containsBulkIOPort = true;
 			}
 		}
 
@@ -167,13 +168,10 @@ public class PlotPortHandler extends AbstractHandler {
 				final PlotView2 plotView = (PlotView2) view;
 				plotView.getPlotPageBook().showPlot(plotSettings);
 
-				Job job = new Job("Adding plot sources...") {
-					@Override
-					protected IStatus run(IProgressMonitor monitor) {
-						return PlotPortHandler.addPlotSources(elements, bulkIOBlockSettings, sddsBlockSettings, fftBlockSettings, plotBlockSettings,
-							pipeQualifiers, plotView, monitor);
-					}
-				};
+				Job job = Job.create("Adding plot sources...", monitor -> {
+					return PlotPortHandler.addPlotSources(ports, bulkIOBlockSettings, sddsBlockSettings, fftBlockSettings, plotBlockSettings, pipeQualifiers,
+						plotView, monitor);
+				});
 				job.setUser(true);
 				job.schedule();
 				return plotView;
@@ -192,75 +190,72 @@ public class PlotPortHandler extends AbstractHandler {
 		return false;
 	}
 
-	private static IStatus addPlotSources(final List< ? > elements, final BulkIONxmBlockSettings bulkIOBlockSettings,
+	private static IStatus addPlotSources(final List<ScaUsesPort> ports, final BulkIONxmBlockSettings bulkIOBlockSettings,
 		final SddsNxmBlockSettings sddsBlockSettings, final FftNxmBlockSettings fftBlockSettings, final PlotNxmBlockSettings plotBlockSettings,
 		final String pipeQualifiers, final PlotView2 plotView, IProgressMonitor monitor) {
 		final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
 		final StringBuilder name = new StringBuilder();
 		final StringBuilder tooltip = new StringBuilder();
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Plotting...", elements.size());
-		for (Object obj : elements) {
-			ScaUsesPort port = PluginUtil.adapt(ScaUsesPort.class, obj, true);
-			if (port != null) {
-				port.fetchAttributes(subMonitor.newChild(1));
-				List<String> tmpList4Tooltip = new LinkedList<String>();
-				for (EObject eObj = port; !(eObj instanceof ScaDomainManagerRegistry) && eObj != null; eObj = eObj.eContainer()) {
-					Adapter adapter = factory.adapt(eObj, IItemLabelProvider.class);
-					if (adapter instanceof IItemLabelProvider) {
-						IItemLabelProvider lp = (IItemLabelProvider) adapter;
-						String text = lp.getText(eObj);
-						if (text != null && !text.isEmpty()) {
-							tmpList4Tooltip.add(0, text);
-						}
+
+		SubMonitor progress = SubMonitor.convert(monitor, "Plotting...", ports.size() * 2);
+		for (ScaUsesPort port : ports) {
+			port.fetchAttributes(progress.newChild(1));
+
+			List<String> tmpList4Tooltip = new LinkedList<String>();
+			for (EObject eObj = port; !(eObj instanceof ScaDomainManagerRegistry) && eObj != null; eObj = eObj.eContainer()) {
+				Adapter adapter = factory.adapt(eObj, IItemLabelProvider.class);
+				if (adapter instanceof IItemLabelProvider) {
+					IItemLabelProvider lp = (IItemLabelProvider) adapter;
+					String text = lp.getText(eObj);
+					if (text != null && !text.isEmpty()) {
+						tmpList4Tooltip.add(0, text);
 					}
 				}
-
-				String nameStr = port.getName();
-				if (nameStr != null && !nameStr.isEmpty()) {
-					name.append(nameStr).append(" ");
-				}
-
-				if (!tmpList4Tooltip.isEmpty()) {
-					for (Iterator<String> i = tmpList4Tooltip.iterator(); i.hasNext();) {
-						tooltip.append(i.next());
-						if (i.hasNext()) {
-							tooltip.append(" -> ");
-						}
-					}
-					tooltip.append("\n");
-				}
-
-				final PlotSource plotSource;
-				final String idl = port.getRepid();
-
-				if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
-					plotSource = new PlotSource(port, sddsBlockSettings, fftBlockSettings, plotBlockSettings, pipeQualifiers);
-				} else if (PlotPortHandler.isBulkIOPortSupported(idl)) { // supported BULKIO data Port
-					plotSource = new PlotSource(port, bulkIOBlockSettings, fftBlockSettings, plotBlockSettings, pipeQualifiers);
-				} else {
-					// Log warning and skip unsupported port
-					String msg = String.format("Cannot plot port '%s' due to unsupported type '%s'", port.getName(), idl);
-					StatusManager.getManager().handle(new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID, msg), StatusManager.LOG);
-					continue;
-				}
-				plotView.addPlotSource(plotSource);
-			} else {
-				subMonitor.worked(1);
 			}
-		} // end for loop
-		PortHelper.refreshPorts(elements, subMonitor);
+
+			String nameStr = port.getName();
+			if (nameStr != null && !nameStr.isEmpty()) {
+				name.append(nameStr).append(" ");
+			}
+
+			if (!tmpList4Tooltip.isEmpty()) {
+				for (Iterator<String> i = tmpList4Tooltip.iterator(); i.hasNext();) {
+					tooltip.append(i.next());
+					if (i.hasNext()) {
+						tooltip.append(" -> ");
+					}
+				}
+				tooltip.append("\n");
+			}
+
+			final PlotSource plotSource;
+			final String idl = port.getRepid();
+
+			if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
+				plotSource = new PlotSource(port, sddsBlockSettings, fftBlockSettings, plotBlockSettings, pipeQualifiers);
+			} else if (PlotPortHandler.isBulkIOPortSupported(idl)) { // supported BULKIO data Port
+				plotSource = new PlotSource(port, bulkIOBlockSettings, fftBlockSettings, plotBlockSettings, pipeQualifiers);
+			} else {
+				// Log warning and skip unsupported port
+				String msg = String.format("Cannot plot port '%s' due to unsupported type '%s'", port.getName(), idl);
+				StatusManager.getManager().handle(new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID, msg), StatusManager.LOG);
+				continue;
+			}
+			plotView.addPlotSource(plotSource);
+			progress.worked(1);
+		}
 		factory.dispose();
+
+		RefreshJob.create(ports).schedule();
+
 		if (name.length() > 0 || tooltip.length() > 0) {
 			Display display = plotView.getSite().getShell().getDisplay();
-			display.asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					if (name.length() > 0) {
-						plotView.setPartName(name.substring(0, name.length() - 1)); // remove trailing space from view's name
-					}
-					if (tooltip.length() > 0) {
-						plotView.setTitleToolTip(tooltip.substring(0, tooltip.length() - 1)); // remove trailing newline from view's tooltip
-					}
+			display.asyncExec(() -> {
+				if (name.length() > 0) {
+					plotView.setPartName(name.substring(0, name.length() - 1)); // remove trailing space from view's name
+				}
+				if (tooltip.length() > 0) {
+					plotView.setTitleToolTip(tooltip.substring(0, tooltip.length() - 1)); // remove trailing newline from view's tooltip
 				}
 			});
 		}

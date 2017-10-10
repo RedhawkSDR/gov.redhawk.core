@@ -11,10 +11,7 @@
  */
 package gov.redhawk.ui.port.playaudio.internal;
 
-import gov.redhawk.model.sca.ScaUsesPort;
-import gov.redhawk.ui.port.PortHelper;
-import gov.redhawk.ui.port.playaudio.internal.views.PlayAudioView;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +26,9 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.UIJob;
 import org.osgi.framework.BundleContext;
 
+import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.ui.port.playaudio.internal.views.PlayAudioView;
+
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -40,32 +40,15 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 
-	/**
-	 * The constructor
-	 */
 	public Activator() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
-	 * )
-	 */
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
-	 * )
-	 */
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		Activator.plugin = null;
@@ -98,28 +81,27 @@ public class Activator extends AbstractUIPlugin {
 	}
 	
 	public void playPorts(final List<ScaUsesPort> portList) {
-		final UIJob job = new UIJob("Starting Play Port") {
+		new UIJob("Starting Play Port") {
 			@Override
 			public IStatus runInUIThread(final IProgressMonitor monitor) {
 				monitor.beginTask("Opening Play Port View", IProgressMonitor.UNKNOWN);
 				final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-				if (page != null) {
-					PlayAudioView view;
-					try {
-						view = (PlayAudioView) page.showView(PlayAudioView.ID);
-						for (ScaUsesPort port : portList) {
-							view.playPort(port);
-						}
-						PortHelper.refreshPorts(portList, monitor);
-					} catch (final PartInitException e) {
-						getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error finding Play Port View", e));
+				if (page == null) {
+					return new Status(IStatus.ERROR, PLUGIN_ID, "Unable to open play port view. No workbench page.");
+				}
+
+				PlayAudioView view;
+				try {
+					view = (PlayAudioView) page.showView(PlayAudioView.ID);
+					for (ScaUsesPort port : portList) {
+						view.playPort(port);
 					}
+				} catch (final PartInitException e) {
+					getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error finding Play Port View", e));
 				}
 				return Status.OK_STATUS;
 			}
-		};
-		job.setSystem(true);
-		job.schedule();
+		}.schedule();
 	}
 
 	/**
@@ -130,28 +112,7 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	@Deprecated
 	public void playPort(final Map<ScaUsesPort, String> portList) {
-		final UIJob job = new UIJob("Starting Play Port") {
-			@Override
-			public IStatus runInUIThread(final IProgressMonitor monitor) {
-				monitor.beginTask("Opening Play Port View", IProgressMonitor.UNKNOWN);
-				final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-				if (page != null) {
-					PlayAudioView view;
-					try {
-						view = (PlayAudioView) page.showView(PlayAudioView.ID);
-						for (ScaUsesPort port : portList.keySet()) {
-							view.playPort(port);
-						}
-						PortHelper.refreshPorts(portList.keySet(), monitor);
-					} catch (final PartInitException e) {
-						getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error finding Play Port View", e));
-					}
-				}
-				return Status.OK_STATUS;
-			}
-		};
-		job.setSystem(true);
-		job.schedule();
+		playPorts(new ArrayList<>(portList.keySet()));
 	}
 
 	/**
