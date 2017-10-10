@@ -15,45 +15,60 @@ import nxm.redhawk.prim.sourcenic;
 
 /**
  * A crude, partially implemented lightweight SDDS header helper.
- *
+ * <p/>
  * In the absence of a current and readily-available SDDS packet standard, a
  * number of nearly-(but not quite entirely-)compatible "de facto" standards
  * for SDDS packets developed. The compile-time SDDS_PACKET_ALT setting allows
  * users to build copies of this header file that are compatible with these
  * variations.
- *
- * SDDS_MODE_COMPAT     - Attempts to accept "du jure" SDDS packets while
- *                        also retaining compatibility for SDDS packets
- *                        that use the TEN_IN_SIXTEEN_AD mode to indicate
- *                        16-bit complex data.  This mode will not work
- *                        for "du jure" packets that use the TEN_IN_SIXTEEN_AD mode.
- *
- * SDDS_MODE_STRICT     - Follows the current "du jure" SDDS packet standard.
- *
- * SDDS_MODE_LEGACY_CX1 - Follows a "de facto" standard from the mid- to
- *                        late-2000s. In this variant, the TEN_IN_SIXTEEN_AD
- *                        data mode is used to indicate 16-bit complex data.
- *                        At the time this standard came into use, the cx bit
- *                        was not present (i.e. no way to indicate complex
- *                        data) and the bit currently used for cx was always
- *                        zero.
- *
- * SDDS_MODE_LEGACY_CX2 - Follows a "de facto" standard from 2010 that was
- *                        based on a mis-interpretation of the "de facto"
- *                        SDDS_PACKET_ALT=1 standard. Strictly speaking, this
- *                        is a superset of SDDS_PACKET_ALT=1 where FOUR_IN_EIGHT
- *                        is unsupported (this is a reasonable assumption
- *                        since nearly all digitizers produced in the last
- *                        decade use FOUR_IN_FOUR rather than FOUR_IN_EIGHT).
- *
- *                        In this variant, the "former" AD-passthrough-bit is
- *                        used as a complex data indicator akin to the cx bit.
- *                        The cx bit is ignored in this variant and is always
- *                        set to zero. This provides an opportunity for this
- *                        variant to read the "du jure" packets (with the cx
- *                        bit in use) in addition to the variant packets
- *                        provided that the "du jure" packets do not use
- *                        FOUR_IN_EIGHT or TEN_IN_SIXTEEN_AD modes.
+ * <p/>
+ * <table summary="SDDS modes">
+ * <tr>
+ * <td>SDDS_MODE_COMPAT</td>
+ * <td>Attempts to accept "du jure" SDDS packets while
+ * also retaining compatibility for SDDS packets
+ * that use the TEN_IN_SIXTEEN_AD mode to indicate
+ * 16-bit complex data. This mode will not work
+ * for "du jure" packets that use the TEN_IN_SIXTEEN_AD mode.</td>
+ * </tr>
+ * 
+ * <tr>
+ * <td>SDDS_MODE_STRICT</td>
+ * <td>Follows the current "du jure" SDDS packet standard.</td>
+ * </tr>
+ * 
+ * <tr>
+ * <td>SDDS_MODE_LEGACY_CX1</td>
+ * <td>Follows a "de facto" standard from the mid- to
+ * late-2000s. In this variant, the TEN_IN_SIXTEEN_AD
+ * data mode is used to indicate 16-bit complex data.
+ * At the time this standard came into use, the cx bit
+ * was not present (i.e. no way to indicate complex
+ * data) and the bit currently used for cx was always
+ * zero.</td>
+ * </tr>
+ * 
+ * <tr>
+ * <td>SDDS_MODE_LEGACY_CX2</td>
+ * <td>Follows a "de facto" standard from 2010 that was
+ * based on a mis-interpretation of the "de facto"
+ * SDDS_PACKET_ALT=1 standard. Strictly speaking, this
+ * is a superset of SDDS_PACKET_ALT=1 where FOUR_IN_EIGHT
+ * is unsupported (this is a reasonable assumption
+ * since nearly all digitizers produced in the last
+ * decade use FOUR_IN_FOUR rather than FOUR_IN_EIGHT).
+ * 
+ * In this variant, the "former" AD-passthrough-bit is
+ * used as a complex data indicator akin to the cx bit.
+ * The cx bit is ignored in this variant and is always
+ * set to zero. This provides an opportunity for this
+ * variant to read the "du jure" packets (with the cx
+ * bit in use) in addition to the variant packets
+ * provided that the "du jure" packets do not use
+ * FOUR_IN_EIGHT or TEN_IN_SIXTEEN_AD modes.</td>
+ * </tr>
+ * </table>
+ * @since 11.1
  */
 public class SDDSHeader {
 
