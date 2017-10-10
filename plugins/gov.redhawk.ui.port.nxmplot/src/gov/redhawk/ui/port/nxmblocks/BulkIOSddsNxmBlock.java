@@ -122,7 +122,13 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 		@Override
 		protected void handleStreamSRIChanged(@NonNull String streamID, @Nullable StreamSRI oldSri, @NonNull StreamSRI newSri) {
 			BulkIOSddsNxmBlock.TRACE_LOG.enteringMethod(streamID, oldSri, newSri);
-			// TODO: what should we do here?
+			if (newSri != null) {
+				Job.create("Updating stream [" + streamID + "] to plot", monitor -> {
+					update(streamID, newSri);
+					return Status.OK_STATUS;
+				}).schedule();
+			}
+			// TODO: Do we need to worry about multiple SRI? Compare with code in BulkIONxmBlock
 		}
 
 	} // inner class SddsPort
