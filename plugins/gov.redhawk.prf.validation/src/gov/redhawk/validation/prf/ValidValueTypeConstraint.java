@@ -20,6 +20,7 @@ import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleRef;
 import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
+import mil.jpeojtrs.sca.prf.StructRef;
 import mil.jpeojtrs.sca.prf.StructSequence;
 import mil.jpeojtrs.sca.prf.StructValue;
 import mil.jpeojtrs.sca.prf.Values;
@@ -52,23 +53,24 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 		
 		private IStatus createFailureStatus(boolean complex, EObject container, String value, PropertyValueType type) {
 			Object [] message;
-			String typeString;
-			if (container instanceof Simple) {
-				Simple s = (Simple) container;
-				typeString = "value";
-			} else if (container instanceof SimpleRef) {
+			String typeString = "value";
+			if (container instanceof SimpleRef) {
 				SimpleRef ref = (SimpleRef) container;
-				StructValue sValue = (StructValue) ref.eContainer();
-				StructSequence ss = (StructSequence) sValue.eContainer();
-				int index = ss.getStructValue().indexOf(sValue);
-				typeString  = "value of struct sequence \"" + ss.getId() + "\" at index " + index + " for property \"" + ref.getRefID() + "\" is invalid.  ";
-			} else {
-				typeString = "value";
+				if (ref.eContainer() instanceof StructValue) {
+					StructValue sValue = (StructValue) ref.eContainer();
+					StructSequence ss = (StructSequence) sValue.eContainer();
+					int index = ss.getStructValue().indexOf(sValue);
+					typeString = "value of struct sequence \"" + ss.getId() + "\" at index " + index + " for property \"" + ref.getRefID() + "\" is invalid.  ";
+				} else if (ref.eContainer() instanceof StructRef) {
+					StructRef sValue = (StructRef) ref.eContainer();
+					typeString = "value of struct \"" + sValue.getRefID() + "\" for property \"" + ref.getRefID() + "\" is invalid.  ";
+				}
 			}
+
 			if (complex) {
-				message = new Object []{typeString, value, "complex " + type, " Valid format A+jB. May not contain spaces."};
+				message = new Object[] { typeString, value, "complex " + type, " Valid format A+jB. May not contain spaces." };
 			} else {
-				message = new Object []{typeString, value, type, ""};
+				message = new Object[] { typeString, value, type, "" };
 			}
 			return ctx.createFailureStatus(message);
 		}
