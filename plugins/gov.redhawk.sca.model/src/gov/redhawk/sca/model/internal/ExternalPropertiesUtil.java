@@ -57,12 +57,24 @@ public class ExternalPropertiesUtil {
 		}
 		switch (propertyRef.eClass().getClassifierID()) {
 		case PrfPackage.SIMPLE_REF:
+			if (!(newProperty instanceof Simple)) {
+				return newProperty;
+			}
 			return copySimple((SimpleRef) propertyRef, (Simple) newProperty);
 		case PrfPackage.SIMPLE_SEQUENCE_REF:
+			if (!(newProperty instanceof SimpleSequence)) {
+				return newProperty;
+			}
 			return copySimpleSequence((SimpleSequenceRef) propertyRef, (SimpleSequence) newProperty);
 		case PrfPackage.STRUCT_REF:
+			if (!(newProperty instanceof Struct)) {
+				return newProperty;
+			}
 			return copyStruct((StructRef) propertyRef, (Struct) newProperty);
 		case PrfPackage.STRUCT_SEQUENCE_REF:
+			if (!(newProperty instanceof StructSequence)) {
+				return newProperty;
+			}
 			return copyStructSequence((StructSequenceRef) propertyRef, (StructSequence) newProperty);
 		default:
 			throw new RuntimeException("Unknown property type");
