@@ -107,7 +107,7 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 	@Override
 	protected void addListeners() {
 		super.addListeners();
-
+		
 		this.composite.getRemoveValueButton().addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
@@ -135,6 +135,10 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		final TableViewer valuesViewer = this.composite.getValuesViewer();
 		retVal.add(context.bindValue(ViewersObservables.observeInput(valuesViewer), valueProp.observe(input)));
 
+		if (!(this.input.getValues().getValue().isEmpty())) {
+			this.composite.getRemoveValueButton().setEnabled(true);
+		}
+		
 		if (this.isEditable()) {
 			this.composite.getValueColumn().setEditingSupport(new SimpleSequenceValueEditingSupport(this.input.getType(), this.input.isComplex(), valuesViewer));
 		} else {
