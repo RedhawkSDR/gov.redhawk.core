@@ -11,19 +11,7 @@
  */
 package gov.redhawk.prf.internal.ui.editor.detailspart;
 
-import gov.redhawk.common.ui.editor.FormLayoutFactory;
-import gov.redhawk.prf.internal.ui.editor.PropertiesSection;
-import gov.redhawk.prf.internal.ui.editor.composite.BasicSimplePropertyComposite;
-import gov.redhawk.prf.internal.ui.editor.composite.SimpleSequencePropertyComposite;
-import gov.redhawk.validation.prf.ValidValueTypeConstraint;
-
 import java.util.List;
-
-import mil.jpeojtrs.sca.prf.PrfFactory;
-import mil.jpeojtrs.sca.prf.PrfPackage;
-import mil.jpeojtrs.sca.prf.PropertyValueType;
-import mil.jpeojtrs.sca.prf.SimpleSequence;
-import mil.jpeojtrs.sca.prf.Values;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -49,6 +37,17 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
+
+import gov.redhawk.common.ui.editor.FormLayoutFactory;
+import gov.redhawk.prf.internal.ui.editor.PropertiesSection;
+import gov.redhawk.prf.internal.ui.editor.composite.BasicSimplePropertyComposite;
+import gov.redhawk.prf.internal.ui.editor.composite.SimpleSequencePropertyComposite;
+import gov.redhawk.validation.prf.ValidValueTypeConstraint;
+import mil.jpeojtrs.sca.prf.PrfFactory;
+import mil.jpeojtrs.sca.prf.PrfPackage;
+import mil.jpeojtrs.sca.prf.PropertyValueType;
+import mil.jpeojtrs.sca.prf.SimpleSequence;
+import mil.jpeojtrs.sca.prf.Values;
 
 public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetailsPage {
 
@@ -107,7 +106,7 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 	@Override
 	protected void addListeners() {
 		super.addListeners();
-		
+
 		this.composite.getRemoveValueButton().addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
@@ -138,9 +137,10 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		if (!(this.input.getValues().getValue().isEmpty())) {
 			this.composite.getRemoveValueButton().setEnabled(true);
 		}
-		
+
 		if (this.isEditable()) {
-			this.composite.getValueColumn().setEditingSupport(new SimpleSequenceValueEditingSupport(this.input.getType(), this.input.isComplex(), valuesViewer));
+			this.composite.getValueColumn().setEditingSupport(
+				new SimpleSequenceValueEditingSupport(this.input.getType(), this.input.isComplex(), valuesViewer));
 		} else {
 			this.composite.getValueColumn().setEditingSupport(null);
 		}
@@ -150,7 +150,7 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 
 	@Override
 	protected BasicSimplePropertyComposite createSection(final Composite parent, final FormToolkit toolkit) {
-		final Section newSection = toolkit.createSection(parent,  Section.EXPANDED | ExpandableComposite.TITLE_BAR);
+		final Section newSection = toolkit.createSection(parent, Section.EXPANDED | ExpandableComposite.TITLE_BAR);
 		newSection.clientVerticalSpacing = FormLayoutFactory.SECTION_HEADER_VERTICAL_SPACING;
 		newSection.setText("Simple Sequence Property");
 		newSection.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
@@ -163,11 +163,12 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		newSection.setClient(composite);
 
 		// TODO Add DND support
-		//		final int dndOperations = DND.DROP_MOVE;
-		//		final Transfer[] transfers = new Transfer[] { LocalTransfer.getInstance() };
-		//		final TableViewer valuesViewer = this.composite.getValuesViewer();
-		//		valuesViewer.addDragSupport(dndOperations, transfers, new ViewerDragAdapter(valuesViewer));
-		//		valuesViewer.addDropSupport(dndOperations, transfers, new EditingDomainViewerDropAdapter(getEditingDomain(), valuesViewer));
+		// final int dndOperations = DND.DROP_MOVE;
+		// final Transfer[] transfers = new Transfer[] { LocalTransfer.getInstance() };
+		// final TableViewer valuesViewer = this.composite.getValuesViewer();
+		// valuesViewer.addDragSupport(dndOperations, transfers, new ViewerDragAdapter(valuesViewer));
+		// valuesViewer.addDropSupport(dndOperations, transfers, new EditingDomainViewerDropAdapter(getEditingDomain(),
+		// valuesViewer));
 
 		return composite;
 	}
@@ -177,7 +178,7 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		toolkit.adapt(retVal);
 		return retVal;
 	}
-	
+
 	protected void handleAddValue(final Shell shell) {
 		final InputDialog dialog = new InputDialog(shell, "New Value", "Value:", "", new InputValueValidator(this.input.getType(), this.input.isComplex()));
 
@@ -199,7 +200,7 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 			}
 		}
 	}
-	
+
 	public SimpleSequencePropertyComposite getComposite() {
 		return (SimpleSequencePropertyComposite) composite;
 	}
@@ -214,8 +215,8 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 					this.composite.getRemoveValueButton().setEnabled(false);
 				}
 			} else {
-				command = RemoveCommand
-				        .create(getEditingDomain(), this.input.getValues(), PrfPackage.Literals.VALUES__VALUE, this.composite.getLastSelection());
+				command = RemoveCommand.create(getEditingDomain(), this.input.getValues(), PrfPackage.Literals.VALUES__VALUE,
+					this.composite.getLastSelection());
 			}
 			execute(command);
 		}
