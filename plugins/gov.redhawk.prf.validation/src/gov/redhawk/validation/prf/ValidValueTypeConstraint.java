@@ -14,6 +14,12 @@ package gov.redhawk.validation.prf;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.validation.AbstractModelConstraint;
+import org.eclipse.emf.validation.IValidationContext;
+import org.eclipse.emf.validation.model.ConstraintStatus;
+
 import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.PropertyValueType;
 import mil.jpeojtrs.sca.prf.Simple;
@@ -26,12 +32,6 @@ import mil.jpeojtrs.sca.prf.StructValue;
 import mil.jpeojtrs.sca.prf.Values;
 import mil.jpeojtrs.sca.prf.util.PrfSwitch;
 import mil.jpeojtrs.sca.validator.EnhancedConstraintStatus;
-
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.validation.AbstractModelConstraint;
-import org.eclipse.emf.validation.IValidationContext;
-import org.eclipse.emf.validation.model.ConstraintStatus;
 
 /**
  * @since 1.1
@@ -100,6 +100,9 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 
 		@Override
 		public IStatus caseSimpleRef(final SimpleRef object) {
+			if (!(object.getProperty() instanceof Simple)) {
+				return ctx.createFailureStatus("property", object.getRefID(), "SimpleRef", "Ensure override type matches property definition in the referenced prf.xml.");
+			}
 			Simple mySimple = object.getProperty();
 			final String value = object.getValue();
 			
@@ -185,7 +188,11 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 				sequence = (SimpleSequence) contObj;
 			} else if (contObj instanceof SimpleSequenceRef) {
 				SimpleSequenceRef ref = (SimpleSequenceRef) contObj;
-				sequence = ref.getProperty();
+				if (ref.getProperty() instanceof SimpleSequence) {
+					sequence = ref.getProperty();
+				} else {
+					return ctx.createFailureStatus("property", ref.getRefID(), "SimpleSequenceRef", "Ensure override type matches property definition in the referenced prf.xml.");
+				}
 			}
 			if (sequence != null) {
 				for (final String value : object.getValue()) {

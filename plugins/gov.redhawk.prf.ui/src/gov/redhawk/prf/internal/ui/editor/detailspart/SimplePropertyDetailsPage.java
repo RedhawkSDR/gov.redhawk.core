@@ -28,6 +28,7 @@ import mil.jpeojtrs.sca.prf.PropertyConfigurationType;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.databinding.edit.EMFEditObservables;
@@ -69,17 +70,32 @@ public class SimplePropertyDetailsPage extends BasicSimplePropertyDetailsPage {
 			targetToModel.setConverter(new EmptyStringValueToStringConverter());
 			EMFUpdateValueStrategy modelToTarget = new EMFUpdateValueStrategy();
 			modelToTarget.setConverter(new StringToEmptyStringValueConverter());
-			retVal.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify)
-			        .observeDelayed(SCAFormEditor.getFieldBindingDelay(), getComposite().getValueEntry().getText()), EMFEditObservables.observeValue(domain, input,
-			        PrfPackage.Literals.SIMPLE__VALUE), targetToModel, modelToTarget));
+			retVal.add(dataBindingContext.bindValue(
+				WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), getComposite().getValueEntry().getText()),
+				EMFEditObservables.observeValue(domain, input, PrfPackage.Literals.SIMPLE__VALUE), targetToModel, modelToTarget));
 		}
 
 		// Command line
 		if (getComposite().getCommandLineCheckbox() != null) {
 			EMFUpdateValueStrategy targetToModel = new EMFUpdateValueStrategy();
 			targetToModel.setConverter(new FalseToNullValueConverter());
+			EMFUpdateValueStrategy modelToTarget = new EMFUpdateValueStrategy();
+			modelToTarget.setConverter(new Converter(Boolean.class, Boolean.class) {
+
+				@Override
+				public Object convert(Object fromObject) {
+					updateCommandLineEnabled();
+
+					if (fromObject == null) {
+						return false;
+					}
+					return (Boolean) fromObject == true;
+
+				}
+
+			});
 			retVal.add(dataBindingContext.bindValue(WidgetProperties.selection().observe(getComposite().getCommandLineCheckbox()),
-				EMFEditObservables.observeValue(domain, input, PrfPackage.Literals.SIMPLE__COMMANDLINE), targetToModel, null));
+				EMFEditObservables.observeValue(domain, input, PrfPackage.Literals.SIMPLE__COMMANDLINE), targetToModel, modelToTarget));
 
 			// Tie the enabled state of the checkbox to the current kind selection
 			getComposite().getKindViewer().addSelectionChangedListener(new ISelectionChangedListener() {
@@ -90,7 +106,7 @@ public class SimplePropertyDetailsPage extends BasicSimplePropertyDetailsPage {
 			});
 		}
 
-		//Enumerations
+		// Enumerations
 		if (getComposite().getEnumerationViewer() != null) {
 			final IEMFEditValueProperty enumProperty = EMFEditProperties.value(getEditingDomain(), FeaturePath.fromList(PrfPackage.Literals.SIMPLE__ENUMERATIONS));
 			@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -136,5 +152,4 @@ public class SimplePropertyDetailsPage extends BasicSimplePropertyDetailsPage {
 		toolkit.adapt(retVal);
 		return retVal;
 	}
-
 }
