@@ -114,7 +114,9 @@ public class WaveformSelectionWizardPage extends WizardPage {
 		gd.horizontalSpan = 2;
 		titleBarSeparator.setLayoutData(gd);
 
-		this.waveformSelectionList = new FormFilteredTree(composite, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER, new PatternFilter());
+		PatternFilter patternFilter = new PatternFilter();
+		patternFilter.setIncludeLeadingWildcard(true);
+		this.waveformSelectionList = new FormFilteredTree(composite, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER, patternFilter);
 		gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gd.horizontalSpan = 2;
 		this.waveformSelectionList.setLayoutData(gd);
