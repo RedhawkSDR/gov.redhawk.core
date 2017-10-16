@@ -10,29 +10,38 @@
  */
 package gov.redhawk.core.graphiti.ui.properties;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.gef.editparts.AbstractEditPart;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.jface.viewers.BaseLabelProvider;
-import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.graphics.Image;
 
-import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
-import mil.jpeojtrs.sca.partitioning.ProvidesPortStub;
-import mil.jpeojtrs.sca.partitioning.UsesPortStub;
+import mil.jpeojtrs.sca.dcd.provider.DcdItemProviderAdapterFactory;
+import mil.jpeojtrs.sca.partitioning.provider.PartitioningItemProviderAdapterFactory;
+import mil.jpeojtrs.sca.sad.provider.SadItemProviderAdapterFactory;
 
-public class PropertyPageLabelProvider extends BaseLabelProvider implements ILabelProvider {
+public class PropertyPageLabelProvider extends AdapterFactoryLabelProvider {
 
 	public PropertyPageLabelProvider() {
+		super(new ComposedAdapterFactory(
+			new AdapterFactory[] { new SadItemProviderAdapterFactory(), new DcdItemProviderAdapterFactory(), new PartitioningItemProviderAdapterFactory() }));
 	}
 
 	@Override
 	public Image getImage(Object element) {
-		return null;
+		element = unwrap(element);
+		return super.getImage(element);
 	}
 
 	@Override
 	public String getText(Object element) {
+		element = unwrap(element);
+		return super.getText(element);
+	}
+
+	private Object unwrap(Object element) {
 		if (element instanceof IStructuredSelection) {
 			element = ((IStructuredSelection) element).getFirstElement();
 		}
@@ -42,15 +51,7 @@ public class PropertyPageLabelProvider extends BaseLabelProvider implements ILab
 		if (element instanceof PictogramElement) {
 			element = ((PictogramElement) element).getLink().getBusinessObjects().get(0);
 		}
-		if (element instanceof ComponentInstantiation) {
-			return ((ComponentInstantiation) element).getId();
-		}
-		if (element instanceof UsesPortStub) {
-			return ((UsesPortStub) element).getName();
-		}
-		if (element instanceof ProvidesPortStub) {
-			return ((ProvidesPortStub) element).getName();
-		}
-		return null;
+
+		return element;
 	}
 }

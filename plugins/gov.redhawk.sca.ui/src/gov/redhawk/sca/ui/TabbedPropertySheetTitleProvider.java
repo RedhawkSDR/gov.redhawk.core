@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
@@ -70,7 +71,10 @@ public class TabbedPropertySheetTitleProvider extends LabelProvider {
 	 * @see org.eclipse.jface.viewers.ILabelProvider#getImage(java.lang.Object)
 	 */
 	@Override
-	public Image getImage(final Object object) {
+	public Image getImage(Object object) {
+		if (object instanceof TreeSelection) {
+			object = ((TreeSelection) object).getFirstElement();
+		}
 		return this.labelProvider != null ? this.labelProvider.getImage(object) : null;// SUPPRESS CHECKSTYLE AvoidInLine
 	}
 
