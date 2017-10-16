@@ -51,6 +51,7 @@ public class PropertyPageLabelProvider extends AdapterFactoryLabelProvider {
 		if (element instanceof PictogramElement) {
 			element = ((PictogramElement) element).getLink().getBusinessObjects().get(0);
 		}
+
 		return element;
 	}
 }
