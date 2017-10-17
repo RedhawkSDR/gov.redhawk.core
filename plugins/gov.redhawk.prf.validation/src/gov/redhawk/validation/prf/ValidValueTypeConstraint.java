@@ -26,9 +26,6 @@ import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleRef;
 import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
-import mil.jpeojtrs.sca.prf.StructRef;
-import mil.jpeojtrs.sca.prf.StructSequence;
-import mil.jpeojtrs.sca.prf.StructValue;
 import mil.jpeojtrs.sca.prf.Values;
 import mil.jpeojtrs.sca.prf.util.PrfSwitch;
 import mil.jpeojtrs.sca.validator.EnhancedConstraintStatus;
@@ -44,33 +41,21 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 	private static final Pattern COMPLEX_PATTERN_1 = Pattern.compile("[-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?[-+]?j(\\d+(\\.\\d+)?([eE][+-]?\\d+)?)?");
 	private static final Pattern COMPLEX_PATTERN_2 = Pattern.compile("[-+]?j(\\d+(\\.\\d+)?([eE][+-]?\\d+)?)?");
 
+	private static final String REASON_COMPLEX_FORMAT = " Valid format A+jB. May not contain spaces.";
+
 	private static class ValidationSwitch extends PrfSwitch<IStatus> {
 		private final IValidationContext ctx;
 
 		public ValidationSwitch(final IValidationContext ctx) {
 			this.ctx = ctx;
 		}
-		
-		private IStatus createFailureStatus(boolean complex, EObject container, String value, PropertyValueType type) {
-			Object [] message;
-			String typeString = "value";
-			if (container instanceof SimpleRef) {
-				SimpleRef ref = (SimpleRef) container;
-				if (ref.eContainer() instanceof StructValue) {
-					StructValue sValue = (StructValue) ref.eContainer();
-					StructSequence ss = (StructSequence) sValue.eContainer();
-					int index = ss.getStructValue().indexOf(sValue);
-					typeString = "value of struct sequence \"" + ss.getId() + "\" at index " + index + " for property \"" + ref.getRefID() + "\" is invalid.  ";
-				} else if (ref.eContainer() instanceof StructRef) {
-					StructRef sValue = (StructRef) ref.eContainer();
-					typeString = "value of struct \"" + sValue.getRefID() + "\" for property \"" + ref.getRefID() + "\" is invalid.  ";
-				}
-			}
 
+		private IStatus createFailureStatus(boolean complex, String typeString, String value, PropertyValueType type, String reason) {
+			Object[] message;
 			if (complex) {
-				message = new Object[] { typeString, value, "complex " + type, " Valid format A+jB. May not contain spaces." };
+				message = new Object[] { typeString, value, "complex " + type, reason };
 			} else {
-				message = new Object[] { typeString, value, type, "" };
+				message = new Object[] { typeString, value, type, reason };
 			}
 			return ctx.createFailureStatus(message);
 		}
@@ -78,108 +63,61 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 		@Override
 		public IStatus caseSimple(final Simple object) {
 			final String value = object.getValue();
-			if (value != null) {
-				final PropertyValueType type = object.getType();
-				if (type != null) {
-					boolean isComplexFormat = isComplexNumber(value);
-					if (object.isComplex() && !isComplexFormat) { // TODO: This is to force PRF complex value of format a+jb
-						return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, object, value, type),
-							PrfPackage.Literals.SIMPLE__VALUE);
-					} else if (!(type.isValueOfType(value, object.isComplex()))) {
-						if (object.isComplex()) {
-							return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, object, value, type),
-								PrfPackage.Literals.SIMPLE__VALUE);
-						} else {
-							return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(false, object, value, type), PrfPackage.Literals.SIMPLE__VALUE);
-						}
-					}
-				}
+			if (value == null) {
+				return ctx.createSuccessStatus();
 			}
-			return super.caseSimple(object);
+			final PropertyValueType type = object.getType();
+			if (type == null) {
+				return ctx.createSuccessStatus();
+			}
+
+			if (object.isComplex() && !isComplexNumber(value)) {
+				return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, simpleTypeString(object), value, type, REASON_COMPLEX_FORMAT),
+					PrfPackage.Literals.SIMPLE__VALUE);
+			} else if (!(type.isValueOfType(value, object.isComplex()))) {
+				return new EnhancedConstraintStatus(
+					(ConstraintStatus) createFailureStatus(object.isComplex(), simpleTypeString(object), value, type, type.getFormattingHelp()),
+					PrfPackage.Literals.SIMPLE__VALUE);
+			}
+			return ctx.createSuccessStatus();
+		}
+
+		private String simpleTypeString(Simple object) {
+			return "simple value";
 		}
 
 		@Override
 		public IStatus caseSimpleRef(final SimpleRef object) {
 			if (!(object.getProperty() instanceof Simple)) {
-				return super.caseSimpleRef(object);
+				return ctx.createSuccessStatus();
 			}
 			Simple mySimple = object.getProperty();
 			final String value = object.getValue();
-			
-			if (value != null && mySimple != null) {
-				final PropertyValueType type = mySimple.getType();
-				if (type != null) {
-					boolean isComplexFormat = isComplexNumber(value);
-					if (mySimple.isComplex() && !isComplexFormat) { // TODO: This is to force PRF complex value of format a+jb
-						return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, object, value, type),
-							PrfPackage.Literals.SIMPLE__VALUE);
-					} else if (!(type.isValueOfType(value, mySimple.isComplex()))) {
-						if (mySimple.isComplex()) {
-							return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, object, value, type),
-								PrfPackage.Literals.SIMPLE_REF__VALUE);
-						} else {
-							return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(false, object, value, type),
-								PrfPackage.Literals.SIMPLE_REF__VALUE);
-						}
-
-					}
-				}
+			if (value == null) {
+				return ctx.createSuccessStatus();
+			}
+			final PropertyValueType type = mySimple.getType();
+			if (type == null) {
+				return ctx.createSuccessStatus();
 			}
 
-			return super.caseSimpleRef(object);
+			if (mySimple.isComplex() && !isComplexNumber(value)) {
+				return new EnhancedConstraintStatus(
+					(ConstraintStatus) createFailureStatus(true, simpleRefTypeString(object), value, type, REASON_COMPLEX_FORMAT),
+					PrfPackage.Literals.SIMPLE_REF__VALUE);
+			} else if (!(type.isValueOfType(value, mySimple.isComplex()))) {
+				return new EnhancedConstraintStatus(
+					(ConstraintStatus) createFailureStatus(mySimple.isComplex(), simpleRefTypeString(object), value, type, type.getFormattingHelp()),
+					PrfPackage.Literals.SIMPLE_REF__VALUE);
+			}
+
+			return ctx.createSuccessStatus();
 		}
 
-		@Override
-		public IStatus caseSimpleSequence(SimpleSequence object) {
-			Values values = object.getValues();
-			if (values != null) {
-				final PropertyValueType type = object.getType();
-				if (type != null) {
-					for (String value: values.getValue()) {
-						boolean isComplexFormat = isComplexNumber(value);
-						if (object.isComplex() && !isComplexFormat) { // TODO: This is to force PRF complex value of format a+jb
-							return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, object, value, type),
-								PrfPackage.Literals.SIMPLE__VALUE);
-						} else if (!(type.isValueOfType(value, object.isComplex()))) {
-							if (object.isComplex()) {
-								return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, object, value, type),
-									PrfPackage.Literals.SIMPLE__VALUE);
-							} else {
-								return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(false, object, value, type), PrfPackage.Literals.SIMPLE__VALUE);
-							}
-						}
-					}
-				}
-			}
-			return super.caseSimpleSequence(object);
+		private String simpleRefTypeString(SimpleRef object) {
+			return "simpleref value";
 		}
-		
-		@Override
-		public IStatus caseSimpleSequenceRef(SimpleSequenceRef refObject) {
-			SimpleSequence object = refObject.getProperty();
-			Values values = object.getValues();
-			if (values != null) {
-				final PropertyValueType type = object.getType();
-				if (type != null) {
-					for (String value: values.getValue()) {
-						boolean isComplexFormat = isComplexNumber(value);
-						if (object.isComplex() && !isComplexFormat) { // TODO: This is to force PRF complex value of format a+jb
-							return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, object, value, type),
-								PrfPackage.Literals.SIMPLE__VALUE);
-						} else if (!(type.isValueOfType(value, object.isComplex()))) {
-							if (object.isComplex()) {
-								return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, object, value, type),
-									PrfPackage.Literals.SIMPLE__VALUE);
-							} else {
-								return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(false, object, value, type), PrfPackage.Literals.SIMPLE__VALUE);
-							}
-						}
-					}
-				}
-			}
-			return super.caseSimpleSequenceRef(refObject);
-		}
-		
+
 		@Override
 		public IStatus caseValues(final Values object) {
 			final EObject contObj = object.eContainer();
@@ -188,29 +126,41 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 				sequence = (SimpleSequence) contObj;
 			} else if (contObj instanceof SimpleSequenceRef) {
 				SimpleSequenceRef ref = (SimpleSequenceRef) contObj;
-				if (ref.getProperty() instanceof SimpleSequence) {
-					sequence = ref.getProperty();
+				if (!(ref.getProperty() instanceof SimpleSequence)) {
+					return ctx.createSuccessStatus();
+				}
+				sequence = ref.getProperty();
+			}
+			if (sequence == null) {
+				return ctx.createSuccessStatus();
+			}
+
+			for (int i = 0; i < object.getValue().size(); i++) {
+				String value = object.getValue().get(i);
+				final PropertyValueType type = sequence.getType();
+				if (sequence.isComplex() && !isComplexNumber(value)) {
+					return new EnhancedConstraintStatus(
+						(ConstraintStatus) createFailureStatus(true, valuesTypeString(object, i), value, type, REASON_COMPLEX_FORMAT),
+						PrfPackage.Literals.VALUES__VALUE);
+				} else if (!type.isValueOfType(value, sequence.isComplex())) {
+					return new EnhancedConstraintStatus(
+						(ConstraintStatus) createFailureStatus(sequence.isComplex(), valuesTypeString(object, i), value, type, type.getFormattingHelp()),
+						PrfPackage.Literals.VALUES__VALUE);
 				}
 			}
-			if (sequence != null) {
-				for (final String value : object.getValue()) {
-					final PropertyValueType type = sequence.getType();
-					boolean isComplexFormat = isComplexNumber(value);
-					if (sequence.isComplex() && !isComplexFormat) { // TODO: This is to force PRF complex value of format a+jb
-						return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, object, value, type),
-							PrfPackage.Literals.SIMPLE__VALUE);
-					} else if (!type.isValueOfType(value, sequence.isComplex())) {
-						if (sequence.isComplex()) {
-							return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, object, value, type),
-								PrfPackage.Literals.VALUES__VALUE);
-						} else {
-							return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(false, object, value, type), PrfPackage.Literals.VALUES__VALUE);
-						}
 
-					}
-				}
-			} 
-			return super.caseValues(object);
+			return ctx.createSuccessStatus();
+		}
+
+		private String valuesTypeString(Values object, int index) {
+			EObject container = object.eContainer();
+			if (container instanceof SimpleSequence) {
+				return "simplesequence value at index " + index;
+			} else if (container instanceof SimpleSequenceRef) {
+				return "simplesequenceref value at index " + index;
+			} else {
+				return "value at index " + index;
+			}
 		}
 
 		@Override

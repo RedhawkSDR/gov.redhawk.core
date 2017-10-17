@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE softwareassembly PUBLIC "-//JTRS//DTD SCA V2.2.2 SAD//EN" "softwareassembly.dtd">
+<softwareassembly id="DCE:05352d14-f468-4938-8e9a-b3cb62ebd537" name="ValidValueTypeConstraintSad">
+  <componentfiles>
+    <componentfile id="ValidValueTypeConstraint_4e4b1a82-75a7-49a4-8b26-5f11f1907e08" type="SPD">
+      <localfile name="/components/ValidValueTypeConstraint/ValidValueTypeConstraint.spd.xml"/>
+    </componentfile>
+  </componentfiles>
+  <partitioning>
+    <componentplacement>
+      <componentfileref refid="ValidValueTypeConstraint_4e4b1a82-75a7-49a4-8b26-5f11f1907e08"/>
+      <componentinstantiation id="ValidValueTypeConstraint_1">
+        <usagename>ValidValueTypeConstraint_1</usagename>
+        <componentproperties>
+          <structref refid="struct">
+            <simpleref refid="struct::simple" value="x"/>
+            <simplesequenceref refid="struct::simpleseq">
+              <values>
+                <value>x</value>
+              </values>
+            </simplesequenceref>
+          </structref>
+          <structsequenceref refid="structseq">
+            <structvalue>
+              <simpleref refid="structseq::simple" value="x"/>
+              <simplesequenceref refid="structseq::simpleseq">
+                <values>
+                  <value>x</value>
+                </values>
+              </simplesequenceref>
+            </structvalue>
+          </structsequenceref>
+          <simpleref refid="simple" value="x"/>
+          <simplesequenceref refid="simpleseq">
+            <values>
+              <value>x</value>
+            </values>
+          </simplesequenceref>
+        </componentproperties>
+        <findcomponent>
+          <namingservice name="ValidValueTypeConstraint_1"/>
+        </findcomponent>
+      </componentinstantiation>
+    </componentplacement>
+  </partitioning>
+  <assemblycontroller>
+    <componentinstantiationref refid="ValidValueTypeConstraint_1"/>
+  </assemblycontroller>
+</softwareassembly>

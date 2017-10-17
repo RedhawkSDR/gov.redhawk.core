@@ -8,4 +8,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.validation,
  org.junit,
  gov.redhawk.sca.sad.validation,
- mil.jpeojtrs.sca.sad
+ mil.jpeojtrs.sca.sad,
+ gov.redhawk.prf.validation

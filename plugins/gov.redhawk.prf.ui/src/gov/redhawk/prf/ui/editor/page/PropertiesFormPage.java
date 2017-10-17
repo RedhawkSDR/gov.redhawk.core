@@ -15,9 +15,11 @@ import gov.redhawk.common.ui.doc.HelpConstants;
 import gov.redhawk.prf.internal.ui.editor.PropertiesBlock;
 import gov.redhawk.ui.editor.SCAFormEditor;
 import gov.redhawk.ui.editor.ScaFormPage;
-import mil.jpeojtrs.sca.prf.Range;
+import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.emf.common.ui.viewer.IViewerProvider;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.viewers.Viewer;
@@ -87,9 +89,19 @@ public class PropertiesFormPage extends ScaFormPage implements IViewerProvider {
 
 	@Override
 	public boolean selectReveal(final Object object) {
-		if (object instanceof Range) {
-			return super.selectReveal(((Range) object).eContainer());
+		if (object instanceof EObject) {
+			EObject eObj = (EObject) object;
+			if (eObj instanceof AbstractProperty) {
+				return super.selectReveal(object);
+			}
+
+			// Try to find a property that is the parent of the object. Reveal it instead.
+			AbstractProperty absProp = ScaEcoreUtils.getEContainerOfType(eObj, AbstractProperty.class);
+			if (absProp != null) {
+				return super.selectReveal(absProp);
+			}
 		}
+
 		return super.selectReveal(object);
 	}
 }

@@ -1,14 +1,14 @@
-/*******************************************************************************
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
  * This file is part of REDHAWK IDE.
  *
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
-package gov.redhawk.prf.validation.tests;
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ */
+package gov.redhawk.sca.sad.validation.test;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -114,113 +114,113 @@ public class TestValidationContext implements IValidationContext {
 	@Override
 	public IStatus createFailureStatus(Object... messageArgument) {
 		return new ConstraintStatus(new IModelConstraint() {
-			
+
 			@Override
 			public IStatus validate(IValidationContext ctx) {
 				return new Status(IStatus.ERROR, "", "");
 			}
-			
+
 			@Override
 			public IConstraintDescriptor getDescriptor() {
 				return new IConstraintDescriptor() {
-					
+
 					@Override
 					public boolean targetsTypeOf(EObject eObject) {
 						return false;
 					}
-					
+
 					@Override
 					public boolean targetsEvent(Notification notification) {
 						return false;
 					}
-					
+
 					@Override
 					public void setError(Throwable exception) {
 					}
-					
+
 					@Override
 					public void setEnabled(boolean enabled) {
 					}
-					
+
 					@Override
 					public void removeCategory(Category category) {
 					}
-					
+
 					@Override
 					public boolean isLive() {
 						return false;
 					}
-					
+
 					@Override
 					public boolean isError() {
 						return true;
 					}
-					
+
 					@Override
 					public boolean isEnabled() {
 						return true;
 					}
-					
+
 					@Override
 					public boolean isBatch() {
 						return false;
 					}
-					
+
 					@Override
 					public int getStatusCode() {
 						return 0;
 					}
-					
+
 					@Override
 					public ConstraintSeverity getSeverity() {
 						return ConstraintSeverity.ERROR;
 					}
-					
+
 					@Override
 					public String getPluginId() {
 						return "testPlugin";
 					}
-					
+
 					@Override
 					public String getName() {
 						return "";
 					}
-					
+
 					@Override
 					public String getMessagePattern() {
 						return null;
 					}
-					
+
 					@Override
 					public String getId() {
 						return "";
 					}
-					
+
 					@Override
 					public Throwable getException() {
 						return null;
 					}
-					
+
 					@Override
 					public EvaluationMode< ? > getEvaluationMode() {
 						return null;
 					}
-					
+
 					@Override
 					public String getDescription() {
 						return "";
 					}
-					
+
 					@Override
 					public Set<Category> getCategories() {
 						return null;
 					}
-					
+
 					@Override
 					public String getBody() {
 						return "";
 					}
-					
+
 					@Override
 					public void addCategory(Category category) {
 					}

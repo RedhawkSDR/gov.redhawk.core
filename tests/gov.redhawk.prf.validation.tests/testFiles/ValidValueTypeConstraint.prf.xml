@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties PUBLIC "-//JTRS//DTD SCA V2.2.2 PRF//EN" "properties.dtd">
+<properties>
+  <simple id="simple" mode="readwrite" type="long">
+    <value>x</value>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simple>
+  <simplesequence id="simpleseq" mode="readwrite" type="long">
+    <values>
+      <value>x</value>
+    </values>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <struct id="struct" mode="readwrite">
+    <simple id="struct::simple" type="long">
+      <value>x</value>
+    </simple>
+    <simplesequence id="struct::simpleseq" type="long">
+      <values>
+        <value>x</value>
+      </values>
+    </simplesequence>
+    <configurationkind kindtype="property"/>
+  </struct>
+  <structsequence id="structseq" mode="readwrite">
+    <struct id="structseq::struct">
+      <simple id="structseq::simple" type="long">
+        <value>x</value>
+      </simple>
+      <simplesequence id="structseq::simpleseq" type="long">
+        <values>
+          <value>x</value>
+        </values>
+      </simplesequence>
+    </struct>
+    <configurationkind kindtype="property"/>
+  </structsequence>
+  <structsequence id="structseqref" mode="readwrite">
+    <struct id="structseqref::struct">
+      <simple id="structseqref::simple" type="long"/>
+      <simplesequence id="structseqref::simpleseq" type="long"/>
+    </struct>
+    <structvalue>
+      <simpleref refid="structseqref::simple" value="x"/>
+      <simplesequenceref refid="structseqref::simpleseq">
+        <values>
+          <value>x</value>
+        </values>
+      </simplesequenceref>
+    </structvalue>
+    <configurationkind kindtype="property"/>
+  </structsequence>
+</properties>
