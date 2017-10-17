@@ -134,7 +134,7 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		final TableViewer valuesViewer = this.composite.getValuesViewer();
 		retVal.add(context.bindValue(ViewersObservables.observeInput(valuesViewer), valueProp.observe(input)));
 
-		if (!(this.input.getValues().getValue().isEmpty())) {
+		if (this.input.getValues() != null && !(this.input.getValues().getValue().isEmpty())) {
 			this.composite.getRemoveValueButton().setEnabled(true);
 		}
 
