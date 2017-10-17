@@ -101,7 +101,7 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 		@Override
 		public IStatus caseSimpleRef(final SimpleRef object) {
 			if (!(object.getProperty() instanceof Simple)) {
-				return ctx.createFailureStatus("property", object.getRefID(), "SimpleRef", "Ensure override type matches property definition in the referenced prf.xml.");
+				return super.caseSimpleRef(object);
 			}
 			Simple mySimple = object.getProperty();
 			final String value = object.getValue();
@@ -190,8 +190,6 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 				SimpleSequenceRef ref = (SimpleSequenceRef) contObj;
 				if (ref.getProperty() instanceof SimpleSequence) {
 					sequence = ref.getProperty();
-				} else {
-					return ctx.createFailureStatus("property", ref.getRefID(), "SimpleSequenceRef", "Ensure override type matches property definition in the referenced prf.xml.");
 				}
 			}
 			if (sequence != null) {
