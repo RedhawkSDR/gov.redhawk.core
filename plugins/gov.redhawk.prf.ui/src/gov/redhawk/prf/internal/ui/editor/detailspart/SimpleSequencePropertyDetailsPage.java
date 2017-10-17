@@ -137,7 +137,7 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		IObservableValue modelObservableValue = valueProp.observe(input);
 		retVal.add(context.bindValue(ViewersObservables.observeInput(valuesViewer), modelObservableValue));
 
-		if (!(this.input.getValues().getValue().isEmpty())) {
+		if (this.input.getValues() != null && !(this.input.getValues().getValue().isEmpty())) {
 			this.composite.getRemoveValueButton().setEnabled(true);
 		}
 
