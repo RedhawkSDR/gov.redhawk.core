@@ -441,7 +441,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			firePropertyChange(IEditorPart.PROP_DIRTY);
 			final Command mostRecentCommand = ((CommandStack) event.getSource()).getMostRecentCommand();
 			if (mostRecentCommand != null && mostRecentCommand.getAffectedObjects() != null && !mostRecentCommand.getAffectedObjects().isEmpty()) {
-				setSelectionToViewer(mostRecentCommand.getAffectedObjects());
+				Object firstObject = mostRecentCommand.getAffectedObjects().iterator().next();
+				setSelectionToViewer(Collections.singleton(firstObject));
 			}
 		}
 	};
