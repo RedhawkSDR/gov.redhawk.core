@@ -25,7 +25,7 @@ import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.CFErrorFormatter;
 
 /**
- * @since 20.5
+ * @since 21.0
  */
 public class StopJob extends Job {
 

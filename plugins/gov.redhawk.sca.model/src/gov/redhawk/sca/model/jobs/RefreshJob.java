@@ -24,7 +24,7 @@ import gov.redhawk.sca.util.SubMonitor;
 /**
  * A {@link Job} that refreshes one or more {@link IRefreshable}.
  *
- * @since 20.5
+ * @since 21.0
  */
 public class RefreshJob extends Job {
 
