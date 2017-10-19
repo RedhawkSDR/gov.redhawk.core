@@ -43,6 +43,7 @@ import mil.jpeojtrs.sca.util.math.ComplexDouble;
 import mil.jpeojtrs.sca.util.math.ComplexFloat;
 import mil.jpeojtrs.sca.util.math.ComplexLong;
 import mil.jpeojtrs.sca.util.math.ComplexLongLong;
+import mil.jpeojtrs.sca.util.math.ComplexOctet;
 import mil.jpeojtrs.sca.util.math.ComplexShort;
 import mil.jpeojtrs.sca.util.math.ComplexULong;
 import mil.jpeojtrs.sca.util.math.ComplexULongLong;
@@ -106,6 +107,8 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 				return new ComplexLong();
 			case LONGLONG:
 				return new ComplexLongLong();
+			case OCTET:
+				return new ComplexOctet();
 			case SHORT:
 				return new ComplexShort();
 			case ULONG:
@@ -115,7 +118,6 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 			case ULONGLONG:
 				return new ComplexULongLong();
 			case STRING:
-			case OCTET:
 			case OBJREF:
 			case CHAR:
 			default:

@@ -24,6 +24,7 @@ import mil.jpeojtrs.sca.util.math.ComplexDouble;
 import mil.jpeojtrs.sca.util.math.ComplexFloat;
 import mil.jpeojtrs.sca.util.math.ComplexLong;
 import mil.jpeojtrs.sca.util.math.ComplexLongLong;
+import mil.jpeojtrs.sca.util.math.ComplexOctet;
 import mil.jpeojtrs.sca.util.math.ComplexShort;
 import mil.jpeojtrs.sca.util.math.ComplexUByte;
 import mil.jpeojtrs.sca.util.math.ComplexULong;
@@ -113,6 +114,7 @@ public class SCAObservables {
 	/**
 	 * @since 1.2
 	 */
+	@SuppressWarnings("deprecation")
 	public static EDataType toType(Object obj) {
 		EDataType type;
 		if (obj instanceof Integer) {
@@ -147,6 +149,8 @@ public class SCAObservables {
 			type = PrfPackage.Literals.COMPLEX_LONG;
 		} else if (obj instanceof ComplexLongLong) {
 			type = PrfPackage.Literals.COMPLEX_LONG_LONG;
+		} else if (obj instanceof ComplexOctet) {
+			type = PrfPackage.Literals.COMPLEX_OCTET;
 		} else if (obj instanceof ComplexUByte) {
 			type = PrfPackage.Literals.COMPLEX_UBYTE;
 		} else if (obj instanceof ComplexShort) {

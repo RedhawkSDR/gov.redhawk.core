@@ -21,6 +21,7 @@ import mil.jpeojtrs.sca.util.math.ComplexFloat;
 import mil.jpeojtrs.sca.util.math.ComplexLong;
 import mil.jpeojtrs.sca.util.math.ComplexLongLong;
 import mil.jpeojtrs.sca.util.math.ComplexNumber;
+import mil.jpeojtrs.sca.util.math.ComplexOctet;
 import mil.jpeojtrs.sca.util.math.ComplexShort;
 import mil.jpeojtrs.sca.util.math.ComplexUByte;
 import mil.jpeojtrs.sca.util.math.ComplexULong;
@@ -59,6 +60,7 @@ public class ComplexNumberPropertyEditor extends PropertyEditor {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public ComplexNumberPropertyEditor(String name, ComplexNumber value, ScaSimpleProperty prop) {
 		this.name = name;
 		this.value = value;
@@ -77,6 +79,8 @@ public class ComplexNumberPropertyEditor extends PropertyEditor {
 			this.valueType = PropertyValueType.FLOAT;
 		} else if (value instanceof ComplexDouble) {
 			this.valueType = PropertyValueType.DOUBLE;
+		} else if (value instanceof ComplexOctet) {
+			this.valueType = PropertyValueType.OCTET;
 		} else if (value instanceof ComplexULongLong) {
 			this.valueType = PropertyValueType.ULONGLONG;
 		} else if (value instanceof ComplexULong) {
