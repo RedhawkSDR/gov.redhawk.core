@@ -29,14 +29,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-/**
- * 
- */
 public class MonitorPortSupplierHandler extends AbstractHandler {
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final ISelection selection = HandlerUtil.getCurrentSelection(event);
@@ -67,7 +61,8 @@ public class MonitorPortSupplierHandler extends AbstractHandler {
 					}
 				}
 			} catch (final PartInitException e) {
-				MonitorViewPlugin.getDefault().getLog().log(new Status(e.getStatus().getSeverity(), MonitorViewPlugin.PLUGIN_ID, e.getLocalizedMessage(), e));
+				IStatus status = new Status(e.getStatus().getSeverity(), MonitorViewPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
+				MonitorViewPlugin.getLog().log(status);
 			}
 		}
 		return null;
