@@ -11,32 +11,18 @@
  */
 package gov.redhawk.ui.views.monitor;
 
-import org.eclipse.core.runtime.Plugin;
-import org.osgi.framework.BundleContext;
+import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.Platform;
+import org.osgi.framework.FrameworkUtil;
 
-public class MonitorViewPlugin extends Plugin {
+public class MonitorViewPlugin {
 
 	public static final String PLUGIN_ID = "gov.redhawk.ui.views.monitor";
 
-	private static MonitorViewPlugin plugin;
-
-	public MonitorViewPlugin() {
-	}
-	
-	public static MonitorViewPlugin getDefault() {
-		return MonitorViewPlugin.plugin;
+	private MonitorViewPlugin() {
 	}
 
-	@Override
-	public void start(final BundleContext context) throws Exception {
-		super.start(context);
-		MonitorViewPlugin.plugin = this;
+	public static ILog getLog() {
+		return Platform.getLog(FrameworkUtil.getBundle(MonitorViewPlugin.class));
 	}
-
-	@Override
-	public void stop(final BundleContext context) throws Exception {
-		MonitorViewPlugin.plugin = null;
-		super.stop(context);
-	}
-
 }

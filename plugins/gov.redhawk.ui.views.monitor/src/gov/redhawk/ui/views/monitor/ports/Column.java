@@ -17,10 +17,6 @@ import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.TreeColumn;
 
-/**
- * @since 3.0
- * 
- */
 public class Column {
 	private static final String COLUMN_DATA = "redhawk.columnData";
 	private final String id;

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Port Monitor View Plugin
 Bundle-SymbolicName: gov.redhawk.ui.views.monitor;singleton:=true
-Bundle-Version: 6.0.0.qualifier
+Bundle-Version: 7.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: REDHAWK
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
@@ -24,9 +24,3 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  gov.redhawk.monitor.edit;bundle-version="1.0.0",
  gov.redhawk.sca.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-ActivationPolicy: lazy
-Export-Package: gov.redhawk.ui.views.internal.monitor.handler;x-internal:=true,
- gov.redhawk.ui.views.internal.monitor.ports;x-internal:=true,
- gov.redhawk.ui.views.internal.monitor.tester;x-internal:=true,
- gov.redhawk.ui.views.monitor.ports
-Bundle-Activator: gov.redhawk.ui.views.monitor.MonitorViewPlugin
