@@ -29,10 +29,6 @@ import org.eclipse.jface.viewers.ViewerCell;
 
 import BULKIO.PortStatistics;
 
-/**
- * @since 3.0
- * 
- */
 public final class StatisticsColumns {
 
 	private static final int BITS_PER_MEGABYTE = 8388608;
