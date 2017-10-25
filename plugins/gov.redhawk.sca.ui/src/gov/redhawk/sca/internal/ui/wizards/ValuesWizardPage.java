@@ -42,9 +42,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-/**
- * 
- */
 public class ValuesWizardPage extends WizardPage {
 
 	private static class ClassStringContainer {
@@ -69,12 +66,6 @@ public class ValuesWizardPage extends WizardPage {
 	private final PropertyValueType type;
 	private Boolean complex;
 
-	/**
-	 * @param type 
-	 * @param pageName
-	 * @param title
-	 * @param titleImage
-	 */
 	protected ValuesWizardPage(final PropertyValueType type, Boolean complex) {
 		super("valuesPage", "Values", null);
 		this.setDescription("Edit the values.");
@@ -82,9 +73,6 @@ public class ValuesWizardPage extends WizardPage {
 		this.complex = complex;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void createControl(final Composite parent) {
 		final Composite control = new Composite(parent, SWT.None);
@@ -97,9 +85,6 @@ public class ValuesWizardPage extends WizardPage {
 		setControl(control);
 	}
 
-	/**
-	 * @param control
-	 */
 	private Control createButtons(final Composite control) {
 		final Composite parent = new Composite(control, SWT.None);
 		parent.setLayout(new GridLayout(1, false));
@@ -164,9 +149,6 @@ public class ValuesWizardPage extends WizardPage {
 		return parent;
 	}
 
-	/**
-	 * @return
-	 */
 	protected int getSelectionIndex() {
 		return this.input.indexOf(getSelectedElement());
 	}
@@ -197,9 +179,6 @@ public class ValuesWizardPage extends WizardPage {
 		}
 	}
 
-	/**
-	 * @param control
-	 */
 	private Control createViewer(final Composite control) {
 		this.viewer = new TableViewer(control, SWT.FULL_SELECTION | SWT.BORDER | SWT.SINGLE);
 		final TableLayout layout = new TableLayout();
@@ -282,9 +261,6 @@ public class ValuesWizardPage extends WizardPage {
 		}
 	}
 
-	/**
-	 * @return
-	 */
 	public String[] getValues() {
 		final String[] retVal = new String[this.input.size()];
 		for (int i = 0; i < retVal.length; i++) {

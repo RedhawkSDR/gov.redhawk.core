@@ -14,6 +14,10 @@ package gov.redhawk.sca.ui.properties;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.util.ModelUtil;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.EditingSupport;
@@ -26,7 +30,7 @@ import org.eclipse.ui.views.properties.IPropertySourceProvider;
  * @since 9.0
  */
 public abstract class AbstractPropertyEditingSupport extends EditingSupport {
-	protected IPropertySourceProvider propertySourceProvider;
+	protected IPropertySourceProvider propertySourceProvider; // SUPPRESS CHECKSTYLE INLINE
 
 	/**
 	 * Creates a new instance to be used with the given viewer, based on the
@@ -84,6 +88,13 @@ public abstract class AbstractPropertyEditingSupport extends EditingSupport {
 		if (valuePropertySource != null) {
 			value = valuePropertySource.getEditableValue();
 		}
+
+		if (value instanceof String[]) {
+			List<String> valueList = Arrays.asList((String[]) value);
+			Collections.replaceAll(valueList, "", "\"\"");
+		} else if ("".equals(value)) {
+			value = "\"\"";
+		}
 		return value;
 	}
 
@@ -91,9 +102,18 @@ public abstract class AbstractPropertyEditingSupport extends EditingSupport {
 	protected void setValue(final Object object, final Object value) {
 		final IPropertySource propertySource = this.propertySourceProvider.getPropertySource(object);
 		final Object propertyID = getPropertyID(object);
-		propertySource.setPropertyValue(propertyID, value);
+
+		Object tmpValue = value;
+		if (value instanceof String[]) {
+			List<String> valueList = Arrays.asList((String[]) value);
+			Collections.replaceAll(valueList, "\"\"", "");
+			tmpValue = valueList.toArray();
+		} else if ("\"\"".equals(value)) {
+			tmpValue = "";
+		}
+		propertySource.setPropertyValue(propertyID, tmpValue);
 	}
-	
+
 	private IPropertyDescriptor getPropertyDescriptor(final Object object) {
 		final IPropertySource propertySource = this.propertySourceProvider.getPropertySource(object);
 		if (propertySource != null) {

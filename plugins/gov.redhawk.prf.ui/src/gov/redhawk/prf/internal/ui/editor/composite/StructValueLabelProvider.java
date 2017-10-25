@@ -11,6 +11,10 @@
  */
 package gov.redhawk.prf.internal.ui.editor.composite;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -26,7 +30,7 @@ import mil.jpeojtrs.sca.prf.util.PrfSwitch;
 
 public class StructValueLabelProvider extends ColumnLabelProvider {
 
-	protected IPropertySourceProvider propertySourceProvider;
+	protected IPropertySourceProvider propertySourceProvider;  // SUPPRESS CHECKSTYLE INLINE
 
 	public StructValueLabelProvider(IPropertySourceProvider propertySourceProvider) {
 		this.propertySourceProvider = propertySourceProvider;
@@ -75,7 +79,21 @@ public class StructValueLabelProvider extends ColumnLabelProvider {
 		}
 		IPropertySource propertySource = propertySourceProvider.getPropertySource(element);
 		IPropertyDescriptor propertyDescriptor = getPropertyDescriptor(propertySource, element, propertyID);
-		return propertyDescriptor.getLabelProvider().getText(propertySource.getPropertyValue(propertyID));
+
+		// Check simple sequences for empty strings and convert them to double quotes in the viewer
+		Object value = propertySource.getPropertyValue(propertyID);
+		if (value instanceof String[]) {
+			List<String> valueList = Arrays.asList((String[]) value);
+			Collections.replaceAll(valueList, "", "\"\"");
+		}
+
+		// Check simples for empty strings and convert them to double quotes in the viewer
+		String text = propertyDescriptor.getLabelProvider().getText(value);
+		if ("".equals(text)) {
+			text = "\"\"";
+		}
+
+		return text;
 	}
 
 }

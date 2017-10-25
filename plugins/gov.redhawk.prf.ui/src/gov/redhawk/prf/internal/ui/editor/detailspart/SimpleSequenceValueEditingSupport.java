@@ -53,9 +53,6 @@ public class SimpleSequenceValueEditingSupport extends EditingSupport {
 		return (TableViewer) super.getViewer();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected CellEditor getCellEditor(final Object element) {
 		final EDataType eDataType = this.valueType.toEDataType(complex);
@@ -70,17 +67,11 @@ public class SimpleSequenceValueEditingSupport extends EditingSupport {
 		return new LabelProvider();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected boolean canEdit(final Object element) {
 		return true;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected Object getValue(final Object element) {
 		return AdapterFactoryEditingDomain.unwrap(element);
@@ -92,8 +83,11 @@ public class SimpleSequenceValueEditingSupport extends EditingSupport {
 		final Widget item = cell.getItem();
 		final int valueIndex = getViewer().getTable().indexOf((TableItem) item);
 		final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(getViewer().getInput());
+
+		// When editing an existing value, if newValue is null or "" then set it to an empty string instead
 		final Command command = SetCommand.create(editingDomain, getViewer().getInput(), PrfPackage.Literals.VALUES__VALUE,
-		        (newValue == null) ? "" : newValue.toString(), valueIndex);
+			(newValue == null) || ("\"\"".equals(newValue)) ? "" : newValue.toString(), valueIndex);
+
 		if (editingDomain != null) {
 			editingDomain.getCommandStack().execute(command);
 		} else {

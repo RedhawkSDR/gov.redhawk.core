@@ -15,9 +15,6 @@ import mil.jpeojtrs.sca.prf.PropertyValueType;
 
 import org.eclipse.jface.wizard.Wizard;
 
-/**
- * 
- */
 public class ValuesWizard extends Wizard {
 
 	private ValuesWizardPage valuesPage;
@@ -32,9 +29,6 @@ public class ValuesWizard extends Wizard {
 		this.complex = complex;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void addPages() {
 		this.valuesPage = new ValuesWizardPage(this.type, complex);
@@ -54,9 +48,6 @@ public class ValuesWizard extends Wizard {
 		return this.valuesPage.getValues();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean performFinish() {
 		return true;

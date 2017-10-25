@@ -217,8 +217,10 @@ public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvid
 	public static String getValueText(ScaSimpleProperty scaProperty, Object value) {
 		String retVal = null;
 		Simple property = scaProperty.getDefinition();
-		if (value == null || value.toString().length() == 0) {
+		if (value == null) {
 			return "";
+		} else if (value.toString().length() == 0) {
+			retVal = "\"\"";
 		}
 		if (property == null) {
 			return value.toString();
