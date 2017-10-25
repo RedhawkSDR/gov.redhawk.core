@@ -15,6 +15,9 @@ import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaStructProperty;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
@@ -64,7 +67,16 @@ public class StructFieldPropertyEditingSupport extends PropertyEditingSupport {
 
 	@Override
 	protected void setValue(final Object object, final Object value) {
-		super.setValue(getElement(object), value);
+		Object newValue = value;
+		// We need to replace any double quotes with an empty string as the model value
+		if (value instanceof String && "\"\"".equals(value)) {
+			newValue = "";
+		} else if (value instanceof List< ? >) {
+			@SuppressWarnings("unchecked")
+			List< String > list = (List< String >) value;
+			Collections.replaceAll(list, "\"\"", "");
+		}
+		super.setValue(getElement(object), newValue);
 	}
 
 }

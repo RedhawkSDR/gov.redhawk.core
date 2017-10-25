@@ -38,6 +38,7 @@ import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -123,18 +124,17 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 
 		return newAdapterFactory;
 	}
-	
+
 	@Override
 	protected ComboViewer createKindViewer(Composite parent, FormToolkit toolkit) {
 		ComboViewer retVal = super.createKindViewer(parent, toolkit);
 		// Hide EXECPARAM since only SimpleProps can be exec params.
 		this.getKindViewer().addFilter(new ViewerFilter() {
-			
+
 			@Override
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
-				if (element instanceof PropertyConfigurationType 
-						&& ((PropertyConfigurationType) element).equals(PropertyConfigurationType.EXECPARAM)) {
-					
+				if (element instanceof PropertyConfigurationType && ((PropertyConfigurationType) element).equals(PropertyConfigurationType.EXECPARAM)) {
+
 					return false;
 				}
 				return true;
@@ -142,7 +142,7 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 		});
 		return retVal;
 	}
-	
+
 	protected void createValues(final Composite parent, final FormToolkit toolkit) {
 		// Value
 		this.valuesLabel = toolkit.createLabel(parent, "Values:");
@@ -164,8 +164,21 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 		this.valuesViewer.setContentProvider(new AdapterFactoryContentProvider(this.adapterFactory));
 
 		this.valueColumn = new TableViewerColumn(this.valuesViewer, SWT.LEFT);
-		this.valueColumn.setLabelProvider(new AdapterFactoryCellLabelProvider(this.adapterFactory));
+		this.valueColumn.setLabelProvider(new AdapterFactoryCellLabelProvider(this.adapterFactory) {
+			@Override
+			public void update(ViewerCell cell) {
+				super.update(cell);
+
+				// Represent empty string as "" in the value table
+				Object obj = this.getElement(cell);
+				if ("".equals(this.getText(obj))) {
+					cell.setText("\"\"");
+				}
+
+			}
+		});
 		layout.addColumnData(new ColumnWeightData(1, 20, true));
+		this.valuesViewer.getTable().setToolTipText("For empty string enter a value of \"\"");
 
 		this.addValueButton = toolkit.createButton(valuesComp, "Add...", SWT.PUSH);
 		this.addValueButton.setLayoutData(GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).create());
@@ -178,8 +191,7 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 			public void selectionChanged(final SelectionChangedEvent event) {
 				if (event.getSelection() instanceof StructuredSelection) {
 					if (((StructuredSelection) event.getSelection()).getFirstElement() instanceof AttributeValueWrapperItemProvider) {
-						final AttributeValueWrapperItemProvider provider = (AttributeValueWrapperItemProvider) ((StructuredSelection) event.getSelection())
-						        .getFirstElement();
+						final AttributeValueWrapperItemProvider provider = (AttributeValueWrapperItemProvider) ((StructuredSelection) event.getSelection()).getFirstElement();
 						SimpleSequencePropertyComposite.this.lastSelection = provider.getValue();
 					}
 				}

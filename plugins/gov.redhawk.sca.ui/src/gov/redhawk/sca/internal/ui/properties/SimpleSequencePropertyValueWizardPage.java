@@ -112,7 +112,12 @@ public class SimpleSequencePropertyValueWizardPage extends AbstractSequencePrope
 
 			@Override
 			public String getText(final Object element) {
-				return super.getText(AdapterFactoryEditingDomain.unwrap(element));
+				// Convert empty string to double quotes for display purposes
+				Object tmpObj = AdapterFactoryEditingDomain.unwrap(element);
+				if ("".equals(tmpObj)) {
+					tmpObj = "\"\"";
+				}
+				return super.getText(tmpObj);
 			}
 		});
 		layout.setColumnData(columnViewer.getColumn(), new ColumnPixelData(100, true));

@@ -184,17 +184,20 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 
 	protected void handleAddValue(final Shell shell) {
 		final InputDialog dialog = new InputDialog(shell, "New Value", "Value:", "", new InputValueValidator(this.input.getType(), this.input.isComplex()));
-
 		if (dialog.open() == Window.OK) {
 			Values values = this.input.getValues();
+
+			// Set "" to empty string instead
+			String value = dialog.getValue();
+			if (dialog.getValue().equals("\"\"")) {
+				value = "";
+			}
 			if (values == null) {
 				values = PrfFactory.eINSTANCE.createValues();
-				values.getValue().add(dialog.getValue());
+				values.getValue().add(value);
 				execute(SetCommand.create(getEditingDomain(), this.input, PrfPackage.Literals.SIMPLE_SEQUENCE__VALUES, values));
-				// Values
-//				this.composite.getValuesViewer().setInput(this.input.getValues());
 			} else {
-				final Command command = AddCommand.create(getEditingDomain(), values, PrfPackage.Literals.VALUES__VALUE, dialog.getValue());
+				final Command command = AddCommand.create(getEditingDomain(), values, PrfPackage.Literals.VALUES__VALUE, value);
 				execute(command);
 			}
 
