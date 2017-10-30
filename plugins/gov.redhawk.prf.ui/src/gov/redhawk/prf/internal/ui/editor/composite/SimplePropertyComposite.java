@@ -77,6 +77,7 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 
 	protected void createCommandLineCheckbox(Composite parent, FormToolkit toolkit) {
 		this.commandLineCheckbox = toolkit.createButton(parent, "Pass on command line", SWT.CHECK);
+		this.commandLineCheckbox.setToolTipText("Indicates that the property's initial value at launch should be passed to the resource on the command line");
 		this.commandLineCheckbox.setLayoutData(GridDataFactory.fillDefaults().span(1, 1).grab(false, false).create());
 	}
 
