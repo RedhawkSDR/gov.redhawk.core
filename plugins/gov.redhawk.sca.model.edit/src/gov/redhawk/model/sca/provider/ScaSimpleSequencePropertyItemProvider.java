@@ -16,7 +16,6 @@ import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -244,6 +243,7 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 	/**
 	 * @since 12.0
 	 */
+	@SuppressWarnings("unchecked")
 	public static String getValueText(ScaSimpleSequenceProperty scaProperty, List< ? > value) {
 		String retVal = null;
 		SimpleSequence property = scaProperty.getDefinition();
@@ -261,12 +261,12 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 				retVal = RadixLabelProviderUtil.getText(value.toArray(), RadixLabelProviderUtil.getRadix(defValue));
 			} else {
 				@SuppressWarnings("rawtypes")
-				List tmpList = Arrays.asList(value);
+				List tmpList = (List) value;
 				Collections.replaceAll(tmpList, "", "\"\"");
 				retVal = tmpList.toString();
 			}
 		}
-
+		
 		final String units;
 		if (property != null) {
 			units = property.getUnits();
