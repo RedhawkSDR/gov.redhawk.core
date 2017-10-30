@@ -12,7 +12,10 @@
 package gov.redhawk.model.sca.tests;
 
 import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.jacorb.JacorbUtil;
 import org.junit.Assert;
+import org.omg.CORBA.Any;
+import org.omg.CORBA.StringSeqHelper;
 
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
@@ -91,6 +94,7 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
+		// END GENERATED CODE
 		this.env = TestEnvirornment.getInstance();
 		final ScaWaveform waveform = this.env.getDomMgr().getWaveformFactories().get(0).createWaveform(null, "name", null, null);
 		Assert.assertNotNull(waveform);
@@ -117,6 +121,7 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 		});
 		Assert.assertNotNull(getFixture());
 		Assert.assertNotNull(TransactionUtil.getEditingDomain(getFixture()));
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -127,9 +132,64 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
+		// END GENERATED CODE
 		this.env = null;
 		setFixture(null);
+		// BEGIN GENERATED CODE
 	}
+
+	// END GENERATED CODE
+
+	@Override
+	public void testFromAny__Any() {
+		// Any with valid string sequence
+		Any validValues = JacorbUtil.init().create_any();
+		StringSeqHelper.insert(validValues, new String[] { "abc", "def" });
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().fromAny(validValues);
+		});
+		Assert.assertEquals(2, getFixture().getValues().size());
+		Assert.assertEquals("abc", getFixture().getValues().get(0));
+		Assert.assertEquals("def", getFixture().getValues().get(1));
+		Assert.assertTrue(getFixture().getStatus().isOK());
+
+		// Any with tk_null
+		Any nullValue = JacorbUtil.init().create_any();
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().fromAny(nullValue);
+		});
+		Assert.assertEquals(0, getFixture().getValues().size());
+		Assert.assertTrue(getFixture().getStatus().isOK());
+
+		// Reset back to good values
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().fromAny(validValues);
+		});
+
+		// Any with zero-length sequence
+		Any zeroLen = JacorbUtil.init().create_any();
+		StringSeqHelper.insert(zeroLen, new String[] {});
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().fromAny(zeroLen);
+		});
+		Assert.assertEquals(getFixture().getValues().size(), 0);
+		Assert.assertTrue(getFixture().getStatus().isOK());
+
+		// Reset to having some good values
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().fromAny(validValues);
+		});
+
+		// Any with non-sequence
+		Any nonArrayValue = JacorbUtil.init().create_any();
+		nonArrayValue.insert_string("abc");
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().fromAny(nonArrayValue);
+		});
+		Assert.assertFalse(getFixture().getStatus().isOK());
+	}
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#getValue() <em>Value</em>}' feature getter.
@@ -159,10 +219,12 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 	 * @generated NOT
 	 */
 	public void testCreatePropertyRef() {
+		// END GENERATED CODE
 		ScaSimpleSequenceProperty prop = getFixture();
 		SimpleSequenceRef ref = prop.createPropertyRef();
 		Assert.assertEquals(prop.getId(), ref.getRefID());
 		Assert.assertEquals(prop.getValues().size(), ref.getValues().getValue().size());
+		// BEGIN GENERATED CODE
 	}
 
 	// END GENERATED CODE
@@ -306,6 +368,8 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 		getFixture().setRemoteValue(getFixture().toAny());
 		// BEGIN GENERATED CODE
 	}
+
+	// END GENERATED CODE
 
 	protected void setNewValue() {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
