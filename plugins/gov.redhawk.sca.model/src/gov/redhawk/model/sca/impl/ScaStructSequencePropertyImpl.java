@@ -270,7 +270,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	@Override
 	public void setValueFromRef(AbstractPropertyRef< ? > refValue) {
 		if (!(refValue instanceof StructSequenceRef)) {
-			String msg = String.format("Property ref of type '%s' does not match type of property '%s'", refValue.getClass().getSimpleName(), getName());
+			String msg = String.format("Property ref of type '%s' does not match type of property '%s'", refValue.getClass().getSimpleName(), getId());
 			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, new Status(Status.ERROR, ScaModelPlugin.ID, msg));
 			return;
 		}
@@ -517,8 +517,9 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 			}
 			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, Status.OK_STATUS);
 		} catch (SystemException e) {
+			String msg = String.format("Failed to demarshal value of property '%s'", getId());
 			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS,
-				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to demarshal value of property '" + getName() + "'", e));
+				new Status(Status.ERROR, ScaModelPlugin.ID, msg, e));
 		}
 	}
 
@@ -529,7 +530,8 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	public IStatus getStatus() {
 		IStatus parentStatus = super.getStatus();
 		if (!getStructs().isEmpty()) {
-			MultiStatus retVal = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Struct Sequence property: " + getName(), null);
+			String msg = String.format("Struct Sequence property: %s", getId());
+			MultiStatus retVal = new MultiStatus(ScaModelPlugin.ID, Status.OK, msg, null);
 			retVal.addAll(super.getStatus());
 			for (ScaStructProperty struct : getStructs()) {
 				retVal.add(struct.getStatus());

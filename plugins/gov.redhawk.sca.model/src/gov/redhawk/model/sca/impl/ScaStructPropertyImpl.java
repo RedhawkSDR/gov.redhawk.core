@@ -264,7 +264,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public void setValueFromRef(AbstractPropertyRef< ? > refValue) {
 		if (!(refValue instanceof StructRef)) {
-			String msg = String.format("Property ref of type '%s' does not match type of property '%s'", refValue.getClass().getSimpleName(), getName());
+			String msg = String.format("Property ref of type '%s' does not match type of property '%s'", refValue.getClass().getSimpleName(), getId());
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, new Status(Status.ERROR, ScaModelPlugin.ID, msg));
 			return;
 		}
@@ -622,8 +622,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			}
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, Status.OK_STATUS);
 		} catch (SystemException e) {
+			String msg = String.format("Failed to demarshal value of property '%s'", getId());
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS,
-				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to demarshal value of property '" + getName() + "'", e));
+				new Status(Status.ERROR, ScaModelPlugin.ID, msg, e));
 		}
 	}
 
@@ -631,7 +632,8 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	public IStatus getStatus() {
 		IStatus parentStatus = super.getStatus();
 		if (!getFields().isEmpty()) {
-			MultiStatus retVal = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Struct property: " + getName(), null);
+			String msg = String.format("Struct property: %s", getId());
+			MultiStatus retVal = new MultiStatus(ScaModelPlugin.ID, Status.OK, msg, null);
 			retVal.addAll(super.getStatus());
 			for (ScaAbstractProperty< ? > field : getFields()) {
 				retVal.add(field.getStatus());

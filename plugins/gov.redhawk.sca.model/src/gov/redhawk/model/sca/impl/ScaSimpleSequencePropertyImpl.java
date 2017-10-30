@@ -224,7 +224,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	@Override
 	public void setValueFromRef(AbstractPropertyRef< ? > refValue) {
 		if (!(refValue instanceof SimpleSequenceRef)) {
-			String msg = String.format("Property ref of type '%s' does not match type of property '%s'", refValue.getClass().getSimpleName(), getName());
+			String msg = String.format("Property ref of type '%s' does not match type of property '%s'", refValue.getClass().getSimpleName(), getId());
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, new Status(Status.ERROR, ScaModelPlugin.ID, msg));
 			return;
 		}
@@ -246,7 +246,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 			setValue(newValues);
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, Status.OK_STATUS);
 		} catch (ClassCastException | IllegalArgumentException e) {
-			String msg = String.format("Failed to demarshal value of property '%s' from simplesequenceref", getName());
+			String msg = String.format("Failed to demarshal value of property '%s' from simplesequenceref", getId());
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, new Status(Status.ERROR, ScaModelPlugin.ID, msg, e));
 		}
 		// BEGIN GENERATED CODE
@@ -399,11 +399,12 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 			}
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, Status.OK_STATUS);
 		} catch (IllegalArgumentException e) {
-			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES,
-				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to demarshal value of property '" + getName() + "'", e));
+			String msg = String.format("Failed to demarshal value of property '%s'", getId());
+			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, new Status(Status.ERROR, ScaModelPlugin.ID, msg, e));
 		} catch (ClassCastException e) {
-			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES,
-				new Status(Status.ERROR, ScaModelPlugin.ID, "Received a value of incorrect type for property '" + getName() + "'", e));
+			String type = (newAny == null) ? "(null)" : newAny.type().toString();
+			String msg = String.format("Received a value of incorrect type for simple sequence property '%s':\n%s", getId(), type);
+			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, new Status(Status.ERROR, ScaModelPlugin.ID, msg, e));
 		}
 	}
 
