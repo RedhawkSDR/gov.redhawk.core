@@ -10,24 +10,14 @@
  */
 package gov.redhawk.model.sca.commands;
 
-import gov.redhawk.model.sca.ScaAbstractProperty;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaPropertyContainer;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
-import gov.redhawk.model.sca.ScaStructProperty;
-import gov.redhawk.model.sca.ScaStructSequenceProperty;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaPropertyContainer;
 import mil.jpeojtrs.sca.prf.AbstractProperty;
-import mil.jpeojtrs.sca.prf.PrfPackage;
-import mil.jpeojtrs.sca.prf.Simple;
-import mil.jpeojtrs.sca.prf.SimpleSequence;
-import mil.jpeojtrs.sca.prf.Struct;
-import mil.jpeojtrs.sca.prf.StructSequence;
 
 /**
  * @since 14.0
@@ -51,27 +41,7 @@ public class MergePropertiesCommand extends ScaModelCommand {
 		final Map<String, ScaAbstractProperty< ? >> newProperties = new HashMap<String, ScaAbstractProperty< ? >>();
 		if (propertyDefs != null) {
 			for (AbstractProperty prop : this.propertyDefs) {
-				ScaAbstractProperty< ? > scaProp = null;
-				switch (prop.eClass().getClassifierID()) {
-				case PrfPackage.SIMPLE:
-						final Simple simpleProp = (Simple) prop;
-						scaProp = createSimpleScaProperty(simpleProp);
-						break;
-				case PrfPackage.SIMPLE_SEQUENCE:
-						SimpleSequence simpleSequence = (SimpleSequence) prop;
-						scaProp = createSimpleSequenceScaProperty(simpleSequence);
-						break;
-				case PrfPackage.STRUCT:
-						Struct struct = (Struct) prop;
-						scaProp = createStructScaProperty(struct);
-						break;
-				case PrfPackage.STRUCT_SEQUENCE:
-						StructSequence structSequence = (StructSequence) prop;
-						scaProp = createStructSequenceScaProperty(structSequence);
-						break;
-				default:
-					break;
-				}
+				ScaAbstractProperty< ? > scaProp = ScaFactory.eINSTANCE.createScaProperty(prop);
 				newProperties.put(prop.getId(), scaProp);
 			}
 		}
@@ -104,29 +74,4 @@ public class MergePropertiesCommand extends ScaModelCommand {
 			container.getProperties().clear();
 		}
 	}
-
-	protected ScaStructProperty createStructScaProperty(final Struct value) {
-		final ScaStructProperty prop = ScaFactory.eINSTANCE.createScaStructProperty();
-		prop.setDefinition(value);
-		return prop;
-	}
-
-	protected ScaSimpleSequenceProperty createSimpleSequenceScaProperty(final SimpleSequence value) {
-		final ScaSimpleSequenceProperty prop = ScaFactory.eINSTANCE.createScaSimpleSequenceProperty();
-		prop.setDefinition(value);
-		return prop;
-	}
-
-	protected ScaSimpleProperty createSimpleScaProperty(final Simple simpleProp) {
-		final ScaSimpleProperty prop = ScaFactory.eINSTANCE.createScaSimpleProperty();
-		prop.setDefinition(simpleProp);
-		return prop;
-	}
-
-	protected ScaStructSequenceProperty createStructSequenceScaProperty(final StructSequence structSequence) {
-		final ScaStructSequenceProperty prop = ScaFactory.eINSTANCE.createScaStructSequenceProperty();
-		prop.setDefinition(structSequence);
-		return prop;
-	}
-
 }

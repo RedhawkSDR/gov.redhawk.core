@@ -28,12 +28,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.AbstractPropertyRef;
 import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.PrfPackage;
-import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleRef;
-import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructRef;
@@ -540,21 +539,8 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			getFields().clear();
 			if (newDefinition != null) {
 				for (FeatureMap.Entry entry : newDefinition.getFields()) {
-					switch (entry.getEStructuralFeature().getFeatureID()) {
-					case PrfPackage.STRUCT__SIMPLE:
-						ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
-						simple.setDefinition((Simple) entry.getValue());
-						fields.add(simple);
-						break;
-					case PrfPackage.STRUCT__SIMPLE_SEQUENCE:
-						ScaSimpleSequenceProperty simpleSequence = ScaFactory.eINSTANCE.createScaSimpleSequenceProperty();
-						simpleSequence.setDefinition((SimpleSequence) entry.getValue());
-						fields.add(simpleSequence);
-						break;
-					default:
-						String msg = String.format("Invalid struct field of type %s", entry.getEStructuralFeature().getName());
-						throw new IllegalArgumentException(msg);
-					}
+					ScaAbstractProperty< ? extends AbstractProperty> field = ScaFactory.eINSTANCE.createScaProperty((AbstractProperty) entry.getValue());
+					fields.add(field);
 				}
 			}
 		}
