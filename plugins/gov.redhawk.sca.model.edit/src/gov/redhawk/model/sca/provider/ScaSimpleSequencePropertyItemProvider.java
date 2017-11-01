@@ -16,6 +16,7 @@ import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -261,7 +262,8 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 				retVal = RadixLabelProviderUtil.getText(value.toArray(), RadixLabelProviderUtil.getRadix(defValue));
 			} else {
 				@SuppressWarnings("rawtypes")
-				List tmpList = (List) value;
+				List tmpList = new ArrayList<>();
+				tmpList.addAll(value);
 				Collections.replaceAll(tmpList, "", "\"\"");
 				retVal = tmpList.toString();
 			}
