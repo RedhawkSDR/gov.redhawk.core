@@ -690,25 +690,40 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	@Override
 	public IStatus getStatus() {
 		// END GENERATED CODE
-		if (!getProperties().isEmpty()) {
-			IStatus superStatus = super.getStatus();
-			MultiStatus propertiesStatus = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Status of properties.", null);
-			for (ScaAbstractProperty< ? > property : getProperties()) {
-				IStatus propertyStatus = property.getStatus();
-				if (propertyStatus != null && !propertiesStatus.isOK()) {
-					propertiesStatus.add(propertyStatus);
-				}
-			}
-			if (propertiesStatus.isOK()) {
-				return superStatus;
-			}
-			MultiStatus status = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Status of the model object.", null);
-			status.addAll(superStatus);
-			status.add(propertiesStatus);
-			return status;
-		} else {
+		if (getProperties().isEmpty()) {
 			return super.getStatus();
 		}
+
+		IStatus superStatus = super.getStatus();
+		MultiStatus propertiesStatus = new MultiStatus(ScaModelPlugin.ID, ScaModelPlugin.ERR_BAD_PROPS, "Status of properties", null);
+		for (ScaAbstractProperty< ? > property : getProperties()) {
+			IStatus propertyStatus = property.getStatus();
+			if (propertyStatus != null && !propertyStatus.isOK()) {
+				propertiesStatus.add(propertyStatus);
+			}
+		}
+
+		// If there aren't problems with any properties, then return the normal status
+		if (propertiesStatus.isOK()) {
+			return superStatus;
+		}
+
+		// If the normal status was okay, we can return the property status which has problems
+		if (superStatus.isOK()) {
+			return propertiesStatus;
+		}
+
+		// Both have problems - combine into one status
+		MultiStatus status;
+		if (superStatus.isMultiStatus() && ScaModelPlugin.ERR_MULTIPLE_BAD_STATUS == superStatus.getCode()
+			&& ScaModelPlugin.ID.equals(superStatus.getPlugin())) {
+			status = (MultiStatus) superStatus;
+		} else {
+			status = new MultiStatus(ScaModelPlugin.ID, ScaModelPlugin.ERR_MULTIPLE_BAD_STATUS, "Multiple problems exist within this item.", null);
+			status.add(superStatus);
+		}
+		status.add(propertiesStatus);
+		return status;
 		// BEGIN GENERATED CODE
 	}
 

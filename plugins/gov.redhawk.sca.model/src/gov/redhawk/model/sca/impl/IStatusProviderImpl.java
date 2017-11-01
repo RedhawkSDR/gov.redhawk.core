@@ -131,7 +131,7 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 		IStatus retVal = Status.OK_STATUS;
 		IStatus[] objectStatus = objectStatusMap.values().toArray(new IStatus[objectStatusMap.size()]);
 		if (objectStatus.length > 1) {
-			MultiStatus status = new MultiStatus(ScaModelPlugin.ID, Status.OK, objectStatus, "Multiple problems exist within this item.", null);
+			MultiStatus status = new MultiStatus(ScaModelPlugin.ID, ScaModelPlugin.ERR_MULTIPLE_BAD_STATUS, objectStatus, "Multiple problems exist within this item.", null);
 			if (!status.isOK()) {
 				retVal = status;
 			}

@@ -30,6 +30,18 @@ import org.osgi.util.tracker.ServiceTracker;
 public class ScaModelPlugin extends Plugin implements IScaObjectLocator {
 	public static final String ID = "gov.redhawk.sca.model"; //$NON-NLS-1$
 
+	/**
+	 * {@link IStatus} code for multiple bad statuses for an {@link IStatusProvider}.
+	 * @since 21.0
+	 */
+	public static final int ERR_MULTIPLE_BAD_STATUS = 100;
+
+	/**
+	 * {@link IStatus} code for problems with one or more properties.
+	 * @since 21.0
+	 */
+	public static final int ERR_BAD_PROPS = 101;
+
 	private static ScaModelPlugin instance;
 
 	private ServiceTracker<IScaObjectLocator, IScaObjectLocator> locatorTracker;

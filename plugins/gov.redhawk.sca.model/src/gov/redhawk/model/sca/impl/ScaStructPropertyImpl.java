@@ -630,23 +630,37 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	@Override
 	public IStatus getStatus() {
-		IStatus parentStatus = super.getStatus();
-		if (!getFields().isEmpty()) {
-			String msg = String.format("Struct property: %s", getId());
-			MultiStatus retVal = new MultiStatus(ScaModelPlugin.ID, Status.OK, msg, null);
-			retVal.addAll(super.getStatus());
-			for (ScaAbstractProperty< ? > field : getFields()) {
-				retVal.add(field.getStatus());
+		IStatus superStatus = super.getStatus();
+		String msg = String.format("Struct property: %s", getId());
+		MultiStatus structStatus = new MultiStatus(ScaModelPlugin.ID, 0, msg, null);
+		for (ScaAbstractProperty< ? > field : getFields()) {
+			IStatus fieldStatus = field.getStatus();
+			if (!fieldStatus.isOK()) {
+				structStatus.add(fieldStatus);
 			}
-			retVal.add(parentStatus);
-			if (!retVal.isOK()) {
-				return retVal;
-			} else {
-				return Status.OK_STATUS;
-			}
-		} else {
-			return parentStatus;
 		}
+
+		// If there aren't problems with the struct, then return the normal status
+		if (structStatus.isOK()) {
+			return superStatus;
+		}
+
+		// If the normal status was okay, we can return the struct status problem(s)
+		if (superStatus.isOK()) {
+			return structStatus;
+		}
+
+		// Both have problems - combine into one status
+		MultiStatus status;
+		if (superStatus.isMultiStatus() && ScaModelPlugin.ERR_MULTIPLE_BAD_STATUS == superStatus.getCode()
+			&& ScaModelPlugin.ID.equals(superStatus.getPlugin())) {
+			status = (MultiStatus) superStatus;
+		} else {
+			status = new MultiStatus(ScaModelPlugin.ID, ScaModelPlugin.ERR_MULTIPLE_BAD_STATUS, "Multiple problems exist within this item.", null);
+			status.add(superStatus);
+		}
+		status.add(structStatus);
+		return status;
 	}
 
 	private int getIndex() {
