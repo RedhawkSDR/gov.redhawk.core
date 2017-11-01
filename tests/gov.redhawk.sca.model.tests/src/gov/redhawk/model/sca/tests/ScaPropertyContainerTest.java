@@ -11,13 +11,11 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
-import gov.redhawk.model.sca.ScaAbstractProperty;
-import gov.redhawk.model.sca.ScaPropertyContainer;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-
-import org.junit.Assert;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.junit.Assert;
 
 import CF.DataType;
 import CF.PropertiesHolder;
@@ -25,6 +23,11 @@ import CF.UnknownProperties;
 import CF.PropertyEmitterPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
+import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaModelPlugin;
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaPropertyContainer;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 
 /**
  * <!-- begin-user-doc -->
@@ -81,6 +84,56 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	protected ScaPropertyContainer< ? , ? > getFixture() {
 		return (ScaPropertyContainer< ? , ? >) fixture;
 	}
+
+	// END GENERATED CODE
+
+	@Override
+	public void testGetStatus() {
+		super.testGetStatus();
+
+		// IDE-2112 Test reporting of problems with the object's properties
+		Assert.assertTrue("Resource must have at least one property for test", getFixture().getProperties().size() > 0);
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().getProperties().get(0).setStatus(ScaPackage.Literals.SCA_ABSTRACT_PROPERTY__ID,
+				new Status(IStatus.ERROR, ScaModelPlugin.ID, "Property problem"));
+		});
+		Assert.assertFalse(getFixture().getStatus().isOK());
+		Assert.assertEquals(ScaModelPlugin.ERR_BAD_PROPS, getFixture().getStatus().getCode());
+
+		// 1 prop problem + 1 problem with object
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().setStatus(ScaPackage.Literals.CORBA_OBJ_WRAPPER__CORBA_OBJ, new Status(IStatus.ERROR, ScaModelPlugin.ID, "Object problem 1"));
+		});
+		Assert.assertFalse(getFixture().getStatus().isOK());
+		Assert.assertEquals(ScaModelPlugin.ERR_MULTIPLE_BAD_STATUS, getFixture().getStatus().getCode());
+		Assert.assertEquals(2, getFixture().getStatus().getChildren().length);
+		boolean found = false;
+		for (IStatus childStatus : getFixture().getStatus().getChildren()) {
+			if (childStatus.getCode() == ScaModelPlugin.ERR_BAD_PROPS) {
+				found = true;
+				break;
+			}
+		}
+		Assert.assertTrue("Didn't find property error", found);
+
+		// 1 prop problem + 2 problems with object
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().setStatus(ScaPackage.Literals.CORBA_OBJ_WRAPPER__OBJ, new Status(IStatus.ERROR, ScaModelPlugin.ID, "Object problem 2"));
+		});
+		Assert.assertFalse(getFixture().getStatus().isOK());
+		Assert.assertEquals(ScaModelPlugin.ERR_MULTIPLE_BAD_STATUS, getFixture().getStatus().getCode());
+		Assert.assertEquals(3, getFixture().getStatus().getChildren().length);
+		found = false;
+		for (IStatus childStatus : getFixture().getStatus().getChildren()) {
+			if (childStatus.getCode() == ScaModelPlugin.ERR_BAD_PROPS) {
+				found = true;
+				break;
+			}
+		}
+		Assert.assertTrue("Didn't find property error", found);
+	}
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}' feature

@@ -11,6 +11,11 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
+import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.junit.Assert;
+
 import gov.redhawk.model.sca.IStatusProvider;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
@@ -18,16 +23,7 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.commands.SetStatusCommand;
 import gov.redhawk.model.sca.util.ScaTransactionalCommandStack;
 import gov.redhawk.model.sca.util.ScaTransactionalEditingDomain;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import org.junit.Assert;
 import junit.framework.TestCase;
-
-import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.transaction.TransactionalEditingDomain;
-import org.eclipse.emf.transaction.util.TransactionUtil;
 
 /**
  * <!-- begin-user-doc -->
@@ -111,13 +107,7 @@ public abstract class IStatusProviderTest extends TestCase {
 	 */
 	public void testGetStatus() {
 		// END GENERATED CODE
-		StringWriter s = new StringWriter();
-		PrintWriter w = new PrintWriter(s);
-		if (getFixture().getStatus().getException() != null) {
-			getFixture().getStatus().getException().printStackTrace(w); // CHECKSTYLE: DEBUG CODE
-		}
-		String msg = getFixture().getStatus().getMessage() + ":" + getFixture().getStatus().getSeverity() + " " + s.toString();
-		Assert.assertTrue(msg, getFixture().getStatus().isOK());
+		Assert.assertTrue(getFixture().getStatus().isOK());
 		// BEGIN GENERATED CODE
 	}
 
@@ -134,9 +124,20 @@ public abstract class IStatusProviderTest extends TestCase {
 	public void testSetStatus__EStructuralFeature_IStatus() {
 		// END GENERATED CODE
 		Assert.assertTrue(getFixture().getStatus().isOK());
+
+		// Add one bad status
 		ScaModelCommand.execute(getFixture(), new SetStatusCommand<IStatusProvider>(getFixture(), ScaPackage.Literals.ISTATUS_PROVIDER__STATUS,
-			new Status(Status.ERROR, ScaModelPlugin.ID, "Test Error", null)));
+			new Status(Status.ERROR, ScaModelPlugin.ID, "Test Error")));
 		Assert.assertFalse(getFixture().getStatus().isOK());
+		Assert.assertFalse(getFixture().getStatus().isMultiStatus());
+
+		// Add a second bad status
+		ScaModelCommand.execute(getFixture(), new SetStatusCommand<IStatusProvider>(getFixture(), ScaPackage.Literals.CORBA_OBJ_WRAPPER__OBJ,
+				new Status(Status.ERROR, ScaModelPlugin.ID, "Test Error 2")));
+		Assert.assertFalse(getFixture().getStatus().isOK());
+		Assert.assertTrue(getFixture().getStatus().isMultiStatus());
+		Assert.assertEquals(2, getFixture().getStatus().getChildren().length);
+		Assert.assertEquals("Incorrect error code", ScaModelPlugin.ERR_MULTIPLE_BAD_STATUS, getFixture().getStatus().getCode());
 		// BEGIN GENERATED CODE
 	}
 

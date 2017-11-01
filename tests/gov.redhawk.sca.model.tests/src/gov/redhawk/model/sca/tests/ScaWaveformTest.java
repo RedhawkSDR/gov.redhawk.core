@@ -94,8 +94,6 @@ import junit.textui.TestRunner;
  */
 public class ScaWaveformTest extends ScaPropertyContainerTest {
 
-	private static final String PLUGIN_ID = "gov.redhawk.sca.model.tests";
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
