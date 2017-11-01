@@ -137,6 +137,22 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		setFixture(null);
 	}
 
+	// END GENERATED CODE
+
+	@Override
+	public void testFromAny__Any() {
+		// TODO: Write a better test. See same method in ScaSimplePropertyTest / ScaSimpleSequencePropertyTest
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+
+			@Override
+			public void execute() {
+				getFixture().fromAny(getFixture().toAny());
+			}
+		});
+	}
+
+	// BEGIN GENERATED CODE
+
 	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaStructSequenceProperty#createScaStructProperty() <em>Create Sca Struct
 	 * Property</em>}' operation.
