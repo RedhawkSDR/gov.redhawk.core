@@ -11,8 +11,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.junit.Assert;
 
@@ -25,8 +23,6 @@ import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
@@ -136,6 +132,22 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		this.env = null;
 		setFixture(null);
 	}
+
+	// END GENERATED CODE
+
+	@Override
+	public void testFromAny__Any() {
+		// TODO: Write a better test. See same method in ScaSimplePropertyTest / ScaSimpleSequencePropertyTest
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+
+			@Override
+			public void execute() {
+				getFixture().fromAny(getFixture().toAny());
+			}
+		});
+	}
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaStructSequenceProperty#createScaStructProperty() <em>Create Sca Struct
@@ -301,37 +313,6 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		// END GENERATED CODE
 		Assert.assertEquals(getFixture().getDefinition().getStructValue().size(), getFixture().getStructs().size());
 		// BEGIN GENERATED CODE
-	}
-
-	public void testListener() {
-		final boolean[] simpleNotification = new boolean[] { false };
-		final EContentAdapter adapter = new EContentAdapter() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				super.notifyChanged(notification);
-				if (notification.getNotifier() instanceof ScaSimpleProperty) {
-					switch (notification.getFeatureID(ScaSimpleProperty.class)) {
-					case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
-						simpleNotification[0] = true;
-						break;
-					default:
-						break;
-					}
-				}
-			}
-		};
-		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-
-			@Override
-			public void execute() {
-				getFixture().eAdapters().add(adapter);
-				ScaStructProperty struct = getFixture().createScaStructProperty();
-				getFixture().getStructs().add(struct);
-				struct.getSimples().get(0).setValue("newValue");
-			}
-		});
-
-		Assert.assertTrue(simpleNotification[0]);
 	}
 
 	@Override

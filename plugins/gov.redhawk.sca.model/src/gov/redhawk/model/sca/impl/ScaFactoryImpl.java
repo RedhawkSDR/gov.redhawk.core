@@ -12,33 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
-import gov.redhawk.model.sca.DomainConnectionException;
-import gov.redhawk.model.sca.DomainConnectionState;
-import gov.redhawk.model.sca.Properties;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaComponent;
-import gov.redhawk.model.sca.ScaConnection;
-import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaDeviceManager;
-import gov.redhawk.model.sca.ScaDeviceManagerFileSystem;
-import gov.redhawk.model.sca.ScaDocumentRoot;
-import gov.redhawk.model.sca.ScaDomainManager;
-import gov.redhawk.model.sca.ScaDomainManagerFileSystem;
-import gov.redhawk.model.sca.ScaDomainManagerRegistry;
-import gov.redhawk.model.sca.ScaExecutableDevice;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaFileStore;
-import gov.redhawk.model.sca.ScaLoadableDevice;
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaProvidesPort;
-import gov.redhawk.model.sca.ScaService;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
-import gov.redhawk.model.sca.ScaStructProperty;
-import gov.redhawk.model.sca.ScaStructSequenceProperty;
-import gov.redhawk.model.sca.ScaUsesPort;
-import gov.redhawk.model.sca.ScaWaveform;
-import gov.redhawk.model.sca.ScaWaveformFactory;
 import java.net.URI;
 import java.util.Map;
 import org.eclipse.core.filesystem.IFileStore;
@@ -51,6 +24,12 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import CF.Device;
 import CF.LoadableDevice;
 import gov.redhawk.model.sca.*;
+import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.prf.PrfPackage;
+import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.SimpleSequence;
+import mil.jpeojtrs.sca.prf.Struct;
+import mil.jpeojtrs.sca.prf.StructSequence;
 import CF.DevicePackage.AdminType;
 import CF.DevicePackage.OperationalType;
 import CF.DevicePackage.UsageType;
@@ -399,6 +378,34 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 		ScaProvidesPortImpl scaProvidesPort = new ScaProvidesPortImpl();
 		return scaProvidesPort;
 	}
+
+	// END GENERATED CODE
+
+	@Override
+	public ScaAbstractProperty< ? extends AbstractProperty > createScaProperty(AbstractProperty definition) {
+		switch (definition.eClass().getClassifierID()) {
+		case PrfPackage.SIMPLE:
+			ScaSimpleProperty simple = createScaSimpleProperty();
+			simple.setDefinition((Simple) definition);
+			return simple;
+		case PrfPackage.SIMPLE_SEQUENCE:
+			ScaSimpleSequenceProperty simpleSeq = createScaSimpleSequenceProperty();
+			simpleSeq.setDefinition((SimpleSequence) definition);
+			return simpleSeq;
+		case PrfPackage.STRUCT:
+			ScaStructProperty struct = createScaStructProperty();
+			struct.setDefinition((Struct) definition);
+			return struct;
+		case PrfPackage.STRUCT_SEQUENCE:
+			ScaStructSequenceProperty structSeq = createScaStructSequenceProperty();
+			structSeq.setDefinition((StructSequence) definition);
+			return structSeq;
+		default:
+			throw new IllegalArgumentException("Unknown property type: " + definition.getClass().getCanonicalName());
+		}
+	}
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * <!-- begin-user-doc -->

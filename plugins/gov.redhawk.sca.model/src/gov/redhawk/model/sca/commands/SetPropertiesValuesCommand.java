@@ -47,7 +47,6 @@ public class SetPropertiesValuesCommand extends SetStatusCommand<ScaPropertyCont
 		this.defs = defs;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void execute() {
 		if (propHolder.value != null && propHolder.value.length > 0) {
@@ -57,11 +56,13 @@ public class SetPropertiesValuesCommand extends SetStatusCommand<ScaPropertyCont
 			}
 
 			for (final DataType dt : propHolder.value) {
-				final ScaAbstractProperty< ? > prop = props.get(dt.id);
+				ScaAbstractProperty< ? > prop = props.get(dt.id);
 				if (prop != null) {
 					if (prop.getDefinition() == null) {
 						AbstractProperty def = getDefinition(prop.getId());
-						((ScaAbstractProperty<AbstractProperty>) prop).setDefinition(def);
+						if (def != null) {
+							prop = setDefinition(prop, def);
+						}
 					}
 					prop.fromAny(dt.value);
 				} else {
@@ -75,6 +76,31 @@ public class SetPropertiesValuesCommand extends SetStatusCommand<ScaPropertyCont
 			}
 		}
 		super.execute();
+	}
+
+	/**
+	 * Set the definition of the SCA model property to what is in the PRF. If there is a type mismatch, the property
+	 * may be re-created.
+	 * @param prop The model property
+	 * @param def The PRF definition
+	 * @return The model property (may be a different object than was passed in)
+	 */
+	@SuppressWarnings("unchecked")
+	private ScaAbstractProperty< ? > setDefinition(ScaAbstractProperty< ? > prop, AbstractProperty def) {
+		try {
+			// Normally this will complete without exception
+			((ScaAbstractProperty<AbstractProperty>) prop).setDefinition(def);
+			return prop;
+		} catch (ClassCastException e) {
+			// This only occurs if a property definition initially isn't available and the SCA model property is
+			// created based solely on the return value from query(). If the definition is later added to the SCA
+			// model property, but the types don't agree (e.g. Simple vs. ScaStruct), the ClassCastException occurs.
+			// This also implies that the resource is returning values from query() that don't agree with its PRF.
+			provider.getProperties().remove(prop);
+			ScaAbstractProperty< ? extends AbstractProperty> replacementProp = ScaFactory.eINSTANCE.createScaProperty(def);
+			provider.getProperties().add(replacementProp);
+			return replacementProp;
+		}
 	}
 
 	private AbstractProperty getDefinition(String id) {

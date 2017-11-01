@@ -14,6 +14,7 @@ package gov.redhawk.model.sca.tests;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.jacorb.JacorbUtil;
 import org.junit.Assert;
+import org.omg.CORBA.Any;
 
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
@@ -129,6 +130,43 @@ public class ScaSimplePropertyTest extends ScaAbstractPropertyTest {
 
 		setFixture(null);
 	}
+
+	// END GENERATED CODE
+
+	@Override
+	public void testFromAny__Any() {
+		// Any with valid string
+		Any validValue = JacorbUtil.init().create_any();
+		validValue.insert_string("abc");
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().fromAny(validValue);
+		});
+		Assert.assertEquals("abc", getFixture().getValue());
+		Assert.assertTrue(getFixture().getStatus().isOK());
+
+		// Any with tk_null
+		Any nullValue = JacorbUtil.init().create_any();
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().fromAny(nullValue);
+		});
+		Assert.assertEquals(null, getFixture().getValue());
+		Assert.assertTrue(getFixture().getStatus().isOK());
+
+		// Reset back to good values
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().fromAny(validValue);
+		});
+
+		// Any with non-string
+		Any nonArrayValue = JacorbUtil.init().create_any();
+		nonArrayValue.insert_long(123);
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().fromAny(nonArrayValue);
+		});
+		Assert.assertFalse(getFixture().getStatus().isOK());
+	}
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaSimpleProperty#createPropertyRef() <em>Create Property Ref</em>}'

@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EFactory;
 
 import CF.Device;
 import CF.LoadableDevice;
+import mil.jpeojtrs.sca.prf.AbstractProperty;
 
 /**
  * <!-- begin-user-doc -->
@@ -176,6 +177,18 @@ public interface ScaFactory extends EFactory {
 	 * @generated
 	 */
 	ScaProvidesPort createScaProvidesPort();
+
+	// END GENERATED CODE
+
+	/**
+	 * Creates a new SCA model property according to the supplied definition.
+	 * @param definition
+	 * @return
+	 * @since 21.0
+	 */
+	ScaAbstractProperty< ? extends AbstractProperty > createScaProperty(AbstractProperty definition);
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * Returns a new object of class '<em>Simple Property</em>'.

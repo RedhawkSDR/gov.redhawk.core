@@ -207,17 +207,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	 * @see gov.redhawk.model.sca.ScaAbstractProperty#fromAny(org.omg.CORBA.Any)
 	 * @generated NOT
 	 */
-	public void testFromAny__Any() {
-		// END GENERATED CODE
-		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-
-			@Override
-			public void execute() {
-				getFixture().fromAny(getFixture().toAny());
-			}
-		});
-		// BEGIN GENERATED CODE
-	}
+	public abstract void testFromAny__Any();
 
 	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#setRemoteValue(org.omg.CORBA.Any) <em>Set Remote

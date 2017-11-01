@@ -11,8 +11,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.junit.Assert;
 
@@ -25,8 +23,6 @@ import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaWaveform;
@@ -140,35 +136,6 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 		Assert.assertNotNull(TransactionUtil.getEditingDomain(getFixture()));
 	}
 
-	public void testListener() {
-		final boolean[] simpleNotification = new boolean[] { false };
-		final EContentAdapter adapter = new EContentAdapter() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				super.notifyChanged(notification);
-				if (notification.getNotifier() instanceof ScaSimpleProperty) {
-					switch (notification.getFeatureID(ScaSimpleProperty.class)) {
-					case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
-						simpleNotification[0] = true;
-						break;
-					default:
-						break;
-					}
-				}
-			}
-		};
-		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-
-			@Override
-			public void execute() {
-				getFixture().eAdapters().add(adapter);
-				getFixture().getSimples().get(0).setValue("newValue");
-			}
-		});
-
-		Assert.assertTrue(simpleNotification[0]);
-	}
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -180,6 +147,22 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 		this.env = null;
 		setFixture(null);
 	}
+
+	// END GENERATED CODE
+
+	@Override
+	public void testFromAny__Any() {
+		// TODO: Write a better test. See same method in ScaSimplePropertyTest / ScaSimpleSequencePropertyTest
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+
+			@Override
+			public void execute() {
+				getFixture().fromAny(getFixture().toAny());
+			}
+		});
+	}
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaStructProperty#getSimples() <em>Simples</em>}' feature getter.

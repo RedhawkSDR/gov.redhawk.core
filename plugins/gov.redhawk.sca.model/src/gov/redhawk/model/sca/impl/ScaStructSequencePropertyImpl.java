@@ -270,7 +270,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	@Override
 	public void setValueFromRef(AbstractPropertyRef< ? > refValue) {
 		if (!(refValue instanceof StructSequenceRef)) {
-			String msg = String.format("Property ref of type '%s' does not match type of property '%s'", refValue.getClass().getSimpleName(), getName());
+			String msg = String.format("Property ref of type '%s' does not match type of property '%s'", refValue.getClass().getSimpleName(), getId());
 			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, new Status(Status.ERROR, ScaModelPlugin.ID, msg));
 			return;
 		}
@@ -517,8 +517,9 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 			}
 			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, Status.OK_STATUS);
 		} catch (SystemException e) {
+			String msg = String.format("Failed to demarshal value of property '%s'", getId());
 			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS,
-				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to demarshal value of property '" + getName() + "'", e));
+				new Status(Status.ERROR, ScaModelPlugin.ID, msg, e));
 		}
 	}
 
@@ -527,22 +528,37 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	 */
 	@Override
 	public IStatus getStatus() {
-		IStatus parentStatus = super.getStatus();
-		if (!getStructs().isEmpty()) {
-			MultiStatus retVal = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Struct Sequence property: " + getName(), null);
-			retVal.addAll(super.getStatus());
-			for (ScaStructProperty struct : getStructs()) {
-				retVal.add(struct.getStatus());
+		IStatus superStatus = super.getStatus();
+		String msg = String.format("Struct sequence property: %s", getId());
+		MultiStatus structSeqStatus = new MultiStatus(ScaModelPlugin.ID, 0, msg, null);
+		for (ScaStructProperty struct : getStructs()) {
+			IStatus structStatus = struct.getStatus();
+			if (!structStatus.isOK()) {
+				structSeqStatus.add(structStatus);
 			}
-			retVal.add(parentStatus);
-			if (!retVal.isOK()) {
-				return retVal;
-			} else {
-				return Status.OK_STATUS;
-			}
-		} else {
-			return parentStatus;
 		}
+
+		// If there aren't problems with any fields, then return the normal status
+		if (structSeqStatus.isOK()) {
+			return superStatus;
+		}
+
+		// If the normal status was okay, we can return the field status problem(s)
+		if (superStatus.isOK()) {
+			return structSeqStatus;
+		}
+
+		// Both have problems - combine into one status
+		MultiStatus status;
+		if (superStatus.isMultiStatus() && ScaModelPlugin.ERR_MULTIPLE_BAD_STATUS == superStatus.getCode()
+			&& ScaModelPlugin.ID.equals(superStatus.getPlugin())) {
+			status = (MultiStatus) superStatus;
+		} else {
+			status = new MultiStatus(ScaModelPlugin.ID, ScaModelPlugin.ERR_MULTIPLE_BAD_STATUS, "Multiple problems exist within this item.", null);
+			status.add(superStatus);
+		}
+		status.add(structSeqStatus);
+		return status;
 	}
 
 	private ScaStructProperty createStructValue(StructSequence seqDef, StructValue value) {

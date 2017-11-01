@@ -11,4 +11,9 @@
  
 -->
 <!DOCTYPE properties PUBLIC "-//JTRS//DTD SCA V2.2.2 PRF//EN" "properties.dtd">
-<properties/>
+<properties>
+  <simple type="boolean" id="startAll">
+    <value>true</value>
+    <kind kindtype="property"/>
+  </simple>
+</properties>

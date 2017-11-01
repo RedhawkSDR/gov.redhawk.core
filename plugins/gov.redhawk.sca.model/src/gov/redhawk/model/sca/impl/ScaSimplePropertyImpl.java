@@ -197,7 +197,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	@Override
 	public void setValueFromRef(AbstractPropertyRef< ? > refValue) {
 		if (!(refValue instanceof SimpleRef)) {
-			String msg = String.format("Property ref of type '%s' does not match type of property '%s'", refValue.getClass().getSimpleName(), getName());
+			String msg = String.format("Property ref of type '%s' does not match type of property '%s'", refValue.getClass().getSimpleName(), getId());
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, new Status(Status.ERROR, ScaModelPlugin.ID, msg));
 			return;
 		}
@@ -219,7 +219,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 			setValue(newValue);
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, Status.OK_STATUS);
 		} catch (ClassCastException | IllegalArgumentException e) {
-			String msg = String.format("Failed to demarshal value of property '%s' from simpleref", getName());
+			String msg = String.format("Failed to demarshal value of property '%s' from simpleref", getId());
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, new Status(Status.ERROR, ScaModelPlugin.ID, msg, e));
 		}
 		// BEGIN GENERATED CODE
@@ -346,11 +346,12 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 			}
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, Status.OK_STATUS);
 		} catch (IllegalArgumentException e) {
-			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE,
-				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to demarshal value of property '" + getName() + "'", e));
+			String msg = String.format("Failed to demarshal value of simple property '%s'", getId());
+			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, new Status(Status.ERROR, ScaModelPlugin.ID, msg, e));
 		} catch (ClassCastException e) {
-			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE,
-				new Status(Status.ERROR, ScaModelPlugin.ID, "Received a value of incorrect type for property '" + getName() + "'", e));
+			String type = (newAny == null) ? "(null)" : newAny.type().toString();
+			String msg = String.format("Received a value of incorrect type for simple property '%s':\n%s", getId(), type);
+			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, new Status(Status.ERROR, ScaModelPlugin.ID, msg, e));
 		}
 	}
 

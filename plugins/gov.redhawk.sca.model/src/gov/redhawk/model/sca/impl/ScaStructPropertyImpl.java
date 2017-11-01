@@ -28,12 +28,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.AbstractPropertyRef;
 import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.PrfPackage;
-import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleRef;
-import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructRef;
@@ -264,7 +263,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public void setValueFromRef(AbstractPropertyRef< ? > refValue) {
 		if (!(refValue instanceof StructRef)) {
-			String msg = String.format("Property ref of type '%s' does not match type of property '%s'", refValue.getClass().getSimpleName(), getName());
+			String msg = String.format("Property ref of type '%s' does not match type of property '%s'", refValue.getClass().getSimpleName(), getId());
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, new Status(Status.ERROR, ScaModelPlugin.ID, msg));
 			return;
 		}
@@ -540,21 +539,8 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			getFields().clear();
 			if (newDefinition != null) {
 				for (FeatureMap.Entry entry : newDefinition.getFields()) {
-					switch (entry.getEStructuralFeature().getFeatureID()) {
-					case PrfPackage.STRUCT__SIMPLE:
-						ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
-						simple.setDefinition((Simple) entry.getValue());
-						fields.add(simple);
-						break;
-					case PrfPackage.STRUCT__SIMPLE_SEQUENCE:
-						ScaSimpleSequenceProperty simpleSequence = ScaFactory.eINSTANCE.createScaSimpleSequenceProperty();
-						simpleSequence.setDefinition((SimpleSequence) entry.getValue());
-						fields.add(simpleSequence);
-						break;
-					default:
-						String msg = String.format("Invalid struct field of type %s", entry.getEStructuralFeature().getName());
-						throw new IllegalArgumentException(msg);
-					}
+					ScaAbstractProperty< ? extends AbstractProperty> field = ScaFactory.eINSTANCE.createScaProperty((AbstractProperty) entry.getValue());
+					fields.add(field);
 				}
 			}
 		}
@@ -622,29 +608,45 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			}
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, Status.OK_STATUS);
 		} catch (SystemException e) {
+			String msg = String.format("Failed to demarshal value of property '%s'", getId());
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS,
-				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to demarshal value of property '" + getName() + "'", e));
+				new Status(Status.ERROR, ScaModelPlugin.ID, msg, e));
 		}
 	}
 
 	@Override
 	public IStatus getStatus() {
-		IStatus parentStatus = super.getStatus();
-		if (!getFields().isEmpty()) {
-			MultiStatus retVal = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Struct property: " + getName(), null);
-			retVal.addAll(super.getStatus());
-			for (ScaAbstractProperty< ? > field : getFields()) {
-				retVal.add(field.getStatus());
+		IStatus superStatus = super.getStatus();
+		String msg = String.format("Struct property: %s", getId());
+		MultiStatus structStatus = new MultiStatus(ScaModelPlugin.ID, 0, msg, null);
+		for (ScaAbstractProperty< ? > field : getFields()) {
+			IStatus fieldStatus = field.getStatus();
+			if (!fieldStatus.isOK()) {
+				structStatus.add(fieldStatus);
 			}
-			retVal.add(parentStatus);
-			if (!retVal.isOK()) {
-				return retVal;
-			} else {
-				return Status.OK_STATUS;
-			}
-		} else {
-			return parentStatus;
 		}
+
+		// If there aren't problems with the struct, then return the normal status
+		if (structStatus.isOK()) {
+			return superStatus;
+		}
+
+		// If the normal status was okay, we can return the struct status problem(s)
+		if (superStatus.isOK()) {
+			return structStatus;
+		}
+
+		// Both have problems - combine into one status
+		MultiStatus status;
+		if (superStatus.isMultiStatus() && ScaModelPlugin.ERR_MULTIPLE_BAD_STATUS == superStatus.getCode()
+			&& ScaModelPlugin.ID.equals(superStatus.getPlugin())) {
+			status = (MultiStatus) superStatus;
+		} else {
+			status = new MultiStatus(ScaModelPlugin.ID, ScaModelPlugin.ERR_MULTIPLE_BAD_STATUS, "Multiple problems exist within this item.", null);
+			status.add(superStatus);
+		}
+		status.add(structStatus);
+		return status;
 	}
 
 	private int getIndex() {
