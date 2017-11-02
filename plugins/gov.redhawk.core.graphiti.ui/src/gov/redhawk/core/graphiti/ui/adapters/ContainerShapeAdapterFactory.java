@@ -57,7 +57,9 @@ public class ContainerShapeAdapterFactory implements IAdapterFactory {
 			if (waveform == null) {
 				return null;
 			} else {
-				return adapterType.cast(waveform);
+				if (adapterType.isInstance(waveform)) {
+					return adapterType.cast(waveform);
+				}
 			}
 		}
 
