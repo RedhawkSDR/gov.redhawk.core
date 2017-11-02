@@ -101,6 +101,12 @@
                type="gov.redhawk.model.sca.ScaComponent">
          </adapter>
          <adapter
+               type="gov.redhawk.model.sca.ScaWaveform">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.ScaDeviceManager">
+         </adapter>
+         <adapter
                type="gov.redhawk.model.sca.ScaAbstractComponent">
          </adapter>
          <adapter

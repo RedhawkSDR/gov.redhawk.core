@@ -20,6 +20,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.graphics.Image;
 
 import gov.redhawk.core.graphiti.ui.util.DUtil;
+import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import mil.jpeojtrs.sca.dcd.provider.DcdItemProviderAdapterFactory;
@@ -53,7 +54,14 @@ public class PropertyPageLabelProvider extends AdapterFactoryLabelProvider {
 			element = ((AbstractEditPart) element).getModel();
 		}
 		if (element instanceof Diagram) {
-			element = DUtil.getBusinessObject((Diagram) element, ScaWaveform.class);
+			ScaWaveform waveform = DUtil.getBusinessObject((Diagram) element, ScaWaveform.class);
+			if (waveform != null) {
+				return waveform;
+			}
+			ScaDeviceManager deviceManager = DUtil.getBusinessObject((Diagram) element, ScaDeviceManager.class);
+			if (deviceManager != null) {
+				return deviceManager;
+			}
 		} else if (element instanceof PictogramElement) {
 			element = ((PictogramElement) element).getLink().getBusinessObjects().get(0);
 		}

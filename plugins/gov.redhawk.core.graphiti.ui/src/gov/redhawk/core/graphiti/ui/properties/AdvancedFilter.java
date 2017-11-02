@@ -17,6 +17,7 @@ import org.eclipse.graphiti.ui.platform.AbstractPropertySectionFilter;
 import org.eclipse.jface.viewers.IFilter;
 
 import gov.redhawk.core.graphiti.ui.util.DUtil;
+import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 import mil.jpeojtrs.sca.partitioning.ProvidesPortStub;
 import mil.jpeojtrs.sca.partitioning.UsesPortStub;
@@ -31,7 +32,7 @@ public class AdvancedFilter extends CompoundFilter {
 	public AdvancedFilter() {
 		super(CompoundFilter.BooleanOperator.FILTER_AND);
 
-		IFilter boFilter = new BusinessObjectFilter(SoftwareAssembly.class, ComponentInstantiation.class, ProvidesPortStub.class, UsesPortStub.class);
+		IFilter boFilter = new BusinessObjectFilter(SoftwareAssembly.class, DeviceConfiguration.class, ComponentInstantiation.class, ProvidesPortStub.class, UsesPortStub.class);
 		IFilter runtimeFilter = new AbstractPropertySectionFilter() {
 			@Override
 			protected boolean accept(PictogramElement pictogramElement) {

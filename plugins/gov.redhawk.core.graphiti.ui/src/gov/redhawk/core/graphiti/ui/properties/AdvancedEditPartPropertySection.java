@@ -21,6 +21,7 @@ import org.eclipse.ui.views.properties.tabbed.AdvancedPropertySection;
 
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
+import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.ScaProvidesPort;
 import gov.redhawk.model.sca.ScaUsesPort;
@@ -57,7 +58,13 @@ public class AdvancedEditPartPropertySection extends AdvancedPropertySection {
 				return Platform.getAdapterManager().getAdapter(ep, ScaUsesPort.class);
 			}
 		} else if (graphitiModel instanceof Diagram) {
-			return DUtil.getBusinessObject((Diagram) graphitiModel, ScaWaveform.class);
+			ScaWaveform waveform = DUtil.getBusinessObject((Diagram) graphitiModel, ScaWaveform.class);
+			if (waveform != null) {
+				return waveform;
+			} else {
+				return DUtil.getBusinessObject((Diagram) graphitiModel, ScaDeviceManager.class);
+			}
+
 		}
 		return null;
 	}

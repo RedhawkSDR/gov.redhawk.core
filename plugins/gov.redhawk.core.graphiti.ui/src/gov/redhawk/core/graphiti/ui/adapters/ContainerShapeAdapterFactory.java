@@ -42,7 +42,8 @@ import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
  */
 public class ContainerShapeAdapterFactory implements IAdapterFactory {
 
-	private static final Class< ? >[] ADAPTER_TYPES = new Class< ? >[] { ScaWaveform.class, ScaComponent.class, ScaDevice.class, ScaService.class };
+	private static final Class< ? >[] ADAPTER_TYPES = new Class< ? >[] { ScaWaveform.class, ScaDeviceManager.class, ScaComponent.class, ScaDevice.class,
+		ScaService.class };
 
 	@Override
 	public < T > T getAdapter(Object adaptableObject, Class<T> adapterType) {
@@ -54,11 +55,14 @@ public class ContainerShapeAdapterFactory implements IAdapterFactory {
 		if (adaptableObject instanceof Diagram) {
 			Diagram diagram = (Diagram) adaptableObject;
 			ScaWaveform waveform = DUtil.getBusinessObject(diagram, ScaWaveform.class);
-			if (waveform == null) {
-				return null;
-			} else {
+			ScaDeviceManager deviceManager = DUtil.getBusinessObject(diagram, ScaDeviceManager.class);
+			if (waveform != null) {
 				if (adapterType.isInstance(waveform)) {
 					return adapterType.cast(waveform);
+				}
+			} else if (deviceManager != null) {
+				if (adapterType.isInstance(deviceManager)) {
+					return adapterType.cast(deviceManager);
 				}
 			}
 		}
