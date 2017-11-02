@@ -20,6 +20,7 @@ import gov.redhawk.core.graphiti.ui.util.DUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 import mil.jpeojtrs.sca.partitioning.ProvidesPortStub;
 import mil.jpeojtrs.sca.partitioning.UsesPortStub;
+import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 
 /**
  * This filter is designed for the "Advanced" tab in the properties view. It filters objects of the correct type(s)
@@ -30,7 +31,7 @@ public class AdvancedFilter extends CompoundFilter {
 	public AdvancedFilter() {
 		super(CompoundFilter.BooleanOperator.FILTER_AND);
 
-		IFilter boFilter = new BusinessObjectFilter(ComponentInstantiation.class, ProvidesPortStub.class, UsesPortStub.class);
+		IFilter boFilter = new BusinessObjectFilter(SoftwareAssembly.class, ComponentInstantiation.class, ProvidesPortStub.class, UsesPortStub.class);
 		IFilter runtimeFilter = new AbstractPropertySectionFilter() {
 			@Override
 			protected boolean accept(PictogramElement pictogramElement) {

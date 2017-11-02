@@ -13,15 +13,18 @@ package gov.redhawk.core.graphiti.ui.properties;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.gef.EditPart;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
+import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.tabbed.AdvancedPropertySection;
 
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
+import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.ScaProvidesPort;
 import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.model.sca.ScaWaveform;
 import mil.jpeojtrs.sca.partitioning.ProvidesPortStub;
 import mil.jpeojtrs.sca.partitioning.UsesPortStub;
 
@@ -53,6 +56,8 @@ public class AdvancedEditPartPropertySection extends AdvancedPropertySection {
 			} else if (rhModel instanceof UsesPortStub) {
 				return Platform.getAdapterManager().getAdapter(ep, ScaUsesPort.class);
 			}
+		} else if (graphitiModel instanceof Diagram) {
+			return DUtil.getBusinessObject((Diagram) graphitiModel, ScaWaveform.class);
 		}
 		return null;
 	}

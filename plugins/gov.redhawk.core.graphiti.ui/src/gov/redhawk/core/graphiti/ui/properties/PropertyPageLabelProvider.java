@@ -14,10 +14,14 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.gef.editparts.AbstractEditPart;
+import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.graphics.Image;
 
+import gov.redhawk.core.graphiti.ui.util.DUtil;
+import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import mil.jpeojtrs.sca.dcd.provider.DcdItemProviderAdapterFactory;
 import mil.jpeojtrs.sca.partitioning.provider.PartitioningItemProviderAdapterFactory;
 import mil.jpeojtrs.sca.sad.provider.SadItemProviderAdapterFactory;
@@ -26,7 +30,7 @@ public class PropertyPageLabelProvider extends AdapterFactoryLabelProvider {
 
 	public PropertyPageLabelProvider() {
 		super(new ComposedAdapterFactory(
-			new AdapterFactory[] { new SadItemProviderAdapterFactory(), new DcdItemProviderAdapterFactory(), new PartitioningItemProviderAdapterFactory() }));
+			new AdapterFactory[] { new ScaItemProviderAdapterFactory(), new SadItemProviderAdapterFactory(), new DcdItemProviderAdapterFactory(), new PartitioningItemProviderAdapterFactory() }));
 	}
 
 	@Override
@@ -48,7 +52,9 @@ public class PropertyPageLabelProvider extends AdapterFactoryLabelProvider {
 		if (element instanceof AbstractEditPart) {
 			element = ((AbstractEditPart) element).getModel();
 		}
-		if (element instanceof PictogramElement) {
+		if (element instanceof Diagram) {
+			element = DUtil.getBusinessObject((Diagram) element, ScaWaveform.class);
+		} else if (element instanceof PictogramElement) {
 			element = ((PictogramElement) element).getLink().getBusinessObjects().get(0);
 		}
 

@@ -37,17 +37,28 @@ import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
  * <li>{@link ScaComponent}</li>
  * <li>{@link ScaDevice}</li>
  * <li>{@link ScaService}</li>
+ * <li>{@link ScaWaveform}</li>
  * </ul>
  */
 public class ContainerShapeAdapterFactory implements IAdapterFactory {
 
-	private static final Class< ? >[] ADAPTER_TYPES = new Class< ? >[] { ScaComponent.class, ScaDevice.class, ScaService.class };
+	private static final Class< ? >[] ADAPTER_TYPES = new Class< ? >[] { ScaWaveform.class, ScaComponent.class, ScaDevice.class, ScaService.class };
 
 	@Override
 	public < T > T getAdapter(Object adaptableObject, Class<T> adapterType) {
 		// We convert the Graphiti UI part -> Graphiti PictogramElement, if not already done for us
 		if (adaptableObject instanceof GraphitiShapeEditPart) {
 			adaptableObject = ((GraphitiShapeEditPart) adaptableObject).getPictogramElement();
+		}
+
+		if (adaptableObject instanceof Diagram) {
+			Diagram diagram = (Diagram) adaptableObject;
+			ScaWaveform waveform = DUtil.getBusinessObject(diagram, ScaWaveform.class);
+			if (waveform == null) {
+				return null;
+			} else {
+				return adapterType.cast(waveform);
+			}
 		}
 
 		// PictogramElement must be an RHContainerShape
