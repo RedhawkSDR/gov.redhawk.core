@@ -178,6 +178,13 @@
                type="mil.jpeojtrs.sca.scd.AbstractPort">
          </adapter>
       </factory>
+      <factory
+            adaptableType="org.eclipse.graphiti.ui.platform.GraphitiConnectionEditPart"
+            class="gov.redhawk.core.graphiti.ui.adapters.ConnectionAdapterFactory">
+         <adapter
+               type="gov.redhawk.model.sca.ScaConnection">
+         </adapter>
+      </factory>
    </extension>
 
    <extension

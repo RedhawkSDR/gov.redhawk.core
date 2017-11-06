@@ -13,6 +13,7 @@ package gov.redhawk.core.graphiti.ui.properties;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.gef.EditPart;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
+import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -21,6 +22,7 @@ import org.eclipse.ui.views.properties.tabbed.AdvancedPropertySection;
 
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
+import gov.redhawk.model.sca.ScaConnection;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.ScaProvidesPort;
@@ -64,7 +66,8 @@ public class AdvancedEditPartPropertySection extends AdvancedPropertySection {
 			} else {
 				return DUtil.getBusinessObject((Diagram) graphitiModel, ScaDeviceManager.class);
 			}
-
+		} else if (graphitiModel instanceof Connection) {
+			return Platform.getAdapterManager().getAdapter(ep, ScaConnection.class);
 		}
 		return null;
 	}
