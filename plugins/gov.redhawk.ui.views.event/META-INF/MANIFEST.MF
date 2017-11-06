@@ -24,7 +24,3 @@ Bundle-Activator: gov.redhawk.ui.views.event.EventViewPlugin
 Bundle-Vendor: REDHAWK
 Import-Package: org.omg.CosEventChannelAdmin,
  org.omg.CosEventComm
-Export-Package: gov.redhawk.ui.views.event,
- gov.redhawk.ui.views.event.model,
- gov.redhawk.ui.views.event.properties,
- gov.redhawk.ui.views.event.utils
