@@ -11,6 +11,7 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.ui.views.allocmgr.provider;
 
+import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.ui.views.allocmgr.util.AllocMgrAdapterFactory;
 
 import java.util.ArrayList;
@@ -235,5 +236,16 @@ public class AllocMgrItemProviderAdapterFactory extends AllocMgrAdapterFactory i
 		if (allocationManagerItemProvider != null)
 			allocationManagerItemProvider.dispose();
 	}
+
+	// END GENERATED CODE
+
+	/**
+	 * @param domMgr The domain manager model object whose children will be used to help resolve labels.
+	 */
+	public void setDomainManager(ScaDomainManager domMgr) {
+		((AllocationStatusItemProvider) createAllocationStatusAdapter()).setDomainManager(domMgr);
+	}
+
+	// BEGIN GENERATED CODE
 
 }

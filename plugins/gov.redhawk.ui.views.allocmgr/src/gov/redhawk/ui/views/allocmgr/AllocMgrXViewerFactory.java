@@ -28,7 +28,7 @@ public class AllocMgrXViewerFactory extends XViewerFactory {
 	/* package */ static final String ID_DEVICE_MGR = NAMESPACE + ".devicemgr";
 	/* package */ static final String ID_SOURCE_ID = NAMESPACE + ".sourceid";
 
-	private static final XViewerColumn COL_ALLOC_ID = new XViewerColumn(ID_ALLOC_ID, "Allocation ID", 200, XViewerAlign.Left, true, SortDataType.String, false,
+	private static final XViewerColumn COL_ALLOC_ID = new XViewerColumn(ID_ALLOC_ID, "Allocation ID", 340, XViewerAlign.Left, true, SortDataType.String, false,
 		"Allocation ID");
 	private static final XViewerColumn COL_DOMAIN = new XViewerColumn(ID_DOMAIN, "Domain", 150, XViewerAlign.Left, true, SortDataType.String, false,
 		"Requesting domain");

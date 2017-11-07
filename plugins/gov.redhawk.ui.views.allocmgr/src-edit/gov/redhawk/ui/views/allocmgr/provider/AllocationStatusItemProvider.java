@@ -11,6 +11,7 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.ui.views.allocmgr.provider;
 
+import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.ui.views.allocmgr.AllocMgrPackage;
 import gov.redhawk.ui.views.allocmgr.AllocationStatus;
 
@@ -42,6 +43,17 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  */
 public class AllocationStatusItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider,
 		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider {
+
+	// END GENERATED CODE
+
+	/**
+	 * The delay before the fetch job should run. Allows multiple requests to be batched.
+	 */
+	private static final long FETCH_DELAY_MS = 500;
+
+	private FetchLabelsJob fetchLabelsJob = new FetchLabelsJob();
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -233,6 +245,8 @@ public class AllocationStatusItemProvider extends ItemProviderAdapter implements
 		case AllocMgrPackage.ALLOCATION_STATUS__DEVICE_LABEL:
 			label = status.getDeviceLabel();
 			if (label == null) {
+				fetchLabelsJob.addStatusWithoutLables(status);
+				fetchLabelsJob.schedule(FETCH_DELAY_MS);
 				label = status.getDeviceIOR();
 			}
 			break;
@@ -242,6 +256,8 @@ public class AllocationStatusItemProvider extends ItemProviderAdapter implements
 		case AllocMgrPackage.ALLOCATION_STATUS__DEVICE_MGR_LABEL:
 			label = status.getDeviceMgrLabel();
 			if (label == null) {
+				fetchLabelsJob.addStatusWithoutLables(status);
+				fetchLabelsJob.schedule(FETCH_DELAY_MS);
 				label = status.getDeviceMgrIOR();
 			}
 			break;
@@ -304,5 +320,22 @@ public class AllocationStatusItemProvider extends ItemProviderAdapter implements
 	public ResourceLocator getResourceLocator() {
 		return AllocMgrEditPlugin.INSTANCE;
 	}
+
+	// END GENERATED CODE
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		fetchLabelsJob.cancel();
+	}
+
+	/**
+	 * @param domMgr The domain manager model object whose children will be used to help resolve labels.
+	 */
+	public void setDomainManager(ScaDomainManager domMgr) {
+		fetchLabelsJob.setDomainManager(domMgr);
+	}
+
+	// BEGIN GENERATED CODE
 
 }

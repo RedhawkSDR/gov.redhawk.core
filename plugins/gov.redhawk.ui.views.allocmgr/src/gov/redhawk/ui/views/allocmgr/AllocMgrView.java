@@ -29,6 +29,8 @@ public class AllocMgrView extends ViewPart {
 
 	private XViewer viewer;
 	private AllocMgrItemProviderAdapterFactory adapterFactory;
+	private FetchAllocationsJob job;
+
 	private AllocationManager input;
 
 	public AllocMgrView() {
@@ -63,27 +65,16 @@ public class AllocMgrView extends ViewPart {
 
 		// Create a model of the allocation manager
 		input = AllocMgrFactory.eINSTANCE.createAllocationManager();
-		AllocationStatus status = AllocMgrFactory.eINSTANCE.createAllocationStatus();
-		status.setAllocationID("abc");
-		status.setRequestingDomain("REDHAWK_DEV");
-		status.setDeviceIOR("IOR:123456");
-		status.setDeviceMgrIOR("IOR:234567");
-		status.setSourceID("def");
-		input.getStatus().add(status);
-		status = AllocMgrFactory.eINSTANCE.createAllocationStatus();
-		status.setAllocationID("ghi");
-		status.setRequestingDomain("REDHAWK_DEV");
-		status.setDeviceIOR("IOR:345678");
-		status.setDeviceLabel("device label");
-		status.setDeviceMgrIOR("IOR:234567");
-		status.setDeviceMgrLabel("device mgr label");
-		status.setSourceID("jkl");
-		input.getStatus().add(status);
 		viewer.setInput(input);
+
+		// Refresh the allocation manager model periodically
+		job = new FetchAllocationsJob(domMgr, input);
+		job.schedule();
 	}
 
 	@Override
 	public void dispose() {
+		job.cancel();
 		super.dispose();
 		adapterFactory.dispose();
 	}
