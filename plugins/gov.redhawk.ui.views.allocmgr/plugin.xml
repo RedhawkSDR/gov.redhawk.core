@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="gov.redhawk.ide.ui.category.sca_development"
+            class="gov.redhawk.ui.views.allocmgr.AllocMgrView"
+            id="gov.redhawk.ui.views.allocmgr.view"
+            name="Allocation Manager"
+            restorable="false">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="true"
+            locationURI="popup:org.eclipse.ui.popup.any?after=group.control">
+         <command
+               commandId="gov.redhawk.ui.views.allocmgr.show"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <test
+                        property="gov.redhawk.sca.model.dommgr.connected"
+                        value="true">
+                  </test>
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="gov.redhawk.ui.commands.category.sca"
+            description="Shows the allocation manager"
+            id="gov.redhawk.ui.views.allocmgr.show"
+            name="Allocation Manager">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="gov.redhawk.ui.views.allocmgr.handlers.ShowAllocMgrHandler"
+            commandId="gov.redhawk.ui.views.allocmgr.show">
+         <activeWhen>
+            <and>
+               <count
+                     value="1">
+               </count>
+               <iterate>
+                  <instanceof
+                        value="gov.redhawk.model.sca.ScaDomainManager">
+                  </instanceof>
+               </iterate>
+            </and>
+         </activeWhen>
+      </handler>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated AllocMgr -->
+      <package
+            uri="http://allocmgr.views.ui.redhawk.gov/allocmgr"
+            class="gov.redhawk.ui.views.allocmgr.AllocMgrPackage"
+            genModel="model/AllocMgr.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated AllocMgr -->
+      <factory
+            uri="http://allocmgr.views.ui.redhawk.gov/allocmgr"
+            class="gov.redhawk.ui.views.allocmgr.provider.AllocMgrItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource
+               org.eclipse.emf.edit.provider.ITableItemLabelProvider"/>
+   </extension>
+</plugin>
