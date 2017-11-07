@@ -119,11 +119,18 @@
       <extension
             point="org.eclipse.core.expressions.propertyTesters">
          <propertyTester
-               class="gov.redhawk.sca.model.internal.EmfPropertyTester"
+               class="gov.redhawk.sca.model.internal.expressions.EmfPropertyTester"
                id="gov.redhawk.sca.model.EMFTester"
                namespace="org.eclipse.emf.ecore"
                properties="namespace"
                type="org.eclipse.emf.ecore.EObject">
+         </propertyTester>
+         <propertyTester
+               class="gov.redhawk.sca.model.internal.expressions.ScaDomainManagerTester"
+               id="gov.redhawk.sca.model.dommgr.tester"
+               namespace="gov.redhawk.sca.model.dommgr"
+               properties="connected"
+               type="gov.redhawk.model.sca.ScaDomainManager">
          </propertyTester>
       </extension>
 
