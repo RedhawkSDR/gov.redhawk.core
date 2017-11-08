@@ -80,6 +80,8 @@ public class PropertyPageLabelProvider extends AdapterFactoryLabelProvider {
 				if (deviceManager != null) {
 					return getScaConnection(deviceManager, connectInterface);
 				}
+
+				return connectInterface;
 			}
 		} else if (element instanceof PictogramElement) {
 			element = ((PictogramElement) element).getLink().getBusinessObjects().get(0);
