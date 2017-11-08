@@ -32,9 +32,11 @@ import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
+import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.dcd.provider.DcdItemProviderAdapterFactory;
 import mil.jpeojtrs.sca.partitioning.ConnectInterface;
 import mil.jpeojtrs.sca.partitioning.provider.PartitioningItemProviderAdapterFactory;
+import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.sad.provider.SadItemProviderAdapterFactory;
 
 public class PropertyPageLabelProvider extends AdapterFactoryLabelProvider {
@@ -102,6 +104,15 @@ public class PropertyPageLabelProvider extends AdapterFactoryLabelProvider {
 		if (deviceManager != null) {
 			return deviceManager;
 		}
+		SoftwareAssembly sad = DUtil.getBusinessObject((Diagram) element, SoftwareAssembly.class);
+		if (sad != null) {
+			return sad;
+		}
+		DeviceConfiguration dcd = DUtil.getBusinessObject((Diagram) element, DeviceConfiguration.class);
+		if (dcd != null) {
+			return dcd;
+		}
+
 		return null;
 	}
 
