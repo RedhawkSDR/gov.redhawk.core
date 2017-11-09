@@ -10,6 +10,9 @@
  */
 package gov.redhawk.ui.views.allocmgr;
 
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -21,6 +24,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.ui.views.allocmgr.jobs.FetchAllocationManagerJob;
+import gov.redhawk.ui.views.allocmgr.jobs.FetchAllocationsJob;
 import gov.redhawk.ui.views.allocmgr.provider.AllocMgrItemProviderAdapterFactory;
 
 public class AllocMgrView extends ViewPart {
@@ -29,9 +34,9 @@ public class AllocMgrView extends ViewPart {
 
 	private XViewer viewer;
 	private AllocMgrItemProviderAdapterFactory adapterFactory;
-	private FetchAllocationsJob job;
+	private FetchAllocationsJob fetchAllocStatusesJob;
 
-	private AllocationManager input;
+	private ScaAllocationManager input;
 
 	public AllocMgrView() {
 	}
@@ -64,17 +69,26 @@ public class AllocMgrView extends ViewPart {
 		adapterFactory.setDomainManager(domMgr);
 
 		// Create a model of the allocation manager
-		input = AllocMgrFactory.eINSTANCE.createAllocationManager();
+		input = AllocMgrFactory.eINSTANCE.createScaAllocationManager();
 		viewer.setInput(input);
 
-		// Refresh the allocation manager model periodically
-		job = new FetchAllocationsJob(domMgr, input);
-		job.schedule();
+		// Fetch the allocation manager, then the allocation statuses periodically
+		Job fetchAllocMgr = new FetchAllocationManagerJob(domMgr, input);
+		fetchAllocStatusesJob = new FetchAllocationsJob(domMgr, input);
+		fetchAllocMgr.addJobChangeListener(new JobChangeAdapter() {
+			@Override
+			public void done(IJobChangeEvent event) {
+				if (event.getResult().isOK()) {
+					fetchAllocStatusesJob.schedule();
+				}
+			}
+		});
+		fetchAllocMgr.schedule();
 	}
 
 	@Override
 	public void dispose() {
-		job.cancel();
+		fetchAllocStatusesJob.cancel();
 		super.dispose();
 		adapterFactory.dispose();
 	}
