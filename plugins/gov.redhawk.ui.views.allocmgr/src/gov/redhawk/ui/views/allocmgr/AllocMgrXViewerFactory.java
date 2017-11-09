@@ -18,6 +18,7 @@ import org.eclipse.nebula.widgets.xviewer.XViewerFactory;
 import org.eclipse.nebula.widgets.xviewer.core.model.SortDataType;
 import org.eclipse.nebula.widgets.xviewer.core.model.XViewerAlign;
 import org.eclipse.nebula.widgets.xviewer.core.model.XViewerColumn;
+import org.eclipse.nebula.widgets.xviewer.customize.XViewerCustomMenu;
 
 public class AllocMgrXViewerFactory extends XViewerFactory {
 
@@ -47,6 +48,11 @@ public class AllocMgrXViewerFactory extends XViewerFactory {
 	@Override
 	public boolean isAdmin() {
 		return false;
+	}
+
+	@Override
+	public XViewerCustomMenu getXViewerCustomMenu() {
+		return new AllocMgrMenu();
 	}
 
 	public static Map<XViewerColumn, EStructuralFeature> getColumnsToFeatures() {
