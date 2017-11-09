@@ -5,7 +5,7 @@
     dynamicTemplates="true" forceOverwrite="true" modelName="AllocMgr" modelPluginClass=""
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"
     commentFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0"
-    copyrightFields="false" tableProviders="true" usedGenPackages="../../mil.jpeojtrs.sca.cf/model/cf.genmodel#//cf"
+    copyrightFields="false" tableProviders="true" usedGenPackages="platform:/plugin/gov.redhawk.sca.model/model/sca.genmodel#//sca platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.genmodel#//cf"
     operationReflection="true" importOrganizing="true">
   <foreignModel>AllocMgr.ecore</foreignModel>
   <genPackages prefix="AllocMgr" basePackage="gov.redhawk.ui.views" disposableProviderFactory="true"
@@ -17,9 +17,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/deviceIOR"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/deviceMgrIOR"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/sourceID"/>
-    </genClasses>
-    <genClasses ecoreClass="AllocMgr.ecore#//AllocationManager">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference AllocMgr.ecore#//AllocationManager/status"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

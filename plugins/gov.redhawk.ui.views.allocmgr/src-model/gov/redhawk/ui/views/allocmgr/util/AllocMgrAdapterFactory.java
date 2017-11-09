@@ -11,6 +11,12 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.ui.views.allocmgr.util;
 
+import CF.AllocationManagerOperations;
+import gov.redhawk.model.sca.CorbaObjWrapper;
+import gov.redhawk.model.sca.DataProviderObject;
+import gov.redhawk.model.sca.IDisposable;
+import gov.redhawk.model.sca.IRefreshable;
+import gov.redhawk.model.sca.IStatusProvider;
 import gov.redhawk.ui.views.allocmgr.*;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -77,13 +83,43 @@ public class AllocMgrAdapterFactory extends AdapterFactoryImpl {
 	 */
 	protected AllocMgrSwitch<Adapter> modelSwitch = new AllocMgrSwitch<Adapter>() {
 		@Override
+		public Adapter caseScaAllocationManager(ScaAllocationManager object) {
+			return createScaAllocationManagerAdapter();
+		}
+
+		@Override
 		public Adapter caseAllocationStatus(AllocationStatus object) {
 			return createAllocationStatusAdapter();
 		}
 
 		@Override
-		public Adapter caseAllocationManager(AllocationManager object) {
-			return createAllocationManagerAdapter();
+		public Adapter caseIStatusProvider(IStatusProvider object) {
+			return createIStatusProviderAdapter();
+		}
+
+		@Override
+		public Adapter caseIDisposable(IDisposable object) {
+			return createIDisposableAdapter();
+		}
+
+		@Override
+		public Adapter caseIRefreshable(IRefreshable object) {
+			return createIRefreshableAdapter();
+		}
+
+		@Override
+		public Adapter caseDataProviderObject(DataProviderObject object) {
+			return createDataProviderObjectAdapter();
+		}
+
+		@Override
+		public < T extends org.omg.CORBA.Object > Adapter caseCorbaObjWrapper(CorbaObjWrapper<T> object) {
+			return createCorbaObjWrapperAdapter();
+		}
+
+		@Override
+		public Adapter caseAllocationManagerOperations(AllocationManagerOperations object) {
+			return createAllocationManagerOperationsAdapter();
 		}
 
 		@Override
@@ -106,6 +142,21 @@ public class AllocMgrAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.ui.views.allocmgr.ScaAllocationManager <em>Sca
+	 * Allocation Manager</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see gov.redhawk.ui.views.allocmgr.ScaAllocationManager
+	 * @generated
+	 */
+	public Adapter createScaAllocationManagerAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link gov.redhawk.ui.views.allocmgr.AllocationStatus
 	 * <em>Allocation Status</em>}'.
 	 * <!-- begin-user-doc -->
@@ -121,17 +172,90 @@ public class AllocMgrAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.ui.views.allocmgr.AllocationManager
-	 * <em>Allocation Manager</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.IStatusProvider <em>IStatus
+	 * Provider</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see gov.redhawk.ui.views.allocmgr.AllocationManager
+	 * @see gov.redhawk.model.sca.IStatusProvider
 	 * @generated
 	 */
-	public Adapter createAllocationManagerAdapter() {
+	public Adapter createIStatusProviderAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.IDisposable <em>IDisposable</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see gov.redhawk.model.sca.IDisposable
+	 * @generated
+	 */
+	public Adapter createIDisposableAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.IRefreshable <em>IRefreshable</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see gov.redhawk.model.sca.IRefreshable
+	 * @generated
+	 */
+	public Adapter createIRefreshableAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.DataProviderObject <em>Data Provider
+	 * Object</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see gov.redhawk.model.sca.DataProviderObject
+	 * @generated
+	 */
+	public Adapter createDataProviderObjectAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.CorbaObjWrapper <em>Corba Obj
+	 * Wrapper</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see gov.redhawk.model.sca.CorbaObjWrapper
+	 * @generated
+	 */
+	public Adapter createCorbaObjWrapperAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link CF.AllocationManagerOperations <em>Allocation Manager
+	 * Operations</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see CF.AllocationManagerOperations
+	 * @generated
+	 */
+	public Adapter createAllocationManagerOperationsAdapter() {
 		return null;
 	}
 

@@ -64,13 +64,23 @@ public class AllocMgrFactoryImpl extends EFactoryImpl implements AllocMgrFactory
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
+		case AllocMgrPackage.SCA_ALLOCATION_MANAGER:
+			return createScaAllocationManager();
 		case AllocMgrPackage.ALLOCATION_STATUS:
 			return createAllocationStatus();
-		case AllocMgrPackage.ALLOCATION_MANAGER:
-			return createAllocationManager();
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ScaAllocationManager createScaAllocationManager() {
+		ScaAllocationManagerImpl scaAllocationManager = new ScaAllocationManagerImpl();
+		return scaAllocationManager;
 	}
 
 	/**
@@ -97,16 +107,6 @@ public class AllocMgrFactoryImpl extends EFactoryImpl implements AllocMgrFactory
 	}
 
 	// BEGIN GENERATED CODE
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public AllocationManager createAllocationManager() {
-		AllocationManagerImpl allocationManager = new AllocationManagerImpl();
-		return allocationManager;
-	}
 
 	/**
 	 * <!-- begin-user-doc -->

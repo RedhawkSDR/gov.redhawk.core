@@ -11,6 +11,12 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.ui.views.allocmgr.util;
 
+import CF.AllocationManagerOperations;
+import gov.redhawk.model.sca.CorbaObjWrapper;
+import gov.redhawk.model.sca.DataProviderObject;
+import gov.redhawk.model.sca.IDisposable;
+import gov.redhawk.model.sca.IRefreshable;
+import gov.redhawk.model.sca.IStatusProvider;
 import gov.redhawk.ui.views.allocmgr.*;
 
 import org.eclipse.emf.ecore.EObject;
@@ -31,7 +37,7 @@ import org.eclipse.emf.ecore.util.Switch;
  * @see gov.redhawk.ui.views.allocmgr.AllocMgrPackage
  * @generated
  */
-public class AllocMgrSwitch< T > extends Switch<T> {
+public class AllocMgrSwitch< T1 > extends Switch<T1> {
 	/**
 	 * The cached model package
 	 * <!-- begin-user-doc -->
@@ -74,18 +80,30 @@ public class AllocMgrSwitch< T > extends Switch<T> {
 	 * @generated
 	 */
 	@Override
-	protected T doSwitch(int classifierID, EObject theEObject) {
+	protected T1 doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
-		case AllocMgrPackage.ALLOCATION_STATUS: {
-			AllocationStatus allocationStatus = (AllocationStatus) theEObject;
-			T result = caseAllocationStatus(allocationStatus);
+		case AllocMgrPackage.SCA_ALLOCATION_MANAGER: {
+			ScaAllocationManager scaAllocationManager = (ScaAllocationManager) theEObject;
+			T1 result = caseScaAllocationManager(scaAllocationManager);
+			if (result == null)
+				result = caseCorbaObjWrapper(scaAllocationManager);
+			if (result == null)
+				result = caseAllocationManagerOperations(scaAllocationManager);
+			if (result == null)
+				result = caseDataProviderObject(scaAllocationManager);
+			if (result == null)
+				result = caseIStatusProvider(scaAllocationManager);
+			if (result == null)
+				result = caseIDisposable(scaAllocationManager);
+			if (result == null)
+				result = caseIRefreshable(scaAllocationManager);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case AllocMgrPackage.ALLOCATION_MANAGER: {
-			AllocationManager allocationManager = (AllocationManager) theEObject;
-			T result = caseAllocationManager(allocationManager);
+		case AllocMgrPackage.ALLOCATION_STATUS: {
+			AllocationStatus allocationStatus = (AllocationStatus) theEObject;
+			T1 result = caseAllocationStatus(allocationStatus);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -93,6 +111,21 @@ public class AllocMgrSwitch< T > extends Switch<T> {
 		default:
 			return defaultCase(theEObject);
 		}
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Sca Allocation Manager</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Sca Allocation Manager</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseScaAllocationManager(ScaAllocationManager object) {
+		return null;
 	}
 
 	/**
@@ -106,22 +139,97 @@ public class AllocMgrSwitch< T > extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseAllocationStatus(AllocationStatus object) {
+	public T1 caseAllocationStatus(AllocationStatus object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Allocation Manager</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IStatus Provider</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Allocation Manager</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IStatus Provider</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseAllocationManager(AllocationManager object) {
+	public T1 caseIStatusProvider(IStatusProvider object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IDisposable</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IDisposable</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseIDisposable(IDisposable object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IRefreshable</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IRefreshable</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseIRefreshable(IRefreshable object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Data Provider Object</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Data Provider Object</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseDataProviderObject(DataProviderObject object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Corba Obj Wrapper</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Corba Obj Wrapper</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public < T extends org.omg.CORBA.Object > T1 caseCorbaObjWrapper(CorbaObjWrapper<T> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Allocation Manager Operations</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Allocation Manager Operations</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseAllocationManagerOperations(AllocationManagerOperations object) {
 		return null;
 	}
 
@@ -137,7 +245,7 @@ public class AllocMgrSwitch< T > extends Switch<T> {
 	 * @generated
 	 */
 	@Override
-	public T defaultCase(EObject object) {
+	public T1 defaultCase(EObject object) {
 		return null;
 	}
 

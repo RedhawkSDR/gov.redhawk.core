@@ -11,11 +11,21 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.ui.views.allocmgr.provider;
 
+import gov.redhawk.model.sca.provider.ScaEditPlugin;
 import mil.jpeojtrs.sca.cf.provider.CfEditPlugin;
 
+import mil.jpeojtrs.sca.dcd.provider.DcdEditPlugin;
+import mil.jpeojtrs.sca.dmd.provider.DmdEditPlugin;
+import mil.jpeojtrs.sca.dpd.provider.DpdEditPlugin;
+import mil.jpeojtrs.sca.partitioning.provider.PartitioningEditPlugin;
+import mil.jpeojtrs.sca.prf.provider.PrfEditPlugin;
+import mil.jpeojtrs.sca.sad.provider.SadEditPlugin;
+import mil.jpeojtrs.sca.scd.provider.ScdEditPlugin;
+import mil.jpeojtrs.sca.spd.provider.SpdEditPlugin;
 import org.eclipse.emf.common.EMFPlugin;
 
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
 
 /**
  * This is the central singleton for the AllocMgr edit plugin.
@@ -47,7 +57,9 @@ public final class AllocMgrEditPlugin extends EMFPlugin {
 	 * @generated
 	 */
 	public AllocMgrEditPlugin() {
-		super(new ResourceLocator[] { CfEditPlugin.INSTANCE, });
+		super(new ResourceLocator[] { ScaEditPlugin.INSTANCE, CfEditPlugin.INSTANCE, SpdEditPlugin.INSTANCE, PrfEditPlugin.INSTANCE, SadEditPlugin.INSTANCE,
+			DcdEditPlugin.INSTANCE, ScdEditPlugin.INSTANCE, DmdEditPlugin.INSTANCE, EcoreEditPlugin.INSTANCE, PartitioningEditPlugin.INSTANCE,
+			DpdEditPlugin.INSTANCE, });
 	}
 
 	/**

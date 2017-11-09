@@ -11,12 +11,16 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.ui.views.allocmgr.provider;
 
+import gov.redhawk.model.sca.provider.CorbaObjWrapperItemProvider;
+
 import gov.redhawk.ui.views.allocmgr.AllocMgrFactory;
 import gov.redhawk.ui.views.allocmgr.AllocMgrPackage;
-import gov.redhawk.ui.views.allocmgr.AllocationManager;
+import gov.redhawk.ui.views.allocmgr.ScaAllocationManager;
 
 import java.util.Collection;
 import java.util.List;
+
+import org.eclipse.core.runtime.IStatus;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
@@ -25,31 +29,23 @@ import org.eclipse.emf.common.util.ResourceLocator;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
-import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.IItemPropertySource;
-import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
-import org.eclipse.emf.edit.provider.ITableItemLabelProvider;
-import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link gov.redhawk.ui.views.allocmgr.AllocationManager} object.
+ * This is the item provider adapter for a {@link gov.redhawk.ui.views.allocmgr.ScaAllocationManager} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class AllocationManagerItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider,
-		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider {
+public class ScaAllocationManagerItemProvider extends CorbaObjWrapperItemProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public AllocationManagerItemProvider(AdapterFactory adapterFactory) {
+	public ScaAllocationManagerItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -80,7 +76,7 @@ public class AllocationManagerItemProvider extends ItemProviderAdapter implement
 	public Collection< ? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(AllocMgrPackage.Literals.ALLOCATION_MANAGER__STATUS);
+			childrenFeatures.add(AllocMgrPackage.Literals.SCA_ALLOCATION_MANAGER__ALLOCATIONS);
 		}
 		return childrenFeatures;
 	}
@@ -99,14 +95,14 @@ public class AllocationManagerItemProvider extends ItemProviderAdapter implement
 	}
 
 	/**
-	 * This returns AllocationManager.gif.
+	 * This returns ScaAllocationManager.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/AllocationManager"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/ScaAllocationManager"));
 	}
 
 	/**
@@ -117,7 +113,9 @@ public class AllocationManagerItemProvider extends ItemProviderAdapter implement
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_AllocationManager_type");
+		IStatus labelValue = ((ScaAllocationManager) object).getStatus();
+		String label = labelValue == null ? null : labelValue.toString();
+		return label == null || label.length() == 0 ? getString("_UI_ScaAllocationManager_type") : getString("_UI_ScaAllocationManager_type") + " " + label;
 	}
 
 	/**
@@ -131,8 +129,8 @@ public class AllocationManagerItemProvider extends ItemProviderAdapter implement
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(AllocationManager.class)) {
-		case AllocMgrPackage.ALLOCATION_MANAGER__STATUS:
+		switch (notification.getFeatureID(ScaAllocationManager.class)) {
+		case AllocMgrPackage.SCA_ALLOCATION_MANAGER__ALLOCATIONS:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
 		}
@@ -150,7 +148,8 @@ public class AllocationManagerItemProvider extends ItemProviderAdapter implement
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add(createChildParameter(AllocMgrPackage.Literals.ALLOCATION_MANAGER__STATUS, AllocMgrFactory.eINSTANCE.createAllocationStatus()));
+		newChildDescriptors.add(
+			createChildParameter(AllocMgrPackage.Literals.SCA_ALLOCATION_MANAGER__ALLOCATIONS, AllocMgrFactory.eINSTANCE.createAllocationStatus()));
 	}
 
 	/**

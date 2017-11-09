@@ -11,18 +11,30 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.ui.views.allocmgr.impl;
 
+import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.ui.views.allocmgr.AllocMgrFactory;
 import gov.redhawk.ui.views.allocmgr.AllocMgrPackage;
-import gov.redhawk.ui.views.allocmgr.AllocationManager;
 import gov.redhawk.ui.views.allocmgr.AllocationStatus;
 
+import gov.redhawk.ui.views.allocmgr.ScaAllocationManager;
 import mil.jpeojtrs.sca.cf.CfPackage;
 
+import mil.jpeojtrs.sca.cf.extended.ExtendedPackage;
+import mil.jpeojtrs.sca.dcd.DcdPackage;
+import mil.jpeojtrs.sca.dmd.DmdPackage;
+import mil.jpeojtrs.sca.dpd.DpdPackage;
+import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
+import mil.jpeojtrs.sca.prf.PrfPackage;
+import mil.jpeojtrs.sca.sad.SadPackage;
+import mil.jpeojtrs.sca.scd.ScdPackage;
+import mil.jpeojtrs.sca.spd.SpdPackage;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -37,14 +49,14 @@ public class AllocMgrPackageImpl extends EPackageImpl implements AllocMgrPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass allocationStatusEClass = null;
+	private EClass scaAllocationManagerEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass allocationManagerEClass = null;
+	private EClass allocationStatusEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -96,7 +108,18 @@ public class AllocMgrPackageImpl extends EPackageImpl implements AllocMgrPackage
 		isInited = true;
 
 		// Initialize simple dependencies
+		ScaPackage.eINSTANCE.eClass();
 		CfPackage.eINSTANCE.eClass();
+		SpdPackage.eINSTANCE.eClass();
+		PrfPackage.eINSTANCE.eClass();
+		SadPackage.eINSTANCE.eClass();
+		DcdPackage.eINSTANCE.eClass();
+		ScdPackage.eINSTANCE.eClass();
+		DmdPackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
+		ExtendedPackage.eINSTANCE.eClass();
+		PartitioningPackage.eINSTANCE.eClass();
+		DpdPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theAllocMgrPackage.createPackageContents();
@@ -110,6 +133,24 @@ public class AllocMgrPackageImpl extends EPackageImpl implements AllocMgrPackage
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(AllocMgrPackage.eNS_URI, theAllocMgrPackage);
 		return theAllocMgrPackage;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getScaAllocationManager() {
+		return scaAllocationManagerEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getScaAllocationManager_Allocations() {
+		return (EReference) scaAllocationManagerEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -198,24 +239,6 @@ public class AllocMgrPackageImpl extends EPackageImpl implements AllocMgrPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getAllocationManager() {
-		return allocationManagerEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getAllocationManager_Status() {
-		return (EReference) allocationManagerEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public AllocMgrFactory getAllocMgrFactory() {
 		return (AllocMgrFactory) getEFactoryInstance();
 	}
@@ -240,6 +263,9 @@ public class AllocMgrPackageImpl extends EPackageImpl implements AllocMgrPackage
 		isCreated = true;
 
 		// Create classes and their features
+		scaAllocationManagerEClass = createEClass(SCA_ALLOCATION_MANAGER);
+		createEReference(scaAllocationManagerEClass, SCA_ALLOCATION_MANAGER__ALLOCATIONS);
+
 		allocationStatusEClass = createEClass(ALLOCATION_STATUS);
 		createEAttribute(allocationStatusEClass, ALLOCATION_STATUS__ALLOCATION_ID);
 		createEAttribute(allocationStatusEClass, ALLOCATION_STATUS__REQUESTING_DOMAIN);
@@ -249,9 +275,6 @@ public class AllocMgrPackageImpl extends EPackageImpl implements AllocMgrPackage
 		createEAttribute(allocationStatusEClass, ALLOCATION_STATUS__DEVICE_MGR_IOR);
 		createEAttribute(allocationStatusEClass, ALLOCATION_STATUS__DEVICE_MGR_LABEL);
 		createEAttribute(allocationStatusEClass, ALLOCATION_STATUS__SOURCE_ID);
-
-		allocationManagerEClass = createEClass(ALLOCATION_MANAGER);
-		createEReference(allocationManagerEClass, ALLOCATION_MANAGER__STATUS);
 	}
 
 	/**
@@ -279,6 +302,7 @@ public class AllocMgrPackageImpl extends EPackageImpl implements AllocMgrPackage
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
+		ScaPackage theScaPackage = (ScaPackage) EPackage.Registry.INSTANCE.getEPackage(ScaPackage.eNS_URI);
 		CfPackage theCfPackage = (CfPackage) EPackage.Registry.INSTANCE.getEPackage(CfPackage.eNS_URI);
 
 		// Create type parameters
@@ -286,8 +310,18 @@ public class AllocMgrPackageImpl extends EPackageImpl implements AllocMgrPackage
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		EGenericType g1 = createEGenericType(theScaPackage.getCorbaObjWrapper());
+		EGenericType g2 = createEGenericType(theCfPackage.getAllocationManager());
+		g1.getETypeArguments().add(g2);
+		scaAllocationManagerEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(theCfPackage.getAllocationManagerOperations());
+		scaAllocationManagerEClass.getEGenericSuperTypes().add(g1);
 
 		// Initialize classes, features, and operations; add parameters
+		initEClass(scaAllocationManagerEClass, ScaAllocationManager.class, "ScaAllocationManager", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getScaAllocationManager_Allocations(), this.getAllocationStatus(), null, "allocations", null, 0, -1, ScaAllocationManager.class,
+			!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(allocationStatusEClass, AllocationStatus.class, "AllocationStatus", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getAllocationStatus_AllocationID(), ecorePackage.getEString(), "allocationID", null, 0, 1, AllocationStatus.class, !IS_TRANSIENT,
 			!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -305,10 +339,6 @@ public class AllocMgrPackageImpl extends EPackageImpl implements AllocMgrPackage
 			!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAllocationStatus_SourceID(), ecorePackage.getEString(), "sourceID", null, 0, 1, AllocationStatus.class, !IS_TRANSIENT, !IS_VOLATILE,
 			IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(allocationManagerEClass, AllocationManager.class, "AllocationManager", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getAllocationManager_Status(), this.getAllocationStatus(), null, "status", null, 0, -1, AllocationManager.class, !IS_TRANSIENT,
-			!IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

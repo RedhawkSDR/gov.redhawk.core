@@ -11,6 +11,8 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.ui.views.allocmgr;
 
+import gov.redhawk.model.sca.ScaPackage;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -66,6 +68,116 @@ public interface AllocMgrPackage extends EPackage {
 	AllocMgrPackage eINSTANCE = gov.redhawk.ui.views.allocmgr.impl.AllocMgrPackageImpl.init();
 
 	/**
+	 * The meta object id for the '{@link gov.redhawk.ui.views.allocmgr.impl.ScaAllocationManagerImpl <em>Sca Allocation
+	 * Manager</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.ui.views.allocmgr.impl.ScaAllocationManagerImpl
+	 * @see gov.redhawk.ui.views.allocmgr.impl.AllocMgrPackageImpl#getScaAllocationManager()
+	 * @generated
+	 */
+	int SCA_ALLOCATION_MANAGER = 0;
+
+	/**
+	 * The feature id for the '<em><b>Status</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_ALLOCATION_MANAGER__STATUS = ScaPackage.CORBA_OBJ_WRAPPER__STATUS;
+
+	/**
+	 * The feature id for the '<em><b>Disposed</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_ALLOCATION_MANAGER__DISPOSED = ScaPackage.CORBA_OBJ_WRAPPER__DISPOSED;
+
+	/**
+	 * The feature id for the '<em><b>Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_ALLOCATION_MANAGER__DATA_PROVIDERS = ScaPackage.CORBA_OBJ_WRAPPER__DATA_PROVIDERS;
+
+	/**
+	 * The feature id for the '<em><b>Data Providers Enabled</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_ALLOCATION_MANAGER__DATA_PROVIDERS_ENABLED = ScaPackage.CORBA_OBJ_WRAPPER__DATA_PROVIDERS_ENABLED;
+
+	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_ALLOCATION_MANAGER__ENABLED_DATA_PROVIDERS = ScaPackage.CORBA_OBJ_WRAPPER__ENABLED_DATA_PROVIDERS;
+
+	/**
+	 * The feature id for the '<em><b>Ior</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_ALLOCATION_MANAGER__IOR = ScaPackage.CORBA_OBJ_WRAPPER__IOR;
+
+	/**
+	 * The feature id for the '<em><b>Obj</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_ALLOCATION_MANAGER__OBJ = ScaPackage.CORBA_OBJ_WRAPPER__OBJ;
+
+	/**
+	 * The feature id for the '<em><b>Corba Obj</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_ALLOCATION_MANAGER__CORBA_OBJ = ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ;
+
+	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_ALLOCATION_MANAGER__FEATURE_DATA = ScaPackage.CORBA_OBJ_WRAPPER__FEATURE_DATA;
+
+	/**
+	 * The feature id for the '<em><b>Allocations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_ALLOCATION_MANAGER__ALLOCATIONS = ScaPackage.CORBA_OBJ_WRAPPER_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Sca Allocation Manager</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_ALLOCATION_MANAGER_FEATURE_COUNT = ScaPackage.CORBA_OBJ_WRAPPER_FEATURE_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link gov.redhawk.ui.views.allocmgr.impl.AllocationStatusImpl <em>Allocation
 	 * Status</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -74,7 +186,7 @@ public interface AllocMgrPackage extends EPackage {
 	 * @see gov.redhawk.ui.views.allocmgr.impl.AllocMgrPackageImpl#getAllocationStatus()
 	 * @generated
 	 */
-	int ALLOCATION_STATUS = 0;
+	int ALLOCATION_STATUS = 1;
 
 	/**
 	 * The feature id for the '<em><b>Allocation ID</b></em>' attribute.
@@ -167,42 +279,27 @@ public interface AllocMgrPackage extends EPackage {
 	int ALLOCATION_STATUS_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link gov.redhawk.ui.views.allocmgr.impl.AllocationManagerImpl <em>Allocation
-	 * Manager</em>}' class.
+	 * Returns the meta object for class '{@link gov.redhawk.ui.views.allocmgr.ScaAllocationManager <em>Sca Allocation
+	 * Manager</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.ui.views.allocmgr.impl.AllocationManagerImpl
-	 * @see gov.redhawk.ui.views.allocmgr.impl.AllocMgrPackageImpl#getAllocationManager()
+	 * @return the meta object for class '<em>Sca Allocation Manager</em>'.
+	 * @see gov.redhawk.ui.views.allocmgr.ScaAllocationManager
 	 * @generated
 	 */
-	int ALLOCATION_MANAGER = 1;
+	EClass getScaAllocationManager();
 
 	/**
-	 * The feature id for the '<em><b>Status</b></em>' containment reference list.
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.ui.views.allocmgr.ScaAllocationManager#getAllocations <em>Allocations</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Allocations</em>'.
+	 * @see gov.redhawk.ui.views.allocmgr.ScaAllocationManager#getAllocations()
+	 * @see #getScaAllocationManager()
 	 * @generated
-	 * @ordered
 	 */
-	int ALLOCATION_MANAGER__STATUS = 0;
-
-	/**
-	 * The number of structural features of the '<em>Allocation Manager</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ALLOCATION_MANAGER_FEATURE_COUNT = 1;
-
-	/**
-	 * The number of operations of the '<em>Allocation Manager</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ALLOCATION_MANAGER_OPERATION_COUNT = 0;
+	EReference getScaAllocationManager_Allocations();
 
 	/**
 	 * Returns the meta object for class '{@link gov.redhawk.ui.views.allocmgr.AllocationStatus <em>Allocation
@@ -312,29 +409,6 @@ public interface AllocMgrPackage extends EPackage {
 	EAttribute getAllocationStatus_SourceID();
 
 	/**
-	 * Returns the meta object for class '{@link gov.redhawk.ui.views.allocmgr.AllocationManager <em>Allocation
-	 * Manager</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Allocation Manager</em>'.
-	 * @see gov.redhawk.ui.views.allocmgr.AllocationManager
-	 * @generated
-	 */
-	EClass getAllocationManager();
-
-	/**
-	 * Returns the meta object for the containment reference list
-	 * '{@link gov.redhawk.ui.views.allocmgr.AllocationManager#getStatus <em>Status</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Status</em>'.
-	 * @see gov.redhawk.ui.views.allocmgr.AllocationManager#getStatus()
-	 * @see #getAllocationManager()
-	 * @generated
-	 */
-	EReference getAllocationManager_Status();
-
-	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -357,6 +431,25 @@ public interface AllocMgrPackage extends EPackage {
 	 * @generated
 	 */
 	interface Literals {
+		/**
+		 * The meta object literal for the '{@link gov.redhawk.ui.views.allocmgr.impl.ScaAllocationManagerImpl <em>Sca
+		 * Allocation Manager</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see gov.redhawk.ui.views.allocmgr.impl.ScaAllocationManagerImpl
+		 * @see gov.redhawk.ui.views.allocmgr.impl.AllocMgrPackageImpl#getScaAllocationManager()
+		 * @generated
+		 */
+		EClass SCA_ALLOCATION_MANAGER = eINSTANCE.getScaAllocationManager();
+
+		/**
+		 * The meta object literal for the '<em><b>Allocations</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SCA_ALLOCATION_MANAGER__ALLOCATIONS = eINSTANCE.getScaAllocationManager_Allocations();
+
 		/**
 		 * The meta object literal for the '{@link gov.redhawk.ui.views.allocmgr.impl.AllocationStatusImpl
 		 * <em>Allocation Status</em>}' class.
@@ -431,25 +524,6 @@ public interface AllocMgrPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ALLOCATION_STATUS__SOURCE_ID = eINSTANCE.getAllocationStatus_SourceID();
-
-		/**
-		 * The meta object literal for the '{@link gov.redhawk.ui.views.allocmgr.impl.AllocationManagerImpl
-		 * <em>Allocation Manager</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see gov.redhawk.ui.views.allocmgr.impl.AllocationManagerImpl
-		 * @see gov.redhawk.ui.views.allocmgr.impl.AllocMgrPackageImpl#getAllocationManager()
-		 * @generated
-		 */
-		EClass ALLOCATION_MANAGER = eINSTANCE.getAllocationManager();
-
-		/**
-		 * The meta object literal for the '<em><b>Status</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference ALLOCATION_MANAGER__STATUS = eINSTANCE.getAllocationManager_Status();
 
 	}
 

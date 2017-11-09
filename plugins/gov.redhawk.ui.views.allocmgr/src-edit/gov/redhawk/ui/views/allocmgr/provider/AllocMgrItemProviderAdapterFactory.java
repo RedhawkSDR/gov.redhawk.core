@@ -85,6 +85,30 @@ public class AllocMgrItemProviderAdapterFactory extends AllocMgrAdapterFactory i
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link gov.redhawk.ui.views.allocmgr.ScaAllocationManager}
+	 * instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ScaAllocationManagerItemProvider scaAllocationManagerItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link gov.redhawk.ui.views.allocmgr.ScaAllocationManager}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createScaAllocationManagerAdapter() {
+		if (scaAllocationManagerItemProvider == null) {
+			scaAllocationManagerItemProvider = new ScaAllocationManagerItemProvider(this);
+		}
+
+		return scaAllocationManagerItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link gov.redhawk.ui.views.allocmgr.AllocationStatus}
 	 * instances.
 	 * <!-- begin-user-doc -->
@@ -106,30 +130,6 @@ public class AllocMgrItemProviderAdapterFactory extends AllocMgrAdapterFactory i
 		}
 
 		return allocationStatusItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link gov.redhawk.ui.views.allocmgr.AllocationManager}
-	 * instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected AllocationManagerItemProvider allocationManagerItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link gov.redhawk.ui.views.allocmgr.AllocationManager}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createAllocationManagerAdapter() {
-		if (allocationManagerItemProvider == null) {
-			allocationManagerItemProvider = new AllocationManagerItemProvider(this);
-		}
-
-		return allocationManagerItemProvider;
 	}
 
 	/**
@@ -231,10 +231,10 @@ public class AllocMgrItemProviderAdapterFactory extends AllocMgrAdapterFactory i
 	 * @generated
 	 */
 	public void dispose() {
+		if (scaAllocationManagerItemProvider != null)
+			scaAllocationManagerItemProvider.dispose();
 		if (allocationStatusItemProvider != null)
 			allocationStatusItemProvider.dispose();
-		if (allocationManagerItemProvider != null)
-			allocationManagerItemProvider.dispose();
 	}
 
 	// END GENERATED CODE

@@ -2,10 +2,18 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="allocmgr" nsURI="http://allocmgr.views.ui.redhawk.gov/allocmgr"
     nsPrefix="allocmgr">
+  <eClassifiers xsi:type="ecore:EClass" name="ScaAllocationManager">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="allocations" upperBound="-1"
+        eType="#//AllocationStatus" containment="true"/>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/gov.redhawk.sca.model/model/sca.ecore#//CorbaObjWrapper">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//AllocationManager"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//AllocationManagerOperations"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AllocationStatus">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="allocationID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="requestingDomain" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="allocationProps" eType="ecore:EDataType ../../mil.jpeojtrs.sca.cf/model/cf.ecore#//DataTypeArray"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="allocationProps" eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//DataTypeArray"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="deviceIOR" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="deviceLabel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         derived="true"/>
@@ -13,9 +21,5 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="deviceMgrLabel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AllocationManager">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="status" upperBound="-1"
-        eType="#//AllocationStatus" containment="true"/>
   </eClassifiers>
 </ecore:EPackage>

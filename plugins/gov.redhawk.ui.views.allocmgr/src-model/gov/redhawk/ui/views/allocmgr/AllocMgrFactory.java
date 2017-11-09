@@ -31,6 +31,15 @@ public interface AllocMgrFactory extends EFactory {
 	AllocMgrFactory eINSTANCE = gov.redhawk.ui.views.allocmgr.impl.AllocMgrFactoryImpl.init();
 
 	/**
+	 * Returns a new object of class '<em>Sca Allocation Manager</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Sca Allocation Manager</em>'.
+	 * @generated
+	 */
+	ScaAllocationManager createScaAllocationManager();
+
+	/**
 	 * Returns a new object of class '<em>Allocation Status</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -44,15 +53,6 @@ public interface AllocMgrFactory extends EFactory {
 	AllocationStatus createAllocationStatus(CF.AllocationManagerPackage.AllocationStatusType cfStatus);
 
 	// BEGIN GENERATED CODE
-
-	/**
-	 * Returns a new object of class '<em>Allocation Manager</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Allocation Manager</em>'.
-	 * @generated
-	 */
-	AllocationManager createAllocationManager();
 
 	/**
 	 * Returns the package supported by this factory.
