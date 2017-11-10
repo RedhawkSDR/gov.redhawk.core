@@ -33,6 +33,17 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="true"
+            locationURI="popup:gov.redhawk.ui.views.allocmgr.view?after=additions">
+         <command
+               commandId="gov.redhawk.ui.views.allocmgr.deallocate"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -41,6 +52,12 @@
             description="Shows the allocation manager"
             id="gov.redhawk.ui.views.allocmgr.show"
             name="Allocation Manager">
+      </command>
+      <command
+            categoryId="gov.redhawk.ui.commands.category.sca"
+            description="Deallocates the selected allocation"
+            id="gov.redhawk.ui.views.allocmgr.deallocate"
+            name="Deallocate">
       </command>
    </extension>
    <extension
@@ -60,6 +77,19 @@
                </iterate>
             </and>
          </activeWhen>
+      </handler>
+      <handler
+            class="gov.redhawk.ui.views.allocmgr.handlers.DeallocateHandler"
+            commandId="gov.redhawk.ui.views.allocmgr.deallocate">
+         <enabledWhen>
+            <iterate
+                  ifEmpty="false"
+                  operator="and">
+               <instanceof
+                     value="gov.redhawk.ui.views.allocmgr.AllocationStatus">
+               </instanceof>
+            </iterate>
+         </enabledWhen>
       </handler>
    </extension>
 

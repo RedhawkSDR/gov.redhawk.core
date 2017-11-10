@@ -10,6 +10,8 @@
  */
 package gov.redhawk.ui.views.allocmgr.jobs;
 
+import java.util.List;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -26,9 +28,9 @@ import mil.jpeojtrs.sca.util.CFErrorFormatter;
 public class DeallocateJob extends Job {
 
 	private ScaAllocationManager allocMgr;
-	private String[] allocationIDs;
+	private List<String> allocationIDs;
 
-	public DeallocateJob(ScaAllocationManager allocMgr, String[] allocationIDs) {
+	public DeallocateJob(ScaAllocationManager allocMgr, List<String> allocationIDs) {
 		super("Deallocate");
 		this.allocMgr = allocMgr;
 		this.allocationIDs = allocationIDs;
@@ -39,7 +41,8 @@ public class DeallocateJob extends Job {
 		SubMonitor progress = SubMonitor.convert(monitor, 2);
 
 		try {
-			allocMgr.deallocate(allocationIDs);
+			String[] param = allocationIDs.toArray(new String[allocationIDs.size()]);
+			allocMgr.deallocate(param);
 			progress.worked(1);
 		} catch (SystemException e) {
 			return new Status(IStatus.ERROR, AllocMgrPlugin.ID, "Unable to deallocate", e);

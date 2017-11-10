@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
+import org.eclipse.emf.edit.ui.provider.UnwrappingSelectionProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
@@ -43,16 +44,21 @@ public class AllocMgrView extends ViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
+		// Our top-level composite
 		Composite viewerComposite = new Composite(parent, SWT.NONE);
 		viewerComposite.setLayout(GridLayoutFactory.fillDefaults().numColumns(1).create());
 
-		viewer = new XViewer(viewerComposite, SWT.NONE, new AllocMgrXViewerFactory());
+		// The viewer
+		viewer = new XViewer(viewerComposite, SWT.MULTI, new AllocMgrXViewerFactory());
 		viewer.getTree().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
 		this.adapterFactory = new AllocMgrItemProviderAdapterFactory();
 		ITreeContentProvider contentProvider = new AdapterFactoryContentProvider(adapterFactory);
 		viewer.setContentProvider(contentProvider);
 		IBaseLabelProvider labelProvider = new AdapterFactoryXViewerLabelProvider(viewer, adapterFactory, AllocMgrXViewerFactory.getColumnsToFeatures());
 		viewer.setLabelProvider(labelProvider);
+
+		getSite().registerContextMenu(viewer.getMenuManager(), new UnwrappingSelectionProvider(viewer));
+		getSite().setSelectionProvider(viewer);
 	}
 
 	@Override

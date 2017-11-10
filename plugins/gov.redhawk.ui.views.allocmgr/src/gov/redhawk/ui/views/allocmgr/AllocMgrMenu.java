@@ -13,12 +13,12 @@ package gov.redhawk.ui.views.allocmgr;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.nebula.widgets.xviewer.customize.XViewerCustomMenu;
+import org.eclipse.ui.IWorkbenchActionConstants;
 
 public class AllocMgrMenu extends XViewerCustomMenu {
 
 	public void setupMenuForTable(MenuManager menuManager) {
-		menuManager.add(new DeallocateAction(xViewer));
-		menuManager.add(new Separator());
+		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		super.setupMenuForTable(menuManager);
 	}
 
