@@ -119,6 +119,7 @@
     <module>plugins/gov.redhawk.sca.waveform.controlpanel</module>
     <module>plugins/gov.redhawk.ui.port</module>
     <module>plugins/gov.redhawk.ui.port.nxmplot</module>
+    <module>plugins/gov.redhawk.ui.views.allocmgr</module>
     <module>plugins/gov.redhawk.ui.views.event</module>
     <module>plugins/gov.redhawk.ui.views.monitor</module>
     <module>plugins/gov.redhawk.ui.views.namebrowser</module>
