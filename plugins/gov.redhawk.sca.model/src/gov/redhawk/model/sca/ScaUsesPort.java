@@ -12,8 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca;
 
-import mil.jpeojtrs.sca.scd.Uses;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +21,7 @@ import org.eclipse.emf.common.util.EList;
 import CF.Port;
 import CF.PortOperations;
 import CF.PortPackage.InvalidPort;
+import mil.jpeojtrs.sca.scd.Uses;
 
 /**
  * <!-- begin-user-doc -->
@@ -112,6 +111,9 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	 * @since 21.0
 	 */
 	public static class Util {
+		private static final String connTable = "connectionTable";
+		private static final String connId = connTable + "::connection_id";
+
 		// END GENERATED CODE
 		private Util() {
 		}
@@ -143,12 +145,11 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 				return connectionIds;
 			}
 
-			// TODO: Are there static final fields for these Strings?
 			ScaPropertyContainer< ? , ? > propContainer = (ScaPropertyContainer< ? , ? >) port.eContainer();
-			ScaStructSequenceProperty connectionTable = (ScaStructSequenceProperty) propContainer.getProperty("connectionTable");
+			ScaStructSequenceProperty connectionTable = (ScaStructSequenceProperty) propContainer.getProperty(connTable);
 			for (ScaStructProperty struct : connectionTable.getStructs()) {
 				for (ScaSimpleProperty simple : struct.getSimples()) {
-					if ("connectionTable::connection_id".equals(simple.getId())) {
+					if (connId.equals(simple.getId())) {
 						connectionIds.add(simple.getValue().toString());
 					}
 				}
