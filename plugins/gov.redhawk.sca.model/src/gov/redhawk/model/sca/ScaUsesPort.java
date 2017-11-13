@@ -14,6 +14,9 @@ package gov.redhawk.model.sca;
 
 import mil.jpeojtrs.sca.scd.Uses;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 
@@ -104,4 +107,55 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	 * @generated
 	 */
 	void disconnectPort(ScaConnection connection) throws InvalidPort;
+
+	/**
+	 * @since 21.0
+	 */
+	public static class Util {
+		// END GENERATED CODE
+		private Util() {
+		}
+
+		/**
+		 * @return True if the ports container has a 'connectionTable' struct property with one or more entries
+		 */
+		public static boolean isMultiOutPort(ScaUsesPort port) {
+			if (!(port.eContainer() instanceof ScaPropertyContainer< ? , ? >)) {
+				return false;
+			}
+
+			ScaPropertyContainer< ? , ? > propContainer = (ScaPropertyContainer< ? , ? >) port.eContainer();
+			if (propContainer.getProperty("connectionTable") != null) {
+				ScaStructSequenceProperty connectionTable = (ScaStructSequenceProperty) propContainer.getProperty("connectionTable");
+				return connectionTable.getStructs().size() >= 1;
+			}
+			return false;
+		}
+
+		/**
+		 * @return a list of all connection ID's in the container's connectionTable property, or an empty list if none
+		 *         are found
+		 */
+		public static List<String> getConnectionIds(ScaUsesPort port) {
+			List<String> connectionIds = new ArrayList<>();
+
+			if (!isMultiOutPort(port)) {
+				return connectionIds;
+			}
+
+			// TODO: Are there static final fields for these Strings?
+			ScaPropertyContainer< ? , ? > propContainer = (ScaPropertyContainer< ? , ? >) port.eContainer();
+			ScaStructSequenceProperty connectionTable = (ScaStructSequenceProperty) propContainer.getProperty("connectionTable");
+			for (ScaStructProperty struct : connectionTable.getStructs()) {
+				for (ScaSimpleProperty simple : struct.getSimples()) {
+					if ("connectionTable::connection_id".equals(simple.getId())) {
+						connectionIds.add(simple.getValue().toString());
+					}
+				}
+			}
+
+			return connectionIds;
+		}
+		// BEGIN GENERATED CODE
+	}
 } // ScaUsesPort
