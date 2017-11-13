@@ -277,11 +277,10 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 		return getSite().getId();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public Object getAdapter(Class adapter) {
+	public < T > T getAdapter(Class<T> adapter) {
 		if (adapter == IPropertySheetPage.class) {
-			return new TabbedPropertySheetPage(this);
+			return adapter.cast(new TabbedPropertySheetPage(this));
 		}
 		return super.getAdapter(adapter);
 	}
