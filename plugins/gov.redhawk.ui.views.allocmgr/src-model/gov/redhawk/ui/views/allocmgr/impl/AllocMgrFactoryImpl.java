@@ -11,15 +11,16 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.ui.views.allocmgr.impl;
 
-import gov.redhawk.ui.views.allocmgr.*;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+
+import gov.redhawk.ui.views.allocmgr.AllocMgrFactory;
+import gov.redhawk.ui.views.allocmgr.AllocMgrPackage;
+import gov.redhawk.ui.views.allocmgr.AllocationStatus;
+import gov.redhawk.ui.views.allocmgr.ScaAllocationManager;
 
 /**
  * <!-- begin-user-doc -->

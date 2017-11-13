@@ -10,11 +10,15 @@
  */
 package gov.redhawk.ui.views.allocmgr;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.UnwrappingSelectionProvider;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
@@ -22,14 +26,20 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.nebula.widgets.xviewer.XViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IPageLayout;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.eclipse.ui.views.properties.tabbed.ITabbedPropertySheetPageContributor;
+import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
 import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.ui.views.allocmgr.actions.ShowDetailsAction;
 import gov.redhawk.ui.views.allocmgr.jobs.FetchAllocationManagerJob;
 import gov.redhawk.ui.views.allocmgr.jobs.FetchAllocationsJob;
 import gov.redhawk.ui.views.allocmgr.provider.AllocMgrItemProviderAdapterFactory;
 
-public class AllocMgrView extends ViewPart {
+public class AllocMgrView extends ViewPart implements ITabbedPropertySheetPageContributor {
 
 	public static final String ID = "gov.redhawk.ui.views.allocmgr.view";
 
@@ -56,6 +66,19 @@ public class AllocMgrView extends ViewPart {
 		viewer.setContentProvider(contentProvider);
 		IBaseLabelProvider labelProvider = new AdapterFactoryXViewerLabelProvider(viewer, adapterFactory, AllocMgrXViewerFactory.getColumnsToFeatures());
 		viewer.setLabelProvider(labelProvider);
+
+		// Event handlers for the viewer
+		viewer.addDoubleClickListener(event -> {
+			try {
+				getSite().getPage().showView(IPageLayout.ID_PROP_SHEET);
+			} catch (PartInitException e) {
+				IStatus status = new Status(IStatus.ERROR, AllocMgrPlugin.ID, "Unable to open properties view", e);
+				ErrorDialog.openError(parent.getShell(), "Error", "Unable to open properties view", status);
+			}
+		});
+
+		IToolBarManager toolBarMgr = getViewSite().getActionBars().getToolBarManager();
+		toolBarMgr.add(new ShowDetailsAction(getSite().getPage()));
 
 		getSite().registerContextMenu(viewer.getMenuManager(), new UnwrappingSelectionProvider(viewer));
 		getSite().setSelectionProvider(viewer);
@@ -97,5 +120,18 @@ public class AllocMgrView extends ViewPart {
 		fetchAllocStatusesJob.cancel();
 		super.dispose();
 		adapterFactory.dispose();
+	}
+
+	@Override
+	public String getContributorId() {
+		return getSite().getId();
+	}
+
+	@Override
+	public < T > T getAdapter(Class<T> adapter) {
+		if (adapter == IPropertySheetPage.class) {
+			return adapter.cast(new TabbedPropertySheetPage(this));
+		}
+		return super.getAdapter(adapter);
 	}
 }

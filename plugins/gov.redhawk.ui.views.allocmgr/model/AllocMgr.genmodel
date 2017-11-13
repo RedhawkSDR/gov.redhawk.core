@@ -5,18 +5,23 @@
     dynamicTemplates="true" forceOverwrite="true" modelName="AllocMgr" modelPluginClass=""
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"
     commentFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0"
-    copyrightFields="false" tableProviders="true" usedGenPackages="platform:/plugin/gov.redhawk.sca.model/model/sca.genmodel#//sca platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.genmodel#//cf"
+    copyrightFields="false" tableProviders="true" usedGenPackages="platform:/plugin/gov.redhawk.sca.model/model/sca.genmodel#//sca platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.genmodel#//cf platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.genmodel#//prf platform:/plugin/mil.jpeojtrs.sca.spd/model/spd.genmodel#//spd platform:/plugin/mil.jpeojtrs.sca.sad/model/sad.genmodel#//sad platform:/plugin/mil.jpeojtrs.sca.dcd/model/dcd.genmodel#//dcd platform:/plugin/mil.jpeojtrs.sca.scd/model/scd.genmodel#//scd platform:/plugin/mil.jpeojtrs.sca.dmd/model/dmd.genmodel#//dmd platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.genmodel#//extended platform:/plugin/mil.jpeojtrs.sca.partitioning/model/partitioning.genmodel#//partitioning platform:/plugin/mil.jpeojtrs.sca.dpd/model/dpd.genmodel#//dpd"
     operationReflection="true" importOrganizing="true">
   <foreignModel>AllocMgr.ecore</foreignModel>
   <genPackages prefix="AllocMgr" basePackage="gov.redhawk.ui.views" disposableProviderFactory="true"
       ecorePackage="AllocMgr.ecore#/">
+    <genClasses ecoreClass="AllocMgr.ecore#//ScaAllocationManager">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference AllocMgr.ecore#//ScaAllocationManager/allocations"/>
+    </genClasses>
     <genClasses ecoreClass="AllocMgr.ecore#//AllocationStatus">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/allocationID"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/requestingDomain"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/allocationProps"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/deviceIOR"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/deviceMgrIOR"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/sourceID"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/allocationID"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/requestingDomain"/>
+      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/allocationProps"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/deviceIOR"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/deviceLabel"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/deviceMgrIOR"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/deviceMgrLabel"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute AllocMgr.ecore#//AllocationStatus/sourceID"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

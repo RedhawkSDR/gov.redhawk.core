@@ -92,6 +92,66 @@
          </enabledWhen>
       </handler>
    </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
+      <propertyContributor
+            contributorId="gov.redhawk.ui.views.allocmgr.view"
+            labelProvider="gov.redhawk.ui.views.allocmgr.properties.AllocMgrPropertiesTitleProvider">
+         <propertyCategory
+               category="gov.redhawk.ui.views.allocmgr.properties"></propertyCategory>
+         <propertyCategory
+               category="gov.redhawk.ui.views.allocmgr.advanced">
+         </propertyCategory>
+      </propertyContributor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
+      <propertyTabs
+            contributorId="gov.redhawk.ui.views.allocmgr.view">
+         <propertyTab
+               category="gov.redhawk.ui.views.allocmgr.properties"
+               id="gov.redhawk.ui.views.allocmgr.propertiestab"
+               label="Properties">
+         </propertyTab>
+         <propertyTab
+               category="gov.redhawk.ui.views.allocmgr.advanced"
+               id="gov.redhawk.ui.views.allocmgr.advancedtab"
+               label="Advanced">
+         </propertyTab>
+      </propertyTabs>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertySections">
+      <propertySections
+            contributorId="gov.redhawk.ui.views.allocmgr.view">
+         <propertySection
+               class="gov.redhawk.sca.ui.properties.ComponentPropertiesPropertySection"
+               id="gov.redhawk.ui.views.allocmgr.propertiessection"
+               tab="gov.redhawk.ui.views.allocmgr.propertiestab">
+            <input
+                  type="gov.redhawk.ui.views.allocmgr.AllocationStatus">
+            </input>
+         </propertySection>
+         <propertySection
+               class="org.eclipse.ui.views.properties.tabbed.AdvancedPropertySection"
+               id="gov.redhawk.ui.views.allocmgr.advancedsection"
+               tab="gov.redhawk.ui.views.allocmgr.advancedtab">
+            <input
+                  type="gov.redhawk.ui.views.allocmgr.AllocationStatus">
+            </input>
+         </propertySection>
+      </propertySections>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="gov.redhawk.ui.views.allocmgr.AllocationStatus"
+            class="gov.redhawk.ui.views.allocmgr.properties.AllocationStatusAdapter">
+         <adapter
+               type="gov.redhawk.model.sca.ScaPropertyContainer">
+         </adapter>
+      </factory>
+   </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated AllocMgr -->

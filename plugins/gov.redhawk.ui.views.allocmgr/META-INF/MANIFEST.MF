@@ -35,5 +35,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore.edit,
  mil.jpeojtrs.sca.partitioning.edit,
  mil.jpeojtrs.sca.dpd.edit,
- gov.redhawk.sca.model.edit
+ gov.redhawk.sca.model.edit,
+ org.eclipse.ui.views.properties.tabbed,
+ gov.redhawk.sca.ui;bundle-version="10.2.0"
 Bundle-ActivationPolicy: lazy

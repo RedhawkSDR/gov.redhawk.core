@@ -22,7 +22,6 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -78,7 +77,6 @@ public class AllocationStatusItemProvider extends ItemProviderAdapter implements
 
 			addAllocationIDPropertyDescriptor(object);
 			addRequestingDomainPropertyDescriptor(object);
-			addAllocationPropsPropertyDescriptor(object);
 			addDeviceIORPropertyDescriptor(object);
 			addDeviceLabelPropertyDescriptor(object);
 			addDeviceMgrIORPropertyDescriptor(object);
@@ -98,33 +96,23 @@ public class AllocationStatusItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_AllocationStatus_allocationID_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_AllocationStatus_allocationID_feature", "_UI_AllocationStatus_type"),
-			AllocMgrPackage.Literals.ALLOCATION_STATUS__ALLOCATION_ID, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+			AllocMgrPackage.Literals.ALLOCATION_STATUS__ALLOCATION_ID, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
 	 * This adds a property descriptor for the Requesting Domain feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void addRequestingDomainPropertyDescriptor(Object object) {
+		// END GENERATED CODE
+		Object image = getResourceLocator().getImage("full/obj16/ScaDomainManager");
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_AllocationStatus_requestingDomain_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_AllocationStatus_requestingDomain_feature", "_UI_AllocationStatus_type"),
-			AllocMgrPackage.Literals.ALLOCATION_STATUS__REQUESTING_DOMAIN, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Allocation Props feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addAllocationPropsPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
-			getString("_UI_AllocationStatus_allocationProps_feature"),
-			getString("_UI_PropertyDescriptor_description", "_UI_AllocationStatus_allocationProps_feature", "_UI_AllocationStatus_type"),
-			AllocMgrPackage.Literals.ALLOCATION_STATUS__ALLOCATION_PROPS, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+			AllocMgrPackage.Literals.ALLOCATION_STATUS__REQUESTING_DOMAIN, false, false, false, image, null, null));
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -137,20 +125,23 @@ public class AllocationStatusItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_AllocationStatus_deviceIOR_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_AllocationStatus_deviceIOR_feature", "_UI_AllocationStatus_type"),
-			AllocMgrPackage.Literals.ALLOCATION_STATUS__DEVICE_IOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+			AllocMgrPackage.Literals.ALLOCATION_STATUS__DEVICE_IOR, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
 	 * This adds a property descriptor for the Device Label feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void addDeviceLabelPropertyDescriptor(Object object) {
+		// END GENERATED CODE
+		Object image = getResourceLocator().getImage("full/obj16/ScaDevice");
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_AllocationStatus_deviceLabel_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_AllocationStatus_deviceLabel_feature", "_UI_AllocationStatus_type"),
-			AllocMgrPackage.Literals.ALLOCATION_STATUS__DEVICE_LABEL, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+			AllocMgrPackage.Literals.ALLOCATION_STATUS__DEVICE_LABEL, false, false, false, image, null, null));
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -163,20 +154,23 @@ public class AllocationStatusItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_AllocationStatus_deviceMgrIOR_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_AllocationStatus_deviceMgrIOR_feature", "_UI_AllocationStatus_type"),
-			AllocMgrPackage.Literals.ALLOCATION_STATUS__DEVICE_MGR_IOR, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+			AllocMgrPackage.Literals.ALLOCATION_STATUS__DEVICE_MGR_IOR, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
 	 * This adds a property descriptor for the Device Mgr Label feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void addDeviceMgrLabelPropertyDescriptor(Object object) {
+		// END GENERATED CODE
+		Object image = getResourceLocator().getImage("full/obj16/ScaDeviceManager");
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_AllocationStatus_deviceMgrLabel_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_AllocationStatus_deviceMgrLabel_feature", "_UI_AllocationStatus_type"),
-			AllocMgrPackage.Literals.ALLOCATION_STATUS__DEVICE_MGR_LABEL, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+			AllocMgrPackage.Literals.ALLOCATION_STATUS__DEVICE_MGR_LABEL, false, false, false, image, null, null));
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -189,7 +183,7 @@ public class AllocationStatusItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_AllocationStatus_sourceID_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_AllocationStatus_sourceID_feature", "_UI_AllocationStatus_type"),
-			AllocMgrPackage.Literals.ALLOCATION_STATUS__SOURCE_ID, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+			AllocMgrPackage.Literals.ALLOCATION_STATUS__SOURCE_ID, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**

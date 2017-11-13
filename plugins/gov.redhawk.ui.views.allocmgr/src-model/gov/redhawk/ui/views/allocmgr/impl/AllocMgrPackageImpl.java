@@ -110,8 +110,8 @@ public class AllocMgrPackageImpl extends EPackageImpl implements AllocMgrPackage
 		// Initialize simple dependencies
 		ScaPackage.eINSTANCE.eClass();
 		CfPackage.eINSTANCE.eClass();
-		SpdPackage.eINSTANCE.eClass();
 		PrfPackage.eINSTANCE.eClass();
+		SpdPackage.eINSTANCE.eClass();
 		SadPackage.eINSTANCE.eClass();
 		DcdPackage.eINSTANCE.eClass();
 		ScdPackage.eINSTANCE.eClass();

@@ -57,7 +57,7 @@ public final class AllocMgrEditPlugin extends EMFPlugin {
 	 * @generated
 	 */
 	public AllocMgrEditPlugin() {
-		super(new ResourceLocator[] { ScaEditPlugin.INSTANCE, CfEditPlugin.INSTANCE, SpdEditPlugin.INSTANCE, PrfEditPlugin.INSTANCE, SadEditPlugin.INSTANCE,
+		super(new ResourceLocator[] { ScaEditPlugin.INSTANCE, CfEditPlugin.INSTANCE, PrfEditPlugin.INSTANCE, SpdEditPlugin.INSTANCE, SadEditPlugin.INSTANCE,
 			DcdEditPlugin.INSTANCE, ScdEditPlugin.INSTANCE, DmdEditPlugin.INSTANCE, EcoreEditPlugin.INSTANCE, PartitioningEditPlugin.INSTANCE,
 			DpdEditPlugin.INSTANCE, });
 	}
