@@ -11,26 +11,6 @@
  */
 package gov.redhawk.internal.ui.port.nxmplot.handlers;
 
-import gov.redhawk.bulkio.util.BulkIOType;
-import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
-import gov.redhawk.model.sca.ScaDomainManagerRegistry;
-import gov.redhawk.model.sca.ScaUsesPort;
-import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
-import gov.redhawk.sca.model.jobs.RefreshJob;
-import gov.redhawk.sca.util.PluginUtil;
-import gov.redhawk.sca.util.SubMonitor;
-import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
-import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
-import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
-import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
-import gov.redhawk.ui.port.nxmplot.IPlotView;
-import gov.redhawk.ui.port.nxmplot.PlotActivator;
-import gov.redhawk.ui.port.nxmplot.PlotSettings;
-import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
-import gov.redhawk.ui.port.nxmplot.PlotSource;
-import gov.redhawk.ui.port.nxmplot.PlotType;
-import gov.redhawk.ui.port.nxmplot.preferences.FftPreferences;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,6 +27,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -59,6 +40,26 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import BULKIO.dataSDDSHelper;
+import gov.redhawk.bulkio.util.BulkIOType;
+import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
+import gov.redhawk.model.sca.ScaDomainManagerRegistry;
+import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
+import gov.redhawk.sca.model.jobs.RefreshJob;
+import gov.redhawk.sca.ui.MultiOutConnectionWizard;
+import gov.redhawk.sca.util.PluginUtil;
+import gov.redhawk.sca.util.SubMonitor;
+import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
+import gov.redhawk.ui.port.nxmplot.IPlotView;
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
+import gov.redhawk.ui.port.nxmplot.PlotSettings;
+import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
+import gov.redhawk.ui.port.nxmplot.PlotSource;
+import gov.redhawk.ui.port.nxmplot.PlotType;
+import gov.redhawk.ui.port.nxmplot.preferences.FftPreferences;
 
 /**
  * @noreference This class is not intended to be referenced by clients
@@ -114,7 +115,7 @@ public class PlotPortHandler extends AbstractHandler {
 		}
 
 		if (plotTypeStr != null) {
-			//because this evaluates to true, we do not end up using addSource2 method
+			// because this evaluates to true, we do not end up using addSource2 method
 			plotSettings.setPlotType(PlotType.valueOf(plotTypeStr));
 			isFFT = Boolean.valueOf(event.getParameter(IPlotView.PARAM_ISFFT));
 
@@ -132,12 +133,20 @@ public class PlotPortHandler extends AbstractHandler {
 			}
 			if (containsBulkIOPort) {
 				bulkIOBlockSettings = new BulkIONxmBlockSettings();
-				bulkIOBlockSettings.setConnectionID(event.getParameter(IPlotView.PARAM_CONNECTION_ID));
+				if (hasMultiOutPort(ports)) {
+					// User may choose to cancel the plot if the port is multi-out
+					if (!setMultiOutConnectionId(bulkIOBlockSettings, event, ports)) {
+						return null;
+					}
+				} else {
+					bulkIOBlockSettings.setConnectionID(event.getParameter(IPlotView.PARAM_CONNECTION_ID));
+				}
 			} else {
 				bulkIOBlockSettings = null;
 			}
 			plotBlockSettings = new PlotNxmBlockSettings();
-		} else { // run advanced Port plot wizard
+		} else {
+			// run advanced Port plot wizard
 			PlotWizard wizard = new PlotWizard(containsBulkIOPort, containsSDDSPort); // advanced Port Plot wizard
 			bulkIOBlockSettings = wizard.getBulkIOBlockSettings();
 			if (bulkIOBlockSettings != null) {
@@ -185,7 +194,56 @@ public class PlotPortHandler extends AbstractHandler {
 			StatusManager.getManager().handle(new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "Failed to show Plot View", e),
 				StatusManager.LOG | StatusManager.SHOW);
 		}
+
 		return null;
+	}
+
+	/**
+	 * @return Returns false if the plot operation was canceled
+	 */
+	private static boolean setMultiOutConnectionId(BulkIONxmBlockSettings bulkIOBlockSettings, ExecutionEvent event, List<ScaUsesPort> ports) {
+
+		// TODO: Assumes if the method return is null then this was NOT done on a port node, but instead on a tuner
+		// node. Is that valid?
+		if (event.getParameter(IPlotView.PARAM_CONNECTION_ID) == null) {
+			if (ports.size() > 1) {
+				// Can't plot multiple multi-out ports simultaneously. Warn the user that they will likely miss data
+				final String warningTitle = PlotPortMessages.PlotPortHandler_MULTIPLE_PORTS_WARNING_TITLE;
+				final String warningMsg = PlotPortMessages.PlotPortHandler_MULTIPLE_PORTS_WARNING_MSG;
+				MessageDialog warningDialog = new MessageDialog(HandlerUtil.getActiveShell(event), warningTitle, null, warningMsg, MessageDialog.WARNING,
+					new String[] { "OK", "CANCEL" }, 1);
+				if (Window.CANCEL == warningDialog.open()) {
+					return false;
+				}
+			} else {
+				List<String> connectionIds = ScaUsesPort.Util.getConnectionIds(ports.get(0));
+				if (connectionIds.size() == 1) {
+					// If only one connectionId is found, assume it's our guy
+					bulkIOBlockSettings.setConnectionID(connectionIds.get(0));
+				} else {
+					MultiOutConnectionWizard selectionDialog = new MultiOutConnectionWizard(HandlerUtil.getActiveShell(event), connectionIds);
+					if (Window.CANCEL == selectionDialog.open()) {
+						return false;
+					}
+					bulkIOBlockSettings.setConnectionID(selectionDialog.getSelectedId());
+				}
+			}
+		} else {
+			bulkIOBlockSettings.setConnectionID(event.getParameter(IPlotView.PARAM_CONNECTION_ID));
+		}
+		return true;
+	}
+
+	/**
+	 * Check a list of ports to see if any of them have a connectionTable property with entries
+	 */
+	private static boolean hasMultiOutPort(List<ScaUsesPort> ports) {
+		for (ScaUsesPort port : ports) {
+			if (ScaUsesPort.Util.isMultiOutPort(port)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static boolean isBulkIOPortSupported(String idl) {
@@ -195,9 +253,10 @@ public class PlotPortHandler extends AbstractHandler {
 		return false;
 	}
 
-	private static IStatus addPlotSources(final List<ScaUsesPort> ports, final BulkIONxmBlockSettings bulkIOBlockSettings,
-		final SddsNxmBlockSettings sddsBlockSettings, final FftNxmBlockSettings fftBlockSettings, final PlotNxmBlockSettings plotBlockSettings,
-		final String pipeQualifiers, final PlotView2 plotView, IProgressMonitor monitor) {
+	private static IStatus addPlotSources(final List<ScaUsesPort> ports, // SUPPRESS CHECKSTYLE excessive parameters
+		final BulkIONxmBlockSettings bulkIOBlockSettings, final SddsNxmBlockSettings sddsBlockSettings, final FftNxmBlockSettings fftBlockSettings,
+		final PlotNxmBlockSettings plotBlockSettings, final String pipeQualifiers, final PlotView2 plotView, IProgressMonitor monitor) {
+
 		final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
 		final StringBuilder name = new StringBuilder();
 		final StringBuilder tooltip = new StringBuilder();
@@ -232,10 +291,12 @@ public class PlotPortHandler extends AbstractHandler {
 			Display display = plotView.getSite().getShell().getDisplay();
 			display.asyncExec(() -> {
 				if (name.length() > 0) {
-					plotView.setPartName(name.substring(0, name.length() - 1)); // remove trailing space from view's name
+					// remove trailing space from view's name
+					plotView.setPartName(name.substring(0, name.length() - 1));
 				}
 				if (tooltip.length() > 0) {
-					plotView.setTitleToolTip(tooltip.substring(0, tooltip.length() - 1)); // remove trailing newline from view's tooltip
+					// remove trailing newline from view's tooltip
+					plotView.setTitleToolTip(tooltip.substring(0, tooltip.length() - 1));
 				}
 			});
 		}
