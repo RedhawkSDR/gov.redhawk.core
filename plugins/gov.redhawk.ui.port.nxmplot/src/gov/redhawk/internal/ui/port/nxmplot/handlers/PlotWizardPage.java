@@ -22,6 +22,7 @@ import gov.redhawk.ui.port.nxmplot.PlotSettings;
 import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 import gov.redhawk.ui.port.nxmplot.PlotType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -57,6 +58,7 @@ public class PlotWizardPage extends WizardPage {
 	private PlotNxmBlockSettings plotBlockSettings = new PlotNxmBlockSettings();
 	private boolean fft;
 	private PlotSettings plotSettings = new PlotSettings();
+	private List<String> connectionIds = new ArrayList<>();
 
 	private DataBindingContext dataBindingContext = new DataBindingContext();
 
@@ -111,7 +113,7 @@ public class PlotWizardPage extends WizardPage {
 			group = new Group(parent, SWT.None);
 			group.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
 			group.setText("BULKIO");
-			new BulkIONxmBlockControls(bulkIOBlockSettings, dataBindingContext).createControls(group);
+			new BulkIONxmBlockControls(bulkIOBlockSettings, dataBindingContext, connectionIds).createControls(group);
 		}
 
 		// == BULKIO SDDS settings ===
@@ -206,6 +208,10 @@ public class PlotWizardPage extends WizardPage {
 
 	public void setPlotSettings(PlotSettings plotSettings) {
 		this.plotSettings = plotSettings;
+	}
+	
+	public void setConnectionIds(List<String> connectionIds) {
+		this.connectionIds = connectionIds;
 	}
 
 }

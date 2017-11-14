@@ -32,6 +32,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -147,7 +148,23 @@ public class PlotPortHandler extends AbstractHandler {
 			plotBlockSettings = new PlotNxmBlockSettings();
 		} else {
 			// run advanced Port plot wizard
-			PlotWizard wizard = new PlotWizard(containsBulkIOPort, containsSDDSPort); // advanced Port Plot wizard
+			PlotWizard wizard;
+
+			// TODO: Clean this up, make new methods if necessary
+			if (event.getParameter(IPlotView.PARAM_CONNECTION_ID) == null && hasMultiOutPort(ports)) {
+				if (ports.size() > 1) {
+					// Can't plot multiple multi-out ports simultaneously. Warn the user that they will likely miss data
+					if (!showWarningDialog(HandlerUtil.getActiveShell(event))) {
+						return null;
+					}
+					wizard = new PlotWizard(containsBulkIOPort, containsSDDSPort);
+				} else {
+					wizard = new PlotWizard(ScaUsesPort.Util.getConnectionIds(ports.get(0)), containsBulkIOPort, containsSDDSPort);
+				}
+			} else {
+				wizard = new PlotWizard(containsBulkIOPort, containsSDDSPort);
+			}
+
 			bulkIOBlockSettings = wizard.getBulkIOBlockSettings();
 			if (bulkIOBlockSettings != null) {
 				bulkIOBlockSettings.setConnectionID(event.getParameter(IPlotView.PARAM_CONNECTION_ID));
@@ -208,11 +225,7 @@ public class PlotPortHandler extends AbstractHandler {
 		if (event.getParameter(IPlotView.PARAM_CONNECTION_ID) == null) {
 			if (ports.size() > 1) {
 				// Can't plot multiple multi-out ports simultaneously. Warn the user that they will likely miss data
-				final String warningTitle = PlotPortMessages.PlotPortHandler_MULTIPLE_PORTS_WARNING_TITLE;
-				final String warningMsg = PlotPortMessages.PlotPortHandler_MULTIPLE_PORTS_WARNING_MSG;
-				MessageDialog warningDialog = new MessageDialog(HandlerUtil.getActiveShell(event), warningTitle, null, warningMsg, MessageDialog.WARNING,
-					new String[] { "OK", "CANCEL" }, 1);
-				if (Window.CANCEL == warningDialog.open()) {
+				if (!showWarningDialog(HandlerUtil.getActiveShell(event))) {
 					return false;
 				}
 			} else {
@@ -230,6 +243,17 @@ public class PlotPortHandler extends AbstractHandler {
 			}
 		} else {
 			bulkIOBlockSettings.setConnectionID(event.getParameter(IPlotView.PARAM_CONNECTION_ID));
+		}
+		return true;
+	}
+
+	private static boolean showWarningDialog(Shell shell) {
+		// Can't plot multiple multi-out ports simultaneously. Warn the user that they will likely miss data
+		final String warningTitle = PlotPortMessages.PlotPortHandler_MULTIPLE_PORTS_WARNING_TITLE;
+		final String warningMsg = PlotPortMessages.PlotPortHandler_MULTIPLE_PORTS_WARNING_MSG;
+		MessageDialog warningDialog = new MessageDialog(shell, warningTitle, null, warningMsg, MessageDialog.WARNING, new String[] { "OK", "CANCEL" }, 1);
+		if (Window.CANCEL == warningDialog.open()) {
+			return false;
 		}
 		return true;
 	}

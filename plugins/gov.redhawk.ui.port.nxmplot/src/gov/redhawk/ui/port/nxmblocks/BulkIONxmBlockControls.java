@@ -13,6 +13,8 @@ package gov.redhawk.ui.port.nxmblocks;
 import gov.redhawk.sca.util.ArrayUtil;
 import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings.BlockingOption;
 
+import java.util.List;
+
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
@@ -49,15 +51,25 @@ public class BulkIONxmBlockControls {
 
 	private final BulkIONxmBlockSettings settings;
 	private final DataBindingContext dataBindingCtx;
+	private final List<String> connectionIds;
 
 	// widgets
-	private Text connectionIDField;
+	private Text connectionIDTextField;
+	private ComboViewer connectionIDComboField;
 	private ComboViewer sampleRateField;
 	private Button removeOnEOSButton;
 
-	public BulkIONxmBlockControls(BulkIONxmBlockSettings settings, DataBindingContext dataBindingCtx) {
+	/**
+	 * 
+	 * @param settings
+	 * @param dataBindingCtx
+	 * @param connectionIds - A {@link String} list. If not empty, indicates that connect ID should be set via a combo
+	 * widget populated with these values.
+	 */
+	public BulkIONxmBlockControls(BulkIONxmBlockSettings settings, DataBindingContext dataBindingCtx, List<String> connectionIds) {
 		this.settings = settings;
 		this.dataBindingCtx = dataBindingCtx;
+		this.connectionIds = connectionIds;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -68,13 +80,22 @@ public class BulkIONxmBlockControls {
 		// === connection ID ==
 		label = new Label(container, SWT.None);
 		label.setText("Connection ID:");
-		connectionIDField = new Text(container, SWT.BORDER);
-		connectionIDField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
-		connectionIDField.setToolTipText("Custom Port connection ID to use vs a generated one.");
-		if (this.settings.getConnectionID() != null && !this.settings.getConnectionID().isEmpty()) {
-			// Can't change the ID after it has been set
-			connectionIDField.setEditable(false);
-			connectionIDField.setEnabled(false);
+		if (connectionIds.isEmpty()) {
+			connectionIDTextField = new Text(container, SWT.BORDER);
+			connectionIDTextField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+			connectionIDTextField.setToolTipText("Custom Port connection ID to use vs a generated one.");
+			if (this.settings.getConnectionID() != null && !this.settings.getConnectionID().isEmpty()) {
+				// Can't change the ID after it has been set
+				connectionIDTextField.setEditable(false);
+				connectionIDTextField.setEnabled(false);
+			}
+		} else {
+			connectionIDComboField = new ComboViewer(container, SWT.BORDER | SWT.READ_ONLY);
+			connectionIDComboField.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+			connectionIDComboField.getCombo().setToolTipText("Available mulit-out port connection IDs");
+			connectionIDComboField.setContentProvider(ArrayContentProvider.getInstance());
+			connectionIDComboField.setLabelProvider(new LabelProvider());
+			connectionIDComboField.setInput(connectionIds);
 		}
 
 		// === sample rate ===
@@ -116,13 +137,24 @@ public class BulkIONxmBlockControls {
 		this.removeOnEOSButton.setToolTipText("On/checked to remove streams from plot when an end-of-stream is received in pushPacket.");
 
 		initDataBindings();
+		
+		// This needs to happen after the data bindings have been initialized
+		if (connectionIDComboField != null) {
+			connectionIDComboField.setSelection(new StructuredSelection(connectionIds.get(0)));
+		}
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initDataBindings() {
-		IObservableValue target = WidgetProperties.text(SWT.Modify).observe(connectionIDField);
-		IObservableValue model = PojoProperties.value(BulkIONxmBlockSettings.PROP_CONNECTION_ID).observe(settings);
-		dataBindingCtx.bindValue(target, model);
+		if (connectionIDTextField != null) {
+			IObservableValue target = WidgetProperties.text(SWT.Modify).observe(connectionIDTextField);
+			IObservableValue model = PojoProperties.value(BulkIONxmBlockSettings.PROP_CONNECTION_ID).observe(settings);
+			dataBindingCtx.bindValue(target, model);
+		} else {
+			IObservableValue target = WidgetProperties.selection().observe(connectionIDComboField.getCombo());
+			IObservableValue model = PojoProperties.value(BulkIONxmBlockSettings.PROP_CONNECTION_ID).observe(settings);
+			dataBindingCtx.bindValue(target, model);
+		}
 
 		IObservableValue srWidgetValue = WidgetProperties.selection().observe(sampleRateField.getCombo());
 		IObservableValue srModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_SAMPLE_RATE).observe(settings);

@@ -16,6 +16,9 @@ import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.PlotSettings;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.wizard.Wizard;
 
 /**
@@ -26,6 +29,10 @@ public class PlotWizard extends Wizard {
 	private PlotWizardPage page = new PlotWizardPage("settings", "Plot Port Settings", null);
 
 	public PlotWizard(boolean containsBulkIOPort, boolean containsSDDSPort) {
+		this(new ArrayList<String>(), containsBulkIOPort, containsSDDSPort);
+	}
+
+	public PlotWizard(List<String> connectionIds, boolean containsBulkIOPort, boolean containsSDDSPort) {
 		setWindowTitle("Plot Port");
 		if (containsBulkIOPort) {
 			page.setBulkIOBlockSettings(new BulkIONxmBlockSettings());
@@ -33,6 +40,7 @@ public class PlotWizard extends Wizard {
 		if (containsSDDSPort) {
 			page.setSddsBlockSettings(new SddsNxmBlockSettings());
 		}
+		page.setConnectionIds(connectionIds);
 	}
 
 	@Override
