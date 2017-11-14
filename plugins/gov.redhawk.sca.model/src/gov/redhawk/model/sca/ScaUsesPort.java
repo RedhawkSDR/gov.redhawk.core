@@ -111,8 +111,9 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	 * @since 21.0
 	 */
 	public static class Util {
-		private static final String connTable = "connectionTable";
-		private static final String connId = connTable + "::connection_id";
+		private static final String CONNECTION_TABLE = "connectionTable";
+		private static final String CONNECTION_ID = CONNECTION_TABLE + "::connection_id";
+		private static final String PORT_NAME = CONNECTION_TABLE + "::port_name";
 
 		// END GENERATED CODE
 		private Util() {
@@ -120,18 +121,10 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 
 		/**
 		 * @return True if the ports container has a 'connectionTable' struct property with one or more entries
+		 *         belonging to the provided port
 		 */
 		public static boolean isMultiOutPort(ScaUsesPort port) {
-			if (!(port.eContainer() instanceof ScaPropertyContainer< ? , ? >)) {
-				return false;
-			}
-
-			ScaPropertyContainer< ? , ? > propContainer = (ScaPropertyContainer< ? , ? >) port.eContainer();
-			if (propContainer.getProperty("connectionTable") != null) {
-				ScaStructSequenceProperty connectionTable = (ScaStructSequenceProperty) propContainer.getProperty("connectionTable");
-				return connectionTable.getStructs().size() >= 1;
-			}
-			return false;
+			return getConnectionIds(port).size() >= 1;
 		}
 
 		/**
@@ -141,17 +134,25 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 		public static List<String> getConnectionIds(ScaUsesPort port) {
 			List<String> connectionIds = new ArrayList<>();
 
-			if (!isMultiOutPort(port)) {
+			if (!(port.eContainer() instanceof ScaPropertyContainer< ? , ? >)) {
 				return connectionIds;
 			}
 
 			ScaPropertyContainer< ? , ? > propContainer = (ScaPropertyContainer< ? , ? >) port.eContainer();
-			ScaStructSequenceProperty connectionTable = (ScaStructSequenceProperty) propContainer.getProperty(connTable);
+			ScaStructSequenceProperty connectionTable = (ScaStructSequenceProperty) propContainer.getProperty(CONNECTION_TABLE);
+			if (connectionTable == null) {
+				return connectionIds;
+			}
+
 			for (ScaStructProperty struct : connectionTable.getStructs()) {
-				for (ScaSimpleProperty simple : struct.getSimples()) {
-					if (connId.equals(simple.getId())) {
-						connectionIds.add(simple.getValue().toString());
-					}
+				ScaSimpleProperty connectionPortName = struct.getSimple(PORT_NAME);
+				if (connectionPortName == null || !connectionPortName.getValue().equals(port.getName())) {
+					continue;
+				}
+
+				ScaSimpleProperty connectionId = struct.getSimple(CONNECTION_ID);
+				if (connectionId != null && connectionId.getValue() != null) {
+					connectionIds.add(connectionId.getValue().toString());
 				}
 			}
 
