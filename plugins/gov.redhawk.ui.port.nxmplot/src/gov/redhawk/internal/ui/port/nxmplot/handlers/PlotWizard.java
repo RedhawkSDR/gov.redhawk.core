@@ -10,16 +10,16 @@
  *******************************************************************************/
 package gov.redhawk.internal.ui.port.nxmplot.handlers;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.jface.wizard.Wizard;
+
 import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.PlotSettings;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.jface.wizard.Wizard;
 
 /**
  * @noreference This class is not intended to be referenced by clients.
@@ -29,10 +29,10 @@ public class PlotWizard extends Wizard {
 	private PlotWizardPage page = new PlotWizardPage("settings", "Plot Port Settings", null);
 
 	public PlotWizard(boolean containsBulkIOPort, boolean containsSDDSPort) {
-		this(new ArrayList<String>(), containsBulkIOPort, containsSDDSPort);
+		this(new HashMap<String, Boolean>(), containsBulkIOPort, containsSDDSPort);
 	}
 
-	public PlotWizard(List<String> connectionIds, boolean containsBulkIOPort, boolean containsSDDSPort) {
+	public PlotWizard(Map<String, Boolean> connectionIds, boolean containsBulkIOPort, boolean containsSDDSPort) {
 		setWindowTitle("Plot Port");
 		if (containsBulkIOPort) {
 			page.setBulkIOBlockSettings(new BulkIONxmBlockSettings());

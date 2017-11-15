@@ -10,21 +10,10 @@
  *******************************************************************************/
 package gov.redhawk.internal.ui.port.nxmplot.handlers;
 
-import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockControls;
-import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
-import gov.redhawk.ui.port.nxmblocks.FftNxmBlockControls;
-import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
-import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockControls;
-import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
-import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockControls;
-import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
-import gov.redhawk.ui.port.nxmplot.PlotSettings;
-import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
-import gov.redhawk.ui.port.nxmplot.PlotType;
-
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
@@ -47,6 +36,18 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
+import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockControls;
+import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlockControls;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockControls;
+import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockControls;
+import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
+import gov.redhawk.ui.port.nxmplot.PlotSettings;
+import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
+import gov.redhawk.ui.port.nxmplot.PlotType;
+
 /**
  * @noreference This class is not intended to be referenced by clients.
  * @since 4.4
@@ -58,7 +59,7 @@ public class PlotWizardPage extends WizardPage {
 	private PlotNxmBlockSettings plotBlockSettings = new PlotNxmBlockSettings();
 	private boolean fft;
 	private PlotSettings plotSettings = new PlotSettings();
-	private List<String> connectionIds = new ArrayList<>();
+	private Map<String, Boolean> connectionIds = new HashMap<>();
 
 	private DataBindingContext dataBindingContext = new DataBindingContext();
 
@@ -210,7 +211,7 @@ public class PlotWizardPage extends WizardPage {
 		this.plotSettings = plotSettings;
 	}
 	
-	public void setConnectionIds(List<String> connectionIds) {
+	public void setConnectionIds(Map<String, Boolean> connectionIds) {
 		this.connectionIds = connectionIds;
 	}
 

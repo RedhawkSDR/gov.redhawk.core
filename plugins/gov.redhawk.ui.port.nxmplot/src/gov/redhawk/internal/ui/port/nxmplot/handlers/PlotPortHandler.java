@@ -14,6 +14,8 @@ package gov.redhawk.internal.ui.port.nxmplot.handlers;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -159,6 +161,21 @@ public class PlotPortHandler extends AbstractHandler {
 					}
 					wizard = new PlotWizard(containsBulkIOPort, containsSDDSPort);
 				} else {
+					Map<String, Boolean> connectionIds = ScaUsesPort.Util.getConnectionIds(ports.get(0));
+					boolean availableConnections = false;
+					for (Boolean isAvailable : connectionIds.values()) {
+						if (isAvailable) {
+							availableConnections = true;
+							break;
+						}
+					}
+
+					// If there are no available connections, just pop a warning dialog
+					if (!availableConnections) {
+						MultiOutConnectionWizard selectionDialog = new MultiOutConnectionWizard(HandlerUtil.getActiveShell(event), connectionIds);
+						selectionDialog.open();
+						return null;
+					}
 					wizard = new PlotWizard(ScaUsesPort.Util.getConnectionIds(ports.get(0)), containsBulkIOPort, containsSDDSPort);
 				}
 			} else {
@@ -219,9 +236,6 @@ public class PlotPortHandler extends AbstractHandler {
 	 * @return Returns false if the plot operation was canceled
 	 */
 	private static boolean setMultiOutConnectionId(BulkIONxmBlockSettings bulkIOBlockSettings, ExecutionEvent event, List<ScaUsesPort> ports) {
-
-		// TODO: Assumes if the method return is null then this was NOT done on a port node, but instead on a tuner
-		// node. Is that valid?
 		if (event.getParameter(IPlotView.PARAM_CONNECTION_ID) == null) {
 			if (ports.size() > 1) {
 				// Can't plot multiple multi-out ports simultaneously. Warn the user that they will likely miss data
@@ -229,13 +243,14 @@ public class PlotPortHandler extends AbstractHandler {
 					return false;
 				}
 			} else {
-				List<String> connectionIds = ScaUsesPort.Util.getConnectionIds(ports.get(0));
-				if (connectionIds.size() == 1) {
-					// If only one connectionId is found, assume it's our guy
-					bulkIOBlockSettings.setConnectionID(connectionIds.get(0));
+				Map<String, Boolean> connectionIds = ScaUsesPort.Util.getConnectionIds(ports.get(0));
+				Entry<String, Boolean> firstEntry = connectionIds.entrySet().iterator().next();
+				if (connectionIds.size() == 1 && firstEntry.getValue()) {
+					// If only one connectionId is found, and it is available, assume it's our guy
+					bulkIOBlockSettings.setConnectionID(firstEntry.getKey());
 				} else {
 					MultiOutConnectionWizard selectionDialog = new MultiOutConnectionWizard(HandlerUtil.getActiveShell(event), connectionIds);
-					if (Window.CANCEL == selectionDialog.open()) {
+					if (Window.CANCEL == selectionDialog.open() || selectionDialog.getSelectedId() == null) {
 						return false;
 					}
 					bulkIOBlockSettings.setConnectionID(selectionDialog.getSelectedId());
@@ -247,6 +262,9 @@ public class PlotPortHandler extends AbstractHandler {
 		return true;
 	}
 
+	/**
+	 * @return false if the user cancels out of the dialog
+	 */
 	private static boolean showWarningDialog(Shell shell) {
 		// Can't plot multiple multi-out ports simultaneously. Warn the user that they will likely miss data
 		final String warningTitle = PlotPortMessages.PlotPortHandler_MULTIPLE_PORTS_WARNING_TITLE;

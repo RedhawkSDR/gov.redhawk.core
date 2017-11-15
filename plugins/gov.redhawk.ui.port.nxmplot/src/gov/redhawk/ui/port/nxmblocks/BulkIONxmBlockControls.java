@@ -10,10 +10,8 @@
  */
 package gov.redhawk.ui.port.nxmblocks;
 
-import gov.redhawk.sca.util.ArrayUtil;
-import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings.BlockingOption;
-
-import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -22,6 +20,9 @@ import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.SelectObservableValue;
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -38,6 +39,10 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import gov.redhawk.sca.util.ArrayUtil;
+import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings.BlockingOption;
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
+
 /**
  * Adjust/override BULKIO NXM block settings user interface/entry control widgets.
  * @NonNullByDefault
@@ -51,7 +56,7 @@ public class BulkIONxmBlockControls {
 
 	private final BulkIONxmBlockSettings settings;
 	private final DataBindingContext dataBindingCtx;
-	private final List<String> connectionIds;
+	private final Map<String, Boolean> connectionIds;
 
 	// widgets
 	private Text connectionIDTextField;
@@ -66,7 +71,7 @@ public class BulkIONxmBlockControls {
 	 * @param connectionIds - A {@link String} list. If not empty, indicates that connect ID should be set via a combo
 	 * widget populated with these values.
 	 */
-	public BulkIONxmBlockControls(BulkIONxmBlockSettings settings, DataBindingContext dataBindingCtx, List<String> connectionIds) {
+	public BulkIONxmBlockControls(BulkIONxmBlockSettings settings, DataBindingContext dataBindingCtx, Map<String, Boolean> connectionIds) {
 		this.settings = settings;
 		this.dataBindingCtx = dataBindingCtx;
 		this.connectionIds = connectionIds;
@@ -94,8 +99,16 @@ public class BulkIONxmBlockControls {
 			connectionIDComboField.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 			connectionIDComboField.getCombo().setToolTipText("Available mulit-out port connection IDs");
 			connectionIDComboField.setContentProvider(ArrayContentProvider.getInstance());
-			connectionIDComboField.setLabelProvider(new LabelProvider());
-			connectionIDComboField.setInput(connectionIds);
+			connectionIDComboField.setLabelProvider(new LabelProvider() {
+				@Override
+				public String getText(Object element) {
+					if (element instanceof Entry) {
+						return ((Entry) element).getKey().toString();
+					}
+					return super.getText(element);
+				}
+			});
+			connectionIDComboField.setInput(connectionIds.entrySet());
 		}
 
 		// === sample rate ===
@@ -108,7 +121,8 @@ public class BulkIONxmBlockControls {
 		this.sampleRateField.setLabelProvider(new LabelProvider());
 		Object[] inputValues = ArrayUtil.copyAndPrependIfNotNull(this.settings.getSampleRate(), BulkIONxmBlockControls.VALUE_USE_DEFAULT);
 		this.sampleRateField.setInput(inputValues);
-		this.sampleRateField.setSelection(new StructuredSelection(inputValues[0])); // select first value (which is current value or default)
+		this.sampleRateField.setSelection(new StructuredSelection(inputValues[0])); // select first value (which is
+																					// current value or default)
 
 		// === blocking option ===
 		label = new Label(container, SWT.NONE);
@@ -137,10 +151,16 @@ public class BulkIONxmBlockControls {
 		this.removeOnEOSButton.setToolTipText("On/checked to remove streams from plot when an end-of-stream is received in pushPacket.");
 
 		initDataBindings();
-		
+
+		// Set selection at first available connectionId
 		// This needs to happen after the data bindings have been initialized
 		if (connectionIDComboField != null) {
-			connectionIDComboField.setSelection(new StructuredSelection(connectionIds.get(0)));
+			for (Entry<String, Boolean> entry : connectionIds.entrySet()) {
+				if (entry.getValue()) {
+					connectionIDComboField.setSelection(new StructuredSelection(entry));
+					return;
+				}
+			}
 		}
 	}
 
@@ -153,14 +173,29 @@ public class BulkIONxmBlockControls {
 		} else {
 			IObservableValue target = WidgetProperties.selection().observe(connectionIDComboField.getCombo());
 			IObservableValue model = PojoProperties.value(BulkIONxmBlockSettings.PROP_CONNECTION_ID).observe(settings);
-			dataBindingCtx.bindValue(target, model);
+			UpdateValueStrategy targetToModel = new UpdateValueStrategy();
+			targetToModel.setAfterGetValidator(new IValidator() {
+
+				@Override
+				public IStatus validate(Object value) {
+					Object element = connectionIDComboField.getStructuredSelection().getFirstElement();
+					if (element instanceof Entry) {
+						Boolean isValid = (Boolean) ((Entry) element).getValue();
+						if (!isValid) {
+							return new Status(Status.ERROR, PlotActivator.PLUGIN_ID, "Selected connection ID is already in use");
+						}
+					}
+					return Status.OK_STATUS;
+				}
+			});
+			dataBindingCtx.bindValue(target, model, targetToModel, null);
 		}
 
 		IObservableValue srWidgetValue = WidgetProperties.selection().observe(sampleRateField.getCombo());
 		IObservableValue srModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_SAMPLE_RATE).observe(settings);
 		UpdateValueStrategy srTargetToModel = new UpdateValueStrategy();
-		srTargetToModel.setAfterGetValidator(new StringToIntegerValidator(BulkIONxmBlockControls.SAMPLE_RATE_FIELD_NAME,
-			BulkIONxmBlockControls.VALUE_USE_DEFAULT));
+		srTargetToModel.setAfterGetValidator(
+			new StringToIntegerValidator(BulkIONxmBlockControls.SAMPLE_RATE_FIELD_NAME, BulkIONxmBlockControls.VALUE_USE_DEFAULT));
 		srTargetToModel.setConverter(new ObjectToNullConverter(StringToNumberConverter.toInteger(false), true, true, BulkIONxmBlockControls.VALUE_USE_DEFAULT));
 		srTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(BulkIONxmBlockControls.SAMPLE_RATE_FIELD_NAME, Integer.class, 0, true));
 		UpdateValueStrategy srModelToTarget = new UpdateValueStrategy();
