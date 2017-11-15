@@ -13,7 +13,9 @@
 package gov.redhawk.model.sca;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
@@ -21,6 +23,9 @@ import org.eclipse.emf.common.util.EList;
 import CF.Port;
 import CF.PortOperations;
 import CF.PortPackage.InvalidPort;
+import gov.redhawk.bulkio.util.AbstractBulkIOPort;
+import gov.redhawk.bulkio.util.BulkIOType;
+import gov.redhawk.bulkio.util.BulkIOUtilActivator;
 import mil.jpeojtrs.sca.scd.Uses;
 
 /**
@@ -128,20 +133,30 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 		}
 
 		/**
-		 * @return a list of all connection ID's in the container's connectionTable property, or an empty list if none
-		 *         are found
+		 * @return a Map<String, Boolean) of all connection ID's in the container's connectionTable property.<br/>
+		 *         <li>Key - {@link String} connectionId
+		 *         <li>Value - {@link Boolean} True if connection ID is available (either not being used, or only being
+		 *         used by the IDE). False means the connection ID is not available, such as being used for a connection
+		 *         to a components provides port
 		 */
-		public static List<String> getConnectionIds(ScaUsesPort port) {
-			List<String> connectionIds = new ArrayList<>();
+		public static Map<String, Boolean> getConnectionIds(ScaUsesPort port) {
+			Map<String, Boolean> connectionIdMap = new HashMap<>();
 
+			// filter out non-BULKIO ports
 			if (!(port.eContainer() instanceof ScaPropertyContainer< ? , ? >)) {
-				return connectionIds;
+				return connectionIdMap;
+			}
+
+			// A list of connection IDs for any existing connections owned by the port 
+			List<String> existingConnections = new ArrayList<>();
+			for (ScaConnection connection : port.getConnections()) {
+				existingConnections.add(connection.getId());
 			}
 
 			ScaPropertyContainer< ? , ? > propContainer = (ScaPropertyContainer< ? , ? >) port.eContainer();
 			ScaStructSequenceProperty connectionTable = (ScaStructSequenceProperty) propContainer.getProperty(CONNECTION_TABLE);
 			if (connectionTable == null) {
-				return connectionIds;
+				return connectionIdMap;
 			}
 
 			for (ScaStructProperty struct : connectionTable.getStructs()) {
@@ -150,13 +165,43 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 					continue;
 				}
 
-				ScaSimpleProperty connectionId = struct.getSimple(CONNECTION_ID);
-				if (connectionId != null && connectionId.getValue() != null) {
-					connectionIds.add(connectionId.getValue().toString());
+				ScaSimpleProperty connectionIdProp = struct.getSimple(CONNECTION_ID);
+				if (connectionIdProp != null && connectionIdProp.getValue() != null) {
+					String connectionId = connectionIdProp.getValue().toString();
+					if (!existingConnections.contains(connectionId)) {
+						// Not being used.  Add ID to map and mark as available. 
+						connectionIdMap.put(connectionId, true);
+					} else {
+						// A connection already exists! Check to see if IDE owns it.
+
+						// Actually we have no way of telling if non-BulkIO port connections are IDE owned, so assumed they are unavailable
+						if (!isBulkIOPortSupported(port)) {
+							connectionIdMap.put(connectionId, false);
+							continue;
+						}
+
+						AbstractBulkIOPort abstractPort = BulkIOUtilActivator.getBulkIOPortConnectionManager().getExternalPort(port.getIor(),
+							BulkIOType.getType(port.getRepid()), connectionId);
+						if (abstractPort != null) {
+							// OK, the BulkIOPortConnectionManager is aware of this connection, so safe to assume it is owned by the IDE.
+							connectionIdMap.put(connectionId, true);
+						} else {
+							//Hmm, not owned by us.  Add the connection, but mark as unavailable.
+							connectionIdMap.put(connectionId, false);
+						}
+					}
 				}
 			}
 
-			return connectionIds;
+			return connectionIdMap;
+		}
+
+		public static boolean isBulkIOPortSupported(ScaUsesPort port) {
+			String idl = port.getRepid();
+			if (BulkIOType.isTypeSupported(idl)) {
+				return true;
+			}
+			return false;
 		}
 		// BEGIN GENERATED CODE
 	}
