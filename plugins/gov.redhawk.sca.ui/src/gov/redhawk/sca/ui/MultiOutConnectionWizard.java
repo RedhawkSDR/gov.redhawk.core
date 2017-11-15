@@ -54,9 +54,46 @@ public class MultiOutConnectionWizard extends Dialog {
 	protected Control createDialogArea(Composite parent) {
 		Composite container = (Composite) super.createDialogArea(parent);
 		container.setLayout(new GridLayout(2, false));
-		createMessageArea(container);
-		createRadioComposite(container);
+
+		// First check to see if there are "any" available connections
+		boolean availableConnections = false;
+		for (Boolean isAvailable : connectionIds.values()) {
+			if (isAvailable) {
+				availableConnections = true;
+				break;
+			}
+		}
+
+		if (availableConnections) {
+			createMessageArea(container);
+			createRadioComposite(container);
+		} else {
+			createNoConnectionsMessageArea(container);
+		}
 		return container;
+	}
+
+	private void createNoConnectionsMessageArea(Composite parent) {
+		final Image image = parent.getDisplay().getSystemImage(SWT.ICON_ERROR);
+		final Label imageLabel = new Label(parent, SWT.NONE);
+		imageLabel.setImage(image);
+		imageLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+
+		final Label msg = new Label(parent, SWT.NONE);
+		msg.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+		msg.setText("Multi-out port selection: All available connections IDs are already in use");
+	}
+
+	private void createMessageArea(Composite parent) {
+		final Image image = parent.getDisplay().getSystemImage(SWT.ICON_WARNING);
+		final Label imageLabel = new Label(parent, SWT.NONE);
+		imageLabel.setImage(image);
+		imageLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+
+		final Label msg = new Label(parent, SWT.NONE);
+		msg.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+		msg.setText("Attempting to perform a connection operation on a multi-out port with multiple data streams.\n"
+			+ "Select one of the provided allocation IDs to use as the connection ID.");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -88,19 +125,6 @@ public class MultiOutConnectionWizard extends Dialog {
 
 		DataBindingContext dbc = new DataBindingContext();
 		dbc.bindValue(selectedRadioBtnObservable, PojoProperties.value(this.getClass(), "selectedId").observe(this));
-	}
-
-	private void createMessageArea(Composite parent) {
-		final Image image = parent.getDisplay().getSystemImage(SWT.ICON_WARNING);
-		final Label imageLabel = new Label(parent, SWT.NONE);
-		imageLabel.setImage(image);
-		imageLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-
-		final Label msg = new Label(parent, SWT.NONE);
-		msg.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
-		msg.setText("Attempting to perform a connection operation on a multi-out port with multiple data streams.\n"
-			+ "Select one of the provided allocation IDs to use as the connection ID.");
-
 	}
 
 	public String getSelectedId() {
