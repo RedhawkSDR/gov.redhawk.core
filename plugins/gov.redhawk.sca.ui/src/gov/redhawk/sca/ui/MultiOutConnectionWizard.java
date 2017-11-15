@@ -10,7 +10,8 @@
  *******************************************************************************/
 package gov.redhawk.sca.ui;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
@@ -34,10 +35,10 @@ import org.eclipse.swt.widgets.Shell;
  * Creates a dialog that allows for selection of predefined connection IDs
  */
 public class MultiOutConnectionWizard extends Dialog {
-	private List<String> connectionIds;
+	private Map<String, Boolean> connectionIds;
 	private WritableValue<String> selectedId = new WritableValue<>();
 
-	public MultiOutConnectionWizard(Shell parentShell, List<String> connectionIds) {
+	public MultiOutConnectionWizard(Shell parentShell, Map<String, Boolean> connectionIds) {
 		super(parentShell);
 		this.connectionIds = connectionIds;
 	}
@@ -67,12 +68,22 @@ public class MultiOutConnectionWizard extends Dialog {
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1);
 		data.widthHint = 400;
 		radioComposite.setLayoutData(data);
+		boolean connectionsInUse = false;
 
 		SelectObservableValue<String> selectedRadioBtnObservable = new SelectObservableValue<String>();
-		for (String id : connectionIds) {
+		for (Entry<String, Boolean> entry : connectionIds.entrySet()) {
 			Button radioButton = new Button(radioComposite, SWT.RADIO);
-			radioButton.setText(id);
-			selectedRadioBtnObservable.addOption(id, WidgetProperties.selection().observe(radioButton));
+			radioButton.setText(entry.getKey());
+			selectedRadioBtnObservable.addOption(entry.getKey(), WidgetProperties.selection().observe(radioButton));
+			if (!entry.getValue()) {
+				radioButton.setText(entry.getKey() + " (IN USE)");
+				radioButton.setEnabled(false);
+				connectionsInUse = true;
+			}
+		}
+
+		if (connectionsInUse) {
+			radioComposite.setToolTipText("Some connection IDs are already in use and are not available for this operation");
 		}
 
 		DataBindingContext dbc = new DataBindingContext();
