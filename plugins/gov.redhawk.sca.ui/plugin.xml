@@ -469,30 +469,7 @@
                icon="icons/clcl16/connect.png"
                style="push">
             <visibleWhen
-                  checkEnabled="false">
-               <and>
-                  <or>
-                     <count
-                           value="1">
-                     </count>
-                     <count
-                           value="2">
-                     </count>
-                  </or>
-                  <iterate>
-                     <or>
-                        <adapt
-                              type="gov.redhawk.model.sca.ScaUsesPort">
-                        </adapt>
-                        <adapt
-                              type="gov.redhawk.model.sca.ScaDomainManager">
-                        </adapt>
-                        <adapt
-                              type="gov.redhawk.model.sca.ScaProvidesPort">
-                        </adapt>
-                     </or>
-                  </iterate>
-               </and>
+                  checkEnabled="true">
             </visibleWhen>
          </command>
          <command
@@ -720,9 +697,10 @@
             <iterate
                   ifEmpty="false"
                   operator="and">
-               <instanceof
-                     value="gov.redhawk.model.sca.ScaDomainManager">
-               </instanceof>
+               <test
+                     property="gov.redhawk.sca.model.dommgr.connected"
+                     value="false">
+               </test>
             </iterate>
          </activeWhen>
       </handler>
@@ -733,9 +711,10 @@
             <iterate
                   ifEmpty="false"
                   operator="and">
-               <instanceof
-                     value="gov.redhawk.model.sca.ScaDomainManager">
-               </instanceof>
+               <test
+                     property="gov.redhawk.sca.model.dommgr.connected"
+                     value="true">
+               </test>
             </iterate>
          </activeWhen>
       </handler>
