@@ -31,6 +31,17 @@
                               type="CF.ApplicationOperations">
                         </adapt>
                      </not>
+                     <or>
+                        <not>
+                           <instanceof
+                                 value="gov.redhawk.model.sca.ScaDomainManager">
+                           </instanceof>
+                        </not>
+                        <test
+                              property="gov.redhawk.sca.model.dommgr.connected"
+                              value="true">
+                        </test>
+                     </or>
                   </iterate>
             </visibleWhen>
             <command
