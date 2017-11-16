@@ -13,20 +13,28 @@ package gov.redhawk.ui.views.connmgr.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.ui.statushandlers.StatusManager;
+import org.eclipse.ui.progress.UIJob;
 
 import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.ui.views.connmgr.ConnMgrFactory;
 import gov.redhawk.ui.views.connmgr.ConnMgrPlugin;
 import gov.redhawk.ui.views.connmgr.ConnMgrView;
+import gov.redhawk.ui.views.connmgr.ScaConnectionManager;
+import gov.redhawk.ui.views.connmgr.jobs.FetchConnectionManagerJob;
 
 /**
  * Handler to open the connection manager view for the selected domain ({@link ScaDomainManager}).
@@ -52,23 +60,48 @@ public class ShowConnMgrHandler extends AbstractHandler {
 		}
 
 		// Use the domain manager's display name as the secondary ID for the view
-		String secondaryId = domMgr.getLocalName();
-		if (secondaryId == null) {
-			secondaryId = domMgr.getName();
-		}
+		String secondaryId = domMgr.getLabel();
 
-		// Open view
-		ConnMgrView view;
-		try {
-			view = (ConnMgrView) page.showView(ConnMgrView.ID, secondaryId, IWorkbenchPage.VIEW_ACTIVATE);
-		} catch (PartInitException e) {
-			IStatus status = new Status(IStatus.ERROR, ConnMgrPlugin.ID, "Unable to show connection manager view", e);
-			StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
+		// If the view is already open, just show it
+		IViewPart existingView = page.findView(ConnMgrView.ID + ":" + secondaryId);
+		if (existingView != null) {
+			page.activate(existingView);
 			return null;
 		}
-		view.setDomainManager(domMgr);
+
+		// Job to fetch connection manager
+		ScaConnectionManager connMgr = ConnMgrFactory.eINSTANCE.createScaConnectionManager();
+		Job fetchJob = new FetchConnectionManagerJob(domMgr, connMgr);
+		fetchJob.setUser(true);
+
+		// Open job
+		Job openJob = new UIJob(shell.getDisplay(), "Open connection manager view") {
+			@Override
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				ConnMgrView view;
+				try {
+					view = (ConnMgrView) page.showView(ConnMgrView.ID, secondaryId, IWorkbenchPage.VIEW_ACTIVATE);
+				} catch (PartInitException e) {
+					IStatus status = new Status(IStatus.ERROR, ConnMgrPlugin.ID, "Unable to show connection manager view", e);
+					return status;
+				}
+				view.setInput(domMgr, connMgr);
+				return Status.OK_STATUS;
+			}
+		};
+		openJob.setUser(true);
+
+		// Fetch job -> Open job
+		fetchJob.addJobChangeListener(new JobChangeAdapter() {
+			@Override
+			public void done(IJobChangeEvent event) {
+				if (event.getResult() != null && event.getResult().isOK()) {
+					openJob.schedule();
+				}
+			}
+		});
+		fetchJob.schedule();
 
 		return null;
 	}
-
 }

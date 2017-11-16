@@ -12,9 +12,6 @@ package gov.redhawk.ui.views.allocmgr;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.UnwrappingSelectionProvider;
 import org.eclipse.jface.action.IToolBarManager;
@@ -35,7 +32,6 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.ui.views.allocmgr.actions.ShowDetailsAction;
-import gov.redhawk.ui.views.allocmgr.jobs.FetchAllocationManagerJob;
 import gov.redhawk.ui.views.allocmgr.jobs.FetchAllocationsJob;
 import gov.redhawk.ui.views.allocmgr.provider.AllocMgrItemProviderAdapterFactory;
 
@@ -46,8 +42,6 @@ public class AllocMgrView extends ViewPart implements ITabbedPropertySheetPageCo
 	private XViewer viewer;
 	private AllocMgrItemProviderAdapterFactory adapterFactory;
 	private FetchAllocationsJob fetchAllocStatusesJob;
-
-	private ScaAllocationManager input;
 
 	public AllocMgrView() {
 	}
@@ -90,30 +84,16 @@ public class AllocMgrView extends ViewPart implements ITabbedPropertySheetPageCo
 		viewer.getTree().setFocus();
 	}
 
-	/**
-	 * Set the domain manager whose allocation manager is to be displayed.
-	 * @param domMgr
-	 */
-	public void setDomainManager(ScaDomainManager domMgr) {
+	public void setInput(ScaDomainManager domMgr, ScaAllocationManager allocMgr) {
 		// Tell the adapter factory some (most) labels can be retrieved from our domain manager model's children
 		adapterFactory.setDomainManager(domMgr);
 
-		// Create a model of the allocation manager
-		input = AllocMgrFactory.eINSTANCE.createScaAllocationManager();
-		viewer.setInput(input);
+		// Viewer input
+		viewer.setInput(allocMgr);
 
-		// Fetch the allocation manager, then the allocation statuses periodically
-		Job fetchAllocMgr = new FetchAllocationManagerJob(domMgr, input);
-		fetchAllocStatusesJob = new FetchAllocationsJob(domMgr, input);
-		fetchAllocMgr.addJobChangeListener(new JobChangeAdapter() {
-			@Override
-			public void done(IJobChangeEvent event) {
-				if (event.getResult().isOK()) {
-					fetchAllocStatusesJob.schedule();
-				}
-			}
-		});
-		fetchAllocMgr.schedule();
+		// Fetch allocation statuses periodically
+		fetchAllocStatusesJob = new FetchAllocationsJob(domMgr, allocMgr);
+		fetchAllocStatusesJob.schedule();
 	}
 
 	@Override

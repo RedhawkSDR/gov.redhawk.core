@@ -12,9 +12,6 @@ package gov.redhawk.ui.views.connmgr;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.UnwrappingSelectionProvider;
 import org.eclipse.jface.action.IToolBarManager;
@@ -35,7 +32,6 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.ui.views.connmgr.actions.ShowDetailsAction;
-import gov.redhawk.ui.views.connmgr.jobs.FetchConnectionManagerJob;
 import gov.redhawk.ui.views.connmgr.jobs.FetchConnectionsJob;
 import gov.redhawk.ui.views.connmgr.provider.ConnMgrItemProviderAdapterFactory;
 
@@ -46,8 +42,6 @@ public class ConnMgrView extends ViewPart implements ITabbedPropertySheetPageCon
 	private XViewer viewer;
 	private ConnMgrItemProviderAdapterFactory adapterFactory;
 	private FetchConnectionsJob fetchConnStatusesJob;
-
-	private ScaConnectionManager input;
 
 	public ConnMgrView() {
 	}
@@ -90,27 +84,12 @@ public class ConnMgrView extends ViewPart implements ITabbedPropertySheetPageCon
 		viewer.getTree().setFocus();
 	}
 
-	/**
-	 * Set the domain manager whose allocation manager is to be displayed.
-	 * @param domMgr
-	 */
-	public void setDomainManager(ScaDomainManager domMgr) {
-		// Create a model of the allocation manager
-		input = ConnMgrFactory.eINSTANCE.createScaConnectionManager();
-		viewer.setInput(input);
+	public void setInput(ScaDomainManager domMgr, ScaConnectionManager connMgr) {
+		viewer.setInput(connMgr);
 
-		// Fetch the connection manager, then the connection statuses periodically
-		Job fetchConnMgr = new FetchConnectionManagerJob(domMgr, input);
-		fetchConnStatusesJob = new FetchConnectionsJob(domMgr, input);
-		fetchConnMgr.addJobChangeListener(new JobChangeAdapter() {
-			@Override
-			public void done(IJobChangeEvent event) {
-				if (event.getResult().isOK()) {
-					fetchConnStatusesJob.schedule();
-				}
-			}
-		});
-		fetchConnMgr.schedule();
+		// Fetch connection statuses periodically
+		fetchConnStatusesJob = new FetchConnectionsJob(domMgr, connMgr);
+		fetchConnStatusesJob.schedule();
 	}
 
 	@Override
