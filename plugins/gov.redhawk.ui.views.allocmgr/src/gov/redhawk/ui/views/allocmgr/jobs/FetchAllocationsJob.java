@@ -47,6 +47,7 @@ public class FetchAllocationsJob extends Job {
 
 		// Don't cancel, but do re-schedule for later if the domain is disconnected
 		if (!DomainConnectionState.CONNECTED.equals(domMgr.getState())) {
+			allocMgr.getAllocations().clear();
 			schedule(getDelay());
 			return Status.OK_STATUS;
 		}

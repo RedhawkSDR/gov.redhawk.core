@@ -59,12 +59,13 @@ public class AllocMgrView extends ViewPart implements ITabbedPropertySheetPageCo
 		viewerComposite.setLayout(GridLayoutFactory.fillDefaults().numColumns(1).create());
 
 		// The viewer
-		viewer = new XViewer(viewerComposite, SWT.MULTI, new AllocMgrXViewerFactory());
+		AllocMgrXViewerFactory xViewerFactory = new AllocMgrXViewerFactory();
+		viewer = new XViewer(viewerComposite, SWT.MULTI, xViewerFactory);
 		viewer.getTree().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
 		this.adapterFactory = new AllocMgrItemProviderAdapterFactory();
 		ITreeContentProvider contentProvider = new AdapterFactoryContentProvider(adapterFactory);
 		viewer.setContentProvider(contentProvider);
-		IBaseLabelProvider labelProvider = new AdapterFactoryXViewerLabelProvider(viewer, adapterFactory, AllocMgrXViewerFactory.getColumnsToFeatures());
+		IBaseLabelProvider labelProvider = new AdapterFactoryXViewerLabelProvider(viewer, adapterFactory, xViewerFactory.getColumnsToFeatures());
 		viewer.setLabelProvider(labelProvider);
 
 		// Event handlers for the viewer

@@ -40,8 +40,8 @@ public class DeallocateJob extends Job {
 	protected IStatus run(IProgressMonitor monitor) {
 		SubMonitor progress = SubMonitor.convert(monitor, 2);
 
+		String[] param = allocationIDs.toArray(new String[allocationIDs.size()]);
 		try {
-			String[] param = allocationIDs.toArray(new String[allocationIDs.size()]);
 			allocMgr.deallocate(param);
 			progress.worked(1);
 		} catch (SystemException e) {

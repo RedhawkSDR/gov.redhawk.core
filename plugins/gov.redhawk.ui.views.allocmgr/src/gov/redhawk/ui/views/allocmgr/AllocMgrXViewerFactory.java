@@ -29,20 +29,19 @@ public class AllocMgrXViewerFactory extends XViewerFactory {
 	/* package */ static final String ID_DEVICE_MGR = NAMESPACE + ".devicemgr";
 	/* package */ static final String ID_SOURCE_ID = NAMESPACE + ".sourceid";
 
-	private static final XViewerColumn COL_ALLOC_ID = new XViewerColumn(ID_ALLOC_ID, "Allocation ID", 340, XViewerAlign.Left, true, SortDataType.String, false,
+	private final XViewerColumn colAllocID = new XViewerColumn(ID_ALLOC_ID, "Allocation ID", 340, XViewerAlign.Left, true, SortDataType.String, false,
 		"Allocation ID");
-	private static final XViewerColumn COL_DOMAIN = new XViewerColumn(ID_DOMAIN, "Domain", 150, XViewerAlign.Left, true, SortDataType.String, false,
+	private final XViewerColumn colDomain = new XViewerColumn(ID_DOMAIN, "Domain", 150, XViewerAlign.Left, true, SortDataType.String, false,
 		"Requesting domain");
-	private static final XViewerColumn COL_DEVICE = new XViewerColumn(ID_DEVICE, "Device", 150, XViewerAlign.Left, true, SortDataType.String, false,
-		"Device label");
-	private static final XViewerColumn COL_DEVICE_MGR = new XViewerColumn(ID_DEVICE_MGR, "Device Manager", 150, XViewerAlign.Left, true, SortDataType.String,
-		false, "Device manager label");
-	private static final XViewerColumn COL_SOURCE_ID = new XViewerColumn(ID_SOURCE_ID, "Source ID", 200, XViewerAlign.Left, true, SortDataType.String, false,
+	private final XViewerColumn colDevice = new XViewerColumn(ID_DEVICE, "Device", 150, XViewerAlign.Left, true, SortDataType.String, false, "Device label");
+	private final XViewerColumn colDeviceMgr = new XViewerColumn(ID_DEVICE_MGR, "Device Manager", 150, XViewerAlign.Left, true, SortDataType.String, false,
+		"Device manager label");
+	private final XViewerColumn colSourceID = new XViewerColumn(ID_SOURCE_ID, "Source ID", 200, XViewerAlign.Left, true, SortDataType.String, false,
 		"Source ID");
 
 	public AllocMgrXViewerFactory() {
 		super(NAMESPACE);
-		registerColumns(COL_ALLOC_ID, COL_DOMAIN, COL_DEVICE, COL_DEVICE_MGR, COL_SOURCE_ID);
+		registerColumns(colAllocID, colDomain, colDevice, colDeviceMgr, colSourceID);
 	}
 
 	@Override
@@ -55,13 +54,13 @@ public class AllocMgrXViewerFactory extends XViewerFactory {
 		return new AllocMgrMenu();
 	}
 
-	public static Map<XViewerColumn, EStructuralFeature> getColumnsToFeatures() {
+	public Map<XViewerColumn, EStructuralFeature> getColumnsToFeatures() {
 		Map<XViewerColumn, EStructuralFeature> map = new HashMap<>();
-		map.put(COL_ALLOC_ID, AllocMgrPackage.Literals.ALLOCATION_STATUS__ALLOCATION_ID);
-		map.put(COL_DOMAIN, AllocMgrPackage.Literals.ALLOCATION_STATUS__REQUESTING_DOMAIN);
-		map.put(COL_DEVICE, AllocMgrPackage.Literals.ALLOCATION_STATUS__DEVICE_LABEL);
-		map.put(COL_DEVICE_MGR, AllocMgrPackage.Literals.ALLOCATION_STATUS__DEVICE_MGR_LABEL);
-		map.put(COL_SOURCE_ID, AllocMgrPackage.Literals.ALLOCATION_STATUS__SOURCE_ID);
+		map.put(colAllocID, AllocMgrPackage.Literals.ALLOCATION_STATUS__ALLOCATION_ID);
+		map.put(colDomain, AllocMgrPackage.Literals.ALLOCATION_STATUS__REQUESTING_DOMAIN);
+		map.put(colDevice, AllocMgrPackage.Literals.ALLOCATION_STATUS__DEVICE_LABEL);
+		map.put(colDeviceMgr, AllocMgrPackage.Literals.ALLOCATION_STATUS__DEVICE_MGR_LABEL);
+		map.put(colSourceID, AllocMgrPackage.Literals.ALLOCATION_STATUS__SOURCE_ID);
 		return map;
 	}
 
