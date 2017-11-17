@@ -11,7 +11,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.ui.views.connmgr.impl;
 
-import gov.redhawk.ui.views.connmgr.*;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -103,14 +102,14 @@ public class ConnMgrFactoryImpl extends EFactoryImpl implements ConnMgrFactory {
 		connectionStatus.setConnectionID(cfStatus.connectionId);
 		connectionStatus.setRequesterID(cfStatus.requesterId);
 		connectionStatus.setConnected(cfStatus.connected);
-		connectionStatus.setSourceIOR(cfStatus.providesEndpoint.endpointObject.toString());
-		connectionStatus.setSourceEntityName(cfStatus.providesEndpoint.entityId);
-		connectionStatus.setSourcePortName(cfStatus.providesEndpoint.portName);
-		connectionStatus.setSourceRepoID(cfStatus.providesEndpoint.repositoryId);
-		connectionStatus.setTargetIOR(cfStatus.usesEndpoint.endpointObject.toString());
-		connectionStatus.setTargetEntityName(cfStatus.usesEndpoint.entityId);
-		connectionStatus.setTargetPortName(cfStatus.usesEndpoint.portName);
-		connectionStatus.setTargetRepoID(cfStatus.usesEndpoint.repositoryId);
+		connectionStatus.setSourceIOR(cfStatus.usesEndpoint.endpointObject.toString());
+		connectionStatus.setSourceEntityName(cfStatus.usesEndpoint.entityId);
+		connectionStatus.setSourcePortName(cfStatus.usesEndpoint.portName);
+		connectionStatus.setSourceRepoID(cfStatus.usesEndpoint.repositoryId);
+		connectionStatus.setTargetIOR(cfStatus.providesEndpoint.endpointObject.toString());
+		connectionStatus.setTargetEntityName(cfStatus.providesEndpoint.entityId);
+		connectionStatus.setTargetPortName(cfStatus.providesEndpoint.portName);
+		connectionStatus.setTargetRepoID(cfStatus.providesEndpoint.repositoryId);
 		return connectionStatus;
 	}
 
