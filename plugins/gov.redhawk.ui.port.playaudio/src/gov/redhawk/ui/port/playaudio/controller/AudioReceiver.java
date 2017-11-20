@@ -10,18 +10,6 @@
  *******************************************************************************/
 package gov.redhawk.ui.port.playaudio.controller;
 
-import gov.redhawk.bulkio.util.AbstractBulkIOPort;
-import gov.redhawk.bulkio.util.BulkIOType;
-import gov.redhawk.bulkio.util.BulkIOUtilActivator;
-import gov.redhawk.bulkio.util.StreamSRIUtil;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaUsesPort;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.sca.model.jobs.RefreshJob;
-import gov.redhawk.sca.util.PropertyChangeSupport;
-import gov.redhawk.ui.port.playaudio.internal.Activator;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.nio.ByteBuffer;
@@ -37,8 +25,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
-
-import mil.jpeojtrs.sca.util.CorbaUtils;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -65,6 +51,18 @@ import BULKIO.dataOctetOperations;
 import BULKIO.dataShortOperations;
 import BULKIO.dataUlongOperations;
 import BULKIO.dataUshortOperations;
+import gov.redhawk.bulkio.util.AbstractBulkIOPort;
+import gov.redhawk.bulkio.util.BulkIOType;
+import gov.redhawk.bulkio.util.BulkIOUtilActivator;
+import gov.redhawk.bulkio.util.StreamSRIUtil;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.sca.model.jobs.RefreshJob;
+import gov.redhawk.sca.util.PropertyChangeSupport;
+import gov.redhawk.ui.port.playaudio.internal.Activator;
+import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
  * @since 2.0
@@ -99,7 +97,10 @@ dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperati
 	};
 	private boolean playing;
 
-	public AudioReceiver(final ScaUsesPort port) {
+	/**
+	 * @since 4.0
+	 */
+	public AudioReceiver(final ScaUsesPort port, final String connectionId) {
 		super(BulkIOType.getType(port.getRepid()));
 		this.port = port;
 		ScaModelCommand.execute(port, new ScaModelCommand() {
@@ -142,7 +143,7 @@ dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperati
 
 		Job connectJob = Job.create("Connecting...", monitor -> {
 			try {
-				connect(monitor);
+				connect(monitor, connectionId);
 			} catch (CoreException e) {
 				return new Status(e.getStatus().getSeverity(), Activator.PLUGIN_ID, "Failed to connect.", e);
 			}
@@ -157,7 +158,7 @@ dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperati
 		connectJob.schedule();
 	}
 
-	private void connect(IProgressMonitor monitor) throws CoreException {
+	private void connect(IProgressMonitor monitor, String connectionId) throws CoreException {
 		final BulkIOType type2 = getBulkIOType();
 		final String ior2 = ior;
 		if (type2 != null && ior2 != null) {
@@ -166,15 +167,15 @@ dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperati
 
 					@Override
 					public Object call() throws Exception {
-						BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior2, type2, AudioReceiver.this);
+						BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior2, type2, AudioReceiver.this, connectionId);
 						return null;
 					}
-					
+
 				}, monitor);
 			} catch (InterruptedException e) {
 				// PASS
 			}
-			
+
 		}
 	}
 

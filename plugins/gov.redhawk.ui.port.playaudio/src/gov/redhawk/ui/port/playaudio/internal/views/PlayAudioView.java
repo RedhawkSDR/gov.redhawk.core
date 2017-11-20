@@ -139,8 +139,8 @@ public class PlayAudioView extends ViewPart {
 	/**
 	 * @since 1.2
 	 */
-	public void playPort(final ScaUsesPort port) {
-		final AudioReceiver receiver = new AudioReceiver(port);
+	public void playPort(final ScaUsesPort port, final String connectionId) {
+		final AudioReceiver receiver = new AudioReceiver(port, connectionId);
 		receiver.addPropertyChangeListener(listener);
 		connections.add(receiver);
 		treeViewer.setSelection(new StructuredSelection(receiver), true);
@@ -204,6 +204,10 @@ public class PlayAudioView extends ViewPart {
 			}
 		}
 
+	}
+
+	public WritableList<AudioReceiver> getConnections() {
+		return connections;
 	}
 
 	/**

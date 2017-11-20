@@ -12,11 +12,16 @@
 package gov.redhawk.ui.port.playaudio.internal;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -25,6 +30,7 @@ import org.eclipse.ui.progress.UIJob;
 import org.osgi.framework.BundleContext;
 
 import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.sca.ui.MultiOutConnectionWizard;
 import gov.redhawk.ui.port.playaudio.internal.views.PlayAudioView;
 
 /**
@@ -91,9 +97,36 @@ public class Activator extends AbstractUIPlugin {
 				PlayAudioView view;
 				try {
 					view = (PlayAudioView) page.showView(PlayAudioView.ID);
+
 					for (ScaUsesPort port : portList) {
-						view.playPort(port);
+						Map<String, Boolean> connectionIds = ScaUsesPort.Util.getConnectionIds(port);
+
+						String connectionId = null;
+						if (connectionIds.size() >= 1) {
+
+							// Check if port is a multi-out port, and if it has an available connection ID
+							Entry<String, Boolean> firstEntry = connectionIds.entrySet().iterator().next();
+							if (connectionIds.size() == 1 && firstEntry.getValue()) {
+								connectionId = firstEntry.getKey();
+							} else {
+								Shell shell = Display.getDefault().getActiveShell();
+								MultiOutConnectionWizard selectionDialog = new MultiOutConnectionWizard(shell, connectionIds);
+								// If uses chooses not to select a connectionId (or one is not available) cycle to the
+								// next port in the loop
+								if (Window.CANCEL == selectionDialog.open() || selectionDialog.getSelectedId() == null) {
+									continue;
+								}
+								connectionId = selectionDialog.getSelectedId();
+							}
+						}
+
+						view.playPort(port, connectionId);
 					}
+
+					if (view.getConnections().size() == 0) {
+						page.hideView(view);
+					}
+
 				} catch (final PartInitException e) {
 					getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error finding Play Port View", e));
 				}

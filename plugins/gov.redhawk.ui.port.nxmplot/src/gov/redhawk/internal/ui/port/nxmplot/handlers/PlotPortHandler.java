@@ -151,8 +151,6 @@ public class PlotPortHandler extends AbstractHandler {
 		} else {
 			// run advanced Port plot wizard
 			PlotWizard wizard;
-
-			// TODO: Clean this up, make new methods if necessary
 			if (event.getParameter(IPlotView.PARAM_CONNECTION_ID) == null && hasMultiOutPort(ports)) {
 				if (ports.size() > 1) {
 					// Can't plot multiple multi-out ports simultaneously. Warn the user that they will likely miss data
@@ -237,8 +235,9 @@ public class PlotPortHandler extends AbstractHandler {
 	 */
 	private static boolean setMultiOutConnectionId(BulkIONxmBlockSettings bulkIOBlockSettings, ExecutionEvent event, List<ScaUsesPort> ports) {
 		if (event.getParameter(IPlotView.PARAM_CONNECTION_ID) == null) {
+
+			// Can't plot multiple multi-out ports simultaneously. Warn the user that they will likely miss data
 			if (ports.size() > 1) {
-				// Can't plot multiple multi-out ports simultaneously. Warn the user that they will likely miss data
 				if (!showWarningDialog(HandlerUtil.getActiveShell(event))) {
 					return false;
 				}
