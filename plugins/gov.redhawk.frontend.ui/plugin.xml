@@ -110,11 +110,6 @@
             name="Deallocate">
       </command>
       <command
-            defaultHandler="gov.redhawk.frontend.ui.internal.SnapshotHandler"
-            id="gov.redhawk.frontend.commands.snapshot"
-            name="Snapshot">
-      </command>
-      <command
             defaultHandler="gov.redhawk.frontend.ui.internal.DeallocateHandler"
             id="gov.redhawk.frontend.commands.deallocateall"
             name="Deallocate All">
