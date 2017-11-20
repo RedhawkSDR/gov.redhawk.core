@@ -106,11 +106,4 @@ public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Obj
 		// Do nothing
 	}
 
-	/**
-	 * @since 14.0
-	 */
-	public boolean mayHaveChildren() {
-		return false;
-	}
-
 } // ScaProvidesPortImpl
