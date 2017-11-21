@@ -12,6 +12,7 @@
 package gov.redhawk.sca.internal.ui.handlers;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -27,6 +28,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -41,15 +43,13 @@ import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.provider.ScaWaveformExternalPortsItemProvider;
 import gov.redhawk.sca.ui.ConnectPortWizard;
+import gov.redhawk.sca.ui.MultiOutConnectionWizard;
 import gov.redhawk.sca.ui.ScaContentProvider;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.scd.SupportsInterface;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
-/**
- * 
- */
 public class ConnectPortHandler extends AbstractHandler implements IHandler {
 
 	private static class ConnectJob extends Job {
@@ -98,9 +98,6 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final ISelection sel = HandlerUtil.getActiveMenuSelection(event);
@@ -120,7 +117,7 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 				}
 			}
 			if (usesPort != null && target != null) {
-				new ConnectJob(usesPort, target.getCorbaObj(), ConnectPortWizard.generateDefaultConnectionID()).schedule();
+				new ConnectJob(usesPort, target.getCorbaObj(), getConnectionId(usesPort, event)).schedule();
 			} else {
 				ConnectPortWizard wizard = new ConnectPortWizard();
 				if (usesPort != null) {
@@ -152,6 +149,24 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 			}
 		}
 		return null;
+	}
+
+	private String getConnectionId(ScaUsesPort usesPort, ExecutionEvent event) {
+		Map<String, Boolean> connectionIds = ScaUsesPort.Util.getConnectionIds(usesPort);
+		if (connectionIds.isEmpty()) {
+			return ConnectPortWizard.generateDefaultConnectionID();
+		} else {
+			Entry<String, Boolean> firstEntry = connectionIds.entrySet().iterator().next();
+			if (connectionIds.size() == 1 && firstEntry.getValue()) {
+				return firstEntry.getKey();
+			}
+			MultiOutConnectionWizard selectionDialog = new MultiOutConnectionWizard(HandlerUtil.getActiveShell(event), connectionIds);
+			if (Window.OK == selectionDialog.open() && selectionDialog.getSelectedId() != null) {
+				return selectionDialog.getSelectedId();
+			}
+		}
+
+		return ConnectPortWizard.generateDefaultConnectionID();
 	}
 
 	/**

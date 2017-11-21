@@ -34,7 +34,6 @@ import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
  * @since 9.3
- * 
  */
 public class ConnectPortWizard extends Wizard {
 	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -63,11 +62,6 @@ public class ConnectPortWizard extends Wizard {
 		addPage(page);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
-	 */
 	@Override
 	public final boolean performFinish() {
 		try {
@@ -122,7 +116,7 @@ public class ConnectPortWizard extends Wizard {
 
 	/**
 	 * @param sourceInput
-	 * @see gov.redhawk.sca.ui.ConnectPortWizard.ConnectWizardPage#setSourceInput(java.lang.Object)
+	 * @see gov.redhawk.sca.ui.ConnectWizardPage#setSourceInput(java.lang.Object)
 	 */
 	public void setSourceInput(Object sourceInput) {
 		page.setSourceInput(sourceInput);
@@ -130,7 +124,7 @@ public class ConnectPortWizard extends Wizard {
 
 	/**
 	 * @return
-	 * @see gov.redhawk.sca.ui.ConnectPortWizard.ConnectWizardPage#getSourceInput()
+	 * @see gov.redhawk.sca.ui.ConnectWizardPage#getSourceInput()
 	 */
 	public Object getSourceInput() {
 		return page.getSourceInput();
@@ -138,7 +132,7 @@ public class ConnectPortWizard extends Wizard {
 
 	/**
 	 * @param targetInput
-	 * @see gov.redhawk.sca.ui.ConnectPortWizard.ConnectWizardPage#setTargetInput(java.lang.Object)
+	 * @see gov.redhawk.sca.ui.ConnectWizardPage#setTargetInput(java.lang.Object)
 	 */
 	public void setTargetInput(Object targetInput) {
 		page.setTargetInput(targetInput);
@@ -146,7 +140,7 @@ public class ConnectPortWizard extends Wizard {
 
 	/**
 	 * @return
-	 * @see gov.redhawk.sca.ui.ConnectPortWizard.ConnectWizardPage#getTargetInput()
+	 * @see gov.redhawk.sca.ui.ConnectWizardPage#getTargetInput()
 	 */
 	public Object getTargetInput() {
 		return page.getTargetInput();
