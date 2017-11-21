@@ -11,6 +11,7 @@
  */
 package gov.redhawk.sca.internal.ui.handlers;
 
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -123,6 +124,10 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 			} else {
 				ConnectPortWizard wizard = new ConnectPortWizard();
 				if (usesPort != null) {
+					Map<String, Boolean> connectionIds = ScaUsesPort.Util.getConnectionIds(usesPort);
+					if (!connectionIds.isEmpty()) {
+						wizard = new ConnectPortWizard(connectionIds);
+					}
 					ScaWaveformExternalPortsItemProvider externalPortsRoot = null;
 					if (usesPort.eContainer() instanceof ScaWaveform) {
 						externalPortsRoot = getExternalPortRoot(usesPort.eContainer());
