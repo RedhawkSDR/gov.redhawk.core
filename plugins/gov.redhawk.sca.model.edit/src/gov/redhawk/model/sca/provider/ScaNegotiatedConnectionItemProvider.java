@@ -100,13 +100,14 @@ public class ScaNegotiatedConnectionItemProvider extends ScaConnectionItemProvid
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public String getText(Object object) {
+		// END GENERATED CODE
 		String label = ((ScaNegotiatedConnection) object).getId();
-		return label == null || label.length() == 0 ? getString("_UI_ScaNegotiatedConnection_type")
-			: getString("_UI_ScaNegotiatedConnection_type") + " " + label;
+		return (label == null || label.length() == 0) ? getString("_UI_ScaNegotiatedConnection_type") : label;
+		// BEGIN GENERATED CODE
 	}
 
 	/**
