@@ -260,6 +260,8 @@ public class ConnectWizardPage extends WizardPage {
 					return;
 				}
 			}
+			// If we get here, then all the connections are in use, so default to the first one
+			idCombo.setSelection(new StructuredSelection(connectionIds.entrySet().toArray()[0]));
 		}
 	}
 
