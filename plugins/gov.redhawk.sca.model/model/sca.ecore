@@ -1131,12 +1131,17 @@
     <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//PortOperations"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ScaConnection">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="data" eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/extended.ecore#//UsesConnection"
-        transient="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        changeable="false" volatile="true" transient="true" derived="true"/>
+        transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetPort" eType="#//Object"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="port" lowerBound="1" eType="#//ScaUsesPort"
         transient="true" eOpposite="#//ScaUsesPort/connections"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaNegotiatedConnection" eSuperTypes="#//ScaConnection">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alive" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="transportType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        unsettable="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ScaWaveform">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">

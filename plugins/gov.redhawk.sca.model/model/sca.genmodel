@@ -14,8 +14,8 @@
     modelPluginID="gov.redhawk.sca.model" templateDirectory="/gov.redhawk.sca.model/templates"
     dynamicTemplates="true" forceOverwrite="true" modelName="Sca" codeFormatting="true"
     commentFormatting="true" testsDirectory="/gov.redhawk.sca.model.tests/src" importerID="org.eclipse.emf.importer.ecore"
-    containmentProxies="true" complianceLevel="7.0" suppressGenModelAnnotations="false"
-    copyrightFields="false" tableProviders="true" colorProviders="true" runtimeVersion="2.11"
+    containmentProxies="true" complianceLevel="8.0" suppressGenModelAnnotations="false"
+    copyrightFields="false" tableProviders="true" colorProviders="true" runtimeVersion="2.13"
     language="" usedGenPackages="platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.genmodel#//cf platform:/plugin/mil.jpeojtrs.sca.spd/model/spd.genmodel#//spd platform:/plugin/mil.jpeojtrs.sca.scd/model/scd.genmodel#//scd platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.genmodel#//prf platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/mil.jpeojtrs.sca.sad/model/sad.genmodel#//sad platform:/plugin/mil.jpeojtrs.sca.dcd/model/dcd.genmodel#//dcd platform:/plugin/mil.jpeojtrs.sca.dmd/model/dmd.genmodel#//dmd platform:/plugin/mil.jpeojtrs.sca.dpd/model/dpd.genmodel#//dpd platform:/plugin/mil.jpeojtrs.sca.partitioning/model/partitioning.genmodel#//partitioning platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.genmodel#//extended"
     interfaceNamePattern="" importOrganizing="true">
   <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/exporter/org.eclipse.xsd.ecore.exporter">
@@ -172,6 +172,9 @@
         <genParameters ecoreParameter="sca.ecore#//ScaAbstractProperty/valueEquals/any"/>
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaAbstractProperty/createPropertyRef"/>
+      <genOperations ecoreOperation="sca.ecore#//ScaAbstractProperty/setValueFromRef">
+        <genParameters ecoreParameter="sca.ecore#//ScaAbstractProperty/setValueFromRef/refValue"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="sca.ecore#//ScaComponent">
       <genFeatures property="Readonly" notify="false" createChild="false" propertyCategory=""
@@ -394,6 +397,9 @@
     <genClasses provider="Stateful" image="false" ecoreClass="sca.ecore#//ScaSimpleProperty">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaSimpleProperty/value"/>
       <genOperations ecoreOperation="sca.ecore#//ScaSimpleProperty/createPropertyRef"/>
+      <genOperations ecoreOperation="sca.ecore#//ScaSimpleProperty/setValueFromRef">
+        <genParameters ecoreParameter="sca.ecore#//ScaSimpleProperty/setValueFromRef/refValue"/>
+      </genOperations>
     </genClasses>
     <genClasses provider="Stateful" image="false" ecoreClass="sca.ecore#//ScaSimpleSequenceProperty">
       <genFeatures children="true" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaSimpleSequenceProperty/values"/>
@@ -402,6 +408,9 @@
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaSimpleSequenceProperty/getValue"/>
       <genOperations ecoreOperation="sca.ecore#//ScaSimpleSequenceProperty/createPropertyRef"/>
+      <genOperations ecoreOperation="sca.ecore#//ScaSimpleSequenceProperty/setValueFromRef">
+        <genParameters ecoreParameter="sca.ecore#//ScaSimpleSequenceProperty/setValueFromRef/refValue"/>
+      </genOperations>
     </genClasses>
     <genClasses provider="Stateful" image="false" ecoreClass="sca.ecore#//ScaStructProperty">
       <genFeatures property="Readonly" children="true" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaStructProperty/fields"/>
@@ -413,6 +422,9 @@
         <genParameters ecoreParameter="sca.ecore#//ScaStructProperty/getField/id"/>
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaStructProperty/createPropertyRef"/>
+      <genOperations ecoreOperation="sca.ecore#//ScaStructProperty/setValueFromRef">
+        <genParameters ecoreParameter="sca.ecore#//ScaStructProperty/setValueFromRef/refValue"/>
+      </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaStructProperty/createStructValue"/>
     </genClasses>
     <genClasses ecoreClass="sca.ecore#//ScaUsesPort">
@@ -425,9 +437,14 @@
       </genOperations>
     </genClasses>
     <genClasses ecoreClass="sca.ecore#//ScaConnection">
-      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaConnection/data"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaConnection/id"/>
+      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaConnection/targetPort"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaConnection/port"/>
+    </genClasses>
+    <genClasses ecoreClass="sca.ecore#//ScaNegotiatedConnection">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaNegotiatedConnection/alive"/>
+      <genFeatures property="Readonly" createChild="false" propertyDescription="The type of the underlying transport being used"
+          ecoreFeature="ecore:EAttribute sca.ecore#//ScaNegotiatedConnection/transportType"/>
     </genClasses>
     <genClasses provider="Stateful" ecoreClass="sca.ecore#//ScaWaveform">
       <genFeatures property="Readonly" children="true" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaWaveform/components"/>
@@ -495,6 +512,9 @@
       <genFeatures children="true" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaStructSequenceProperty/structs"/>
       <genOperations ecoreOperation="sca.ecore#//ScaStructSequenceProperty/createScaStructProperty"/>
       <genOperations ecoreOperation="sca.ecore#//ScaStructSequenceProperty/createPropertyRef"/>
+      <genOperations ecoreOperation="sca.ecore#//ScaStructSequenceProperty/setValueFromRef">
+        <genParameters ecoreParameter="sca.ecore#//ScaStructSequenceProperty/setValueFromRef/refValue"/>
+      </genOperations>
     </genClasses>
     <genClasses image="false" ecoreClass="sca.ecore#//IStatusProvider">
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//IStatusProvider/status"/>

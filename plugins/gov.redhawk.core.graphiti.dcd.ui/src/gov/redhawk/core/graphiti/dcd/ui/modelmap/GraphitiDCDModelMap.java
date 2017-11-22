@@ -261,7 +261,7 @@ public class GraphitiDCDModelMap extends AbstractGraphitiModelMap {
 				portContainer.fetchPorts(null);
 			}
 			for (final ScaPort< ? , ? > port : portContainer.getPorts()) {
-				if (port instanceof ScaProvidesPort && port.getObj()._is_equivalent(newValue.getData().port)) {
+				if (port instanceof ScaProvidesPort && port.getObj()._is_equivalent(newValue.getTargetPort())) {
 					final DcdComponentInstantiation compInst = getComponentInstantiation(portContainer);
 					if (compInst == null) {
 						continue;
@@ -277,7 +277,7 @@ public class GraphitiDCDModelMap extends AbstractGraphitiModelMap {
 
 		// Iterate anything that could be a component supported interface looking for a match
 		for (final CorbaObjWrapper< ? > csiTarget : componentSupportedInterfaceTargets) {
-			if (csiTarget.getObj()._is_equivalent(newValue.getData().port)) {
+			if (csiTarget.getObj()._is_equivalent(newValue.getTargetPort())) {
 				DcdComponentInstantiation compInst = getComponentInstantiation(csiTarget);
 				if (compInst != null) {
 					return compInst.getInterfaceStub();

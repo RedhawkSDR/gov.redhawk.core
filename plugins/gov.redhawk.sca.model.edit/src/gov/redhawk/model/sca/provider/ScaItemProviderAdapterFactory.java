@@ -475,6 +475,31 @@ public class ScaItemProviderAdapterFactory extends ScaAdapterFactory implements 
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link gov.redhawk.model.sca.ScaNegotiatedConnection} instances.
+	 * <!-- begin-user-doc -->
+	 * @since 13.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ScaNegotiatedConnectionItemProvider scaNegotiatedConnectionItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link gov.redhawk.model.sca.ScaNegotiatedConnection}.
+	 * <!-- begin-user-doc -->
+	 * @since 13.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createScaNegotiatedConnectionAdapter() {
+		if (scaNegotiatedConnectionItemProvider == null) {
+			scaNegotiatedConnectionItemProvider = new ScaNegotiatedConnectionItemProvider(this);
+		}
+
+		return scaNegotiatedConnectionItemProvider;
+	}
+
+	/**
 	 * This creates an adapter for a {@link gov.redhawk.model.sca.ScaWaveform}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

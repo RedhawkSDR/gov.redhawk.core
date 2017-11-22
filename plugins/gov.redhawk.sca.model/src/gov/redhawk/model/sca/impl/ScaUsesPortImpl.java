@@ -19,6 +19,7 @@ import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.commands.ScaUsesPortMergeConnectionsCommand;
+import gov.redhawk.model.sca.commands.SetStatusCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 
@@ -47,6 +48,9 @@ import CF.Port;
 import CF.PortHelper;
 import CF.PortPackage.InvalidPort;
 import CF.PortPackage.OccupiedPort;
+import ExtendedCF.ConnectionStatus;
+import ExtendedCF.NegotiableUsesPort;
+import ExtendedCF.NegotiableUsesPortHelper;
 import ExtendedCF.QueryablePort;
 import ExtendedCF.QueryablePortHelper;
 import ExtendedCF.UsesConnection;
@@ -56,13 +60,13 @@ import ExtendedCF.UsesConnection;
  * An implementation of the model object '<em><b>Uses Port</b></em>'.
  * 
  * @since 12.0
- *        <!-- end-user-doc -->
- *        <p>
- *        The following features are implemented:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaUsesPortImpl#getConnections <em>Connections</em>}</li>
- *        </ul>
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaUsesPortImpl#getConnections <em>Connections</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -71,7 +75,6 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 * The cached value of the '{@link #getConnections() <em>Connections</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getConnections()
 	 * @generated
 	 * @ordered
@@ -81,7 +84,6 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ScaUsesPortImpl() {
@@ -91,7 +93,6 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -103,8 +104,8 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 18.0
-	 *        <!-- end-user-doc -->
-	 *        This is specialized for the more specific type known in this context.
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
 	 * @generated
 	 */
 	@Override
@@ -115,7 +116,6 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -130,7 +130,6 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -142,7 +141,6 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -155,7 +153,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 8.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getType()
 	 * @generated NOT
 	 * @ordered
@@ -176,7 +174,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -189,34 +187,14 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
 		Port portObj = fetchNarrowedObject(subMonitor.split(1));
 
-		// Convert the CORBA object to a QueryablePort if possible
-		if (!(portObj instanceof QueryablePort)) {
-			if (subMonitor.isCanceled()) {
-				throw new OperationCanceledException();
-			}
-			if (_is_a(QueryablePortHelper.id())) {
-				portObj = QueryablePortHelper.unchecked_narrow(portObj);
-			}
+		if (subMonitor.isCanceled()) {
+			throw new OperationCanceledException();
 		}
 
-		if (portObj instanceof QueryablePort) {
-			// Ask the port for its connections
-			Transaction transaction = connectionsFeature.createTransaction();
-			QueryablePort queryPort = (QueryablePort) portObj;
-			IStatus fetchStatus = Status.OK_STATUS;
-			UsesConnection[] newConnections = new UsesConnection[0];
-			if (subMonitor.isCanceled()) {
-				throw new OperationCanceledException();
-			}
-			try {
-				newConnections = queryPort.connections();
-			} catch (SystemException e) {
-				fetchStatus = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port connections.", e);
-			}
-
-			// Update the model
-			transaction.addCommand(new ScaUsesPortMergeConnectionsCommand(this, newConnections, fetchStatus));
-			transaction.commit();
+		if (portObj instanceof NegotiableUsesPort) {
+			internalFetchConnections((NegotiableUsesPort) portObj);
+		} else if (portObj instanceof QueryablePort) {
+			internalFetchConnections((QueryablePort) portObj);
 		}
 
 		subMonitor.done();
@@ -235,11 +213,41 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 		// BEGIN GENERATED CODE
 	}
 
+	private void internalFetchConnections(QueryablePort portObj) {
+		// Ask the port for its connections
+		Transaction transaction = connectionsFeature.createTransaction();
+		try {
+			UsesConnection[] newConnections = portObj.connections();
+			transaction.addCommand(new ScaUsesPortMergeConnectionsCommand(this, newConnections, Status.OK_STATUS));
+		} catch (SystemException e) {
+			IStatus status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port connections.", e);
+			transaction.addCommand(new SetStatusCommand<>(this, ScaPackage.Literals.SCA_USES_PORT__CONNECTIONS, status));
+		}
+
+		// Update the model
+		transaction.commit();
+	}
+
+	private void internalFetchConnections(NegotiableUsesPort portObj) {
+		// Ask the port for its connections
+		Transaction transaction = connectionsFeature.createTransaction();
+		try {
+			ConnectionStatus[] newConnections = portObj.connectionStatus();
+			transaction.addCommand(new ScaUsesPortMergeConnectionsCommand(this, newConnections, Status.OK_STATUS));
+		} catch (SystemException e) {
+			IStatus status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port connections.", e);
+			transaction.addCommand(new SetStatusCommand<>(this, ScaPackage.Literals.SCA_USES_PORT__CONNECTIONS, status));
+		}
+
+		// Update the model
+		transaction.commit();
+	}
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 * 
 	 */
@@ -247,7 +255,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	public void disconnectPort(ScaConnection connection) throws InvalidPort {
 		// END GENERATED CODE
 		if (connection != null) {
-			disconnectPort(connection.getData().connectionId);
+			disconnectPort(connection.getId());
 		}
 		// BEGIN GENERATED CODE
 	}
@@ -256,7 +264,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -271,11 +279,9 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 
 		// Create a stub connection object for ports that don't support queryable port operations
 		if (!_is_a(QueryablePortHelper.id())) {
-			UsesConnection data = new UsesConnection();
-			data.connectionId = connectionId;
-			data.port = target;
 			final ScaConnection newConnection = ScaFactory.eINSTANCE.createScaConnection();
-			newConnection.setData(data);
+			newConnection.setId(connectionId);
+			newConnection.setTargetPort(target);
 			ScaModelCommand.execute(this, new ScaModelCommand() {
 
 				@Override
@@ -291,7 +297,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -327,7 +333,6 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -343,7 +348,6 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -358,7 +362,6 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -373,7 +376,6 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -391,7 +393,6 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -407,7 +408,6 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -431,6 +431,8 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 		// BEGIN GENERATED CODE
 	}
 
+	// END GENERATED CODE
+
 	/**
 	 * @since 14.0
 	 */
@@ -438,11 +440,15 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	protected Port narrow(final org.omg.CORBA.Object obj) {
 		if (obj == null) {
 			return null;
+		} else if (_is_a(NegotiableUsesPortHelper.id())) {
+			return NegotiableUsesPortHelper.unchecked_narrow(obj);
 		} else if (_is_a(QueryablePortHelper.id())) {
-			return QueryablePortHelper.narrow(obj);
+			return QueryablePortHelper.unchecked_narrow(obj);
 		} else {
 			return PortHelper.narrow(obj);
 		}
 	}
+
+	// BEGIN GENERATED CODE
 
 } // ScaUsesPortImpl

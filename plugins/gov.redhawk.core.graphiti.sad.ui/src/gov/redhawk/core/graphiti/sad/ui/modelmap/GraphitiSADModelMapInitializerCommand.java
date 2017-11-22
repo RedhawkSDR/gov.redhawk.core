@@ -76,7 +76,7 @@ public class GraphitiSADModelMapInitializerCommand extends AbstractCommand {
 		final SadConnectInterface sadCon = SadFactory.eINSTANCE.createSadConnectInterface();
 		sadCon.setId(con.getId());
 		initConnectionSource(sadCon, comp, uses);
-		initConnectionTarget(sadCon, uses, con.getData().port);
+		initConnectionTarget(sadCon, uses, con.getTargetPort());
 		if (sadCon.getProvidesPort() == null && sadCon.getComponentSupportedInterface() == null) {
 			// We were unable to find the target side of the connection; ignore it
 			return;

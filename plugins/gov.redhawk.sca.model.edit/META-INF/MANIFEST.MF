@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: gov.redhawk.sca.model.edit;singleton:=true
-Bundle-Version: 12.5.0.qualifier
+Bundle-Version: 13.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: gov.redhawk.model.sca.provider.ScaEditPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: gov.redhawk.model.sca.provider
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  gov.redhawk.sca.model;bundle-version="14.0.0";visibility:=reexport,

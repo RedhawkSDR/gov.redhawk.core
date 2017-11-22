@@ -13,7 +13,9 @@ package gov.redhawk.model.sca.tests.stubs;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.ConfigurationKind;
@@ -75,11 +77,17 @@ import org.ossie.properties.ULongSequenceProperty;
 import org.ossie.properties.UShortProperty;
 import org.ossie.properties.UShortSequenceProperty;
 
+import CF.DataType;
 import CF.PortOperations;
 import CF.PortPOATie;
 import CF.LifeCyclePackage.InitializeError;
 import CF.PortPackage.InvalidPort;
 import CF.PortPackage.OccupiedPort;
+import ExtendedCF.ConnectionStatus;
+import ExtendedCF.NegotiableUsesPortOperations;
+import ExtendedCF.NegotiableUsesPortPOATie;
+import ExtendedCF.TransportInfo;
+import ExtendedCF.UsesConnection;
 
 public class AbstractResourceImpl extends Resource {
 
@@ -119,18 +127,51 @@ public class AbstractResourceImpl extends Resource {
 		}
 	}
 
+	private static class AbstractNegotiablePort extends AbstractPort implements NegotiableUsesPortOperations {
+
+		@Override
+		public UsesConnection[] connections() {
+			List<UsesConnection> retVal = new ArrayList<>();
+			for (String connectionID : getConnections().keySet()) {
+				retVal.add(new UsesConnection(connectionID, getConnections().get(connectionID)));
+			}
+			return retVal.toArray(new UsesConnection[retVal.size()]);
+		}
+
+		@Override
+		public TransportInfo[] supportedTransports() {
+			return new TransportInfo[] { new TransportInfo("transport_type", new DataType[] {}) };
+		}
+
+		@Override
+		public ConnectionStatus[] connectionStatus() {
+			List<ConnectionStatus> retVal = new ArrayList<>();
+			for (String connectionID : getConnections().keySet()) {
+				retVal.add(new ConnectionStatus(connectionID, getConnections().get(connectionID), true, "transport_type", new DataType[] {}));
+			}
+			return retVal.toArray(new ConnectionStatus[retVal.size()]);
+		}
+
+	}
+
 	private static class AbstractPort implements PortOperations {
+
+		private Map<String, org.omg.CORBA.Object> connections = new HashMap<>();
+
+		protected Map<String, org.omg.CORBA.Object> getConnections() {
+			return connections;
+		}
 
 		@Override
 		public void connectPort(org.omg.CORBA.Object connection, String connectionId) throws InvalidPort, OccupiedPort {
-			// TODO Auto-generated method stub
-
+			connections.put(connectionId, connection);
 		}
 
 		@Override
 		public void disconnectPort(String connectionId) throws InvalidPort {
-			// TODO Auto-generated method stub
-
+			if (connections.remove(connectionId) == null) {
+				throw new InvalidPort((short) 0, "Invalid connection ID");
+			}
 		}
 
 	}
@@ -142,8 +183,13 @@ public class AbstractResourceImpl extends Resource {
 		}
 
 		for (Uses in : ports.getUses()) {
-			PortPOATie tie = new PortPOATie(new AbstractPort());
-			addPort(in.getName(), tie);
+			if (in.getRepID().startsWith("IDL:BULKIO/data")) {
+				NegotiableUsesPortPOATie tie = new NegotiableUsesPortPOATie(new AbstractNegotiablePort());
+				addPort(in.getName(), tie);
+			} else {
+				PortPOATie tie = new PortPOATie(new AbstractPort());
+				addPort(in.getName(), tie);
+			}
 		}
 	}
 

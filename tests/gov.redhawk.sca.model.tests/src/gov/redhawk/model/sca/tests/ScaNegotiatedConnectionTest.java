@@ -14,27 +14,18 @@ package gov.redhawk.model.sca.tests;
 import org.junit.Assert;
 
 import gov.redhawk.model.sca.ScaComponent;
-import gov.redhawk.model.sca.ScaConnection;
+import gov.redhawk.model.sca.ScaNegotiatedConnection;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.ScaWaveform;
-import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Connection</b></em>'.
+ * A test case for the model object '<em><b>Negotiated Connection</b></em>'.
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaConnectionTest extends TestCase {
-
-	/**
-	 * The fixture for this Connection test case.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected ScaConnection fixture = null;
+public class ScaNegotiatedConnectionTest extends ScaConnectionTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -42,37 +33,28 @@ public class ScaConnectionTest extends TestCase {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(ScaConnectionTest.class);
+		TestRunner.run(ScaNegotiatedConnectionTest.class);
 	}
 
 	/**
-	 * Constructs a new Connection test case with the given name.
+	 * Constructs a new Negotiated Connection test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ScaConnectionTest(String name) {
+	public ScaNegotiatedConnectionTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Sets the fixture for this Connection test case.
+	 * Returns the fixture for this Negotiated Connection test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void setFixture(ScaConnection fixture) {
-		this.fixture = fixture;
-	}
-
-	/**
-	 * Returns the fixture for this Connection test case.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected ScaConnection getFixture() {
-		return fixture;
+	@Override
+	protected ScaNegotiatedConnection getFixture() {
+		return (ScaNegotiatedConnection) fixture;
 	}
 
 	/**
@@ -104,14 +86,14 @@ public class ScaConnectionTest extends TestCase {
 
 	// END GENERATED CODE
 
-	public void testGetId() {
-		Assert.assertEquals("DCE:223f0573-772d-44ad-ae36-18ddffaa0ffe", getFixture().getId());
+	public void testGetTransportType() {
+		Assert.assertEquals("transport_type", ((ScaNegotiatedConnection) getFixture()).getTransportType());
 	}
 
-	public void testGetTargetPort() {
-		Assert.assertNotNull(getFixture().getTargetPort());
+	public void testIsAlive() {
+		Assert.assertEquals(true, ((ScaNegotiatedConnection) getFixture()).isAlive());
 	}
 
 	// BEGIN GENERATED CODE
 
-} // ScaConnectionTest
+} // ScaNegotiatedConnectionTest

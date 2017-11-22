@@ -10,15 +10,20 @@
  */
 package gov.redhawk.model.sca.commands;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
 
+import ExtendedCF.ConnectionStatus;
 import ExtendedCF.UsesConnection;
 import gov.redhawk.model.sca.ScaConnection;
 import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaNegotiatedConnection;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 
@@ -27,45 +32,93 @@ import gov.redhawk.model.sca.ScaUsesPort;
  */
 public class ScaUsesPortMergeConnectionsCommand extends SetStatusCommand<ScaUsesPort> {
 
-	private UsesConnection[] newConnections;
+	private UsesConnection[] usesConnections;
+	private ConnectionStatus[] connectionStatuses;
 
-	public ScaUsesPortMergeConnectionsCommand(ScaUsesPort provider, UsesConnection[] newConnections, IStatus status) {
+	/**
+	 * Uses to merge port connection data from a {@link ExtendedCF.QueryablePort}.
+	 *
+	 * @param provider
+	 * @param usesConnections
+	 * @param status
+	 */
+	public ScaUsesPortMergeConnectionsCommand(ScaUsesPort provider, UsesConnection[] usesConnections, IStatus status) {
 		super(provider, ScaPackage.Literals.SCA_USES_PORT__CONNECTIONS, status);
-		this.newConnections = newConnections;
+		this.usesConnections = usesConnections;
+	}
+
+	/**
+	 * Uses to merge port connection data from a {@link ExtendedCF.NegotiableUsesPort}.
+	 *
+	 * @param provider
+	 * @param connectionStatuses
+	 * @param status
+	 */
+	public ScaUsesPortMergeConnectionsCommand(ScaUsesPort provider, ConnectionStatus[] connectionStatuses, IStatus status) {
+		super(provider, ScaPackage.Literals.SCA_USES_PORT__CONNECTIONS, status);
+		this.connectionStatuses = connectionStatuses;
 	}
 
 	@Override
 	public void execute() {
-		Map<String, ScaConnection> currentConnections = new HashMap<String, ScaConnection>();
+		// Existing connection IDs -> SCA model object
+		Map<String, ScaConnection> scaConnections = new HashMap<>();
 		for (ScaConnection connection : provider.getConnections()) {
-			currentConnections.put(connection.getId(), connection);
+			scaConnections.put(connection.getId(), connection);
 		}
 
-		Map<String, ScaConnection> connectionToRemove = new HashMap<String, ScaConnection>();
-		connectionToRemove.putAll(currentConnections);
-
-		Map<String, ScaConnection> newConnectionMaps = Collections.emptyMap();
-		if (newConnections != null) {
-			newConnectionMaps = new HashMap<String, ScaConnection>();
-			for (UsesConnection connection : newConnections) {
-				ScaConnection newConnection = ScaFactory.eINSTANCE.createScaConnection();
-				newConnection.setData(connection);
-				newConnectionMaps.put(connection.connectionId, newConnection);
+		// New connection IDs
+		Set<String> currentConnectionIDs = new HashSet<>();
+		if (usesConnections != null) {
+			for (UsesConnection connection : usesConnections) {
+				currentConnectionIDs.add(connection.connectionId);
+			}
+		} else {
+			for (ConnectionStatus connection : connectionStatuses) {
+				currentConnectionIDs.add(connection.connectionId);
 			}
 		}
-		connectionToRemove.keySet().removeAll(newConnectionMaps.keySet());
 
 		// Remove old connections
-		if (!connectionToRemove.isEmpty()) {
-			provider.getConnections().removeAll(connectionToRemove.values());
+		Map<String, ScaConnection> connectionsToRemove = new HashMap<>(scaConnections);
+		connectionsToRemove.keySet().removeAll(currentConnectionIDs);
+		if (!connectionsToRemove.isEmpty()) {
+			provider.getConnections().removeAll(connectionsToRemove.values());
 		}
 
-		// Remove duplicates
-		newConnectionMaps.keySet().removeAll(currentConnections.keySet());
+		// Determine new connections / update existing
+		List<ScaConnection> newConnections = new ArrayList<>();
+		if (usesConnections != null) {
+			for (UsesConnection connection : usesConnections) {
+				if (scaConnections.containsKey(connection.connectionId)) {
+					continue;
+				}
+				ScaConnection newConnection = ScaFactory.eINSTANCE.createScaConnection();
+				newConnection.setId(connection.connectionId);
+				newConnection.setTargetPort(connection.port);
+				newConnections.add(newConnection);
+			}
+		} else {
+			for (ConnectionStatus connection : connectionStatuses) {
+				ScaNegotiatedConnection existingConnection = (ScaNegotiatedConnection) scaConnections.get(connection.connectionId);
+				if (existingConnection != null) {
+					if (existingConnection.isAlive() != connection.alive || !existingConnection.isSetAlive()) {
+						existingConnection.setAlive(connection.alive);
+					}
+				} else {
+					ScaNegotiatedConnection newConnection = ScaFactory.eINSTANCE.createScaNegotiatedConnection();
+					newConnection.setId(connection.connectionId);
+					newConnection.setTargetPort(connection.port);
+					newConnection.setAlive(connection.alive);
+					newConnection.setTransportType(connection.transportType);
+					newConnections.add(newConnection);
+				}
+			}
+		}
 
 		// Add new connections
-		if (!newConnectionMaps.isEmpty()) {
-			provider.getConnections().addAll(newConnectionMaps.values());
+		if (!newConnections.isEmpty()) {
+			provider.getConnections().addAll(newConnections);
 		}
 
 		// Do this to "Set" the connections

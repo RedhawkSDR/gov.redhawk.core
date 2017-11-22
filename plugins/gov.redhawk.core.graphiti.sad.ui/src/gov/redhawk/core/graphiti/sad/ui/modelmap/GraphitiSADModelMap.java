@@ -170,7 +170,7 @@ public class GraphitiSADModelMap extends AbstractGraphitiModelMap {
 				portContainer.fetchPorts(null);
 			}
 			for (final ScaPort< ? , ? > port : portContainer.getPorts()) {
-				if (port instanceof ScaProvidesPort && port.getObj()._is_equivalent(newValue.getData().port)) {
+				if (port instanceof ScaProvidesPort && port.getObj()._is_equivalent(newValue.getTargetPort())) {
 					final SadComponentInstantiation compInst = getComponentInstantiation(portContainer);
 					if (compInst == null) {
 						continue;
@@ -186,7 +186,7 @@ public class GraphitiSADModelMap extends AbstractGraphitiModelMap {
 
 		// Iterate anything that could be a component supported interface looking for a match
 		for (final ScaComponent csiTarget : components) {
-			if (csiTarget.getObj()._is_equivalent(newValue.getData().port)) {
+			if (csiTarget.getObj()._is_equivalent(newValue.getTargetPort())) {
 				SadComponentInstantiation compInst = getComponentInstantiation(csiTarget);
 				if (compInst != null) {
 					return compInst.getInterfaceStub();

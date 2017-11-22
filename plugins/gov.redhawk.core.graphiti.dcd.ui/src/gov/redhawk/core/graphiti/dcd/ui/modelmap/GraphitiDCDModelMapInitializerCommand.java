@@ -81,7 +81,7 @@ public class GraphitiDCDModelMapInitializerCommand extends AbstractCommand {
 		final DcdConnectInterface dcdCon = DcdFactory.eINSTANCE.createDcdConnectInterface();
 		dcdCon.setId(con.getId());
 		initConnectionSource(dcdCon, container, uses);
-		initConnectionTarget(dcdCon, uses, con.getData().port);
+		initConnectionTarget(dcdCon, uses, con.getTargetPort());
 		if (dcdCon.getProvidesPort() == null && dcdCon.getComponentSupportedInterface() == null) {
 			// We were unable to find the target side of the connection; ignore it
 			return;

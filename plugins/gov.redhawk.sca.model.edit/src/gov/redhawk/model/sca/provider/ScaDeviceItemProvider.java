@@ -131,7 +131,7 @@ public class ScaDeviceItemProvider extends ScaAbstractComponentItemProvider {
 	/**
 	 * This adds a property descriptor for the Component Instantiation feature.
 	 * <!-- begin-user-doc -->
-	 * @since 12.5
+	 * @since 13.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
