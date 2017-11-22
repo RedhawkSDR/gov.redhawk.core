@@ -105,6 +105,7 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
+		// END GENERATED CODE
 		this.env = TestEnvirornment.getInstance();
 		final ScaWaveform waveform = this.env.getDomMgr().getWaveformFactories().get(0).createWaveform(null, "name", null, null);
 		Assert.assertNotNull(waveform);
@@ -123,6 +124,7 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 
 		});
 		Assert.assertNotNull(TransactionUtil.getEditingDomain(getFixture()));
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -133,8 +135,10 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
+		// END GENERATED CODE
 		this.env = null;
 		setFixture(null);
+		// BEGIN GENERATED CODE
 	}
 
 	// END GENERATED CODE
@@ -177,10 +181,12 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 	 * @generated NOT
 	 */
 	public void testCreatePropertyRef() {
+		// END GENERATED CODE
 		ScaStructSequenceProperty prop = getFixture();
 		StructSequenceRef ref = prop.createPropertyRef();
 		Assert.assertEquals(prop.getId(), ref.getRefID());
 		Assert.assertEquals(prop.getStructs().size(), ref.getStructValue().size());
+		// BEGIN GENERATED CODE
 	}
 
 	// END GENERATED CODE
@@ -246,7 +252,7 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaStructSequenceProperty#setValueFromRef(mil.jpeojtrs.sca.prf.StructSequenceRef)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetValueFromRef__StructSequenceRef() {
 		// END GENERATED CODE
@@ -319,6 +325,8 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		// BEGIN GENERATED CODE
 	}
 
+	// END GENERATED CODE
+
 	public void testListener() {
 		final boolean[] simpleNotification = new boolean[] { false };
 		final EContentAdapter adapter = new EContentAdapter() {
@@ -362,6 +370,8 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		});
 		Assert.assertFalse(getFixture().isDefaultValue());
 	}
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * Tests the '{@link gov.redhawk.model.sca.IPropertyConfigurer#configure(mil.jpeojtrs.sca.cf.DataType)
@@ -414,6 +424,8 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		// BEGIN GENERATED CODE
 	}
 
+	// END GENERATED CODE
+
 	protected void setNewValue() {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 			@Override
@@ -433,5 +445,7 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 			}
 		});
 	}
+
+	// BEGIN GENERATED CODE
 
 } // ScaStructSequencePropertyTest

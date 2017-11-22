@@ -39,7 +39,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.omg.CORBA.ORB;
-import org.omg.CORBA.TCKind;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
@@ -272,53 +271,53 @@ public class AbstractResourceImpl extends Resource {
 		}
 		String type = sequence.getType().toString();
 
-		switch (AnyUtils.convertToTCKind(type).value()) {
-		case TCKind._tk_boolean:
+		switch (type) {
+		case "boolean":
 			List<Boolean> booleanValue = createValueList(sequence, type, Boolean.class);
 			return new BooleanSequenceProperty(id, name, booleanValue, mode, action, kinds);
-		case TCKind._tk_char:
+		case "char":
 			List<Character> characterValue = createValueList(sequence, type, Character.class);
 			return new CharSequenceProperty(id, name, characterValue, mode, action, kinds);
-		case TCKind._tk_double:
+		case "double":
 			List<Double> doubleValue = createValueList(sequence, type, Double.class);
 			return new DoubleSequenceProperty(id, name, doubleValue, mode, action, kinds);
-		case TCKind._tk_float:
+		case "float":
 			List<Float> floatValue = createValueList(sequence, type, Float.class);
 			return new FloatSequenceProperty(id, name, floatValue, mode, action, kinds);
-		case TCKind._tk_longlong:
+		case "longlong":
 			List<Long> longLongValue = createValueList(sequence, type, Long.class);
 			return new LongLongSequenceProperty(id, name, longLongValue, mode, action, kinds);
-		case TCKind._tk_long:
+		case "long":
 			List<Integer> longValue = createValueList(sequence, type, Integer.class);
 			return new LongSequenceProperty(id, name, longValue, mode, action, kinds);
-		case TCKind._tk_octet:
+		case "octet":
 			List<Short> octetRealValue = createValueList(sequence, type, Short.class);
 			List<Byte> octetValue = new ArrayList<Byte>();
 			for (Short s : octetRealValue) {
 				octetValue.add(s.byteValue());
 			}
 			return new OctetSequenceProperty(id, name, octetValue, mode, action, kinds);
-		case TCKind._tk_short:
+		case "short":
 			List<Short> shortValue = createValueList(sequence, type, Short.class);
 			return new ShortSequenceProperty(id, name, shortValue, mode, action, kinds);
-		case TCKind._tk_string:
+		case "string":
 			List<String> stringValue = createValueList(sequence, type, String.class);
 			return new StringSequenceProperty(id, name, stringValue, mode, action, kinds);
-		case TCKind._tk_ulonglong:
+		case "ulonglong":
 			List<BigInteger> uLongLongRealValue = createValueList(sequence, type, BigInteger.class);
 			List<Long> uLongLongValue = createValueList(sequence, type, Long.class);
 			for (BigInteger bi : uLongLongRealValue) {
 				uLongLongValue.add(bi.longValue());
 			}
 			return new ULongLongSequenceProperty(id, name, uLongLongValue, mode, action, kinds);
-		case TCKind._tk_ulong:
+		case "ulong":
 			List<Long> uLongRealValue = createValueList(sequence, type, Long.class);
 			List<Integer> uLongValue = new ArrayList<Integer>();
 			for (Long l : uLongRealValue) {
 				uLongValue.add(l.intValue());
 			}
 			return new ULongSequenceProperty(id, name, uLongValue, mode, action, kinds);
-		case TCKind._tk_ushort:
+		case "ushort":
 			List<Integer> uShortRealValue = createValueList(sequence, type, Integer.class);
 			List<Short> uShortValue = new ArrayList<Short>();
 			for (Integer i : uShortRealValue) {
@@ -352,39 +351,39 @@ public class AbstractResourceImpl extends Resource {
 		}
 		String type = simple.getType().toString();
 
-		switch (AnyUtils.convertToTCKind(type).value()) {
-		case TCKind._tk_boolean:
+		switch (type) {
+		case "boolean":
 			return new BooleanProperty(id, name, (Boolean) value, mode, action, kinds);
-		case TCKind._tk_char:
+		case "char":
 			return new CharProperty(id, name, (Character) value, mode, action, kinds);
-		case TCKind._tk_double:
+		case "double":
 			return new DoubleProperty(id, name, (Double) value, mode, action, kinds);
-		case TCKind._tk_float:
+		case "float":
 			return new FloatProperty(id, name, (Float) value, mode, action, kinds);
-		case TCKind._tk_longlong:
+		case "longlong":
 			return new LongLongProperty(id, name, (Long) value, mode, action, kinds);
-		case TCKind._tk_long:
+		case "long":
 			return new LongProperty(id, name, (Integer) value, mode, action, kinds);
-		case TCKind._tk_octet:
+		case "octet":
 			if (value != null) {
 				value = ((Short) value).byteValue();
 			}
 			return new OctetProperty(id, name, (Byte) value, mode, action, kinds);
-		case TCKind._tk_short:
+		case "short":
 			return new ShortProperty(id, name, (Short) value, mode, action, kinds);
-		case TCKind._tk_string:
+		case "string":
 			return new StringProperty(id, name, (String) value, mode, action, kinds);
-		case TCKind._tk_ulonglong:
+		case "ulonglong":
 			if (value != null) {
 				value = ((BigInteger) value).longValue();
 			}
 			return new ULongLongProperty(id, name, (Long) value, mode, action, kinds);
-		case TCKind._tk_ulong:
+		case "ulong":
 			if (value != null) {
 				value = ((Long) value).intValue();
 			}
 			return new ULongProperty(id, name, (Integer) value, mode, action, kinds);
-		case TCKind._tk_ushort:
+		case "ushort":
 			if (value != null) {
 				value = ((Integer) value).shortValue();
 			}

@@ -112,6 +112,7 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
+		// END GENERATED CODE
 		this.env = TestEnvirornment.getInstance();
 		final ScaWaveform waveform = this.env.getDomMgr().getWaveformFactories().get(0).createWaveform(null, "name", null, null);
 		Assert.assertNotNull(waveform);
@@ -138,7 +139,10 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 		});
 		Assert.assertNotNull(getFixture());
 		Assert.assertNotNull(TransactionUtil.getEditingDomain(getFixture()));
+		// BEGIN GENERATED CODE
 	}
+
+	// END GENERATED CODE
 
 	public void testListener() {
 		final boolean[] simpleNotification = new boolean[] { false };
@@ -169,6 +173,8 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 		Assert.assertTrue(simpleNotification[0]);
 	}
 
+	// BEGIN GENERATED CODE
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -177,8 +183,10 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
+		// END GENERATED CODE
 		this.env = null;
 		setFixture(null);
+		// BEGIN GENERATED CODE
 	}
 
 	// END GENERATED CODE
@@ -249,6 +257,7 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 	 * @generated NOT
 	 */
 	public void testCreatePropertyRef() {
+		// END GENERATED CODE
 		final ScaStructProperty prop = getFixture();
 
 		StructRef ref = prop.createPropertyRef();
@@ -263,6 +272,7 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 		});
 		ref = prop.createPropertyRef();
 		Assert.assertEquals(1, ref.getRefs().size());
+		// BEGIN GENERATED CODE
 	}
 
 	// END GENERATED CODE
@@ -318,7 +328,7 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaStructProperty#setValueFromRef(mil.jpeojtrs.sca.prf.StructRef)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetValueFromRef__StructRef() {
 		// END GENERATED CODE
@@ -355,9 +365,11 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 	 * @generated NOT
 	 */
 	public void testCreateStructValue() {
+		// END GENERATED CODE
 		ScaStructProperty prop = getFixture();
 		StructValue value = prop.createStructValue();
 		Assert.assertEquals(prop.getFields().size(), value.getRefs().size());
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -410,9 +422,10 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 		// BEGIN GENERATED CODE
 	}
 
+	// END GENERATED CODE
+
 	/**
 	 * Tests that struct field order is preserved from the definition to the runtime property.
-	 * @generated NOT
 	 */
 	public void testStructOrder() {
 		int index = 0;
@@ -442,5 +455,7 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 			}
 		});
 	}
+
+	// BEGIN GENERATED CODE
 
 } // ScaStructPropertyTest
