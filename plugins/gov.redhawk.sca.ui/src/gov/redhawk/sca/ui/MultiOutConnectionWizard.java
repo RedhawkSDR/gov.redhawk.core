@@ -19,14 +19,10 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -227,26 +223,19 @@ public class MultiOutConnectionWizard extends Dialog {
 		});
 
 		// Don't allow selection of "In Use" connection IDs
-		selectIdTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				@SuppressWarnings("unchecked")
-				Entry<String, Boolean> selection = (Entry<String, Boolean>) event.getStructuredSelection().getFirstElement();
-				if (selection != null) {
-					selectedConnectionId = selection.getKey();
-					getButton(IDialogConstants.OK_ID).setEnabled(selection.getValue());
-				}
+		selectIdTreeViewer.addSelectionChangedListener((event) -> {
+			@SuppressWarnings("unchecked")
+			Entry<String, Boolean> selection = (Entry<String, Boolean>) event.getStructuredSelection().getFirstElement();
+			if (selection != null) {
+				selectedConnectionId = selection.getKey();
+				getButton(IDialogConstants.OK_ID).setEnabled(selection.getValue());
 			}
 		});
 
 		// Don't allow an empty text field when manually entering the connection ID
-		connectionIdText.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				selectedConnectionId = connectionIdText.getText();
-				validate();
-			}
+		connectionIdText.addModifyListener((event) -> {
+			selectedConnectionId = connectionIdText.getText();
+			validate();
 		});
 	}
 
