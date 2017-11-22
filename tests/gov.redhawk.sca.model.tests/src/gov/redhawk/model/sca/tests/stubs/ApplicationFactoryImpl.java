@@ -38,6 +38,7 @@ import CF.ApplicationPOATie;
 import CF.DataType;
 import CF.DeviceAssignmentType;
 import CF.Port;
+import CF.PortHelper;
 import CF.Resource;
 import CF.ResourceHelper;
 import CF.ResourcePOATie;
@@ -47,7 +48,6 @@ import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
 import CF.PortPackage.InvalidPort;
 import CF.PortPackage.OccupiedPort;
 import CF.PortSupplierPackage.UnknownPort;
-import CF.jni.PortHelper;
 
 /**
  * 
