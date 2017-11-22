@@ -10,7 +10,7 @@ build:
   image: ${docker_registry}redhawk/maven:3-jdk-8
   stage: build
   script:
-    - mvn install sonar:sonar -P sign -P develop-2.1 -P with-metadata
+    - mvn install sonar:sonar -P sign -P develop-2.1 -P with-metadata -D maven.test.failure.ignore=true
   artifacts:
     paths:
       - tests/*/target/surefire-reports/*.xml
