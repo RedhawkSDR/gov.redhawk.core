@@ -268,7 +268,7 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 				retVal = tmpList.toString();
 			}
 		}
-		
+
 		final String units;
 		if (property != null) {
 			units = property.getUnits();

@@ -41,8 +41,7 @@ import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
  * <p>
  * The following operations are tested:
  * <ul>
- * <li>
- * {@link gov.redhawk.model.sca.ScaWaveformFactory#createWaveform(org.eclipse.core.runtime.IProgressMonitor, java.lang.String, CF.DataType[], CF.DeviceAssignmentType[])
+ * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#createWaveform(org.eclipse.core.runtime.IProgressMonitor, java.lang.String, CF.DataType[], CF.DeviceAssignmentType[])
  * <em>Create Waveform</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
  * <em>Fetch Identifier</em>}</li>

@@ -76,21 +76,20 @@ import CF.DevicePackage.UsageType;
  * An implementation of the model object ' <em><b>Device</b></em>'.
  * 
  * @since 12.0
- *        <!-- end-user-doc -->
- *        <p>
- *        The following features are implemented:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getChildDevices <em>Child Devices</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getAdminState <em>Admin State</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getLabel <em>Label</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getOperationalState <em>Operational State</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getUsageState <em>Usage State</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getParentDevice <em>Parent Device</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getDevMgr <em>Dev Mgr</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getComponentInstantiation <em>Component
- *        Instantiation</em>}</li>
- *        </ul>
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getChildDevices <em>Child Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getAdminState <em>Admin State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getLabel <em>Label</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getOperationalState <em>Operational State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getUsageState <em>Usage State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getParentDevice <em>Parent Device</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getDevMgr <em>Dev Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getComponentInstantiation <em>Component Instantiation</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -100,7 +99,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * The cached value of the '{@link #getChildDevices() <em>Child Devices</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getChildDevices()
 	 * @generated
 	 * @ordered
@@ -110,7 +108,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * The default value of the '{@link #getAdminState() <em>Admin State</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getAdminState()
 	 * @generated
 	 * @ordered
@@ -120,7 +117,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * The cached value of the '{@link #getAdminState() <em>Admin State</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getAdminState()
 	 * @generated
 	 * @ordered
@@ -130,7 +126,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * This is true if the Admin State attribute has been set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -139,7 +134,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * The default value of the '{@link #getLabel() <em>Label</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getLabel()
 	 * @generated
 	 * @ordered
@@ -149,7 +143,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * The cached value of the '{@link #getLabel() <em>Label</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getLabel()
 	 * @generated
 	 * @ordered
@@ -159,7 +152,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * This is true if the Label attribute has been set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -168,7 +160,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * The default value of the '{@link #getOperationalState() <em>Operational State</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getOperationalState()
 	 * @generated
 	 * @ordered
@@ -178,7 +169,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * The cached value of the '{@link #getOperationalState() <em>Operational State</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getOperationalState()
 	 * @generated
 	 * @ordered
@@ -188,7 +178,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * This is true if the Operational State attribute has been set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -197,7 +186,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * The default value of the '{@link #getUsageState() <em>Usage State</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getUsageState()
 	 * @generated
 	 * @ordered
@@ -207,7 +195,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * The cached value of the '{@link #getUsageState() <em>Usage State</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getUsageState()
 	 * @generated
 	 * @ordered
@@ -217,7 +204,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * This is true if the Usage State attribute has been set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -226,7 +212,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * The cached value of the '{@link #getParentDevice() <em>Parent Device</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getParentDevice()
 	 * @generated
 	 * @ordered
@@ -238,7 +223,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 21.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getComponentInstantiation()
 	 * @generated
 	 * @ordered
@@ -249,7 +234,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 21.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -258,7 +243,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ScaDeviceImpl() {
@@ -268,7 +252,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -279,7 +262,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -294,7 +276,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -306,7 +287,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -317,7 +297,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -328,7 +307,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -344,7 +322,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -361,7 +338,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -372,7 +348,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -383,7 +358,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -399,7 +373,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -415,7 +388,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -426,7 +398,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -437,7 +408,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -454,7 +424,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -471,7 +440,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -482,7 +450,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -493,7 +460,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -509,7 +475,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -526,7 +491,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -537,7 +501,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -556,7 +519,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ScaDevice< ? > basicGetParentDevice() {
@@ -566,7 +528,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetParentDevice(ScaDevice< ? > newParentDevice, NotificationChain msgs) {
@@ -586,7 +547,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -607,7 +567,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -678,7 +637,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -702,7 +661,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -743,7 +702,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -787,7 +746,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -828,7 +787,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -871,7 +830,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	protected void internalFetchAggregateDevices(IProgressMonitor monitor) {
@@ -949,7 +908,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.4
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public DcdComponentInstantiation getComponentInstantiation() {
@@ -969,7 +928,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 21.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public DcdComponentInstantiation basicGetComponentInstantiation() {
@@ -980,7 +939,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.4
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setComponentInstantiation(DcdComponentInstantiation newComponentInstantiation) {
@@ -997,7 +956,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.4
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void unsetComponentInstantiation() {
@@ -1014,7 +973,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.4
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isSetComponentInstantiation() {
@@ -1092,7 +1051,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -1112,7 +1070,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1129,7 +1086,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1164,7 +1120,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -1200,7 +1155,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1234,7 +1188,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1263,7 +1216,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1394,7 +1346,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override

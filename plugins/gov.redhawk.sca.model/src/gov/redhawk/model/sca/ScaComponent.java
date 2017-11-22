@@ -37,7 +37,7 @@ import CF.Resource;
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaComponent()
  * @model superTypes="gov.redhawk.model.sca.ScaAbstractComponent&lt;mil.jpeojtrs.sca.cf.Resource&gt;"
- *        extendedMetaData="name='ScaComponent' kind='elementOnly'"
+ * extendedMetaData="name='ScaComponent' kind='elementOnly'"
  * @generated
  */
 public interface ScaComponent extends ScaAbstractComponent<Resource> {
@@ -50,14 +50,13 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Component Instantiation</em>' reference.
 	 * @see #isSetComponentInstantiation()
 	 * @see #unsetComponentInstantiation()
 	 * @see #setComponentInstantiation(SadComponentInstantiation)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaComponent_ComponentInstantiation()
 	 * @model unsettable="true" required="true" transient="true"
-	 *        extendedMetaData="kind='attribute' name='componentInstantiation'"
+	 * extendedMetaData="kind='attribute' name='componentInstantiation'"
 	 * @generated
 	 */
 	SadComponentInstantiation getComponentInstantiation();
@@ -67,7 +66,6 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * Instantiation</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Component Instantiation</em>' reference.
 	 * @see #isSetComponentInstantiation()
 	 * @see #unsetComponentInstantiation()
@@ -81,7 +79,6 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * Instantiation</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetComponentInstantiation()
 	 * @see #getComponentInstantiation()
 	 * @see #setComponentInstantiation(SadComponentInstantiation)
@@ -94,7 +91,6 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * <em>Component Instantiation</em>}' reference is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Component Instantiation</em>' reference is set.
 	 * @see #unsetComponentInstantiation()
 	 * @see #getComponentInstantiation()
@@ -112,13 +108,12 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Devices</em>' reference list.
 	 * @see #isSetDevices()
 	 * @see #unsetDevices()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaComponent_Devices()
 	 * @model unsettable="true" transient="true"
-	 *        extendedMetaData="kind='attribute' name='devices'"
+	 * extendedMetaData="kind='attribute' name='devices'"
 	 * @generated
 	 */
 	EList<ScaDevice< ? >> getDevices();
@@ -127,7 +122,6 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaComponent#getDevices <em>Devices</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetDevices()
 	 * @see #getDevices()
 	 * @generated
@@ -139,7 +133,6 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Devices</em>' reference list is set.
 	 * @see #unsetDevices()
 	 * @see #getDevices()
@@ -155,12 +148,11 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * identifier ({@link #getIdentifier()}).
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Instantiation Identifier</em>' attribute.
 	 * @see #isSetInstantiationIdentifier()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaComponent_InstantiationIdentifier()
 	 * @model unsettable="true" transient="true" changeable="false" volatile="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='instantiationIdentifier'"
+	 * extendedMetaData="kind='attribute' name='instantiationIdentifier'"
 	 * @generated
 	 */
 	String getInstantiationIdentifier();
@@ -170,7 +162,6 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * <em>Instantiation Identifier</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Instantiation Identifier</em>' attribute is set.
 	 * @see #getInstantiationIdentifier()
 	 * @generated
@@ -187,13 +178,12 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Waveform</em>' container reference.
 	 * @see #setWaveform(ScaWaveform)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaComponent_Waveform()
 	 * @see gov.redhawk.model.sca.ScaWaveform#getComponents
 	 * @model opposite="components"
-	 *        extendedMetaData="kind='attribute' name='waveform'"
+	 * extendedMetaData="kind='attribute' name='waveform'"
 	 * @generated
 	 */
 	ScaWaveform getWaveform();
@@ -203,7 +193,6 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Waveform</em>' container reference.
 	 * @see #getWaveform()
 	 * @generated
@@ -218,7 +207,6 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * binding.
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaComponent_Name()
@@ -231,7 +219,6 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaComponent#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Name</em>' attribute.
 	 * @see #getName()
 	 * @generated
@@ -242,7 +229,7 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */

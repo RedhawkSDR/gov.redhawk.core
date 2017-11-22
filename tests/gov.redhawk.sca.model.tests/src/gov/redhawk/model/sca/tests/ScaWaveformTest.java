@@ -65,8 +65,7 @@ import junit.textui.TestRunner;
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchComponents(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
  * Components</em>}</li>
- * <li>
- * {@link gov.redhawk.model.sca.ScaWaveform#fetchComponents(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchComponents(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch Components</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
  * Identifier</em>}</li>

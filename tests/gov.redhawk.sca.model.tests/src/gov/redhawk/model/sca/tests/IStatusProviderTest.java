@@ -38,8 +38,7 @@ import junit.framework.TestCase;
  * <p>
  * The following operations are tested:
  * <ul>
- * <li>
- * {@link gov.redhawk.model.sca.IStatusProvider#setStatus(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.core.runtime.IStatus)
+ * <li>{@link gov.redhawk.model.sca.IStatusProvider#setStatus(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.core.runtime.IStatus)
  * <em>Set Status</em>}</li>
  * <li>{@link gov.redhawk.model.sca.IStatusProvider#clearAllStatus() <em>Clear All Status</em>}</li>
  * <li>{@link gov.redhawk.model.sca.IStatusProvider#getStatus(org.eclipse.emf.ecore.EStructuralFeature) <em>Get
@@ -133,7 +132,7 @@ public abstract class IStatusProviderTest extends TestCase {
 
 		// Add a second bad status
 		ScaModelCommand.execute(getFixture(), new SetStatusCommand<IStatusProvider>(getFixture(), ScaPackage.Literals.CORBA_OBJ_WRAPPER__OBJ,
-				new Status(Status.ERROR, ScaModelPlugin.ID, "Test Error 2")));
+			new Status(Status.ERROR, ScaModelPlugin.ID, "Test Error 2")));
 		Assert.assertFalse(getFixture().getStatus().isOK());
 		Assert.assertTrue(getFixture().getStatus().isMultiStatus());
 		Assert.assertEquals(2, getFixture().getStatus().getChildren().length);

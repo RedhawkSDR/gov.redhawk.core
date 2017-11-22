@@ -42,8 +42,8 @@ import mil.jpeojtrs.sca.scd.Uses;
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaUsesPort()
  * @model superTypes="gov.redhawk.model.sca.ScaPort&lt;mil.jpeojtrs.sca.scd.Uses, mil.jpeojtrs.sca.cf.Port&gt;
- *        mil.jpeojtrs.sca.cf.PortOperations"
- *        extendedMetaData="name='ScaUsesPort' kind='empty'"
+ * mil.jpeojtrs.sca.cf.PortOperations"
+ * extendedMetaData="name='ScaUsesPort' kind='empty'"
  * @generated
  */
 public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
@@ -58,7 +58,6 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	 * of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Connections</em>' containment reference list.
 	 * @see #isSetConnections()
 	 * @see #unsetConnections()
@@ -74,7 +73,6 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	 * containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetConnections()
 	 * @see #getConnections()
 	 * @generated
@@ -86,7 +84,6 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	 * containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Connections</em>' containment reference list is set.
 	 * @see #unsetConnections()
 	 * @see #getConnections()
@@ -97,7 +94,6 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -106,7 +102,6 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model exceptions="mil.jpeojtrs.sca.cf.InvalidPort"
 	 * @generated
 	 */
@@ -126,7 +121,7 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 
 		/**
 		 * @return True if the ports container has a 'connectionTable' struct property with one or more entries
-		 *         belonging to the provided port
+		 * belonging to the provided port
 		 */
 		public static boolean isMultiOutPort(ScaUsesPort port) {
 			return getConnectionIds(port).size() >= 1;
@@ -134,10 +129,10 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 
 		/**
 		 * @return a Map<String, Boolean) of all connection ID's in the container's connectionTable property.<br/>
-		 *         <li>Key - {@link String} connectionId
-		 *         <li>Value - {@link Boolean} True if connection ID is available (either not being used, or only being
-		 *         used by the IDE). False means the connection ID is not available, such as being used for a connection
-		 *         to a components provides port
+		 * <li>Key - {@link String} connectionId
+		 * <li>Value - {@link Boolean} True if connection ID is available (either not being used, or only being
+		 * used by the IDE). False means the connection ID is not available, such as being used for a connection
+		 * to a components provides port
 		 */
 		public static Map<String, Boolean> getConnectionIds(ScaUsesPort port) {
 			Map<String, Boolean> connectionIdMap = new HashMap<>();
@@ -147,7 +142,7 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 				return connectionIdMap;
 			}
 
-			// A list of connection IDs for any existing connections owned by the port 
+			// A list of connection IDs for any existing connections owned by the port
 			List<String> existingConnections = new ArrayList<>();
 			for (ScaConnection connection : port.getConnections()) {
 				existingConnections.add(connection.getId());
@@ -169,12 +164,13 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 				if (connectionIdProp != null && connectionIdProp.getValue() != null) {
 					String connectionId = connectionIdProp.getValue().toString();
 					if (!existingConnections.contains(connectionId)) {
-						// Not being used.  Add ID to map and mark as available. 
+						// Not being used. Add ID to map and mark as available.
 						connectionIdMap.put(connectionId, true);
 					} else {
 						// A connection already exists! Check to see if IDE owns it.
 
-						// Actually we have no way of telling if non-BulkIO port connections are IDE owned, so assumed they are unavailable
+						// Actually we have no way of telling if non-BulkIO port connections are IDE owned, so assumed
+						// they are unavailable
 						if (!isBulkIOPortSupported(port)) {
 							connectionIdMap.put(connectionId, false);
 							continue;
@@ -183,10 +179,11 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 						AbstractBulkIOPort abstractPort = BulkIOUtilActivator.getBulkIOPortConnectionManager().getExternalPort(port.getIor(),
 							BulkIOType.getType(port.getRepid()), connectionId);
 						if (abstractPort != null) {
-							// OK, the BulkIOPortConnectionManager is aware of this connection, so safe to assume it is owned by the IDE.
+							// OK, the BulkIOPortConnectionManager is aware of this connection, so safe to assume it is
+							// owned by the IDE.
 							connectionIdMap.put(connectionId, true);
 						} else {
-							//Hmm, not owned by us.  Add the connection, but mark as unavailable.
+							// Hmm, not owned by us. Add the connection, but mark as unavailable.
 							connectionIdMap.put(connectionId, false);
 						}
 					}

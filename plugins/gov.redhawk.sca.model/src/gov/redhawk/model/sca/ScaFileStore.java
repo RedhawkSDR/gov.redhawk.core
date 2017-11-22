@@ -34,7 +34,7 @@ import org.eclipse.emf.common.util.EList;
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaFileStore()
  * @model superTypes="gov.redhawk.model.sca.IStatusProvider gov.redhawk.model.sca.IRefreshable"
- *        extendedMetaData="name='ScaFileStore' kind='empty'"
+ * extendedMetaData="name='ScaFileStore' kind='empty'"
  * @generated
  */
 public interface ScaFileStore extends IStatusProvider, IRefreshable {
@@ -47,12 +47,11 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>File Store</em>' attribute.
 	 * @see #setFileStore(IFileStore)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaFileStore_FileStore()
 	 * @model dataType="gov.redhawk.model.sca.IFileStore" transient="true"
-	 *        extendedMetaData="kind='attribute' name='fileStore'"
+	 * extendedMetaData="kind='attribute' name='fileStore'"
 	 * @generated
 	 */
 	IFileStore getFileStore();
@@ -61,7 +60,6 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaFileStore#getFileStore <em>File Store</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>File Store</em>' attribute.
 	 * @see #getFileStore()
 	 * @generated
@@ -77,13 +75,12 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	 * a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Children</em>' containment reference list.
 	 * @see #isSetChildren()
 	 * @see #unsetChildren()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaFileStore_Children()
 	 * @model containment="true" resolveProxies="true" unsettable="true" transient="true"
-	 *        extendedMetaData="kind='attribute' name='children'"
+	 * extendedMetaData="kind='attribute' name='children'"
 	 * @generated
 	 */
 	EList<ScaFileStore> getChildren();
@@ -93,7 +90,6 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	 * reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetChildren()
 	 * @see #getChildren()
 	 * @generated
@@ -105,7 +101,6 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	 * containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Children</em>' containment reference list is set.
 	 * @see #unsetChildren()
 	 * @see #getChildren()
@@ -121,7 +116,6 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Image Desc</em>' attribute.
 	 * @see #isSetImageDesc()
 	 * @see #unsetImageDesc()
@@ -136,7 +130,6 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaFileStore#getImageDesc <em>Image Desc</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Image Desc</em>' attribute.
 	 * @see #isSetImageDesc()
 	 * @see #unsetImageDesc()
@@ -149,7 +142,6 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaFileStore#getImageDesc <em>Image Desc</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetImageDesc()
 	 * @see #getImageDesc()
 	 * @see #setImageDesc(Object)
@@ -162,7 +154,6 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Image Desc</em>' attribute is set.
 	 * @see #unsetImageDesc()
 	 * @see #getImageDesc()
@@ -179,7 +170,6 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Directory</em>' attribute.
 	 * @see #setDirectory(boolean)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaFileStore_Directory()
@@ -193,7 +183,7 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Directory</em>' attribute.
 	 * @see #isDirectory()
 	 * @generated
@@ -207,7 +197,6 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	 * If the meaning of the '<em>Name</em>' attribute isn't clear, there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaFileStore_Name()
@@ -221,7 +210,7 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Name</em>' attribute.
 	 * @see #getName()
 	 * @generated
@@ -231,7 +220,6 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */

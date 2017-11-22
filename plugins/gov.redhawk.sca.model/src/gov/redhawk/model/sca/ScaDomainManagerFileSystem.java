@@ -17,14 +17,14 @@ package gov.redhawk.model.sca;
  * A representation of the model object '<em><b>Domain Manager File System</b></em>'.
  * 
  * @since 10.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *        <p>
- *        The following features are supported:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.ScaDomainManagerFileSystem#getDomMgr <em>Dom Mgr</em>}</li>
- *        </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManagerFileSystem#getDomMgr <em>Dom Mgr</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManagerFileSystem()
  * @model extendedMetaData="name='ScaDomainManagerFileSystem' kind='empty'"
@@ -42,13 +42,12 @@ public interface ScaDomainManagerFileSystem extends ScaFileManager {
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Dom Mgr</em>' container reference.
 	 * @see #setDomMgr(ScaDomainManager)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManagerFileSystem_DomMgr()
 	 * @see gov.redhawk.model.sca.ScaDomainManager#getFileManager
 	 * @model opposite="fileManager"
-	 *        extendedMetaData="kind='attribute' name='domMgr'"
+	 * extendedMetaData="kind='attribute' name='domMgr'"
 	 * @generated
 	 */
 	ScaDomainManager getDomMgr();
@@ -59,7 +58,7 @@ public interface ScaDomainManagerFileSystem extends ScaFileManager {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Dom Mgr</em>' container reference.
 	 * @see #getDomMgr()
 	 * @generated

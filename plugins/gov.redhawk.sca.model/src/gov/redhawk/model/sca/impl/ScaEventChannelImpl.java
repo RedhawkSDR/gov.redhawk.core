@@ -26,13 +26,13 @@ import org.omg.CosEventChannelAdmin.EventChannelHelper;
  * An implementation of the model object '<em><b>Event Channel</b></em>'.
  * 
  * @since 19.0
- *        <!-- end-user-doc -->
- *        <p>
- *        The following features are implemented:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaEventChannelImpl#getName <em>Name</em>}</li>
- *        </ul>
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaEventChannelImpl#getName <em>Name</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -41,7 +41,6 @@ public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel> imple
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -51,7 +50,6 @@ public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel> imple
 	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -61,7 +59,6 @@ public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ScaEventChannelImpl() {
@@ -71,7 +68,6 @@ public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -83,7 +79,6 @@ public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel> imple
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * This is specialized for the more specific type known in this context.
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -94,7 +89,6 @@ public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String getName() {
@@ -104,7 +98,6 @@ public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setName(String newName) {
@@ -117,7 +110,6 @@ public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -132,7 +124,6 @@ public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -148,7 +139,6 @@ public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -164,7 +154,6 @@ public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -179,7 +168,6 @@ public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

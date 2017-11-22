@@ -45,9 +45,9 @@ import CF.InvalidObjectReference;
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManager()
  * @model superTypes="gov.redhawk.model.sca.ScaPropertyContainer&lt;mil.jpeojtrs.sca.cf.DeviceManager,
- *        mil.jpeojtrs.sca.dcd.DeviceConfiguration&gt; mil.jpeojtrs.sca.cf.DeviceManagerOperations
- *        gov.redhawk.model.sca.ScaPortContainer"
- *        extendedMetaData="name='ScaDeviceManager' kind='elementOnly'"
+ * mil.jpeojtrs.sca.dcd.DeviceConfiguration&gt; mil.jpeojtrs.sca.cf.DeviceManagerOperations
+ * gov.redhawk.model.sca.ScaPortContainer"
+ * extendedMetaData="name='ScaDeviceManager' kind='elementOnly'"
  * @generated
  */
 public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, DeviceConfiguration>, DeviceManagerOperations, ScaPortContainer {
@@ -61,14 +61,13 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Devices</em>' attribute list.
 	 * @see #isSetDevices()
 	 * @see #unsetDevices()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManager_Devices()
 	 * @model unique="false" unsettable="true" dataType="org.eclipse.emf.ecore.EFeatureMapEntry" many="true"
-	 *        transient="true"
-	 *        extendedMetaData="kind='group' name='devices:1'"
+	 * transient="true"
+	 * extendedMetaData="kind='group' name='devices:1'"
 	 * @generated
 	 */
 	FeatureMap getDevices();
@@ -78,7 +77,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetDevices()
 	 * @see #getDevices()
 	 * @generated
@@ -90,7 +88,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * attribute list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Devices</em>' attribute list is set.
 	 * @see #unsetDevices()
 	 * @see #getDevices()
@@ -107,11 +104,10 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Root Devices</em>' containment reference list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManager_RootDevices()
 	 * @model containment="true" transient="true" volatile="true" derived="true"
-	 *        extendedMetaData="group='#devices:1'"
+	 * extendedMetaData="group='#devices:1'"
 	 * @generated
 	 */
 	EList<ScaDevice< ? >> getRootDevices();
@@ -125,11 +121,10 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Child Devices</em>' containment reference list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManager_ChildDevices()
 	 * @model containment="true" transient="true" volatile="true" derived="true"
-	 *        extendedMetaData="group='#devices:1'"
+	 * extendedMetaData="group='#devices:1'"
 	 * @generated
 	 */
 	EList<ScaDevice< ? >> getChildDevices();
@@ -140,7 +135,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @deprecated Use {@link #getDevices()}, or {@link #getRootDevices()} and {@link #getChildDevices()}.
-	 *             <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>All Devices</em>' containment reference list.
 	 * @see #isSetAllDevices()
 	 * @see #unsetAllDevices()
@@ -157,7 +152,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @deprecated Use {@link #unsetDevices()}
-	 *             <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isSetAllDevices()
 	 * @see #getAllDevices()
 	 * @generated
@@ -171,7 +166,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @deprecated Use {@link #isSetDevices()}
-	 *             <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>All Devices</em>' containment reference list is set.
 	 * @see #unsetAllDevices()
 	 * @see #getAllDevices()
@@ -190,7 +185,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>File System</em>' containment reference.
 	 * @see #isSetFileSystem()
 	 * @see #unsetFileSystem()
@@ -198,7 +192,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManager_FileSystem()
 	 * @see gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager
 	 * @model opposite="deviceManager" containment="true" unsettable="true" transient="true"
-	 *        extendedMetaData="kind='element' name='fileSystem'"
+	 * extendedMetaData="kind='element' name='fileSystem'"
 	 * @generated
 	 */
 	ScaDeviceManagerFileSystem getFileSystem();
@@ -208,7 +202,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>File System</em>' containment reference.
 	 * @see #isSetFileSystem()
 	 * @see #unsetFileSystem()
@@ -222,7 +215,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetFileSystem()
 	 * @see #getFileSystem()
 	 * @see #setFileSystem(ScaDeviceManagerFileSystem)
@@ -235,7 +227,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * System</em>}' containment reference is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>File System</em>' containment reference is set.
 	 * @see #unsetFileSystem()
 	 * @see #getFileSystem()
@@ -254,13 +245,12 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Dom Mgr</em>' container reference.
 	 * @see #setDomMgr(ScaDomainManager)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManager_DomMgr()
 	 * @see gov.redhawk.model.sca.ScaDomainManager#getDeviceManagers
 	 * @model opposite="deviceManagers"
-	 *        extendedMetaData="kind='attribute' name='domMgr'"
+	 * extendedMetaData="kind='attribute' name='domMgr'"
 	 * @generated
 	 */
 	ScaDomainManager getDomMgr();
@@ -270,7 +260,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Dom Mgr</em>' container reference.
 	 * @see #getDomMgr()
 	 * @generated
@@ -285,14 +274,13 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Identifier</em>' attribute.
 	 * @see #isSetIdentifier()
 	 * @see #unsetIdentifier()
 	 * @see #setIdentifier(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManager_Identifier()
 	 * @model unsettable="true" id="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='identifier'"
+	 * extendedMetaData="kind='attribute' name='identifier'"
 	 * @generated
 	 */
 	String getIdentifier();
@@ -303,7 +291,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Identifier</em>' attribute.
 	 * @see #isSetIdentifier()
 	 * @see #unsetIdentifier()
@@ -318,7 +306,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isSetIdentifier()
 	 * @see #getIdentifier()
 	 * @see #setIdentifier(String)
@@ -331,7 +319,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * <em>Identifier</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Identifier</em>' attribute is set.
 	 * @see #unsetIdentifier()
 	 * @see #getIdentifier()
@@ -348,14 +335,13 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Label</em>' attribute.
 	 * @see #isSetLabel()
 	 * @see #unsetLabel()
 	 * @see #setLabel(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManager_Label()
 	 * @model unsettable="true" transient="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='label'"
+	 * extendedMetaData="kind='attribute' name='label'"
 	 * @generated
 	 */
 	String getLabel();
@@ -365,7 +351,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Label</em>' attribute.
 	 * @see #isSetLabel()
 	 * @see #unsetLabel()
@@ -379,7 +365,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isSetLabel()
 	 * @see #getLabel()
 	 * @see #setLabel(String)
@@ -392,7 +378,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Label</em>' attribute is set.
 	 * @see #unsetLabel()
 	 * @see #getLabel()
@@ -411,7 +396,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Services</em>' containment reference list.
 	 * @see #isSetServices()
 	 * @see #unsetServices()
@@ -427,7 +411,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetServices()
 	 * @see #getServices()
 	 * @generated
@@ -439,7 +422,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Services</em>' containment reference list is set.
 	 * @see #unsetServices()
 	 * @see #getServices()
@@ -455,7 +437,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Profile</em>' attribute.
 	 * @see #isSetProfile()
 	 * @see #unsetProfile()
@@ -470,7 +451,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDeviceManager#getProfile <em>Profile</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Profile</em>' attribute.
 	 * @see #isSetProfile()
 	 * @see #unsetProfile()
@@ -483,7 +463,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDeviceManager#getProfile <em>Profile</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetProfile()
 	 * @see #getProfile()
 	 * @see #setProfile(String)
@@ -496,7 +475,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Profile</em>' attribute is set.
 	 * @see #unsetProfile()
 	 * @see #getProfile()
@@ -508,7 +486,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model
 	 * @generated
 	 */
@@ -518,7 +495,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -528,7 +505,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -537,7 +514,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -546,7 +522,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -556,7 +531,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -565,9 +540,8 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model exceptions="mil.jpeojtrs.sca.cf.InvalidObjectReference"
-	 *        registeringServiceDataType="gov.redhawk.model.sca.Object"
+	 * registeringServiceDataType="gov.redhawk.model.sca.Object"
 	 * @generated
 	 */
 	ScaService registerScaService(org.omg.CORBA.Object registeringService, String name) throws InvalidObjectReference;
@@ -575,7 +549,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model
 	 * @generated
 	 */
@@ -584,7 +557,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */

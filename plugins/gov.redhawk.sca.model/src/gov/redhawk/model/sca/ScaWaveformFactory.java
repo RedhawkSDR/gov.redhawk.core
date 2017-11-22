@@ -42,9 +42,9 @@ import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaWaveformFactory()
  * @model superTypes="gov.redhawk.model.sca.CorbaObjWrapper&lt;mil.jpeojtrs.sca.cf.ApplicationFactory&gt;
- *        mil.jpeojtrs.sca.cf.ApplicationFactoryOperations
- *        gov.redhawk.model.sca.ProfileObjectWrapper&lt;mil.jpeojtrs.sca.sad.SoftwareAssembly&gt;"
- *        extendedMetaData="name='ScaWaveformFactory' kind='empty'"
+ * mil.jpeojtrs.sca.cf.ApplicationFactoryOperations
+ * gov.redhawk.model.sca.ProfileObjectWrapper&lt;mil.jpeojtrs.sca.sad.SoftwareAssembly&gt;"
+ * extendedMetaData="name='ScaWaveformFactory' kind='empty'"
  * @generated
  */
 public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>, ApplicationFactoryOperations, ProfileObjectWrapper<SoftwareAssembly> {
@@ -59,13 +59,12 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Dom Mgr</em>' container reference.
 	 * @see #setDomMgr(ScaDomainManager)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaWaveformFactory_DomMgr()
 	 * @see gov.redhawk.model.sca.ScaDomainManager#getWaveformFactories
 	 * @model opposite="waveformFactories" required="true"
-	 *        extendedMetaData="kind='attribute' name='domMgr'"
+	 * extendedMetaData="kind='attribute' name='domMgr'"
 	 * @generated
 	 */
 	ScaDomainManager getDomMgr();
@@ -76,7 +75,7 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Dom Mgr</em>' container reference.
 	 * @see #getDomMgr()
 	 * @generated
@@ -91,14 +90,13 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Identifier</em>' attribute.
 	 * @see #isSetIdentifier()
 	 * @see #unsetIdentifier()
 	 * @see #setIdentifier(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaWaveformFactory_Identifier()
 	 * @model unsettable="true" id="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='identifier'"
+	 * extendedMetaData="kind='attribute' name='identifier'"
 	 * @generated
 	 */
 	String getIdentifier();
@@ -109,7 +107,7 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Identifier</em>' attribute.
 	 * @see #isSetIdentifier()
 	 * @see #unsetIdentifier()
@@ -124,7 +122,7 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isSetIdentifier()
 	 * @see #getIdentifier()
 	 * @see #setIdentifier(String)
@@ -137,7 +135,6 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * <em>Identifier</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Identifier</em>' attribute is set.
 	 * @see #unsetIdentifier()
 	 * @see #getIdentifier()
@@ -153,14 +150,13 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * If the meaning of the '<em>Name</em>' attribute isn't clear, there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #isSetName()
 	 * @see #unsetName()
 	 * @see #setName(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaWaveformFactory_Name()
 	 * @model unsettable="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='name'"
+	 * extendedMetaData="kind='attribute' name='name'"
 	 * @generated
 	 */
 	String getName();
@@ -170,7 +166,7 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Name</em>' attribute.
 	 * @see #isSetName()
 	 * @see #unsetName()
@@ -184,7 +180,7 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isSetName()
 	 * @see #getName()
 	 * @see #setName(String)
@@ -197,7 +193,6 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Name</em>' attribute is set.
 	 * @see #unsetName()
 	 * @see #getName()
@@ -214,7 +209,6 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Profile</em>' attribute.
 	 * @see #isSetProfile()
 	 * @see #unsetProfile()
@@ -229,7 +223,6 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaWaveformFactory#getProfile <em>Profile</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Profile</em>' attribute.
 	 * @see #isSetProfile()
 	 * @see #unsetProfile()
@@ -242,7 +235,6 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaWaveformFactory#getProfile <em>Profile</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetProfile()
 	 * @see #getProfile()
 	 * @see #setProfile(String)
@@ -255,7 +247,6 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Profile</em>' attribute is set.
 	 * @see #unsetProfile()
 	 * @see #getProfile()
@@ -267,13 +258,11 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model exceptions="mil.jpeojtrs.sca.cf.CreateApplicationError mil.jpeojtrs.sca.cf.CreateApplicationRequestError
-	 *        mil.jpeojtrs.sca.cf.InvalidInitConfiguration
-	 *        mil.jpeojtrs.sca.cf.CreateApplicationInsufficientCapacityError"
-	 *        monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
-	 *        initConfigurationDataType="mil.jpeojtrs.sca.cf.DataTypeArray"
-	 *        deviceAssignmentsDataType="mil.jpeojtrs.sca.cf.DeviceAssignmentTypeArray"
+	 * mil.jpeojtrs.sca.cf.InvalidInitConfiguration mil.jpeojtrs.sca.cf.CreateApplicationInsufficientCapacityError"
+	 * monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
+	 * initConfigurationDataType="mil.jpeojtrs.sca.cf.DataTypeArray"
+	 * deviceAssignmentsDataType="mil.jpeojtrs.sca.cf.DeviceAssignmentTypeArray"
 	 * @generated
 	 */
 	ScaWaveform createWaveform(IProgressMonitor monitor, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments)
@@ -288,7 +277,6 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -297,7 +285,6 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -306,7 +293,6 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */

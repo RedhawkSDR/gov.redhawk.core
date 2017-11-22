@@ -18,14 +18,14 @@ import org.omg.CosEventChannelAdmin.EventChannel;
  * A representation of the model object '<em><b>Event Channel</b></em>'.
  * 
  * @since 19.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *        <p>
- *        The following features are supported:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.ScaEventChannel#getName <em>Name</em>}</li>
- *        </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaEventChannel#getName <em>Name</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaEventChannel()
  * @model superTypes="gov.redhawk.model.sca.CorbaObjWrapper&lt;gov.redhawk.model.sca.EventChannel&gt;"
@@ -40,7 +40,6 @@ public interface ScaEventChannel extends CorbaObjWrapper<EventChannel> {
 	 * If the meaning of the '<em>Name</em>' attribute isn't clear, there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaEventChannel_Name()
@@ -53,7 +52,6 @@ public interface ScaEventChannel extends CorbaObjWrapper<EventChannel> {
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaEventChannel#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Name</em>' attribute.
 	 * @see #getName()
 	 * @generated

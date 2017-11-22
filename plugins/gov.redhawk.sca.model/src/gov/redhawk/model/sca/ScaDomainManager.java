@@ -57,8 +57,8 @@ import CF.DomainManagerPackage.InvalidIdentifier;
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager()
  * @model superTypes="gov.redhawk.model.sca.ScaPropertyContainer&lt;mil.jpeojtrs.sca.cf.DomainManager,
- *        mil.jpeojtrs.sca.dmd.DomainManagerConfiguration&gt; mil.jpeojtrs.sca.cf.DomainManagerOperations"
- *        extendedMetaData="name='ScaDomainManager' kind='elementOnly'"
+ * mil.jpeojtrs.sca.dmd.DomainManagerConfiguration&gt; mil.jpeojtrs.sca.cf.DomainManagerOperations"
+ * extendedMetaData="name='ScaDomainManager' kind='elementOnly'"
  * @generated
  */
 public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, DomainManagerConfiguration>, DomainManagerOperations {
@@ -74,14 +74,13 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Waveform Factories</em>' containment reference list.
 	 * @see #isSetWaveformFactories()
 	 * @see #unsetWaveformFactories()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager_WaveformFactories()
 	 * @see gov.redhawk.model.sca.ScaWaveformFactory#getDomMgr
 	 * @model opposite="domMgr" containment="true" unsettable="true" transient="true"
-	 *        extendedMetaData="kind='element' name='waveformFactories'"
+	 * extendedMetaData="kind='element' name='waveformFactories'"
 	 * @generated
 	 */
 	EList<ScaWaveformFactory> getWaveformFactories();
@@ -91,7 +90,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * Factories</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetWaveformFactories()
 	 * @see #getWaveformFactories()
 	 * @generated
@@ -103,7 +101,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * Factories</em>}' containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Waveform Factories</em>' containment reference list is set.
 	 * @see #unsetWaveformFactories()
 	 * @see #getWaveformFactories()
@@ -121,14 +118,13 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Waveforms</em>' containment reference list.
 	 * @see #isSetWaveforms()
 	 * @see #unsetWaveforms()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager_Waveforms()
 	 * @see gov.redhawk.model.sca.ScaWaveform#getDomMgr
 	 * @model opposite="domMgr" containment="true" unsettable="true" transient="true"
-	 *        extendedMetaData="kind='element' name='waveforms'"
+	 * extendedMetaData="kind='element' name='waveforms'"
 	 * @generated
 	 */
 	EList<ScaWaveform> getWaveforms();
@@ -138,7 +134,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetWaveforms()
 	 * @see #getWaveforms()
 	 * @generated
@@ -150,7 +145,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Waveforms</em>' containment reference list is set.
 	 * @see #unsetWaveforms()
 	 * @see #getWaveforms()
@@ -169,14 +163,13 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Device Managers</em>' containment reference list.
 	 * @see #isSetDeviceManagers()
 	 * @see #unsetDeviceManagers()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager_DeviceManagers()
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#getDomMgr
 	 * @model opposite="domMgr" containment="true" unsettable="true" transient="true"
-	 *        extendedMetaData="kind='element' name='deviceManagers'"
+	 * extendedMetaData="kind='element' name='deviceManagers'"
 	 * @generated
 	 */
 	EList<ScaDeviceManager> getDeviceManagers();
@@ -186,7 +179,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * Managers</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetDeviceManagers()
 	 * @see #getDeviceManagers()
 	 * @generated
@@ -198,7 +190,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * Managers</em>}' containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Device Managers</em>' containment reference list is set.
 	 * @see #unsetDeviceManagers()
 	 * @see #getDeviceManagers()
@@ -216,7 +207,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>File Manager</em>' containment reference.
 	 * @see #isSetFileManager()
 	 * @see #unsetFileManager()
@@ -224,7 +214,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager_FileManager()
 	 * @see gov.redhawk.model.sca.ScaDomainManagerFileSystem#getDomMgr
 	 * @model opposite="domMgr" containment="true" unsettable="true" transient="true"
-	 *        extendedMetaData="kind='element' name='fileManager'"
+	 * extendedMetaData="kind='element' name='fileManager'"
 	 * @generated
 	 */
 	ScaDomainManagerFileSystem getFileManager();
@@ -235,7 +225,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>File Manager</em>' containment reference.
 	 * @see #isSetFileManager()
 	 * @see #unsetFileManager()
@@ -250,7 +240,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isSetFileManager()
 	 * @see #getFileManager()
 	 * @see #setFileManager(ScaDomainManagerFileSystem)
@@ -263,7 +253,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * Manager</em>}' containment reference is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>File Manager</em>' containment reference is set.
 	 * @see #unsetFileManager()
 	 * @see #getFileManager()
@@ -277,12 +266,12 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Connection Properties Container</em>' containment reference.
 	 * @see #setConnectionPropertiesContainer(Properties)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager_ConnectionPropertiesContainer()
 	 * @model containment="true" resolveProxies="true" required="true"
-	 *        extendedMetaData="kind='element' name='connectionProperties'"
+	 * extendedMetaData="kind='element' name='connectionProperties'"
 	 * @generated
 	 */
 	Properties getConnectionPropertiesContainer();
@@ -293,7 +282,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Connection Properties Container</em>' containment reference.
 	 * @see #getConnectionPropertiesContainer()
 	 * @generated
@@ -310,12 +299,11 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Connection Properties</em>' map.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager_ConnectionProperties()
 	 * @model mapType="gov.redhawk.model.sca.StringToStringMap&lt;org.eclipse.emf.ecore.EString,
-	 *        org.eclipse.emf.ecore.EString&gt;" transient="true" volatile="true" derived="true"
-	 *        extendedMetaData="kind='element' name='connectionPropertiesTransient'"
+	 * org.eclipse.emf.ecore.EString&gt;" transient="true" volatile="true" derived="true"
+	 * extendedMetaData="kind='element' name='connectionPropertiesTransient'"
 	 * @generated
 	 */
 	EMap<String, String> getConnectionProperties();
@@ -328,7 +316,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Auto Connect</em>' attribute.
 	 * @see #setAutoConnect(boolean)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager_AutoConnect()
@@ -342,7 +329,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Auto Connect</em>' attribute.
 	 * @see #isAutoConnect()
 	 * @generated
@@ -357,11 +343,10 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Connected</em>' attribute.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager_Connected()
 	 * @model required="true" transient="true" changeable="false" volatile="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='connected'"
+	 * extendedMetaData="kind='attribute' name='connected'"
 	 * @generated
 	 */
 	boolean isConnected();
@@ -374,14 +359,13 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Identifier</em>' attribute.
 	 * @see #isSetIdentifier()
 	 * @see #unsetIdentifier()
 	 * @see #setIdentifier(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager_Identifier()
 	 * @model unsettable="true" transient="true"
-	 *        extendedMetaData="kind='attribute' name='identifier'"
+	 * extendedMetaData="kind='attribute' name='identifier'"
 	 * @generated
 	 */
 	String getIdentifier();
@@ -392,7 +376,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Identifier</em>' attribute.
 	 * @see #isSetIdentifier()
 	 * @see #unsetIdentifier()
@@ -407,7 +391,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isSetIdentifier()
 	 * @see #getIdentifier()
 	 * @see #setIdentifier(String)
@@ -420,7 +404,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <em>Identifier</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Identifier</em>' attribute is set.
 	 * @see #unsetIdentifier()
 	 * @see #getIdentifier()
@@ -437,12 +420,11 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * You should consider using {@link #getLabel()} instead.
 	 * 
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager_Name()
 	 * @model required="true"
-	 *        extendedMetaData="kind='attribute' name='name'"
+	 * extendedMetaData="kind='attribute' name='name'"
 	 * @generated
 	 */
 	String getName();
@@ -451,7 +433,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDomainManager#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Name</em>' attribute.
 	 * @see #getName()
 	 * @generated
@@ -466,14 +447,13 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Root Context</em>' attribute.
 	 * @see #isSetRootContext()
 	 * @see #unsetRootContext()
 	 * @see #setRootContext(NamingContextExt)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager_RootContext()
 	 * @model unsettable="true" dataType="mil.jpeojtrs.sca.cf.NamingContextExt" required="true" transient="true"
-	 *        extendedMetaData="kind='attribute' name='rootContext'"
+	 * extendedMetaData="kind='attribute' name='rootContext'"
 	 * @generated
 	 */
 	NamingContextExt getRootContext();
@@ -484,7 +464,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Root Context</em>' attribute.
 	 * @see #isSetRootContext()
 	 * @see #unsetRootContext()
@@ -499,7 +479,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isSetRootContext()
 	 * @see #getRootContext()
 	 * @see #setRootContext(NamingContextExt)
@@ -512,7 +492,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * Context</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Root Context</em>' attribute is set.
 	 * @see #unsetRootContext()
 	 * @see #getRootContext()
@@ -530,13 +509,12 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>State</em>' attribute.
 	 * @see gov.redhawk.model.sca.DomainConnectionState
 	 * @see #setState(DomainConnectionState)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager_State()
 	 * @model required="true" transient="true"
-	 *        extendedMetaData="kind='attribute' name='state'"
+	 * extendedMetaData="kind='attribute' name='state'"
 	 * @generated
 	 */
 	DomainConnectionState getState();
@@ -546,7 +524,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>State</em>' attribute.
 	 * @see gov.redhawk.model.sca.DomainConnectionState
 	 * @see #getState()
@@ -562,7 +540,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Profile</em>' attribute.
 	 * @see #isSetProfile()
 	 * @see #unsetProfile()
@@ -577,7 +554,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDomainManager#getProfile <em>Profile</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Profile</em>' attribute.
 	 * @see #isSetProfile()
 	 * @see #unsetProfile()
@@ -590,7 +566,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDomainManager#getProfile <em>Profile</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetProfile()
 	 * @see #getProfile()
 	 * @see #setProfile(String)
@@ -603,7 +578,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Profile</em>' attribute is set.
 	 * @see #unsetProfile()
 	 * @see #getProfile()
@@ -622,7 +596,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * </p>
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Event Channels</em>' containment reference list.
 	 * @see #isSetEventChannels()
 	 * @see #unsetEventChannels()
@@ -638,7 +612,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isSetEventChannels()
 	 * @see #getEventChannels()
 	 * @generated
@@ -651,7 +625,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Event Channels</em>' containment reference list is set.
 	 * @see #unsetEventChannels()
 	 * @see #getEventChannels()
@@ -664,7 +638,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Local Name</em>' attribute.
 	 * @see #setLocalName(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager_LocalName()
@@ -679,7 +653,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Local Name</em>' attribute.
 	 * @see #getLocalName()
 	 * @generated
@@ -689,7 +663,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model
 	 * @generated
 	 */
@@ -698,9 +671,8 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model exceptions="gov.redhawk.model.sca.DomainConnectionException"
-	 *        monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
+	 * monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
 	void connect(IProgressMonitor monitor, RefreshDepth refreshDepth) throws DomainConnectionException;
@@ -708,7 +680,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model
 	 * @generated
 	 */
@@ -718,7 +689,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -728,7 +699,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -738,7 +709,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -748,7 +719,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -757,7 +728,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -766,9 +736,8 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model exceptions="mil.jpeojtrs.sca.cf.InvalidProfile mil.jpeojtrs.sca.cf.InvalidFileName
-	 *        mil.jpeojtrs.sca.cf.ApplicationInstallationError mil.jpeojtrs.sca.cf.ApplicationAlreadyInstalled"
+	 * mil.jpeojtrs.sca.cf.ApplicationInstallationError mil.jpeojtrs.sca.cf.ApplicationAlreadyInstalled"
 	 * @generated
 	 */
 	ScaWaveformFactory installScaWaveformFactory(String profilePath)
@@ -777,9 +746,8 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model exceptions="mil.jpeojtrs.sca.cf.ApplicationUninstallationError
-	 *        mil.jpeojtrs.sca.cf.InvalidDomMgrIdentifier"
+	 * mil.jpeojtrs.sca.cf.InvalidDomMgrIdentifier"
 	 * @generated
 	 */
 	void uninstallScaWaveformFactory(ScaWaveformFactory factory) throws ApplicationUninstallationError, InvalidIdentifier;
@@ -787,7 +755,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -797,7 +764,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -812,7 +779,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model kind="operation" dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */

@@ -94,16 +94,16 @@ import CF.TestableObjectPackage.UnknownTest;
  * An implementation of the model object ' <em><b>Abstract Component</b></em>'.
  * 
  * @since 12.0
- *        <!-- end-user-doc -->
- *        <p>
- *        The following features are implemented:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getPorts <em>Ports</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getIdentifier <em>Identifier</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getStarted <em>Started</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getProfile <em>Profile</em>}</li>
- *        </ul>
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getPorts <em>Ports</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getIdentifier <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getStarted <em>Started</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getProfile <em>Profile</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -113,7 +113,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * The cached value of the '{@link #getPorts() <em>Ports</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getPorts()
 	 * @generated
 	 * @ordered
@@ -124,7 +123,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * The default value of the '{@link #getIdentifier() <em>Identifier</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getIdentifier()
 	 * @generated
 	 * @ordered
@@ -135,7 +133,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * The cached value of the '{@link #getIdentifier() <em>Identifier</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getIdentifier()
 	 * @generated
 	 * @ordered
@@ -146,7 +143,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * This is true if the Identifier attribute has been set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -156,7 +152,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * The default value of the '{@link #getStarted() <em>Started</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getStarted()
 	 * @generated
 	 * @ordered
@@ -167,7 +162,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * The cached value of the '{@link #getStarted() <em>Started</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getStarted()
 	 * @generated
 	 * @ordered
@@ -178,7 +172,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * This is true if the Started attribute has been set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -189,7 +182,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getProfile()
 	 * @generated
 	 * @ordered
@@ -201,7 +194,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getProfile()
 	 * @generated
 	 * @ordered
@@ -213,7 +206,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -222,7 +215,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ScaAbstractComponentImpl() {
@@ -232,7 +224,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -244,8 +235,8 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 18.0
-	 *        <!-- end-user-doc -->
-	 *        This is specialized for the more specific type known in this context.
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
 	 * @generated
 	 */
 	@Override
@@ -256,7 +247,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -271,7 +261,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -283,7 +272,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -294,7 +282,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -305,7 +292,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -322,7 +308,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -339,7 +324,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -350,7 +334,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -361,7 +344,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -377,7 +359,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -393,7 +374,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -405,7 +385,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String getProfile() {
@@ -416,7 +396,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setProfile(String newProfile) {
@@ -432,7 +412,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void unsetProfile() {
@@ -448,7 +428,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isSetProfile() {
@@ -461,7 +441,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -504,7 +484,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -630,7 +610,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -646,7 +625,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -661,7 +639,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -682,7 +659,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -709,7 +685,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -734,7 +709,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -755,7 +729,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -798,7 +771,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -841,7 +813,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -948,7 +919,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @throws InterruptedException
 	 * @generated NOT
 	 */
@@ -1039,7 +1010,8 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 						org.omg.CORBA.Object portCorbaObj = currentObj.getPort(portName);
 						newPorts.add(new PortData(abstractPort, portCorbaObj));
 					} catch (UnknownPort e) {
-						// Unknown port exception can be treated as a warning. If set as an error, the MergePortsCommand will unset all ports
+						// Unknown port exception can be treated as a warning. If set as an error, the MergePortsCommand
+						// will unset all ports
 						fetchPortsStatus.add(new Status(Status.WARNING, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
 					} catch (SystemException e) {
 						fetchPortsStatus.add(new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));

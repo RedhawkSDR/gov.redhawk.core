@@ -64,15 +64,15 @@ import CF.PropertySetPackage.PartialConfiguration;
  * An implementation of the model object ' <em><b>Property Container</b></em>'.
  * 
  * @since 12.0
- *        <!-- end-user-doc -->
- *        <p>
- *        The following features are implemented:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProfileURI <em>Profile URI</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProfileObj <em>Profile Obj</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProperties <em>Properties</em>}</li>
- *        </ul>
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProfileURI <em>Profile URI</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProfileObj <em>Profile Obj</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProperties <em>Properties</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -82,7 +82,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * The default value of the '{@link #getProfileURI() <em>Profile URI</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getProfileURI()
 	 * @generated
 	 * @ordered
@@ -92,7 +91,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * The cached value of the '{@link #getProfileURI() <em>Profile URI</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getProfileURI()
 	 * @generated
 	 * @ordered
@@ -102,7 +100,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * This is true if the Profile URI attribute has been set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -111,7 +108,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * The cached value of the '{@link #getProfileObj() <em>Profile Obj</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getProfileObj()
 	 * @generated
 	 * @ordered
@@ -121,7 +117,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * This is true if the Profile Obj reference has been set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -130,7 +125,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getProperties()
 	 * @generated
 	 * @ordered
@@ -140,7 +134,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ScaPropertyContainerImpl() {
@@ -150,7 +143,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -161,7 +153,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -172,7 +163,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -189,7 +179,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -206,7 +195,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -217,7 +205,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -237,7 +224,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public E basicGetProfileObj() {
@@ -247,7 +233,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -264,7 +249,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -280,7 +264,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -317,7 +300,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -332,7 +314,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -344,7 +325,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -363,7 +343,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * This is an EMF-generated wrapper for {@link #registerPropertyListener(org.omg.CORBA.Object, String[], float)}.
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -375,7 +355,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 * 
 	 */
@@ -386,7 +366,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -395,7 +375,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -410,7 +389,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -431,7 +409,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -455,7 +432,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -477,7 +453,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -496,7 +471,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -529,7 +503,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -562,7 +535,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -586,7 +558,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -663,7 +635,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -673,7 +645,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override

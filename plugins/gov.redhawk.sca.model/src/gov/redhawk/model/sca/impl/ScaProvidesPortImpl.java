@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.EClass;
  * An implementation of the model object '<em><b>Provides Port</b></em>'.
  * 
  * @since 12.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
  * @generated
  */
@@ -32,7 +32,6 @@ public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Obj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ScaProvidesPortImpl() {
@@ -42,7 +41,6 @@ public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Obj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -54,8 +52,8 @@ public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Obj
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 18.0
-	 *        <!-- end-user-doc -->
-	 *        This is specialized for the more specific type known in this context.
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
 	 * @generated
 	 */
 	@Override
@@ -68,7 +66,7 @@ public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Obj
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 8.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getType()
 	 * @generated NOT
 	 * @ordered

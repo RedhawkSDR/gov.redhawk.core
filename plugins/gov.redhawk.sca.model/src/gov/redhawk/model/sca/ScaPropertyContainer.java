@@ -21,20 +21,20 @@ import org.eclipse.emf.common.util.EList;
  * A representation of the model object '<em><b>Property Container</b></em>'.
  * 
  * @since 11.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *        <p>
- *        The following features are supported:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.ScaPropertyContainer#getProperties <em>Properties</em>}</li>
- *        </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaPropertyContainer#getProperties <em>Properties</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaPropertyContainer()
  * @model abstract="true" superTypes="gov.redhawk.model.sca.CorbaObjWrapper&lt;P&gt;
- *        gov.redhawk.model.sca.ProfileObjectWrapper&lt;E&gt; mil.jpeojtrs.sca.cf.PropertyEmitterOperations"
- *        PBounds="gov.redhawk.model.sca.Object" EBounds="org.eclipse.emf.ecore.EJavaObject"
- *        extendedMetaData="name='ScaPropertyContainer' kind='elementOnly'"
+ * gov.redhawk.model.sca.ProfileObjectWrapper&lt;E&gt; mil.jpeojtrs.sca.cf.PropertyEmitterOperations"
+ * PBounds="gov.redhawk.model.sca.Object" EBounds="org.eclipse.emf.ecore.EJavaObject"
+ * extendedMetaData="name='ScaPropertyContainer' kind='elementOnly'"
  * @generated
  */
 public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends Object >
@@ -48,13 +48,12 @@ public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends
 	 * of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Properties</em>' containment reference list.
 	 * @see #isSetProperties()
 	 * @see #unsetProperties()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaPropertyContainer_Properties()
 	 * @model containment="true" unsettable="true" transient="true"
-	 *        extendedMetaData="kind='element' name='properties'"
+	 * extendedMetaData="kind='element' name='properties'"
 	 * @generated
 	 */
 	EList<ScaAbstractProperty< ? >> getProperties();
@@ -64,7 +63,6 @@ public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends
 	 * containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetProperties()
 	 * @see #getProperties()
 	 * @generated
@@ -76,7 +74,6 @@ public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends
 	 * <em>Properties</em>}' containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Properties</em>' containment reference list is set.
 	 * @see #unsetProperties()
 	 * @see #getProperties()
@@ -87,7 +84,6 @@ public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -96,7 +92,6 @@ public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model
 	 * @generated
 	 */

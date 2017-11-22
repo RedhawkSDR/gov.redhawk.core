@@ -21,23 +21,21 @@ import org.eclipse.emf.common.util.EList;
  * A representation of the model object '<em><b>Data Provider Object</b></em>'.
  * 
  * @since 9.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *        <p>
- *        The following features are supported:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.DataProviderObject#getDataProviders <em>Data Providers</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.DataProviderObject#isDataProvidersEnabled <em>Data Providers
- *        Enabled</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.DataProviderObject#getEnabledDataProviders <em>Enabled Data
- *        Providers</em>}</li>
- *        </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.DataProviderObject#getDataProviders <em>Data Providers</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.DataProviderObject#isDataProvidersEnabled <em>Data Providers Enabled</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.DataProviderObject#getEnabledDataProviders <em>Enabled Data Providers</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getDataProviderObject()
  * @model abstract="true" superTypes="gov.redhawk.model.sca.IStatusProvider gov.redhawk.model.sca.IDisposable
- *        gov.redhawk.model.sca.IRefreshable"
- *        extendedMetaData="name='DataProviderObject' kind='empty'"
+ * gov.redhawk.model.sca.IRefreshable"
+ * extendedMetaData="name='DataProviderObject' kind='empty'"
  * @generated
  */
 public interface DataProviderObject extends IStatusProvider, IDisposable, IRefreshable {
@@ -51,13 +49,12 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Data Providers</em>' attribute list.
 	 * @see #isSetDataProviders()
 	 * @see #unsetDataProviders()
 	 * @see gov.redhawk.model.sca.ScaPackage#getDataProviderObject_DataProviders()
 	 * @model unsettable="true" dataType="gov.redhawk.model.sca.IScaDataProvider" transient="true"
-	 *        extendedMetaData="kind='attribute' name='dataProviders'"
+	 * extendedMetaData="kind='attribute' name='dataProviders'"
 	 * @generated
 	 */
 	EList<IScaDataProvider> getDataProviders();
@@ -67,7 +64,6 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	 * Providers</em>}' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetDataProviders()
 	 * @see #getDataProviders()
 	 * @generated
@@ -79,7 +75,6 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	 * Providers</em>}' attribute list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Data Providers</em>' attribute list is set.
 	 * @see #unsetDataProviders()
 	 * @see #getDataProviders()
@@ -96,7 +91,6 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Data Providers Enabled</em>' attribute.
 	 * @see #setDataProvidersEnabled(boolean)
 	 * @see gov.redhawk.model.sca.ScaPackage#getDataProviderObject_DataProvidersEnabled()
@@ -110,7 +104,6 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	 * Enabled</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Data Providers Enabled</em>' attribute.
 	 * @see #isDataProvidersEnabled()
 	 * @generated
@@ -123,7 +116,7 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Enabled Data Providers</em>' attribute list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getDataProviderObject_EnabledDataProviders()
 	 * @model
@@ -134,7 +127,6 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model
 	 * @generated
 	 */
@@ -143,7 +135,6 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model
 	 * @generated
 	 */

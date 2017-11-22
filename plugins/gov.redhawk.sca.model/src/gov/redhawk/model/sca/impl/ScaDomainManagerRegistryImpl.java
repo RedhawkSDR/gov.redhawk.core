@@ -39,14 +39,14 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * An implementation of the model object '<em><b>Domain Manager Registry</b></em>'.
  * 
  * @since 12.0
- *        <!-- end-user-doc -->
- *        <p>
- *        The following features are implemented:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerRegistryImpl#isDisposed <em>Disposed</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerRegistryImpl#getDomains <em>Domains</em>}</li>
- *        </ul>
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerRegistryImpl#isDisposed <em>Disposed</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerRegistryImpl#getDomains <em>Domains</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -55,7 +55,6 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	 * The default value of the '{@link #isDisposed() <em>Disposed</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isDisposed()
 	 * @generated
 	 * @ordered
@@ -65,7 +64,6 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	 * The cached value of the '{@link #isDisposed() <em>Disposed</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isDisposed()
 	 * @generated
 	 * @ordered
@@ -75,7 +73,6 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	 * The cached value of the '{@link #getDomains() <em>Domains</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getDomains()
 	 * @generated
 	 * @ordered
@@ -98,7 +95,6 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -109,7 +105,6 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -120,7 +115,6 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -182,7 +176,6 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -197,7 +190,6 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -214,7 +206,6 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -232,7 +223,6 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -248,7 +238,6 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -265,7 +254,6 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -284,7 +272,7 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override

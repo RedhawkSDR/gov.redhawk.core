@@ -43,8 +43,8 @@ import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDevice()
  * @model superTypes="gov.redhawk.model.sca.ScaAbstractComponent&lt;D&gt; mil.jpeojtrs.sca.cf.DeviceOperations"
- *        DBounds="mil.jpeojtrs.sca.cf.Device"
- *        extendedMetaData="name='ScaDevice' kind='elementOnly'"
+ * DBounds="mil.jpeojtrs.sca.cf.Device"
+ * extendedMetaData="name='ScaDevice' kind='elementOnly'"
  * @generated
  */
 public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, DeviceOperations {
@@ -60,14 +60,13 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Child Devices</em>' reference list.
 	 * @see #isSetChildDevices()
 	 * @see #unsetChildDevices()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDevice_ChildDevices()
 	 * @see gov.redhawk.model.sca.ScaDevice#getParentDevice
 	 * @model opposite="parentDevice" resolveProxies="false" unsettable="true" transient="true"
-	 *        extendedMetaData="kind='element' name='childDevices'"
+	 * extendedMetaData="kind='element' name='childDevices'"
 	 * @generated
 	 */
 	EList<ScaDevice< ? >> getChildDevices();
@@ -77,7 +76,6 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetChildDevices()
 	 * @see #getChildDevices()
 	 * @generated
@@ -89,7 +87,6 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Child Devices</em>' reference list is set.
 	 * @see #unsetChildDevices()
 	 * @see #getChildDevices()
@@ -105,14 +102,13 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Admin State</em>' attribute.
 	 * @see #isSetAdminState()
 	 * @see #unsetAdminState()
 	 * @see #setAdminState(AdminType)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDevice_AdminState()
 	 * @model unsettable="true" dataType="gov.redhawk.model.sca.AdminType" transient="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='adminState'"
+	 * extendedMetaData="kind='attribute' name='adminState'"
 	 * @generated
 	 */
 	AdminType getAdminState();
@@ -122,7 +118,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Admin State</em>' attribute.
 	 * @see #isSetAdminState()
 	 * @see #unsetAdminState()
@@ -136,7 +132,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isSetAdminState()
 	 * @see #getAdminState()
 	 * @see #setAdminState(AdminType)
@@ -149,7 +145,6 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Admin State</em>' attribute is set.
 	 * @see #unsetAdminState()
 	 * @see #getAdminState()
@@ -166,14 +161,13 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Label</em>' attribute.
 	 * @see #isSetLabel()
 	 * @see #unsetLabel()
 	 * @see #setLabel(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDevice_Label()
 	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.String" transient="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='label'"
+	 * extendedMetaData="kind='attribute' name='label'"
 	 * @generated
 	 */
 	String getLabel();
@@ -183,7 +177,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Label</em>' attribute.
 	 * @see #isSetLabel()
 	 * @see #unsetLabel()
@@ -197,7 +191,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isSetLabel()
 	 * @see #getLabel()
 	 * @see #setLabel(String)
@@ -210,7 +204,6 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Label</em>' attribute is set.
 	 * @see #unsetLabel()
 	 * @see #getLabel()
@@ -227,14 +220,13 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Operational State</em>' attribute.
 	 * @see #isSetOperationalState()
 	 * @see #unsetOperationalState()
 	 * @see #setOperationalState(OperationalType)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDevice_OperationalState()
 	 * @model unsettable="true" dataType="gov.redhawk.model.sca.OperationalType" transient="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='operationalState'"
+	 * extendedMetaData="kind='attribute' name='operationalState'"
 	 * @generated
 	 */
 	OperationalType getOperationalState();
@@ -245,7 +237,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Operational State</em>' attribute.
 	 * @see #isSetOperationalState()
 	 * @see #unsetOperationalState()
@@ -260,7 +252,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isSetOperationalState()
 	 * @see #getOperationalState()
 	 * @see #setOperationalState(OperationalType)
@@ -273,7 +265,6 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * State</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Operational State</em>' attribute is set.
 	 * @see #unsetOperationalState()
 	 * @see #getOperationalState()
@@ -290,14 +281,13 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Usage State</em>' attribute.
 	 * @see #isSetUsageState()
 	 * @see #unsetUsageState()
 	 * @see #setUsageState(UsageType)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDevice_UsageState()
 	 * @model unsettable="true" dataType="gov.redhawk.model.sca.UsageType" transient="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='usageState'"
+	 * extendedMetaData="kind='attribute' name='usageState'"
 	 * @generated
 	 */
 	UsageType getUsageState();
@@ -307,7 +297,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Usage State</em>' attribute.
 	 * @see #isSetUsageState()
 	 * @see #unsetUsageState()
@@ -321,7 +311,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isSetUsageState()
 	 * @see #getUsageState()
 	 * @see #setUsageState(UsageType)
@@ -334,7 +324,6 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Usage State</em>' attribute is set.
 	 * @see #unsetUsageState()
 	 * @see #getUsageState()
@@ -353,7 +342,6 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Parent Device</em>' reference.
 	 * @see #setParentDevice(ScaDevice)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDevice_ParentDevice()
@@ -367,7 +355,6 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getParentDevice <em>Parent Device</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Parent Device</em>' reference.
 	 * @see #getParentDevice()
 	 * @generated
@@ -382,7 +369,6 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Dev Mgr</em>' reference.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDevice_DevMgr()
 	 * @model transient="true" changeable="false" volatile="true" derived="true"
@@ -398,7 +384,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * </p>
 	 * 
 	 * @since 21.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Component Instantiation</em>' reference.
 	 * @see #isSetComponentInstantiation()
 	 * @see #unsetComponentInstantiation()
@@ -415,7 +401,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 21.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Component Instantiation</em>' reference.
 	 * @see #isSetComponentInstantiation()
 	 * @see #unsetComponentInstantiation()
@@ -430,7 +416,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 21.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #isSetComponentInstantiation()
 	 * @see #getComponentInstantiation()
 	 * @see #setComponentInstantiation(DcdComponentInstantiation)
@@ -444,7 +430,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 21.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Component Instantiation</em>' reference is set.
 	 * @see #unsetComponentInstantiation()
 	 * @see #getComponentInstantiation()
@@ -458,7 +444,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * 
 	 * @deprecated Use {@link #fetchAggregateDevices(IProgressMonitor, RefreshDepth)}
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -469,7 +455,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -478,7 +464,6 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model dataType="gov.redhawk.model.sca.AdminType" monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -487,7 +472,6 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -496,7 +480,6 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model dataType="gov.redhawk.model.sca.OperationalType" monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -505,7 +488,6 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model dataType="gov.redhawk.model.sca.UsageType" monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */

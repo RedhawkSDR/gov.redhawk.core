@@ -22,16 +22,16 @@ import org.eclipse.emf.ecore.EObject;
  * A representation of the model object '<em><b>Waveforms Container</b></em>'.
  * 
  * @since 20.2
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *        <p>
- *        The following features are supported:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.WaveformsContainer#getSubContainers <em>Sub Containers</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.WaveformsContainer#getWaveforms <em>Waveforms</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.WaveformsContainer#getContainerName <em>Container Name</em>}</li>
- *        </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.WaveformsContainer#getSubContainers <em>Sub Containers</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.WaveformsContainer#getWaveforms <em>Waveforms</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.WaveformsContainer#getContainerName <em>Container Name</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getWaveformsContainer()
  * @model
@@ -47,7 +47,6 @@ public interface WaveformsContainer extends EObject {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Sub Containers</em>' reference list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getWaveformsContainer_SubContainers()
 	 * @model
@@ -64,7 +63,6 @@ public interface WaveformsContainer extends EObject {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Waveforms</em>' reference list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getWaveformsContainer_Waveforms()
 	 * @model
@@ -80,7 +78,6 @@ public interface WaveformsContainer extends EObject {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Container Name</em>' attribute.
 	 * @see #setContainerName(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getWaveformsContainer_ContainerName()
@@ -94,7 +91,6 @@ public interface WaveformsContainer extends EObject {
 	 * attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Container Name</em>' attribute.
 	 * @see #getContainerName()
 	 * @generated

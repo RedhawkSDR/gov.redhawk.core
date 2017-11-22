@@ -52,18 +52,18 @@ import org.eclipse.emf.transaction.RunnableWithResult;
  * An implementation of the model object '<em><b>Data Provider Object</b></em>'.
  * 
  * @since 12.0
- *        <!-- end-user-doc -->
- *        <p>
- *        The following features are implemented:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#isDisposed <em>Disposed</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#getDataProviders <em>Data Providers</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#isDataProvidersEnabled <em>Data Providers
- *        Enabled</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#getEnabledDataProviders <em>Enabled Data
- *        Providers</em>}</li>
- *        </ul>
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#isDisposed <em>Disposed</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#getDataProviders <em>Data Providers</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#isDataProvidersEnabled <em>Data Providers
+ * Enabled</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#getEnabledDataProviders <em>Enabled Data
+ * Providers</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -72,7 +72,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * The default value of the '{@link #isDisposed() <em>Disposed</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isDisposed()
 	 * @generated
 	 * @ordered
@@ -82,7 +81,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * The cached value of the '{@link #isDisposed() <em>Disposed</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isDisposed()
 	 * @generated
 	 * @ordered
@@ -92,7 +90,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * The cached value of the '{@link #getDataProviders() <em>Data Providers</em>}' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getDataProviders()
 	 * @generated
 	 * @ordered
@@ -102,7 +99,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * The default value of the '{@link #isDataProvidersEnabled() <em>Data Providers Enabled</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isDataProvidersEnabled()
 	 * @generated
 	 * @ordered
@@ -112,7 +108,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * The cached value of the '{@link #isDataProvidersEnabled() <em>Data Providers Enabled</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isDataProvidersEnabled()
 	 * @generated
 	 * @ordered
@@ -124,7 +119,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getEnabledDataProviders()
 	 * @generated
 	 * @ordered
@@ -134,7 +129,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected DataProviderObjectImpl() {
@@ -144,7 +138,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -155,7 +148,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -166,7 +158,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -181,7 +172,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -193,7 +183,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -204,7 +193,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -215,7 +203,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -239,7 +226,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public EList<String> getEnabledDataProviders() {
@@ -365,7 +352,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -431,7 +418,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -618,7 +605,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -666,7 +652,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -690,7 +676,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -712,7 +697,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -733,7 +717,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -758,7 +741,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -783,7 +765,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

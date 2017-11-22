@@ -29,8 +29,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  * The following operations are tested:
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#findDomain(java.lang.String) <em>Find Domain</em>}</li>
- * <li>
- * {@link gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, java.lang.String, boolean, java.util.Map)
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, java.lang.String, boolean, java.util.Map)
  * <em>Create Domain</em>}</li>
  * <li>{@link gov.redhawk.model.sca.IDisposable#dispose() <em>Dispose</em>}</li>
  * </ul>

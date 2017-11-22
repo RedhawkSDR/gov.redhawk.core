@@ -139,30 +139,29 @@ import mil.jpeojtrs.sca.util.ScaEcoreUtils;
  * An implementation of the model object ' <em><b>Domain Manager</b></em>'.
  * 
  * @since 12.0
- *        <!-- end-user-doc -->
- *        <p>
- *        The following features are implemented:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getWaveformFactories <em>Waveform
- *        Factories</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getWaveforms <em>Waveforms</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getDeviceManagers <em>Device Managers</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getFileManager <em>File Manager</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getConnectionPropertiesContainer <em>Connection
- *        Properties Container</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getConnectionProperties <em>Connection
- *        Properties</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#isAutoConnect <em>Auto Connect</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#isConnected <em>Connected</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getIdentifier <em>Identifier</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getName <em>Name</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getRootContext <em>Root Context</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getState <em>State</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getProfile <em>Profile</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getEventChannels <em>Event Channels</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getLocalName <em>Local Name</em>}</li>
- *        </ul>
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getWaveformFactories <em>Waveform Factories</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getWaveforms <em>Waveforms</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getDeviceManagers <em>Device Managers</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getFileManager <em>File Manager</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getConnectionPropertiesContainer <em>Connection Properties
+ * Container</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getConnectionProperties <em>Connection
+ * Properties</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#isAutoConnect <em>Auto Connect</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#isConnected <em>Connected</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getIdentifier <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getRootContext <em>Root Context</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getState <em>State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getProfile <em>Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getEventChannels <em>Event Channels</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getLocalName <em>Local Name</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -171,7 +170,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The cached value of the '{@link #getWaveformFactories() <em>Waveform Factories</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getWaveformFactories()
 	 * @generated
 	 * @ordered
@@ -181,7 +179,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The cached value of the '{@link #getWaveforms() <em>Waveforms</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getWaveforms()
 	 * @generated
 	 * @ordered
@@ -191,7 +188,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The cached value of the '{@link #getDeviceManagers() <em>Device Managers</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getDeviceManagers()
 	 * @generated
 	 * @ordered
@@ -201,7 +197,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The cached value of the '{@link #getFileManager() <em>File Manager</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getFileManager()
 	 * @generated
 	 * @ordered
@@ -211,7 +206,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * This is true if the File Manager containment reference has been set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -221,7 +215,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getConnectionPropertiesContainer()
 	 * @generated
 	 * @ordered
@@ -231,7 +224,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The default value of the '{@link #isAutoConnect() <em>Auto Connect</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isAutoConnect()
 	 * @generated
 	 * @ordered
@@ -241,7 +233,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The cached value of the '{@link #isAutoConnect() <em>Auto Connect</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isAutoConnect()
 	 * @generated
 	 * @ordered
@@ -251,7 +242,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The default value of the '{@link #isConnected() <em>Connected</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isConnected()
 	 * @generated
 	 * @ordered
@@ -261,7 +251,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The default value of the '{@link #getIdentifier() <em>Identifier</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getIdentifier()
 	 * @generated
 	 * @ordered
@@ -271,7 +260,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The cached value of the '{@link #getIdentifier() <em>Identifier</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getIdentifier()
 	 * @generated
 	 * @ordered
@@ -281,7 +269,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * This is true if the Identifier attribute has been set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -290,7 +277,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -300,7 +286,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -310,7 +295,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The default value of the '{@link #getRootContext() <em>Root Context</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getRootContext()
 	 * @generated
 	 * @ordered
@@ -320,7 +304,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The cached value of the '{@link #getRootContext() <em>Root Context</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getRootContext()
 	 * @generated
 	 * @ordered
@@ -330,7 +313,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * This is true if the Root Context attribute has been set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -339,7 +321,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The default value of the '{@link #getState() <em>State</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getState()
 	 * @generated
 	 * @ordered
@@ -349,7 +330,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The cached value of the '{@link #getState() <em>State</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getState()
 	 * @generated
 	 * @ordered
@@ -359,7 +339,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The default value of the '{@link #getProfile() <em>Profile</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getProfile()
 	 * @generated
 	 * @ordered
@@ -369,7 +348,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The cached value of the '{@link #getProfile() <em>Profile</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getProfile()
 	 * @generated
 	 * @ordered
@@ -379,7 +357,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * This is true if the Profile attribute has been set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -389,7 +366,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getEventChannels()
 	 * @generated
 	 * @ordered
@@ -400,7 +377,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getLocalName()
 	 * @generated
 	 * @ordered
@@ -411,7 +388,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getLocalName()
 	 * @generated
 	 * @ordered
@@ -439,7 +416,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -451,8 +427,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 18.0
-	 *        <!-- end-user-doc -->
-	 *        This is specialized for the more specific type known in this context.
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
 	 * @generated
 	 */
 	@Override
@@ -463,7 +439,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -478,7 +453,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -490,7 +464,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -501,7 +474,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -516,7 +488,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -528,7 +499,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -539,7 +509,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -554,7 +523,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -566,7 +534,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -577,7 +544,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -588,7 +554,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetFileManager(ScaDomainManagerFileSystem newFileManager, NotificationChain msgs) {
@@ -610,7 +575,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -638,7 +602,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicUnsetFileManager(NotificationChain msgs) {
@@ -660,7 +623,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -683,7 +645,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -694,7 +655,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -723,7 +683,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public Properties basicGetConnectionPropertiesContainer() {
@@ -733,7 +692,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetConnectionPropertiesContainer(Properties newConnectionPropertiesContainer, NotificationChain msgs) {
@@ -753,7 +711,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -830,7 +787,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 8.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -843,7 +800,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -854,7 +810,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -880,7 +835,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -891,7 +845,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -907,7 +860,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -924,7 +876,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -935,7 +886,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -946,7 +896,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -960,7 +909,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -971,7 +919,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -988,7 +935,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1005,7 +951,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1016,7 +961,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1028,7 +972,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setStateGen(DomainConnectionState newState) {
@@ -1072,7 +1016,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1083,7 +1026,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1099,7 +1041,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1115,7 +1056,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1127,7 +1067,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EList<ScaEventChannel> getEventChannels() {
@@ -1142,7 +1082,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void unsetEventChannels() {
@@ -1154,7 +1094,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean isSetEventChannels() {
@@ -1165,7 +1105,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String getLocalName() {
@@ -1176,7 +1116,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setLocalName(String newLocalName) {
@@ -1191,8 +1131,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * that can access the model.
 	 * 
 	 * @param monitor the progress monitor to use for reporting progress to the user. It is the caller's responsibility
-	 *            to call done() on the given monitor. Accepts null, indicating that no progress should be
-	 *            reported and that the operation cannot be canceled.
+	 * to call done() on the given monitor. Accepts null, indicating that no progress should be
+	 * reported and that the operation cannot be canceled.
 	 * @throws InterruptedException
 	 */
 	private void waitOnConnect(final IProgressMonitor monitor) throws InterruptedException {
@@ -1211,7 +1151,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -1546,7 +1486,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -1581,7 +1521,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -1905,7 +1845,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -1929,7 +1868,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1956,7 +1894,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2004,7 +1941,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -2064,7 +2000,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2119,7 +2054,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2371,7 +2305,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -2442,7 +2376,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -2659,7 +2593,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -2699,7 +2633,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -2741,7 +2675,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -2785,7 +2719,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -2848,7 +2782,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -2886,7 +2820,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public String getLabel() {

@@ -24,19 +24,19 @@ import CF.PropertySetOperations;
  * A representation of the model object '<em><b>Struct Sequence Property</b></em>'.
  * 
  * @since 11.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *        <p>
- *        The following features are supported:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.ScaStructSequenceProperty#getStructs <em>Structs</em>}</li>
- *        </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaStructSequenceProperty#getStructs <em>Structs</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaStructSequenceProperty()
  * @model superTypes="gov.redhawk.model.sca.ScaAbstractProperty&lt;mil.jpeojtrs.sca.prf.StructSequence&gt;
- *        mil.jpeojtrs.sca.cf.PropertySetOperations"
- *        extendedMetaData="name='ScaStructSequenceProperty' kind='empty'"
+ * mil.jpeojtrs.sca.cf.PropertySetOperations"
+ * extendedMetaData="name='ScaStructSequenceProperty' kind='empty'"
  * @generated
  */
 public interface ScaStructSequenceProperty extends ScaAbstractProperty<StructSequence>, PropertySetOperations {
@@ -50,11 +50,10 @@ public interface ScaStructSequenceProperty extends ScaAbstractProperty<StructSeq
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Structs</em>' containment reference list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaStructSequenceProperty_Structs()
 	 * @model containment="true" resolveProxies="true" transient="true"
-	 *        extendedMetaData="kind='attribute' name='structs'"
+	 * extendedMetaData="kind='attribute' name='structs'"
 	 * @generated
 	 */
 	EList<ScaStructProperty> getStructs();
@@ -62,7 +61,6 @@ public interface ScaStructSequenceProperty extends ScaAbstractProperty<StructSeq
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model
 	 * @generated
 	 */
@@ -72,7 +70,7 @@ public interface ScaStructSequenceProperty extends ScaAbstractProperty<StructSeq
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */
@@ -82,8 +80,9 @@ public interface ScaStructSequenceProperty extends ScaAbstractProperty<StructSeq
 	/**
 	 * <!-- begin-user-doc -->
 	 * See {@link ScaAbstractProperty#setValueFromRef(mil.jpeojtrs.sca.prf.AbstractPropertyRef)}
+	 * 
 	 * @since 21.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */
