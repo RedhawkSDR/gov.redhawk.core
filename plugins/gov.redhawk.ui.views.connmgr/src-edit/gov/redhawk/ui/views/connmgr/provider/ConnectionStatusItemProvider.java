@@ -14,8 +14,6 @@ package gov.redhawk.ui.views.connmgr.provider;
 import gov.redhawk.ui.views.connmgr.ConnMgrPackage;
 import gov.redhawk.ui.views.connmgr.ConnectionStatus;
 import mil.jpeojtrs.sca.util.DceUuidUtil;
-
-import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -247,6 +245,16 @@ public class ConnectionStatusItemProvider extends ItemProviderAdapter implements
 		return overlayImage(object, getResourceLocator().getImage("full/obj16/ConnectionStatus"));
 	}
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected boolean shouldComposeCreationImage() {
+		return true;
+	}
+
 	// END GENERATED CODE
 
 	@Override
@@ -352,18 +360,6 @@ public class ConnectionStatusItemProvider extends ItemProviderAdapter implements
 			return;
 		}
 		super.notifyChanged(notification);
-	}
-
-	/**
-	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
-	 * that can be created under this object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-		super.collectNewChildDescriptors(newChildDescriptors, object);
 	}
 
 	/**

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/gov.redhawk.ui.views.connmgr/src-model" editDirectory="/gov.redhawk.ui.views.connmgr/src-edit"
-    editorDirectory="" modelPluginID="gov.redhawk.ui.views.connmgr" templateDirectory="/gov.redhawk.ui.views.connmgr/templates"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/gov.redhawk.ui.views.connmgr/src-model" creationCommands="false"
+    creationIcons="false" editDirectory="/gov.redhawk.ui.views.connmgr/src-edit" editorDirectory=""
+    modelPluginID="gov.redhawk.ui.views.connmgr" templateDirectory="/gov.redhawk.ui.views.connmgr/templates"
     dynamicTemplates="true" forceOverwrite="true" modelName="ConnMgr" editPluginClass="gov.redhawk.ui.views.connmgr.provider.ConnMgrEditPlugin"
     editorPluginClass="gov.redhawk.ui.views.connmgr.presentation.ConnMgrEditorPlugin"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"

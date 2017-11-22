@@ -12,8 +12,6 @@
 package gov.redhawk.ui.views.connmgr.provider;
 
 import gov.redhawk.model.sca.provider.CorbaObjWrapperItemProvider;
-
-import gov.redhawk.ui.views.connmgr.ConnMgrFactory;
 import gov.redhawk.ui.views.connmgr.ConnMgrPackage;
 import gov.redhawk.ui.views.connmgr.ScaConnectionManager;
 
@@ -106,6 +104,16 @@ public class ScaConnectionManagerItemProvider extends CorbaObjWrapperItemProvide
 	}
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected boolean shouldComposeCreationImage() {
+		return true;
+	}
+
+	/**
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -135,21 +143,6 @@ public class ScaConnectionManagerItemProvider extends CorbaObjWrapperItemProvide
 			return;
 		}
 		super.notifyChanged(notification);
-	}
-
-	/**
-	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
-	 * that can be created under this object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add(
-			createChildParameter(ConnMgrPackage.Literals.SCA_CONNECTION_MANAGER__CONNECTIONS, ConnMgrFactory.eINSTANCE.createConnectionStatus()));
 	}
 
 	/**

@@ -14,8 +14,6 @@ package gov.redhawk.ui.views.allocmgr.provider;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.ui.views.allocmgr.AllocMgrPackage;
 import gov.redhawk.ui.views.allocmgr.AllocationStatus;
-
-import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -197,6 +195,16 @@ public class AllocationStatusItemProvider extends ItemProviderAdapter implements
 		return overlayImage(object, getResourceLocator().getImage("full/obj16/AllocationStatus"));
 	}
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected boolean shouldComposeCreationImage() {
+		return true;
+	}
+
 	// END GENERATED CODE
 
 	@Override
@@ -290,18 +298,6 @@ public class AllocationStatusItemProvider extends ItemProviderAdapter implements
 			return;
 		}
 		super.notifyChanged(notification);
-	}
-
-	/**
-	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
-	 * that can be created under this object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-		super.collectNewChildDescriptors(newChildDescriptors, object);
 	}
 
 	/**
