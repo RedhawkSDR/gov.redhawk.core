@@ -19,6 +19,8 @@ import mil.jpeojtrs.sca.scd.Provides;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EClass;
 
+import ExtendedCF.NegotiableProvidesPortHelper;
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Provides Port</b></em>'.
@@ -87,13 +89,13 @@ public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Obj
 
 	@Override
 	protected org.omg.CORBA.Object narrow(final org.omg.CORBA.Object obj) {
-		// We don't know what to narrow to so do nothing
-		return obj;
-	}
-
-	@Override
-	protected Class<org.omg.CORBA.Object> getCorbaType() {
-		return org.omg.CORBA.Object.class;
+		if (obj == null) {
+			return null;
+		} else if (_is_a(NegotiableProvidesPortHelper.id())) { // All applicable BULKIO provides ports since RH 2.1.3
+			return NegotiableProvidesPortHelper.unchecked_narrow(obj);
+		} else { // No minimum required interface for a provides port
+			return obj;
+		}
 	}
 
 	/**

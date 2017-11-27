@@ -440,11 +440,11 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	protected Port narrow(final org.omg.CORBA.Object obj) {
 		if (obj == null) {
 			return null;
-		} else if (_is_a(NegotiableUsesPortHelper.id())) {
+		} else if (_is_a(NegotiableUsesPortHelper.id())) { // Many uses ports in RH since 2.1.3
 			return NegotiableUsesPortHelper.unchecked_narrow(obj);
-		} else if (_is_a(QueryablePortHelper.id())) {
+		} else if (_is_a(QueryablePortHelper.id())) { // Many uses ports in RH since long ago
 			return QueryablePortHelper.unchecked_narrow(obj);
-		} else {
+		} else { // Minimum required interface for any uses port
 			return PortHelper.narrow(obj);
 		}
 	}
