@@ -161,6 +161,8 @@ public class BulkIONxmBlockControls {
 					return;
 				}
 			}
+			// If we get here, then all the connections are in use, so default to the first one
+			connectionIDComboField.setSelection(new StructuredSelection(connectionIds.entrySet().toArray()[0]));
 		}
 	}
 

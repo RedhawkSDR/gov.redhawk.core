@@ -159,21 +159,6 @@ public class PlotPortHandler extends AbstractHandler {
 					}
 					wizard = new PlotWizard(containsBulkIOPort, containsSDDSPort);
 				} else {
-					Map<String, Boolean> connectionIds = ScaUsesPort.Util.getConnectionIds(ports.get(0));
-					boolean availableConnections = false;
-					for (Boolean isAvailable : connectionIds.values()) {
-						if (isAvailable) {
-							availableConnections = true;
-							break;
-						}
-					}
-
-					// If there are no available connections, just pop a warning dialog
-					if (!availableConnections) {
-						MultiOutConnectionWizard selectionDialog = new MultiOutConnectionWizard(HandlerUtil.getActiveShell(event), connectionIds);
-						selectionDialog.open();
-						return null;
-					}
 					wizard = new PlotWizard(ScaUsesPort.Util.getConnectionIds(ports.get(0)), containsBulkIOPort, containsSDDSPort);
 				}
 			} else {
