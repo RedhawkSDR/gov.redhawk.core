@@ -56,6 +56,7 @@ public class ScaPortItemProvider extends CorbaObjWrapperItemProvider {
 			addNamePropertyDescriptor(object);
 			addProfileObjPropertyDescriptor(object);
 			addRepidPropertyDescriptor(object);
+			addSupportedTransportsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -94,6 +95,20 @@ public class ScaPortItemProvider extends CorbaObjWrapperItemProvider {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_ScaPort_repid_feature"), getString("_UI_PropertyDescriptor_description", "_UI_ScaPort_repid_feature", "_UI_ScaPort_type"),
 			ScaPackage.Literals.SCA_PORT__REPID, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Supported Transports feature.
+	 * <!-- begin-user-doc -->
+	 * @since 13.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addSupportedTransportsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaPort_supportedTransports_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaPort_supportedTransports_feature", "_UI_ScaPort_type"),
+			ScaPackage.Literals.SCA_PORT__SUPPORTED_TRANSPORTS, false, false, false, null, null, null));
 	}
 
 	/**
@@ -151,6 +166,7 @@ public class ScaPortItemProvider extends CorbaObjWrapperItemProvider {
 
 		switch (notification.getFeatureID(ScaPort.class)) {
 		case ScaPackage.SCA_PORT__NAME:
+		case ScaPackage.SCA_PORT__SUPPORTED_TRANSPORTS:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		}

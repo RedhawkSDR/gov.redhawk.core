@@ -708,6 +708,13 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case ScaPackage.SCA_TRANSPORT: {
+			ScaTransport scaTransport = (ScaTransport) theEObject;
+			T1 result = caseScaTransport(scaTransport);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case ScaPackage.SCA_USES_PORT: {
 			ScaUsesPort scaUsesPort = (ScaUsesPort) theEObject;
 			T1 result = caseScaUsesPort(scaUsesPort);
@@ -1301,6 +1308,22 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseScaStructProperty(ScaStructProperty object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Transport</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * @since 21.0
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Transport</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseScaTransport(ScaTransport object) {
 		return null;
 	}
 

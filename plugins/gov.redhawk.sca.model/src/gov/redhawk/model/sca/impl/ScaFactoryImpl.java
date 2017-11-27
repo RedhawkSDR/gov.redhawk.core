@@ -30,6 +30,7 @@ import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructSequence;
+import mil.jpeojtrs.sca.util.AnyUtils;
 import CF.DevicePackage.AdminType;
 import CF.DevicePackage.OperationalType;
 import CF.DevicePackage.UsageType;
@@ -113,6 +114,8 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 			return createScaSimpleSequenceProperty();
 		case ScaPackage.SCA_STRUCT_PROPERTY:
 			return createScaStructProperty();
+		case ScaPackage.SCA_TRANSPORT:
+			return createScaTransport();
 		case ScaPackage.SCA_USES_PORT:
 			return createScaUsesPort();
 		case ScaPackage.SCA_CONNECTION:
@@ -422,6 +425,45 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 		ScaStructPropertyImpl scaStructProperty = new ScaStructPropertyImpl();
 		return scaStructProperty;
 	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ScaTransport createScaTransport() {
+		ScaTransportImpl scaTransport = new ScaTransportImpl();
+		return scaTransport;
+	}
+
+	// END GENERATED CODE
+
+	public ScaTransport createScaTransport(ExtendedCF.TransportInfo transportInfo) {
+		ScaTransport scaTransport = createScaTransport();
+		scaTransport.setTransportType(transportInfo.transportType);
+		for (CF.DataType dt : transportInfo.transportProperties) {
+			ScaAbstractProperty< ? > newProp;
+			if (AnyUtils.isSimple(dt)) {
+				newProp = createScaSimpleProperty();
+			} else if (AnyUtils.isStruct(dt)) {
+				newProp = createScaStructProperty();
+			} else if (AnyUtils.isSequence(dt)) {
+				newProp = createScaSimpleSequenceProperty();
+			} else if (AnyUtils.isStructSequence(dt)) {
+				newProp = createScaStructSequenceProperty();
+			} else {
+				String msg = String.format("Unable to determine type of transport property '%s'", dt.id);
+				EcorePlugin.INSTANCE.log(msg);
+				continue;
+			}
+			newProp.setId(dt.id);
+			newProp.fromAny(dt.value);
+			scaTransport.getTransportProperties().add(newProp);
+		}
+		return scaTransport;
+	}
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * <!-- begin-user-doc -->

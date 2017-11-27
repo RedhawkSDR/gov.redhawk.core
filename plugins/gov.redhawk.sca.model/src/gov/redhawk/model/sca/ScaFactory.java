@@ -203,6 +203,25 @@ public interface ScaFactory extends EFactory {
 	ScaStructProperty createScaStructProperty();
 
 	/**
+	 * Returns a new object of class '<em>Transport</em>'.
+	 * <!-- begin-user-doc -->
+	 * @since 21.0
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Transport</em>'.
+	 * @generated
+	 */
+	ScaTransport createScaTransport();
+
+	// END GENERATED CODE
+
+	/**
+	 * @since 21.0
+	 */
+	ScaTransport createScaTransport(ExtendedCF.TransportInfo transportInfo);
+
+	// BEGIN GENERATED CODE
+
+	/**
 	 * Returns a new object of class '<em>Uses Port</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

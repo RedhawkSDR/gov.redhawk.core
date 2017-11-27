@@ -51,6 +51,7 @@ import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
+import gov.redhawk.model.sca.ScaTransport;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.ScaWaveformFactory;
@@ -272,6 +273,12 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * @generated
 	 */
 	private EClass scaStructPropertyEClass = null;
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass scaTransportEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1582,9 +1589,18 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getScaPort_SupportedTransports() {
+		return (EReference) scaPortEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public EReference getScaPort_PortContainer() {
-		return (EReference) scaPortEClass.getEStructuralFeatures().get(3);
+		return (EReference) scaPortEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -1667,6 +1683,33 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	@Override
 	public EReference getScaStructProperty_Simples() {
 		return (EReference) scaStructPropertyEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getScaTransport() {
+		return scaTransportEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getScaTransport_TransportType() {
+		return (EAttribute) scaTransportEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getScaTransport_TransportProperties() {
+		return (EReference) scaTransportEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -2429,6 +2472,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		createEAttribute(scaPortEClass, SCA_PORT__NAME);
 		createEReference(scaPortEClass, SCA_PORT__PROFILE_OBJ);
 		createEAttribute(scaPortEClass, SCA_PORT__REPID);
+		createEReference(scaPortEClass, SCA_PORT__SUPPORTED_TRANSPORTS);
 		createEReference(scaPortEClass, SCA_PORT__PORT_CONTAINER);
 
 		scaProvidesPortEClass = createEClass(SCA_PROVIDES_PORT);
@@ -2442,6 +2486,10 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		scaStructPropertyEClass = createEClass(SCA_STRUCT_PROPERTY);
 		createEReference(scaStructPropertyEClass, SCA_STRUCT_PROPERTY__FIELDS);
 		createEReference(scaStructPropertyEClass, SCA_STRUCT_PROPERTY__SIMPLES);
+
+		scaTransportEClass = createEClass(SCA_TRANSPORT);
+		createEAttribute(scaTransportEClass, SCA_TRANSPORT__TRANSPORT_TYPE);
+		createEReference(scaTransportEClass, SCA_TRANSPORT__TRANSPORT_PROPERTIES);
 
 		scaUsesPortEClass = createEClass(SCA_USES_PORT);
 		createEReference(scaUsesPortEClass, SCA_USES_PORT__CONNECTIONS);
@@ -3254,8 +3302,13 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 			IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getScaPort_Repid(), ecorePackage.getEString(), "repid", null, 1, 1, ScaPort.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE,
 			!IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getScaPort_SupportedTransports(), this.getScaTransport(), null, "supportedTransports", null, 0, -1, ScaPort.class, IS_TRANSIENT,
+			!IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getScaPort_PortContainer(), this.getScaPortContainer(), this.getScaPortContainer_Ports(), "portContainer", null, 1, 1, ScaPort.class,
 			IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		op = addEOperation(scaPortEClass, this.getScaTransport(), "fetchSupportedTransports", 0, -1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(scaProvidesPortEClass, ScaProvidesPort.class, "ScaProvidesPort", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -3308,6 +3361,15 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		addEParameter(op, thePrfPackage.getStructRef(), "refValue", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		addEOperation(scaStructPropertyEClass, thePrfPackage.getStructValue(), "createStructValue", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(scaTransportEClass, ScaTransport.class, "ScaTransport", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getScaTransport_TransportType(), ecorePackage.getEString(), "transportType", null, 0, 1, ScaTransport.class, !IS_TRANSIENT, !IS_VOLATILE,
+			IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(this.getScaAbstractProperty());
+		g2 = createEGenericType();
+		g1.getETypeArguments().add(g2);
+		initEReference(getScaTransport_TransportProperties(), g1, null, "transportProperties", null, 0, -1, ScaTransport.class, !IS_TRANSIENT, !IS_VOLATILE,
+			IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(scaUsesPortEClass, ScaUsesPort.class, "ScaUsesPort", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getScaUsesPort_Connections(), this.getScaConnection(), this.getScaConnection_Port(), "connections", null, 0, -1, ScaUsesPort.class,

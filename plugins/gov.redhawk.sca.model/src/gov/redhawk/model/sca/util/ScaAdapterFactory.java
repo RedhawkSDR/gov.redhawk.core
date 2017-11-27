@@ -276,6 +276,11 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseScaTransport(ScaTransport object) {
+			return createScaTransportAdapter();
+		}
+
+		@Override
 		public Adapter caseScaUsesPort(ScaUsesPort object) {
 			return createScaUsesPortAdapter();
 		}
@@ -862,6 +867,21 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createScaStructPropertyAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaTransport <em>Transport</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * @since 21.0
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see gov.redhawk.model.sca.ScaTransport
+	 * @generated
+	 */
+	public Adapter createScaTransportAdapter() {
 		return null;
 	}
 

@@ -987,6 +987,9 @@
     <eTypeParameters name="P2">
       <eBounds eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//Object"/>
     </eTypeParameters>
+    <eOperations name="fetchSupportedTransports" upperBound="-1" eType="#//ScaTransport">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
@@ -1007,6 +1010,8 @@
         <details key="name" value="repid"/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="supportedTransports" upperBound="-1"
+        eType="#//ScaTransport" transient="true" unsettable="true" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="portContainer" lowerBound="1"
         eType="#//ScaPortContainer" transient="true" eOpposite="#//ScaPortContainer/ports"/>
     <eGenericSuperTypes eClassifier="#//CorbaObjWrapper">
@@ -1109,6 +1114,15 @@
       <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//Struct"/>
     </eGenericSuperTypes>
     <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//PropertySetOperations"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaTransport">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="transportType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transportProperties" upperBound="-1"
+        containment="true">
+      <eGenericType eClassifier="#//ScaAbstractProperty">
+        <eTypeArguments/>
+      </eGenericType>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ScaUsesPort">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">

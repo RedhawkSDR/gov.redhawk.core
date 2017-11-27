@@ -391,7 +391,11 @@
       <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
           ecoreFeature="ecore:EReference sca.ecore#//ScaPort/profileObj"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaPort/repid"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaPort/supportedTransports"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaPort/portContainer"/>
+      <genOperations ecoreOperation="sca.ecore#//ScaPort/fetchSupportedTransports">
+        <genParameters ecoreParameter="sca.ecore#//ScaPort/fetchSupportedTransports/monitor"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="sca.ecore#//ScaProvidesPort"/>
     <genClasses provider="Stateful" image="false" ecoreClass="sca.ecore#//ScaSimpleProperty">
@@ -426,6 +430,10 @@
         <genParameters ecoreParameter="sca.ecore#//ScaStructProperty/setValueFromRef/refValue"/>
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaStructProperty/createStructValue"/>
+    </genClasses>
+    <genClasses ecoreClass="sca.ecore#//ScaTransport">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaTransport/transportType"/>
+      <genFeatures property="Readonly" children="true" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaTransport/transportProperties"/>
     </genClasses>
     <genClasses ecoreClass="sca.ecore#//ScaUsesPort">
       <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaUsesPort/connections"/>

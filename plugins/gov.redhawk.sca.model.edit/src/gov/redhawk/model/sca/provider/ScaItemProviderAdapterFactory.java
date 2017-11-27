@@ -429,6 +429,30 @@ public class ScaItemProviderAdapterFactory extends ScaAdapterFactory implements 
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link gov.redhawk.model.sca.ScaTransport} instances.
+	 * <!-- begin-user-doc -->
+	 * @since 13.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ScaTransportItemProvider scaTransportItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link gov.redhawk.model.sca.ScaTransport}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createScaTransportAdapter() {
+		if (scaTransportItemProvider == null) {
+			scaTransportItemProvider = new ScaTransportItemProvider(this);
+		}
+
+		return scaTransportItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link gov.redhawk.model.sca.ScaUsesPort} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

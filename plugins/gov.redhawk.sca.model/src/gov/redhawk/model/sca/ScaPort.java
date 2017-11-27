@@ -13,6 +13,8 @@
 package gov.redhawk.model.sca;
 
 import mil.jpeojtrs.sca.scd.AbstractPort;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,6 +28,7 @@ import mil.jpeojtrs.sca.scd.AbstractPort;
  * <li>{@link gov.redhawk.model.sca.ScaPort#getName <em>Name</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaPort#getProfileObj <em>Profile Obj</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaPort#getRepid <em>Repid</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPort#getSupportedTransports <em>Supported Transports</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaPort#getPortContainer <em>Port Container</em>}</li>
  * </ul>
  *
@@ -108,6 +111,48 @@ public interface ScaPort< P extends AbstractPort, P2 extends org.omg.CORBA.Objec
 	String getRepid();
 
 	/**
+	 * Returns the value of the '<em><b>Supported Transports</b></em>' containment reference list.
+	 * The list contents are of type {@link gov.redhawk.model.sca.ScaTransport}.
+	 * <!-- begin-user-doc -->
+	 * <p/>
+	 * If the port implements {@link ExtendedCF.NegotiablePort}, then this provides the list of supported transports.
+	 * @since 21.0
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Supported Transports</em>' containment reference list.
+	 * @see #isSetSupportedTransports()
+	 * @see #unsetSupportedTransports()
+	 * @see gov.redhawk.model.sca.ScaPackage#getScaPort_SupportedTransports()
+	 * @model containment="true" resolveProxies="true" unsettable="true" transient="true"
+	 * @generated
+	 */
+	EList<ScaTransport> getSupportedTransports();
+
+	/**
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaPort#getSupportedTransports <em>Supported
+	 * Transports</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * @since 21.0
+	 * <!-- end-user-doc -->
+	 * @see #isSetSupportedTransports()
+	 * @see #getSupportedTransports()
+	 * @generated
+	 */
+	void unsetSupportedTransports();
+
+	/**
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaPort#getSupportedTransports <em>Supported
+	 * Transports</em>}' containment reference list is set.
+	 * <!-- begin-user-doc -->
+	 * @since 21.0
+	 * <!-- end-user-doc -->
+	 * @return whether the value of the '<em>Supported Transports</em>' containment reference list is set.
+	 * @see #unsetSupportedTransports()
+	 * @see #getSupportedTransports()
+	 * @generated
+	 */
+	boolean isSetSupportedTransports();
+
+	/**
 	 * Returns the value of the '<em><b>Port Container</b></em>' container reference.
 	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaPortContainer#getPorts <em>Ports</em>}'.
 	 * <!-- begin-user-doc -->
@@ -135,5 +180,14 @@ public interface ScaPort< P extends AbstractPort, P2 extends org.omg.CORBA.Objec
 	 * @generated
 	 */
 	void setPortContainer(ScaPortContainer value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 21.0
+	 * <!-- end-user-doc -->
+	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
+	 * @generated
+	 */
+	EList<ScaTransport> fetchSupportedTransports(IProgressMonitor monitor);
 
 } // ScaPort

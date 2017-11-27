@@ -204,6 +204,8 @@ public class ScaValidator extends EObjectValidator {
 			return validateScaSimpleSequenceProperty((ScaSimpleSequenceProperty) value, diagnostics, context);
 		case ScaPackage.SCA_STRUCT_PROPERTY:
 			return validateScaStructProperty((ScaStructProperty) value, diagnostics, context);
+		case ScaPackage.SCA_TRANSPORT:
+			return validateScaTransport((ScaTransport) value, diagnostics, context);
 		case ScaPackage.SCA_USES_PORT:
 			return validateScaUsesPort((ScaUsesPort) value, diagnostics, context);
 		case ScaPackage.SCA_CONNECTION:
@@ -527,6 +529,16 @@ public class ScaValidator extends EObjectValidator {
 	 */
 	public boolean validateScaStructProperty(ScaStructProperty scaStructProperty, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(scaStructProperty, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 21.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateScaTransport(ScaTransport scaTransport, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(scaTransport, diagnostics, context);
 	}
 
 	/**

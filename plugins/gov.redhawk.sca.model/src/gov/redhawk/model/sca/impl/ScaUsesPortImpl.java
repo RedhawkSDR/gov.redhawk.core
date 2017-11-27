@@ -41,19 +41,16 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.emf.transaction.RunnableWithResult;
 import org.omg.CORBA.SystemException;
 
 import CF.Port;
 import CF.PortHelper;
 import CF.PortPackage.InvalidPort;
 import CF.PortPackage.OccupiedPort;
-import ExtendedCF.ConnectionStatus;
 import ExtendedCF.NegotiableUsesPort;
 import ExtendedCF.NegotiableUsesPortHelper;
 import ExtendedCF.QueryablePort;
 import ExtendedCF.QueryablePortHelper;
-import ExtendedCF.UsesConnection;
 
 /**
  * <!-- begin-user-doc -->
@@ -160,6 +157,8 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 */
 	protected static final String TYPE_EDEFAULT = "uses";
 
+	// END GENERATED CODE
+
 	/**
 	 * @since 14.0
 	 */
@@ -169,6 +168,8 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	}
 
 	private final VersionedFeature connectionsFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_USES_PORT__CONNECTIONS);
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -196,20 +197,11 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 		} else if (portObj instanceof QueryablePort) {
 			internalFetchConnections((QueryablePort) portObj);
 		}
+		subMonitor.worked(1);
 
-		subMonitor.done();
-		try {
-			return ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<EList<ScaConnection>>() {
-
-				@Override
-				public void run() {
-					setResult(ECollections.unmodifiableEList(new BasicEList<ScaConnection>(getConnections())));
-				}
-
-			});
-		} catch (InterruptedException e) {
-			return ECollections.emptyEList();
-		}
+		return ScaModelCommand.runExclusive(this, () -> {
+			return ECollections.unmodifiableEList(new BasicEList<ScaConnection>(getConnections()));
+		});
 		// BEGIN GENERATED CODE
 	}
 
@@ -217,7 +209,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 		// Ask the port for its connections
 		Transaction transaction = connectionsFeature.createTransaction();
 		try {
-			UsesConnection[] newConnections = portObj.connections();
+			ExtendedCF.UsesConnection[] newConnections = portObj.connections();
 			transaction.addCommand(new ScaUsesPortMergeConnectionsCommand(this, newConnections, Status.OK_STATUS));
 		} catch (SystemException e) {
 			IStatus status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port connections.", e);
@@ -232,7 +224,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 		// Ask the port for its connections
 		Transaction transaction = connectionsFeature.createTransaction();
 		try {
-			ConnectionStatus[] newConnections = portObj.connectionStatus();
+			ExtendedCF.ConnectionStatus[] newConnections = portObj.connectionStatus();
 			transaction.addCommand(new ScaUsesPortMergeConnectionsCommand(this, newConnections, Status.OK_STATUS));
 		} catch (SystemException e) {
 			IStatus status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port connections.", e);
