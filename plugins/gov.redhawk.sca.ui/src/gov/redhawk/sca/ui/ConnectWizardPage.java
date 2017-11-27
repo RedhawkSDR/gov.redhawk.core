@@ -23,7 +23,6 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
@@ -33,16 +32,12 @@ import org.eclipse.jface.databinding.wizard.WizardPageSupport;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -102,7 +97,7 @@ public class ConnectWizardPage extends WizardPage {
 			if (!connectionIds.isEmpty()) {
 				if (selectIdRadioButton != null && selectIdRadioButton.getSelection()) {
 					@SuppressWarnings("unchecked")
-					Entry<String, Boolean> selection = (Entry< String, Boolean>) idCombo.getStructuredSelection().getFirstElement();
+					Entry<String, Boolean> selection = (Entry<String, Boolean>) idCombo.getStructuredSelection().getFirstElement();
 					if (!selection.getValue()) {
 						status.setValue(ValidationStatus.error("Selected connection ID is already in use"));
 						return;
@@ -115,11 +110,11 @@ public class ConnectWizardPage extends WizardPage {
 					}
 				}
 			}
-			
-			
+
 			if (source != null && target != null) {
 				if (!target._is_a(source.getRepid())) {
-					status.setValue(ValidationStatus.warning("Warning: Connection types are not an exact match, connection may not be possible. Target is not of type: " + source.getRepid()));
+					status.setValue(ValidationStatus.warning(
+						"Warning: Connection types are not an exact match, connection may not be possible. Target is not of type: " + source.getRepid()));
 					return;
 				}
 			}
@@ -141,13 +136,17 @@ public class ConnectWizardPage extends WizardPage {
 	private boolean showAllOutputs = true;
 	private Object sourceInput = defaultInput;
 	private Object targetInput = defaultInput;
-	
+
 	// A list of possible connection IDs, used by multi-out ports
 	private Map<String, Boolean> connectionIds;
-	private Text idText;
-	private ComboViewer idCombo;
+
+	// SWT Widgets
+	private CommonViewer sourceViewer;
+	private CommonViewer targetViewer;
 	private Button selectIdRadioButton;
 	private Button createIdRadioButton;
+	private ComboViewer idCombo;
+	private Text idText;
 
 	protected ConnectWizardPage(Map<String, Boolean> connectionIds) {
 		super("connectPage", "Create new connection", null);
@@ -170,6 +169,46 @@ public class ConnectWizardPage extends WizardPage {
 		Composite composite = new Composite(parent, SWT.None);
 		composite.setLayout(new GridLayout(4, true));
 
+		createSourceGroup(composite);
+		createTargetGroup(composite);
+		createConnectionIdComposite(composite);
+
+		setControl(composite);
+
+		context = new DataBindingContext();
+		context.bindValue(ViewerProperties.input().observe(sourceViewer), BeanProperties.value("sourceInput").observe(this));
+		context.bindValue(ViewerProperties.input().observe(targetViewer), BeanProperties.value("targetInput").observe(this));
+		context.bindValue(ViewerProperties.singleSelection().observe(sourceViewer), BeanProperties.value("source").observe(this), createSourceTargetToModel(),
+			null);
+		context.bindValue(ViewerProperties.singleSelection().observe(targetViewer), BeanProperties.value("target").observe(this), createTargetTargetToModel(),
+			null);
+
+		// Only do data-binding for connection ID if NOT operating on a multi-out port
+		if (idCombo == null) {
+			context.bindValue(WidgetProperties.text(SWT.Modify).observe(idText), BeanProperties.value("connectionID").observe(this),
+				createConnectionIDTextTargetToModel(), null);
+			context.bindValue(WidgetProperties.enabled().observe(idText), BeanProperties.value("connectionIDReadOnly").observe(this));
+		}
+
+		context.addValidationStatusProvider(connectionValidator);
+
+		support = WizardPageSupport.create(this, context);
+
+		// Set selection at first available connectionId
+		// This needs to happen after the data bindings have been initialized
+		if (idCombo != null) {
+			for (Entry<String, Boolean> entry : connectionIds.entrySet()) {
+				if (entry.getValue()) {
+					idCombo.setSelection(new StructuredSelection(entry));
+					return;
+				}
+			}
+			// If we get here, then all the connections are in use, so default to the first one
+			idCombo.setSelection(new StructuredSelection(connectionIds.entrySet().toArray()[0]));
+		}
+	}
+
+	private void createSourceGroup(Composite composite) {
 		Group sourceGroup = new Group(composite, SWT.None);
 		sourceGroup.setText("Source");
 		sourceGroup.setLayout(new FillLayout());
@@ -178,7 +217,7 @@ public class ConnectWizardPage extends WizardPage {
 		if (!isShowAllInputs() && getSource() != null) {
 			sourceViewerStyle = sourceViewerStyle | SWT.READ_ONLY;
 		}
-		CommonViewer sourceViewer = new CommonViewer(ScaExplorer.VIEW_ID, sourceGroup, sourceViewerStyle);
+		sourceViewer = new CommonViewer(ScaExplorer.VIEW_ID, sourceGroup, sourceViewerStyle);
 		sourceViewer.addFilter(new ViewerFilter() {
 
 			@Override
@@ -205,7 +244,9 @@ public class ConnectWizardPage extends WizardPage {
 				return true;
 			}
 		});
+	}
 
+	private void createTargetGroup(Composite composite) {
 		Group targetGroup = new Group(composite, SWT.None);
 		targetGroup.setText("Target");
 		targetGroup.setLayout(new FillLayout());
@@ -214,7 +255,7 @@ public class ConnectWizardPage extends WizardPage {
 		if (!isShowAllOutputs() && getTarget() != null) {
 			targetViewerStyle = targetViewerStyle | SWT.READ_ONLY;
 		}
-		CommonViewer targetViewer = new CommonViewer(ScaExplorer.VIEW_ID, targetGroup, targetViewerStyle);
+		targetViewer = new CommonViewer(ScaExplorer.VIEW_ID, targetGroup, targetViewerStyle);
 		targetViewer.addFilter(new ViewerFilter() {
 
 			@Override
@@ -237,107 +278,30 @@ public class ConnectWizardPage extends WizardPage {
 				return true;
 			}
 		});
+	}
 
+	private void createConnectionIdComposite(Composite composite) {
 		Label label = new Label(composite, SWT.None);
-		label.setText("Connection ID:");
 		if (connectionIds.isEmpty()) {
+			label.setText("Connection ID:");
+			// Assume non-multi-out port
 			idText = new Text(composite, SWT.BORDER);
 			idText.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(3, 1).create());
 		} else {
+			label.setText("Multi-out port detected: ");
+			// Assume multi-out port
 			Composite radioContainer = new Composite(composite, SWT.NONE);
 			radioContainer.setLayout(new GridLayout());
 			radioContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1));
-			
-			selectIdRadioButton = new Button(radioContainer, SWT.RADIO);
-			selectIdRadioButton.setText("Select an existing connection ID");
-			Composite selectIdComposite = new Composite(radioContainer, SWT.NONE);
-			GridLayout selectIdCompositeLayout = new GridLayout();
-			selectIdCompositeLayout.marginLeft = 25;
-			selectIdComposite.setLayout(selectIdCompositeLayout);
-			selectIdComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			
-			idCombo = new ComboViewer(selectIdComposite, SWT.BORDER | SWT.READ_ONLY);
-			idCombo.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
-			idCombo.getCombo().setToolTipText("Available mulit-out port connection IDs");
-			idCombo.setContentProvider(ArrayContentProvider.getInstance());
-			idCombo.setLabelProvider(new LabelProvider() {
-				@Override
-				public String getText(Object element) {
-					if (element instanceof Entry) {
-						Entry< String , Boolean > entry = (Entry< String , Boolean >) element;
-						String retVal = entry.getKey();
-						if (!entry.getValue()) {
-							retVal += " (IN USE)";
-						}
-						return retVal;
-					}
-					return super.getText(element);
-				}
-			});
-			idCombo.setInput(connectionIds.entrySet());
-			
-			
-			
-			
-			createIdRadioButton = new Button(radioContainer, SWT.RADIO);
-			createIdRadioButton.setText("Input connection ID");
-			Composite createIdComposite = new Composite(radioContainer, SWT.NONE);
-			GridLayout createIdCompositeLayout = new GridLayout();
-			createIdCompositeLayout.marginLeft = 25;
-			createIdComposite.setLayout(createIdCompositeLayout);
-			createIdComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			
-			Label warningLabel = new Label(createIdComposite, SWT.NONE);
-			warningLabel.setText("WARNING: Inputing a connection ID for a multi-out port is not recommended.\nThis may result in your port not suppling data.");
-			
-			idText = new Text(createIdComposite, SWT.BORDER);
-			idText.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
-			idText.setText(connectionID);
-		
-			// Listeners TODO: lambdas
-			selectIdRadioButton.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-						if (selectIdRadioButton.getSelection()) {
-						String oldValue = connectionID;
-						Entry< String, Boolean> selection = (Entry< String, Boolean>) idCombo.getStructuredSelection().getFirstElement();
-						connectionID = selection.getKey();
-						pcs.firePropertyChange("connectionID", oldValue, connectionID);
-					}
-				}
-			});
-			
-			createIdRadioButton.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-						if (createIdRadioButton.getSelection()) {
-						String oldValue = connectionID;
-						connectionID = idText.getText();
-						pcs.firePropertyChange("connectionID", oldValue, connectionID);
-					}
-				}
-				
-			});
-			
-			idCombo.addSelectionChangedListener((event) -> {
-				String oldValue = connectionID;
-				Entry< String, Boolean> selection = (Entry< String, Boolean>) idCombo.getStructuredSelection().getFirstElement();
-				connectionID = selection.getKey();
-				pcs.firePropertyChange("connectionID", oldValue, connectionID);
-			});
-			
-			idText.addModifyListener(new ModifyListener() {
-				
-				@Override
-				public void modifyText(ModifyEvent e) {
-					String oldValue = connectionID;
-					connectionID = idText.getText();
-					pcs.firePropertyChange("connectionID", oldValue, connectionID);
-				}
-			});
-			
+
+			addSelectIdSection(radioContainer);
+			addCreateIdSection(radioContainer);
+			addConnectionIdListeners();
+
+			// Default to selecting an ID from the provided list
 			selectIdRadioButton.setSelection(true);
-			
+
+			// Add data-binding to the radio buttons to only enable the selected section
 			DataBindingContext dbc = new DataBindingContext();
 			ISWTObservableValue enabledObservable = WidgetProperties.enabled().observe(idCombo.getControl());
 			ISWTObservableValue selectionObservable = WidgetProperties.selection().observe(selectIdRadioButton);
@@ -347,54 +311,108 @@ public class ConnectWizardPage extends WizardPage {
 			selectionObservable = WidgetProperties.selection().observe(createIdRadioButton);
 			dbc.bindValue(enabledObservable, selectionObservable);
 		}
-		
+	}
 
-		setControl(composite);
+	private void addSelectIdSection(Composite parent) {
+		selectIdRadioButton = new Button(parent, SWT.RADIO);
+		selectIdRadioButton.setText("Select an existing connection ID");
+		Composite selectIdComposite = new Composite(parent, SWT.NONE);
+		GridLayout selectIdCompositeLayout = new GridLayout();
+		selectIdCompositeLayout.marginLeft = 25;
+		selectIdComposite.setLayout(selectIdCompositeLayout);
+		selectIdComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		context = new DataBindingContext();
-		context.bindValue(ViewerProperties.input().observe(sourceViewer), BeanProperties.value("sourceInput").observe(this));
-		context.bindValue(ViewerProperties.input().observe(targetViewer), BeanProperties.value("targetInput").observe(this));
-		context.bindValue(ViewerProperties.singleSelection().observe(sourceViewer), BeanProperties.value("source").observe(this),
-			createSourceTargetToModel(), null);
-		context.bindValue(ViewerProperties.singleSelection().observe(targetViewer), BeanProperties.value("target").observe(this),
-			createTargetTargetToModel(), null);
-		
-		// Only do data-binding for connection ID if NOT operating on a multi-out port
-		if (idCombo == null) {
-			context.bindValue(WidgetProperties.text(SWT.Modify).observe(idText), BeanProperties.value("connectionID").observe(this),
-				createConnectionIDTextTargetToModel(), null);
-			context.bindValue(WidgetProperties.enabled().observe(idText), BeanProperties.value("connectionIDReadOnly").observe(this));
-		}
-		context.addValidationStatusProvider(connectionValidator);
+		idCombo = new ComboViewer(selectIdComposite, SWT.BORDER | SWT.READ_ONLY);
+		idCombo.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		idCombo.getCombo().setToolTipText("Available mulit-out port connection IDs");
+		idCombo.setContentProvider(ArrayContentProvider.getInstance());
+		idCombo.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if (element instanceof Entry) {
+					@SuppressWarnings("unchecked")
+					Entry<String, Boolean> entry = (Entry<String, Boolean>) element;
+					String retVal = entry.getKey();
+					if (!entry.getValue()) {
+						retVal += " (IN USE)";
+					}
+					return retVal;
+				}
+				return super.getText(element);
+			}
+		});
+		idCombo.setInput(connectionIds.entrySet());
+	}
 
-		support = WizardPageSupport.create(this, context);
+	private void addCreateIdSection(Composite parent) {
+		createIdRadioButton = new Button(parent, SWT.RADIO);
+		createIdRadioButton.setText("Input connection ID");
+		Composite createIdComposite = new Composite(parent, SWT.NONE);
+		GridLayout createIdCompositeLayout = new GridLayout();
+		createIdCompositeLayout.marginLeft = 25;
+		createIdComposite.setLayout(createIdCompositeLayout);
+		createIdComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		// Set selection at first available connectionId
-		// This needs to happen after the data bindings have been initialized
-		if (idCombo != null) {
-			for (Entry<String, Boolean> entry : connectionIds.entrySet()) {
-				if (entry.getValue()) {
-					idCombo.setSelection(new StructuredSelection(entry));
-					return;
+		Label warningLabel = new Label(createIdComposite, SWT.NONE);
+		warningLabel.setText(
+			"WARNING: Manually inputing a connection ID for a multi-out port is not recommended.\nThis may result in your port not suppling data.");
+
+		idText = new Text(createIdComposite, SWT.BORDER);
+		idText.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		idText.setText(connectionID);
+	}
+
+	/**
+	 * A series of listeners to kick off validation when modifying the connection ID for a multi-out port
+	 */
+	private void addConnectionIdListeners() {
+		selectIdRadioButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (selectIdRadioButton.getSelection()) {
+					String oldValue = connectionID;
+					@SuppressWarnings("unchecked")
+					Entry<String, Boolean> selection = (Entry<String, Boolean>) idCombo.getStructuredSelection().getFirstElement();
+					connectionID = selection.getKey();
+					pcs.firePropertyChange("connectionID", oldValue, connectionID);
 				}
 			}
-			// If we get here, then all the connections are in use, so default to the first one
-			idCombo.setSelection(new StructuredSelection(connectionIds.entrySet().toArray()[0]));
-		}
+		});
+
+		createIdRadioButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (createIdRadioButton.getSelection()) {
+					String oldValue = connectionID;
+					connectionID = idText.getText();
+					pcs.firePropertyChange("connectionID", oldValue, connectionID);
+				}
+			}
+
+		});
+
+		idCombo.addSelectionChangedListener((event) -> {
+			String oldValue = connectionID;
+			@SuppressWarnings("unchecked")
+			Entry<String, Boolean> selection = (Entry<String, Boolean>) idCombo.getStructuredSelection().getFirstElement();
+			connectionID = selection.getKey();
+			pcs.firePropertyChange("connectionID", oldValue, connectionID);
+		});
+
+		idText.addModifyListener((event) -> {
+			String oldValue = connectionID;
+			connectionID = idText.getText();
+			pcs.firePropertyChange("connectionID", oldValue, connectionID);
+		});
 	}
 
 	private UpdateValueStrategy createConnectionIDTextTargetToModel() {
 		UpdateValueStrategy strategy = new UpdateValueStrategy();
-		strategy.setAfterConvertValidator(new IValidator() {
-
-			@Override
-			public IStatus validate(Object value) {
-				if (value == null || value.toString().trim().isEmpty()) {
-					return ValidationStatus.error("Must enter a connection ID");
-				}
-				return ValidationStatus.ok();
+		strategy.setAfterConvertValidator((value) -> {
+			if (value == null || value.toString().trim().isEmpty()) {
+				return ValidationStatus.error("Must enter a connection ID");
 			}
-
+			return ValidationStatus.ok();
 		});
 		return strategy;
 	}
@@ -408,32 +426,22 @@ public class ConnectWizardPage extends WizardPage {
 
 	private UpdateValueStrategy createTargetTargetToModel() {
 		UpdateValueStrategy strategy = new UpdateValueStrategy();
-		strategy.setAfterGetValidator(new IValidator() {
-
-			@Override
-			public IStatus validate(Object value) {
-				if (!(value instanceof CorbaObjWrapper< ? >)) {
-					return ValidationStatus.error("Target not specified.");
-				}
-				return ValidationStatus.ok();
+		strategy.setAfterGetValidator((value) -> {
+			if (!(value instanceof CorbaObjWrapper< ? >)) {
+				return ValidationStatus.error("Target not specified.");
 			}
-
+			return ValidationStatus.ok();
 		});
 		return strategy;
 	}
 
 	private UpdateValueStrategy createSourceTargetToModel() {
 		UpdateValueStrategy strategy = new UpdateValueStrategy();
-		strategy.setAfterGetValidator(new IValidator() {
-
-			@Override
-			public IStatus validate(Object value) {
-				if (value instanceof ScaUsesPort) {
-					return ValidationStatus.ok();
-				}
-				return ValidationStatus.error("Source must be of type 'Uses Port'");
+		strategy.setAfterGetValidator((value) -> {
+			if (value instanceof ScaUsesPort) {
+				return ValidationStatus.ok();
 			}
-
+			return ValidationStatus.error("Source must be of type 'Uses Port'");
 		});
 		return strategy;
 	}
@@ -455,7 +463,7 @@ public class ConnectWizardPage extends WizardPage {
 	public void setSource(ScaUsesPort source) {
 		ScaUsesPort oldValue = this.source;
 		this.source = source;
-		
+
 		pcs.firePropertyChange("source", oldValue, source);
 	}
 
