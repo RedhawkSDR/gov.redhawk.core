@@ -31,8 +31,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import CF.FileManager;
-
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Domain Manager File System</b></em>'.
@@ -269,16 +267,6 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 		queryParams.put(ScaFileSystemConstants.QUERY_PARAM_FS, ior);
 		queryParams.put(ScaFileSystemConstants.QUERY_PARAM_DOMAIN_NAME, dmName);
 		return new URI(ScaFileSystemConstants.SCHEME + "://?" + QueryParser.createQuery(queryParams));
-	}
-
-	@Override
-	public void setCorbaObj(org.omg.CORBA.Object newCorbaObj) {
-		if (newCorbaObj instanceof FileManager) {
-			super.setCorbaObj(newCorbaObj);
-			setObj((FileManager) newCorbaObj);
-		} else {
-			super.setCorbaObj(newCorbaObj);
-		}
 	}
 
 } // ScaDomainManagerFileSystemImpl

@@ -242,16 +242,6 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 	}
 
 	@Override
-	public void setCorbaObj(org.omg.CORBA.Object newCorbaObj) {
-		if (newCorbaObj instanceof FileSystem) {
-			super.setCorbaObj(newCorbaObj);
-			setObj((FileSystem) newCorbaObj);
-		} else {
-			super.setCorbaObj(newCorbaObj);
-		}
-	}
-
-	@Override
 	protected URI createFileSystemURI() {
 		ScaDeviceManager devMgr = getDeviceManager();
 		String devMgrName = null;

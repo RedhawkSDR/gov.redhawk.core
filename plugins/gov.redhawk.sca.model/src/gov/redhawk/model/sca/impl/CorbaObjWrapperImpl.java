@@ -381,6 +381,9 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	}
 
 	/**
+	 * When setting the CORBA object via {@link #setCorbaObj(org.omg.CORBA.Object)}, if the object is already an
+	 * instance of this class then no narrow will be attempted. The object will be used as-is for
+	 * {@link #setObj(org.omg.CORBA.Object)}.
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
 	protected Class< ? extends T> getCorbaType() {
