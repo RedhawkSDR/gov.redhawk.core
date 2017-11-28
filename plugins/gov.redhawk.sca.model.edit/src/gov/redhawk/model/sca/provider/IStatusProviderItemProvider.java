@@ -76,23 +76,9 @@ public class IStatusProviderItemProvider extends ItemProviderAdapter implements 
 	 * This adds a property descriptor for the Status feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOt
+	 * @generated NOT
 	 */
 	protected void addStatusPropertyDescriptor(Object object) {
-		// itemPropertyDescriptors.add
-		// (createItemPropertyDescriptor
-		// (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-		// getResourceLocator(),
-		// getString("_UI_IStatusProvider_status_feature"),
-		// getString("_UI_PropertyDescriptor_description", "_UI_IStatusProvider_status_feature",
-		// "_UI_IStatusProvider_type"),
-		// ScaPackage.Literals.ISTATUS_PROVIDER__STATUS,
-		// true,
-		// false,
-		// false,
-		// ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-		// null,
-		// null));
 		itemPropertyDescriptors.add(new ItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_IStatusProvider_status_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_IStatusProvider_status_feature", "_UI_IStatusProvider_type"),
