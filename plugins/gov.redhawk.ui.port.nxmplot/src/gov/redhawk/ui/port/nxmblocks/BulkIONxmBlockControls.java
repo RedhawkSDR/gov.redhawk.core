@@ -10,6 +10,8 @@
  */
 package gov.redhawk.ui.port.nxmblocks;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -25,12 +27,15 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
@@ -38,6 +43,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 
 import gov.redhawk.sca.util.ArrayUtil;
 import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings.BlockingOption;
@@ -57,6 +64,7 @@ public class BulkIONxmBlockControls {
 	private final BulkIONxmBlockSettings settings;
 	private final DataBindingContext dataBindingCtx;
 	private final Map<String, Boolean> connectionIds;
+	private final List<String> connectionIdList;
 
 	// widgets
 	private Text connectionIDTextField;
@@ -75,6 +83,10 @@ public class BulkIONxmBlockControls {
 		this.settings = settings;
 		this.dataBindingCtx = dataBindingCtx;
 		this.connectionIds = connectionIds;
+		connectionIdList = new ArrayList<String>();
+		for (String key : connectionIds.keySet()) {
+			connectionIdList.add(key);
+		}
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -95,7 +107,7 @@ public class BulkIONxmBlockControls {
 				connectionIDTextField.setEnabled(false);
 			}
 		} else {
-			connectionIDComboField = new ComboViewer(container, SWT.BORDER | SWT.READ_ONLY);
+			connectionIDComboField = new ComboViewer(container, SWT.BORDER);
 			connectionIDComboField.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 			connectionIDComboField.getCombo().setToolTipText("Available mulit-out port connection IDs");
 			connectionIDComboField.setContentProvider(ArrayContentProvider.getInstance());
@@ -109,6 +121,27 @@ public class BulkIONxmBlockControls {
 				}
 			});
 			connectionIDComboField.setInput(connectionIds.entrySet());
+
+			// Add control decorator to warning against custom connection ID's for multiout ports
+			ControlDecoration dec = new ControlDecoration(connectionIDComboField.getControl(), SWT.TOP | SWT.LEFT);
+			dec.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_DEC_FIELD_WARNING));
+			dec.hide();
+			dec.setDescriptionText(" WARNING: Using a manually generated connection ID for a multi-out port may result in port not suppling data ");
+			connectionIDComboField.getControl().addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyReleased(KeyEvent e) {
+					if (!(connectionIdList.contains(connectionIDComboField.getCombo().getText()))) {
+						dec.show();
+					} else {
+						dec.hide();
+					}
+				}
+			});
+			connectionIDComboField.addSelectionChangedListener((event) -> {
+				if (connectionIdList.contains(connectionIDComboField.getCombo().getText()) && dec.isVisible()) {
+					dec.hide();
+				}
+			});
 		}
 
 		// === sample rate ===
