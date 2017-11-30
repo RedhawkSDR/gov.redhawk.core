@@ -452,7 +452,13 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 			@Override
 			protected Object getValue(final Object element) {
 				final Enumeration e = (Enumeration) element;
-				return (e.getValue() == null) ? "" : e.getValue();
+				String value = e.getValue();
+				if (value == null) {
+					return "";
+				} else if ("".equals(value)) {
+					return "\"\"";
+				}
+				return value;
 			}
 
 			@Override
