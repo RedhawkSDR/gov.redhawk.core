@@ -16,6 +16,7 @@ import gov.redhawk.bulkio.ui.views.SriDataView;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
+import gov.redhawk.sca.ui.MultiOutConnectionWizard;
 import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.sca.util.SubMonitor;
 import gov.redhawk.ui.port.nxmplot.IPlotView;
@@ -27,6 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -40,6 +42,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -58,45 +61,75 @@ public class GetSriHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
-		final Set<ScaUsesPort> elements = new HashSet<ScaUsesPort>();
-		final Map<ScaUsesPort, PlotSource> portToPlotSourceMap = new HashMap<ScaUsesPort, PlotSource>(); 
-		
+		final Set<ScaUsesPort> ports = new HashSet<ScaUsesPort>();
+		final Map<ScaUsesPort, PlotSource> portToPlotSourceMap = new HashMap<ScaUsesPort, PlotSource>();
+
 		// Launches from an plot view dropdown
 		IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		if (activePart instanceof IPlotView) {
 			IPlotView view = (IPlotView) HandlerUtil.getActivePart(event);
 			List<PlotSource> sources = view.getPlotPageBook().getSources();
 			for (PlotSource source : sources) {
-				elements.add(source.getInput());
+				ports.add(source.getInput());
 				portToPlotSourceMap.put(source.getInput(), source);
 			}
 		} else if (selection == null) {
 			selection = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
 		}
 
-		// Launches from a context menu 
+		// Launches from a context menu
 		if (selection != null) {
 			for (Object obj : selection.toArray()) {
 				ScaUsesPort port = PluginUtil.adapt(ScaUsesPort.class, obj);
 				if (port != null) {
-					elements.add(port);
+					ports.add(port);
 				}
 			}
 		}
 
-		if (elements.isEmpty()) {
+		if (ports.isEmpty()) {
 			return null;
 		}
 
-		for (final ScaUsesPort port : elements) {
+		for (final ScaUsesPort port : ports) {
 			if (port == null) {
 				StatusManager.getManager().handle(new Status(IStatus.ERROR, BulkIOUIActivator.PLUGIN_ID, "Failed to find port for SRI Data View", null),
 					StatusManager.LOG);
 				continue;
 			}
 
+			// Determine connectionID
+			String tmpConnectionId = null;
+			PlotSource source = portToPlotSourceMap.get(port);
+			if (source != null) {
+				if (source.getBulkIOBlockSettings() != null) {
+					tmpConnectionId = source.getBulkIOBlockSettings().getConnectionID();
+				} else if (source.getSddsBlockSettings() != null) {
+					return new Status(IStatus.ERROR, BulkIOUIActivator.PLUGIN_ID, "Can't display SRI for SDDS ports");
+				} else {
+					return new Status(IStatus.ERROR, BulkIOUIActivator.PLUGIN_ID, "Can't get a connection ID from plot settings");
+				}
+			} else {
+				Map<String, Boolean> connectionIds = ScaUsesPort.Util.getConnectionIds(port);
+				if (!connectionIds.isEmpty()) {
+					Entry<String, Boolean> firstEntry = connectionIds.entrySet().iterator().next();
+					if (connectionIds.size() == 1 && firstEntry.getValue()) {
+						tmpConnectionId = firstEntry.getKey();
+					} else {
+						MultiOutConnectionWizard dialog = new MultiOutConnectionWizard(Display.getDefault().getActiveShell(), connectionIds);
+						if (Window.CANCEL == dialog.open() || dialog.getSelectedId() == null) {
+							return null;
+						}
+						tmpConnectionId = dialog.getSelectedId();
+					}
+				}
+			}
+			final String connectionId = tmpConnectionId;
+
+			// Open SRI view
 			try {
-				IViewPart view = window.getActivePage().showView(SriDataView.ID, SriDataView.createSecondaryId(port), IWorkbenchPage.VIEW_ACTIVATE);
+				String secondaryId = SriDataView.createSecondaryId(port, connectionId);
+				IViewPart view = window.getActivePage().showView(SriDataView.ID, secondaryId, IWorkbenchPage.VIEW_ACTIVATE);
 				if (view instanceof SriDataView) {
 					final SriDataView sriView = (SriDataView) view;
 
@@ -107,7 +140,7 @@ public class GetSriHandler extends AbstractHandler {
 							final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
 							final StringBuilder name = new StringBuilder();
 							final StringBuilder tooltip = new StringBuilder();
-							SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching SRI...", elements.size());
+							SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching SRI...", ports.size());
 
 							port.fetchAttributes(subMonitor.newChild(1));
 							List<String> tmpList = new LinkedList<String>();
@@ -138,23 +171,8 @@ public class GetSriHandler extends AbstractHandler {
 								}
 								tooltip.append("\n");
 							}
-							
-							PlotSource source = portToPlotSourceMap.get(port);
-							
-							if (source != null) {
-								String connectionId;
-								if (source.getBulkIOBlockSettings() != null) {
-									connectionId = source.getBulkIOBlockSettings().getConnectionID();
-								} else if (source.getSddsBlockSettings() != null) {
-									return new Status(IStatus.ERROR, BulkIOUIActivator.PLUGIN_ID, "Can't display SRI for SDDS ports");
-								} else {
-									return new Status(IStatus.ERROR, BulkIOUIActivator.PLUGIN_ID, "Can't get a connection ID from plot settings");
-								}
 
-								sriView.activateReceiver(port, connectionId);
-							} else {
-								sriView.activateReceiver(port);
-							}
+							sriView.activateReceiver(port, connectionId);
 
 							factory.dispose();
 							if (name.length() > 0 || tooltip.length() > 0) {

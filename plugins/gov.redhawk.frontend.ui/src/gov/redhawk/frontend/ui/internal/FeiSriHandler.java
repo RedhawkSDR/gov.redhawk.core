@@ -41,7 +41,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.ListDialog;
@@ -92,17 +91,9 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 					continue;
 				}
 
-				// Ensure there isn't already a view open for this port
-				String secondaryID = SriDataView.createSecondaryId(usesPort);
-				for (IViewReference viewRef : activePage.getViewReferences()) {
-					if (SriDataView.ID.equals(viewRef.getId()) && secondaryID.equals(viewRef.getSecondaryId())) {
-						viewRef.getView(true);
-						continue;
-					}
-				}
+				String listenerID = "SRI_" + System.getProperty("user.name") + ":" + System.currentTimeMillis();
 
 				// Create the allocation job
-				String listenerID = "SRI_" + System.getProperty("user.name") + ":" + System.currentTimeMillis();
 				final DataType[] props = TunerStatusUtil.createAllocationProperties(listenerID, tuner);
 				Job allocationJob = new AllocateJob(device, props);
 				allocationJob.setName("Allocate FEI listener for tuner " + tuner.getAllocationID());
@@ -207,10 +198,14 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 	 * @param usesPort The port to attach to
 	 * @return True if the view was displayed
 	 */
-	private boolean createSriView(IWorkbenchPage activePage, final ScaDevice< ? > device, final TunerStatus tuner, ScaUsesPort usesPort, final DataType[] props, String listenerID)
-		throws ExecutionException {
+	private boolean createSriView(IWorkbenchPage activePage, final ScaDevice< ? > device, final TunerStatus tuner, ScaUsesPort usesPort, final DataType[] props,
+		String listenerID) throws ExecutionException {
+
+		// Create unique ID for the view
+		String viewID = SriDataView.createSecondaryId(usesPort, tuner.getAllocationID().split(",")[0]);
+
 		// Display the SRI View
-		SriDataView sriViewLocalRef = displaySriView(activePage, usesPort, listenerID);
+		SriDataView sriViewLocalRef = displaySriView(activePage, usesPort, listenerID, viewID);
 		if (sriViewLocalRef == null) {
 			return false;
 		}
@@ -241,12 +236,9 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 											return;
 										}
 
-										sriViewLocalRef.getTreeViewer().getTree().getDisplay().asyncExec(new Runnable() {
-											@Override
-											public void run() {
-												sriViewLocalRef.getTreeViewer().getTree().removeDisposeListener(disposeListener);
-												sriViewLocalRef.getViewSite().getPage().hideView(sriViewLocalRef);
-											}
+										sriViewLocalRef.getTreeViewer().getTree().getDisplay().asyncExec(() -> {
+											sriViewLocalRef.getTreeViewer().getTree().removeDisposeListener(disposeListener);
+											sriViewLocalRef.getViewSite().getPage().hideView(sriViewLocalRef);
 										});
 									}
 									break;
@@ -282,9 +274,10 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 	 * Displays the SRI View...
 	 * @param usesPort - Uses port that the SRI View is listening to
 	 * @param connectionId - Existing connection ID for SRI View to piggyback on
+	 * @param viewId - the unique ID used by the SRI view
 	 * @return
 	 */
-	private SriDataView displaySriView(IWorkbenchPage activePage, ScaUsesPort usesPort, String connectionId) {
+	private SriDataView displaySriView(IWorkbenchPage activePage, ScaUsesPort usesPort, String connectionId, String viewId) {
 		// Create the name and tooltip for the view tab
 		final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
 		final StringBuilder name = new StringBuilder();
@@ -293,7 +286,7 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 		factory.dispose();
 
 		try {
-			IViewPart view = activePage.showView(SriDataView.ID, SriDataView.createSecondaryId(usesPort), IWorkbenchPage.VIEW_ACTIVATE);
+			IViewPart view = activePage.showView(SriDataView.ID, viewId, IWorkbenchPage.VIEW_ACTIVATE);
 			final SriDataView sriView = (SriDataView) view;
 			if (name.length() > 0) {
 				sriView.setPartName(name.toString());

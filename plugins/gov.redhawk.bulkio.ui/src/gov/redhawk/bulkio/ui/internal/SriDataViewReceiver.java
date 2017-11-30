@@ -161,7 +161,7 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 		Job disconnectJob = new Job("Disconnecting SRI Receiver...") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(port.getIor(), getBulkIOType(), receiver);
+				BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(port.getIor(), getBulkIOType(), receiver, connectionId);
 				return Status.OK_STATUS;
 			}
 		};

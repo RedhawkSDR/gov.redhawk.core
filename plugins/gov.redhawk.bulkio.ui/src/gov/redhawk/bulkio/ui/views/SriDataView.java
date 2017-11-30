@@ -20,7 +20,7 @@ import gov.redhawk.bulkio.ui.writer.SriFileWriter;
 import gov.redhawk.bulkio.ui.writer.SriXmlWriter;
 import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.model.sca.IDisposable;
-import gov.redhawk.model.sca.ScaComponent;
+import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.ScaWaveform;
@@ -477,13 +477,13 @@ public class SriDataView extends ViewPart {
 	}
 
 	@NonNull
-	public static String createSecondaryId(@NonNull ScaUsesPort port) {
+	public static String createSecondaryId(@NonNull ScaUsesPort port, String connectionId) {
 		EObject eObj = port.eContainer();
 
 		StringBuilder retVal = new StringBuilder();
 
-		if (eObj instanceof ScaComponent) {
-			ScaComponent component = (ScaComponent) eObj;
+		if (eObj instanceof ScaAbstractComponent< ? >) {
+			ScaAbstractComponent< ? > component = (ScaAbstractComponent< ? >) eObj;
 			retVal.append(component.getIdentifier());
 		} else if (eObj instanceof ScaWaveform) {
 			ScaWaveform waveform = (ScaWaveform) eObj;
@@ -493,6 +493,11 @@ public class SriDataView extends ViewPart {
 		}
 
 		retVal.append("_" + port.getName());
+
+		// Allows unique secondary IDs for multiple connections coming out of one port. Useful for multi-out ports.
+		if (connectionId != null) {
+			retVal.append("_" + connectionId);
+		}
 
 		return retVal.toString().replace(':', '_');
 	}

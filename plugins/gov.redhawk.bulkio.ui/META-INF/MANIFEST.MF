@@ -19,8 +19,9 @@ Require-Bundle: org.eclipse.core.runtime,
  gov.redhawk.ui.port.nxmplot;bundle-version="4.2.0",
  nxm.sys;bundle-version="3.3.4",
  mil.jpeojtrs.sca.prf,
- org.eclipse.jdt.annotation;bundle-version="[1.1.0,2.0.0)";resolution:=optional
+ org.eclipse.jdt.annotation;bundle-version="[1.1.0,2.0.0)";resolution:=optional,
+ gov.redhawk.sca.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: REDHAWK
-Export-Package: gov.redhawk.bulkio.ui.views;x-internal:=true
+Export-Package: gov.redhawk.bulkio.ui.views;x-friends:="gov.redhawk.frontend.ui"
