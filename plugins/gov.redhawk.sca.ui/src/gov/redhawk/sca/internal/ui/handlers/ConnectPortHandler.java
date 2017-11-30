@@ -117,7 +117,11 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 				}
 			}
 			if (usesPort != null && target != null) {
-				new ConnectJob(usesPort, target.getCorbaObj(), getConnectionId(usesPort, event)).schedule();
+				String connectionId = getConnectionId(usesPort, event);
+				if (connectionId == null) {
+					return null;
+				}
+				new ConnectJob(usesPort, target.getCorbaObj(), connectionId).schedule();
 			} else {
 				ConnectPortWizard wizard = new ConnectPortWizard();
 				if (usesPort != null) {
@@ -164,9 +168,9 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 			if (Window.OK == selectionDialog.open() && selectionDialog.getSelectedId() != null) {
 				return selectionDialog.getSelectedId();
 			}
+			// Return null if no selection was made, or the dialog was canceled
+			return null;
 		}
-
-		return ConnectPortWizard.generateDefaultConnectionID();
 	}
 
 	/**
