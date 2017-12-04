@@ -74,9 +74,9 @@ public class ScaExplorer extends CommonNavigator implements ITabbedPropertySheet
 	}
 
 	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
+	public <T> T getAdapter(Class<T> adapter) {
 		if (IPropertySheetPage.class == adapter) {
-			return new TabbedPropertySheetPage(this);
+			return adapter.cast(new TabbedPropertySheetPage(this));
 		}
 		return super.getAdapter(adapter);
 	}
