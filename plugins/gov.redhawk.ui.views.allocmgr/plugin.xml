@@ -37,6 +37,36 @@
             allPopups="true"
             locationURI="popup:gov.redhawk.ui.views.allocmgr.view?after=additions">
          <command
+               commandId="gov.redhawk.ui.views.allocmgr.finddevice"
+               icon="icons/ScaDevice.gif"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="gov.redhawk.ui.views.allocmgr.AllocationStatus">
+                  </instanceof>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="gov.redhawk.ui.views.allocmgr.finddevicemanager"
+               icon="icons/ScaDeviceManager.gif"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="gov.redhawk.ui.views.allocmgr.AllocationStatus">
+                  </instanceof>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
                commandId="gov.redhawk.ui.views.allocmgr.deallocate"
                style="push">
             <visibleWhen
@@ -44,20 +74,48 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:gov.redhawk.ui.views.allocmgr.view">
+         <command
+               commandId="gov.redhawk.ui.views.allocmgr.finddevice"
+               icon="icons/ScaDevice.gif"
+               style="push"
+               tooltip="%finddevice.command.description">
+         </command>
+         <command
+               commandId="gov.redhawk.ui.views.allocmgr.finddevicemanager"
+               icon="icons/ScaDeviceManager.gif"
+               style="push"
+               tooltip="%finddevicemanager.command.description">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
             categoryId="gov.redhawk.ui.commands.category.sca"
-            description="Shows the allocation manager"
+            description="%show.command.description"
             id="gov.redhawk.ui.views.allocmgr.show"
-            name="Allocation Manager">
+            name="%show.command.name">
       </command>
       <command
             categoryId="gov.redhawk.ui.commands.category.sca"
-            description="Deallocates the selected allocation"
+            description="%finddevice.command.description"
+            id="gov.redhawk.ui.views.allocmgr.finddevice"
+            name="%finddevice.command.name">
+      </command>
+      <command
+            categoryId="gov.redhawk.ui.commands.category.sca"
+            description="%finddevicemanager.command.description"
+            id="gov.redhawk.ui.views.allocmgr.finddevicemanager"
+            name="%finddevicemanager.command.name">
+      </command>
+      <command
+            categoryId="gov.redhawk.ui.commands.category.sca"
+            description="%deallocate.command.description"
             id="gov.redhawk.ui.views.allocmgr.deallocate"
-            name="Deallocate">
+            name="%deallocate.command.name">
       </command>
    </extension>
    <extension
@@ -77,6 +135,42 @@
                </iterate>
             </and>
          </activeWhen>
+      </handler>
+      <handler
+            class="gov.redhawk.ui.views.allocmgr.handlers.FindDeviceHandler"
+            commandId="gov.redhawk.ui.views.allocmgr.finddevice">
+         <enabledWhen>
+            <and>
+               <count
+                     value="1">
+               </count>
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="gov.redhawk.ui.views.allocmgr.AllocationStatus">
+                  </instanceof>
+               </iterate>
+            </and>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="gov.redhawk.ui.views.allocmgr.handlers.FindDeviceManagerHander"
+            commandId="gov.redhawk.ui.views.allocmgr.finddevicemanager">
+         <enabledWhen>
+            <and>
+               <count
+                     value="1">
+               </count>
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="gov.redhawk.ui.views.allocmgr.AllocationStatus">
+                  </instanceof>
+               </iterate>
+            </and>
+         </enabledWhen>
       </handler>
       <handler
             class="gov.redhawk.ui.views.allocmgr.handlers.DeallocateHandler"
