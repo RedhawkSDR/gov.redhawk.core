@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Connection Status</b></em>'.
+ * Represents a {@link CF.ConnectionManagerPackage.ConnectionStatusType} returned by a {@link CF.ConnectionManager}.
  * <!-- end-user-doc -->
  *
  * <p>
