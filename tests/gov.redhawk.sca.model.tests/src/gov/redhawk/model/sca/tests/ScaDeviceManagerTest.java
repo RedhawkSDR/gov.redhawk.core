@@ -181,6 +181,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#getAllDevices()
 	 * @generated NOT
 	 */
+	@SuppressWarnings("deprecation")
 	public void testGetAllDevices() {
 		// END GENERATED CODE
 		Assert.assertNotNull(getFixture().getAllDevices());
@@ -195,6 +196,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#unsetAllDevices()
 	 * @generated NOT
 	 */
+	@SuppressWarnings("deprecation")
 	public void testUnsetAllDevices() {
 		// END GENERATED CODE
 		Assert.assertTrue(getFixture().isSetAllDevices());
@@ -243,6 +245,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#isSetAllDevices()
 	 * @generated NOT
 	 */
+	@SuppressWarnings("deprecation")
 	public void testIsSetAllDevices() {
 		// END GENERATED CODE
 		Assert.assertTrue(getFixture().isSetAllDevices());
