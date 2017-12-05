@@ -102,11 +102,15 @@ public class ConnMgrFactoryImpl extends EFactoryImpl implements ConnMgrFactory {
 		connectionStatus.setConnectionID(cfStatus.connectionId);
 		connectionStatus.setRequesterID(cfStatus.requesterId);
 		connectionStatus.setConnected(cfStatus.connected);
-		connectionStatus.setSourceIOR(cfStatus.usesEndpoint.endpointObject.toString());
+		if (cfStatus.usesEndpoint.endpointObject != null) {
+			connectionStatus.setSourceIOR(cfStatus.usesEndpoint.endpointObject.toString());
+		}
 		connectionStatus.setSourceEntityName(cfStatus.usesEndpoint.entityId);
 		connectionStatus.setSourcePortName(cfStatus.usesEndpoint.portName);
 		connectionStatus.setSourceRepoID(cfStatus.usesEndpoint.repositoryId);
-		connectionStatus.setTargetIOR(cfStatus.providesEndpoint.endpointObject.toString());
+		if (cfStatus.providesEndpoint.endpointObject != null) {
+			connectionStatus.setTargetIOR(cfStatus.providesEndpoint.endpointObject.toString());
+		}
 		connectionStatus.setTargetEntityName(cfStatus.providesEndpoint.entityId);
 		connectionStatus.setTargetPortName(cfStatus.providesEndpoint.portName);
 		connectionStatus.setTargetRepoID(cfStatus.providesEndpoint.repositoryId);
