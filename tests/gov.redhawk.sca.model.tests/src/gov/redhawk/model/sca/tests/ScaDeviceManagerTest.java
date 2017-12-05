@@ -510,7 +510,12 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testFetchFileSystem__IProgressMonitor_RefreshDepth() {
 		// END GENERATED CODE
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().unsetFileSystem();
+		});
+		Assert.assertNull(getFixture().getFileSystem());
 		getFixture().fetchFileSystem(new NullProgressMonitor(), RefreshDepth.SELF);
+		Assert.assertNotNull(getFixture().getFileSystem());
 		// BEGIN GENERATED CODE
 	}
 
@@ -525,7 +530,12 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testFetchIdentifier__IProgressMonitor() {
 		// END GENERATED CODE
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().unsetIdentifier();
+		});
+		Assert.assertFalse(getFixture().isSetIdentifier());
 		getFixture().fetchIdentifier(null);
+		Assert.assertTrue(getFixture().isSetIdentifier());
 		// BEGIN GENERATED CODE
 	}
 
@@ -539,7 +549,12 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testFetchLabel__IProgressMonitor() {
 		// END GENERATED CODE
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().unsetLabel();
+		});
+		Assert.assertFalse(getFixture().isSetLabel());
 		getFixture().fetchLabel(null);
+		Assert.assertTrue(getFixture().isSetLabel());
 		// BEGIN GENERATED CODE
 	}
 
@@ -554,7 +569,12 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testFetchPorts__IProgressMonitor() throws InterruptedException {
 		// END GENERATED CODE
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().unsetPorts();
+		});
+		Assert.assertFalse(getFixture().isSetPorts());
 		getFixture().fetchPorts(null);
+		Assert.assertTrue(getFixture().isSetPorts());
 		// BEGIN GENERATED CODE
 	}
 
@@ -570,7 +590,12 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testFetchServices__IProgressMonitor_RefreshDepth() {
 		// END GENERATED CODE
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().unsetServices();
+		});
+		Assert.assertFalse(getFixture().isSetServices());
 		getFixture().fetchServices(new NullProgressMonitor(), RefreshDepth.SELF);
+		Assert.assertTrue(getFixture().isSetServices());
 		// BEGIN GENERATED CODE
 	}
 
