@@ -37,11 +37,76 @@
             allPopups="true"
             locationURI="popup:gov.redhawk.ui.views.connmgr.view?after=additions">
          <command
+               commandId="gov.redhawk.ui.views.connmgr.findobject"
+               icon="icons/ScaUsesPort.gif"
+               label="%menu.findsource.label"
+               style="push">
+            <parameter
+                  name="gov.redhawk.ui.views.connmgr.sourceOrTarget"
+                  value="source">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="gov.redhawk.ui.views.connmgr.ConnectionStatus">
+                  </instanceof>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="gov.redhawk.ui.views.connmgr.findobject"
+               icon="icons/ScaProvidesPort.gif"
+               label="%menu.findtarget.label"
+               style="push">
+            <parameter
+                  name="gov.redhawk.ui.views.connmgr.sourceOrTarget"
+                  value="target">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="gov.redhawk.ui.views.connmgr.ConnectionStatus">
+                  </instanceof>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
                commandId="gov.redhawk.ui.views.connmgr.disconnect"
+               icon="icons/disconnect.png"
                style="push">
             <visibleWhen
                   checkEnabled="true">
             </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:gov.redhawk.ui.views.connmgr.view?after=additions">
+         <command
+               commandId="gov.redhawk.ui.views.connmgr.findobject"
+               icon="icons/ScaUsesPort.gif"
+               style="push"
+               tooltip="%findobject.source.command.description">
+            <parameter
+                  name="gov.redhawk.ui.views.connmgr.sourceOrTarget"
+                  value="source">
+            </parameter>
+         </command>
+         <command
+               commandId="gov.redhawk.ui.views.connmgr.findobject"
+               icon="icons/ScaProvidesPort.gif"
+               style="push"
+               tooltip="%findobject.target.command.description">
+            <parameter
+                  name="gov.redhawk.ui.views.connmgr.sourceOrTarget"
+                  value="target">
+            </parameter>
          </command>
       </menuContribution>
    </extension>
@@ -49,15 +114,25 @@
          point="org.eclipse.ui.commands">
       <command
             categoryId="gov.redhawk.ui.commands.category.sca"
-            description="Shows the connection manager"
+            description="%show.command.description"
             id="gov.redhawk.ui.views.connmgr.show"
-            name="Connection Manager">
+            name="%show.command.name">
+      </command>
+      <command
+            description="%findobject.command.description"
+            id="gov.redhawk.ui.views.connmgr.findobject"
+            name="%findobject.command.name">
+         <commandParameter
+               id="gov.redhawk.ui.views.connmgr.sourceOrTarget"
+               name="Source or Target"
+               optional="false">
+         </commandParameter>
       </command>
       <command
             categoryId="gov.redhawk.ui.commands.category.sca"
-            description="Disconnects the selected connection"
+            description="%disconnect.command.description"
             id="gov.redhawk.ui.views.connmgr.disconnect"
-            name="Disconnect">
+            name="%disconnect.command.name">
       </command>
    </extension>
    <extension
@@ -73,6 +148,22 @@
                <iterate>
                   <instanceof
                         value="gov.redhawk.model.sca.ScaDomainManager">
+                  </instanceof>
+               </iterate>
+            </and>
+         </activeWhen>
+      </handler>
+      <handler
+            class="gov.redhawk.ui.views.connmgr.handlers.FindHandler"
+            commandId="gov.redhawk.ui.views.connmgr.findobject">
+         <activeWhen>
+            <and>
+               <count
+                     value="1">
+               </count>
+               <iterate>
+                  <instanceof
+                        value="gov.redhawk.ui.views.connmgr.ConnectionStatus">
                   </instanceof>
                </iterate>
             </and>
