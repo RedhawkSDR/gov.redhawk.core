@@ -2379,7 +2379,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		}
 
 		Transaction transaction = fileSystemRevision.createTransaction();
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching File system", 4);
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching file system", 3);
 		if (subMonitor.isCanceled()) {
 			throw new OperationCanceledException();
 		}
@@ -2400,8 +2400,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DEVICE_MANAGER__FILE_SYSTEM));
 		}
+		transaction.commit();
 
-		subMonitor.setWorkRemaining(2);
+		subMonitor.setWorkRemaining(1);
 		ScaDeviceManagerFileSystem fs = getFileSystem();
 		if (depth != RefreshDepth.NONE && fs != null) {
 			try {
@@ -2414,8 +2415,6 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			}
 		}
 
-		subMonitor.setWorkRemaining(1);
-		transaction.commit();
 		subMonitor.done();
 		return fs;
 	}
