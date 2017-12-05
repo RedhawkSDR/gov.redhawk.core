@@ -74,6 +74,7 @@ dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperati
 
 	private SourceDataLine sourceDataLine;
 	private final ScaUsesPort port;
+	private final String connectionId;
 	private final String ior;
 	private boolean blocking = true;
 	private double multiplier = 1.0;
@@ -103,6 +104,8 @@ dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperati
 	public AudioReceiver(final ScaUsesPort port, final String connectionId) {
 		super(BulkIOType.getType(port.getRepid()));
 		this.port = port;
+		this.connectionId = connectionId;
+
 		ScaModelCommand.execute(port, new ScaModelCommand() {
 
 			@Override
@@ -143,7 +146,7 @@ dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperati
 
 		Job connectJob = Job.create("Connecting...", monitor -> {
 			try {
-				connect(monitor, connectionId);
+				connect(monitor, AudioReceiver.this.connectionId);
 			} catch (CoreException e) {
 				return new Status(e.getStatus().getSeverity(), Activator.PLUGIN_ID, "Failed to connect.", e);
 			}
@@ -179,11 +182,11 @@ dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperati
 		}
 	}
 
-	private void disconnect(IProgressMonitor monitor) {
+	private void disconnect(IProgressMonitor monitor, String connectionId) {
 		BulkIOType type2 = getBulkIOType();
 		String ior2 = ior;
 		if (type2 != null && ior2 != null) {
-			BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior2, type2, this);
+			BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior2, type2, this, connectionId);
 		}
 	}
 
@@ -525,7 +528,7 @@ dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperati
 		disposed = true;
 		Job.create("Disconnect", monitor -> {
 			SubMonitor progress = SubMonitor.convert(monitor, 2);
-			disconnect(progress.split(1));
+			disconnect(progress.split(1), AudioReceiver.this.connectionId);
 
 			try {
 				port.refresh(progress.split(1), RefreshDepth.FULL);
