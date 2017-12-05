@@ -169,7 +169,7 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 		return new DeferredAdapter(object) {
 			@Override
 			public boolean isSet() {
-				return object.isSetDevices() && object.isSetPorts();
+				return object.isSetDevices() && object.isSetServices() && object.isSetPorts();
 			}
 
 		};
