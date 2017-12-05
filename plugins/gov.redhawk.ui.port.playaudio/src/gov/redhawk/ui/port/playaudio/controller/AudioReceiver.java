@@ -68,7 +68,7 @@ import mil.jpeojtrs.sca.util.CorbaUtils;
  * @since 2.0
  */
 public class AudioReceiver extends AbstractBulkIOPort implements dataShortOperations, dataCharOperations, dataLongOperations, dataLongLongOperations,
-dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperations, dataUshortOperations {
+		dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperations, dataUshortOperations {
 	private AudioFormat audioFormat;
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
