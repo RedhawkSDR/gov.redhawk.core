@@ -47,6 +47,14 @@ public class PlotWizard extends Wizard {
 	public void addPages() {
 		addPage(page);
 	}
+	
+	@Override
+	public boolean canFinish() {
+		if (getBulkIOBlockSettings().getConnectionID() == null) {
+			return false;
+		}
+		return super.canFinish();
+	}
 
 	@Override
 	public boolean performFinish() {

@@ -194,8 +194,9 @@ public class BulkIONxmBlockControls {
 					return;
 				}
 			}
-			// If we get here, then all the connections are in use, so default to the first one
-			connectionIDComboField.setSelection(new StructuredSelection(connectionIds.entrySet().toArray()[0]));
+			// If we get here, then all the connections are in use, so don't have an entry
+			connectionIDComboField.getCombo().setText("");
+//			connectionIDComboField.setSelection(new StructuredSelection(connectionIds.entrySet().toArray()[0]));
 		}
 	}
 
@@ -209,16 +210,18 @@ public class BulkIONxmBlockControls {
 			IObservableValue target = WidgetProperties.selection().observe(connectionIDComboField.getCombo());
 			IObservableValue model = PojoProperties.value(BulkIONxmBlockSettings.PROP_CONNECTION_ID).observe(settings);
 			UpdateValueStrategy targetToModel = new UpdateValueStrategy();
-			targetToModel.setAfterGetValidator(new IValidator() {
+			targetToModel.setBeforeSetValidator(new IValidator() {
 
 				@Override
 				public IStatus validate(Object value) {
-					Object element = connectionIDComboField.getStructuredSelection().getFirstElement();
-					if (element instanceof Entry) {
-						Boolean isValid = (Boolean) ((Entry) element).getValue();
-						if (!isValid) {
-							return new Status(Status.ERROR, PlotActivator.PLUGIN_ID, "Selected connection ID is already in use");
-						}
+					String comboText = connectionIDComboField.getCombo().getText();
+					if (comboText == null || comboText.isEmpty()) {
+						return new Status(Status.ERROR, PlotActivator.PLUGIN_ID, "Must enter valid connection ID");
+					}
+
+					Boolean isValid = connectionIds.get(comboText);
+					if (isValid != null && !isValid) {
+						return new Status(Status.ERROR, PlotActivator.PLUGIN_ID, "Selected connection ID is already in use");
 					}
 					return Status.OK_STATUS;
 				}
