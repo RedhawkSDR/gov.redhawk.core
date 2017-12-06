@@ -38,8 +38,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
+import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
 import org.omg.PortableServer.POA;
+import org.omg.PortableServer.Servant;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 import org.osgi.framework.FrameworkUtil;
@@ -83,8 +85,13 @@ import CF.LifeCyclePackage.InitializeError;
 import CF.PortPackage.InvalidPort;
 import CF.PortPackage.OccupiedPort;
 import ExtendedCF.ConnectionStatus;
+import ExtendedCF.NegotiablePortOperations;
+import ExtendedCF.NegotiableProvidesPortOperations;
+import ExtendedCF.NegotiableProvidesPortPOATie;
 import ExtendedCF.NegotiableUsesPortOperations;
 import ExtendedCF.NegotiableUsesPortPOATie;
+import ExtendedCF.NegotiationError;
+import ExtendedCF.NegotiationResult;
 import ExtendedCF.TransportInfo;
 import ExtendedCF.UsesConnection;
 
@@ -126,7 +133,20 @@ public class AbstractResourceImpl extends Resource {
 		}
 	}
 
-	private static class AbstractNegotiablePort extends AbstractPort implements NegotiableUsesPortOperations {
+	private class AbstractNegotiableProvidesPort extends AbstractNegotiablePort implements NegotiableProvidesPortOperations {
+
+		@Override
+		public NegotiationResult negotiateTransport(String transportType, DataType[] transportProperties) throws NegotiationError {
+			return null;
+		}
+
+		@Override
+		public void disconnectTransport(String transportId) throws NegotiationError {
+		}
+
+	}
+
+	private class AbstractNegotiableUsesPort extends AbstractNegotiablePort implements NegotiableUsesPortOperations {
 
 		@Override
 		public UsesConnection[] connections() {
@@ -138,22 +158,33 @@ public class AbstractResourceImpl extends Resource {
 		}
 
 		@Override
-		public TransportInfo[] supportedTransports() {
-			return new TransportInfo[] { new TransportInfo("transport_type", new DataType[] {}) };
-		}
-
-		@Override
 		public ConnectionStatus[] connectionStatus() {
 			List<ConnectionStatus> retVal = new ArrayList<>();
 			for (String connectionID : getConnections().keySet()) {
-				retVal.add(new ConnectionStatus(connectionID, getConnections().get(connectionID), true, "transport_type", new DataType[] {}));
+				retVal.add(new ConnectionStatus(connectionID, getConnections().get(connectionID), true, "corba", new DataType[] {}));
 			}
 			return retVal.toArray(new ConnectionStatus[retVal.size()]);
 		}
 
 	}
 
-	private static class AbstractPort implements PortOperations {
+	private class AbstractNegotiablePort extends AbstractPort implements NegotiablePortOperations {
+
+		@Override
+		public TransportInfo[] supportedTransports() {
+			String progLang = spd.getImplementation().get(0).getProgrammingLanguage().getName();
+			if (progLang.toLowerCase().equals("c++")) {
+				Any any = AnyUtils.toAny(123, "long", false);
+				DataType simpleProp = new DataType("simpleProp", any);
+				return new TransportInfo[] { new TransportInfo("shmipc", new DataType[] { simpleProp }) };
+			} else {
+				return new TransportInfo[] { };
+			}
+		}
+
+	}
+
+	private class AbstractPort implements PortOperations {
 
 		private Map<String, org.omg.CORBA.Object> connections = new HashMap<>();
 
@@ -177,18 +208,23 @@ public class AbstractResourceImpl extends Resource {
 
 	protected void initPorts(Ports ports) {
 		for (Provides out : ports.getProvides()) {
-			PortPOATie tie = new PortPOATie(new AbstractPort());
-			addPort(out.getName(), tie);
+			Servant servant;
+			if (out.getRepID().startsWith("IDL:BULKIO/data")) {
+				servant = new NegotiableProvidesPortPOATie(new AbstractNegotiableProvidesPort());
+			} else {
+				servant = new PortPOATie(new AbstractPort());
+			}
+			addPort(out.getName(), servant);
 		}
 
 		for (Uses in : ports.getUses()) {
+			Servant servant;
 			if (in.getRepID().startsWith("IDL:BULKIO/data")) {
-				NegotiableUsesPortPOATie tie = new NegotiableUsesPortPOATie(new AbstractNegotiablePort());
-				addPort(in.getName(), tie);
+				servant = new NegotiableUsesPortPOATie(new AbstractNegotiableUsesPort());
 			} else {
-				PortPOATie tie = new PortPOATie(new AbstractPort());
-				addPort(in.getName(), tie);
+				servant = new PortPOATie(new AbstractPort());
 			}
+			addPort(in.getName(), servant);
 		}
 	}
 

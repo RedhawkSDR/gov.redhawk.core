@@ -12,21 +12,32 @@
 package gov.redhawk.model.sca.tests;
 
 import org.junit.Assert;
+import org.junit.Test;
 
 import gov.redhawk.model.sca.ScaComponent;
-import gov.redhawk.model.sca.ScaNegotiatedConnection;
+import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.model.sca.ScaTransport;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
+import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Negotiated Connection</b></em>'.
+ * A test case for the model object '<em><b>Transport</b></em>'.
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaNegotiatedConnectionTest extends ScaConnectionTest {
+public class ScaTransportTest extends TestCase {
+
+	/**
+	 * The fixture for this Transport test case.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ScaTransport fixture = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -34,28 +45,37 @@ public class ScaNegotiatedConnectionTest extends ScaConnectionTest {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(ScaNegotiatedConnectionTest.class);
+		TestRunner.run(ScaTransportTest.class);
 	}
 
 	/**
-	 * Constructs a new Negotiated Connection test case with the given name.
+	 * Constructs a new Transport test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ScaNegotiatedConnectionTest(String name) {
+	public ScaTransportTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Returns the fixture for this Negotiated Connection test case.
+	 * Sets the fixture for this Transport test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	protected ScaNegotiatedConnection getFixture() {
-		return (ScaNegotiatedConnection) fixture;
+	protected void setFixture(ScaTransport fixture) {
+		this.fixture = fixture;
+	}
+
+	/**
+	 * Returns the fixture for this Transport test case.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ScaTransport getFixture() {
+		return fixture;
 	}
 
 	/**
@@ -66,11 +86,14 @@ public class ScaNegotiatedConnectionTest extends ScaConnectionTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
+		// END GENERATED CODE
 		TestEnvirornment env = TestEnvirornment.getInstance();
 		ScaWaveform waveform = env.getDomMgr().getWaveforms().get(0);
 		ScaComponent component = waveform.getScaComponent(ScaTestConstaints.SIG_GEN_1);
 		ScaUsesPort usesPort = (ScaUsesPort) component.getScaPort("out");
-		setFixture(usesPort.getConnections().get(0));
+		ScaTransport transport = usesPort.getSupportedTransports().get(0);
+		setFixture(transport);
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -84,16 +107,13 @@ public class ScaNegotiatedConnectionTest extends ScaConnectionTest {
 		setFixture(null);
 	}
 
-	// END GENERATED CODE
-
-	public void testGetTransportType() {
-		Assert.assertEquals("corba", ((ScaNegotiatedConnection) getFixture()).getTransportType());
+	@Test
+	public void testTransportDetails() {
+		Assert.assertEquals("shmipc", getFixture().getTransportType());
+		Assert.assertEquals(1, getFixture().getTransportProperties().size());
+		ScaSimpleProperty simpleProp = (ScaSimpleProperty) getFixture().getTransportProperties().get(0);
+		Assert.assertEquals("simpleProp", simpleProp.getId());
+		Assert.assertEquals(123, simpleProp.getValue());
 	}
 
-	public void testIsAlive() {
-		Assert.assertEquals(true, ((ScaNegotiatedConnection) getFixture()).isAlive());
-	}
-
-	// BEGIN GENERATED CODE
-
-} // ScaNegotiatedConnectionTest
+} // ScaTransportTest

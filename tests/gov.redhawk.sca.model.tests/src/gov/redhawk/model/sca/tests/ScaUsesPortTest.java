@@ -11,21 +11,22 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
+import org.eclipse.emf.common.util.EList;
+import org.junit.Assert;
+
+import CF.PortPackage.InvalidPort;
+import CF.PortPackage.OccupiedPort;
+import ExtendedCF.NegotiableUsesPortHelper;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaConnection;
+import gov.redhawk.model.sca.ScaNegotiatedConnection;
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.textui.TestRunner;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.transaction.util.TransactionUtil;
-import org.junit.Assert;
-import CF.PortHelper;
-import CF.PortPackage.InvalidPort;
-import CF.PortPackage.OccupiedPort;
 
 /**
  * <!-- begin-user-doc -->
@@ -76,8 +77,6 @@ public class ScaUsesPortTest extends ScaPortTest {
 		return (ScaUsesPort) fixture;
 	}
 
-	private TestEnvirornment env;
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -86,31 +85,15 @@ public class ScaUsesPortTest extends ScaPortTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		this.env = TestEnvirornment.getInstance();
-		final ScaWaveform waveform = this.env.getDomMgr().getWaveformFactories().get(0).createWaveform(null, "testWave", null, null);
-		Assert.assertNotNull(waveform);
+		// END GENERATED CODE
+		TestEnvirornment env = TestEnvirornment.getInstance();
+		ScaWaveform waveform = env.getDomMgr().getWaveforms().get(0);
 		waveform.refresh(null, RefreshDepth.FULL);
-		this.env.validateStartState();
-		Assert.assertNotNull(waveform);
-		ScaModelCommand.execute(waveform, new ScaModelCommand() {
-
-			@Override
-			public void execute() {
-				final ScaComponent kitchenSinkComp = waveform.findComponent(ScaTestConstaints.DCE_KITCHEN_SINK_COMPONENT);
-				if (kitchenSinkComp == null) {
-					ScaTestsUtil.DEBUG.message("Invalid Object State: {0}", waveform);
-					return;
-				}
-				final ScaPort< ? , ? > port = kitchenSinkComp.getScaPort("outDouble");
-				if (port == null) {
-					ScaTestsUtil.DEBUG.message("Invalid Object State: {0}", kitchenSinkComp);
-					return;
-				}
-				setFixture(port);
-			}
-		});
-		Assert.assertNotNull(getFixture());
-		Assert.assertNotNull(TransactionUtil.getEditingDomain(getFixture()));
+		env.validateStartState();
+		ScaComponent kitchenSinkComp = waveform.findComponent(ScaTestConstaints.SIG_GEN_1);
+		ScaPort< ? , ? > port = kitchenSinkComp.getScaPort("out");
+		setFixture(port);
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -121,9 +104,10 @@ public class ScaUsesPortTest extends ScaPortTest {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
+		// END GENERATED CODE
 		this.env = null;
-
 		setFixture(null);
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -137,7 +121,14 @@ public class ScaUsesPortTest extends ScaPortTest {
 	 */
 	public void testFetchConnections__IProgressMonitor() throws InterruptedException {
 		// END GENERATED CODE
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().unsetConnections();
+		});
+		Assert.assertFalse(getFixture().isSetConnections());
 		EList<ScaConnection> connectionsEList = getFixture().fetchConnections(null);
+		Assert.assertTrue(getFixture().isSetConnections());
+		Assert.assertEquals(1, getFixture().getConnections().size());
+		Assert.assertTrue(getFixture().getConnections().get(0) instanceof ScaNegotiatedConnection);
 		try {
 			connectionsEList.clear();
 			Assert.fail("fetched Connections list should be unmodifiable");
@@ -156,13 +147,13 @@ public class ScaUsesPortTest extends ScaPortTest {
 	 * @see gov.redhawk.model.sca.ScaUsesPort#disconnectPort(gov.redhawk.model.sca.ScaConnection)
 	 * @generated NOT
 	 */
-	public void testDisconnectPort__ScaConnection() {
+	public void testDisconnectPort__ScaConnection() throws InvalidPort {
 		// END GENERATED CODE
-		try {
-			getFixture().disconnectPort((ScaConnection) null);
-		} catch (InvalidPort e) {
-			// PASS
-		}
+		getFixture().disconnectPort((ScaConnection) null);
+
+		ScaConnection connection = getFixture().getConnections().get(0);
+		getFixture().disconnectPort(connection);
+		Assert.assertFalse(getFixture().getConnections().contains(connection));
 		// BEGIN GENERATED CODE
 	}
 
@@ -199,19 +190,31 @@ public class ScaUsesPortTest extends ScaPortTest {
 	 * @see mil.jpeojtrs.sca.cf.PortOperations#disconnectPort(java.lang.String)
 	 * @generated NOT
 	 */
-	public void testDisconnectPort__String() {
+	public void testDisconnectPort__String() throws InvalidPort {
 		// END GENERATED CODE
-		// try {
-		// getFixture().disconnectPort("");
-		// } catch (InvalidPort e) {
-		// // PASS
-		// }
+		getFixture().disconnectPort((String) null);
+
+		boolean caught = false;
+		try {
+			getFixture().disconnectPort("bogus_connection");
+		} catch (InvalidPort e) {
+			caught = true;
+		}
+		Assert.assertTrue(caught);
+
+		Assert.assertEquals(1, getFixture().getConnections().size());
+		getFixture().disconnectPort("DCE:223f0573-772d-44ad-ae36-18ddffaa0ffe");
+		Assert.assertEquals(0, getFixture().getConnections().size());
 		// BEGIN GENERATED CODE
 	}
 
+	// END GENERATED CODE
+
 	@Override
 	protected String getRepId() {
-		return PortHelper.id();
+		return NegotiableUsesPortHelper.id();
 	}
+
+	// BEGIN GENERATED CODE
 
 } // ScaUsesPortTest

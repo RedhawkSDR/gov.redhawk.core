@@ -12,7 +12,10 @@
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.ScaPort;
+import gov.redhawk.model.sca.ScaTransport;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+
+import java.util.List;
 
 import org.junit.Assert;
 
@@ -24,6 +27,13 @@ import org.junit.Assert;
  * The following features are tested:
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaPort#getRepid() <em>Repid</em>}</li>
+ * </ul>
+ * </p>
+ * <p>
+ * The following operations are tested:
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaPort#fetchSupportedTransports(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Supported Transports</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -74,16 +84,24 @@ public abstract class ScaPortTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaPort#getComponent() <em>Component</em>}' feature getter.
+	 * Tests the
+	 * '{@link gov.redhawk.model.sca.ScaPort#fetchSupportedTransports(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Supported Transports</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ScaPort#getComponent()
+	 * @see gov.redhawk.model.sca.ScaPort#fetchSupportedTransports(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
-	@Deprecated
-	public void testGetComponent() {
+	public void testFetchSupportedTransports__IProgressMonitor() {
 		// END GENERATED CODE
-		// PASS
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().unsetSupportedTransports();
+		});
+		Assert.assertFalse(getFixture().isSetSupportedTransports());
+		getFixture().fetchSupportedTransports(null);
+		List<ScaTransport> transports = getFixture().getSupportedTransports();
+		Assert.assertNotNull(transports);
+		Assert.assertEquals(1, transports.size());
 		// BEGIN GENERATED CODE
 	}
 

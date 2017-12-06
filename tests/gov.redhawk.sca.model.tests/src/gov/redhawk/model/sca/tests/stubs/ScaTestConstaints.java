@@ -27,6 +27,8 @@ public final class ScaTestConstaints {
 	public static final String DCE_STRUCT_SEQ_PROP_SIMPLE_FIELD = "DCE:b34d9204-46fa-43ea-9ef2-189674bfc366";
 
 	public static final String DCE_KITCHEN_SINK_COMPONENT = "DCE:fedf7667-b838-47b5-b90b-73e5e2e93f76";
+	public static final String SIG_GEN_1 = "DCE:7264cd85-6985-4903-92e1-c30982197dbd";
+	public static final String HARD_LIMIT_1 = "DCE:24494fb3-7220-45d7-97b9-2efe64a538df";
 
 	public static final String DCE_EXAMPLE_WAVEFORM = "DCE:4c5d6060-7b03-47c6-8fed-56cf0991273a";
 	public static final String DCE_GPP_DEVICE = "DCE:0dba299a-c79a-4c35-bdc5-5f417b02df32";

@@ -11,15 +11,14 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
+import ExtendedCF.NegotiableProvidesPortHelper;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaProvidesPort;
 import gov.redhawk.model.sca.ScaWaveform;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.textui.TestRunner;
-import org.junit.Assert;
 
 /**
  * <!-- begin-user-doc -->
@@ -59,8 +58,6 @@ public class ScaProvidesPortTest extends ScaPortTest {
 		return (ScaProvidesPort) fixture;
 	}
 
-	private TestEnvirornment env;
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -69,30 +66,15 @@ public class ScaProvidesPortTest extends ScaPortTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		this.env = TestEnvirornment.getInstance();
-		final ScaWaveform waveform = this.env.getDomMgr().getWaveformFactories().get(0).createWaveform(null, "testWave", null, null);
-		Assert.assertNotNull(waveform);
+		// END GENERATED CODE
+		TestEnvirornment env = TestEnvirornment.getInstance();
+		ScaWaveform waveform = env.getDomMgr().getWaveforms().get(0);
 		waveform.refresh(null, RefreshDepth.FULL);
-		this.env.validateStartState();
-		ScaModelCommand.execute(waveform, new ScaModelCommand() {
-
-			@Override
-			public void execute() {
-				final ScaComponent kitchenSinkComp = waveform.findComponent(ScaTestConstaints.DCE_KITCHEN_SINK_COMPONENT);
-				if (kitchenSinkComp == null && ScaTestsUtil.DEBUG.enabled) {
-					ScaTestsUtil.DEBUG.message("Invalid Object State: {0}", waveform);
-				}
-				if (kitchenSinkComp == null) {
-					return;
-				}
-				final ScaPort< ? , ? > port = kitchenSinkComp.getScaPort("inDouble");
-				if (port == null && ScaTestsUtil.DEBUG.enabled) {
-					ScaTestsUtil.DEBUG.message("Invalid Object State: {0}", kitchenSinkComp);
-				}
-				setFixture(port);
-			}
-		});
-		Assert.assertNotNull(getFixture());
+		env.validateStartState();
+		ScaComponent kitchenSinkComp = waveform.findComponent(ScaTestConstaints.HARD_LIMIT_1);
+		ScaPort< ? , ? > port = kitchenSinkComp.getScaPort("dataDouble_in");
+		setFixture(port);
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -103,14 +85,19 @@ public class ScaProvidesPortTest extends ScaPortTest {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
+		// END GENERATED CODE
 		this.env = null;
-
 		setFixture(null);
+		// BEGIN GENERATED CODE
 	}
+
+	// END GENERATED CODE
 
 	@Override
 	protected String getRepId() {
-		return null;
+		return NegotiableProvidesPortHelper.id();
 	}
+
+	// BEGIN GENERATED CODE
 
 } // ScaProvidesPortTest
