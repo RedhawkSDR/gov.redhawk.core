@@ -88,7 +88,7 @@ public class MultiOutConnectionWizard extends Dialog {
 				String id = entry.getKey().toString();
 
 				if (!entry.getValue()) {
-					id = id + " (IN USE) ";
+					id = id + " (IN USE)";
 				}
 				return id;
 			}
