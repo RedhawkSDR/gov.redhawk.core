@@ -14,6 +14,7 @@ package gov.redhawk.sca.model.provider.event.internal.listener;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaEventChannel;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.ScaWaveformFactory;
@@ -21,9 +22,13 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
 import gov.redhawk.model.sca.services.IScaDataProvider;
 import gov.redhawk.sca.model.provider.event.AbstractEventChannelDataProvider;
+import gov.redhawk.sca.model.provider.event.DataProviderActivator;
 import gov.redhawk.sca.model.provider.event.internal.EventServiceDataProviderService;
 import gov.redhawk.sca.util.PluginUtil;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.OBJECT_NOT_EXIST;
 import org.omg.CORBA.SystemException;
@@ -82,6 +87,9 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 		case SourceCategoryType._DEVICE_MANAGER:
 			handleRemoveDeviceManager(event);
 			break;
+		case SourceCategoryType._EVENT_CHANNEL:
+			handleRemoveEventChannel(event);
+			break;
 		case SourceCategoryType._SERVICE:
 			break;
 		default:
@@ -133,6 +141,18 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 		});
 	}
 
+	private void handleRemoveEventChannel(final DomainManagementObjectRemovedEventType event) {
+		final ScaDomainManager domain = getContainer();
+		ScaModelCommand.execute(domain, () -> {
+			for (ScaEventChannel eventChannel : domain.getEventChannels()) {
+				if (eventChannel.getName().equals(event.sourceId)) {
+					domain.getEventChannels().remove(eventChannel);
+					return;
+				}
+			}
+		});
+	}
+
 	private void handleAddEvent(final DomainManagementObjectAddedEventType event) {
 		switch (event.sourceCategory.value()) {
 		case SourceCategoryType._APPLICATION:
@@ -146,6 +166,9 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			break;
 		case SourceCategoryType._DEVICE_MANAGER:
 			handleAddDeviceManager(event);
+			break;
+		case SourceCategoryType._EVENT_CHANNEL:
+			handleAddEventChannel(event);
 			break;
 		case SourceCategoryType._SERVICE:
 			break;
@@ -231,6 +254,44 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			}
 		} catch (final InterruptedException | SystemException e) {
 			// PASS if the object does not exist ignore the add request
+		}
+	}
+
+	private void handleAddEventChannel(final DomainManagementObjectAddedEventType event) {
+		if (event.sourceId == null || event.sourceId.isEmpty()) {
+			IStatus status = new Status(IStatus.ERROR, DataProviderActivator.ID, "DomainManagementObjectAddedEventType for event channel did not contain a source ID");
+			DataProviderActivator.getInstance().getLog().log(status);
+			return;
+		}
+		if (event.sourceIOR == null) {
+			IStatus status = new Status(IStatus.ERROR, DataProviderActivator.ID, "DomainManagementObjectAddedEventType for event channel did not contain an object (sourceIOR)");
+			DataProviderActivator.getInstance().getLog().log(status);
+			return;
+		}
+
+		final ScaDomainManager domain = getContainer();
+		ScaEventChannel newEventChannel = ScaFactory.eINSTANCE.createScaEventChannel();
+		newEventChannel.setName(event.sourceId);
+		newEventChannel.setCorbaObj(event.sourceIOR);
+
+		Boolean added = ScaModelCommandWithResult.execute(domain, () -> {
+			for (ScaEventChannel eventChannel : domain.getEventChannels()) {
+				if (newEventChannel.getName().equals(eventChannel.getName())) {
+					return false;
+				}
+				if (newEventChannel.getIor().equals(eventChannel.getIor())) {
+					return false;
+				}
+			}
+			domain.getEventChannels().add(newEventChannel);
+			return true;
+		});
+		if (added != null && added.booleanValue()) {
+			try {
+				newEventChannel.refresh(new NullProgressMonitor(), RefreshDepth.SELF);
+			} catch (InterruptedException e) {
+				return;
+			}
 		}
 	}
 
