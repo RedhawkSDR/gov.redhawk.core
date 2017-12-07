@@ -191,11 +191,7 @@ public abstract class AbstractEventChannelDataProvider< T > extends AbstractData
 		for (final String s : this.connectedChannels.keySet()) {
 			try {
 				disconnectChannel(s, progress.newChild(1));
-			} catch (final InvalidEventChannelName e) {
-				// PASS
-			} catch (final NotConnected e) {
-				// PASS
-			} catch (final SystemException e) {
+			} catch (final InvalidEventChannelName | NotConnected | SystemException e) {
 				// PASS
 			}
 		}

@@ -52,9 +52,6 @@ import CF.DomainManagerPackage.AlreadyConnected;
 import CF.DomainManagerPackage.InvalidEventChannelName;
 import CF.DomainManagerPackage.NotConnected;
 
-/**
- * 
- */
 public class EventJob extends SilentJob implements PushConsumerOperations {
 
 	private static final ExecutorService EXECUTOR_POOL = Executors.newSingleThreadExecutor(new NamedThreadFactory(EventJob.class.getName()));
@@ -89,17 +86,7 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 			POA poa = session.getPOA();
 			this.stub = PushConsumerHelper.narrow(poa.servant_to_reference(new PushConsumerPOATie(this)));
 			this.domMgr.registerWithEventChannel(stub, this.id.toString(), channelName);
-		} catch (ServantNotActive e) {
-			throw new CoreException(new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
-		} catch (WrongPolicy e) {
-			throw new CoreException(new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
-		} catch (InvalidObjectReference e) {
-			throw new CoreException(new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
-		} catch (InvalidEventChannelName e) {
-			throw new CoreException(new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
-		} catch (AlreadyConnected e) {
-			throw new CoreException(new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
-		} catch (SystemException e) {
+		} catch (ServantNotActive | WrongPolicy | InvalidObjectReference | InvalidEventChannelName | AlreadyConnected | SystemException e) {
 			throw new CoreException(new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
 		}
 
@@ -168,11 +155,7 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 			if (!this.dp.isDisposed()) {
 				this.dp.disconnectChannel(this.channelName, null);
 			}
-		} catch (final InvalidEventChannelName e) {
-			// PASS
-		} catch (final NotConnected e) {
-			// PASS
-		} catch (final SystemException e) {
+		} catch (final InvalidEventChannelName | NotConnected | SystemException e) {
 			// PASS
 		}
 	}
@@ -196,11 +179,7 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 							if (localDomMgr != null && localId != null && localChannelName != null) {
 								localDomMgr.unregisterFromEventChannel(localId, localChannelName);
 							}
-						} catch (InvalidEventChannelName e) {
-							// PASS
-						} catch (NotConnected e) {
-							// PASS
-						} catch (final SystemException e) {
+						} catch (InvalidEventChannelName | NotConnected | SystemException e) {
 							// PASS
 						} finally {
 							if (localStub != null) {
