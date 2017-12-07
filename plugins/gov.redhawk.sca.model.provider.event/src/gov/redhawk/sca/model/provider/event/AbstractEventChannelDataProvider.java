@@ -15,6 +15,7 @@ import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.services.AbstractDataProvider;
 import gov.redhawk.sca.model.provider.event.internal.listener.EventJob;
 import gov.redhawk.sca.util.MutexRule;
+import gov.redhawk.sca.util.SubMonitor;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,7 +29,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.SystemException;
@@ -36,9 +36,6 @@ import org.omg.CORBA.SystemException;
 import CF.DomainManagerPackage.InvalidEventChannelName;
 import CF.DomainManagerPackage.NotConnected;
 
-/**
- * 
- */
 public abstract class AbstractEventChannelDataProvider< T > extends AbstractDataProvider {
 
 	private final T container;
@@ -176,15 +173,13 @@ public abstract class AbstractEventChannelDataProvider< T > extends AbstractData
 	 * @throws NotConnected
 	 */
 	public synchronized void disconnectChannel(final String channelName, IProgressMonitor monitor) throws InvalidEventChannelName, NotConnected {
-		if (monitor == null) {
-			monitor = new NullProgressMonitor();
-		}
-		monitor.beginTask("Disconnecting " + channelName, 1);
+		SubMonitor progress = SubMonitor.convert(monitor, "Disconnecting " + channelName, 1);
 		final EventJob oldJob = this.connectedChannels.remove(channelName);
 		if (oldJob != null) {
 			oldJob.dispose();
 		}
-		monitor.done();
+		progress.worked(1);
+		progress.done();
 	}
 
 	/**
@@ -192,22 +187,15 @@ public abstract class AbstractEventChannelDataProvider< T > extends AbstractData
 	 * @param monitor
 	 */
 	public synchronized void disconnectAll(IProgressMonitor monitor) {
-		if (monitor == null) {
-			monitor = new NullProgressMonitor();
-		}
-		monitor.beginTask("Disconnecting all", this.connectedChannels.size());
+		SubMonitor progress = SubMonitor.convert(monitor, "Disconnecting all", this.connectedChannels.size());
 		for (final String s : this.connectedChannels.keySet()) {
 			try {
-				disconnectChannel(s, new SubProgressMonitor(monitor, 1));
-			} catch (final InvalidEventChannelName e) {
-				// PASS
-			} catch (final NotConnected e) {
-				// PASS
-			} catch (final SystemException e) {
+				disconnectChannel(s, progress.newChild(1));
+			} catch (final InvalidEventChannelName | NotConnected | SystemException e) {
 				// PASS
 			}
 		}
-		monitor.done();
+		progress.done();
 		setStatus(Status.OK_STATUS);
 	}
 
@@ -221,32 +209,22 @@ public abstract class AbstractEventChannelDataProvider< T > extends AbstractData
 	 * @throws WrongPolicy
 	 */
 	public synchronized IStatus connectAll(IProgressMonitor monitor) {
-		if (monitor == null) {
-			monitor = new NullProgressMonitor();
-		}
-		
+		SubMonitor progress = SubMonitor.convert(monitor, "Connecting to event channels", this.connectedChannels.size());
 		MultiStatus connectAllStatus = new MultiStatus(DataProviderActivator.ID, Status.OK, "Error connecting to event channels", null);
-		monitor.beginTask("Connecting to event channels", this.connectedChannels.size());
 		for (final String s : this.connectedChannels.keySet()) {
-			IStatus connectStatus = connectChannel(s, new SubProgressMonitor(monitor, 1));
+			IStatus connectStatus = connectChannel(s, progress.newChild(1));
 			connectAllStatus.add(connectStatus);
-			
 		}
+		progress.done();
 		setStatus(connectAllStatus);
 		return connectAllStatus;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public IStatus refresh(final IProgressMonitor monitor) {
 		return Status.OK_STATUS;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void dispose() {
 		super.dispose();

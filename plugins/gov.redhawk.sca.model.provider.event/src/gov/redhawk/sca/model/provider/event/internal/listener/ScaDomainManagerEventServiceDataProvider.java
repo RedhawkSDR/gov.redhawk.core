@@ -25,6 +25,7 @@ import gov.redhawk.sca.model.provider.event.internal.EventServiceDataProviderSer
 import gov.redhawk.sca.util.PluginUtil;
 
 import org.omg.CORBA.Any;
+import org.omg.CORBA.OBJECT_NOT_EXIST;
 import org.omg.CORBA.SystemException;
 import org.omg.CORBA.TypeCode;
 
@@ -196,11 +197,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			if (newDeviceManager != null) {
 				newDeviceManager.refresh(null, RefreshDepth.SELF);
 			}
-		} catch (final org.omg.CORBA.OBJECT_NOT_EXIST e) {
-			// PASS if the object does not exist ignore the add request
-		} catch (final InterruptedException e) {
-			// PASS
-		} catch (final SystemException e) {
+		} catch (final InterruptedException | SystemException e) {
 			// PASS
 		}
 	}
@@ -229,10 +226,8 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 				newWaveformFactory.refresh(null, RefreshDepth.SELF);
 			}
 
-		} catch (final org.omg.CORBA.OBJECT_NOT_EXIST e) {
-			// PASS if the object does not exist ignore the add request
-		} catch (final InterruptedException e) {
-			// PASS if the object does not exist ignore the add request
+		} catch (final OBJECT_NOT_EXIST | InterruptedException e) {
+			// PASS
 		}
 	}
 
@@ -258,14 +253,9 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			if (newWaveform != null) {
 				newWaveform.refresh(null, RefreshDepth.SELF);
 			}
-		} catch (final org.omg.CORBA.OBJECT_NOT_EXIST e) {
+		} catch (final InterruptedException | SystemException e) {
 			// PASS if the object does not exist ignore the add request
-		} catch (final SystemException e) {
-			// PASS
-		} catch (final InterruptedException e) {
-			// PASS
 		}
-
 	}
 
 }

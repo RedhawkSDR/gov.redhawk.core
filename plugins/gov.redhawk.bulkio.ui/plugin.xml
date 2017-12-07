@@ -46,9 +46,13 @@
                   checkEnabled="false">
                <iterate
                      ifEmpty="false"
-                     operator="or">
+                     operator="and">
                   <adapt
                         type="gov.redhawk.model.sca.ScaUsesPort">
+                     <test
+                           forcePluginActivation="true"
+                           property="gov.redhawk.bulkio.ui.sriSupported">
+                     </test>
                   </adapt>
                </iterate>
             </visibleWhen>
@@ -72,6 +76,16 @@
             id="gov.redhawk.bulkio.ui.preferences"
             name="BulkIO">
       </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="gov.redhawk.bulkio.ui.internal.SriSupportPropertyTester"
+            id="gov.redhawk.bulkio.ui.sri.supported"
+            namespace="gov.redhawk.bulkio.ui"
+            properties="sriSupported"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
 
 </plugin>
