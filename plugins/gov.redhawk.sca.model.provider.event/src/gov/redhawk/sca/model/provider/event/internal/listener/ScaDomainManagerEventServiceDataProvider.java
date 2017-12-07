@@ -98,51 +98,38 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 	private void handleRemoveDeviceManager(final DomainManagementObjectRemovedEventType event) {
 		final String sourceId = event.sourceId;
 		final ScaDomainManager domain = getContainer();
-		ScaModelCommand.execute(domain, new ScaModelCommand() {
-			@Override
-			public void execute() {
-				for (final ScaDeviceManager deviceManager : domain.getDeviceManagers()) {
-					if (deviceManager != null && PluginUtil.equals(deviceManager.identifier(), sourceId)) {
-						domain.getDeviceManagers().remove(deviceManager);
-						break;
-					}
+		ScaModelCommand.execute(domain, () -> {
+			for (final ScaDeviceManager deviceManager : domain.getDeviceManagers()) {
+				if (deviceManager != null && PluginUtil.equals(deviceManager.identifier(), sourceId)) {
+					domain.getDeviceManagers().remove(deviceManager);
+					break;
 				}
-
 			}
-
 		});
 	}
 
 	private void handleRemoveApplicationFactory(final DomainManagementObjectRemovedEventType event) {
 		final String sourceId = event.sourceId;
 		final ScaDomainManager domain = getContainer();
-		ScaModelCommand.execute(domain, new ScaModelCommand() {
-			@Override
-			public void execute() {
-				for (final ScaWaveformFactory factory : domain.getWaveformFactories()) {
-					if (factory != null && PluginUtil.equals(sourceId, factory.getIdentifier())) {
-						domain.getWaveformFactories().remove(factory);
-						break;
-					}
+		ScaModelCommand.execute(domain, () -> {
+			for (final ScaWaveformFactory factory : domain.getWaveformFactories()) {
+				if (factory != null && PluginUtil.equals(sourceId, factory.getIdentifier())) {
+					domain.getWaveformFactories().remove(factory);
+					break;
 				}
 			}
-
 		});
 	}
 
 	private void handleRemoveApplication(final DomainManagementObjectRemovedEventType event) {
 		final ScaDomainManager domain = getContainer();
-		ScaModelCommand.execute(domain, new ScaModelCommand() {
-			@Override
-			public void execute() {
-				for (final ScaWaveform waveform : domain.getWaveforms()) {
-					if (waveform != null && PluginUtil.equals(event.sourceId, waveform.getIdentifier())) {
-						domain.getWaveforms().remove(waveform);
-						break;
-					}
+		ScaModelCommand.execute(domain, () -> {
+			for (final ScaWaveform waveform : domain.getWaveforms()) {
+				if (waveform != null && PluginUtil.equals(event.sourceId, waveform.getIdentifier())) {
+					domain.getWaveforms().remove(waveform);
+					break;
 				}
 			}
-
 		});
 	}
 
@@ -176,23 +163,19 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 
 	private void handleAddDeviceManager(final DomainManagementObjectAddedEventType event) {
 		try {
-			final DeviceManager devMgr = DeviceManagerHelper.narrow(event.sourceIOR);
-			final String ior = devMgr.toString();
+			final DeviceManager devMgrObj = DeviceManagerHelper.narrow(event.sourceIOR);
+			final String ior = devMgrObj.toString();
 			final ScaDomainManager domain = getContainer();
-			final ScaDeviceManager newDeviceManager = ScaModelCommandWithResult.execute(domain, new ScaModelCommandWithResult<ScaDeviceManager>() {
-				@Override
-				public void execute() {
-					for (final ScaDeviceManager deviceManager : domain.getDeviceManagers()) {
-						if (deviceManager != null && PluginUtil.equals(ior, deviceManager.getIor())) {
-							return;
-						}
+			final ScaDeviceManager newDeviceManager = ScaModelCommandWithResult.execute(domain, () -> {
+				for (final ScaDeviceManager deviceManager : domain.getDeviceManagers()) {
+					if (deviceManager != null && PluginUtil.equals(ior, deviceManager.getIor())) {
+						return null;
 					}
-					final ScaDeviceManager newScaDeviceManager = ScaFactory.eINSTANCE.createScaDeviceManager();
-					newScaDeviceManager.setCorbaObj(devMgr);
-					domain.getDeviceManagers().add(newScaDeviceManager);
-					setResult(newScaDeviceManager);
 				}
-
+				final ScaDeviceManager retVal = ScaFactory.eINSTANCE.createScaDeviceManager();
+				retVal.setCorbaObj(devMgrObj);
+				domain.getDeviceManagers().add(retVal);
+				return retVal;
 			});
 			if (newDeviceManager != null) {
 				newDeviceManager.refresh(null, RefreshDepth.SELF);
@@ -204,23 +187,19 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 
 	private void handleAddApplicationFactory(final DomainManagementObjectAddedEventType event) {
 		try {
-			final ApplicationFactory appFactory = ApplicationFactoryHelper.narrow(event.sourceIOR);
-			final String ior = appFactory.toString();
+			final ApplicationFactory appFactoryObj = ApplicationFactoryHelper.narrow(event.sourceIOR);
+			final String ior = appFactoryObj.toString();
 			final ScaDomainManager domain = getContainer();
-			final ScaWaveformFactory newWaveformFactory = ScaModelCommandWithResult.execute(domain, new ScaModelCommandWithResult<ScaWaveformFactory>() {
-				@Override
-				public void execute() {
-					for (final ScaWaveformFactory factory : domain.getWaveformFactories()) {
-						if (factory != null && PluginUtil.equals(ior, factory.getIor())) {
-							return;
-						}
+			final ScaWaveformFactory newWaveformFactory = ScaModelCommandWithResult.execute(domain, () -> {
+				for (final ScaWaveformFactory factory : domain.getWaveformFactories()) {
+					if (factory != null && PluginUtil.equals(ior, factory.getIor())) {
+						return null;
 					}
-					final ScaWaveformFactory newWaveformFactory = ScaFactory.eINSTANCE.createScaWaveformFactory();
-					newWaveformFactory.setCorbaObj(appFactory);
-					domain.getWaveformFactories().add(newWaveformFactory);
-					setResult(newWaveformFactory);
 				}
-
+				final ScaWaveformFactory retVal = ScaFactory.eINSTANCE.createScaWaveformFactory();
+				retVal.setCorbaObj(appFactoryObj);
+				domain.getWaveformFactories().add(retVal);
+				return retVal;
 			});
 			if (newWaveformFactory != null && !newWaveformFactory.isDisposed()) {
 				newWaveformFactory.refresh(null, RefreshDepth.SELF);
@@ -233,22 +212,19 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 
 	private void handleAddApplicationEvent(final DomainManagementObjectAddedEventType event) {
 		try {
-			final Application app = ApplicationHelper.narrow(event.sourceIOR);
-			final String ior = app.toString();
+			final Application appObj = ApplicationHelper.narrow(event.sourceIOR);
+			final String ior = appObj.toString();
 			final ScaDomainManager domain = getContainer();
-			final ScaWaveform newWaveform = ScaModelCommandWithResult.execute(domain, new ScaModelCommandWithResult<ScaWaveform>() {
-				@Override
-				public void execute() {
-					for (final ScaWaveform w : domain.getWaveforms()) {
-						if (w != null && PluginUtil.equals(ior, w.getIor())) {
-							return;
-						}
+			final ScaWaveform newWaveform = ScaModelCommandWithResult.execute(domain, () -> {
+				for (final ScaWaveform w : domain.getWaveforms()) {
+					if (w != null && PluginUtil.equals(ior, w.getIor())) {
+						return null;
 					}
-					final ScaWaveform newWaveform = ScaFactory.eINSTANCE.createScaWaveform();
-					newWaveform.setCorbaObj(app);
-					domain.getWaveforms().add(newWaveform);
-					setResult(newWaveform);
 				}
+				final ScaWaveform retVal = ScaFactory.eINSTANCE.createScaWaveform();
+				retVal.setCorbaObj(appObj);
+				domain.getWaveforms().add(retVal);
+				return retVal;
 			});
 			if (newWaveform != null) {
 				newWaveform.refresh(null, RefreshDepth.SELF);

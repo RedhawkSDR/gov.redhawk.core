@@ -13,8 +13,13 @@ package gov.redhawk.model.sca.commands;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.concurrent.Callable;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.emf.transaction.util.TransactionUtil;
+
+import gov.redhawk.model.sca.ScaModelPlugin;
 
 /**
  * @since 14.0
@@ -35,14 +40,39 @@ public abstract class ScaModelCommandWithResult< RESULT > extends ScaModelComman
 	}
 
 	/**
-	 * 
+	 * Runs a command which changes the model and also returns a result.
 	 * @param <T> The return type
-	 * @param context The context to run the command within
+	 * @param context The context in which to run the command
 	 * @param command The command to run
-	 * @return The result of the command <b> NOTE </b> May be NULL if the command failed to execute.
+	 * @return The result of the command, or null if there was an error
 	 */
 	public static < T > T execute(EObject context, ScaModelCommandWithResult<T> command) {
 		ScaModelCommand.execute(context, command);
+		return command.result;
+	}
+
+	/**
+	 * Runs a command which changes the model and also returns a result.
+	 * @param <T> The return type
+	 * @param context The context in which to run the command
+	 * @param callable The command to run
+	 * @return The result of the command, or null if there was an error
+	 * @since 21.0
+	 */
+	public static < T > T execute(EObject context, Callable<T> callable) {
+		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(context);
+		ScaModelCommandWithResult<T> command = new ScaModelCommandWithResult<T>() {
+			@Override
+			public void execute() {
+				try {
+					T callableResult = callable.call();
+					setResult(callableResult);
+				} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged
+					ScaModelPlugin.logError("Error while executing model command", e);
+				}
+			}
+		};
+		domain.getCommandStack().execute(command);
 		return command.result;
 	}
 }
