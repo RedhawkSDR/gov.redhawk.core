@@ -6,6 +6,5 @@ gov.redhawk.sca.model/debug/portFetch=false
 gov.redhawk.sca.model/debug/scaWaveform/ports=false
 gov.redhawk.sca.model/debug/scaWaveformFactory/create=false
 gov.redhawk.sca.model/debug/scaModelCommand=false
-gov.redhawk.sca.model/debug/scaDomainManager/connect=false
 gov.redhawk.sca.model/debug/scaDomainManager/keepAliveErrors=false
 gov.redhawk.sca.model/debug/scaAbstractProperty/ignoreRemoteSet=false

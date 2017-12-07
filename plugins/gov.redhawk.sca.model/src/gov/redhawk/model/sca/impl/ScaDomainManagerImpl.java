@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -394,7 +393,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * @ordered
 	 */
 	protected String localName = LOCAL_NAME_EDEFAULT;
-	private static final Debug DEBUG = new Debug(ScaModelPlugin.ID, "scaDomainManager/connect");
 	private static final Debug DEBUG_KEEP_ALIVE_ERRORS = new Debug(ScaModelPlugin.ID, "scaDomainManager/keepAliveErrors");
 
 	private static final DeviceManager[] EMPTY_DEVICE_MANAGERS = new DeviceManager[0];
@@ -1133,17 +1131,28 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * @param monitor the progress monitor to use for reporting progress to the user. It is the caller's responsibility
 	 * to call done() on the given monitor. Accepts null, indicating that no progress should be
 	 * reported and that the operation cannot be canceled.
-	 * @throws InterruptedException
+	 * @throws DomainConnectionException The pending connection fails
 	 */
-	private void waitOnConnect(final IProgressMonitor monitor) throws InterruptedException {
+	private void waitOnConnect(final IProgressMonitor monitor) throws DomainConnectionException {
 		SubMonitor progress = SubMonitor.convert(monitor, SubMonitor.UNKNOWN);
 
 		final int SLEEP_TIME_MILLIS = 1000;
 		while (getState() == DomainConnectionState.CONNECTING && !progress.isCanceled()) {
+			if (progress.isCanceled()) {
+				return;
+			}
 			synchronized (this) {
-				this.wait(SLEEP_TIME_MILLIS);
+				try {
+					this.wait(SLEEP_TIME_MILLIS);
+				} catch (InterruptedException e) {
+					return;
+				}
 			}
 			progress.worked(1);
+		}
+
+		if (getState() != DomainConnectionState.CONNECTED) {
+			throw new DomainConnectionException("Unable to connect");
 		}
 	}
 
@@ -1158,46 +1167,33 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	public void connect(IProgressMonitor parentMonitor, RefreshDepth refreshDepth) throws DomainConnectionException {
 		// END GENERATED CODE
+		DomainConnectionState localState = getState();
+		switch (localState) {
+		case CONNECTED:
+			return;
+		case CONNECTING:
+			waitOnConnect(parentMonitor);
+			return;
+		case DISCONNECTED:
+		case FAILED:
+			// We'll permit connecting to start
+			break;
+		default:
+			throw new DomainConnectionException("Invalid state for connect (" + localState.getName() + ")");
+		}
+
+		final int INIT_ORB_WORK = 5;
+		final int RESOLVE_NAMINGCONTEXT_WORK = 5;
+		final int SET_NAMINGCONTEXT_WORK = 5;
+		final int DOMAIN_MGR_WORK = 5;
+		final int REFRESH_DOMAIN_WORK = 80;
+		final SubMonitor monitor = SubMonitor.convert(parentMonitor, "Connecting to domain: " + getName(), 100);
+
 		try {
-			if (refreshDepth == null) {
-				refreshDepth = RefreshDepth.SELF;
-			}
-
-			DomainConnectionState localState = getState();
-
-			if (localState == DomainConnectionState.CONNECTED) {
-				// Silly rabbit - you're already connected
-				return;
-			} else if (localState == DomainConnectionState.CONNECTING) {
-				// Someone is already connecting. Wait on them to finish.
-				waitOnConnect(parentMonitor);
-
-				localState = getState();
-				// If the other thread connected us, or we were canceled, we're done
-				if (localState == DomainConnectionState.CONNECTED || (parentMonitor != null && parentMonitor.isCanceled())) {
-					return;
-				}
-
-				// Report back failure
-				throw new DomainConnectionException("Unable to connect");
-			} else if ((localState != DomainConnectionState.DISCONNECTED) && (localState != DomainConnectionState.FAILED)) {
-				// Disconnected / Failed are the only other states connect can be called from
-				throw new DomainConnectionException("Invalid state for connect (" + getState().getName() + ")");
-			}
-
-			ScaModelCommand.execute(this, new ScaModelCommand() {
-				@Override
-				public void execute() {
-					setState(DomainConnectionState.CONNECTING);
-				}
+			ScaModelCommand.execute(this, () -> {
+				setState(DomainConnectionState.CONNECTING);
 			});
 
-			final int INIT_ORB_WORK = 5;
-			final int RESOLVE_NAMINGCONTEXT_WORK = 5;
-			final int SET_NAMINGCONTEXT_WORK = 5;
-			final int DOMAIN_MGR_WORK = 5;
-			final int REFRESH_DOMAIN_WORK = 75;
-			final SubMonitor monitor = SubMonitor.convert(parentMonitor, "Connecting to domain: " + getName(), 100);
 			monitor.subTask("Initializing ORB...");
 			java.util.Properties orbProperties = createProperties();
 			java.util.Properties systemProps = new java.util.Properties(System.getProperties());
@@ -1227,25 +1223,14 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			final String domMgrName = getDomMgrName();
 
 			monitor.subTask("Resolving Naming Service...");
-			// String nameService = orbProperties.getProperty("ORBInitRef.NameService");
 			final ORB orb = orbSession.getOrb();
-			final org.omg.CORBA.Object objRef = CorbaUtils.invoke(new Callable<org.omg.CORBA.Object>() {
+			final org.omg.CORBA.Object objRef = CorbaUtils.invoke(() -> {
+				return orb.resolve_initial_references("NameService");
+			}, monitor.split(RESOLVE_NAMINGCONTEXT_WORK));
 
-				@Override
-				public org.omg.CORBA.Object call() throws Exception {
-					return orb.resolve_initial_references("NameService");
-				}
-
-			}, monitor.newChild(RESOLVE_NAMINGCONTEXT_WORK));
-
-			final NamingContextExt newNamingContext = CorbaUtils.invoke(new Callable<NamingContextExt>() {
-
-				@Override
-				public NamingContextExt call() throws Exception {
-					return NamingContextExtHelper.narrow(objRef);
-				}
-
-			}, monitor.newChild(SET_NAMINGCONTEXT_WORK));
+			final NamingContextExt newNamingContext = CorbaUtils.invoke(() -> {
+				return NamingContextExtHelper.narrow(objRef);
+			}, monitor.split(SET_NAMINGCONTEXT_WORK));
 			command.append(new ScaModelCommand() {
 
 				@Override
@@ -1256,7 +1241,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			});
 
 			monitor.subTask("Resolving Domain " + domMgrName);
-			final org.omg.CORBA.Object newCorbaObj = CorbaUtils.resolve_str(newNamingContext, domMgrName, monitor.newChild(DOMAIN_MGR_WORK));
+			final org.omg.CORBA.Object newCorbaObj = CorbaUtils.resolve_str(newNamingContext, domMgrName, monitor.split(DOMAIN_MGR_WORK));
 			command.append(new ScaModelCommand() {
 
 				@Override
@@ -1268,39 +1253,25 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			});
 
 			ScaModelCommand.execute(this, command);
-
-			monitor.subTask("Refreshing Domain...");
-			try {
-				this.refresh(monitor.newChild(REFRESH_DOMAIN_WORK), refreshDepth);
-			} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
-				if (DEBUG.enabled) {
-					DEBUG.message("Errors during refresh in connect.");
-					DEBUG.catching(e);
-				}
-			}
-
-			monitor.done();
-		} catch (final DomainConnectionException e) {
-			// Failure occurred in another thread and we're reporting that failure to this thread
-			throw e;
-		} catch (InterruptedException e) {
-			// PASS
-		} catch (final CoreException e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
-			ScaModelCommand.execute(this, new ScaModelCommand() {
-
-				@Override
-				public void execute() {
-					setState(DomainConnectionState.FAILED);
-					reset();
-				}
-
+		} catch (CoreException | InterruptedException | OperationCanceledException e) {
+			ScaModelCommand.execute(this, () -> {
+				setState(DomainConnectionState.FAILED);
+				reset();
 			});
-			throw new DomainConnectionException(e);
-		} finally {
-			if (parentMonitor != null) {
-				parentMonitor.done();
+
+			if (e instanceof CoreException) {
+				throw new DomainConnectionException(e);
 			}
 		}
+
+		monitor.subTask("Refreshing Domain...");
+		try {
+			this.refresh(monitor.split(REFRESH_DOMAIN_WORK), (refreshDepth == null) ? RefreshDepth.SELF : refreshDepth);
+		} catch (InterruptedException e) {
+			return;
+		}
+
+		monitor.done();
 		// BEGIN GENERATED CODE
 	}
 
