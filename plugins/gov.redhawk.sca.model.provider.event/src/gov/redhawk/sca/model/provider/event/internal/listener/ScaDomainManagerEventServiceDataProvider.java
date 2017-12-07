@@ -279,9 +279,6 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 				if (newEventChannel.getName().equals(eventChannel.getName())) {
 					return false;
 				}
-				if (newEventChannel.getIor().equals(eventChannel.getIor())) {
-					return false;
-				}
 			}
 			domain.getEventChannels().add(newEventChannel);
 			return true;
