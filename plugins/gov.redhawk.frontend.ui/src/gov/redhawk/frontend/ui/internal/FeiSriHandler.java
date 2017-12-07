@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.emf.transaction.RunnableWithResult;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
@@ -89,6 +90,9 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 				final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
 				final ScaUsesPort usesPort = findUsesPort(HandlerUtil.getActiveShellChecked(event), device);
 				if (usesPort == null) {
+					MessageDialog dialog = new MessageDialog(HandlerUtil.getActiveShell(event), "Display SRI Error", null,
+						"No ports that support SRI streaming were detected", 0, new String[] { "OK" }, 0);
+					dialog.open();
 					continue;
 				}
 
@@ -207,8 +211,8 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 	 * @param usesPort The port to attach to
 	 * @return True if the view was displayed
 	 */
-	private boolean createSriView(IWorkbenchPage activePage, final ScaDevice< ? > device, final TunerStatus tuner, ScaUsesPort usesPort, final DataType[] props, String listenerID)
-		throws ExecutionException {
+	private boolean createSriView(IWorkbenchPage activePage, final ScaDevice< ? > device, final TunerStatus tuner, ScaUsesPort usesPort, final DataType[] props,
+		String listenerID) throws ExecutionException {
 		// Display the SRI View
 		SriDataView sriViewLocalRef = displaySriView(activePage, usesPort, listenerID);
 		if (sriViewLocalRef == null) {
