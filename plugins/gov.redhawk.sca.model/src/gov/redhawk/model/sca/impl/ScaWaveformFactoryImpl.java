@@ -619,7 +619,8 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * 
+	 * @deprecated Use
+	 * {@link #createWaveform(IProgressMonitor, String, DataType[], DeviceAssignmentType[], RefreshDepth)}
 	 * @since 14.0
 	 * <!-- end-user-doc -->
 	 * 
@@ -629,6 +630,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * @generated NOT
 	 */
 	@Override
+	@Deprecated
 	public ScaWaveform createWaveform(IProgressMonitor monitor, final String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments)
 		throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
 		return createWaveform(monitor, name, initConfiguration, deviceAssignments, RefreshDepth.SELF);
