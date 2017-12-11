@@ -31,7 +31,7 @@ import mil.jpeojtrs.sca.util.metrics.Metric;
 
 public class MetricsRefreshJob extends Job {
 
-	private static final long RESCHEDULE_DELAY = 10000;
+	private static final long RESCHEDULE_DELAY = 2000;
 
 	private XViewer xviewer;
 	private ScaWaveform waveform;
