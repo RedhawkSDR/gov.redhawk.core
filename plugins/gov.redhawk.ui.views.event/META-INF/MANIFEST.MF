@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Event View Plugin
 Bundle-SymbolicName: gov.redhawk.ui.views.event;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.apache.commons.lang,
  org.eclipse.core.databinding,
  org.eclipse.core.runtime,
@@ -20,7 +20,6 @@ Require-Bundle: org.apache.commons.lang,
  gov.redhawk.sca.ui,
  gov.redhawk.ui.views.namebrowser,
  gov.redhawk.logging.ui
-Bundle-Activator: gov.redhawk.ui.views.event.EventViewPlugin
 Bundle-Vendor: REDHAWK
 Import-Package: org.omg.CosEventChannelAdmin,
  org.omg.CosEventComm

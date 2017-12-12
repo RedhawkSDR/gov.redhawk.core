@@ -52,23 +52,10 @@ public class EventChannelListener extends ChannelListener {
 			ref = PushConsumerHelper.narrow(poa.servant_to_reference(new PushConsumerPOATie(this)));
 			pushSupplier = eventChannel.for_consumers().obtain_push_supplier();
 			pushSupplier.connect_push_consumer(ref);
-		} catch (SystemException e) {
-			throw new CoreException(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, "Failed to connect to event channel for monitor: " + "("
-					+ getChannel() + ")", e));
-		} catch (ServantNotActive e) {
-			throw new CoreException(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, "Failed to connect to event channel for monitor: " + "("
-					+ getChannel() + ")", e));
-		} catch (WrongPolicy e) {
-			throw new CoreException(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, "Failed to connect to event channel for monitor: " + "("
-					+ getChannel() + ")", e));
-		} catch (AlreadyConnected e) {
-			throw new CoreException(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, "Failed to connect to event channel for monitor: " + "("
-					+ getChannel() + ")", e));
-		} catch (TypeError e) {
+		} catch (ServantNotActive | WrongPolicy | AlreadyConnected | TypeError | SystemException e) {
 			throw new CoreException(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, "Failed to connect to event channel for monitor: " + "("
 					+ getChannel() + ")", e));
 		}
-
 	}
 
 	@Override
@@ -91,8 +78,6 @@ public class EventChannelListener extends ChannelListener {
 
 	@Override
 	public void disconnect_push_consumer() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public EventChannel getEventChannel() {

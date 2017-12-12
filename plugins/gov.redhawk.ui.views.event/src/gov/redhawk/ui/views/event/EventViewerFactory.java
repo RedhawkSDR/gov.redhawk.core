@@ -1,15 +1,14 @@
-package gov.redhawk.ui.views.event;
-/*******************************************************************************
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
  * This file is part of REDHAWK IDE.
  *
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
-
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ */
+package gov.redhawk.ui.views.event;
 
 import org.eclipse.nebula.widgets.xviewer.XViewer;
 import org.eclipse.nebula.widgets.xviewer.XViewerFactory;
@@ -31,18 +30,12 @@ public class EventViewerFactory extends XViewerFactory {
 	static final XViewerColumn SUMMARY = new XViewerColumn(EventViewerFactory.NAMESPACE + ".summary", "Summary", 360, XViewerAlign.Left, true,
 		SortDataType.String, false, "Event");
 
-	/**
-	 * @param namespace
-	 */
 	public EventViewerFactory() {
 		super(EventViewerFactory.NAMESPACE);
 		registerColumns(EventViewerFactory.TIME_COL_SS, EventViewerFactory.TYPE_COL, EventViewerFactory.SUMMARY);
 
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.nebula.widgets.xviewer.IXViewerFactory#isAdmin()
-	 */
 	@Override
 	public boolean isAdmin() {
 		return false;

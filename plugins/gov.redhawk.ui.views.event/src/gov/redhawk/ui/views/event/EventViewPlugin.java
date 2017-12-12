@@ -10,32 +10,11 @@
  *******************************************************************************/
 package gov.redhawk.ui.views.event;
 
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
-
-public class EventViewPlugin extends AbstractUIPlugin {
+public class EventViewPlugin {
 
 	public static final String PLUGIN_ID = "gov.redhawk.ui.views.event";
 	
-	private static EventViewPlugin plugin;
-	
-	public EventViewPlugin() {
-	}
-	
-	public static EventViewPlugin getDefault() {
-		return EventViewPlugin.plugin;
-	}
-	
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		EventViewPlugin.plugin = this;
-	}
-	
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		EventViewPlugin.plugin = null;
-		super.stop(context);
+	private EventViewPlugin() {
 	}
 
 }

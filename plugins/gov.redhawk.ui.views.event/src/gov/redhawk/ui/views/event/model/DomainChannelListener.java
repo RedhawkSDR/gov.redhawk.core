@@ -60,26 +60,10 @@ public class DomainChannelListener extends ChannelListener {
 			ref = PushConsumerHelper.narrow(poa.servant_to_reference(new PushConsumerPOATie(this)));
 			registrationId = "eventViewer_" + UUID.randomUUID() + "_" + ConnectPortWizard.generateDefaultConnectionID();
 			domain.registerWithEventChannel(ref, registrationId, getChannel());
-		} catch (SystemException e) {
-			throw new CoreException(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, "Failed to connect to event channel for monitor: "
-				+ domain.getLabel() + "(" + getChannel() + ")", e));
-		} catch (InvalidObjectReference e) {
-			throw new CoreException(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, "Failed to connect to event channel for monitor: "
-				+ domain.getLabel() + "(" + getChannel() + ")", e));
-		} catch (InvalidEventChannelName e) {
-			throw new CoreException(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, "Failed to connect to event channel for monitor: "
-				+ domain.getLabel() + "(" + getChannel() + ")", e));
-		} catch (AlreadyConnected e) {
-			throw new CoreException(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, "Failed to connect to event channel for monitor: "
-				+ domain.getLabel() + "(" + getChannel() + ")", e));
-		} catch (ServantNotActive e) {
-			throw new CoreException(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, "Failed to connect to event channel for monitor: "
-				+ domain.getLabel() + "(" + getChannel() + ")", e));
-		} catch (WrongPolicy e) {
+		} catch (ServantNotActive | WrongPolicy | InvalidObjectReference | InvalidEventChannelName | AlreadyConnected | SystemException e) {
 			throw new CoreException(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, "Failed to connect to event channel for monitor: "
 				+ domain.getLabel() + "(" + getChannel() + ")", e));
 		}
-
 	}
 
 	@Override
@@ -96,11 +80,7 @@ public class DomainChannelListener extends ChannelListener {
 				}
 				domain.unregisterFromEventChannel(registrationId, getChannel());
 
-			} catch (InvalidEventChannelName e) {
-				// PASS
-			} catch (DomainConnectionException e) {
-				// PASS
-			} catch (NotConnected e) {
+			} catch (InvalidEventChannelName | DomainConnectionException | NotConnected e) {
 				// PASS
 			} finally {
 				if (disconnect) {

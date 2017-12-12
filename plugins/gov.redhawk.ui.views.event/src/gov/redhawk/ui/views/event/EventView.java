@@ -1,22 +1,20 @@
-package gov.redhawk.ui.views.event;
-/*******************************************************************************
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
  * This file is part of REDHAWK IDE.
  *
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ */
+package gov.redhawk.ui.views.event;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
@@ -55,13 +53,14 @@ import mil.jpeojtrs.sca.util.CorbaUtils;
 
 public class EventView extends ViewPart implements ITabbedPropertySheetPageContributor {
 
-	public static final String ID = "gov.redhawk.ui.views.event.eventViewer";
+	public static final String ID = "gov.redhawk.ui.views.event.eventViewer"; //$NON-NLS-1$
 
 	private EventViewerFactory viewerFactory;
 
 	private XViewer viewer;
 
-	private Action clearAction = new Action("Clear", AbstractUIPlugin.imageDescriptorFromPlugin(EventViewPlugin.PLUGIN_ID, "icons/clear_co.gif")) {
+	private Action clearAction = new Action(Messages.EventView_Action_Clear,
+		AbstractUIPlugin.imageDescriptorFromPlugin(EventViewPlugin.PLUGIN_ID, "icons/clear_co.gif")) { //$NON-NLS-1$
 		@Override
 		public void run() {
 			history.clear();
@@ -69,9 +68,9 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 		}
 	};
 
-	private Action scrollLockAction = new Action("Scroll Lock", IAction.AS_CHECK_BOX) {
+	private Action scrollLockAction = new Action(Messages.EventView_Action_ScrollLock, IAction.AS_CHECK_BOX) {
 		{
-			setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(EventViewPlugin.PLUGIN_ID, "icons/lock_co.gif"));
+			setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(EventViewPlugin.PLUGIN_ID, "icons/lock_co.gif")); //$NON-NLS-1$
 		}
 
 		@Override
@@ -80,9 +79,9 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 		}
 	};
 
-	private Action detailsAction = new Action("Show Details", IAction.AS_PUSH_BUTTON) {
+	private Action detailsAction = new Action(Messages.EventView_Action_ShowDetails, IAction.AS_PUSH_BUTTON) {
 		{
-			setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(EventViewPlugin.PLUGIN_ID, "icons/details.png"));
+			setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(EventViewPlugin.PLUGIN_ID, "icons/details.png")); //$NON-NLS-1$
 		}
 
 		@Override
@@ -90,15 +89,15 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 			try {
 				EventView.this.getSite().getPage().showView(IPageLayout.ID_PROP_SHEET);
 			} catch (PartInitException e) {
-				StatusManager.getManager().handle(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, "Failed to open Properties view: " + e.getMessage(), e),
+				StatusManager.getManager().handle(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, Messages.EventView_CannotOpenPropertiesView, e),
 					StatusManager.SHOW | StatusManager.LOG);
 			}
 		}
 	};
 
-	private Action disconnectAction = new Action("Disconnect") {
+	private Action disconnectAction = new Action(Messages.EventView_Action_Disconnect) {
 		{
-			setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(EventViewPlugin.PLUGIN_ID, "icons/disconnect.gif"));
+			setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(EventViewPlugin.PLUGIN_ID, "icons/disconnect.gif")); //$NON-NLS-1$
 		}
 
 		@Override
@@ -157,8 +156,7 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 				try {
 					EventView.this.getSite().getPage().showView(IPageLayout.ID_PROP_SHEET);
 				} catch (PartInitException e) {
-					StatusManager.getManager().handle(
-						new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, "Failed to open Properties view: " + e.getMessage(), e),
+					StatusManager.getManager().handle(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, Messages.EventView_CannotOpenPropertiesView, e),
 						StatusManager.SHOW | StatusManager.LOG);
 				}
 			}
@@ -178,36 +176,24 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 	}
 
 	private void disconnectAll(boolean user) {
-		Job disconnectAll = new Job("Disconnect all event channels") {
-
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				synchronized (EventView.this) {
-					SubMonitor subMonitor = SubMonitor.convert(monitor, channelListeners.size());
-					for (final ChannelListener listener : channelListeners) {
-						try {
-							CorbaUtils.invoke(new Callable<Object>() {
-
-								@Override
-								public Object call() throws Exception {
-									listener.disconnect();
-									return null;
-								}
-
-							}, subMonitor.newChild(1));
-						} catch (CoreException e) {
-							// PASS
-						} catch (InterruptedException e) {
-							// PASS
-						}
+		Job disconnectAll = Job.create(Messages.EventView_DisconnectAllJobTitle, monitor -> {
+			synchronized (EventView.this) {
+				SubMonitor subMonitor = SubMonitor.convert(monitor, channelListeners.size());
+				for (final ChannelListener listener : channelListeners) {
+					try {
+						CorbaUtils.invoke(() -> {
+							listener.disconnect();
+							return null;
+						}, subMonitor.newChild(1));
+					} catch (CoreException | InterruptedException e) {
+						// PASS
 					}
-					channelListeners.clear();
-					session.dispose();
 				}
-				return Status.OK_STATUS;
+				channelListeners.clear();
+				session.dispose();
 			}
-
-		};
+			return Status.OK_STATUS;
+		});
 		disconnectAll.setUser(user);
 		disconnectAll.schedule();
 	}
@@ -248,7 +234,7 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 			try {
 				domain.connect(null, RefreshDepth.SELF);
 			} catch (DomainConnectionException e) {
-				throw new CoreException(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, "Failed to connect to domain.", e));
+				throw new CoreException(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, Messages.EventView_CannotConnectToDomain, e));
 			}
 		}
 		newListener.connect(session);
