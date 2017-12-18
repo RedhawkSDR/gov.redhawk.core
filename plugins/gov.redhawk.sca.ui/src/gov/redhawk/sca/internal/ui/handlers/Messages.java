@@ -10,15 +10,16 @@
  */
 
 // BEGIN GENERATED CODE
-package gov.redhawk.ui.views.event.handlers;
+package gov.redhawk.sca.internal.ui.handlers;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "gov.redhawk.ui.views.event.handlers.messages"; //$NON-NLS-1$
-	public static String EventChannelListenerHandler_CannotConnectToEventChannel;
-	public static String EventChannelListenerHandler_CannotOpenEventViewer;
-	public static String EventChannelListenerHandler_ConnectToEventChannelJobTitle;
+	private static final String BUNDLE_NAME = "gov.redhawk.sca.internal.ui.handlers.messages"; //$NON-NLS-1$
+	public static String ReleaseEventChannelHandler_NoDomMgrError_Description;
+	public static String ReleaseEventChannelHandler_NoDomMgrError_Title;
+	public static String ReleaseEventChannelHandler_ReservedEventChannel_Description;
+	public static String ReleaseEventChannelHandler_ReservedEventChannel_Title;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

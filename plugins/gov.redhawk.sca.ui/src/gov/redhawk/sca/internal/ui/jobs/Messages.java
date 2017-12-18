@@ -10,12 +10,12 @@
  */
 
 // BEGIN GENERATED CODE
-package gov.redhawk.ui.views.event.jobs;
+package gov.redhawk.sca.internal.ui.jobs;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "gov.redhawk.ui.views.event.jobs.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "gov.redhawk.sca.internal.ui.jobs.messages"; //$NON-NLS-1$
 	public static String ReleaseEventChannelJob_CannotGetECM;
 	public static String ReleaseEventChannelJob_ChannelDoesNotExist;
 	public static String ReleaseEventChannelJob_ErrorStatusMessage;

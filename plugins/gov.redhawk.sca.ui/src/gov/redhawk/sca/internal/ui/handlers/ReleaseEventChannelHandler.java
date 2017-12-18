@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  */
-package gov.redhawk.ui.views.event.handlers;
+package gov.redhawk.sca.internal.ui.handlers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaEventChannel;
-import gov.redhawk.ui.views.event.jobs.ReleaseEventChannelJob;
+import gov.redhawk.sca.internal.ui.jobs.ReleaseEventChannelJob;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public class ReleaseEventChannelHandler extends AbstractHandler {
@@ -39,6 +39,9 @@ public class ReleaseEventChannelHandler extends AbstractHandler {
 
 		List<Job> jobs = new ArrayList<>();
 		for (Object obj : ss.toArray()) {
+			if (!(obj instanceof ScaEventChannel)) {
+				continue;
+			}
 			ScaEventChannel eventChannel = (ScaEventChannel) obj;
 
 			ScaDomainManager domMgr = ScaEcoreUtils.getEContainerOfType(eventChannel, ScaDomainManager.class);

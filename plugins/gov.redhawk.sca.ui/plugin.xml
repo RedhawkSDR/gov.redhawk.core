@@ -606,10 +606,16 @@
             <visibleWhen
                   checkEnabled="false">
                <iterate
-                     ifEmpty="false">
-                  <adapt
-                        type="CF.LifeCycleOperations">
-                  </adapt>
+                     ifEmpty="false"
+                     operator="and">
+                  <or>
+                     <adapt
+                           type="CF.LifeCycleOperations">
+                     </adapt>
+                     <instanceof
+                           value="gov.redhawk.model.sca.ScaEventChannel">
+                     </instanceof>
+                  </or>
                </iterate>
             </visibleWhen>
          </command>
@@ -687,10 +693,23 @@
          <activeWhen>
             <iterate
                   ifEmpty="false"
-                  operator="or">
+                  operator="and">
                <adapt
                      type="CF.LifeCycleOperations">
                </adapt>
+            </iterate>
+         </activeWhen>
+      </handler>
+      <handler
+            class="gov.redhawk.sca.internal.ui.handlers.ReleaseEventChannelHandler"
+            commandId="org.eclipse.ui.edit.delete">
+         <activeWhen>
+            <iterate
+                  ifEmpty="false"
+                  operator="and">
+               <instanceof
+                     value="gov.redhawk.model.sca.ScaEventChannel">
+               </instanceof>
             </iterate>
          </activeWhen>
       </handler>

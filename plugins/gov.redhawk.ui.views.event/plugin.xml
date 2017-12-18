@@ -26,13 +26,6 @@
                   checkEnabled="true">
             </visibleWhen>
          </command>
-         <command
-               commandId="gov.redhawk.ui.views.event.releaseEventChannel"
-               style="push">
-            <visibleWhen
-                  checkEnabled="true">
-            </visibleWhen>
-         </command>
       </menuContribution>
    </extension>
    <extension
@@ -42,12 +35,6 @@
             description="%eventChannelListener.command.description"
             id="gov.redhawk.ui.views.event.eventChannelListener"
             name="%eventChannelListener.command.name">
-      </command>
-      <command
-            categoryId="gov.redhawk.ui.commands.category.sca"
-            description="%releaseEventChannel.command.description"
-            id="gov.redhawk.ui.views.event.releaseEventChannel"
-            name="%releaseEventChannel.command.name">
       </command>
    </extension>
    <extension
@@ -73,19 +60,6 @@
                      </test>
                   </and>
                </or>
-            </iterate>
-         </enabledWhen>
-      </handler>
-      <handler
-            class="gov.redhawk.ui.views.event.handlers.ReleaseEventChannelHandler"
-            commandId="gov.redhawk.ui.views.event.releaseEventChannel">
-         <enabledWhen>
-            <iterate
-                  ifEmpty="false"
-                  operator="and">
-               <instanceof
-                     value="gov.redhawk.model.sca.ScaEventChannel">
-               </instanceof>
             </iterate>
          </enabledWhen>
       </handler>
