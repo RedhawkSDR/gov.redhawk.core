@@ -23,25 +23,14 @@
                icon="icons/emblem-documents.png"
                style="push">
             <visibleWhen
-                  checkEnabled="false">
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <or>
-                     <and>
-                        <instanceof
-                              value="gov.redhawk.ui.views.namebrowser.view.BindingNode">
-                        </instanceof>
-                        <test
-                              args="IDL:omg.org/CosEventChannelAdmin/EventChannel:1.0"
-                              property="gov.redhawk.ui.views.namebrowser.isRepID">
-                        </test>
-                     </and>
-                     <instanceof
-                           value="gov.redhawk.model.sca.ScaEventChannel">
-                     </instanceof>
-                  </or>
-               </iterate>
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="gov.redhawk.ui.views.event.releaseEventChannel"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
             </visibleWhen>
          </command>
       </menuContribution>
@@ -50,10 +39,56 @@
          point="org.eclipse.ui.commands">
       <command
             categoryId="gov.redhawk.ui.commands.category.sca"
-            defaultHandler="gov.redhawk.ui.views.event.handlers.EventChannelListenerHandler"
+            description="%eventChannelListener.command.description"
             id="gov.redhawk.ui.views.event.eventChannelListener"
-            name="Listen to Event Channel">
+            name="%eventChannelListener.command.name">
       </command>
+      <command
+            categoryId="gov.redhawk.ui.commands.category.sca"
+            description="%releaseEventChannel.command.description"
+            id="gov.redhawk.ui.views.event.releaseEventChannel"
+            name="%releaseEventChannel.command.name">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="gov.redhawk.ui.views.event.handlers.EventChannelListenerHandler"
+            commandId="gov.redhawk.ui.views.event.eventChannelListener">
+         <enabledWhen>
+            <iterate
+                  ifEmpty="false"
+                  operator="and">
+               <or>
+                  <instanceof
+                        value="gov.redhawk.model.sca.ScaEventChannel">
+                  </instanceof>
+                  <and>
+                     <instanceof
+                           value="gov.redhawk.ui.views.namebrowser.view.BindingNode">
+                     </instanceof>
+                     <test
+                           args="IDL:omg.org/CosEventChannelAdmin/EventChannel:1.0"
+                           property="gov.redhawk.ui.views.namebrowser.isRepID">
+                     </test>
+                  </and>
+               </or>
+            </iterate>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="gov.redhawk.ui.views.event.handlers.ReleaseEventChannelHandler"
+            commandId="gov.redhawk.ui.views.event.releaseEventChannel">
+         <enabledWhen>
+            <iterate
+                  ifEmpty="false"
+                  operator="and">
+               <instanceof
+                     value="gov.redhawk.model.sca.ScaEventChannel">
+               </instanceof>
+            </iterate>
+         </enabledWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.views.properties.tabbed.propertyContributor">

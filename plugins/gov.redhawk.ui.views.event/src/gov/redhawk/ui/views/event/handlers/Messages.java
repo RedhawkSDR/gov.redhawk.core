@@ -19,6 +19,10 @@ public class Messages extends NLS {
 	public static String EventChannelListenerHandler_CannotConnectToEventChannel;
 	public static String EventChannelListenerHandler_CannotOpenEventViewer;
 	public static String EventChannelListenerHandler_ConnectToEventChannelJobTitle;
+	public static String ReleaseEventChannelHandler_NoDomMgrError_Description;
+	public static String ReleaseEventChannelHandler_NoDomMgrError_Title;
+	public static String ReleaseEventChannelHandler_ReservedEventChannel_Description;
+	public static String ReleaseEventChannelHandler_ReservedEventChannel_Title;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
