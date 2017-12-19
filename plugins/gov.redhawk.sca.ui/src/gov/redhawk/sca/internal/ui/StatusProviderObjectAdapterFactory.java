@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
-import org.eclipse.ui.views.properties.IPropertySource;
+import org.eclipse.ui.views.properties.IPropertySource2;
 
 public class StatusProviderObjectAdapterFactory extends RedhawkUiAdapterFactory {
 
@@ -105,7 +105,7 @@ public class StatusProviderObjectAdapterFactory extends RedhawkUiAdapterFactory 
 	}
 
 	@Override
-	protected IPropertySource createPropertySource(final Object adaptableObject, final IItemPropertySource itemPropertySource) {
+	protected IPropertySource2 createPropertySource(final Object adaptableObject, final IItemPropertySource itemPropertySource) {
 		return new DataProviderPropertySource(adaptableObject, itemPropertySource);
 	}
 }
