@@ -119,6 +119,7 @@ public class WaveformSelectionWizardPage extends WizardPage {
 		this.waveformSelectionList = new FormFilteredTree(composite, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER, patternFilter);
 		gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gd.horizontalSpan = 2;
+		gd.minimumHeight = 200;
 		this.waveformSelectionList.setLayoutData(gd);
 
 		this.contentProvider = new InstallApplicationContentProvider();
