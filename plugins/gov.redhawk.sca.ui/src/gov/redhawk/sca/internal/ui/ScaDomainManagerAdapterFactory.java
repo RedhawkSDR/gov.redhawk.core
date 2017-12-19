@@ -36,7 +36,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
-import org.eclipse.ui.views.properties.IPropertySource;
+import org.eclipse.ui.views.properties.IPropertySource2;
 
 /**
  * 
@@ -120,7 +120,7 @@ public class ScaDomainManagerAdapterFactory extends RedhawkUiAdapterFactory impl
 	}
 
 	@Override
-	protected IPropertySource createPropertySource(final Object adaptableObject, final IItemPropertySource itemPropertySource) {
+	protected IPropertySource2 createPropertySource(final Object adaptableObject, final IItemPropertySource itemPropertySource) {
 		return new ScaDomainManagerPropertySource(adaptableObject, itemPropertySource);
 	}
 }

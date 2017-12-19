@@ -11,8 +11,6 @@
  */
 package gov.redhawk.sca.ui;
 
-import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
-
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
@@ -28,6 +26,8 @@ import org.eclipse.emf.transaction.ui.provider.TransactionalPropertySource;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySource2;
+
+import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 
 /**
  * @since 7.0
@@ -69,38 +69,43 @@ public class RedhawkUiAdapterFactory implements IAdapterFactory {
 		return (IItemPropertySource) RedhawkUiAdapterFactory.adapterFactory.adapt(adaptableObject, IItemPropertySource.class);
 	}
 
-	protected IPropertySource createPropertySource(final Object adaptableObject, final IItemPropertySource itemPropertySource) {
+	/**
+	 * @since 11.0
+	 */
+	protected IPropertySource2 createPropertySource(final Object adaptableObject, final IItemPropertySource itemPropertySource) {
 		return new ScaPropertySource(adaptableObject, itemPropertySource);
 	}
 
 	@Override
-	public Object getAdapter(final Object input, @SuppressWarnings("rawtypes") final Class adapterType) {
+	public < T > T getAdapter(Object input, Class<T> adapterType) {
 		final Object adaptableObject = AdapterFactoryEditingDomain.unwrap(input);
-		if (adaptableObject instanceof EObject) {
-			final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(adaptableObject);
-			if (editingDomain != null) {
-				try {
-	                return TransactionUtil.runExclusive(editingDomain,  new RunnableWithResult.Impl<Object>() {
-
-						@Override
-						public void run() {
-							final IItemPropertySource itemPropertySource = getItemPropertySource(adaptableObject);
-							final IPropertySource propertySource = createPropertySource(adaptableObject, itemPropertySource);
-							setResult(new TransactionalPropertySource(editingDomain, propertySource));
-                        } 
-	                	
-	                });
-                } catch (InterruptedException e) {
-	                return null;
-                }
-			}
-			if (adapterType == IPropertySource.class || adapterType == IPropertySource2.class) {
-				final IItemPropertySource itemPropertySource = getItemPropertySource(adaptableObject);
-				final IPropertySource propertySource = createPropertySource(adaptableObject, itemPropertySource);
-				return propertySource;
-			}
+		if (adaptableObject instanceof EObject && (adapterType == IPropertySource.class || adapterType == IPropertySource2.class)) {
+			return adapterType.cast(getPropertySourceAdapter((EObject) adaptableObject));
 		}
 		return null;
+	}
+
+	private IPropertySource2 getPropertySourceAdapter(EObject adaptableObject) {
+		final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(adaptableObject);
+		if (editingDomain != null) {
+			try {
+				IPropertySource2 propertySource = TransactionUtil.runExclusive(editingDomain, new RunnableWithResult.Impl<IPropertySource2>() {
+					@Override
+					public void run() {
+						IItemPropertySource itemPropertySource = getItemPropertySource(adaptableObject);
+						IPropertySource2 propertySource = createPropertySource(adaptableObject, itemPropertySource);
+						setResult(new TransactionalPropertySource(editingDomain, propertySource));
+					}
+				});
+				return propertySource;
+			} catch (InterruptedException e) {
+				return null;
+			}
+		} else {
+			IItemPropertySource itemPropertySource = getItemPropertySource(adaptableObject);
+			IPropertySource2 propertySource = createPropertySource(adaptableObject, itemPropertySource);
+			return propertySource;
+		}
 
 	}
 
