@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package gov.redhawk.sca.ui;
+package gov.redhawk.sca.internal.ui.wizards;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -61,12 +61,10 @@ import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.model.sca.provider.ScaEventChannelsContainerItemProvider;
 import gov.redhawk.model.sca.provider.ScaWaveformFactoriesContainerItemProvider;
 import gov.redhawk.sca.ScaPlugin;
+import gov.redhawk.sca.ui.ConnectPortWizard;
 import gov.redhawk.sca.ui.views.ScaExplorer;
 import gov.redhawk.sca.util.PropertyChangeSupport;
 
-/**
- * @since 10.2
- */
 public class ConnectWizardPage extends WizardPage {
 
 	private class SourceTargetValidator extends ValidationStatusProvider implements PropertyChangeListener {
@@ -148,7 +146,7 @@ public class ConnectWizardPage extends WizardPage {
 	private ComboViewer idCombo;
 	private Text idText;
 
-	protected ConnectWizardPage(Map<String, Boolean> connectionIds) {
+	public ConnectWizardPage(Map<String, Boolean> connectionIds) {
 		super("connectPage", "Create new connection", null);
 		setDescription("Select the source and target connection elements.\nAlso enter a connection id.");
 		pcs.addPropertyChangeListener(connectionValidator);

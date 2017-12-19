@@ -46,7 +46,7 @@ import gov.redhawk.ui.editor.IIdlLibraryService;
 import mil.jpeojtrs.sca.scd.AbstractPort;
 
 /**
- * @since 10.2
+ * @since 11.0
  */
 public class PortInterfacePropertiesSection extends AbstractPropertySection implements ITabbedPropertyConstants {
 

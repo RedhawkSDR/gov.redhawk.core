@@ -30,6 +30,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import CF.PortPackage.InvalidPort;
 import gov.redhawk.model.sca.CorbaObjWrapper;
 import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.sca.internal.ui.wizards.ConnectWizardPage;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
@@ -49,7 +50,7 @@ public class ConnectPortWizard extends Wizard {
 	}
 
 	/**
-	 * @since 10.2
+	 * @since 11.0
 	 */
 	public ConnectPortWizard(Map<String, Boolean> connectionIds) {
 		setWindowTitle("Connect");
@@ -116,7 +117,7 @@ public class ConnectPortWizard extends Wizard {
 
 	/**
 	 * @param sourceInput
-	 * @see gov.redhawk.sca.ui.ConnectWizardPage#setSourceInput(java.lang.Object)
+	 * @see gov.redhawk.sca.internal.ui.wizards.ConnectWizardPage#setSourceInput(java.lang.Object)
 	 */
 	public void setSourceInput(Object sourceInput) {
 		page.setSourceInput(sourceInput);
@@ -124,7 +125,7 @@ public class ConnectPortWizard extends Wizard {
 
 	/**
 	 * @return
-	 * @see gov.redhawk.sca.ui.ConnectWizardPage#getSourceInput()
+	 * @see gov.redhawk.sca.internal.ui.wizards.ConnectWizardPage#getSourceInput()
 	 */
 	public Object getSourceInput() {
 		return page.getSourceInput();
@@ -132,7 +133,7 @@ public class ConnectPortWizard extends Wizard {
 
 	/**
 	 * @param targetInput
-	 * @see gov.redhawk.sca.ui.ConnectWizardPage#setTargetInput(java.lang.Object)
+	 * @see gov.redhawk.sca.internal.ui.wizards.ConnectWizardPage#setTargetInput(java.lang.Object)
 	 */
 	public void setTargetInput(Object targetInput) {
 		page.setTargetInput(targetInput);
@@ -140,7 +141,7 @@ public class ConnectPortWizard extends Wizard {
 
 	/**
 	 * @return
-	 * @see gov.redhawk.sca.ui.ConnectWizardPage#getTargetInput()
+	 * @see gov.redhawk.sca.internal.ui.wizards.ConnectWizardPage#getTargetInput()
 	 */
 	public Object getTargetInput() {
 		return page.getTargetInput();
