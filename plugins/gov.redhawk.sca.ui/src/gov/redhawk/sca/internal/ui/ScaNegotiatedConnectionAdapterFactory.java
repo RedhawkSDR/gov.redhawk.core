@@ -66,7 +66,8 @@ public class ScaNegotiatedConnectionAdapterFactory extends RedhawkUiAdapterFacto
 
 		@Override
 		protected IPropertyDescriptor createPropertyDescriptor(final IItemPropertyDescriptor itemPropertyDescriptor) {
-			if (itemPropertyDescriptor.getFeature(this.object) == ScaPackage.Literals.SCA_NEGOTIATED_CONNECTION__TRANSPORT_TYPE) {
+			if (itemPropertyDescriptor.getFeature(this.object) == ScaPackage.Literals.SCA_NEGOTIATED_CONNECTION__TRANSPORT_TYPE
+				|| itemPropertyDescriptor.getFeature(this.object) == ScaPackage.Literals.SCA_NEGOTIATED_CONNECTION__TRANSPORT_INFO) {
 				return new ConnectionTransportDetailsPropertyDescriptor(this.object, itemPropertyDescriptor);
 			} else {
 				return super.createPropertyDescriptor(itemPropertyDescriptor);
