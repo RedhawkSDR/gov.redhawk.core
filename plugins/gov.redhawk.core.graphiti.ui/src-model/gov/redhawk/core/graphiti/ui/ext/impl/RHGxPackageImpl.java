@@ -22,8 +22,6 @@ import mil.jpeojtrs.sca.partitioning.UsesPortStub;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
-import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 
@@ -322,18 +320,6 @@ public class RHGxPackageImpl extends EPackageImpl implements RHGxPackage {
 			!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(rhContainerShapeEClass, null, "init", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
-		EOperation op = addEOperation(rhContainerShapeEClass, null, "getProvidesPortStubs", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		EGenericType g1 = createEGenericType(theEcorePackage.getEEList());
-		EGenericType g2 = createEGenericType(this.getProvidesPortStub());
-		g1.getETypeArguments().add(g2);
-		initEOperation(op, g1);
-
-		op = addEOperation(rhContainerShapeEClass, null, "getUsesPortStubs", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		g1 = createEGenericType(theEcorePackage.getEEList());
-		g2 = createEGenericType(this.getUsesPortStub());
-		g1.getETypeArguments().add(g2);
-		initEOperation(op, g1);
 
 		addEOperation(rhContainerShapeEClass, theEcorePackage.getEBoolean(), "update", 0, 1, !IS_UNIQUE, IS_ORDERED);
 

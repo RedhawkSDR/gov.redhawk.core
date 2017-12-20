@@ -19,7 +19,6 @@
 
 package gov.redhawk.core.graphiti.ui.ext
 
-import org.eclipse.emf.ecore.EEList
 import org.eclipse.graphiti.mm.pictograms.ContainerShape
 import org.eclipse.graphiti.mm.algorithms.Text
 import org.eclipse.graphiti.mm.algorithms.Image
@@ -48,12 +47,6 @@ class RHContainerShape extends ContainerShape {
 	boolean hideUnusedPorts //hides all ports without connection
 
 	op void init()
-
-	/*Returns providesPortsStubs business object list linked to getProvidesPortsContainerShape()*/
-	op EEList<ProvidesPortStub> getProvidesPortStubs()
-
-	/*Returns providesPortsStubs business object list linked to getUsesPortsContainerShape()*/
-	op EEList<UsesPortStub> getUsesPortStubs()
 
 	/*Updates the shape with supplied values */
 	op boolean update()
