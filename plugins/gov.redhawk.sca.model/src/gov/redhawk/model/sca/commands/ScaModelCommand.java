@@ -113,7 +113,11 @@ public abstract class ScaModelCommand extends AbstractCommand {
 					}
 				}
 			};
-			domain.runExclusive(runnableWithResult);
+			if (domain != null) {
+				domain.runExclusive(runnableWithResult);
+			} else {
+				runnableWithResult.run();
+			}
 			return runnableWithResult.getResult();
 		} catch (InterruptedException e) {
 			ScaModelPlugin.logError("Interrupted while executing command", e);
