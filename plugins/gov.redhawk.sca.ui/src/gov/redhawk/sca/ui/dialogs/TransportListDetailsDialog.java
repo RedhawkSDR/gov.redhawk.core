@@ -78,10 +78,6 @@ public class TransportListDetailsDialog extends Dialog {
 		comboViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
 		comboViewer.setInput(transports);
 
-		// Transport type
-		new Label(composite, SWT.NONE).setText("Type:");
-		Label typeLabel = new Label(composite, SWT.NONE);
-
 		// Properties viewer
 		Composite propertiesComposite = new Composite(composite, SWT.BORDER);
 		propertiesComposite.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).span(2, 1).create());
@@ -93,7 +89,6 @@ public class TransportListDetailsDialog extends Dialog {
 		// Selection handlers
 		comboViewer.addSelectionChangedListener(event -> {
 			ScaTransport transport = (ScaTransport) ((IStructuredSelection) event.getSelection()).getFirstElement();
-			typeLabel.setText(transport.getTransportType());
 			propHolder.getProperties().clear();
 			ScaModelCommand.runExclusive(transport, () -> {
 				for (ScaAbstractProperty< ? > prop : transport.getTransportProperties()) {
