@@ -26,7 +26,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource2;
 
@@ -42,7 +41,6 @@ public class StatusProviderObjectAdapterFactory extends RedhawkUiAdapterFactory 
 		public CellEditor createPropertyEditor(final Composite composite) {
 			return new DialogCellEditor(composite) {
 
-				private Label label;
 				private Button detailButton;
 
 				@Override
@@ -56,16 +54,8 @@ public class StatusProviderObjectAdapterFactory extends RedhawkUiAdapterFactory 
 				@Override
 				protected Button createButton(final Composite parent) {
 					this.detailButton = new Button(parent, SWT.DOWN);
-					this.detailButton.setText("Details"); //$NON-NLS-1$
+					this.detailButton.setText("Details");
 					return this.detailButton;
-				}
-
-				@Override
-				protected Control createContents(final Composite cell) {
-					this.label = new Label(cell, SWT.LEFT);
-					this.label.setFont(cell.getFont());
-					this.label.setBackground(cell.getBackground());
-					return this.label;
 				}
 
 				@Override
@@ -74,12 +64,12 @@ public class StatusProviderObjectAdapterFactory extends RedhawkUiAdapterFactory 
 						if (this.detailButton != null) {
 							this.detailButton.setEnabled(!((IStatus) value).isOK());
 						}
-						this.label.setText(getEditLabelProvider().getText(value));
+						getDefaultLabel().setText(getEditLabelProvider().getText(value));
 					} else {
 						if (this.detailButton != null) {
 							this.detailButton.setEnabled(false);
 						}
-						this.label.setText("");
+						getDefaultLabel().setText("");
 					}
 				}
 
