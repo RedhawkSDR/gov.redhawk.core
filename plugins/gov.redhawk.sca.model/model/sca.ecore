@@ -1156,6 +1156,12 @@
         unsettable="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="transportType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transportInfo" upperBound="-1"
+        containment="true">
+      <eGenericType eClassifier="#//ScaAbstractProperty">
+        <eTypeArguments/>
+      </eGenericType>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ScaWaveform">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">

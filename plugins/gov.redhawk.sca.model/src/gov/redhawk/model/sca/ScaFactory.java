@@ -249,6 +249,15 @@ public interface ScaFactory extends EFactory {
 	 */
 	ScaNegotiatedConnection createScaNegotiatedConnection();
 
+	// END GENERATED CODE
+
+	/**
+	 * @since 21.0
+	 */
+	ScaNegotiatedConnection createScaNegotiatedConnection(ExtendedCF.ConnectionStatus connectionStatus);
+
+	// BEGIN GENERATED CODE
+
 	/**
 	 * Returns a new object of class '<em>Waveform</em>'.
 	 * <!-- begin-user-doc -->

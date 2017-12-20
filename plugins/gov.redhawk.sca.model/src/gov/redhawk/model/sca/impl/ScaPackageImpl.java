@@ -1811,6 +1811,15 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getScaNegotiatedConnection_TransportInfo() {
+		return (EReference) scaNegotiatedConnectionEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public EClass getScaWaveform() {
 		return scaWaveformEClass;
@@ -2502,6 +2511,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		scaNegotiatedConnectionEClass = createEClass(SCA_NEGOTIATED_CONNECTION);
 		createEAttribute(scaNegotiatedConnectionEClass, SCA_NEGOTIATED_CONNECTION__ALIVE);
 		createEAttribute(scaNegotiatedConnectionEClass, SCA_NEGOTIATED_CONNECTION__TRANSPORT_TYPE);
+		createEReference(scaNegotiatedConnectionEClass, SCA_NEGOTIATED_CONNECTION__TRANSPORT_INFO);
 
 		scaWaveformEClass = createEClass(SCA_WAVEFORM);
 		createEReference(scaWaveformEClass, SCA_WAVEFORM__COMPONENTS);
@@ -3396,6 +3406,11 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 			!IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getScaNegotiatedConnection_TransportType(), ecorePackage.getEString(), "transportType", null, 0, 1, ScaNegotiatedConnection.class,
 			!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(this.getScaAbstractProperty());
+		g2 = createEGenericType();
+		g1.getETypeArguments().add(g2);
+		initEReference(getScaNegotiatedConnection_TransportInfo(), g1, null, "transportInfo", null, 0, -1, ScaNegotiatedConnection.class, !IS_TRANSIENT,
+			!IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(scaWaveformEClass, ScaWaveform.class, "ScaWaveform", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getScaWaveform_Components(), this.getScaComponent(), this.getScaComponent_Waveform(), "components", null, 0, -1, ScaWaveform.class,

@@ -11,14 +11,21 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
+import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaNegotiatedConnection;
 import gov.redhawk.model.sca.ScaPackage;
 
+import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,6 +39,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  * <li>{@link gov.redhawk.model.sca.impl.ScaNegotiatedConnectionImpl#isAlive <em>Alive</em>}</li>
  * <li>{@link gov.redhawk.model.sca.impl.ScaNegotiatedConnectionImpl#getTransportType <em>Transport Type</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaNegotiatedConnectionImpl#getTransportInfo <em>Transport Info</em>}</li>
  * </ul>
  *
  * @generated
@@ -94,6 +102,16 @@ public class ScaNegotiatedConnectionImpl extends ScaConnectionImpl implements Sc
 	 * @ordered
 	 */
 	protected boolean transportTypeESet;
+
+	/**
+	 * The cached value of the '{@link #getTransportInfo() <em>Transport Info</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTransportInfo()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ScaAbstractProperty< ? >> transportInfo;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -213,6 +231,33 @@ public class ScaNegotiatedConnectionImpl extends ScaConnectionImpl implements Sc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<ScaAbstractProperty< ? >> getTransportInfo() {
+		if (transportInfo == null) {
+			transportInfo = new EObjectContainmentEList.Resolving<ScaAbstractProperty< ? >>(ScaAbstractProperty.class, this,
+				ScaPackage.SCA_NEGOTIATED_CONNECTION__TRANSPORT_INFO);
+		}
+		return transportInfo;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+		case ScaPackage.SCA_NEGOTIATED_CONNECTION__TRANSPORT_INFO:
+			return ((InternalEList< ? >) getTransportInfo()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -220,6 +265,8 @@ public class ScaNegotiatedConnectionImpl extends ScaConnectionImpl implements Sc
 			return isAlive();
 		case ScaPackage.SCA_NEGOTIATED_CONNECTION__TRANSPORT_TYPE:
 			return getTransportType();
+		case ScaPackage.SCA_NEGOTIATED_CONNECTION__TRANSPORT_INFO:
+			return getTransportInfo();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -229,6 +276,7 @@ public class ScaNegotiatedConnectionImpl extends ScaConnectionImpl implements Sc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -237,6 +285,10 @@ public class ScaNegotiatedConnectionImpl extends ScaConnectionImpl implements Sc
 			return;
 		case ScaPackage.SCA_NEGOTIATED_CONNECTION__TRANSPORT_TYPE:
 			setTransportType((String) newValue);
+			return;
+		case ScaPackage.SCA_NEGOTIATED_CONNECTION__TRANSPORT_INFO:
+			getTransportInfo().clear();
+			getTransportInfo().addAll((Collection< ? extends ScaAbstractProperty< ? >>) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -256,6 +308,9 @@ public class ScaNegotiatedConnectionImpl extends ScaConnectionImpl implements Sc
 		case ScaPackage.SCA_NEGOTIATED_CONNECTION__TRANSPORT_TYPE:
 			unsetTransportType();
 			return;
+		case ScaPackage.SCA_NEGOTIATED_CONNECTION__TRANSPORT_INFO:
+			getTransportInfo().clear();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -272,6 +327,8 @@ public class ScaNegotiatedConnectionImpl extends ScaConnectionImpl implements Sc
 			return isSetAlive();
 		case ScaPackage.SCA_NEGOTIATED_CONNECTION__TRANSPORT_TYPE:
 			return isSetTransportType();
+		case ScaPackage.SCA_NEGOTIATED_CONNECTION__TRANSPORT_INFO:
+			return transportInfo != null && !transportInfo.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

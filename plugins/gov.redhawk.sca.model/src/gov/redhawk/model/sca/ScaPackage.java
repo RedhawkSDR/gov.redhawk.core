@@ -3708,6 +3708,14 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_NEGOTIATED_CONNECTION__TRANSPORT_TYPE = SCA_CONNECTION_FEATURE_COUNT + 1;
 	/**
+	 * The feature id for the '<em><b>Transport Info</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_NEGOTIATED_CONNECTION__TRANSPORT_INFO = SCA_CONNECTION_FEATURE_COUNT + 2;
+	/**
 	 * The number of structural features of the '<em>Negotiated Connection</em>' class.
 	 * <!-- begin-user-doc -->
 	 * @since 21.0
@@ -3715,7 +3723,7 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_NEGOTIATED_CONNECTION_FEATURE_COUNT = SCA_CONNECTION_FEATURE_COUNT + 2;
+	int SCA_NEGOTIATED_CONNECTION_FEATURE_COUNT = SCA_CONNECTION_FEATURE_COUNT + 3;
 	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaWaveformImpl <em>Waveform</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -6008,6 +6016,18 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaNegotiatedConnection_TransportType();
 
 	/**
+	 * Returns the meta object for the containment reference list
+	 * '{@link gov.redhawk.model.sca.ScaNegotiatedConnection#getTransportInfo <em>Transport Info</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Transport Info</em>'.
+	 * @see gov.redhawk.model.sca.ScaNegotiatedConnection#getTransportInfo()
+	 * @see #getScaNegotiatedConnection()
+	 * @generated
+	 */
+	EReference getScaNegotiatedConnection_TransportInfo();
+
+	/**
 	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaWaveform <em>Waveform</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7615,6 +7635,13 @@ public interface ScaPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute SCA_NEGOTIATED_CONNECTION__TRANSPORT_TYPE = eINSTANCE.getScaNegotiatedConnection_TransportType();
+		/**
+		 * The meta object literal for the '<em><b>Transport Info</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SCA_NEGOTIATED_CONNECTION__TRANSPORT_INFO = eINSTANCE.getScaNegotiatedConnection_TransportInfo();
 		/**
 		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaWaveformImpl <em>Waveform</em>}' class.
 		 * <!-- begin-user-doc -->

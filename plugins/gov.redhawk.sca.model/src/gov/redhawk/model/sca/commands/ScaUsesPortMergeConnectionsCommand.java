@@ -106,11 +106,7 @@ public class ScaUsesPortMergeConnectionsCommand extends SetStatusCommand<ScaUses
 						existingConnection.setAlive(connection.alive);
 					}
 				} else {
-					ScaNegotiatedConnection newConnection = ScaFactory.eINSTANCE.createScaNegotiatedConnection();
-					newConnection.setId(connection.connectionId);
-					newConnection.setTargetPort(connection.port);
-					newConnection.setAlive(connection.alive);
-					newConnection.setTransportType(connection.transportType);
+					ScaNegotiatedConnection newConnection = ScaFactory.eINSTANCE.createScaNegotiatedConnection(connection);
 					newConnections.add(newConnection);
 				}
 			}

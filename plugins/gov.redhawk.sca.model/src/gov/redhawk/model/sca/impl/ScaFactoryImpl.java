@@ -13,6 +13,8 @@
 package gov.redhawk.model.sca.impl;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.emf.ecore.EClass;
@@ -441,7 +443,14 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	public ScaTransport createScaTransport(ExtendedCF.TransportInfo transportInfo) {
 		ScaTransport scaTransport = createScaTransport();
 		scaTransport.setTransportType(transportInfo.transportType);
-		for (CF.DataType dt : transportInfo.transportProperties) {
+		List<ScaAbstractProperty< ? >> transportProperties = createProperties(transportInfo.transportProperties);
+		scaTransport.getTransportProperties().addAll(transportProperties);
+		return scaTransport;
+	}
+
+	private List<ScaAbstractProperty< ? >> createProperties(CF.DataType[] dtProps) {
+		List<ScaAbstractProperty< ? >> scaProps = new ArrayList<>();
+		for (CF.DataType dt : dtProps) {
 			ScaAbstractProperty< ? > newProp;
 			if (AnyUtils.isSimple(dt)) {
 				newProp = createScaSimpleProperty();
@@ -458,9 +467,9 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 			}
 			newProp.setId(dt.id);
 			newProp.fromAny(dt.value);
-			scaTransport.getTransportProperties().add(newProp);
+			scaProps.add(newProp);
 		}
-		return scaTransport;
+		return scaProps;
 	}
 
 	// BEGIN GENERATED CODE
@@ -498,6 +507,25 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 		ScaNegotiatedConnectionImpl scaNegotiatedConnection = new ScaNegotiatedConnectionImpl();
 		return scaNegotiatedConnection;
 	}
+
+	// END GENERATED CODE
+
+	/**
+	 * @since 21.0
+	 */
+	public ScaNegotiatedConnection createScaNegotiatedConnection(ExtendedCF.ConnectionStatus connectionStatus) {
+		ScaNegotiatedConnection scaNegotiatedConnection = createScaNegotiatedConnection();
+		scaNegotiatedConnection.setId(connectionStatus.connectionId);
+		scaNegotiatedConnection.setTargetPort(connectionStatus.port);
+		scaNegotiatedConnection.setAlive(connectionStatus.alive);
+		scaNegotiatedConnection.setTransportType(connectionStatus.transportType);
+		List<ScaAbstractProperty< ? >> transportInfo = createProperties(connectionStatus.transportInfo);
+		scaNegotiatedConnection.getTransportInfo().addAll(transportInfo);
+		return scaNegotiatedConnection;
+
+	}
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * <!-- begin-user-doc -->

@@ -11,6 +11,8 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca;
 
+import org.eclipse.emf.common.util.EList;
+
 /**
  * <!-- begin-user-doc -->
  * A negotiated connection is retrieved from a {@link ExtendedCF.NegotiableUsesPort}.
@@ -23,6 +25,7 @@ package gov.redhawk.model.sca;
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaNegotiatedConnection#isAlive <em>Alive</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaNegotiatedConnection#getTransportType <em>Transport Type</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaNegotiatedConnection#getTransportInfo <em>Transport Info</em>}</li>
  * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaNegotiatedConnection()
@@ -139,5 +142,21 @@ public interface ScaNegotiatedConnection extends ScaConnection {
 	 * @generated
 	 */
 	boolean isSetTransportType();
+
+	/**
+	 * Returns the value of the '<em><b>Transport Info</b></em>' containment reference list.
+	 * The list contents are of type {@link gov.redhawk.model.sca.ScaAbstractProperty}<code>&lt;?&gt;</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Transport Info</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Transport Info</em>' containment reference list.
+	 * @see gov.redhawk.model.sca.ScaPackage#getScaNegotiatedConnection_TransportInfo()
+	 * @model containment="true" resolveProxies="true"
+	 * @generated
+	 */
+	EList<ScaAbstractProperty< ? >> getTransportInfo();
 
 } // ScaNegotiatedConnection
