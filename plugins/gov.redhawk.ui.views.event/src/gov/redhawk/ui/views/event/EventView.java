@@ -43,12 +43,14 @@ import org.omg.CosEventChannelAdmin.EventChannel;
 import gov.redhawk.model.sca.DomainConnectionException;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.ui.views.event.model.ChannelListener;
 import gov.redhawk.ui.views.event.model.DomainChannelListener;
 import gov.redhawk.ui.views.event.model.Event;
 import gov.redhawk.ui.views.event.model.EventChannelListener;
+import gov.redhawk.ui.views.event.model.MessagePortListener;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
 public class EventView extends ViewPart implements ITabbedPropertySheetPageContributor {
@@ -212,6 +214,23 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 
 		final ChannelListener newListener = new EventChannelListener(history, eventChannel, channel);
 
+		newListener.connect(session);
+		channelListeners.add(newListener);
+	}
+
+	public synchronized void connect(final String channel, final ScaUsesPort port) throws CoreException {
+		// Don't add duplicate listeners
+		for (ChannelListener l : channelListeners) {
+			if (l.getFullChannelName().equals(port.getName())) {
+				return;
+			}
+		}
+
+		if (!disconnectAction.isEnabled()) {
+			disconnectAction.setEnabled(true);
+		}
+
+		final ChannelListener newListener = new MessagePortListener(history, channel, port);
 		newListener.connect(session);
 		channelListeners.add(newListener);
 	}

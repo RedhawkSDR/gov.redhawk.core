@@ -27,6 +27,29 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="true"
+            locationURI="popup:org.eclipse.ui.popup.any">
+         <command
+               commandId="gov.redhawk.ui.views.event.portMessageListener"
+               icon="icons/emblem-documents.png"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate>
+                  <and>
+                     <instanceof
+                           value="gov.redhawk.model.sca.ScaUsesPort">
+                     </instanceof>
+                     <test
+                           forcePluginActivation="true"
+                           property="gov.redhawk.ui.views.event.isMessagePort">
+                     </test>
+                  </and>
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -35,6 +58,12 @@
             description="%eventChannelListener.command.description"
             id="gov.redhawk.ui.views.event.eventChannelListener"
             name="%eventChannelListener.command.name">
+      </command>
+      <command
+            categoryId="gov.redhawk.ui.commands.category.sca"
+            defaultHandler="gov.redhawk.ui.views.event.handlers.EventChannelListenerHandler"
+            id="gov.redhawk.ui.views.event.portMessageListener"
+            name="Listen to Message Events">
       </command>
    </extension>
    <extension
@@ -98,6 +127,16 @@
             </input>
          </propertySection>
       </propertySections>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="gov.redhawk.ui.views.event.MessagePortTester"
+            id="gov.redhawk.ui.views.event.isMessagePort"
+            namespace="gov.redhawk.ui.views.event"
+            properties="isMessagePort"
+            type="gov.redhawk.model.sca.ScaUsesPort">
+      </propertyTester>
    </extension>
 
 </plugin>

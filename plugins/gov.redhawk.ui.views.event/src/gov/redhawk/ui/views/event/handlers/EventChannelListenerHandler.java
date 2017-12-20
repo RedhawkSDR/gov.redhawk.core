@@ -17,6 +17,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ISelection;
@@ -34,6 +35,8 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaEventChannel;
+import gov.redhawk.model.sca.ScaAbstractComponent;
+import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.ui.views.event.EventView;
 import gov.redhawk.ui.views.event.EventViewPlugin;
 import gov.redhawk.ui.views.namebrowser.view.BindingNode;
@@ -63,10 +66,45 @@ public class EventChannelListenerHandler extends AbstractHandler {
 				view = showBindingNode((BindingNode) obj, page, view, isMany);
 			} else if (obj instanceof ScaEventChannel) {
 				view = showScaEventChannel((ScaEventChannel) obj, page, view, isMany);
+			} else if (Platform.getAdapterManager().getAdapter(obj, ScaUsesPort.class) != null) {
+				ScaUsesPort usesPort = Platform.getAdapterManager().getAdapter(obj, ScaUsesPort.class);
+				view = showPort(usesPort, page, view, isMany);
 			}
 		}
 
 		return null;
+	}
+
+	private EventView showPort(final ScaUsesPort usesPort, IWorkbenchPage page, EventView view, boolean isMany) throws ExecutionException {
+		// Open the event view
+		final String name = usesPort.getName();
+		final EventView finalView;
+		try {
+			finalView = showView(page, view, isMany, name);
+		} catch (PartInitException e) {
+			throw new ExecutionException("Failed to open event view.", e);
+		}
+
+		// Connect the event channel to the view
+		Job connectJob = Job.create(Messages.bind(Messages.EventChannelListenerHandler_ConnectToEventChannelJobTitle, name), monitor -> {
+			try {
+				CorbaUtils.invoke(() -> {
+					final ScaAbstractComponent< ? > resource = ScaEcoreUtils.getEContainerOfType(usesPort, ScaAbstractComponent.class);
+					final String channel = resource.getIdentifier() + "_" + usesPort.getName();
+					finalView.connect(channel, usesPort);
+					return null;
+				}, monitor);
+				return Status.CANCEL_STATUS;
+			} catch (CoreException e1) {
+				return new Status(e1.getStatus().getSeverity(), EventViewPlugin.PLUGIN_ID, "Failed to connect to : " + name, e1);
+			} catch (InterruptedException e1) {
+				return Status.CANCEL_STATUS;
+			}
+		});
+		connectJob.setUser(true);
+		connectJob.setSystem(false);
+		connectJob.schedule();
+		return finalView;
 	}
 
 	private EventView showBindingNode(final BindingNode node, IWorkbenchPage page, EventView view, boolean isMany) throws ExecutionException {

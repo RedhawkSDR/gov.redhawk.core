@@ -21,6 +21,7 @@ Require-Bundle: org.apache.commons.lang,
  gov.redhawk.sca.model.edit,
  gov.redhawk.sca.ui,
  gov.redhawk.ui.views.namebrowser,
- gov.redhawk.logging.ui
+ gov.redhawk.logging.ui,
+ org.eclipse.core.expressions
 Import-Package: org.omg.CosEventChannelAdmin,
  org.omg.CosEventComm
