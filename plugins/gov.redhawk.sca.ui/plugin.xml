@@ -326,6 +326,16 @@
          </adapter>
       </factory>
       <factory
+            adaptableType="gov.redhawk.model.sca.ScaNegotiatedConnection"
+            class="gov.redhawk.sca.internal.ui.ScaNegotiatedConnectionAdapterFactory">
+         <adapter
+               type="org.eclipse.ui.views.properties.IPropertySource">
+         </adapter>
+         <adapter
+               type="org.eclipse.ui.views.properties.IPropertySource2">
+         </adapter>
+      </factory>
+      <factory
             adaptableType="gov.redhawk.model.sca.provider.ScaWaveformsContainerItemProvider"
             class="gov.redhawk.sca.internal.ui.ScaWaveformsContainerItemProviderAdapterFactory">
          <adapter
