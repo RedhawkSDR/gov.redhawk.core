@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TreeItem;
 
 /**
- * @since 10.2
+ * @since 11.0
  * 
  * Creates a dialog that allows for selection of predefined connection IDs
  */
