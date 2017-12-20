@@ -465,54 +465,6 @@ public class RHContainerShapeImpl extends ContainerShapeImpl implements RHContai
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public EList<ProvidesPortStub> getProvidesPortStubs() {
-		if (isCollapsed()) {
-			ContainerShape providesSuperPortsContainerShape = getSuperProvidesPortsContainerShape();
-			if (providesSuperPortsContainerShape != null && providesSuperPortsContainerShape.getLink() != null) {
-				EList<ProvidesPortStub> returnList = new BasicEList<ProvidesPortStub>();
-				EList<EObject> providesAndInterfaceObjects = (EList<EObject>) (EList< ? >) providesSuperPortsContainerShape.getLink().getBusinessObjects();
-				for (EObject o : providesAndInterfaceObjects) {
-					if (o instanceof ProvidesPortStub) {
-						returnList.add((ProvidesPortStub) o);
-					}
-				}
-
-				return returnList;
-			}
-		} else {
-			ContainerShape providesPortsContainerShape = getProvidesPortsContainerShape();
-			if (providesPortsContainerShape != null && providesPortsContainerShape.getLink() != null) {
-				return (EList<ProvidesPortStub>) (EList< ? >) providesPortsContainerShape.getLink().getBusinessObjects();
-			}
-		}
-		return new BasicEList<ProvidesPortStub>();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	public EList<UsesPortStub> getUsesPortStubs() {
-		if (isCollapsed()) {
-			ContainerShape usesSuperPortsContainerShape = getSuperUsesPortsContainerShape();
-			if (usesSuperPortsContainerShape != null && usesSuperPortsContainerShape.getLink() != null) {
-				return (EList<UsesPortStub>) (EList< ? >) usesSuperPortsContainerShape.getLink().getBusinessObjects();
-			}
-		} else {
-			ContainerShape usesPortsContainerShape = getUsesPortsContainerShape();
-			if (usesPortsContainerShape != null && usesPortsContainerShape.getLink() != null) {
-				return (EList<UsesPortStub>) (EList< ? >) usesPortsContainerShape.getLink().getBusinessObjects();
-			}
-		}
-		return new BasicEList<UsesPortStub>();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
 	public boolean update() {
 		boolean updateStatus = false;
 		if (isCollapsed()) {

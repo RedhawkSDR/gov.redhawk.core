@@ -12,11 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.core.graphiti.ui.ext;
 
-import mil.jpeojtrs.sca.partitioning.ProvidesPortStub;
-import mil.jpeojtrs.sca.partitioning.UsesPortStub;
-
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.graphiti.mm.algorithms.Image;
 import org.eclipse.graphiti.mm.algorithms.Polyline;
 import org.eclipse.graphiti.mm.algorithms.Text;
@@ -260,28 +255,6 @@ public interface RHContainerShape extends ContainerShape {
 	 * @generated
 	 */
 	void init();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Returns providesPortsStubs business object list linked to getProvidesPortsContainerShape()
-	 * <!-- end-model-doc -->
-	 * @model kind="operation" unique="false" many="false"
-	 * @generated
-	 */
-	EList<ProvidesPortStub> getProvidesPortStubs();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Returns providesPortsStubs business object list linked to getUsesPortsContainerShape()
-	 * <!-- end-model-doc -->
-	 * @model kind="operation" unique="false" many="false"
-	 * @generated
-	 */
-	EList<UsesPortStub> getUsesPortStubs();
 
 	/**
 	 * <!-- begin-user-doc -->
