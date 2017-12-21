@@ -35,18 +35,7 @@
                icon="icons/emblem-documents.png"
                style="push">
             <visibleWhen
-                  checkEnabled="false">
-               <iterate>
-                  <and>
-                     <instanceof
-                           value="gov.redhawk.model.sca.ScaUsesPort">
-                     </instanceof>
-                     <test
-                           forcePluginActivation="true"
-                           property="gov.redhawk.ui.views.event.isMessagePort">
-                     </test>
-                  </and>
-               </iterate>
+                  checkEnabled="true">
             </visibleWhen>
          </command>
       </menuContribution>
@@ -61,7 +50,6 @@
       </command>
       <command
             categoryId="gov.redhawk.ui.commands.category.sca"
-            defaultHandler="gov.redhawk.ui.views.event.handlers.EventChannelListenerHandler"
             id="gov.redhawk.ui.views.event.portMessageListener"
             name="Listen to Message Events">
       </command>
@@ -89,6 +77,23 @@
                      </test>
                   </and>
                </or>
+            </iterate>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="gov.redhawk.ui.views.event.handlers.EventChannelListenerHandler"
+            commandId="gov.redhawk.ui.views.event.portMessageListener">
+         <enabledWhen>
+            <iterate
+                  ifEmpty="false"
+                  operator="and">
+               <adapt
+                     type="gov.redhawk.model.sca.ScaUsesPort">
+                  <test
+                        property="gov.redhawk.sca.model.port.interface"
+                        value="IDL:ExtendedEvent/MessageEvent:1.0">
+                  </test>
+               </adapt>
             </iterate>
          </enabledWhen>
       </handler>
@@ -127,16 +132,6 @@
             </input>
          </propertySection>
       </propertySections>
-   </extension>
-   <extension
-         point="org.eclipse.core.expressions.propertyTesters">
-      <propertyTester
-            class="gov.redhawk.ui.views.event.MessagePortTester"
-            id="gov.redhawk.ui.views.event.isMessagePort"
-            namespace="gov.redhawk.ui.views.event"
-            properties="isMessagePort"
-            type="gov.redhawk.model.sca.ScaUsesPort">
-      </propertyTester>
    </extension>
 
 </plugin>
