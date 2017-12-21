@@ -13,8 +13,8 @@ Export-Package: gov.redhawk.model.sca,
  gov.redhawk.model.sca.impl.listeners;x-internal:=true,
  gov.redhawk.model.sca.services,
  gov.redhawk.model.sca.util,
- gov.redhawk.sca.model.internal;
-  x-friends:="gov.redhawk.sca.model.tests",
+ gov.redhawk.sca.model.internal;x-friends:="gov.redhawk.sca.model.tests",
+ gov.redhawk.sca.model.internal.expressions;x-friends:="gov.redhawk.sca.model.tests",
  gov.redhawk.sca.model.jobs,
  gov.redhawk.sca.model.preferences
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",

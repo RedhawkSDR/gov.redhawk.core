@@ -36,23 +36,13 @@
                <iterate
                      ifEmpty="false"
                      operator="or">
-                  <and>
-                     <adapt
-                           type="gov.redhawk.model.sca.ScaUsesPort">
-                     </adapt>
+                  <adapt
+                        type="gov.redhawk.model.sca.ScaUsesPort">
                      <test
-                           forcePluginActivation="true"
-                           property="gov.redhawk.ui.port.interface"
+                           property="gov.redhawk.sca.model.port.interface"
                            value="IDL:BULKIO/data.*">
                      </test>
-                     <not>
-                        <test
-                              forcePluginActivation="true"
-                              property="gov.redhawk.ui.port.interface"
-                              value="IDL:BULKIO/dataSDDS.*">
-                        </test>
-                     </not>
-                  </and>
+                  </adapt>
                </iterate>
             </visibleWhen>
          </command>
@@ -62,10 +52,16 @@
          point="org.eclipse.ui.commands">
       <command
             categoryId="gov.redhawk.ui.commands.category.sca"
-            defaultHandler="gov.redhawk.ui.port.playaudio.internal.handlers.PlayPortHandler"
             id="gov.redhawk.ui.port.playaudio"
             name="Play Port">
       </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="gov.redhawk.ui.port.playaudio.internal.handlers.PlayPortHandler"
+            commandId="gov.redhawk.ui.port.playaudio">
+      </handler>
    </extension>
 
 </plugin>

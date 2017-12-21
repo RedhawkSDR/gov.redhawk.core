@@ -132,6 +132,13 @@
                properties="connected"
                type="gov.redhawk.model.sca.ScaDomainManager">
          </propertyTester>
+         <propertyTester
+               class="gov.redhawk.sca.model.internal.expressions.PortPropertyTester"
+               id="gov.redhawk.sca.model.portTester"
+               namespace="gov.redhawk.sca.model.port"
+               properties="interface"
+               type="gov.redhawk.model.sca.ScaPort">
+         </propertyTester>
       </extension>
 
 </plugin>

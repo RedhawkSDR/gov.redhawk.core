@@ -86,12 +86,11 @@
                      operator="or">
                   <adapt
                         type="gov.redhawk.model.sca.ScaUsesPort">
+                     <test
+                           property="gov.redhawk.sca.model.port.interface"
+                           value="IDL:BULKIO/data.*">
+                     </test>
                   </adapt>
-                  <test
-                        forcePluginActivation="true"
-                        property="gov.redhawk.ui.port.interface"
-                        value="IDL:BULKIO/data.*">
-                  </test>
                </iterate>
             </visibleWhen>
          </command>
@@ -105,12 +104,11 @@
                      operator="or">
                   <adapt
                         type="gov.redhawk.model.sca.ScaUsesPort">
+                     <test
+                           property="gov.redhawk.sca.model.port.interface"
+                           value="IDL:BULKIO/data.*">
+                     </test>
                   </adapt>
-                  <test
-                        forcePluginActivation="true"
-                        property="gov.redhawk.ui.port.interface"
-                        value="IDL:BULKIO/data.*">
-                  </test>
                </iterate>
             </visibleWhen>
             <command
@@ -170,11 +168,11 @@
                      operator="or">
                   <adapt
                         type="gov.redhawk.model.sca.ScaUsesPort">
+                     <test
+                           property="gov.redhawk.sca.model.port.interface"
+                           value="IDL:BULKIO/data.*">
+                     </test>
                   </adapt>
-                  <test
-                        property="gov.redhawk.ui.port.interface"
-                        value="IDL:BULKIO/data.*">
-                  </test>
                </iterate>
             </visibleWhen>
          </command>
@@ -188,11 +186,11 @@
                      operator="or">
                   <adapt
                         type="gov.redhawk.model.sca.ScaUsesPort">
+                     <test
+                           property="gov.redhawk.sca.model.port.interface"
+                           value="IDL:BULKIO/data.*">
+                     </test>
                   </adapt>
-                  <test
-                        property="gov.redhawk.ui.port.interface"
-                        value="IDL:BULKIO/data.*">
-                  </test>
                </iterate>
             </visibleWhen>
                <command
@@ -234,12 +232,11 @@
                      operator="or">
                   <adapt
                         type="gov.redhawk.model.sca.ScaUsesPort">
+                     <test
+                           property="gov.redhawk.sca.model.port.interface"
+                           value="IDL:BULKIO/data.*">
+                     </test>
                   </adapt>
-                  <test
-                        forcePluginActivation="true"
-                        property="gov.redhawk.ui.port.interface"
-                        value="IDL:BULKIO/data.*">
-                  </test>
                </iterate>
             </visibleWhen>
          </command>
