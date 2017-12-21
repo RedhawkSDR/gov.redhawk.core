@@ -116,7 +116,6 @@
     <module>plugins/gov.redhawk.sca.ui.singledomain</module>
     <module>plugins/gov.redhawk.sca.util</module>
     <module>plugins/gov.redhawk.sca.waveform.controlpanel</module>
-    <module>plugins/gov.redhawk.ui.port</module>
     <module>plugins/gov.redhawk.ui.port.nxmplot</module>
     <module>plugins/gov.redhawk.ui.views.allocmgr</module>
     <module>plugins/gov.redhawk.ui.views.connmgr</module>
