@@ -36,23 +36,21 @@
                <iterate
                      ifEmpty="false"
                      operator="or">
-                  <and>
-                     <adapt
-                           type="gov.redhawk.model.sca.ScaUsesPort">
-                     </adapt>
-                     <test
-                           forcePluginActivation="true"
-                           property="gov.redhawk.ui.port.interface"
-                           value="IDL:BULKIO/data.*">
-                     </test>
-                     <not>
+                  <adapt
+                        type="gov.redhawk.model.sca.ScaUsesPort">
+                     <and>
                         <test
-                              forcePluginActivation="true"
-                              property="gov.redhawk.ui.port.interface"
-                              value="IDL:BULKIO/dataSDDS.*">
+                              property="gov.redhawk.sca.model.port.interface"
+                              value="IDL:BULKIO/data.*">
                         </test>
-                     </not>
-                  </and>
+                        <not>
+                           <test
+                                 property="gov.redhawk.sca.model.port.interface"
+                                 value="IDL:BULKIO/dataSDDS.*">
+                           </test>
+                        </not>
+                     </and>
+                  </adapt>
                </iterate>
             </visibleWhen>
          </command>
