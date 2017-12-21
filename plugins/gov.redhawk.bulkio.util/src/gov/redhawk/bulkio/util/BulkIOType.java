@@ -10,6 +10,9 @@
  *******************************************************************************/
 package gov.redhawk.bulkio.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.omg.PortableServer.POA;
@@ -61,6 +64,22 @@ public enum BulkIOType {
 	USHORT(2, short.class, true, dataUshortOperations.class, 'L'),
 	OCTET(1, byte.class, false, dataOctetOperations.class, 'B'),
 	CHAR(2, char.class, false, dataCharOperations.class, 'I');
+
+	private static final Map<String, BulkIOType> MAP;
+
+	static {
+		MAP = new HashMap<>();
+		MAP.put(dataCharHelper.id(), BulkIOType.CHAR);
+		MAP.put(dataDoubleHelper.id(), BulkIOType.DOUBLE);
+		MAP.put(dataFloatHelper.id(), BulkIOType.FLOAT);
+		MAP.put(dataLongHelper.id(), BulkIOType.LONG);
+		MAP.put(dataLongLongHelper.id(), BulkIOType.LONG_LONG);
+		MAP.put(dataOctetHelper.id(), BulkIOType.OCTET);
+		MAP.put(dataShortHelper.id(), BulkIOType.SHORT);
+		MAP.put(dataUlongHelper.id(), BulkIOType.ULONG);
+		MAP.put(dataUlongLongHelper.id(), BulkIOType.ULONG_LONG);
+		MAP.put(dataUshortHelper.id(), BulkIOType.USHORT);
+	}
 
 	private final int bytePerAtom;
 	private final Class< ? > javaType;
@@ -149,26 +168,9 @@ public enum BulkIOType {
 	}
 
 	public static BulkIOType getType(@Nullable String idl) {
-		if (dataCharHelper.id().equals(idl)) {
-			return BulkIOType.CHAR;
-		} else if (dataDoubleHelper.id().equals(idl)) {
-			return BulkIOType.DOUBLE;
-		} else if (dataFloatHelper.id().equals(idl)) {
-			return BulkIOType.FLOAT;
-		} else if (dataLongHelper.id().equals(idl)) {
-			return BulkIOType.LONG;
-		} else if (dataLongLongHelper.id().equals(idl)) {
-			return BulkIOType.LONG_LONG;
-		} else if (dataOctetHelper.id().equals(idl)) {
-			return BulkIOType.OCTET;
-		} else if (dataShortHelper.id().equals(idl)) {
-			return BulkIOType.SHORT;
-		} else if (dataUlongHelper.id().equals(idl)) {
-			return BulkIOType.ULONG;
-		} else if (dataUlongLongHelper.id().equals(idl)) {
-			return BulkIOType.ULONG_LONG;
-		} else if (dataUshortHelper.id().equals(idl)) {
-			return BulkIOType.USHORT;
+		BulkIOType type = MAP.get(idl);
+		if (type != null) {
+			return type;
 		} else {
 			throw new IllegalArgumentException("Unknown type: " + idl);
 		}
@@ -178,14 +180,7 @@ public enum BulkIOType {
 	 * @since 2.0
 	 */
 	public static boolean isTypeSupported(@Nullable String idl) {
-		if (dataLongLongHelper.id().equals(idl) || dataUlongLongHelper.id().equals(idl)
-				|| dataFloatHelper.id().equals(idl) || dataDoubleHelper.id().equals(idl)
-				|| dataLongHelper.id().equals(idl)  || dataUlongHelper.id().equals(idl)
-				|| dataShortHelper.id().equals(idl) || dataUshortHelper.id().equals(idl)
-				|| dataOctetHelper.id().equals(idl) || dataCharHelper.id().equals(idl)) {
-			return true;
-		}
-		return false;
+		return MAP.containsKey(idl);
 	}
 
 	/**
