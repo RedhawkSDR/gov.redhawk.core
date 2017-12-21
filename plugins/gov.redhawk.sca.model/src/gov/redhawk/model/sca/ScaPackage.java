@@ -3710,6 +3710,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Transport Info</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
+	 * @since 21.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -6019,6 +6020,7 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the containment reference list
 	 * '{@link gov.redhawk.model.sca.ScaNegotiatedConnection#getTransportInfo <em>Transport Info</em>}'.
 	 * <!-- begin-user-doc -->
+	 * @since 21.0
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Transport Info</em>'.
 	 * @see gov.redhawk.model.sca.ScaNegotiatedConnection#getTransportInfo()
@@ -7638,6 +7640,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Transport Info</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
+		 * @since 21.0
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
