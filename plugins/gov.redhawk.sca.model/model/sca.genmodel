@@ -236,7 +236,7 @@
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDeviceManager/identifier"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDeviceManager/label"/>
       <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaDeviceManager/services"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDeviceManager/profile"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDeviceManager/profile"/>
       <genOperations ecoreOperation="sca.ecore#//ScaDeviceManager/getDevice">
         <genParameters ecoreParameter="sca.ecore#//ScaDeviceManager/getDevice/deviceId"/>
       </genOperations>
@@ -301,7 +301,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/name"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/rootContext"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/state"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/profile"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/profile"/>
       <genFeatures property="None" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaDomainManager/eventChannels"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/localName"/>
       <genOperations ecoreOperation="sca.ecore#//ScaDomainManager/getDevice">
@@ -463,7 +463,7 @@
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaWaveform/identifier"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaWaveform/name"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaWaveform/started"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaWaveform/profile"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaWaveform/profile"/>
       <genOperations ecoreOperation="sca.ecore#//ScaWaveform/fetchComponents">
         <genParameters ecoreParameter="sca.ecore#//ScaWaveform/fetchComponents/monitor"/>
       </genOperations>
@@ -496,7 +496,7 @@
           ecoreFeature="ecore:EReference sca.ecore#//ScaWaveformFactory/domMgr"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaWaveformFactory/identifier"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaWaveformFactory/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaWaveformFactory/profile"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaWaveformFactory/profile"/>
       <genOperations ecoreOperation="sca.ecore#//ScaWaveformFactory/createWaveform">
         <genParameters ecoreParameter="sca.ecore#//ScaWaveformFactory/createWaveform/monitor"/>
         <genParameters ecoreParameter="sca.ecore#//ScaWaveformFactory/createWaveform/name"/>
