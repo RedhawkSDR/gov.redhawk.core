@@ -204,7 +204,7 @@ public class BindingNode implements IPropertySource {
 	}
 
 	public ORB getOrb() {
-		return this.info.session.getOrb();
+		return (this.info.session == null) ? null : this.info.session.getOrb();
 	}
 
 	public BindingNode getRoot() {
