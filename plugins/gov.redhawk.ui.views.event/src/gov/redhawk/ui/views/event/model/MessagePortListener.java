@@ -14,6 +14,8 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.omg.CORBA.NO_IMPLEMENT;
+import org.omg.CORBA.SystemException;
 import org.omg.CosEventChannelAdmin.AlreadyConnected;
 import org.omg.CosEventChannelAdmin.ConsumerAdmin;
 import org.omg.CosEventChannelAdmin.ProxyPullConsumer;
@@ -42,14 +44,18 @@ import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.ui.views.event.EventViewPlugin;
 import mil.jpeojtrs.sca.util.CFErrorFormatter;
+import mil.jpeojtrs.sca.util.CorbaUtils;
 
 public class MessagePortListener extends ChannelListener implements MessageEventOperations, SupplierAdminOperations, ProxyPushConsumerOperations {
 
-	private ScaUsesPort port;
-	private MessageEvent ref;
 	private OrbSession session;
-	private ProxyPushConsumer proxyConsumer;
-	private SupplierAdmin supplier;
+
+	private ScaUsesPort port;
+	private String connectionID;
+
+	private MessageEvent messageEventPort;
+	private ProxyPushConsumer proxyPushConsumer;
+	private SupplierAdmin supplierAdmin;
 
 	public MessagePortListener(IObservableList<Event> history, String channel, ScaUsesPort port) {
 		super(history, channel);
@@ -62,10 +68,16 @@ public class MessagePortListener extends ChannelListener implements MessageEvent
 		this.session = session;
 
 		try {
-			ref = MessageEventHelper.narrow(session.getPOA().servant_to_reference(new MessageEventPOATie(this)));
-			port.connectPort(ref, createConnectionID());
+			// Create a MessageEvent CORBA object for this instance
+			messageEventPort = MessageEventHelper.narrow(session.getPOA().servant_to_reference(new MessageEventPOATie(this)));
+
+			// Call connect port with the CORBA object ref we created
+			String newConnectionID = createConnectionID();
+			port.connectPort(messageEventPort, newConnectionID);
+			connectionID = newConnectionID;
 		} catch (ServantNotActive | WrongPolicy e) {
-			logError("Failed to connect to event channel", e);
+			String msg = String.format("Failed to connect to port '%s'", port.getName());
+			logError(msg, e);
 		} catch (InvalidPort e) {
 			logError(CFErrorFormatter.format(e, port.getName()), e);
 		} catch (OccupiedPort e) {
@@ -79,20 +91,32 @@ public class MessagePortListener extends ChannelListener implements MessageEvent
 
 	@Override
 	public void disconnect() {
-		try {
-			if (proxyConsumer != null) {
-				session.getPOA().deactivate_object(session.getPOA().reference_to_id(proxyConsumer));
+		if (connectionID != null) {
+			try {
+				port.disconnectPort(connectionID);
+			} catch (InvalidPort e) {
+				logError(CFErrorFormatter.format(e, port.getName()), e);
+			} catch (SystemException e) {
+				logError("Unable to disconnect port", e);
 			}
-			if (supplier != null) {
-				session.getPOA().deactivate_object(session.getPOA().reference_to_id(supplier));
+			connectionID = null;
+		}
+
+		for (org.omg.CORBA.Object reference : new org.omg.CORBA.Object[] { proxyPushConsumer, supplierAdmin, messageEventPort }) {
+			if (reference == null) {
+				continue;
 			}
-		} catch (ObjectNotActive | WrongPolicy | WrongAdapter | CoreException e) {
-			logError("Failed to disconnect from event channel", e);
+			try {
+				byte[] id = session.getPOA().reference_to_id(reference);
+				session.getPOA().deactivate_object(id);
+			} catch (ObjectNotActive | WrongPolicy | WrongAdapter | CoreException e) {
+				logError("Failed to deactivate CORBA object after listening to message port", e);
+			}
+			CorbaUtils.release(reference);
 		}
-		if (ref != null) {
-			ORBUtil.release(ref);
-		}
-		ref = null;
+		proxyPushConsumer = null;
+		supplierAdmin = null;
+		messageEventPort = null;
 	}
 
 	@Override
@@ -103,18 +127,19 @@ public class MessagePortListener extends ChannelListener implements MessageEvent
 	/** EVENT CHANNEL OPERATIONS **/
 	@Override
 	public void destroy() {
+		throw new NO_IMPLEMENT();
 	}
 
 	@Override
 	public ConsumerAdmin for_consumers() {
-		return null;
+		throw new NO_IMPLEMENT();
 	}
 
 	@Override
 	public SupplierAdmin for_suppliers() {
 		try {
-			supplier = SupplierAdminHelper.narrow(session.getPOA().servant_to_reference(new SupplierAdminPOATie(this)));
-			return supplier;
+			supplierAdmin = SupplierAdminHelper.narrow(session.getPOA().servant_to_reference(new SupplierAdminPOATie(this)));
+			return supplierAdmin;
 		} catch (ServantNotActive | WrongPolicy | CoreException e) {
 			logError("Failed to connect to event channel", e);
 			return null;
@@ -124,23 +149,25 @@ public class MessagePortListener extends ChannelListener implements MessageEvent
 	/** MESSAGE EVENT OPERATIONS **/
 	@Override
 	public void connectPort(org.omg.CORBA.Object connection, String connectionId) throws InvalidPort, OccupiedPort {
+		throw new NO_IMPLEMENT();
 	}
 
 	@Override
 	public void disconnectPort(String connectionId) throws InvalidPort {
+		throw new NO_IMPLEMENT();
 	}
 
 	/** SUPPLIER ADMIN OPERATIONS **/
 	@Override
 	public ProxyPullConsumer obtain_pull_consumer() {
-		return null;
+		throw new NO_IMPLEMENT();
 	}
 
 	@Override
 	public ProxyPushConsumer obtain_push_consumer() {
 		try {
-			proxyConsumer = ProxyPushConsumerHelper.narrow(session.getPOA().servant_to_reference(new ProxyPushConsumerPOATie(this)));
-			return proxyConsumer;
+			proxyPushConsumer = ProxyPushConsumerHelper.narrow(session.getPOA().servant_to_reference(new ProxyPushConsumerPOATie(this)));
+			return proxyPushConsumer;
 		} catch (ServantNotActive | WrongPolicy | CoreException e) {
 			logError("Failed to connect to event channel", e);
 			return null;
@@ -150,6 +177,7 @@ public class MessagePortListener extends ChannelListener implements MessageEvent
 	/** PUSH SUPPLIER **/
 	@Override
 	public void connect_push_supplier(PushSupplier arg0) throws AlreadyConnected {
+		ORBUtil.release(arg0);
 	}
 
 	private void logError(String msg, Throwable e) {

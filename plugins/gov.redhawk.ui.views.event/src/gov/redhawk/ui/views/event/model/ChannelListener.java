@@ -42,14 +42,9 @@ public abstract class ChannelListener implements PushConsumerOperations {
 
 	@Override
 	public void push(final Any arg0) throws Disconnected {
-		this.history.getRealm().asyncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				final Event event = new Event(arg0, channel, new Date());
-				history.add(event);
-			}
-
+		this.history.getRealm().asyncExec(() -> {
+			final Event event = new Event(arg0, channel, new Date());
+			history.add(event);
 		});
 	}
 
