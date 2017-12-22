@@ -32,7 +32,11 @@ public class BindingNodeRepIDTester extends PropertyTester {
 		// Parse the IOR
 		ParsedIOR parsedIOR;
 		try {
-			parsedIOR = new ParsedIOR((ORB) node.getOrb(), node.getIOR());
+			ORB orb = (ORB) node.getOrb();
+			if (orb == null) {
+				return false;
+			}
+			parsedIOR = new ParsedIOR(orb, node.getIOR());
 		} catch (IllegalArgumentException | SystemException e) {
 			return false;
 		}
