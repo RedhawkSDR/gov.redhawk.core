@@ -107,6 +107,8 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	 */
 	void disconnectPort(ScaConnection connection) throws InvalidPort;
 
+	// END GENERATED CODE
+
 	/**
 	 * @since 21.0
 	 */
@@ -115,7 +117,6 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 		private static final String CONNECTION_ID = CONNECTION_TABLE + "::connection_id";
 		private static final String PORT_NAME = CONNECTION_TABLE + "::port_name";
 
-		// END GENERATED CODE
 		private Util() {
 		}
 
@@ -200,6 +201,8 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 			}
 			return false;
 		}
-		// BEGIN GENERATED CODE
 	}
+
+	// BEGIN GENERATED CODE
+
 } // ScaUsesPort
