@@ -121,14 +121,6 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 		}
 
 		/**
-		 * @return True if the ports container has a 'connectionTable' struct property with one or more entries
-		 * belonging to the provided port
-		 */
-		public static boolean isMultiOutPort(ScaUsesPort port) {
-			return getConnectionIds(port).size() >= 1;
-		}
-
-		/**
 		 * @return a Map<String, Boolean) of all connection ID's in the container's connectionTable property.<br/>
 		 * <li>Key - {@link String} connectionId
 		 * <li>Value - {@link Boolean} True if connection ID is available (either not being used, or only being
@@ -194,7 +186,7 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 			return connectionIdMap;
 		}
 
-		public static boolean isBulkIOPortSupported(ScaUsesPort port) {
+		private static boolean isBulkIOPortSupported(ScaUsesPort port) {
 			String idl = port.getRepid();
 			if (BulkIOType.isTypeSupported(idl)) {
 				return true;

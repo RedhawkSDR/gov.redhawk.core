@@ -265,7 +265,7 @@ public class PlotPortHandler extends AbstractHandler {
 	 */
 	private static boolean hasMultiOutPort(List<ScaUsesPort> ports) {
 		for (ScaUsesPort port : ports) {
-			if (ScaUsesPort.Util.isMultiOutPort(port)) {
+			if (!ScaUsesPort.Util.getConnectionIds(port).isEmpty()) {
 				return true;
 			}
 		}
