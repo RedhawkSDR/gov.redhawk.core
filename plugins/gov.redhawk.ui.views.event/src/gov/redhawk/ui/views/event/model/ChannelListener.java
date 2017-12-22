@@ -11,11 +11,14 @@
 package gov.redhawk.ui.views.event.model;
 
 import gov.redhawk.sca.util.OrbSession;
+import gov.redhawk.ui.views.event.EventViewPlugin;
 
 import java.util.Date;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.omg.CORBA.Any;
 import org.omg.CosEventComm.Disconnected;
 import org.omg.CosEventComm.PushConsumerOperations;
@@ -50,6 +53,11 @@ public abstract class ChannelListener implements PushConsumerOperations {
 
 	public String getChannel() {
 		return channel;
+	}
+
+	protected void logError(String msg, Throwable e) {
+		Status status = new Status(Status.ERROR, EventViewPlugin.PLUGIN_ID, msg, e);
+		Platform.getLog(Platform.getBundle(EventViewPlugin.PLUGIN_ID)).log(status);
 	}
 
 }

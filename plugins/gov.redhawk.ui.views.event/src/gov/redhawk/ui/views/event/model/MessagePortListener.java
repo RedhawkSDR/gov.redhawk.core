@@ -12,8 +12,6 @@ package gov.redhawk.ui.views.event.model;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.omg.CORBA.NO_IMPLEMENT;
 import org.omg.CORBA.SystemException;
 import org.omg.CosEventChannelAdmin.AlreadyConnected;
@@ -42,7 +40,6 @@ import ExtendedEvent.MessageEventPOATie;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
-import gov.redhawk.ui.views.event.EventViewPlugin;
 import mil.jpeojtrs.sca.util.CFErrorFormatter;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
@@ -179,10 +176,4 @@ public class MessagePortListener extends ChannelListener implements MessageEvent
 	public void connect_push_supplier(PushSupplier arg0) throws AlreadyConnected {
 		ORBUtil.release(arg0);
 	}
-
-	private void logError(String msg, Throwable e) {
-		Status status = new Status(Status.ERROR, EventViewPlugin.PLUGIN_ID, msg, e);
-		Platform.getLog(Platform.getBundle(EventViewPlugin.PLUGIN_ID)).log(status);
-	}
-
 }
