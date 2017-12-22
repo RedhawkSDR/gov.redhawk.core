@@ -19,6 +19,7 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.ui.provider.PropertyDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.DialogCellEditor;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
@@ -41,6 +42,8 @@ public class ScaPortAdapterFactory extends RedhawkUiAdapterFactory {
 		public CellEditor createPropertyEditor(final Composite composite) {
 			return new DialogCellEditor(composite) {
 
+				private Button button;
+
 				@Override
 				protected Object openDialogBox(Control cellEditorWindow) {
 					EcoreEList< ? > list = (EcoreEList< ? >) getValue();
@@ -52,8 +55,18 @@ public class ScaPortAdapterFactory extends RedhawkUiAdapterFactory {
 				}
 
 				@Override
+				protected Button createButton(Composite parent) {
+					button = super.createButton(parent);
+					return button;
+				}
+
+				@Override
 				protected void updateContents(Object value) {
 					getDefaultLabel().setText(getEditLabelProvider().getText(value));
+					EcoreEList< ? > list = (EcoreEList< ? >) value;
+					if (button != null) {
+						button.setEnabled(!list.isEmpty());
+					}
 				}
 			};
 		}
