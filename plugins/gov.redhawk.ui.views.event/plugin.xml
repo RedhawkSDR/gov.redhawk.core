@@ -72,7 +72,7 @@
                            value="gov.redhawk.ui.views.namebrowser.view.BindingNode">
                      </instanceof>
                      <test
-                           args="IDL:omg.org/CosEventChannelAdmin/EventChannel:1.0"
+                           args="IDL:omg.org/CosEventChannelAdmin/EventChannel:1.0,IDL:omni/omniEvents/EventChannel:1.0"
                            property="gov.redhawk.ui.views.namebrowser.isRepID">
                      </test>
                   </and>
