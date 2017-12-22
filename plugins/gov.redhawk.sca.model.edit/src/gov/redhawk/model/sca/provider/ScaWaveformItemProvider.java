@@ -157,7 +157,7 @@ public class ScaWaveformItemProvider extends ScaPropertyContainerItemProvider {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_ScaWaveform_profile_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_ScaWaveform_profile_feature", "_UI_ScaWaveform_type"),
-			ScaPackage.Literals.SCA_WAVEFORM__PROFILE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+			ScaPackage.Literals.SCA_WAVEFORM__PROFILE, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
