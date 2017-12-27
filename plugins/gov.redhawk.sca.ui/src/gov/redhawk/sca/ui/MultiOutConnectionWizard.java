@@ -191,7 +191,7 @@ public class MultiOutConnectionWizard extends Dialog {
 
 	private void createCreateNewIdSection(Composite radioContainer) {
 		createIdRadioButton = new Button(radioContainer, SWT.RADIO);
-		createIdRadioButton.setText("Input connection ID");
+		createIdRadioButton.setText("Specify connection ID");
 		Composite generateComposite = new Composite(radioContainer, SWT.NONE);
 		GridLayout generateCompositeLayout = new GridLayout();
 		generateCompositeLayout.marginLeft = 25;
@@ -199,7 +199,7 @@ public class MultiOutConnectionWizard extends Dialog {
 		generateComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		Label warningLabel = new Label(generateComposite, SWT.NONE);
-		warningLabel.setText("WARNING: Inputing a connection ID for a multi-out port is not recommended.\nThis may result in your port not suppling data.");
+		warningLabel.setText("WARNING: Specifying a connection ID that is not in the connection table for a multi-out port is not recommended.\nThis may result in your port not suppling data.");
 		connectionIdText = new Text(generateComposite, SWT.BORDER);
 		connectionIdText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		connectionIdText.setText(ConnectPortWizard.generateDefaultConnectionID());

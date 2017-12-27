@@ -344,7 +344,7 @@ public class ConnectWizardPage extends WizardPage {
 
 	private void addCreateIdSection(Composite parent) {
 		createIdRadioButton = new Button(parent, SWT.RADIO);
-		createIdRadioButton.setText("Input connection ID");
+		createIdRadioButton.setText("Specify connection ID");
 		Composite createIdComposite = new Composite(parent, SWT.NONE);
 		GridLayout createIdCompositeLayout = new GridLayout();
 		createIdCompositeLayout.marginLeft = 25;
