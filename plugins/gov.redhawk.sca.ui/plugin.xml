@@ -269,13 +269,6 @@
          </adapter>
       </factory>
       <factory
-            adaptableType="mil.jpeojtrs.sca.sad.SoftwareAssembly"
-            class="gov.redhawk.sca.internal.ui.SoftwareAssemblyAdapterFactory">
-         <adapter
-               type="gov.redhawk.model.sca.ScaWaveform">
-         </adapter>
-      </factory>
-      <factory
             adaptableType="gov.redhawk.model.sca.IStatusProvider"
             class="gov.redhawk.sca.internal.ui.StatusProviderObjectAdapterFactory">
          <adapter
@@ -341,20 +334,6 @@
             class="gov.redhawk.sca.internal.ui.ScaDeviceManagersContainerItemProviderAdapterFactory">
          <adapter
                type="gov.redhawk.model.sca.IRefreshable">
-         </adapter>
-      </factory>
-      <factory
-            adaptableType="mil.jpeojtrs.sca.sad.SadComponentInstantiation"
-            class="gov.redhawk.sca.internal.ui.SadComponentInstantiationAdapterFactory">
-         <adapter
-               type="gov.redhawk.model.sca.ScaComponent">
-         </adapter>
-      </factory>
-      <factory
-            adaptableType="mil.jpeojtrs.sca.dcd.DcdComponentInstantiation"
-            class="gov.redhawk.sca.internal.ui.DcdComponentInstantiationAdapterFactory">
-         <adapter
-               type="gov.redhawk.model.sca.ScaDevice">
          </adapter>
       </factory>
    </extension>
