@@ -87,24 +87,22 @@ public class PortDetailsPropertySection extends AbstractPropertySection {
 	@Override
 	public void setInput(IWorkbenchPart part, ISelection selection) {
 		super.setInput(part, selection);
-		AbstractPort newPort = null;
+
 		if (selection instanceof IStructuredSelection) {
-			final IStructuredSelection ss = (IStructuredSelection) selection;
-			final Object obj = ss.getFirstElement();
-			Object adapter = Platform.getAdapterManager().getAdapter(obj, AbstractPort.class);
-			if (adapter instanceof AbstractPort) {
-				newPort = (AbstractPort) adapter;
+			final Object obj = ((IStructuredSelection) selection).getFirstElement();
+			AbstractPort absPort = Platform.getAdapterManager().getAdapter(obj, AbstractPort.class);
+			if (absPort != null) {
+				this.port = absPort;
+				return;
 			}
-			if (newPort == null) {
-				adapter = Platform.getAdapterManager().getAdapter(obj, ScaPort.class);
-				if (adapter instanceof ScaPort) {
-					ScaPort<AbstractPort, ? > scaPort = (ScaPort<AbstractPort, ? >) adapter;
-					newPort = scaPort.getProfileObj();
-				}
+			ScaPort< ? , ? > scaPort = Platform.getAdapterManager().getAdapter(obj, ScaPort.class);
+			if (scaPort != null) {
+				this.port = scaPort.getProfileObj();
+				return;
 			}
 		}
 
-		this.port = newPort;
+		this.port = null;
 	}
 
 	@Override
