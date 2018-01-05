@@ -27,8 +27,8 @@ import org.eclipse.ui.views.properties.IPropertySource2;
 
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.sca.internal.ui.dialogs.TransportListDetailsDialog;
 import gov.redhawk.sca.ui.RedhawkUiAdapterFactory;
-import gov.redhawk.sca.ui.dialogs.TransportListDetailsDialog;
 
 public class ScaPortAdapterFactory extends RedhawkUiAdapterFactory {
 

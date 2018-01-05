@@ -26,8 +26,8 @@ import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaNegotiatedConnection;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaTransport;
+import gov.redhawk.sca.internal.ui.dialogs.TransportListDetailsDialog;
 import gov.redhawk.sca.ui.RedhawkUiAdapterFactory;
-import gov.redhawk.sca.ui.dialogs.TransportListDetailsDialog;
 
 public class ScaNegotiatedConnectionAdapterFactory extends RedhawkUiAdapterFactory {
 
