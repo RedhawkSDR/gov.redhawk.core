@@ -18,10 +18,26 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
 
-package org.ossie.component;
+package org.ossie.redhawk;
+import java.util.List;
+import java.util.ListIterator;
 
-public interface PortBase
-{
-	String getRepid();
-	String getDirection();
+public class PortCallError extends Exception {
+    public PortCallError(String msg, List<String> connectionids) {
+        super(createPortCallErrorMessage(msg, connectionids));
+    }
+
+    private static String createPortCallErrorMessage(String msg, List<String> connectionids) {
+        String _msg = msg;
+        if (connectionids.size() > 0) {
+            _msg += "Connections available: ";
+            for (ListIterator<String> iter = connectionids.listIterator(); iter.hasNext(); ) {
+                _msg += iter.next();
+                if (iter.hasNext()) {
+                    _msg += ", ";
+                }
+            }
+        }
+        return _msg;
+    }
 }
