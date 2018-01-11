@@ -14,6 +14,7 @@ package gov.redhawk.sca.internal.ui.actions;
 import gov.redhawk.model.sca.ScaFileStore;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.eclipse.core.filesystem.EFS;
@@ -34,9 +35,6 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
 
-/**
- * 
- */
 public class DownloadJob extends Job {
 
 	private final ScaFileStore[] stores;
@@ -49,9 +47,6 @@ public class DownloadJob extends Job {
 		setUser(true);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected IStatus run(final IProgressMonitor monitor) {
 		final MultiStatus status = new MultiStatus(ScaUiPlugin.PLUGIN_ID, IStatus.OK, "Problems downloading REDHAWK files", null);
@@ -81,63 +76,55 @@ public class DownloadJob extends Job {
 		final IFile targetFile = target.getFile(new Path(store.getName()));
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, "Downloading file " + store.getName(), 100);
 		try {
-			final InputStream inputStream = store.getFileStore().openInputStream(EFS.NONE, subMonitor.newChild(1));
-			final IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
 			ISchedulingRule rule;
 			IWorkspaceRunnable runnable;
-			if (!targetFile.exists()) {
-				rule = ruleFactory.createRule(targetFile);
-				runnable = new IWorkspaceRunnable() {
-
-					@Override
-					public void run(final IProgressMonitor monitor) throws CoreException {
-						targetFile.create(inputStream, true, monitor);
-					}
-				};
-			} else {
-				rule = ruleFactory.modifyRule(targetFile);
-				runnable = new IWorkspaceRunnable() {
-
-					@Override
-					public void run(final IProgressMonitor monitor) throws CoreException {
+			try (InputStream inputStream = store.getFileStore().openInputStream(EFS.NONE, subMonitor.newChild(1))) {
+				final IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
+				if (!targetFile.exists()) {
+					rule = ruleFactory.createRule(targetFile);
+					runnable = monitor2 -> {
+						targetFile.create(inputStream, true, monitor2);
+					};
+				} else {
+					rule = ruleFactory.modifyRule(targetFile);
+					runnable = monitor2 -> {
 						targetFile.setContents(inputStream, 0, monitor);
-					}
-				};
+					};
+				}
+				ResourcesPlugin.getWorkspace().run(runnable, rule, 0, subMonitor.newChild(99));
 			}
-			ResourcesPlugin.getWorkspace().run(runnable, rule, 0, subMonitor.newChild(99));
-		} catch (final CoreException e) {
+		} catch (CoreException e) {
 			return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
+		} catch (IOException e) {
+			return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Unable to open file " + store.getName(), e);
 		}
 		return Status.OK_STATUS;
 	}
 
 	private static IStatus downloadDirectory(final ScaFileStore store, final IContainer target, final IProgressMonitor monitor) {
 		final IFolder targetFolder = target.getFolder(new Path(store.getName()));
-		final SubMonitor subMonitor = SubMonitor.convert(monitor, "Downloading folder " + store.getName(), 2);
+		final SubMonitor subMonitor = SubMonitor.convert(monitor, "Downloading folder " + store.getName(), 100);
 		try {
 			if (!targetFolder.exists()) {
-				ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
-
-					@Override
-					public void run(final IProgressMonitor monitor) throws CoreException {
-						targetFolder.create(false, true, monitor);
-					}
-				}, targetFolder.getParent(), IResource.NONE, subMonitor.newChild(1));
+				ResourcesPlugin.getWorkspace().run(monitor2 -> {
+					targetFolder.create(false, true, monitor2);
+				}, targetFolder.getParent(), IResource.NONE, subMonitor.newChild(5));
 			} else {
-				subMonitor.setWorkRemaining(1);
+				subMonitor.setWorkRemaining(95);
 			}
-			final SubMonitor childMonitor = subMonitor.newChild(1);
-			childMonitor.beginTask("Downloading folder contents", store.fetchChildren(null).size());
-			final MultiStatus childStoreStatus = new MultiStatus(ScaUiPlugin.PLUGIN_ID,
-			        IStatus.OK,
-			        "Problems downloading folder contents " + store.getName(),
-			        null);
+
+			final SubMonitor childMonitor = subMonitor.newChild(95);
+			childMonitor.beginTask("Downloading folder contents", store.fetchChildren(childMonitor.newChild(10)).size());
+			final MultiStatus childStoreStatus = new MultiStatus(ScaUiPlugin.PLUGIN_ID, IStatus.OK, "Problems downloading folder contents " + store.getName(),
+				null);
 			for (final ScaFileStore child : store.getChildren()) {
 				final IStatus childStatus = DownloadJob.downloadStore(child, targetFolder, childMonitor.newChild(1));
 				if (!childStatus.isOK()) {
 					childStoreStatus.add(childStatus);
 				}
 			}
+			childMonitor.done();
+
 			return childStoreStatus;
 		} catch (final CoreException e) {
 			return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);

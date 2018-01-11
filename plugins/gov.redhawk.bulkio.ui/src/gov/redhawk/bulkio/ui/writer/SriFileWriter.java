@@ -45,28 +45,20 @@ public class SriFileWriter extends AbstractSriWriter {
 				// Operation was cancelled to avoid overwriting existing files
 				return;
 			}
-			FileWriter output = new FileWriter(metadataFile);
-			BufferedWriter buffer = new BufferedWriter(output);
-			PrintWriter out = new PrintWriter(buffer);
 
 			// Build contents for .sri file
 			Table rootTable = new Table();
-
 			Table genInfoTable = (Table) rootTable.addTable("General Information");
 			putGeneralInfo(nextStream.getValue(), genInfoTable);
-
 			StreamSRIUtil.putSriInfo(nextStream.getValue().getSri(), rootTable);
-
 			List<String> list = rootTable.toConfigFile();
 
 			// Print/save to text file
-			try {
+			try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(metadataFile)))) {
 				for (String s : list) {
 					out.println(s);
 				}
 				addFilesWritten(filename);
-			} finally {
-				out.close();
 			}
 		}
 	}

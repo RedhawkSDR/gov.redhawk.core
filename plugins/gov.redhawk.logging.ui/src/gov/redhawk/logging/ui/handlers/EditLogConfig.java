@@ -14,7 +14,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.concurrent.Callable;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -91,46 +90,39 @@ public class EditLogConfig extends AbstractHandler {
 			protected IStatus run(IProgressMonitor monitor) {
 				monitor.beginTask(getName(), IProgressMonitor.UNKNOWN);
 				try {
-					CorbaUtils.invoke(new Callable<Object>() {
-						public Object call() throws Exception {
-							// Get the logConfig string
-							String logConfig = resource.getLogConfig();
-
-							// Create a temporary file to use as input for the editor
-							File file = createTemporaryFile();
-
-							BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-							bw.write(logConfig);
-							bw.close();
-
-							final IPath path = new Path(file.getAbsolutePath());
-							final IFileStore fileStore = EFS.getLocalFileSystem().getStore(path);
-							final FileStoreEditorInput input = new FileStoreEditorInput(fileStore);
-
-							Display.getDefault().asyncExec(new Runnable() {
-
-								@Override
-								public void run() {
-									try {
-										LogConfigEditor editor = (LogConfigEditor) activePage.openEditor(input, LogConfigEditor.ID);
-										editor.setResource(resource);
-										editor.setFilePath(path);
-									} catch (PartInitException e) {
-										ErrorDialog.openError(PlatformUI.getWorkbench().getDisplay().getActiveShell(), "Log Config Editor Error",
-											"Failed to open LogConfigurationEditor",
-											new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, "Log Config Editor could not open"));
-									}
-								}
-							});
-
-							return null;
-						}
-
+					// Retrieve the logging config from the running resource
+					String logConfig = CorbaUtils.invoke(() -> {
+						return resource.getLogConfig();
 					}, monitor);
+
+					// Create a temporary file to use as input for the editor; write the config to it
+					File directory = LoggingUiPlugin.getDefault().getStateLocation().toFile();
+					File file = File.createTempFile("logConfiguration", ".tmp.txt", directory);
+
+					try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+						bw.write(logConfig);
+					}
+
+					final IPath path = new Path(file.getAbsolutePath());
+					final IFileStore fileStore = EFS.getLocalFileSystem().getStore(path);
+					final FileStoreEditorInput input = new FileStoreEditorInput(fileStore);
+
+					Display.getDefault().asyncExec(() -> {
+						try {
+							LogConfigEditor editor = (LogConfigEditor) activePage.openEditor(input, LogConfigEditor.ID);
+							editor.setResource(resource);
+						} catch (PartInitException e) {
+							ErrorDialog.openError(PlatformUI.getWorkbench().getDisplay().getActiveShell(), "Log Config Editor Error",
+								"Failed to open LogConfigurationEditor",
+								new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, "Log Config Editor could not open"));
+						}
+					});
 				} catch (CoreException e) {
 					return new Status(e.getStatus().getSeverity(), LoggingUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
 				} catch (InterruptedException e) {
 					return Status.CANCEL_STATUS;
+				} catch (IOException e) {
+					return new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, "Unable to write logging config to a temporary file", e);
 				} finally {
 					monitor.done();
 				}
@@ -143,27 +135,6 @@ public class EditLogConfig extends AbstractHandler {
 		editLogConfigJob.schedule();
 
 	}
-
-	/**
-	 * Creates a temporary file that will be populated with then resources log config and serve as the input for the
-	 * LogConfigEditor
-	 * @throws IOException
-	 */
-	private File createTemporaryFile() throws IOException {
-		String tmpLocation = "/log_configuration_tmpfile";
-		IPath tmpFilePath = LoggingUiPlugin.getDefault().getStateLocation();
-		tmpFilePath = tmpFilePath.append(tmpLocation);
-		File file = new File(tmpFilePath.toString());
-
-		int appender = 1;
-		while (file.exists()) {
-			file = new File(tmpFilePath + "_" + appender++);
-		}
-
-		file.createNewFile();
-
-		return file;
-	};
 
 	/**
 	 * Launch a toggle dialog that warns a user that edits to the log config will take place immediately on save.</br>
