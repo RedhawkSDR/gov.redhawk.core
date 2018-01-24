@@ -12,6 +12,7 @@
 package gov.redhawk.frontend.util;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -54,6 +55,7 @@ import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructSequence;
 import mil.jpeojtrs.sca.util.CorbaUtils2;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
+import mil.jpeojtrs.sca.util.collections.FeatureMapIterator;
 import mil.jpeojtrs.sca.util.collections.FeatureMapList;
 
 /**
@@ -64,32 +66,19 @@ public enum TunerProperties {
 	INSTANCE;
 
 	/**
-	 * Contains required FEI property definitions mapped by ID.
+	 * Contains FEI property definitions mapped by ID.
 	 */
-	private Map<String, AbstractProperty> requiredProps;
-
-	/**
-	 * Contains optional FEI property definitions mapped by ID.
-	 */
-	private Map<String, AbstractProperty> optionalProps;
+	private Map<String, AbstractProperty> feiProps;
 
 	TunerProperties() {
 		ResourceSet resourceSet = new ResourceSetImpl();
 
-		URI uri = URI.createPlatformPluginURI("/gov.redhawk.frontend/xml/fei_required.prf.xml", false);
+		URI uri = URI.createPlatformPluginURI("/gov.redhawk.frontend/xml/fei.prf.xml", false);
 		Resource resource = resourceSet.getResource(uri, true);
 		Properties props = Properties.Util.getProperties(resource);
-		requiredProps = new HashMap<>();
+		feiProps = new HashMap<>();
 		for (AbstractProperty prop : new FeatureMapList<AbstractProperty>(props.getProperties(), AbstractProperty.class)) {
-			requiredProps.put(prop.getId(), prop);
-		}
-
-		uri = URI.createPlatformPluginURI("/gov.redhawk.frontend/xml/fei_optional.prf.xml", false);
-		resource = resourceSet.getResource(uri, true);
-		props = Properties.Util.getProperties(resource);
-		optionalProps = new HashMap<>();
-		for (AbstractProperty prop : new FeatureMapList<AbstractProperty>(props.getProperties(), AbstractProperty.class)) {
-			optionalProps.put(prop.getId(), prop);
+			feiProps.put(prop.getId(), prop);
 		}
 	}
 
@@ -108,11 +97,31 @@ public enum TunerProperties {
 		}
 
 		/**
+		 * @deprecated Use {@link #createProperty(boolean)}
+		 */
+		@Deprecated
+		public StructSequence createProperty() {
+			return createProperty(false);
+		}
+
+		/**
+		 * @param scanner If the device is a scanner device
 		 * @return A new {@link StructSequence} instance of the property containing only the required fields.
 		 */
-		public StructSequence createProperty() {
-			StructSequence prop = (StructSequence) TunerProperties.INSTANCE.requiredProps.get(getId());
-			return EcoreUtil.copy(prop);
+		public StructSequence createProperty(boolean scanner) {
+			StructSequence prop = (StructSequence) TunerProperties.INSTANCE.feiProps.get(getId());
+			prop = EcoreUtil.copy(prop);
+
+			// Remove members that aren't required
+			Iterator<AbstractProperty> iter = new FeatureMapIterator<>(prop.getStruct().getFields(), AbstractProperty.class);
+			while (iter.hasNext()) {
+				AbstractProperty member = iter.next();
+				if (!TunerStatusAllocationProperties.fromPropID(member.getId()).isRequired(scanner)) {
+					iter.remove();
+				}
+			}
+
+			return prop;
 		}
 	}
 
@@ -185,7 +194,6 @@ public enum TunerProperties {
 		private final EAttribute feiAttr;
 		private final boolean editable;
 		private final AbstractProperty property;
-		private final boolean required;
 
 		TunerStatusAllocationProperties(String id, PropertyValueType prfType, String name, EAttribute feiAttr, boolean editable) {
 			this.id = id;
@@ -194,19 +202,10 @@ public enum TunerProperties {
 			this.feiAttr = feiAttr;
 			this.editable = editable;
 
-			// Look for it in the required properties section, then in the optional properties section
-			StructSequence ss = (StructSequence) TunerProperties.INSTANCE.requiredProps.get(TunerStatusProperty.INSTANCE.getId());
+			StructSequence ss = (StructSequence) TunerProperties.INSTANCE.feiProps.get(TunerStatusProperty.INSTANCE.getId());
 			AbstractProperty tmpProp = ss.getStruct().getProperty(id);
 			if (tmpProp != null) {
 				this.property = tmpProp;
-				this.required = true;
-				return;
-			}
-			ss = (StructSequence) TunerProperties.INSTANCE.optionalProps.get(TunerStatusProperty.INSTANCE.getId());
-			tmpProp = ss.getStruct().getProperty(id);
-			if (tmpProp != null) {
-				this.property = tmpProp;
-				this.required = false;
 				return;
 			}
 
@@ -251,9 +250,38 @@ public enum TunerProperties {
 		/**
 		 * @return Whether this property is required or optional per the FEI spec
 		 * @since 2.0
+		 * @deprecated Use {@link #isRequired(boolean)}
 		 */
+		@Deprecated
 		public boolean isRequired() {
-			return this.required;
+			return isRequired(false);
+		}
+
+		/**
+		 * @return Whether this property is required or optional per the FEI spec
+		 * @param scanner If the device is a scanner device
+		 * @since 2.0
+		 */
+		public boolean isRequired(boolean scanner) {
+			switch (this) {
+			case ALLOCATION_ID:
+			case BANDWIDTH:
+			case CENTER_FREQUENCY:
+			case ENABLED:
+			case GROUP_ID:
+			case RF_FLOW_ID:
+			case SAMPLE_RATE:
+			case TUNER_TYPE:
+				// Always required
+				return true;
+			case SCAN_MODE_ENABLED:
+			case SUPPORTS_SCAN:
+				// Required if it's a scanner
+				return scanner;
+			default:
+				// Everything else not required
+				return false;
+			}
 		}
 
 		/**
@@ -453,7 +481,7 @@ public enum TunerProperties {
 		 * @since 2.0
 		 */
 		public Struct createProperty() {
-			Struct prop = (Struct) TunerProperties.INSTANCE.requiredProps.get(getId());
+			Struct prop = (Struct) TunerProperties.INSTANCE.feiProps.get(getId());
 			return EcoreUtil.copy(prop);
 		}
 
@@ -504,7 +532,7 @@ public enum TunerProperties {
 		 * @since 2.0
 		 */
 		public Struct createProperty() {
-			Struct prop = (Struct) TunerProperties.INSTANCE.requiredProps.get(getId());
+			Struct prop = (Struct) TunerProperties.INSTANCE.feiProps.get(getId());
 			return EcoreUtil.copy(prop);
 		}
 
@@ -696,6 +724,30 @@ public enum TunerProperties {
 	}
 
 	/**
+	 * Used to create the <code>FRONTEND::scanner_allocation</code> property.
+	 * @since 2.0
+	 */
+	public enum ScannerAllocationProperty {
+		INSTANCE;
+
+		/**
+		 * @return The fully qualified ID of the property
+		 */
+		public String getId() {
+			return "FRONTEND::scanner_allocation";
+		}
+
+		/**
+		 * @return A new {@link Struct} instance of the property
+		 * @since 2.0
+		 */
+		public Struct createProperty() {
+			Struct prop = (Struct) TunerProperties.INSTANCE.feiProps.get(getId());
+			return EcoreUtil.copy(prop);
+		}
+	}
+
+	/**
 	 * Used to create the <code>connectionTable</code> property.
 	 * @since 2.0
 	 */
@@ -713,7 +765,7 @@ public enum TunerProperties {
 		 * @return A new {@link StructSequence} instance for the property
 		 */
 		public StructSequence createProperty() {
-			StructSequence prop = (StructSequence) TunerProperties.INSTANCE.requiredProps.get(getId());
+			StructSequence prop = (StructSequence) TunerProperties.INSTANCE.feiProps.get(getId());
 			return EcoreUtil.copy(prop);
 		}
 	}
