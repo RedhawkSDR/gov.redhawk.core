@@ -19,9 +19,9 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * @since 11.0
@@ -48,35 +47,11 @@ public class MultiOutConnectionWizard extends Dialog {
 
 	// SWT Widgets
 	private Button selectIdRadioButton;
-	private TreeViewer selectIdTreeViewer;
+	private ListViewer selectIdViewer;
 	private Button createIdRadioButton;
 	private Text connectionIdText;
 
 	private String selectedConnectionId;
-
-	/** Content provider for the connection ID tree viewer **/
-	private ITreeContentProvider treeViewerContentProvider = new ITreeContentProvider() {
-
-		@Override
-		public boolean hasChildren(Object element) {
-			return false;
-		}
-
-		@Override
-		public Object getParent(Object element) {
-			return null;
-		}
-
-		@Override
-		public Object[] getElements(Object inputElement) {
-			return ArrayContentProvider.getInstance().getElements(inputElement);
-		}
-
-		@Override
-		public Object[] getChildren(Object parentElement) {
-			return null;
-		}
-	};
 
 	/** Content provider for the connection ID tree viewer **/
 	private LabelProvider treeViewerLabelProvider = new LabelProvider() {
@@ -112,6 +87,7 @@ public class MultiOutConnectionWizard extends Dialog {
 		Control contents = super.createContents(parent);
 
 		// Need to validate here on creation, since we have to wait for the button bars to be created
+		createListeners();
 		validate();
 
 		return contents;
@@ -148,13 +124,18 @@ public class MultiOutConnectionWizard extends Dialog {
 
 		createSelectExistingIdSection(radioContainer);
 		createCreateNewIdSection(radioContainer);
-		createListeners();
 
-		// Set default to the first item in the tree viewer
-		selectIdRadioButton.setSelection(true);
-		TreeItem firstItem = selectIdTreeViewer.getTree().getItem(0);
-		selectedConnectionId = firstItem.getText();
-		selectIdTreeViewer.getTree().setSelection(firstItem);
+		// Set selection to the first available connection ID; if none, ask them to provide one
+		for (Entry<String, Boolean> entry : connectionIds.entrySet()) {
+			if (entry.getValue()) {
+				selectIdRadioButton.setSelection(true);
+				selectIdViewer.setSelection(new StructuredSelection(entry));
+				break;
+			}
+		}
+		if (!selectIdRadioButton.getSelection()) {
+			createIdRadioButton.setSelection(true);
+		}
 
 		initDataBindings();
 	}
@@ -162,7 +143,7 @@ public class MultiOutConnectionWizard extends Dialog {
 	/** Data bindings to enable/disable sections depending on which radio button is selected **/
 	private void initDataBindings() {
 		DataBindingContext dbc = new DataBindingContext();
-		ISWTObservableValue enabledObservable = WidgetProperties.enabled().observe(selectIdTreeViewer.getControl());
+		ISWTObservableValue enabledObservable = WidgetProperties.enabled().observe(selectIdViewer.getControl());
 		ISWTObservableValue selectionObservable = WidgetProperties.selection().observe(selectIdRadioButton);
 		dbc.bindValue(enabledObservable, selectionObservable);
 
@@ -180,13 +161,13 @@ public class MultiOutConnectionWizard extends Dialog {
 		existingComposite.setLayout(existingCompositeLayout);
 		existingComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		selectIdTreeViewer = new TreeViewer(existingComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE);
-		selectIdTreeViewer.setContentProvider(treeViewerContentProvider);
-		selectIdTreeViewer.setLabelProvider(treeViewerLabelProvider);
-		selectIdTreeViewer.setInput(connectionIds.entrySet());
+		selectIdViewer = new ListViewer(existingComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE);
+		selectIdViewer.setContentProvider(ArrayContentProvider.getInstance());
+		selectIdViewer.setLabelProvider(treeViewerLabelProvider);
+		selectIdViewer.setInput(connectionIds.entrySet());
 		GridData treeViewerData = new GridData(GridData.FILL, GridData.FILL, true, true);
 		treeViewerData.heightHint = 50;
-		selectIdTreeViewer.getControl().setLayoutData(treeViewerData);
+		selectIdViewer.getControl().setLayoutData(treeViewerData);
 	}
 
 	private void createCreateNewIdSection(Composite radioContainer) {
@@ -198,17 +179,15 @@ public class MultiOutConnectionWizard extends Dialog {
 		generateComposite.setLayout(generateCompositeLayout);
 		generateComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		Label warningLabel = new Label(generateComposite, SWT.NONE);
-		warningLabel.setText("WARNING: Specifying a connection ID that is not in the connection table for a multi-out port is not recommended.\nThis may result in your port not suppling data.");
+		Label warningLabel = new Label(generateComposite, SWT.WRAP);
+		warningLabel.setText("WARNING: Specifying a connection ID that is not in the connection table for a multi-out port is not recommended. This may result in your port not suppling data.");
+		warningLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		connectionIdText = new Text(generateComposite, SWT.BORDER);
 		connectionIdText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		connectionIdText.setText(ConnectPortWizard.generateDefaultConnectionID());
 	}
 
-	/** Various listeners to avoid completing the dialog while an invalid value is selected for the connection ID **/
 	private void createListeners() {
-
-		// Validate selection when changing between selectExistingId and createNewId sections
 		selectIdRadioButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -221,36 +200,29 @@ public class MultiOutConnectionWizard extends Dialog {
 				validate();
 			}
 		});
-
-		// Don't allow selection of "In Use" connection IDs
-		selectIdTreeViewer.addSelectionChangedListener((event) -> {
-			@SuppressWarnings("unchecked")
-			Entry<String, Boolean> selection = (Entry<String, Boolean>) event.getStructuredSelection().getFirstElement();
-			if (selection != null) {
-				selectedConnectionId = selection.getKey();
-				getButton(IDialogConstants.OK_ID).setEnabled(selection.getValue());
-			}
+		selectIdViewer.addSelectionChangedListener(event -> {
+			validate();
 		});
-
-		// Don't allow an empty text field when manually entering the connection ID
 		connectionIdText.addModifyListener((event) -> {
-			selectedConnectionId = connectionIdText.getText();
 			validate();
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	private void validate() {
 		if (selectIdRadioButton.getSelection()) {
-			Entry<String, Boolean> selection = (Entry<String, Boolean>) selectIdTreeViewer.getStructuredSelection().getFirstElement();
+			@SuppressWarnings("unchecked")
+			Entry<String, Boolean> selection = (Entry<String, Boolean>) selectIdViewer.getStructuredSelection().getFirstElement();
+
 			if (selection != null) {
 				selectedConnectionId = selection.getKey();
 				getButton(IDialogConstants.OK_ID).setEnabled(selection.getValue());
+			} else {
+				selectedConnectionId = null;
+				getButton(IDialogConstants.OK_ID).setEnabled(false);
 			}
 		} else if (createIdRadioButton.getSelection()) {
-			String connId = connectionIdText.getText();
-			selectedConnectionId = connId;
-			getButton(IDialogConstants.OK_ID).setEnabled(connId != null && !"".equals(connId));
+			selectedConnectionId = connectionIdText.getText();
+			getButton(IDialogConstants.OK_ID).setEnabled(selectedConnectionId != null && !selectedConnectionId.isEmpty());
 		}
 	}
 
