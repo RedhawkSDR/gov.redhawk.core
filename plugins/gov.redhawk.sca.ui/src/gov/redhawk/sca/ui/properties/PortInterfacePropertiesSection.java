@@ -40,7 +40,6 @@ import gov.redhawk.eclipsecorba.idl.provider.IdlItemProviderAdapterFactory;
 import gov.redhawk.eclipsecorba.idl.types.provider.TypesItemProviderAdapterFactory;
 import gov.redhawk.eclipsecorba.library.IdlLibrary;
 import gov.redhawk.model.sca.ScaPort;
-import gov.redhawk.sca.ui.ScaComponentFactory;
 import gov.redhawk.ui.RedhawkUiActivator;
 import gov.redhawk.ui.editor.IIdlLibraryService;
 import mil.jpeojtrs.sca.scd.AbstractPort;
@@ -93,10 +92,6 @@ public class PortInterfacePropertiesSection extends AbstractPropertySection impl
 
 		});
 		this.viewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
-	}
-
-	protected TreeViewer createTreeViewer(final Composite parent) {
-		return ScaComponentFactory.createPropertyTable(getWidgetFactory(), parent, SWT.SINGLE, this.adapterFactory);
 	}
 
 	@Override
