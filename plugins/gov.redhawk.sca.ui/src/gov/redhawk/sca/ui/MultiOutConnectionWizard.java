@@ -79,7 +79,7 @@ public class MultiOutConnectionWizard extends Dialog {
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("Multi-out port connection wizard");
+		newShell.setText("Multi-out Port Connection Wizard");
 	}
 
 	@Override
