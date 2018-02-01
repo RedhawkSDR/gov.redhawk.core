@@ -17,21 +17,25 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+package bulkio;
 
-package bulkio.sri;
+import org.apache.log4j.Logger;
 
-import BULKIO.StreamSRI;
+import org.ossie.component.PortBase;
 
-public class DefaultComparator implements bulkio.sri.Comparator {
+public interface InDataPort<E,A> extends PortBase {
+    public String getName();
 
-    public boolean compare(StreamSRI SRI_1, StreamSRI SRI_2)
-    {
-	if ((SRI_1 == null) || (SRI_2 == null)) {
-	    return false;
-        }
-        return utils.compare(SRI_1, SRI_2);
-    } 
+    public Logger getLogger();
+    public void setLogger(Logger logger);
 
+    public void setSriListener(bulkio.SriListener sriCallback);
+
+    public int getCurrentQueueDepth();
+    public int getMaxQueueDepth();
+    public void setMaxQueueDepth(int newDepth);
+
+    public DataTransfer<A> getPacket(long wait);
+
+    public void enableStats(boolean enable);
 }
-
-

@@ -17,21 +17,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+package bulkio;
 
-package bulkio.sri;
-
-import BULKIO.StreamSRI;
-
-public class DefaultComparator implements bulkio.sri.Comparator {
-
-    public boolean compare(StreamSRI SRI_1, StreamSRI SRI_2)
-    {
-	if ((SRI_1 == null) || (SRI_2 == null)) {
-	    return false;
-        }
-        return utils.compare(SRI_1, SRI_2);
-    } 
-
+public interface DataHelper<E> {
+    int elementSize();
+    int bitSize();
+    E emptyArray();
+    int arraySize(E data);
+    E slice(E data, int start, int end);
 }
-
-

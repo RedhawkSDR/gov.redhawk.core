@@ -17,21 +17,32 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+/*
+ * WARNING: This file is generated from NumericDataHelper.java.template.
+ *          Do not modify directly.
+ */
+package bulkio;
 
-package bulkio.sri;
+import java.util.Arrays;
 
-import BULKIO.StreamSRI;
+class UInt64DataHelper implements DataHelper<long[]> {
+    public int elementSize() {
+        return 8;
+    }
 
-public class DefaultComparator implements bulkio.sri.Comparator {
+    public int bitSize() {
+        return 8 * 8;
+    }
 
-    public boolean compare(StreamSRI SRI_1, StreamSRI SRI_2)
-    {
-	if ((SRI_1 == null) || (SRI_2 == null)) {
-	    return false;
-        }
-        return utils.compare(SRI_1, SRI_2);
-    } 
+    public int arraySize(long[] data) {
+        return data.length;
+    }
 
+    public long[] emptyArray() {
+        return new long[0];
+    }
+
+    public long[] slice(long[] data, int start, int end) {
+        return Arrays.copyOfRange(data, start, end);
+    }
 }
-
-

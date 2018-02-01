@@ -29,56 +29,37 @@ import BULKIO.PortUsageType;
 /**
  * 
  */
-public class InFilePort extends BULKIO.jni.dataFilePOA implements InDataPort<BULKIO.dataFileOperations,String> {
+public class InBitPort extends BULKIO.jni.dataBitPOA implements InDataPort<BULKIO.dataBitOperations,BULKIO.BitSequence> {
 
     /**
      * A class to hold packet data.
      * 
      */
-    public class Packet extends DataTransfer < String > {
+    public class Packet extends DataTransfer<BULKIO.BitSequence> {
 
-	public Packet( String data, PrecisionUTCTime timeStamp, boolean endOfStream, String streamID, StreamSRI H, boolean sriChanged, boolean inputQueueFlushed ) {
+	public Packet(BULKIO.BitSequence data, PrecisionUTCTime timeStamp, boolean endOfStream, String streamID, StreamSRI H, boolean sriChanged, boolean inputQueueFlushed ) {
 	    super(data,timeStamp,endOfStream,streamID,H,sriChanged,inputQueueFlushed); 
 	};
     };
 
-    private InPortImpl<String> impl;
+    private InPortImpl<BULKIO.BitSequence> impl;
     
     /**
      * 
      */
-    public InFilePort( String portName ) {
-	this( portName, null, new bulkio.sri.DefaultComparator(), null );
+    public InBitPort(String name) {
+	this(name, null);
     }
 
-    public InFilePort( String portName, 
-		       bulkio.sri.Comparator compareSRI ) {
-	this( portName, null, compareSRI, null );
-    }
-
-    public InFilePort( String portName, 
-			bulkio.sri.Comparator compareSRI, 
-			bulkio.SriListener sriCallback
-		       ) {
-	this( portName, null, compareSRI, sriCallback );
-    }
-
-    public InFilePort( String portName, Logger logger ) {
-	this( portName, logger, new bulkio.sri.DefaultComparator(), null );
-    }
-
-    public InFilePort( String portName, 
-		       Logger logger,
-		       bulkio.sri.Comparator compareSRI, 
-		       bulkio.SriListener sriCallback ){
-        impl = new InPortImpl<String>(portName, logger, compareSRI, sriCallback, new FileDataHelper());
+    public InBitPort(String name, Logger logger) {
+        impl = new InPortImpl<BULKIO.BitSequence>(name, logger, new bulkio.sri.DefaultComparator(), null, new BitDataHelper());
     }
 
     public Logger getLogger() {
         return impl.getLogger();
     }
 
-    public void setLogger(Logger logger){
+    public void setLogger(Logger logger) {
         impl.setLogger(logger);
     }
 
@@ -155,7 +136,7 @@ public class InFilePort extends BULKIO.jni.dataFilePOA implements InDataPort<BUL
     /**
      * 
      */
-    public void pushPacket(String data, PrecisionUTCTime time, boolean eos, String streamID)
+    public void pushPacket(BULKIO.BitSequence data, PrecisionUTCTime time, boolean eos, String streamID)
     {
         impl.pushPacket(data, time, eos, streamID);
     }
@@ -165,7 +146,7 @@ public class InFilePort extends BULKIO.jni.dataFilePOA implements InDataPort<BUL
      */
     public Packet getPacket(long wait)
     {
-        DataTransfer<String> p = impl.getPacket(wait);
+        DataTransfer<BULKIO.BitSequence> p = impl.getPacket(wait);
         if (p == null) {
             return null;
         } else {
@@ -178,7 +159,6 @@ public class InFilePort extends BULKIO.jni.dataFilePOA implements InDataPort<BUL
     }
 
     public String getRepid() {
-        return BULKIO.dataFileHelper.id();
+        return BULKIO.dataBitHelper.id();
     }
 }
-

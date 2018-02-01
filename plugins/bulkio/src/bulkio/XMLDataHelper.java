@@ -17,21 +17,26 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+package bulkio;
 
-package bulkio.sri;
+class XMLDataHelper implements DataHelper<String> {
+    public int elementSize() {
+        return 1;
+    }
 
-import BULKIO.StreamSRI;
+    public int bitSize() {
+        return 8;
+    }
 
-public class DefaultComparator implements bulkio.sri.Comparator {
+    public int arraySize(String data) {
+        return data.length();
+    }
 
-    public boolean compare(StreamSRI SRI_1, StreamSRI SRI_2)
-    {
-	if ((SRI_1 == null) || (SRI_2 == null)) {
-	    return false;
-        }
-        return utils.compare(SRI_1, SRI_2);
-    } 
+    public String emptyArray() {
+        return "";
+    }
 
+    public String slice(String data, int start, int end) {
+        return data.substring(start, end);
+    }
 }
-
-

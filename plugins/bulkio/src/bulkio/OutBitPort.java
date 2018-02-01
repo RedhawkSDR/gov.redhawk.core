@@ -17,49 +17,42 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-/*
- * WARNING: This file is generated from OutPort.java.template.
- *          Do not modify directly.
- */
 package bulkio;
 
 import org.apache.log4j.Logger;
 
 import BULKIO.PrecisionUTCTime;
-import BULKIO.dataDoubleOperations;
+import BULKIO.dataBitOperations;
 
 /**
- * BulkIO output port implementation for dataDouble.
+ * BulkIO output port implementation for dataBit.
  */
-public class OutDoublePort extends OutStreamPort<dataDoubleOperations,double[]> {
+public class OutBitPort extends OutStreamPort<dataBitOperations,BULKIO.BitSequence> {
 
-    public OutDoublePort(String portName) {
+    public OutBitPort(String portName) {
         this(portName, null, null);
     }
 
-    public OutDoublePort(String portName, Logger logger) {
+    public OutBitPort(String portName, Logger logger) {
         this(portName, logger, null);
     }
 
-    public OutDoublePort(String portName, Logger logger, ConnectionEventListener eventCB) {
-        super(portName, logger, eventCB, new DoubleDataHelper());
+    public OutBitPort(String portName, Logger logger, ConnectionEventListener eventCB) {
+        super(portName, logger, eventCB, new BitDataHelper());
         if (this.logger != null) {
             this.logger.debug("bulkio.OutPort CTOR port: " + portName);
         }
-
     }
 
-    protected dataDoubleOperations narrow(final org.omg.CORBA.Object obj) {
-        return BULKIO.jni.dataDoubleHelper.narrow(obj);
+    protected dataBitOperations narrow(org.omg.CORBA.Object obj) {
+        return BULKIO.jni.dataBitHelper.narrow(obj);
     }
 
-    protected void sendPacket(dataDoubleOperations port, double[] data, PrecisionUTCTime time,
-                              boolean endOfStream, String streamID) {
+    protected void sendPacket(dataBitOperations port, BULKIO.BitSequence data, PrecisionUTCTime time, boolean endOfStream, String streamID) {
         port.pushPacket(data, time, endOfStream, streamID);
     }
 
     public String getRepid() {
-        return BULKIO.dataDoubleHelper.id();
+        return BULKIO.dataBitHelper.id();
     }
 }
-
