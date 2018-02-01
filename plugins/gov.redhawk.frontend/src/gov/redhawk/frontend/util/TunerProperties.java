@@ -152,7 +152,7 @@ public enum TunerProperties {
 		/**
 		 * @since 2.0
 		 */
-		SUPPORTS_SCAN("FRONTEND::tuner_status::supports_scan", PropertyValueType.BOOLEAN, "Supports scanning"),
+		SUPPORTS_SCAN("FRONTEND::tuner_status::supports_scan", PropertyValueType.BOOLEAN, "Supports Scanning"),
 
 		// optional properties
 		// instance name ID PRF type
