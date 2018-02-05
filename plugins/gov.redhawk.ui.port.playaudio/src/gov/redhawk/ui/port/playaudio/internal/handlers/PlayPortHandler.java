@@ -59,11 +59,30 @@ public class PlayPortHandler extends AbstractHandler {
 			setBaseEnabled(false);
 			return;
 		}
-		IStructuredSelection ss = (IStructuredSelection) obj;
 
-		for (Object element : ss.toArray()) {
+		for (Object element : ((IStructuredSelection) obj).toArray()) {
+			// Must be a uses port with a 'supported' BULKIO type
 			ScaUsesPort port = PluginUtil.adapt(ScaUsesPort.class, element);
 			if (port == null || !BulkIOType.isTypeSupported(port.getRepid())) {
+				setBaseEnabled(false);
+				return;
+			}
+
+			// Check that our audio class supports the specific BULKIO type
+			switch (BulkIOType.getType(port.getRepid())) {
+			case CHAR:
+			case DOUBLE:
+			case FLOAT:
+			case LONG:
+			case LONG_LONG:
+			case OCTET:
+			case SHORT:
+			case ULONG:
+			case USHORT:
+				// BULKIO type is supported
+				break;
+			default:
+				// BULKIO type is NOT supported
 				setBaseEnabled(false);
 				return;
 			}
