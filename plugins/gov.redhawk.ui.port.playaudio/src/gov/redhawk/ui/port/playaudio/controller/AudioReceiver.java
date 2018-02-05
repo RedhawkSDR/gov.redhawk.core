@@ -67,8 +67,11 @@ import mil.jpeojtrs.sca.util.CorbaUtils;
 /**
  * @since 2.0
  */
-public class AudioReceiver extends AbstractBulkIOPort implements dataShortOperations, dataCharOperations, dataLongOperations, dataLongLongOperations,
-		dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperations, dataUshortOperations {
+public class AudioReceiver extends AbstractBulkIOPort implements dataCharOperations, dataDoubleOperations, dataFloatOperations, dataLongOperations,
+		dataLongLongOperations, dataOctetOperations, dataShortOperations, dataUlongOperations, dataUshortOperations {
+
+	private static final double SCALE_LONG_TO_INT = ((double) Integer.MAX_VALUE) / ((double) Long.MAX_VALUE);
+
 	private AudioFormat audioFormat;
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
@@ -421,7 +424,7 @@ public class AudioReceiver extends AbstractBulkIOPort implements dataShortOperat
 		IntBuffer iBuffer = buffer.asIntBuffer();
 		// Convert to Int
 		for (long l : data) {
-			int value = Integer.MAX_VALUE * (int) ((l / Long.MAX_VALUE) * multiplier);
+			int value = (int) (multiplier * SCALE_LONG_TO_INT * l);
 			iBuffer.put(value);
 		}
 		byte[] byteBuffer = buffer.array();
