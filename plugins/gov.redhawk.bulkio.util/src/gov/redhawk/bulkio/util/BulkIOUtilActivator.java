@@ -35,7 +35,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.jdt.annotation.NonNull;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
@@ -104,17 +103,9 @@ public class BulkIOUtilActivator extends Plugin {
 		}
 	};
 
-	/**
-	 * The constructor
-	 */
 	public BulkIOUtilActivator() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
@@ -123,11 +114,6 @@ public class BulkIOUtilActivator extends Plugin {
 		portFactoryTracker.open();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
@@ -136,21 +122,12 @@ public class BulkIOUtilActivator extends Plugin {
 			portFactoryTracker.close();
 			portFactoryTracker = null;
 		}
-		Future< ? > future = BulkIOUtilActivator.EXECUTOR_POOL.submit(new Runnable() {
-
-			@Override
-			public void run() {
-				ConnectionManager.INSTANCE.dispose();
-			}
-
+		Future< ? > future = BulkIOUtilActivator.EXECUTOR_POOL.submit(() -> {
+			ConnectionManager.INSTANCE.dispose();
 		});
 		try {
 			future.get(30, TimeUnit.SECONDS); // SUPPRESS CHECKSTYLE MAGIC NUMBER
-		} catch (InterruptedException e) {
-			// PASS
-		} catch (ExecutionException e) {
-			// PASS
-		} catch (TimeoutException e) {
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			// PASS
 		}
 	}
@@ -192,7 +169,6 @@ public class BulkIOUtilActivator extends Plugin {
 	 * @return
 	 * @since 2.0
 	 */
-	@NonNull
 	public IPortFactory getPortFactory() {
 		return delegatingFactory;
 	}

@@ -16,6 +16,7 @@ import gov.redhawk.bulkio.util.IPortFactory;
 import gov.redhawk.bulkio.util.PortReference;
 import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
+import mil.jpeojtrs.sca.util.CFErrorFormatter;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
@@ -30,16 +31,10 @@ import CF.PortHelper;
 import CF.PortPackage.InvalidPort;
 import CF.PortPackage.OccupiedPort;
 
-/**
- * 
- */
 public class PortFactoryDefaultImpl implements IPortFactory {
 
 	private static final OrbSession SESSION = OrbSession.createSession();
 
-	/*
-	 * @see gov.redhawk.bulkio.util.IPortFactory#connect(java.lang.String, gov.redhawk.bulkio.util.Port, gov.redhawk.bulkio.util.dataDoubleOperations)
-	 */
 	@Override
 	public PortReference connect(final String connectionID, String portIor, BulkIOType type, updateSRIOperations handler) throws CoreException {
 		Servant tie = createTie(type, handler);
@@ -55,25 +50,21 @@ public class PortFactoryDefaultImpl implements IPortFactory {
 				public void dispose() {
 					try {
 						port.disconnectPort(connectionID);
-					} catch (InvalidPort e) {
-						// PASS
-					} catch (SystemException e) {
+					} catch (InvalidPort | SystemException e) {
 						// PASS
 					}
 					ORBUtil.release(ref);
 
 				}
 			};
-		} catch (ServantNotActive e) {
-			throw new CoreException(new Status(Status.ERROR, BulkIOUtilActivator.PLUGIN_ID, "Failed to connect BulkIO Port ", e));
-		} catch (WrongPolicy e) {
+		} catch (ServantNotActive | WrongPolicy | SystemException e) {
 			throw new CoreException(new Status(Status.ERROR, BulkIOUtilActivator.PLUGIN_ID, "Failed to connect BulkIO Port ", e));
 		} catch (InvalidPort e) {
-			throw new CoreException(new Status(Status.ERROR, BulkIOUtilActivator.PLUGIN_ID, "Failed to connect BulkIO Port ", e));
+			String msg = "Failed to connect. " + CFErrorFormatter.format(e, "BULKIO port");
+			throw new CoreException(new Status(Status.ERROR, BulkIOUtilActivator.PLUGIN_ID, msg, e));
 		} catch (OccupiedPort e) {
-			throw new CoreException(new Status(Status.ERROR, BulkIOUtilActivator.PLUGIN_ID, "Failed to connect BulkIO Port ", e));
-		} catch (SystemException e) {
-			throw new CoreException(new Status(Status.ERROR, BulkIOUtilActivator.PLUGIN_ID, "Failed to connect BulkIO Port ", e));
+			String msg = "Failed to connect. " + CFErrorFormatter.format(e, "BULKIO port");
+			throw new CoreException(new Status(Status.ERROR, BulkIOUtilActivator.PLUGIN_ID, msg, e));
 		}
 	}
 

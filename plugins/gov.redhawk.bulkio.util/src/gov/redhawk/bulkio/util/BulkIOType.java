@@ -13,8 +13,6 @@ package gov.redhawk.bulkio.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.jdt.annotation.Nullable;
 import org.omg.PortableServer.Servant;
 
 import BULKIO.dataCharHelper;
@@ -49,7 +47,16 @@ import BULKIO.dataUshortOperations;
 import BULKIO.dataUshortPOATie;
 import BULKIO.updateSRIOperations;
 
-@NonNullByDefault
+/**
+ * This enumeration describes all BULKIO types implemented by the abstract class {@link AbstractUberBulkIOPort}.
+ * <b>NOT ALL BULKIO TYPES ARE SUPPORTED.</b> In general the supported types are those that:
+ * <ol>
+ * <li>convey sample data</li>
+ * <li>convey data in-band (via base class implementation)</li>
+ * </ol>
+ * So for example, dataXML isn't supported because it transmits XML not sample data. dataSDDS also isn't supported
+ * because the sample data is conveyed out-of-band.
+ */
 public enum BulkIOType {
 	DOUBLE(8, double.class, false, dataDoubleOperations.class, 'D'),
 	FLOAT(4, float.class, false, dataFloatOperations.class, 'F'),
@@ -164,7 +171,7 @@ public enum BulkIOType {
 		return retVal;
 	}
 
-	public static BulkIOType getType(@Nullable String idl) {
+	public static BulkIOType getType(String idl) {
 		BulkIOType type = MAP.get(idl);
 		if (type != null) {
 			return type;
@@ -176,12 +183,12 @@ public enum BulkIOType {
 	/**
 	 * @since 2.0
 	 */
-	public static boolean isTypeSupported(@Nullable String idl) {
+	public static boolean isTypeSupported(String idl) {
 		return MAP.containsKey(idl);
 	}
 
 	/**
-	 * @return The non upcasted Java class container type
+	 * @return The non-upcast Java class container type
 	 * @since 2.0
 	 */
 	public Class< ? > getJavaType() {

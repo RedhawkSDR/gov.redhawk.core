@@ -10,8 +10,6 @@
  *******************************************************************************/
 package gov.redhawk.bulkio.util;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import BULKIO.dataCharOperations;
 import BULKIO.dataDoubleOperations;
 import BULKIO.dataFloatOperations;
@@ -24,8 +22,9 @@ import BULKIO.dataUlongOperations;
 import BULKIO.dataUshortOperations;
 
 /**
+ * This abstract class adds to {@link AbstractBulkIOPort} the requirement to implement all BULKIO port types in
+ * {@link BulkIOType}.
  * @since 2.0
- * 
  */
 public abstract class AbstractUberBulkIOPort extends AbstractBulkIOPort implements dataUshortOperations, dataCharOperations, dataDoubleOperations, dataFloatOperations,
 		dataLongLongOperations, dataLongOperations, dataOctetOperations, dataShortOperations, dataUlongLongOperations, dataUlongOperations {
@@ -34,7 +33,7 @@ public abstract class AbstractUberBulkIOPort extends AbstractBulkIOPort implemen
 		super();
 	}
 
-	public AbstractUberBulkIOPort(@NonNull BulkIOType type) {
+	public AbstractUberBulkIOPort(BulkIOType type) {
 		super(type);
 	}
 
