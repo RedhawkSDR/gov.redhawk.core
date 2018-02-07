@@ -25,6 +25,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.progress.WorkbenchJob;
 
+import BULKIO.BitSequence;
 import BULKIO.PrecisionUTCTime;
 import BULKIO.StreamSRI;
 import gov.redhawk.bulkio.ui.views.SriDataView;
@@ -199,6 +200,12 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 
 	public String getActiveStreamID() {
 		return activeSriStreamID;
+	}
+
+	@Override
+	public void pushPacket(BitSequence data, PrecisionUTCTime time, boolean eos, String streamID) {
+		setPrecisionTime(time, streamID);
+		checkForEOS(eos, streamID);
 	}
 
 	@Override
