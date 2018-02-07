@@ -24,6 +24,7 @@ import BULKIO.PortStatistics;
 import BULKIO.PortUsageType;
 import BULKIO.PrecisionUTCTime;
 import BULKIO.StreamSRI;
+import BULKIO.dataBitOperations;
 import BULKIO.dataCharOperations;
 import BULKIO.dataDoubleOperations;
 import BULKIO.dataFloatOperations;
@@ -39,6 +40,7 @@ import CF.Port;
 import CF.PortHelper;
 import CF.PortPackage.InvalidPort;
 import CF.PortPackage.OccupiedPort;
+import bulkio.InBitPort;
 import bulkio.InCharPort;
 import bulkio.InDoublePort;
 import bulkio.InFloatPort;
@@ -61,6 +63,8 @@ public class PortFactory implements IPortFactory {
 		org.omg.CORBA.Object portRef = SESSION.getOrb().string_to_object(portIor);
 		final Port port = PortHelper.narrow(portRef);
 		switch (type) {
+		case BIT:
+			return connect(connectionID, port, (dataBitOperations) handler);
 		case CHAR:
 			return connect(connectionID, port, (dataCharOperations) handler);
 		case DOUBLE:
@@ -426,6 +430,39 @@ public class PortFactory implements IPortFactory {
 		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
+	/**
+	 * @param connectionID
+	 * @param port
+	 * @param handler
+	 * @return
+	 */
+	private PortReference connect(final String connectionID, final Port port, final dataBitOperations handler) throws CoreException {
+		final InBitPort inPort = new InBitPort(connectionID) {
+			public void pushPacket(BULKIO.BitSequence data, PrecisionUTCTime time, boolean eos, String streamID) {
+				handler.pushPacket(data, time, eos, streamID);
+			}
+
+			public void pushSRI(StreamSRI header) {
+				handler.pushSRI(header);
+			}
+
+			@Override
+			public StreamSRI[] activeSRIs() {
+				return handler.activeSRIs();
+			}
+
+			@Override
+			public PortUsageType state() {
+				return handler.state();
+			}
+
+			@Override
+			public PortStatistics statistics() {
+				return handler.statistics();
+			}
+		};
+		return createAndConnectHandler(connectionID, port, inPort);
+	}
 
 	private PortReference createAndConnectHandler(final String connectionID, final Port port, final Servant inPort) throws CoreException {
 		try {
