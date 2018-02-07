@@ -51,7 +51,7 @@ public class PlotTypeMenuAction extends Action implements IMenuCreator {
 		final ImageDescriptor rasterImageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(PlotActivator.PLUGIN_ID, "icons/elcl16/raster.png");
 		setImageDescriptor(rasterImageDescriptor);
 		this.plotPageBook = plotPageBook;
-		setToolTipText("Change the plot's type");
+		setToolTipText("Plot Type");
 		setMenuCreator(this);
 		setChecked(plotPageBook.getCurrentType() == PlotType.RASTER); // updates tool tip to display what action button will do
 	}
@@ -66,16 +66,6 @@ public class PlotTypeMenuAction extends Action implements IMenuCreator {
 			plotPageBook.showPlot(PlotType.RASTER);
 			this.setChecked(true);
 		}
-	}
-
-	@Override
-	public void setChecked(final boolean checked) {
-		super.setChecked(checked);
-		//		if (!checked) {
-		//			this.setToolTipText("Show Raster");
-		//		} else {
-		//			this.setToolTipText("Show Line");
-		//		}
 	}
 
 	@Override

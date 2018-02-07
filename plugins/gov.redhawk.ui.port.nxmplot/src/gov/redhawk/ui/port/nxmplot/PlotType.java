@@ -23,7 +23,12 @@ public enum PlotType {
 	CONTOUR,
 	MESH,
 	POINT,
-	DOT;
+	DOT,
+	/**
+	 * Select an appropriate default based on the port type.
+	 * @since 6.0
+	 */
+	DEFAULT;
 
 	/**
 	 * @since 4.4

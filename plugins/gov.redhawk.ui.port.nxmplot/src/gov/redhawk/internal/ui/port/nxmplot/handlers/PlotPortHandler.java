@@ -42,10 +42,12 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import BULKIO.dataBitHelper;
 import BULKIO.dataSDDSHelper;
 import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
+import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.sca.model.jobs.RefreshJob;
@@ -63,6 +65,10 @@ import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 import gov.redhawk.ui.port.nxmplot.PlotSource;
 import gov.redhawk.ui.port.nxmplot.PlotType;
 import gov.redhawk.ui.port.nxmplot.preferences.FftPreferences;
+import mil.jpeojtrs.sca.scd.Interface;
+import mil.jpeojtrs.sca.scd.ScdFactory;
+import mil.jpeojtrs.sca.scd.ScdPackage;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 /**
  * @noreference This class is not intended to be referenced by clients
@@ -118,8 +124,13 @@ public class PlotPortHandler extends AbstractHandler {
 		}
 
 		if (plotTypeStr != null) {
+			PlotType plotType = PlotType.valueOf(plotTypeStr);
+			if (plotType == PlotType.DEFAULT) {
+				plotType = getDefaultPlotType(ports);
+			}
+			plotSettings.setPlotType(plotType);
+
 			// because this evaluates to true, we do not end up using addSource2 method
-			plotSettings.setPlotType(PlotType.valueOf(plotTypeStr));
 			isFFT = Boolean.valueOf(event.getParameter(IPlotView.PARAM_ISFFT));
 
 			if (isFFT) {
@@ -213,6 +224,22 @@ public class PlotPortHandler extends AbstractHandler {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Returns the default plot type given a list of ports.
+	 * @param ports
+	 * @return
+	 */
+	private static PlotType getDefaultPlotType(List<ScaUsesPort> ports) {
+		Interface portIntf = ScaEcoreUtils.getFeature(ports.get(0), ScaPackage.Literals.SCA_PORT__PROFILE_OBJ, ScdPackage.Literals.ABSTRACT_PORT__INTERFACE);
+		if (portIntf == null) {
+			return PlotType.LINE;
+		}
+		Interface bitIntf = ScdFactory.eINSTANCE.createInterface(dataBitHelper.id());
+
+		// Use a raster plot for BULKIO.datBit ports
+		return (portIntf.isInstance(bitIntf)) ? PlotType.RASTER : PlotType.LINE;
 	}
 
 	/**

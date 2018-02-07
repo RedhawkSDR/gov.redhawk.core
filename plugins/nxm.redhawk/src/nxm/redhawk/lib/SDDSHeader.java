@@ -68,7 +68,7 @@ import nxm.redhawk.prim.sourcenic;
  * FOUR_IN_EIGHT or TEN_IN_SIXTEEN_AD modes.</td>
  * </tr>
  * </table>
- * @since 11.1
+ * @since 12.0
  */
 public class SDDSHeader {
 

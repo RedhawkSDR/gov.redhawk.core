@@ -15,8 +15,6 @@ import gov.redhawk.ui.port.nxmblocks.FftNxmBlock;
 import gov.redhawk.ui.port.nxmplot.preferences.FftPreferences;
 
 import java.beans.PropertyChangeListener;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,22 +50,16 @@ public class FftNumAvgControls extends Composite {
 				return;
 			}
 			if (FftPreferences.NUM_AVERAGES.isEvent(evt)) {
-
-				getDisplay().asyncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						int numAvg = (Integer) evt.getNewValue();
-						if (avgSlider != null && avgText != null) {
-							if (numAvg < avgSlider.getMinimum()) {
-								numAvg = avgSlider.getMinimum();
-							} else if (numAvg > avgSlider.getMaximum()) {
-								numAvg = avgSlider.getMaximum();
-							}
-							state.setNumAvg(numAvg);
+				getDisplay().asyncExec(() -> {
+					int numAvg = (Integer) evt.getNewValue();
+					if (avgSlider != null && avgText != null) {
+						if (numAvg < avgSlider.getMinimum()) {
+							numAvg = avgSlider.getMinimum();
+						} else if (numAvg > avgSlider.getMaximum()) {
+							numAvg = avgSlider.getMaximum();
 						}
+						state.setNumAvg(numAvg);
 					}
-
 				});
 			}
 		}
@@ -131,16 +123,13 @@ public class FftNumAvgControls extends Composite {
 
 	private Scale avgSlider;
 	private Text avgText;
-	private final NumberFormat numberFormatter;
 	private final PlotPageBook2 pageBook;
 	private DataBindingContext context = new DataBindingContext();
 
 	public FftNumAvgControls(PlotPageBook2 pageBook, Composite parent) {
-		super(parent, SWT.None);
+		super(parent, SWT.NONE);
 		this.pageBook = pageBook;
 		this.pageBook.addPropertyChangeListener(propListener);
-		numberFormatter = new DecimalFormat("##0");
-		numberFormatter.setParseIntegerOnly(true);
 		createPartControls(this);
 		for (PlotSource source : pageBook.getSources()) {
 			for (INxmBlock b : pageBook.getBlockChain(source)) {
@@ -188,7 +177,7 @@ public class FftNumAvgControls extends Composite {
 			}
 		}
 		this.avgText.setTextLimit(3);
-		context.bindValue(WidgetProperties.text(new int[] { SWT.Modify, SWT.FocusOut }).observeDelayed(500, avgText),
+		context.bindValue(WidgetProperties.text(SWT.Modify, SWT.FocusOut).observeDelayed(500, avgText),
 			BeanProperties.value("numAvg").observe(state));
 
 		this.avgSlider = new Scale(parent, SWT.VERTICAL);
