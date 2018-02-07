@@ -35,8 +35,10 @@ import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+import BULKIO.BitSequence;
 import BULKIO.PrecisionUTCTime;
 import BULKIO.StreamSRI;
+import BULKIO.dataBitOperations;
 import BULKIO.dataCharOperations;
 import BULKIO.dataDoubleOperations;
 import BULKIO.dataFloatOperations;
@@ -203,6 +205,20 @@ public class Connection extends AbstractUberBulkIOPort {
 	 */
 	public boolean isEmpty() {
 		return children.isEmpty();
+	}
+
+	@Override
+	public void pushPacket(BitSequence data, PrecisionUTCTime time, boolean eos, String streamID) {
+		if (!super.pushPacket(data.bits, time, eos, streamID)) {
+			return;
+		}
+		for (updateSRIOperations child : getSafeChildren()) {
+			try {
+				((dataBitOperations) child).pushPacket(data, time, eos, streamID);
+			} catch (Exception e) { // SUPPRESS CHECKSTYLE IllegalCatch
+				logPushException(data, child, e);
+			}
+		}
 	}
 
 	@Override

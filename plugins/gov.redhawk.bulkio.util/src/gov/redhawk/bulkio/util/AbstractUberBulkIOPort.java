@@ -10,6 +10,7 @@
  *******************************************************************************/
 package gov.redhawk.bulkio.util;
 
+import BULKIO.dataBitOperations;
 import BULKIO.dataCharOperations;
 import BULKIO.dataDoubleOperations;
 import BULKIO.dataFloatOperations;
@@ -26,8 +27,9 @@ import BULKIO.dataUshortOperations;
  * {@link BulkIOType}.
  * @since 2.0
  */
-public abstract class AbstractUberBulkIOPort extends AbstractBulkIOPort implements dataUshortOperations, dataCharOperations, dataDoubleOperations, dataFloatOperations,
-		dataLongLongOperations, dataLongOperations, dataOctetOperations, dataShortOperations, dataUlongLongOperations, dataUlongOperations {
+public abstract class AbstractUberBulkIOPort extends AbstractBulkIOPort
+		implements dataBitOperations, dataCharOperations, dataDoubleOperations, dataFloatOperations, dataLongLongOperations, dataLongOperations,
+		dataOctetOperations, dataShortOperations, dataUlongLongOperations, dataUlongOperations, dataUshortOperations {
 
 	public AbstractUberBulkIOPort() {
 		super();
