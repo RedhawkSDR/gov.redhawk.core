@@ -16,7 +16,6 @@ import gov.redhawk.model.sca.ScaStructSequenceProperty;
 import gov.redhawk.model.sca.provider.ScaSimplePropertyItemProvider;
 import gov.redhawk.sca.internal.ui.properties.StructFieldPropertyColumnLabelProvider;
 import gov.redhawk.sca.internal.ui.properties.StructFieldPropertyEditingSupport;
-import gov.redhawk.sca.ui.compatibility.ColumnViewerToolTipSupport;
 import gov.redhawk.sca.ui.compatibility.CompatibilityUtil;
 import gov.redhawk.sca.ui.properties.ScaPropertiesContentProvider;
 
@@ -32,6 +31,7 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnPixelData;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
