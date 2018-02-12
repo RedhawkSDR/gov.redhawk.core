@@ -12,9 +12,9 @@
 package gov.redhawk.bulkio.ui.internal;
 
 import gov.redhawk.bulkio.ui.BulkIOUIActivator;
+import gov.redhawk.bulkio.util.BulkIOFormatter;
 
 import java.util.Arrays;
-import java.util.Date;
 
 import mil.jpeojtrs.sca.util.AnyUtils;
 import nxm.sys.lib.DataFile;
@@ -26,6 +26,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+import BULKIO.PrecisionUTCTime;
 import CF.DataType;
 
 public class SriDataViewLabelProvider implements ITableLabelProvider {
@@ -120,8 +121,8 @@ public class SriDataViewLabelProvider implements ITableLabelProvider {
 				} else { // Default behavior for populated rows
 					Object value = sri.getValue();
 					if (value != null) {
-						if (value instanceof Date) {
-							return BulkIOUIActivator.toISO8601TimeStr((Date) sri.getValue());
+						if (value instanceof PrecisionUTCTime) {
+							return BulkIOFormatter.toISO8601((PrecisionUTCTime) value);
 						} else {
 							return value.toString();
 						}

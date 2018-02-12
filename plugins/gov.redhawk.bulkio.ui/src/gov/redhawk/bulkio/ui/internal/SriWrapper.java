@@ -11,20 +11,19 @@
  */
 package gov.redhawk.bulkio.ui.internal;
 
-import java.util.Date;
-
 import org.eclipse.jdt.annotation.NonNull;
 
+import BULKIO.PrecisionUTCTime;
 import BULKIO.StreamSRI;
 
 public class SriWrapper {
 
 	private StreamSRI sri;
-	private Date pushSriDate;      // time when SRI was received in local machine time
-	private String precisionTime;  // time specified in pushPacket
+	private PrecisionUTCTime pushSriDate;      // time when SRI was received in local machine time
+	private PrecisionUTCTime precisionTime;  // time specified in pushPacket
 	private boolean eos;           // end of stream
 
-	public SriWrapper(@NonNull StreamSRI streamSRI, @NonNull Date date) {
+	public SriWrapper(@NonNull StreamSRI streamSRI, @NonNull PrecisionUTCTime date) {
 		this.setSri(streamSRI);
 		this.setPushSriDate(date);
 	}
@@ -47,21 +46,21 @@ public class SriWrapper {
 
 	/** Get most recent pushSRI date (local machine time). */
 	@NonNull
-	public Date getPushSriDate() {
+	public PrecisionUTCTime getPushSriDate() {
 		return pushSriDate;
 	}
 
-	public void setPushSriDate(Date date) {
+	public void setPushSriDate(PrecisionUTCTime date) {
 		this.pushSriDate = date;
 	}
 
 	/** Get most recent packet's precision time (received in pushPacket call). */ 
 	@NonNull
-	public String getPrecisionTime() {
+	public PrecisionUTCTime getPrecisionTime() {
 		return precisionTime;
 	}
 
-	public void setPrecisionTime(String precisionTime) {
+	public void setPrecisionTime(PrecisionUTCTime precisionTime) {
 		this.precisionTime = precisionTime;
 	}
 

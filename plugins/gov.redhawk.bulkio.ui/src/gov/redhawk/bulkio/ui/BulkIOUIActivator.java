@@ -25,38 +25,24 @@ public class BulkIOUIActivator extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "gov.redhawk.bulkio.ui"; //$NON-NLS-1$
 
-	/** ISO 8601 date/time format, using space instead of 'T' between date and time for readability on UI. */
+	/**
+	 * @deprecated Do not use.
+	 */
+	@Deprecated
 	public static final String ISO_8601_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSZ";
 
 	// The shared instance
 	private static BulkIOUIActivator plugin;
 
-	/**
-	 * The constructor
-	 */
 	public BulkIOUIActivator() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see 
-	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 * 
-	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		BulkIOUIActivator.plugin = this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see 
-	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 * 
-	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		BulkIOUIActivator.plugin = null;
@@ -72,9 +58,10 @@ public class BulkIOUIActivator extends AbstractUIPlugin {
 		return BulkIOUIActivator.plugin;
 	}
 
-	/** converts Date to ISO 8601 date/time format string.
-	 *  @return if date is null, then empty string is return, otherwise returns date/time in ISO 8601 format
-	 **/
+	/**
+	 * @deprecated {@link Use gov.redhawk.bulkio.util.BulkIOFormatter#toISO8601(PrecisionUTCTime)}
+	 */
+	@Deprecated
 	public static String toISO8601TimeStr(Date date) {
 		if (date == null) {
 			return "";
