@@ -15,8 +15,9 @@ import org.eclipse.jface.viewers.ColumnViewer;
 
 /**
  * @since 9.2
- * 
+ * @deprecated Not used now that we don't support RAP.
  */
+@Deprecated
 public final class ColumnViewerToolTipSupport {
 	private ColumnViewerToolTipSupport() {
 
@@ -24,11 +25,17 @@ public final class ColumnViewerToolTipSupport {
 
 	/**
 	 * @since 10.0
+	 * @deprecated Use {@link ColumnViewerToolTipSupport#enableFor(ColumnViewer)}
 	 */
+	@Deprecated
 	public static void enableFor(final ColumnViewer viewer) {
 		org.eclipse.jface.viewers.ColumnViewerToolTipSupport.enableFor(viewer);
 	}
 
+	/**
+	 * @deprecated Use {@link ColumnViewerToolTipSupport#enableFor(ColumnViewer, int)}
+	 */
+	@Deprecated
 	public static void enableFor(final ColumnViewer viewer, final int style) {
 		org.eclipse.jface.viewers.ColumnViewerToolTipSupport.enableFor(viewer, style);
 	}
