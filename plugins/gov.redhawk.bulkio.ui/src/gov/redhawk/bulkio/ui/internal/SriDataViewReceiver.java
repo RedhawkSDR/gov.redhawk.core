@@ -11,14 +11,6 @@
  */
 package gov.redhawk.bulkio.ui.internal;
 
-import gov.redhawk.bulkio.ui.BulkIOUIActivator;
-import gov.redhawk.bulkio.ui.views.SriDataView;
-import gov.redhawk.bulkio.util.AbstractUberBulkIOPort;
-import gov.redhawk.bulkio.util.BulkIOType;
-import gov.redhawk.bulkio.util.BulkIOUtilActivator;
-import gov.redhawk.model.sca.ScaUsesPort;
-
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -35,6 +27,11 @@ import org.eclipse.ui.progress.WorkbenchJob;
 
 import BULKIO.PrecisionUTCTime;
 import BULKIO.StreamSRI;
+import gov.redhawk.bulkio.ui.views.SriDataView;
+import gov.redhawk.bulkio.util.AbstractUberBulkIOPort;
+import gov.redhawk.bulkio.util.BulkIOType;
+import gov.redhawk.bulkio.util.BulkIOUtilActivator;
+import gov.redhawk.model.sca.ScaUsesPort;
 
 public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 	private ScaUsesPort port;
@@ -107,9 +104,11 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 		if (modelStreamMap.containsKey(streamID)) {
 			SriWrapper stream = modelStreamMap.get(streamID);
 			stream.setSri(newSri);
-			stream.setPushSriDate(new Date());
+			long timeMillis = System.currentTimeMillis();
+			stream.setPushSriDate(new PrecisionUTCTime(BULKIO.TCM_CPU.value, BULKIO.TCS_VALID.value, 0.0, timeMillis / 1000, timeMillis % 1000 / 1000.0));
 		} else {
-			SriWrapper sriWrapper = new SriWrapper(newSri, new Date());
+			long timeMillis = System.currentTimeMillis();
+			SriWrapper sriWrapper = new SriWrapper(newSri, new PrecisionUTCTime(BULKIO.TCM_CPU.value, BULKIO.TCS_VALID.value, 0.0, timeMillis / 1000, timeMillis % 1000 / 1000.0));
 			modelStreamMap.put(streamID, sriWrapper);
 		}
 		if (activeSriStreamID == null) {
@@ -177,21 +176,11 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 			return;
 		}
 		if (time != null) {
-			// Build packet's precision time stamp
-			final String precisionString;
-			final double seconds = (time.twsec * 1000 + time.tfsec);
-			if (Double.isInfinite(seconds) || Double.isNaN(seconds)) {
-				precisionString = Double.toString(seconds);
-			} else {
-				Date precisionTime = new Date((long) seconds);
-				precisionString = BulkIOUIActivator.toISO8601TimeStr(precisionTime);
-			}
-
 			// Assign to SriWrapper object
-			modelStreamMap.get(streamID).setPrecisionTime(precisionString);
+			modelStreamMap.get(streamID).setPrecisionTime(time);
 
 			if (!sriDataView.isPaused()) {
-				viewStreamMap.get(streamID).setPrecisionTime(precisionString);
+				viewStreamMap.get(streamID).setPrecisionTime(time);
 				refreshView.schedule(250);
 			}
 		}
