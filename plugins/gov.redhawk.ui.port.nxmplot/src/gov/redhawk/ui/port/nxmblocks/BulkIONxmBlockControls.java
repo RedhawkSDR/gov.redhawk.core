@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
+import org.apache.commons.lang.WordUtils;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
@@ -126,7 +126,8 @@ public class BulkIONxmBlockControls {
 			ControlDecoration dec = new ControlDecoration(connectionIDComboField.getControl(), SWT.TOP | SWT.LEFT);
 			dec.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_DEC_FIELD_WARNING));
 			dec.hide();
-			dec.setDescriptionText(" WARNING: Using a manually generated connection ID for a multi-out port may result in port not suppling data ");
+			String text = WordUtils.wrap(gov.redhawk.model.sca.provider.Messages.MultiOutPortManualConnectionIDWarning, 80);
+			dec.setDescriptionText(text);
 			connectionIDComboField.getControl().addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyReleased(KeyEvent e) {

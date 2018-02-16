@@ -101,7 +101,7 @@ public class ConnectWizardPage extends WizardPage {
 						return;
 					}
 				} else if (createIdRadioButton != null && createIdRadioButton.getSelection()) {
-					String id = idText.getText();
+					String id = connectionIdText.getText();
 					if (id == null || id.toString().trim().isEmpty()) {
 						status.setValue(ValidationStatus.error("Must enter a valid connection ID"));
 						return;
@@ -144,7 +144,7 @@ public class ConnectWizardPage extends WizardPage {
 	private Button selectIdRadioButton;
 	private Button createIdRadioButton;
 	private ComboViewer idCombo;
-	private Text idText;
+	private Text connectionIdText;
 
 	public ConnectWizardPage(Map<String, Boolean> connectionIds) {
 		super("connectPage", "Create new connection", null);
@@ -183,9 +183,9 @@ public class ConnectWizardPage extends WizardPage {
 
 		// Only do data-binding for connection ID if NOT operating on a multi-out port
 		if (idCombo == null) {
-			context.bindValue(WidgetProperties.text(SWT.Modify).observe(idText), BeanProperties.value("connectionID").observe(this),
+			context.bindValue(WidgetProperties.text(SWT.Modify).observe(connectionIdText), BeanProperties.value("connectionID").observe(this),
 				createConnectionIDTextTargetToModel(), null);
-			context.bindValue(WidgetProperties.enabled().observe(idText), BeanProperties.value("connectionIDReadOnly").observe(this));
+			context.bindValue(WidgetProperties.enabled().observe(connectionIdText), BeanProperties.value("connectionIDReadOnly").observe(this));
 		}
 
 		context.addValidationStatusProvider(connectionValidator);
@@ -283,14 +283,14 @@ public class ConnectWizardPage extends WizardPage {
 		if (connectionIds.isEmpty()) {
 			label.setText("Connection ID:");
 			// Assume non-multi-out port
-			idText = new Text(composite, SWT.BORDER);
-			idText.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(3, 1).create());
+			connectionIdText = new Text(composite, SWT.BORDER);
+			connectionIdText.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(3, 1).create());
 		} else {
 			label.setText("Multi-out port detected: ");
 			// Assume multi-out port
 			Composite radioContainer = new Composite(composite, SWT.NONE);
 			radioContainer.setLayout(new GridLayout());
-			radioContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1));
+			radioContainer.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(4, 1).hint(400, SWT.DEFAULT).create());
 
 			addSelectIdSection(radioContainer);
 			addCreateIdSection(radioContainer);
@@ -305,7 +305,7 @@ public class ConnectWizardPage extends WizardPage {
 			ISWTObservableValue selectionObservable = WidgetProperties.selection().observe(selectIdRadioButton);
 			dbc.bindValue(enabledObservable, selectionObservable);
 
-			enabledObservable = WidgetProperties.enabled().observe(idText);
+			enabledObservable = WidgetProperties.enabled().observe(connectionIdText);
 			selectionObservable = WidgetProperties.selection().observe(createIdRadioButton);
 			dbc.bindValue(enabledObservable, selectionObservable);
 		}
@@ -351,13 +351,12 @@ public class ConnectWizardPage extends WizardPage {
 		createIdComposite.setLayout(createIdCompositeLayout);
 		createIdComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		Label warningLabel = new Label(createIdComposite, SWT.NONE);
-		warningLabel.setText(
-			"WARNING: Manually inputing a connection ID for a multi-out port is not recommended.\nThis may result in your port not suppling data.");
-
-		idText = new Text(createIdComposite, SWT.BORDER);
-		idText.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
-		idText.setText(connectionID);
+		Label warningLabel = new Label(createIdComposite, SWT.WRAP);
+		warningLabel.setText(gov.redhawk.model.sca.provider.Messages.MultiOutPortManualConnectionIDWarning);
+		warningLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		connectionIdText = new Text(createIdComposite, SWT.BORDER);
+		connectionIdText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		connectionIdText.setText(connectionID);
 	}
 
 	/**
@@ -382,7 +381,7 @@ public class ConnectWizardPage extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				if (createIdRadioButton.getSelection()) {
 					String oldValue = connectionID;
-					connectionID = idText.getText();
+					connectionID = connectionIdText.getText();
 					pcs.firePropertyChange("connectionID", oldValue, connectionID);
 				}
 			}
@@ -397,9 +396,9 @@ public class ConnectWizardPage extends WizardPage {
 			pcs.firePropertyChange("connectionID", oldValue, connectionID);
 		});
 
-		idText.addModifyListener((event) -> {
+		connectionIdText.addModifyListener((event) -> {
 			String oldValue = connectionID;
-			connectionID = idText.getText();
+			connectionID = connectionIdText.getText();
 			pcs.firePropertyChange("connectionID", oldValue, connectionID);
 		});
 	}

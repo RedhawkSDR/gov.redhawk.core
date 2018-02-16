@@ -180,7 +180,7 @@ public class MultiOutConnectionWizard extends Dialog {
 		generateComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		Label warningLabel = new Label(generateComposite, SWT.WRAP);
-		warningLabel.setText("WARNING: Specifying a connection ID that is not in the connection table for a multi-out port is not recommended. This may result in your port not suppling data.");
+		warningLabel.setText(gov.redhawk.model.sca.provider.Messages.MultiOutPortManualConnectionIDWarning);
 		warningLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		connectionIdText = new Text(generateComposite, SWT.BORDER);
 		connectionIdText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
