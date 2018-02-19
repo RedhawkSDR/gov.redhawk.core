@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: BULKIO Util Unit Tests
 Bundle-SymbolicName: gov.redhawk.bulkio.util.tests
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: gov.redhawk.bulkio.util.tests.BulkIOUtilTestActivator
 Bundle-Vendor: REDHAWK
 Require-Bundle: org.eclipse.core.runtime,
  gov.redhawk.bulkio.util;bundle-version="2.0.0",

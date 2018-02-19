@@ -97,61 +97,61 @@ public class BulkIOTypeTest {
 
 	private static class TestDataLongPort extends AbstractBulkIOPort implements dataLongOperations {
 		@Override
-		public void pushPacket(int[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
+		public void pushPacket(int[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 		}
 	}
 
 	private static class TestDataUlongPort extends AbstractBulkIOPort implements dataUlongOperations {
 		@Override
-		public void pushPacket(int[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
+		public void pushPacket(int[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 		}
 	}
 
 	private static class TestDataLongLongPort extends AbstractBulkIOPort implements dataLongLongOperations {
 		@Override
-		public void pushPacket(long[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
+		public void pushPacket(long[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 		}
 	}
 
 	private static class TestDataUlongLongPort extends AbstractBulkIOPort implements dataUlongLongOperations {
 		@Override
-		public void pushPacket(long[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
+		public void pushPacket(long[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 		}
 	}
 
 	private static class TestDataShortPort extends AbstractBulkIOPort implements dataShortOperations {
 		@Override
-		public void pushPacket(short[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
+		public void pushPacket(short[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 		}
 	}
 
 	private static class TestDataUshortPort extends AbstractBulkIOPort implements dataUshortOperations {
 		@Override
-		public void pushPacket(short[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
+		public void pushPacket(short[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 		}
 	}
 
 	private static class TestDataFloatPort extends AbstractBulkIOPort implements dataFloatOperations {
 		@Override
-		public void pushPacket(float[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
+		public void pushPacket(float[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 		}
 	}
 
 	private static class TestDataDoublePort extends AbstractBulkIOPort implements dataDoubleOperations {
 		@Override
-		public void pushPacket(double[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
+		public void pushPacket(double[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 		}
 	}
 
 	private static class TestDataOctetPort extends AbstractBulkIOPort implements dataOctetOperations {
 		@Override
-		public void pushPacket(byte[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
+		public void pushPacket(byte[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 		}
 	}
 
 	private static class TestDataCharPort extends AbstractBulkIOPort implements dataCharOperations {
 		@Override
-		public void pushPacket(char[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
+		public void pushPacket(char[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 		}
 	}
 }
