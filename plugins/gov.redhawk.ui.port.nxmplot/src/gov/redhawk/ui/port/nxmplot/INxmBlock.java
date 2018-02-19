@@ -158,7 +158,7 @@ public interface INxmBlock {
 	@Nullable
 	String getOutputName(int outIndex, String streamID);
 
-	/** launches the appropriate NeXtMidas command to acquire the input (e.g. CORBARECEIVER, SOURCENIC)
+	/** launches the appropriate NeXtMidas command to acquire the input (e.g. CORBARECEIVER2, SOURCENIC)
 	 *  or process it's input(s) (e.g. using FFT, FCALCUALTOR).
 	 *  Called every time when a new or changed StreamSRI comes in.
 	 *  NOTE: This *MUST* launch hooked/connected follow on blocks.
