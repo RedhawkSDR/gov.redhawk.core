@@ -1,4 +1,3 @@
-package gov.redhawk.bulkio.util.tests.internal;
 /**
  * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
@@ -8,8 +7,8 @@ package gov.redhawk.bulkio.util.tests.internal;
  * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- *
  */
+package gov.redhawk.bulkio.util.tests.internal;
 
 import static org.hamcrest.CoreMatchers.startsWith;
 import gov.redhawk.bulkio.util.AbstractBulkIOPort;
@@ -41,23 +40,23 @@ public class ConnectionManagerTest {
 
 	private static class MyPort implements PortOperations {
 
-		public int connections = 0;
+		private int connections = 0;
 
 		@Override
 		public void connectPort(Object connection, String connectionId) throws InvalidPort, OccupiedPort {
-			System.out.println("New Connection: " + connections + " " + (++connections));
+			connections++;
 		}
 
 		@Override
 		public void disconnectPort(String connectionId) throws InvalidPort {
-			System.out.println("Remove Connection: " + connections + " " + (--connections));
+			connections--;
 		}
 
 	}
 
 	private static class TestDataDoublePort extends AbstractBulkIOPort implements dataDoubleOperations {
 		@Override
-		public void pushPacket(double[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
+		public void pushPacket(double[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 		}
 	}
 
