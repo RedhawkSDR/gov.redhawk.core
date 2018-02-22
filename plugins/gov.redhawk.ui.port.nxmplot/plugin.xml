@@ -22,7 +22,7 @@
             allowMultiple="true"
             category="gov.redhawk.ui.category.sca"
             class="gov.redhawk.internal.ui.port.nxmplot.view.PlotView2"
-            icon="icons/SDU.gif"
+            icon="icons/view16/plot_view.gif"
             id="gov.redhawk.ui.port.nxmplot.PlotView2"
             name="Port Data"
             restorable="false">
@@ -72,7 +72,7 @@
          </separator>
          <command
                commandId="gov.redhawk.ui.port.nxmplot.command.plot"
-               icon="icons/SDU.gif"
+               icon="icons/view16/plot_view.gif"
                label="Plot Port Data"
                style="push">
             <parameter
@@ -95,7 +95,7 @@
             </visibleWhen>
          </command>
          <menu
-               icon="icons/SDU.gif"
+               icon="icons/view16/plot_view.gif"
                label="Plot Port Data As">
             <visibleWhen
                   checkEnabled="false">
@@ -150,7 +150,7 @@
          </menu>
          <command
                commandId="gov.redhawk.ui.port.nxmplot.command.plot"
-               icon="icons/SDU.gif"
+               icon="icons/view16/plot_view.gif"
                label="Plot Port FFT"
                style="push">
             <parameter
@@ -177,7 +177,7 @@
             </visibleWhen>
          </command>
          <menu
-               icon="icons/SDU.gif"
+               icon="icons/view16/plot_view.gif"
                label="Plot Port FFT As">
             <visibleWhen
                   checkEnabled="false">
@@ -222,7 +222,7 @@
          </menu>
          <command
                commandId="gov.redhawk.ui.port.nxmplot.command.plot"
-               icon="icons/SDU.gif"
+               icon="icons/view16/plot_view.gif"
                label="Plot Port ..."
                style="push">
             <visibleWhen

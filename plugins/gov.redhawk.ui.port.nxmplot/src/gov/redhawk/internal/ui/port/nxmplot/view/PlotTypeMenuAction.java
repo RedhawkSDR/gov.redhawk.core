@@ -48,7 +48,7 @@ public class PlotTypeMenuAction extends Action implements IMenuCreator {
 
 	public PlotTypeMenuAction(PlotPageBook2 plotPageBook) {
 		super("&Plot Type", IAction.AS_DROP_DOWN_MENU);
-		final ImageDescriptor rasterImageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(PlotActivator.PLUGIN_ID, "icons/raster.png");
+		final ImageDescriptor rasterImageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(PlotActivator.PLUGIN_ID, "icons/elcl16/raster.png");
 		setImageDescriptor(rasterImageDescriptor);
 		this.plotPageBook = plotPageBook;
 		setToolTipText("Change the plot's type");
