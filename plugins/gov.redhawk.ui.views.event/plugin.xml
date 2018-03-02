@@ -89,10 +89,16 @@
                   operator="and">
                <adapt
                      type="gov.redhawk.model.sca.ScaUsesPort">
-                  <test
-                        property="gov.redhawk.sca.model.port.interface"
-                        value="IDL:ExtendedEvent/MessageEvent:1.0">
-                  </test>
+                  <or>
+                     <test
+                           property="gov.redhawk.sca.model.port.interface"
+                           value="IDL:ExtendedEvent/MessageEvent:1.0">
+                     </test>
+                     <test
+                           property="gov.redhawk.sca.model.port.interface"
+                           value="IDL:omg.org/CosEventChannelAdmin/EventChannel:1.0">
+                     </test>
+                  </or>
                </adapt>
             </iterate>
          </enabledWhen>
