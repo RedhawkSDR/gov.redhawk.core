@@ -16,7 +16,6 @@ import java.util.List;
 import org.eclipse.jface.databinding.viewers.IViewerUpdater;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.nebula.widgets.xviewer.XViewer;
 
@@ -26,64 +25,46 @@ public class EventViewerContentProvider implements ITreeContentProvider {
 
 		@Override
 		public void replace(Object oldElement, Object newElement, int position) {
-			if (scrollLock) {
-				viewer.replace(input, position, newElement);
-			} else {
-				refresh();
-			}
+			viewer.replace(input, position, newElement);
+			scroll();
 		}
 
 		@Override
 		public void remove(Object element, int position) {
-			if (scrollLock) {
-				viewer.remove(element, position);
-			} else {
-				refresh();
-			}
+			viewer.remove(element, position);
+			scroll();
 		}
 
 		@Override
 		public void remove(Object[] elements) {
-			if (scrollLock) {
-				viewer.remove(elements);
-			} else {
-				refresh();
-			}
-		}
-
-		private void refresh() {
-			viewer.refresh();
-			List< ? > inputList = (List< ? >) input;
-			viewer.setSelection(StructuredSelection.EMPTY);
-			if (!inputList.isEmpty()) {
-				viewer.reveal(inputList.get(inputList.size() - 1));
-			}
+			viewer.remove(elements);
+			scroll();
 		}
 
 		@Override
 		public void move(Object element, int oldPosition, int newPosition) {
-			if (scrollLock) {
-				viewer.refresh();
-			} else {
-				refresh();
-			}
+			viewer.refresh();
+			scroll();
 		}
 
 		@Override
 		public void insert(Object element, int position) {
-			if (scrollLock) {
-				viewer.insert(input, element, position);
-			} else {
-				refresh();
-			}
+			viewer.insert(input, element, position);
+			scroll();
 		}
 
 		@Override
 		public void add(Object[] elements) {
-			if (scrollLock) {
-				viewer.add(input, elements);
-			} else {
-				refresh();
+			viewer.add(input, elements);
+			scroll();
+		}
+
+		private void scroll() {
+			if (!scrollLock) {
+				List< ? > inputList = (List< ? >) input;
+				if (!inputList.isEmpty()) {
+					viewer.reveal(inputList.get(inputList.size() - 1));
+				}
 			}
 		}
 	};
