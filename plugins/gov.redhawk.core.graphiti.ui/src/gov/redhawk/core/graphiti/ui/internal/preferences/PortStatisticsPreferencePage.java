@@ -10,12 +10,13 @@
  */
 package gov.redhawk.core.graphiti.ui.internal.preferences;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.FieldEditor;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -31,15 +32,25 @@ import gov.redhawk.core.graphiti.ui.preferences.DiagramPreferenceConstants;
 
 public class PortStatisticsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
-	private DoubleFieldEditor queueLevel;
-	private DoubleFieldEditor timeSinceLastPush;
-	private DoubleFieldEditor queueFlush;
+	private List<FieldEditor> fields = new ArrayList<>();
+
+	private IPropertyChangeListener validateAllFields = event -> {
+		if (event.getProperty().equals(FieldEditor.IS_VALID)) {
+			for (FieldEditor field : fields) {
+				if (!field.isValid()) {
+					setValid(false);
+					return;
+				}
+			}
+			setValid(true);
+			return;
+		}
+	};
 
 	@Override
 	public void init(IWorkbench workbench) {
 		setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE, GraphitiUIPlugin.PLUGIN_ID));
 		setDescription("Graphical port monitoring preferences");
-
 	}
 
 	@Override
@@ -51,14 +62,19 @@ public class PortStatisticsPreferencePage extends PreferencePage implements IWor
 		createWarningGroup(composite);
 		createErrorGroup(composite);
 
-		return null;
+		for (FieldEditor field : fields) {
+			field.load();
+			field.setPropertyChangeListener(validateAllFields);
+		}
+
+		return composite;
 	}
 
 	/**
 	 * Controls for warning events when port statistics are running
 	 */
-	private void createWarningGroup(Composite composite) {
-		Group warningGroup = new Group(composite, SWT.LEFT);
+	private void createWarningGroup(Composite parent) {
+		Group warningGroup = new Group(parent, SWT.LEFT);
 		warningGroup.setLayout(new GridLayout());
 		warningGroup.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		warningGroup.setText(GraphitiPreferencesNLS.PortStatPreference_warningGroupTitle);
@@ -69,47 +85,29 @@ public class PortStatisticsPreferencePage extends PreferencePage implements IWor
 		prefComposite.setLayout(new GridLayout(2, true));
 		prefComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		queueLevel = new DoubleFieldEditor(DiagramPreferenceConstants.PREF_PORT_STATISTICS_QUEUE_LEVEL,
+		DoubleFieldEditor queueLevel = new DoubleFieldEditor(DiagramPreferenceConstants.PREF_PORT_STATISTICS_QUEUE_LEVEL,
 			GraphitiPreferencesNLS.PortStatPreference_warningQueueLevel, prefComposite);
 		queueLevel.getTextControl(prefComposite).setToolTipText(GraphitiPreferencesNLS.PortStatPreference_warningQueueLevelToolTip);
 		queueLevel.setPreferenceStore(getPreferenceStore());
 		queueLevel.setPage(this);
 		queueLevel.setErrorMessage(GraphitiPreferencesNLS.PortStatPreference_warningQueueLevelError);
 		queueLevel.setValidRange(0.0, 100.0);
-		queueLevel.load();
-		queueLevel.setPropertyChangeListener(new IPropertyChangeListener() {
+		fields.add(queueLevel);
 
-			@Override
-			public void propertyChange(PropertyChangeEvent event) {
-				if (event.getProperty().equals(FieldEditor.IS_VALID)) {
-					setValid(validateFields());
-				}
-			}
-		});
-
-		timeSinceLastPush = new DoubleFieldEditor(DiagramPreferenceConstants.PREF_PORT_STATISTICS_NO_DATA_PUSHED_SECONDS,
+		DoubleFieldEditor timeSinceLastPush = new DoubleFieldEditor(DiagramPreferenceConstants.PREF_PORT_STATISTICS_NO_DATA_PUSHED_SECONDS,
 			GraphitiPreferencesNLS.PortStatPreference_warningNoData, prefComposite);
 		timeSinceLastPush.getTextControl(prefComposite).setToolTipText(GraphitiPreferencesNLS.PortStatPreference_warningNoDataToolTip);
 		timeSinceLastPush.setPreferenceStore(getPreferenceStore());
 		timeSinceLastPush.setPage(this);
 		timeSinceLastPush.setErrorMessage(GraphitiPreferencesNLS.PortStatPreference_warningNoDataError);
-		timeSinceLastPush.load();
-		timeSinceLastPush.setPropertyChangeListener(new IPropertyChangeListener() {
-
-			@Override
-			public void propertyChange(PropertyChangeEvent event) {
-				if (event.getProperty().equals(FieldEditor.IS_VALID)) {
-					setValid(validateFields());
-				}
-			}
-		});
+		fields.add(timeSinceLastPush);
 	}
 
 	/**
 	 * Controls for error events when port statistics are running
 	 */
-	private void createErrorGroup(Composite composite) {
-		Group errorGroup = new Group(composite, SWT.LEFT);
+	private void createErrorGroup(Composite parent) {
+		Group errorGroup = new Group(parent, SWT.LEFT);
 		errorGroup.setLayout(new GridLayout());
 		errorGroup.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		errorGroup.setText(GraphitiPreferencesNLS.PortStatPreference_errorGroupTitle);
@@ -120,59 +118,29 @@ public class PortStatisticsPreferencePage extends PreferencePage implements IWor
 		prefComposite.setLayout(new GridLayout(2, true));
 		prefComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		queueFlush = new DoubleFieldEditor(DiagramPreferenceConstants.PREF_PORT_STATISTICS_QUEUE_FLUSH_DISPLAY,
+		DoubleFieldEditor queueFlush = new DoubleFieldEditor(DiagramPreferenceConstants.PREF_PORT_STATISTICS_QUEUE_FLUSH_DISPLAY,
 			GraphitiPreferencesNLS.PortStatPreference_errorQueueFlush, prefComposite);
 		queueFlush.getTextControl(prefComposite).setToolTipText(GraphitiPreferencesNLS.PortStatPreference_errorQueueFlushToolTip);
 		queueFlush.setPreferenceStore(getPreferenceStore());
 		queueFlush.setPage(this);
 		queueFlush.setErrorMessage(GraphitiPreferencesNLS.PortStatPreference_errorQueueFlushError);
-		queueFlush.load();
-		queueFlush.setPropertyChangeListener(new IPropertyChangeListener() {
-
-			@Override
-			public void propertyChange(PropertyChangeEvent event) {
-				if (event.getProperty().equals(FieldEditor.IS_VALID)) {
-					setValid(validateFields());
-				}
-			}
-		});
+		fields.add(queueFlush);
 	}
 
-	/**
-	 * The default button has been pressed.
-	 */
 	@Override
 	protected void performDefaults() {
-		queueLevel.loadDefault();
-		timeSinceLastPush.loadDefault();
-		queueFlush.loadDefault();
-
+		for (FieldEditor field : fields) {
+			field.loadDefault();
+		}
 		super.performDefaults();
 	}
 
-	/**
-	 * The user has pressed Ok. Store/apply this page's values appropriately.
-	 */
 	@Override
 	public boolean performOk() {
-		IPreferenceStore store = getPreferenceStore();
-
-		store.setValue(DiagramPreferenceConstants.PREF_PORT_STATISTICS_QUEUE_LEVEL, queueLevel.getDoubleValue());
-		store.setValue(DiagramPreferenceConstants.PREF_PORT_STATISTICS_NO_DATA_PUSHED_SECONDS, timeSinceLastPush.getDoubleValue());
-		store.setValue(DiagramPreferenceConstants.PREF_PORT_STATISTICS_QUEUE_FLUSH_DISPLAY, queueFlush.getDoubleValue());
-
-		return super.performOk();
-	}
-
-	/**
-	 * Determines whether preference page can be applied/submitted.
-	 * @return Only return true if all fields all valid
-	 */
-	private boolean validateFields() {
-		if (queueFlush.isValid() && queueLevel.isValid() && timeSinceLastPush.isValid()) {
-			return true;
+		for (FieldEditor field : fields) {
+			field.store();
 		}
-		return false;
+		return super.performOk();
 	}
 
 }

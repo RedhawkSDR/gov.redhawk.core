@@ -69,10 +69,10 @@
             category="gov.redhawk.ui.preferences"
             class="gov.redhawk.core.graphiti.ui.internal.preferences.DiagramPreferencePage"
             id="gov.redhawk.core.graphiti.ui.DiagramPreferencePage"
-            name="Graphiti Diagram Preferences">
+            name="Diagrams">
       </page>
       <page
-            category="gov.redhawk.ui.preferences"
+            category="gov.redhawk.ui.preferences/gov.redhawk.core.graphiti.ui.DiagramPreferencePage"
             class="gov.redhawk.core.graphiti.ui.internal.preferences.PortStatisticsPreferencePage"
             id="gov.redhawk.core.graphiti.ui.PortStatisticsPreferencePage"
             name="Port Statistics">
