@@ -30,4 +30,19 @@
          </contentTypeBinding>
       </editor>
    </extension>
+<extension
+      point="org.eclipse.core.runtime.preferences">
+   <initializer
+         class="gov.redhawk.prf.internal.ui.preferences.PrfEditorPreferenceInitializer">
+   </initializer>
+</extension>
+<extension
+      point="org.eclipse.ui.preferencePages">
+   <page
+         category="gov.redhawk.ui.preferences"
+         class="gov.redhawk.prf.internal.ui.preferences.PrfEditorPreferencePage"
+         id="gov.redhawk.prf.ui.editor"
+         name="PRF Editor">
+   </page>
+</extension>
 </plugin>
