@@ -21,6 +21,7 @@ import java.net.URLDecoder;
 import nxm.redhawk.lib.RedhawkOptActivator;
 import nxm.redhawk.prim.data.BulkIOReceiver;
 import nxm.sys.inc.Commandable;
+import nxm.sys.inc.DataTypes;
 import nxm.sys.lib.BaseFile;
 import nxm.sys.lib.Convert;
 import nxm.sys.lib.Data;
@@ -51,14 +52,6 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	/** Name of STREAMID= argument. */
 	public static final String A_STREAM_ID = "STREAMID";
 
-	/**
-	 * Name of switch to set to false to NOT block pushPacket/write(..) when pipe doesn't have enough room,
-	 * which will cause that pushPacket data to get drop
-	 * @deprecated since 11.0, use {@link #SW_BLOCKING_OPTION} instead.
-	 */
-	@Deprecated
-	public static final String SW_BLOCKING = "/BLOCKING";
-	
 	/**
 	 * Name of switch to set the blocking option (Blocking, NonBlocking (drop data), FromSRI (use setting from StreamSRI.blocking)
 	 * on what to do in pushPacket/write(..) when pipe doesn't have enough room.
@@ -156,13 +149,6 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		this.idl = corbareceiver2.decodeIDL(encoded_idl);
 		this.streamId = MA.getCS(corbareceiver2.A_STREAM_ID, null);
 		BlockingOption defBlockingOption = BlockingOption.FROMSRI;
-		if (MA.isPresent(SW_BLOCKING)) { // backwards compatible mode
-			if (MA.getState(SW_BLOCKING, false)) {
-				defBlockingOption = BlockingOption.BLOCKING;
-			} else {
-				defBlockingOption = BlockingOption.NONBLOCKING;
-			}
-		}
 		this.blockingOption = MA.getSelection(corbareceiver2.SW_BLOCKING_OPTION, defBlockingOption);
 		boolean unsignedOctet = MA.getState(corbareceiver2.SW_TREAT_OCTET_AS_UNSIGNED);
 		this.connectionId = MA.getCS(corbareceiver2.SW_CONNECTION_ID, null);
@@ -419,10 +405,13 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 			localOutputFile.setTimeAt(midasTime);
 		}
 
-		byte[] byteBuffer = new byte[bufferSize];
-		Convert.ja2bb(dataArray, 0, type, byteBuffer, 0, localOutputFile.dataType, size);
-		localOutputFile.write(byteBuffer, 0, byteBuffer.length);
-		return;
+		if (type != DataTypes.BYTE) {
+			byte[] byteBuffer = new byte[bufferSize];
+			Convert.ja2bb(dataArray, 0, type, byteBuffer, 0, localOutputFile.dataType, size);
+			localOutputFile.write(byteBuffer, 0, byteBuffer.length);
+		} else {
+			localOutputFile.write((byte[]) dataArray, 0, size);
+		}
 	}
 
 	/**

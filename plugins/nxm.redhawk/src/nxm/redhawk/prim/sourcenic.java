@@ -401,7 +401,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	/**
 	 * Change output file's pipe size (immediately)
 	 * @param newValue new pipe size for output data file/pipe (in bytes)
-	 * @since 11.1
+	 * @since 12.0
 	 */
 	public synchronized void setPipeSize(int newValue) {
 		if (newValue <= 0) {

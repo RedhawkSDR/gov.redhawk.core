@@ -77,7 +77,7 @@
                style="push">
             <parameter
                   name="gov.redhawk.ui.port.nxmplot.type"
-                  value="LINE">
+                  value="DEFAULT">
             </parameter>
             <visibleWhen
                   checkEnabled="false">

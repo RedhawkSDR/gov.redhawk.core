@@ -22,9 +22,6 @@ import java.util.Map.Entry;
 import mil.jpeojtrs.sca.util.AnyUtils;
 import nxm.sys.lib.Table;
 
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import BULKIO.StreamSRI;
 import CF.DataType;
 
@@ -59,7 +56,6 @@ public final class StreamSRIUtil {
 		}
 	}
 	
-	@NonNull
 	public static Map<String, Object> toMap(DataType[] dataTypes) {
 		if (dataTypes == null || dataTypes.length == 0) {
 			return Collections.emptyMap();
@@ -81,7 +77,6 @@ public final class StreamSRIUtil {
 		return retVal;
 	}
 
-	@NonNull
 	public static Map<String, Object> extractKeyWords(StreamSRI sri) {
 		if (sri == null) {
 			return Collections.emptyMap();
@@ -140,10 +135,11 @@ public final class StreamSRIUtil {
 		return true;
 	}
 	
-	/** Useful for debugging info in StreamSRI
+	/**
+	 * Useful for debugging info in StreamSRI
 	 * @since 2.0
 	 */
-	public static CharSequence toString(@Nullable final StreamSRI sri) {
+	public static CharSequence toString(final StreamSRI sri) {
 		final StringBuilder sb = new StringBuilder();
 		if (sri == null) {
 			sb.append(sri);

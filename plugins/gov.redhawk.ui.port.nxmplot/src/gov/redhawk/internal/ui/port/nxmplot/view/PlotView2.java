@@ -12,6 +12,7 @@
 package gov.redhawk.internal.ui.port.nxmplot.view;
 
 import gov.redhawk.ui.port.nxmplot.FftNumAvgControls;
+import gov.redhawk.ui.port.nxmplot.FrameSizeControls;
 import gov.redhawk.ui.port.nxmplot.IPlotView;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotEventChannelForwarder;
@@ -19,9 +20,6 @@ import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
 import gov.redhawk.ui.port.nxmplot.PlotSettings;
 import gov.redhawk.ui.port.nxmplot.PlotSource;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
-
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -32,7 +30,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -45,6 +43,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.services.IDisposable;
 import org.eclipse.ui.statushandlers.StatusManager;
 
@@ -68,13 +67,11 @@ public class PlotView2 extends ViewPart implements IPlotView {
 	/** The private action for creating a new plot connection */
 	private IAction newPlotViewAction;
 
-	/** The private action for adjusting plot settings. */
-	private IAction adjustPlotSettingsAction;
-
 	private IMenuManager menu;
 
 	private PlotFftMenuAction fftSizeMenu;
 	private PlotModeMenuAction plotModeMenu;
+	private Action frameSizeAction;
 
 	private PlotPageBook2 plotPageBook;
 
@@ -91,18 +88,16 @@ public class PlotView2 extends ViewPart implements IPlotView {
 	private boolean diposed;
 
 	private FftNumAvgControls fftControls;
+	private FrameSizeControls frameSizeControls;
 
 	private PlotSettingsAction plotSettingsAction;
 
 	private Composite parent;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void createPartControl(final Composite parent) {
 		this.parent = parent;
-		GridLayout layout = new GridLayout(2, false);
+		GridLayout layout = new GridLayout(3, false);
 		layout.marginBottom = 0;
 		layout.marginHeight = 0;
 		layout.marginLeft = 0;
@@ -112,54 +107,35 @@ public class PlotView2 extends ViewPart implements IPlotView {
 		layout.horizontalSpacing = 0;
 		layout.verticalSpacing = 0;
 		parent.setLayout(layout);
-		this.plotPageBook = new PlotPageBook2(parent, SWT.None);
-		this.plotPageBook.addPropertyChangeListener(new PropertyChangeListener() {
-
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (PlotPageBook2.PROP_SOURCES.equals(evt.getPropertyName())) {
-					final boolean hasFft = hasFft();
-					if (parent == null || parent.isDisposed()) {
-						return;
-					}
-					parent.getDisplay().asyncExec(new Runnable() {
-
-						@Override
-						public void run() {
-							updateFftSizeMenu(hasFft);
-							updateFftControls(hasFft);
-						}
-
-					});
-					if (evt.getNewValue() instanceof PlotSource) {
-						PlotSource source = (PlotSource) evt.getNewValue();
-						PlotEventChannelForwarder.forwardEvents(plotPageBook, source.getInput(), PlotView2.this);
-					}
+		this.plotPageBook = new PlotPageBook2(parent, SWT.NONE);
+		this.plotPageBook.addPropertyChangeListener(event -> {
+			if (PlotPageBook2.PROP_SOURCES.equals(event.getPropertyName())) {
+				final boolean hasFft = hasFft();
+				if (parent == null || parent.isDisposed()) {
+					return;
+				}
+				parent.getDisplay().asyncExec(() -> {
+					updateFftSizeMenu(hasFft);
+					updateFftControls(hasFft);
+				});
+				if (event.getNewValue() instanceof PlotSource) {
+					PlotSource source = (PlotSource) event.getNewValue();
+					PlotEventChannelForwarder.forwardEvents(plotPageBook, source.getInput(), PlotView2.this);
 				}
 			}
 		});
 		this.plotPageBook.setLayoutData(GridDataFactory.fillDefaults().indent(0, 0).grab(true, true).create());
 
 		this.plotPageBook.addDisposeListener(disposeListener);
-		this.plotPageBook.getSharedPlotBlockPreferences().addPropertyChangeListener(new IPropertyChangeListener() {
-
-			@Override
-			public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
-				if (PlotPreferences.ENABLE_QUICK_CONTROLS.isEvent(event)) {
-					final boolean hasFft = hasFft();
-					if (parent == null || parent.isDisposed()) {
-						return;
-					}
-					parent.getDisplay().asyncExec(new Runnable() {
-
-						@Override
-						public void run() {
-							updateFftControls(hasFft);
-						}
-
-					});
-					updateFftControls(hasFft);
+		this.plotPageBook.getSharedPlotBlockPreferences().addPropertyChangeListener(event -> {
+			if (PlotPreferences.ENABLE_QUICK_CONTROLS.isEvent(event)) {
+				final boolean hasFft = hasFft();
+				if (parent == null || parent.isDisposed()) {
+					return;
 				}
+				parent.getDisplay().asyncExec(() -> {
+					updateFftControls(hasFft);
+				});
 			}
 		});
 		createActions();
@@ -181,9 +157,6 @@ public class PlotView2 extends ViewPart implements IPlotView {
 		return this.plotPageBook.addSource(plotSource);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void setFocus() {
 		if (this.plotPageBook != null && !this.plotPageBook.isDisposed()) {
@@ -194,21 +167,10 @@ public class PlotView2 extends ViewPart implements IPlotView {
 	private void createMenu() {
 		final IActionBars bars = getViewSite().getActionBars();
 		menu = bars.getMenuManager();
-		if (this.newPlotViewAction != null) {
-			menu.add(this.newPlotViewAction);
-		}
-		if (this.adjustPlotSettingsAction != null) {
-			menu.add(this.adjustPlotSettingsAction);
-		}
-		if (this.plotTypeAction != null) {
-			menu.add(this.plotTypeAction);
-		}
-
+		menu.add(this.newPlotViewAction);
+		menu.add(this.plotTypeAction);
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-
-		if (this.plotSettingsAction != null) {
-			menu.add(plotSettingsAction);
-		}
+		menu.add(plotSettingsAction);
 	}
 
 	/**
@@ -218,15 +180,10 @@ public class PlotView2 extends ViewPart implements IPlotView {
 		final IActionBars bars = getViewSite().getActionBars();
 
 		final IToolBarManager toolBarManager = bars.getToolBarManager();
-		if (this.plotModeMenu != null) {
-			toolBarManager.add(plotModeMenu);
-		}
-		if (this.fftSizeMenu != null) {
-			toolBarManager.add(this.fftSizeMenu);
-		}
-		if (this.plotTypeAction != null) {
-			toolBarManager.add(this.plotTypeAction);
-		}
+		toolBarManager.add(plotModeMenu);
+		toolBarManager.add(this.fftSizeMenu);
+		toolBarManager.add(this.plotTypeAction);
+		toolBarManager.add(this.frameSizeAction);
 		toolBarManager.add(new Separator());
 		toolBarManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
@@ -237,18 +194,30 @@ public class PlotView2 extends ViewPart implements IPlotView {
 
 	/** Creates the actions. **/
 	private void createActions() {
-		this.plotTypeAction = new PlotTypeMenuAction(this.plotPageBook);
-
-		this.newPlotViewAction = createNewPlotViewAction();
-
+		// Toolbar actions
 		this.plotModeMenu = new PlotModeMenuAction(plotPageBook);
 		this.fftSizeMenu = new PlotFftMenuAction(plotPageBook);
+		this.plotTypeAction = new PlotTypeMenuAction(plotPageBook);
+		this.frameSizeAction = new Action("Frame Size", IAction.AS_CHECK_BOX) {
+
+			{
+				ImageDescriptor img = AbstractUIPlugin.imageDescriptorFromPlugin(PlotActivator.PLUGIN_ID, "icons/elcl16/frameSize.png"); //$NON-NLS-1$
+				setImageDescriptor(img);
+			}
+
+			@Override
+			public void run() {
+				updateFrameSizeControls(isChecked());
+			}
+		};
+
+		// Menu actions
+		this.newPlotViewAction = createNewPlotViewAction();
 		this.plotSettingsAction = new PlotSettingsAction(plotPageBook);
 
 		boolean hasFft = hasFft();
 		updateFftSizeMenu(hasFft);
 		updateFftControls(hasFft);
-		//		this.adjustPlotSettingsAction = createAdjustPlotSettingsAction();
 	}
 
 	private boolean hasFft() {
@@ -271,18 +240,8 @@ public class PlotView2 extends ViewPart implements IPlotView {
 		if (parent == null || parent.isDisposed()) {
 			return;
 		}
-		if (!hasFft) {
-			if (this.fftControls != null) {
-				this.fftControls.dispose();
-				this.fftControls = null;
-				this.parent.layout(true, true);
-			}
-			return;
-		}
-		boolean controlsEnabled = false;
-		controlsEnabled = PlotPreferences.ENABLE_QUICK_CONTROLS.getValue(plotPageBook.getSharedPlotBlockPreferences());
-
-		if (!controlsEnabled) {
+		boolean controlsEnabled = PlotPreferences.ENABLE_QUICK_CONTROLS.getValue(plotPageBook.getSharedPlotBlockPreferences());
+		if (!hasFft || !controlsEnabled) {
 			if (this.fftControls != null) {
 				this.fftControls.dispose();
 				this.fftControls = null;
@@ -296,6 +255,28 @@ public class PlotView2 extends ViewPart implements IPlotView {
 		}
 		this.fftControls = new FftNumAvgControls(plotPageBook, parent);
 		this.fftControls.setLayoutData(GridDataFactory.fillDefaults().grab(false, true).create());
+		this.parent.layout(true, true);
+		return;
+	}
+
+	private void updateFrameSizeControls(boolean visible) {
+		if (parent == null || parent.isDisposed()) {
+			return;
+		}
+		if (!visible) {
+			if (this.frameSizeControls != null) {
+				this.frameSizeControls.dispose();
+				this.frameSizeControls = null;
+				this.parent.layout(true, true);
+			}
+			return;
+		}
+
+		if (this.frameSizeControls != null) {
+			return;
+		}
+		this.frameSizeControls = new FrameSizeControls(plotPageBook, parent);
+		this.frameSizeControls.setLayoutData(GridDataFactory.fillDefaults().grab(false, true).create());
 		this.parent.layout(true, true);
 		return;
 	}

@@ -29,8 +29,6 @@ import nxm.redhawk.prim.corbareceiver2;
 import nxm.sys.lib.StringUtil;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.annotation.NonNull;
@@ -38,6 +36,7 @@ import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
+import BULKIO.BitSequence;
 import BULKIO.PrecisionUTCTime;
 import BULKIO.StreamSRI;
 
@@ -53,7 +52,6 @@ public class BulkIONxmBlock extends CommonBulkIONxmBlock<corbareceiver2> {
 	private final BulkIOPort bulkIOPort = new BulkIOPort();
 	private final String ior;
 	private final BulkIOType bulkIOType;
-
 	private String originalConnectionID;
 
 	class BulkIOPort extends AbstractUberBulkIOPort {
@@ -66,26 +64,20 @@ public class BulkIONxmBlock extends CommonBulkIONxmBlock<corbareceiver2> {
 					BulkIONxmBlock.TRACE_LOG.message("WARN: streamID={0} BAD xdelta={1}", newSri.streamID, newSri.xdelta);
 				}
 			}
+			Job job;
 			if (oldSri == null) { // only launch for a new stream
 				// run in background so we don't further block our caller and cause potential deadlock
-				Job job = new Job("launching stream [" + streamID + "] to plot") {
-					@Override
-					protected IStatus run(IProgressMonitor monitor) {
-						launch(streamID, newSri);
-						return Status.OK_STATUS;
-					}
-				};
-				job.schedule(0);
+				job = Job.create("launching stream [" + streamID + "] to plot", monitor -> {
+					launch(streamID, newSri);
+					return Status.OK_STATUS;
+				});
 			} else {
-				Job job = new Job("updating stream [" + streamID + "] to plot") {
-					@Override
-					protected IStatus run(IProgressMonitor monitor) {
-						update(streamID, newSri);
-						return Status.OK_STATUS;
-					}
-				};
-				job.schedule(0);
+				job = Job.create("updating stream [" + streamID + "] to plot", monitor -> {
+					update(streamID, newSri);
+					return Status.OK_STATUS;
+				});
 			}
+			job.schedule(0);
 		}
 
 		private void handlePushPacket(int length, PrecisionUTCTime time, boolean endOfStream, String streamID) {
@@ -93,6 +85,12 @@ public class BulkIONxmBlock extends CommonBulkIONxmBlock<corbareceiver2> {
 			if (endOfStream && isRemoveOnEndOfStream()) {
 				shutdown(streamID);
 			}
+		}
+
+		@Override
+		public void pushPacket(BitSequence data, PrecisionUTCTime time, boolean eos, String streamID) {
+			handlePushPacket(data.bits, time, eos, streamID);
+			// ignore, not receiving data in this class
 		}
 
 		@Override

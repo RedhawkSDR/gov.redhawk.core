@@ -11,8 +11,6 @@
 package gov.redhawk.bulkio.util;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 
 import BULKIO.updateSRIOperations;
 
@@ -25,31 +23,31 @@ public interface IBulkIOPortConnectionManager {
 	 * @return connection id
 	 * @since 2.0
 	 */
-	String connect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort) throws CoreException;
+	String connect(String ior, BulkIOType type, updateSRIOperations internalPort) throws CoreException;
 	
 	/**
 	 * @return connection id
 	 * @since 2.0
 	 */
-	String connect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort, @Nullable String connectionID) throws CoreException;
+	String connect(String ior, BulkIOType type, updateSRIOperations internalPort, String connectionID) throws CoreException;
 
 	/**
 	 * @since 2.0
 	 */
-	void disconnect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort);
+	void disconnect(String ior, BulkIOType type, updateSRIOperations internalPort);
 	
 	/**
 	 * @since 2.0
 	 */	
-	void disconnect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort, @Nullable String connectionID);
+	void disconnect(String ior, BulkIOType type, updateSRIOperations internalPort, String connectionID);
 
 	/**
 	 * @since 2.0
 	 */
-	AbstractBulkIOPort getExternalPort(@NonNull String ior, @NonNull BulkIOType type);
+	AbstractBulkIOPort getExternalPort(String ior, BulkIOType type);
 	
 	/**
 	 * @since 2.0
 	 */
-	AbstractBulkIOPort getExternalPort(@NonNull String ior, @NonNull BulkIOType type, @Nullable String connectionID);
+	AbstractBulkIOPort getExternalPort(String ior, BulkIOType type, String connectionID);
 }

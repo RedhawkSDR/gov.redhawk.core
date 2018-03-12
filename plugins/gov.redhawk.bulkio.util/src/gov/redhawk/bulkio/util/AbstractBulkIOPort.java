@@ -18,9 +18,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import BULKIO.PortStatistics;
 import BULKIO.PortUsageType;
 import BULKIO.PrecisionUTCTime;
@@ -29,56 +26,43 @@ import BULKIO.StreamSRI;
 import BULKIO.updateSRIOperations;
 import CF.DataType;
 
-/**
- *
- */
 public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProviderOperations, updateSRIOperations {
 
 	private static final Debug TRACE_LOG = new Debug(BulkIOUtilActivator.getDefault(), AbstractBulkIOPort.class.getSimpleName());
 
 	private final Map<String, StreamSRI> streamSRIMap = Collections.synchronizedMap(new HashMap<String, StreamSRI>());
 	private StreamSRI currentSri;
-	private final PortStatistics stats = new PortStatistics();
+	private final PortStatistics stats = new PortStatistics("port_" + System.getProperty("user.name", "user") + "_" + System.currentTimeMillis(), -1.0f, -1.0f,
+		-1.0f, new String[0], -1.0f, -1.0f, new DataType[0]);
 	private AtomicLong lastWrite = new AtomicLong(-1);
 	private AtomicLong lastUpdate = new AtomicLong(-1);
 	private AtomicInteger numElements = new AtomicInteger();
 	private AtomicInteger numCalls = new AtomicInteger();
 	private BulkIOType type;
-	{
-		stats.callsPerSecond = -1;
-		stats.elementsPerSecond = -1;
-		stats.timeSinceLastCall = -1;
-		stats.bitsPerSecond = -1;
-		stats.keywords = new DataType[0];
-		stats.portName = "port_" + System.getProperty("user.name", "user") + "_" + System.currentTimeMillis();
-		stats.streamIDs = new String[0];
-	}
-	
+
 	protected AbstractBulkIOPort() {
 	}
-	
+
 	/**
 	 * @since 2.0
 	 */
 	protected AbstractBulkIOPort(BulkIOType type) {
 		this.type = type;
 	}
-	
+
 	/**
 	 * @since 2.0
 	 */
-	@NonNull
 	public BulkIOType getBulkIOType() {
 		return type;
 	}
-	
+
 	/**
 	 * @since 2.0
 	 */
-	public void setBulkIOType(@NonNull BulkIOType type) {
+	public void setBulkIOType(BulkIOType type) {
 		this.type = type;
 	}
-
 
 	/**
 	 * Call this method to update the port statistics, should only need to be called from the statistics method itself
@@ -90,7 +74,7 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 			return;
 		}
 		long delta = Math.max(1, currentTime - oldLastUpdate);
-		
+
 		stats.callsPerSecond = this.numCalls.floatValue() / delta * 1000f; // SUPPRESS CHECKSTYLE MAGIC NUMBER
 		this.numCalls.set(0);
 
@@ -103,7 +87,7 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 			stats.timeSinceLastCall = -1;
 		}
 
-		int bpa = (type != null) ? type.getBytePerAtom() : 1;    // SUPPRESS CHECKSTYLE AvoidInline
+		int bpa = (type != null) ? type.getBytePerAtom() : 1; // SUPPRESS CHECKSTYLE AvoidInline
 		stats.bitsPerSecond = bpa * stats.elementsPerSecond * 8; // SUPPRESS CHECKSTYLE MAGIC NUMBER
 	}
 
@@ -112,7 +96,7 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 	 * @param length Length of the push packet array.
 	 * @return true if should process packet
 	 */
-	protected boolean pushPacket(int length, @Nullable final PrecisionUTCTime time, final boolean endOfStream, @Nullable final String streamID) {
+	protected boolean pushPacket(int length, final PrecisionUTCTime time, final boolean endOfStream, final String streamID) {
 		if (endOfStream) {
 			// Process last packet sent
 			this.streamSRIMap.remove(streamID);
@@ -127,35 +111,31 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 	}
 
 	@Override
-	@NonNull
 	public PortUsageType state() {
 		return PortUsageType.ACTIVE;
 	}
-	
-	@NonNull
+
 	public PortStatistics getPortStatistics() {
 		return stats;
 	}
 
 	@Override
-	@NonNull
 	public PortStatistics statistics() {
 		updateStatitics();
 		return stats;
 	}
 
 	@Override
-	@NonNull
 	public StreamSRI[] activeSRIs() {
 		return this.streamSRIMap.values().toArray(new StreamSRI[this.streamSRIMap.size()]);
 	}
 
 	/**
-	 * sub-class should override the {@link #handleStreamSRIChanged(String, StreamSRI, StreamSRI)} method.
+	 * Sub-class should override the {@link #handleStreamSRIChanged(String, StreamSRI, StreamSRI)} method.
 	 * @since 2.0
 	 */
 	@Override
-	public final void pushSRI(@Nullable StreamSRI sri) {
+	public final void pushSRI(StreamSRI sri) {
 		if (AbstractBulkIOPort.TRACE_LOG.enabled) {
 			AbstractBulkIOPort.TRACE_LOG.enteringMethod(StreamSRIUtil.toString(sri));
 		}
@@ -168,42 +148,29 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 				}
 			}
 		}
-		StreamSRI oldSri = this.currentSri;
 		this.currentSri = sri;
-		if (!StreamSRIUtil.equals(oldSri, sri)) {
-			handleStreamSRIChanged(oldSri, sri);
-		}
 		AbstractBulkIOPort.TRACE_LOG.exitingMethod(sri);
 	}
-	
+
 	/**
 	 * @since 2.0
 	 */
-	@Nullable
 	public StreamSRI getStreamSRI() {
 		return this.currentSri;
 	}
-	
-	/** callback to notify that SRI has changed from previous SRI.
-	 * @deprecated use {@link #handleStreamSRIChanged(String, StreamSRI, StreamSRI)}
-	 */
-	@Deprecated
-	protected void handleStreamSRIChanged(@Nullable StreamSRI oldSri, @Nullable StreamSRI newSri) {
-		
-	}
 
-	/** callback to notify that SRI has changed for specified streamID (this is method that sub-classes should override).
-	 * @since 2.0*/
-	protected void handleStreamSRIChanged(@NonNull String streamID, @Nullable StreamSRI oldSri, @NonNull StreamSRI newSri) {
-		
+	/**
+	 * Callback to notify that SRI has changed for specified streamID (this is method that sub-classes should override).
+	 * @since 2.0
+	 */
+	protected void handleStreamSRIChanged(String streamID, StreamSRI oldSri, StreamSRI newSri) {
 	}
 
 	/**
 	 * @param streamID
 	 * @return SRI for specified stream ID (null if it does not exist or has reached end-of-stream (EOS)).
 	 */
-	@Nullable
-	public StreamSRI getSri(@Nullable String streamID) {
+	public StreamSRI getSri(String streamID) {
 		return this.streamSRIMap.get(streamID);
 	}
 }

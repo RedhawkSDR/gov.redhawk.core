@@ -19,15 +19,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.jdt.annotation.Nullable;
 
 import BULKIO.updateSRIOperations;
 
-/**
- * 
- */
-@NonNullByDefault
 public enum ConnectionManager implements IBulkIOPortConnectionManager {
 	INSTANCE;
 
@@ -38,8 +32,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 		return connect(ior, type, internalPort, null);
 	}
 
-	@Nullable
-	private Connection getConnection(final String ior, final BulkIOType type, @Nullable final String connectionID) {
+	private Connection getConnection(final String ior, final BulkIOType type, final String connectionID) {
 		synchronized (connections) {
 			for (Connection c : connections) {
 				String connectIor = c.getIor();
@@ -63,7 +56,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 	}
 
 	@Override
-	public String connect(final String ior, final BulkIOType type, final updateSRIOperations internalPort, @Nullable final String connectionID)
+	public String connect(final String ior, final BulkIOType type, final updateSRIOperations internalPort, final String connectionID)
 			throws CoreException {
 		if (ior == null || internalPort == null) {
 			throw new IllegalArgumentException("Null ior or port implemention.");
@@ -92,7 +85,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 	}
 
 	@Override
-	public void disconnect(String ior, BulkIOType type, updateSRIOperations internalPort, @Nullable String connectionID) {
+	public void disconnect(String ior, BulkIOType type, updateSRIOperations internalPort, String connectionID) {
 		if (ior == null || internalPort == null) {
 			return;
 		}
@@ -112,15 +105,13 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 		}
 	}
 
-	@Nullable
 	@Override
 	public AbstractBulkIOPort getExternalPort(String ior, BulkIOType type) {
 		return getExternalPort(ior, type, null);
 	}
 
-	@Nullable
 	@Override
-	public AbstractBulkIOPort getExternalPort(String ior, BulkIOType type, @Nullable String connectionID) {
+	public AbstractBulkIOPort getExternalPort(String ior, BulkIOType type, String connectionID) {
 		Connection retVal = getConnection(ior, type, connectionID);
 		return retVal;
 	}

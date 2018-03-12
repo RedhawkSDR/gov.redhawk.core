@@ -13,10 +13,11 @@ package gov.redhawk.bulkio.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.jdt.annotation.Nullable;
 import org.omg.PortableServer.Servant;
 
+import BULKIO.dataBitHelper;
+import BULKIO.dataBitOperations;
+import BULKIO.dataBitPOATie;
 import BULKIO.dataCharHelper;
 import BULKIO.dataCharOperations;
 import BULKIO.dataCharPOATie;
@@ -49,23 +50,37 @@ import BULKIO.dataUshortOperations;
 import BULKIO.dataUshortPOATie;
 import BULKIO.updateSRIOperations;
 
-@NonNullByDefault
+/**
+ * This enumeration describes all BULKIO types implemented by the abstract class {@link AbstractUberBulkIOPort}.
+ * <b>NOT ALL BULKIO TYPES ARE SUPPORTED.</b> In general the supported types are those that:
+ * <ol>
+ * <li>convey sample data</li>
+ * <li>convey data in-band (via base class implementation)</li>
+ * </ol>
+ * So for example, dataXML isn't supported because it transmits XML not sample data. dataSDDS also isn't supported
+ * because the sample data is conveyed out-of-band.
+ */
 public enum BulkIOType {
+	/**
+	 * @since 4.0
+	 */
+	BIT(0, byte.class, true, dataBitOperations.class, 'P'),
+	CHAR(2, char.class, false, dataCharOperations.class, 'I'),
 	DOUBLE(8, double.class, false, dataDoubleOperations.class, 'D'),
 	FLOAT(4, float.class, false, dataFloatOperations.class, 'F'),
-	LONG_LONG(8, long.class, false, dataLongLongOperations.class, 'X'),
-	ULONG_LONG(8, long.class, true, dataUlongLongOperations.class, 'X'),
 	LONG(4, int.class, false, dataLongOperations.class, 'L'),
-	ULONG(4, int.class, true, dataUlongOperations.class, 'X'),
-	SHORT(2, short.class, false, dataShortOperations.class, 'I'),
-	USHORT(2, short.class, true, dataUshortOperations.class, 'L'),
+	LONG_LONG(8, long.class, false, dataLongLongOperations.class, 'X'),
 	OCTET(1, byte.class, false, dataOctetOperations.class, 'B'),
-	CHAR(2, char.class, false, dataCharOperations.class, 'I');
+	SHORT(2, short.class, false, dataShortOperations.class, 'I'),
+	ULONG(4, int.class, true, dataUlongOperations.class, 'X'),
+	ULONG_LONG(8, long.class, true, dataUlongLongOperations.class, 'X'),
+	USHORT(2, short.class, true, dataUshortOperations.class, 'L');
 
 	private static final Map<String, BulkIOType> MAP;
 
 	static {
 		MAP = new HashMap<>();
+		MAP.put(dataBitHelper.id(), BulkIOType.BIT);
 		MAP.put(dataCharHelper.id(), BulkIOType.CHAR);
 		MAP.put(dataDoubleHelper.id(), BulkIOType.DOUBLE);
 		MAP.put(dataFloatHelper.id(), BulkIOType.FLOAT);
@@ -92,6 +107,9 @@ public enum BulkIOType {
 		this.midasType = midasType;
 	}
 
+	/**
+	 * @return The number of bytes per 'atom' (size of 1 scalar sample). For {@link #BIT}, this returns 0.
+	 */
 	public int getBytePerAtom() {
 		return bytePerAtom;
 	}
@@ -101,7 +119,13 @@ public enum BulkIOType {
 	 */
 	public static BulkIOType getType(updateSRIOperations impl) {
 		BulkIOType retVal = null;
+		if (dataBitOperations.class.isAssignableFrom(impl.getClass())) {
+			retVal = BulkIOType.BIT;
+		}
 		if (dataCharOperations.class.isAssignableFrom(impl.getClass())) {
+			if (retVal != null) {
+				throw new IllegalArgumentException(impl.getClass() + " implements more than more type of BulkIO Interface.");
+			}
 			retVal = BulkIOType.CHAR;
 		}
 		if (dataDoubleOperations.class.isAssignableFrom(impl.getClass())) {
@@ -164,7 +188,7 @@ public enum BulkIOType {
 		return retVal;
 	}
 
-	public static BulkIOType getType(@Nullable String idl) {
+	public static BulkIOType getType(String idl) {
 		BulkIOType type = MAP.get(idl);
 		if (type != null) {
 			return type;
@@ -176,12 +200,12 @@ public enum BulkIOType {
 	/**
 	 * @since 2.0
 	 */
-	public static boolean isTypeSupported(@Nullable String idl) {
+	public static boolean isTypeSupported(String idl) {
 		return MAP.containsKey(idl);
 	}
 
 	/**
-	 * @return The non upcasted Java class container type
+	 * @return The non-upcast Java class container type
 	 * @since 2.0
 	 */
 	public Class< ? > getJavaType() {
@@ -218,6 +242,8 @@ public enum BulkIOType {
 			throw new IllegalArgumentException(this + " can not create servant.  Handler must be of type " + portType);
 		}
 		switch (this) {
+		case BIT:
+			return new dataBitPOATie((dataBitOperations) handler);
 		case CHAR:
 			return new dataCharPOATie((dataCharOperations) handler);
 		case DOUBLE:

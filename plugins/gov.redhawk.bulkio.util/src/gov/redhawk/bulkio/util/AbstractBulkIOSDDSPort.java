@@ -16,9 +16,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.jdt.annotation.Nullable;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.Servant;
 
@@ -215,7 +212,6 @@ public abstract class AbstractBulkIOSDDSPort implements dataSDDSOperations {
 		}
 	}
 
-	@NonNull
 	public Servant toServant(POA poa) {
 		return new dataSDDSPOATie(this, poa);
 	}
@@ -224,12 +220,11 @@ public abstract class AbstractBulkIOSDDSPort implements dataSDDSOperations {
 	 * @param streamID stream ID
 	 * @return StreamSRI for specified stream ID (null if it does not exist or has been detached)
 	 */
-	@Nullable
-	public StreamSRI getSri(@NonNull String streamID) {
+	public StreamSRI getSri(String streamID) {
 		return this.streamSRIMap.get(streamID);
 	}
 	
-	protected StreamSRI putSri(@NonNull String streamID, StreamSRI sri) {
+	protected StreamSRI putSri(String streamID, StreamSRI sri) {
 		return this.streamSRIMap.put(streamID, sri);
 	}
 
@@ -238,19 +233,18 @@ public abstract class AbstractBulkIOSDDSPort implements dataSDDSOperations {
 	// =========================================================================
 
 	/** callback to notify when there is a new SDDSStreamDefinition attach request. */
-	protected abstract void handleAttach(@NonNull SddsStreamSession sss) throws AttachError, StreamInputError;
+	protected abstract void handleAttach(SddsStreamSession sss) throws AttachError, StreamInputError;
 
 	/** callback to notify when there is a SDDSStreamDefinition detach request. */
-	protected abstract void handleDetach(@NonNull SddsStreamSession sss) throws DetachError, StreamInputError;
+	protected abstract void handleDetach(SddsStreamSession sss) throws DetachError, StreamInputError;
 
 	/** callback to notify that SRI has changed for specified streamID. */
-	protected abstract void handleStreamSRIChanged(@NonNull String streamID, @Nullable StreamSRI oldSri, @NonNull StreamSRI newSri);
+	protected abstract void handleStreamSRIChanged(String streamID, StreamSRI oldSri, StreamSRI newSri);
 
 	// =========================================================================
 	// Inner classes
 	// =========================================================================
 
-	@NonNullByDefault
 	public static class SddsStreamSession {
 		private final SDDSStreamDefinition sddsStreamDef;
 		private final String userId;

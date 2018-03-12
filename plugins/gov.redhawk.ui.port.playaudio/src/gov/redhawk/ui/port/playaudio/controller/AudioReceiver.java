@@ -38,7 +38,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.jdt.annotation.Nullable;
 
 import BULKIO.PrecisionUTCTime;
 import BULKIO.StreamSRI;
@@ -198,7 +197,7 @@ public class AudioReceiver extends AbstractBulkIOPort implements dataCharOperati
 	}
 
 	@Override
-	protected void handleStreamSRIChanged(@Nullable StreamSRI oldSri, @Nullable StreamSRI newSri) {
+	protected void handleStreamSRIChanged(String streamID, StreamSRI oldSri, StreamSRI newSri) {
 		AudioFormat.Encoding enc;
 		int sampleSizeInBytes;
 		BulkIOType bulkIOType = getBulkIOType();

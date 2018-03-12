@@ -14,6 +14,7 @@ import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.IPortFactory;
 import gov.redhawk.bulkio.util.PortReference;
 import gov.redhawk.sca.util.OrbSession;
+import omnijni.Servant;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
@@ -23,6 +24,7 @@ import BULKIO.PortStatistics;
 import BULKIO.PortUsageType;
 import BULKIO.PrecisionUTCTime;
 import BULKIO.StreamSRI;
+import BULKIO.dataBitOperations;
 import BULKIO.dataCharOperations;
 import BULKIO.dataDoubleOperations;
 import BULKIO.dataFloatOperations;
@@ -38,6 +40,7 @@ import CF.Port;
 import CF.PortHelper;
 import CF.PortPackage.InvalidPort;
 import CF.PortPackage.OccupiedPort;
+import bulkio.InBitPort;
 import bulkio.InCharPort;
 import bulkio.InDoublePort;
 import bulkio.InFloatPort;
@@ -60,6 +63,8 @@ public class PortFactory implements IPortFactory {
 		org.omg.CORBA.Object portRef = SESSION.getOrb().string_to_object(portIor);
 		final Port port = PortHelper.narrow(portRef);
 		switch (type) {
+		case BIT:
+			return connect(connectionID, port, (dataBitOperations) handler);
 		case CHAR:
 			return connect(connectionID, port, (dataCharOperations) handler);
 		case DOUBLE:
@@ -92,63 +97,31 @@ public class PortFactory implements IPortFactory {
 	 * @return
 	 */
 	private PortReference connect(final String connectionID, final Port port, final dataUshortOperations handler) throws CoreException {
-		try {
+		final InUInt16Port inPort = new InUInt16Port(connectionID) {
+			public void pushPacket(short[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+				handler.pushPacket(data, time, eos, streamID);
+			}
 
-			final InUInt16Port inPort = new InUInt16Port(connectionID) {
-				public void pushPacket(short[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-					handler.pushPacket(data, time, eos, streamID);
-				}
+			public void pushSRI(BULKIO.StreamSRI header) {
+				handler.pushSRI(header);
+			}
 
-				public void pushSRI(BULKIO.StreamSRI header) {
-					handler.pushSRI(header);
-				}
+			@Override
+			public StreamSRI[] activeSRIs() {
+				return handler.activeSRIs();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#activeSRIs()
-				 */
-				@Override
-				public StreamSRI[] activeSRIs() {
-					return handler.activeSRIs();
-				}
+			@Override
+			public PortUsageType state() {
+				return handler.state();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#state()
-				 */
-				@Override
-				public PortUsageType state() {
-					return handler.state();
-				}
-
-				/*
-				 * @see bulkio.InDoublePort#statistics()
-				 */
-				@Override
-				public PortStatistics statistics() {
-					return handler.statistics();
-				}
-			};
-			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
-			return new PortReference() {
-				@Override
-				public void dispose() {
-					try {
-						port.disconnectPort(connectionID);
-					} catch (InvalidPort e) {
-						// PASS
-					} catch (SystemException e) {
-						// PASS
-					}
-					inPort._deactivate();
-				}
-
-			};
-		} catch (InvalidPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (OccupiedPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (SystemException e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		}
+			@Override
+			public PortStatistics statistics() {
+				return handler.statistics();
+			}
+		};
+		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
 	/**
@@ -158,62 +131,31 @@ public class PortFactory implements IPortFactory {
 	 * @return
 	 */
 	private PortReference connect(final String connectionID, final Port port, final dataUlongLongOperations handler) throws CoreException {
-		try {
+		final InUInt64Port inPort = new InUInt64Port(connectionID) {
+			public void pushPacket(long[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+				handler.pushPacket(data, time, eos, streamID);
+			}
 
-			final InUInt64Port inPort = new InUInt64Port(connectionID) {
-				public void pushPacket(long[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-					handler.pushPacket(data, time, eos, streamID);
-				}
+			public void pushSRI(BULKIO.StreamSRI header) {
+				handler.pushSRI(header);
+			}
 
-				public void pushSRI(BULKIO.StreamSRI header) {
-					handler.pushSRI(header);
-				}
+			@Override
+			public StreamSRI[] activeSRIs() {
+				return handler.activeSRIs();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#activeSRIs()
-				 */
-				@Override
-				public StreamSRI[] activeSRIs() {
-					return handler.activeSRIs();
-				}
+			@Override
+			public PortUsageType state() {
+				return handler.state();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#state()
-				 */
-				@Override
-				public PortUsageType state() {
-					return handler.state();
-				}
-
-				/*
-				 * @see bulkio.InDoublePort#statistics()
-				 */
-				@Override
-				public PortStatistics statistics() {
-					return handler.statistics();
-				}
-			};
-			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
-			return new PortReference() {
-				@Override
-				public void dispose() {
-					try {
-						port.disconnectPort(connectionID);
-					} catch (InvalidPort e) {
-						// PASS
-					} catch (SystemException e) {
-						// PASS
-					}
-					inPort._deactivate();
-				}
-			};
-		} catch (InvalidPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (OccupiedPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (SystemException e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		}
+			@Override
+			public PortStatistics statistics() {
+				return handler.statistics();
+			}
+		};
+		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
 	/**
@@ -223,62 +165,31 @@ public class PortFactory implements IPortFactory {
 	 * @return
 	 */
 	private PortReference connect(final String connectionID, final Port port, final dataUlongOperations handler) throws CoreException {
-		try {
+		final InUInt32Port inPort = new InUInt32Port(connectionID) {
+			public void pushPacket(int[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+				handler.pushPacket(data, time, eos, streamID);
+			}
 
-			final InUInt32Port inPort = new InUInt32Port(connectionID) {
-				public void pushPacket(int[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-					handler.pushPacket(data, time, eos, streamID);
-				}
+			public void pushSRI(BULKIO.StreamSRI header) {
+				handler.pushSRI(header);
+			}
 
-				public void pushSRI(BULKIO.StreamSRI header) {
-					handler.pushSRI(header);
-				}
+			@Override
+			public StreamSRI[] activeSRIs() {
+				return handler.activeSRIs();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#activeSRIs()
-				 */
-				@Override
-				public StreamSRI[] activeSRIs() {
-					return handler.activeSRIs();
-				}
+			@Override
+			public PortUsageType state() {
+				return handler.state();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#state()
-				 */
-				@Override
-				public PortUsageType state() {
-					return handler.state();
-				}
-
-				/*
-				 * @see bulkio.InDoublePort#statistics()
-				 */
-				@Override
-				public PortStatistics statistics() {
-					return handler.statistics();
-				}
-			};
-			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
-			return new PortReference() {
-				@Override
-				public void dispose() {
-					try {
-						port.disconnectPort(connectionID);
-					} catch (InvalidPort e) {
-						// PASS
-					} catch (SystemException e) {
-						// PASS
-					}
-					inPort._deactivate();
-				}
-			};
-		} catch (InvalidPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (OccupiedPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (SystemException e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		}
+			@Override
+			public PortStatistics statistics() {
+				return handler.statistics();
+			}
+		};
+		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
 	/**
@@ -288,62 +199,31 @@ public class PortFactory implements IPortFactory {
 	 * @return
 	 */
 	private PortReference connect(final String connectionID, final Port port, final dataShortOperations handler) throws CoreException {
-		try {
+		final InInt16Port inPort = new InInt16Port(connectionID) {
+			public void pushPacket(short[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+				handler.pushPacket(data, time, eos, streamID);
+			}
 
-			final InInt16Port inPort = new InInt16Port(connectionID) {
-				public void pushPacket(short[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-					handler.pushPacket(data, time, eos, streamID);
-				}
+			public void pushSRI(BULKIO.StreamSRI header) {
+				handler.pushSRI(header);
+			}
 
-				public void pushSRI(BULKIO.StreamSRI header) {
-					handler.pushSRI(header);
-				}
+			@Override
+			public StreamSRI[] activeSRIs() {
+				return handler.activeSRIs();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#activeSRIs()
-				 */
-				@Override
-				public StreamSRI[] activeSRIs() {
-					return handler.activeSRIs();
-				}
+			@Override
+			public PortUsageType state() {
+				return handler.state();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#state()
-				 */
-				@Override
-				public PortUsageType state() {
-					return handler.state();
-				}
-
-				/*
-				 * @see bulkio.InDoublePort#statistics()
-				 */
-				@Override
-				public PortStatistics statistics() {
-					return handler.statistics();
-				}
-			};
-			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
-			return new PortReference() {
-				@Override
-				public void dispose() {
-					try {
-						port.disconnectPort(connectionID);
-					} catch (InvalidPort e) {
-						// PASS
-					} catch (SystemException e) {
-						// PASS
-					}
-					inPort._deactivate();
-				}
-			};
-		} catch (InvalidPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (OccupiedPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (SystemException e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		}
+			@Override
+			public PortStatistics statistics() {
+				return handler.statistics();
+			}
+		};
+		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
 	/**
@@ -353,62 +233,31 @@ public class PortFactory implements IPortFactory {
 	 * @return
 	 */
 	private PortReference connect(final String connectionID, final Port port, final dataOctetOperations handler) throws CoreException {
-		try {
+		final InUInt8Port inPort = new InUInt8Port(connectionID) {
+			public void pushPacket(byte[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+				handler.pushPacket(data, time, eos, streamID);
+			}
 
-			final InUInt8Port inPort = new InUInt8Port(connectionID) {
-				public void pushPacket(byte[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-					handler.pushPacket(data, time, eos, streamID);
-				}
+			public void pushSRI(BULKIO.StreamSRI header) {
+				handler.pushSRI(header);
+			}
 
-				public void pushSRI(BULKIO.StreamSRI header) {
-					handler.pushSRI(header);
-				}
+			@Override
+			public StreamSRI[] activeSRIs() {
+				return handler.activeSRIs();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#activeSRIs()
-				 */
-				@Override
-				public StreamSRI[] activeSRIs() {
-					return handler.activeSRIs();
-				}
+			@Override
+			public PortUsageType state() {
+				return handler.state();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#state()
-				 */
-				@Override
-				public PortUsageType state() {
-					return handler.state();
-				}
-
-				/*
-				 * @see bulkio.InDoublePort#statistics()
-				 */
-				@Override
-				public PortStatistics statistics() {
-					return handler.statistics();
-				}
-			};
-			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
-			return new PortReference() {
-				@Override
-				public void dispose() {
-					try {
-						port.disconnectPort(connectionID);
-					} catch (InvalidPort e) {
-						// PASS
-					} catch (SystemException e) {
-						// PASS
-					}
-					inPort._deactivate();
-				}
-			};
-		} catch (InvalidPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (OccupiedPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (SystemException e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		}
+			@Override
+			public PortStatistics statistics() {
+				return handler.statistics();
+			}
+		};
+		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
 	/**
@@ -418,62 +267,31 @@ public class PortFactory implements IPortFactory {
 	 * @return
 	 */
 	private PortReference connect(final String connectionID, final Port port, final dataLongLongOperations handler) throws CoreException {
-		try {
+		final InInt64Port inPort = new InInt64Port(connectionID) {
+			public void pushPacket(long[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+				handler.pushPacket(data, time, eos, streamID);
+			}
 
-			final InInt64Port inPort = new InInt64Port(connectionID) {
-				public void pushPacket(long[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-					handler.pushPacket(data, time, eos, streamID);
-				}
+			public void pushSRI(BULKIO.StreamSRI header) {
+				handler.pushSRI(header);
+			}
 
-				public void pushSRI(BULKIO.StreamSRI header) {
-					handler.pushSRI(header);
-				}
+			@Override
+			public StreamSRI[] activeSRIs() {
+				return handler.activeSRIs();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#activeSRIs()
-				 */
-				@Override
-				public StreamSRI[] activeSRIs() {
-					return handler.activeSRIs();
-				}
+			@Override
+			public PortUsageType state() {
+				return handler.state();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#state()
-				 */
-				@Override
-				public PortUsageType state() {
-					return handler.state();
-				}
-
-				/*
-				 * @see bulkio.InDoublePort#statistics()
-				 */
-				@Override
-				public PortStatistics statistics() {
-					return handler.statistics();
-				}
-			};
-			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
-			return new PortReference() {
-				@Override
-				public void dispose() {
-					try {
-						port.disconnectPort(connectionID);
-					} catch (InvalidPort e) {
-						// PASS
-					} catch (SystemException e) {
-						// PASS
-					}
-					inPort._deactivate();
-				}
-			};
-		} catch (InvalidPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (OccupiedPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (SystemException e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		}
+			@Override
+			public PortStatistics statistics() {
+				return handler.statistics();
+			}
+		};
+		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
 	/**
@@ -483,62 +301,31 @@ public class PortFactory implements IPortFactory {
 	 * @return
 	 */
 	private PortReference connect(final String connectionID, final Port port, final dataLongOperations handler) throws CoreException {
-		try {
+		final InInt32Port inPort = new InInt32Port(connectionID) {
+			public void pushPacket(int[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+				handler.pushPacket(data, time, eos, streamID);
+			}
 
-			final InInt32Port inPort = new InInt32Port(connectionID) {
-				public void pushPacket(int[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-					handler.pushPacket(data, time, eos, streamID);
-				}
+			public void pushSRI(BULKIO.StreamSRI header) {
+				handler.pushSRI(header);
+			}
 
-				public void pushSRI(BULKIO.StreamSRI header) {
-					handler.pushSRI(header);
-				}
+			@Override
+			public StreamSRI[] activeSRIs() {
+				return handler.activeSRIs();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#activeSRIs()
-				 */
-				@Override
-				public StreamSRI[] activeSRIs() {
-					return handler.activeSRIs();
-				}
+			@Override
+			public PortUsageType state() {
+				return handler.state();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#state()
-				 */
-				@Override
-				public PortUsageType state() {
-					return handler.state();
-				}
-
-				/*
-				 * @see bulkio.InDoublePort#statistics()
-				 */
-				@Override
-				public PortStatistics statistics() {
-					return handler.statistics();
-				}
-			};
-			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
-			return new PortReference() {
-				@Override
-				public void dispose() {
-					try {
-						port.disconnectPort(connectionID);
-					} catch (InvalidPort e) {
-						// PASS
-					} catch (SystemException e) {
-						// PASS
-					}
-					inPort._deactivate();
-				}
-			};
-		} catch (InvalidPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (OccupiedPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (SystemException e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		}
+			@Override
+			public PortStatistics statistics() {
+				return handler.statistics();
+			}
+		};
+		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
 	/**
@@ -548,62 +335,31 @@ public class PortFactory implements IPortFactory {
 	 * @return
 	 */
 	private PortReference connect(final String connectionID, final Port port, final dataFloatOperations handler) throws CoreException {
-		try {
+		final InFloatPort inPort = new InFloatPort(connectionID) {
+			public void pushPacket(float[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+				handler.pushPacket(data, time, eos, streamID);
+			}
 
-			final InFloatPort inPort = new InFloatPort(connectionID) {
-				public void pushPacket(float[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-					handler.pushPacket(data, time, eos, streamID);
-				}
+			public void pushSRI(BULKIO.StreamSRI header) {
+				handler.pushSRI(header);
+			}
 
-				public void pushSRI(BULKIO.StreamSRI header) {
-					handler.pushSRI(header);
-				}
+			@Override
+			public StreamSRI[] activeSRIs() {
+				return handler.activeSRIs();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#activeSRIs()
-				 */
-				@Override
-				public StreamSRI[] activeSRIs() {
-					return handler.activeSRIs();
-				}
+			@Override
+			public PortUsageType state() {
+				return handler.state();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#state()
-				 */
-				@Override
-				public PortUsageType state() {
-					return handler.state();
-				}
-
-				/*
-				 * @see bulkio.InDoublePort#statistics()
-				 */
-				@Override
-				public PortStatistics statistics() {
-					return handler.statistics();
-				}
-			};
-			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
-			return new PortReference() {
-				@Override
-				public void dispose() {
-					try {
-						port.disconnectPort(connectionID);
-					} catch (InvalidPort e) {
-						// PASS
-					} catch (SystemException e) {
-						// PASS
-					}
-					inPort._deactivate();
-				}
-			};
-		} catch (InvalidPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (OccupiedPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (SystemException e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		}
+			@Override
+			public PortStatistics statistics() {
+				return handler.statistics();
+			}
+		};
+		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
 	/**
@@ -613,107 +369,103 @@ public class PortFactory implements IPortFactory {
 	 * @return
 	 */
 	private PortReference connect(final String connectionID, final Port port, final dataDoubleOperations handler) throws CoreException {
-		try {
+		final InDoublePort inPort = new InDoublePort(connectionID) {
+			public void pushPacket(double[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+				handler.pushPacket(data, time, eos, streamID);
+			}
 
-			final InDoublePort inPort = new InDoublePort(connectionID) {
-				public void pushPacket(double[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-					handler.pushPacket(data, time, eos, streamID);
-				}
+			public void pushSRI(StreamSRI header) {
+				handler.pushSRI(header);
+			}
 
-				public void pushSRI(StreamSRI header) {
-					handler.pushSRI(header);
-				}
+			@Override
+			public StreamSRI[] activeSRIs() {
+				return handler.activeSRIs();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#activeSRIs()
-				 */
-				@Override
-				public StreamSRI[] activeSRIs() {
-					return handler.activeSRIs();
-				}
+			@Override
+			public PortUsageType state() {
+				return handler.state();
+			}
 
-				/*
-				 * @see bulkio.InDoublePort#state()
-				 */
-				@Override
-				public PortUsageType state() {
-					return handler.state();
-				}
-
-				/*
-				 * @see bulkio.InDoublePort#statistics()
-				 */
-				@Override
-				public PortStatistics statistics() {
-					return handler.statistics();
-				}
-			};
-			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
-			return new PortReference() {
-				@Override
-				public void dispose() {
-					try {
-						port.disconnectPort(connectionID);
-					} catch (InvalidPort e) {
-						// PASS
-					} catch (SystemException e) {
-						// PASS
-					}
-					inPort._deactivate();
-				}
-
-			};
-		} catch (InvalidPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (OccupiedPort e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		} catch (SystemException e) {
-			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
-		}
+			@Override
+			public PortStatistics statistics() {
+				return handler.statistics();
+			}
+		};
+		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
 	/**
 	 * @param connectionID
 	 * @param port
 	 * @param handler
-	 * @return 
+	 * @return
 	 */
 	private PortReference connect(final String connectionID, final Port port, final dataCharOperations handler) throws CoreException {
+		final InCharPort inPort = new InCharPort(connectionID) {
+			public void pushPacket(char[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+				handler.pushPacket(data, time, eos, streamID);
+			}
+
+			public void pushSRI(BULKIO.StreamSRI header) {
+				handler.pushSRI(header);
+			}
+
+			@Override
+			public StreamSRI[] activeSRIs() {
+				return handler.activeSRIs();
+			}
+
+			@Override
+			public PortUsageType state() {
+				return handler.state();
+			}
+
+			@Override
+			public PortStatistics statistics() {
+				return handler.statistics();
+			}
+		};
+		return createAndConnectHandler(connectionID, port, inPort);
+	}
+
+	/**
+	 * @param connectionID
+	 * @param port
+	 * @param handler
+	 * @return
+	 */
+	private PortReference connect(final String connectionID, final Port port, final dataBitOperations handler) throws CoreException {
+		final InBitPort inPort = new InBitPort(connectionID) {
+			public void pushPacket(BULKIO.BitSequence data, PrecisionUTCTime time, boolean eos, String streamID) {
+				handler.pushPacket(data, time, eos, streamID);
+			}
+
+			public void pushSRI(StreamSRI header) {
+				handler.pushSRI(header);
+			}
+
+			@Override
+			public StreamSRI[] activeSRIs() {
+				return handler.activeSRIs();
+			}
+
+			@Override
+			public PortUsageType state() {
+				return handler.state();
+			}
+
+			@Override
+			public PortStatistics statistics() {
+				return handler.statistics();
+			}
+		};
+		return createAndConnectHandler(connectionID, port, inPort);
+	}
+
+	private PortReference createAndConnectHandler(final String connectionID, final Port port, final Servant inPort) throws CoreException {
 		try {
-
-			final InCharPort inPort = new InCharPort(connectionID) {
-				public void pushPacket(char[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-					handler.pushPacket(data, time, eos, streamID);
-				}
-
-				public void pushSRI(BULKIO.StreamSRI header) {
-					handler.pushSRI(header);
-				}
-
-				/*
-				 * @see bulkio.InDoublePort#activeSRIs()
-				 */
-				@Override
-				public StreamSRI[] activeSRIs() {
-					return handler.activeSRIs();
-				}
-
-				/*
-				 * @see bulkio.InDoublePort#state()
-				 */
-				@Override
-				public PortUsageType state() {
-					return handler.state();
-				}
-
-				/*
-				 * @see bulkio.InDoublePort#statistics()
-				 */
-				@Override
-				public PortStatistics statistics() {
-					return handler.statistics();
-				}
-			};
 			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
 			return new PortReference() {
 				@Override
@@ -726,7 +478,6 @@ public class PortFactory implements IPortFactory {
 						// PASS
 					}
 					inPort._deactivate();
-
 				}
 
 			};
@@ -737,6 +488,7 @@ public class PortFactory implements IPortFactory {
 		} catch (SystemException e) {
 			throw new CoreException(new Status(Status.ERROR, "gov.redhaw.bulkio.orb.omni", "Failed to connect BulkIO Port ", e));
 		}
+
 	}
 
 }

@@ -23,8 +23,6 @@
  */
 package bulkio;
 
-import java.util.Arrays;
-
 import org.apache.log4j.Logger;
 
 import BULKIO.PrecisionUTCTime;
@@ -44,7 +42,7 @@ public class OutUInt8Port extends OutStreamPort<dataOctetOperations,byte[]> {
     }
 
     public OutUInt8Port(String portName, Logger logger, ConnectionEventListener eventCB) {
-        super(portName, logger, eventCB, 1);
+        super(portName, logger, eventCB, new UInt8DataHelper());
         if (this.logger != null) {
             this.logger.debug("bulkio.OutPort CTOR port: " + portName);
         }
@@ -58,18 +56,6 @@ public class OutUInt8Port extends OutStreamPort<dataOctetOperations,byte[]> {
     protected void sendPacket(dataOctetOperations port, byte[] data, PrecisionUTCTime time,
                               boolean endOfStream, String streamID) {
         port.pushPacket(data, time, endOfStream, streamID);
-    }
-
-    protected byte[] copyOfRange(byte[] array, int start, int end) {
-        return Arrays.copyOfRange(array, start, end);
-    }
-
-    protected int arraySize(byte[] array) {
-        return array.length;
-    }
-
-    protected byte[] emptyArray() {
-        return new byte[0];
     }
 
     public String getRepid() {
