@@ -122,10 +122,12 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 
 		/**
 		 * @return a Map<String, Boolean) of all connection ID's in the container's connectionTable property.<br/>
-		 * <li>Key - {@link String} connectionId
+		 * <ul>
+		 * <li>Key - {@link String} connectionId</li>
 		 * <li>Value - {@link Boolean} True if connection ID is available (either not being used, or only being
 		 * used by the IDE). False means the connection ID is not available, such as being used for a connection
-		 * to a components provides port
+		 * to a components provides port</li>
+		 * </ul>
 		 */
 		public static Map<String, Boolean> getConnectionIds(ScaUsesPort port) {
 			Map<String, Boolean> connectionIdMap = new HashMap<>();
