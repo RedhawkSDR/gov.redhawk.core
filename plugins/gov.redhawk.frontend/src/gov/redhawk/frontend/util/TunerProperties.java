@@ -748,6 +748,30 @@ public enum TunerProperties {
 	}
 
 	/**
+	 * @since 2.0
+	 */
+	public enum ScannerAllocationProperties {
+		MIN_FREQ("FRONTEND::scanner_allocation::min_freq"),
+		MAX_FREQ("FRONTEND::scanner_allocation::max_freq"),
+		MODE("FRONTEND::scanner_allocation::mode"),
+		CONTROL_MODE("FRONTEND::scanner_allocation::control_mode"),
+		CONTROL_LIMIT("FRONTEND::scanner_allocation::control_limit");
+
+		private String id;
+
+		private ScannerAllocationProperties(String id) {
+			this.id = id;
+		}
+
+		/**
+		 * @return The fully qualified ID of the field
+		 */
+		public String getId() {
+			return id;
+		}
+	}
+
+	/**
 	 * Used to create the <code>connectionTable</code> property.
 	 * @since 2.0
 	 */

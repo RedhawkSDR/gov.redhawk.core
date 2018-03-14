@@ -18,12 +18,17 @@ import java.util.List;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 
 import CF.DataType;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.FrontEndUIActivator.AllocationMode;
+import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperty;
+import gov.redhawk.frontend.util.TunerProperties.ScannerAllocationProperty;
+import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperties;
+import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperty;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.sca.model.jobs.AllocateJob;
@@ -32,11 +37,13 @@ import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 public class TunerAllocationWizard extends Wizard {
 
 	private TunerStatus tuner;
+	private ScaDevice< ? > feiDevice;
+
 	private TunerAllocationWizardPage allocatePage;
+	private ListenerAllocationWizardPage listenerPage;
+	private ScannerAllocationWizardPage scannerPage;
 	private boolean listener;
 	private String targetId;
-	private ListenerAllocationWizardPage listenerPage;
-	private ScaDevice< ? > feiDevice;
 
 	public TunerAllocationWizard(TunerStatus tuner) {
 		this(tuner, false, null);
@@ -72,6 +79,8 @@ public class TunerAllocationWizard extends Wizard {
 			if (tuner != null) {
 				allocatePage = new TunerAllocationWizardPage(tuner, feiDevice);
 				addPage(allocatePage);
+				scannerPage = new ScannerAllocationWizardPage(tuner);
+				addPage(scannerPage);
 			} else {
 				FrontEndUIActivator.getDefault().getLog().log(new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID,
 					"Unable to launch Allocation wizard because an empty array of tuners was provided."));
@@ -128,27 +137,69 @@ public class TunerAllocationWizard extends Wizard {
 	}
 
 	private DataType[] createAllocationProperties() {
-		List<DataType> props = new ArrayList<DataType>();
-		ScaStructProperty struct;
-		DataType dt = new DataType();
+		// If the listener-only page was shown
 		if (listener) {
-			ListenerAllocationWizardPage page = listenerPage;
-			struct = page.getListenerAllocationStruct();
-			dt.id = "FRONTEND::listener_allocation";
-			dt.value = struct.toAny();
-		} else {
-			TunerAllocationWizardPage page = allocatePage;
-			if (page.getAllocationMode() == AllocationMode.TUNER) {
-				struct = page.getTunerAllocationStruct();
-				dt.id = "FRONTEND::tuner_allocation";
-			} else {
-				struct = page.getListenerAllocationStruct();
-				dt.id = "FRONTEND::listener_allocation";
-			}
-			dt.value = struct.toAny();
+			ScaStructProperty struct = listenerPage.getListenerAllocationStruct();
+			DataType dt = new DataType(ListenerAllocationProperty.INSTANCE.getId(), struct.toAny());
+			return new DataType[] { dt };
 		}
+
+		// If the full page was shown (allocate or listen), and the user chose listener
+		if (allocatePage.getAllocationMode() == AllocationMode.LISTENER) {
+			ScaStructProperty struct = allocatePage.getListenerAllocationStruct();
+			DataType dt = new DataType(ListenerAllocationProperty.INSTANCE.getId(), struct.toAny());
+			return new DataType[] { dt };
+		}
+
+		// The full page was shown (allocate or listen), and the user chose allocate
+		List<DataType> props = new ArrayList<DataType>();
+		ScaStructProperty struct = allocatePage.getTunerAllocationStruct();
+		DataType dt = new DataType(TunerAllocationProperty.INSTANCE.getId(), struct.toAny());
 		props.add(dt);
+
+		// Did they choose a scanner allocation? Add the property for it if so.
+		String tunerType = (String) struct.getSimple(TunerAllocationProperties.TUNER_TYPE.getId()).getValue();
+		if (FRONTEND.TUNER_TYPE_RX_SCANNER_DIGITIZER.value.equals(tunerType)) {
+			struct = scannerPage.getScannerAllocationStruct();
+			dt = new DataType(ScannerAllocationProperty.INSTANCE.getId(), struct.toAny());
+			props.add(dt);
+		}
+
 		return props.toArray(new DataType[0]);
+	}
+
+	private boolean isScannerAllocation() {
+		return !listener && allocatePage.isScannerAllocation();
+	}
+
+	@Override
+	public boolean canFinish() {
+		if (listener) {
+			return listenerPage.isPageComplete();
+		}
+
+		if (!allocatePage.isPageComplete()) {
+			return false;
+		}
+		return (isScannerAllocation()) ? scannerPage.isPageComplete() : true;
+	}
+
+	@Override
+	public IWizardPage getNextPage(IWizardPage page) {
+		// If we're on the allocate tuner page, and they haven't chosen a scanner, there isn't a next page
+		if (page == allocatePage && !isScannerAllocation()) {
+			return null;
+		}
+
+		return super.getNextPage(page);
+	}
+
+	@Override
+	public int getPageCount() {
+		int count = super.getPageCount();
+
+		// Report 1 fewer page if using the allocate wizard pages, and scanner isn't chosen
+		return (!listener && !isScannerAllocation()) ? count - 1 : count;
 	}
 
 }

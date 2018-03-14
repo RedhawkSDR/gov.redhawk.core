@@ -15,6 +15,26 @@ import org.eclipse.osgi.util.NLS;
 
 /* package */ class Messages extends NLS {
 	private static final String BUNDLE_NAME = "gov.redhawk.frontend.ui.wizard.messages"; //$NON-NLS-1$
+	public static String ScannerAllocationWizardPage_ControlLimit_Text;
+	public static String ScannerAllocationWizardPage_ControlLimit_ToolTip_Samples;
+	public static String ScannerAllocationWizardPage_ControlLimit_ToolTip_Seconds;
+	public static String ScannerAllocationWizardPage_ControlMode_Text;
+	public static String ScannerAllocationWizardPage_ControlMode_ToolTip;
+	public static String ScannerAllocationWizardPage_Error_InvalidNumber;
+	public static String ScannerAllocationWizardPage_Error_MinFreqBiggerThanMaxFreq;
+	public static String ScannerAllocationWizardPage_Error_MustBePositiveNonZero;
+	public static String ScannerAllocationWizardPage_Error_NoControlMode;
+	public static String ScannerAllocationWizardPage_Error_NoValue;
+	public static String ScannerAllocationWizardPage_Error_OutOfFreqRange;
+	public static String ScannerAllocationWizardPage_MaxFreq_Text;
+	public static String ScannerAllocationWizardPage_MaxFreq_ToolTip;
+	public static String ScannerAllocationWizardPage_MinFreq_Text;
+	public static String ScannerAllocationWizardPage_MinFreq_ToolTip;
+	public static String ScannerAllocationWizardPage_Model_Text;
+	public static String ScannerAllocationWizardPage_Model_ToolTip;
+	public static String ScannerAllocationWizardPage_PageDescription;
+	public static String ScannerAllocationWizardPage_PageName;
+	public static String ScannerAllocationWizardPage_PageTitle;
 	public static String TunerAllocationWizardPage_Allocation_Text;
 	public static String TunerAllocationWizardPage_AllocationPropsGroup_Text;
 	public static String TunerAllocationWizardPage_Bandwidth_Text;
@@ -36,7 +56,6 @@ import org.eclipse.osgi.util.NLS;
 	public static String TunerAllocationWizardPage_Error_NoTunerType;
 	public static String TunerAllocationWizardPage_Error_TunerTypeNotSupported;
 	public static String TunerAllocationWizardPage_Error_ValueCanNotBeNegative;
-	public static String TunerAllocationWizardPage_Error_ValueMustBePositiveNonZero;
 	public static String TunerAllocationWizardPage_ExistingAllocID_Text;
 	public static String TunerAllocationWizardPage_ExistingAllocID_ToolTip;
 	public static String TunerAllocationWizardPage_GroupID_Text;

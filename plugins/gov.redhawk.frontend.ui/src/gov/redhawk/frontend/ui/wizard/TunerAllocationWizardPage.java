@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
@@ -63,13 +64,11 @@ import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperty;
 import gov.redhawk.frontend.util.TunerProperties.TunerStatusAllocationProperties;
 import gov.redhawk.frontend.util.TunerProperties.TunerStatusProperty;
 import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
 import gov.redhawk.sca.observables.SCAObservables;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
-import org.eclipse.core.databinding.conversion.Converter;
 
 public class TunerAllocationWizardPage extends WizardPage {
 
@@ -105,6 +104,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private AllocationMode allocationMode = AllocationMode.TUNER;
 	private EMFDataBindingContext context;
 	private NumberFormat nf;
+	private boolean allocationIDGenerated = false;
 
 	private MultiRange cfRange = new MultiRange();
 	private MultiRange bwRange = new MultiRange();
@@ -259,16 +259,15 @@ public class TunerAllocationWizardPage extends WizardPage {
 
 	@Override
 	public void createControl(Composite parent) {
-		Composite comp = new Composite(parent, SWT.NONE);
-		createGroupControls(comp);
-		setControl(comp);
+		initializeTunerAllocationStruct();
+		initializeListenerAllocationStruct();
 
 		setTitle(Messages.TunerAllocationWizardPage_PageTitle);
 		setDescription(Messages.TunerAllocationWizardPage_PageDescription);
 
-		initializeTunerAllocationStruct();
-		initializeListenerAllocationStruct();
-
+		Composite comp = new Composite(parent, SWT.NONE);
+		createGroupControls(comp);
+		setControl(comp);
 		context = new EMFDataBindingContext();
 		addBindings();
 		WizardPageSupport.create(this, context);
@@ -285,10 +284,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 			String s = (String) value;
 			if (s == null || s.trim().isEmpty()) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoTunerType);
-			}
-			if (FRONTEND.TUNER_TYPE_RX_SCANNER_DIGITIZER.value.equals(s)) {
-				// We don't support allocating these (yet)
-				return ValidationStatus.error("Tuner type not currently supported");
 			}
 			if (!FrontEndUIActivator.SUPPORTED_TUNER_TYPES.contains(s)) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_TunerTypeNotSupported);
@@ -412,8 +407,8 @@ public class TunerAllocationWizardPage extends WizardPage {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoCenterFreq);
 			}
 			Double val = (Double) value;
-			if (val <= 0) {
-				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_ValueMustBePositiveNonZero);
+			if (val < 0) {
+				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_ValueCanNotBeNegative);
 			}
 			if (!cfRange.inRange(val)) {
 				return ValidationStatus.warning(Messages.TunerAllocationWizardPage_Error_FreqOutOfRange);
@@ -676,11 +671,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 			return;
 		}
 
-		tunerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
-		tunerAllocationStruct.setId(TunerAllocationProperty.INSTANCE.getId());
-		tunerAllocationStruct.setDefinition(TunerAllocationProperty.INSTANCE.createProperty());
-
-		// Defaults
 		String allocId;
 		if (listenerAllocationStruct != null) {
 			// Use allocation ID from the existing listener
@@ -688,13 +678,8 @@ public class TunerAllocationWizardPage extends WizardPage {
 		} else {
 			// Generate a new allocation ID
 			allocId = generateDefaultAllocID();
-			allocIdText.setBackground(allocIdText.getDisplay().getSystemColor(SWT.COLOR_CYAN));
 		}
-		tunerAllocationStruct.getSimple(TunerAllocationProperties.ALLOCATION_ID.getId()).setValue(allocId);
-		tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH_TOLERANCE.getId()).setValue(20.0);
-		tunerAllocationStruct.getSimple(TunerAllocationProperties.SAMPLE_RATE_TOLERANCE.getId()).setValue(20.0);
-		tunerAllocationStruct.getSimple(TunerAllocationProperties.RF_FLOW_ID.getId()).setValue("");
-		tunerAllocationStruct.getSimple(TunerAllocationProperties.GROUP_ID.getId()).setValue("");
+		tunerAllocationStruct = FEIStructDefaults.defaultTunerAllocationStruct(allocId);
 	}
 
 	private void initializeListenerAllocationStruct() {
@@ -703,12 +688,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 			return;
 		}
 
-		listenerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
-		listenerAllocationStruct.setId(ListenerAllocationProperty.INSTANCE.getId());
-		listenerAllocationStruct.setDefinition(ListenerAllocationProperty.INSTANCE.createProperty());
+		listenerAllocationStruct = FEIStructDefaults.defaultListenerAllocationStruct();
 	}
 
 	private String generateDefaultAllocID() {
+		allocationIDGenerated = true;
 		if (isRuntime()) {
 			return System.getProperty("user.name") + ":" + UUID.randomUUID().toString(); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
@@ -754,6 +738,9 @@ public class TunerAllocationWizardPage extends WizardPage {
 		allocIdLabel.setText(Messages.TunerAllocationWizardPage_NewAllocID_Text);
 		allocIdText = new Text(allocPropGroup, SWT.BORDER);
 		allocIdText.setToolTipText(Messages.TunerAllocationWizardPage_NewAllocID_ToolTip);
+		if (allocationIDGenerated) {
+			allocIdText.setBackground(allocIdText.getDisplay().getSystemColor(SWT.COLOR_CYAN));
+		}
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(allocIdText);
 
 		Label typeLabel = new Label(allocPropGroup, SWT.NONE);
@@ -910,5 +897,16 @@ public class TunerAllocationWizardPage extends WizardPage {
 	 */
 	public boolean isBackgroundJob() {
 		return bgJobButton.getSelection();
+	}
+
+	/**
+	 * @since 1.1
+	 */
+	public boolean isScannerAllocation() {
+		if (getAllocationMode() == AllocationMode.LISTENER) {
+			return false;
+		}
+		String tunerType = (String) tunerAllocationStruct.getSimple(TunerAllocationProperties.TUNER_TYPE.getId()).getValue();
+		return FRONTEND.TUNER_TYPE_RX_SCANNER_DIGITIZER.value.equals(tunerType);
 	}
 }
