@@ -17,6 +17,10 @@ import CF.DataType;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.sca.model.jobs.AllocateJob;
 
+/**
+ * @deprecated Use {@link AllocateJob}
+ */
+@Deprecated
 public class TunerAllocationJob extends AllocateJob {
 
 	public TunerAllocationJob(String name, ScaDevice< ? > device, DataType[] props) {

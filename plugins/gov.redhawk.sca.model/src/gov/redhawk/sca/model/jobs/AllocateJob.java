@@ -47,8 +47,11 @@ public class AllocateJob extends Job {
 		}
 	}
 
+	/**
+	 * @since 21.1
+	 */
 	@Override
-	protected IStatus run(IProgressMonitor monitor) {
+	public IStatus run(IProgressMonitor monitor) {
 		final int WORK_ALLOCATE = 9;
 		final int WORK_REFRESH = 1;
 		SubMonitor progress = SubMonitor.convert(monitor, "Allocating", WORK_ALLOCATE + WORK_REFRESH);

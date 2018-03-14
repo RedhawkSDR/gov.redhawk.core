@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="gov.redhawk.frontend.ui" version="2">
+    <resource path="src/gov/redhawk/frontend/ui/wizard/TunerAllocationWizardPage.java" type="gov.redhawk.frontend.ui.wizard.TunerAllocationWizardPage">
+        <filter comment="Not public API" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.frontend.ui.wizard.TunerAllocationWizardPage"/>
+                <message_argument value="getContext()"/>
+            </message_arguments>
+        </filter>
+        <filter comment="Not public API" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.frontend.ui.wizard.TunerAllocationWizardPage"/>
+                <message_argument value="getValidationStatus(Control, Object)"/>
+            </message_arguments>
+        </filter>
+        <filter comment="Not public API" id="338886760">
+            <message_arguments>
+                <message_argument value="gov.redhawk.frontend.ui.wizard.TunerAllocationWizardPage.TargetableValidator"/>
+                <message_argument value="gov.redhawk.frontend.ui_1.0.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>

@@ -16,8 +16,8 @@ public class FrontEndGeneratorTest {
 	@Test
 	public void testGeneratedFeiDevicePropConfig() {
 		Struct[] structs = {
-			TunerProperties.TunerAllocationProperty.INSTANCE.createStruct(),
-			TunerProperties.ListenerAllocationProperty.INSTANCE.createStruct()
+			TunerProperties.TunerAllocationProperty.INSTANCE.createProperty(),
+			TunerProperties.ListenerAllocationProperty.INSTANCE.createProperty()
 		};
 		
 		for (Struct struct : structs) {
