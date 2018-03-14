@@ -84,7 +84,7 @@ public interface ScaSimpleSequenceProperty extends ScaAbstractProperty<SimpleSeq
 	/**
 	 * <!-- begin-user-doc -->
 	 * See {@link ScaAbstractProperty#setValueFromRef(mil.jpeojtrs.sca.prf.AbstractPropertyRef)}
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated

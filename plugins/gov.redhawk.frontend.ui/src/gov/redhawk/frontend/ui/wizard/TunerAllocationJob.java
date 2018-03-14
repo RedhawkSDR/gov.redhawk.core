@@ -19,8 +19,9 @@ import gov.redhawk.sca.model.jobs.AllocateJob;
 
 /**
  * @since 1.1
- * 
+ * @deprecated Use {@link AllocateJob}
  */
+@Deprecated
 public class TunerAllocationJob extends AllocateJob {
 
 	public TunerAllocationJob(String name, ScaDevice< ? > device, DataType[] props) {

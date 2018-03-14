@@ -1316,7 +1316,7 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Transport</em>'.
@@ -1363,7 +1363,7 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Negotiated Connection</em>'.

@@ -383,7 +383,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * Gets the component instantiation for this device (from the DCD XML).
 	 * </p>
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Component Instantiation</em>' reference.
 	 * @see #isSetComponentInstantiation()
@@ -400,7 +400,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * Instantiation</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Component Instantiation</em>' reference.
 	 * @see #isSetComponentInstantiation()
@@ -415,7 +415,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * Instantiation</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @see #isSetComponentInstantiation()
 	 * @see #getComponentInstantiation()
@@ -429,7 +429,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * Instantiation</em>}' reference is set.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Component Instantiation</em>' reference is set.
 	 * @see #unsetComponentInstantiation()

@@ -56,7 +56,7 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @see #getId()
 	 * @generated
@@ -67,7 +67,7 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	 * The default value of the '{@link #getTargetPort() <em>Target Port</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @see #getTargetPort()
 	 * @generated
@@ -78,7 +78,7 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	 * The cached value of the '{@link #getTargetPort() <em>Target Port</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @see #getTargetPort()
 	 * @generated

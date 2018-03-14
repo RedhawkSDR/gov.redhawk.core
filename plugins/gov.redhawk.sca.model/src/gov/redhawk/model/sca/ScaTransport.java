@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EObject;
 /**
  * <!-- begin-user-doc -->
  * Represents the details of a {@link ExtendedCF.TransportInfo}.
- * @since 21.0
+ * @since 21.1
  * <!-- end-user-doc -->
  *
  * <p>

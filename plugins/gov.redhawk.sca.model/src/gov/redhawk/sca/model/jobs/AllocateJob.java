@@ -28,7 +28,7 @@ import mil.jpeojtrs.sca.util.CFErrorFormatter;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
- * @since 21.0
+ * @since 21.1
  */
 public class AllocateJob extends Job {
 
@@ -48,7 +48,7 @@ public class AllocateJob extends Job {
 	}
 
 	@Override
-	protected IStatus run(IProgressMonitor monitor) {
+	public IStatus run(IProgressMonitor monitor) {
 		final int WORK_ALLOCATE = 9;
 		final int WORK_REFRESH = 1;
 		SubMonitor progress = SubMonitor.convert(monitor, "Allocating", WORK_ALLOCATE + WORK_REFRESH);

@@ -111,7 +111,7 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated

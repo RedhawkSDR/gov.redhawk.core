@@ -24,4 +24,24 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/gov/redhawk/frontend/ui/wizard/TunerAllocationWizardPage.java" type="gov.redhawk.frontend.ui.wizard.TunerAllocationWizardPage">
+        <filter comment="Not public API" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.frontend.ui.wizard.TunerAllocationWizardPage"/>
+                <message_argument value="getContext()"/>
+            </message_arguments>
+        </filter>
+        <filter comment="Not public API" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.frontend.ui.wizard.TunerAllocationWizardPage"/>
+                <message_argument value="getValidationStatus(Control, Object)"/>
+            </message_arguments>
+        </filter>
+        <filter comment="Not public API" id="338886760">
+            <message_arguments>
+                <message_argument value="gov.redhawk.frontend.ui.wizard.TunerAllocationWizardPage.TargetableValidator"/>
+                <message_argument value="gov.redhawk.frontend.ui_1.1.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
 </component>

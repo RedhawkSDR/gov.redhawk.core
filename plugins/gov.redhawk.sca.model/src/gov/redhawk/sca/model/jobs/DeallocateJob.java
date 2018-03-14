@@ -39,7 +39,7 @@ public class DeallocateJob extends Job {
 	private String label;
 
 	/**
-	 * @since 21.0
+	 * @since 21.1
 	 */
 	public DeallocateJob(ScaDevice< ? > device, DataType... deallocation) {
 		super("Deallocating");

@@ -29,7 +29,7 @@ import gov.redhawk.model.sca.ScaPackage;
 /**
  * Used when updating the devices belonging to a device manager
  * 
- * @since 21.0
+ * @since 21.1
  */
 public class ScaDeviceManagerMergeDevicesCommand extends SetStatusCommand<ScaDeviceManager> {
 

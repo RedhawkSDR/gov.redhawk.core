@@ -29,7 +29,7 @@ import mil.jpeojtrs.sca.util.CorbaUtils;
 /**
  * Interruptible job that performs a CORBA call to {@link LifeCycleOperations#releaseObject()}.
  * 
- * @since 21.0
+ * @since 21.1
  */
 public class ReleaseJob extends Job {
 

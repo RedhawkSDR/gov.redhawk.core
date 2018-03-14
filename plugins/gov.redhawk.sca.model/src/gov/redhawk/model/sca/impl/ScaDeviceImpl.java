@@ -222,7 +222,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * The cached value of the '{@link #getComponentInstantiation() <em>Component Instantiation</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @see #getComponentInstantiation()
 	 * @generated
@@ -233,7 +233,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * This is true if the Component Instantiation reference has been set.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -927,7 +927,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1402,7 +1402,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	}
 
 	/**
-	 * @since 21.0
+	 * @since 21.1
 	 */
 	protected void fetchComponentInstantiation(String identifier) {
 		ScaDeviceManager devMgr = getDevMgr();

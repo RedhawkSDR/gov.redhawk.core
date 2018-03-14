@@ -294,7 +294,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * Set the value of this struct from a structvalue. Used by {@link ScaStructSequenceProperty}.
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 */
 	protected void setValueFromRef(StructValue refValue) {
 		// END GENERATED CODE

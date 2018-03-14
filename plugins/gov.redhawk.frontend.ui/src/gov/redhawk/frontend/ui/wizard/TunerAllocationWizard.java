@@ -15,11 +15,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.wizard.Wizard;
 
 import CF.DataType;
@@ -28,11 +26,12 @@ import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.FrontEndUIActivator.AllocationMode;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaStructProperty;
+import gov.redhawk.sca.model.jobs.AllocateJob;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public class TunerAllocationWizard extends Wizard {
 
-	private TunerStatus[] tuners;
+	private TunerStatus tuner;
 	private TunerAllocationWizardPage allocatePage;
 	private boolean listener;
 	private String targetId;
@@ -52,7 +51,7 @@ public class TunerAllocationWizard extends Wizard {
 	}
 
 	public TunerAllocationWizard(TunerStatus tuner, boolean listener, String targetId, ScaDevice< ? > device) {
-		this.tuners = new TunerStatus[] { tuner };
+		this.tuner = tuner;
 		this.listener = listener;
 		this.targetId = targetId;
 		this.setNeedsProgressMonitor(true);
@@ -70,8 +69,8 @@ public class TunerAllocationWizard extends Wizard {
 			listenerPage = new ListenerAllocationWizardPage(targetId);
 			addPage(listenerPage);
 		} else {
-			if (tuners.length > 0) {
-				allocatePage = new TunerAllocationWizardPage(tuners[0], feiDevice);
+			if (tuner != null) {
+				allocatePage = new TunerAllocationWizardPage(tuner, feiDevice);
 				addPage(allocatePage);
 			} else {
 				FrontEndUIActivator.getDefault().getLog().log(new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID,
@@ -82,54 +81,44 @@ public class TunerAllocationWizard extends Wizard {
 
 	@Override
 	public boolean performFinish() {
-		ScaDevice< ? > tmpDevice = ScaEcoreUtils.getEContainerOfType(tuners[0], ScaDevice.class);
+		ScaDevice< ? > tmpDevice = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
 		if (tmpDevice == null) {
 			tmpDevice = this.feiDevice;
 		}
 
-		final StringBuilder sb = new StringBuilder();
-		final boolean retVal = allocateTuner(tmpDevice, sb);
-
-		if (!retVal) {
-			MessageDialog.openError(getShell(), "Tuner not Allocated", sb.toString());
+		IStatus status = allocateTuner(tmpDevice);
+		if (!status.isOK()) {
+			ErrorDialog.openError(getShell(), "Tuner not Allocated", status.getMessage(), status);
 		}
-
-		return retVal;
+		return status.isOK();
 	}
 
 	/**
 	 * Attempts an allocateCapacity call on the provided device. Checks user input to either run the allocate in the UI
 	 * Thread or in a background job.
 	 * @param device
-	 * @param sb
-	 * @return true is allocateCapacity succeeds, false otherwise
+	 * @return Status of the allocation
 	 */
-	private boolean allocateTuner(ScaDevice< ? > device, StringBuilder sb) {
+	private IStatus allocateTuner(ScaDevice< ? > device) {
 		final DataType[] props = createAllocationProperties();
-		final boolean[] retVal = { false };
+		final IStatus[] retVal = { Status.CANCEL_STATUS };
 
 		try {
-			TunerAllocationJob allocationJob = new TunerAllocationJob("Allocating: " + device.getLabel(), device, props);
+			AllocateJob allocationJob = new AllocateJob(device, props);
 			if (allocatePage != null && allocatePage.isBackgroundJob()) {
 				// Run allocation as a background job
 				allocationJob.schedule();
-				return true;
+				return Status.OK_STATUS;
 			} else {
 				// Run allocation directly
-				getContainer().run(true, true, new IRunnableWithProgress() {
-					@Override
-					public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-						IStatus status = allocationJob.allocate(monitor, sb);
-						retVal[0] = status.isOK();
-					}
+				getContainer().run(true, true, monitor -> {
+					retVal[0] = allocationJob.run(monitor);
 				});
 			}
 		} catch (InvocationTargetException e) {
-			sb.append("An error occurred during the invocation of the allocation request. Message: " + e.getMessage());
-			retVal[0] = false;
+			return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "An error occurred during the invocation of the allocation request.", e);
 		} catch (InterruptedException e) {
-			sb.append("The allocation request was cancelled");
-			retVal[0] = false;
+			return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "The allocation request was cancelled");
 		}
 
 		return retVal[0];

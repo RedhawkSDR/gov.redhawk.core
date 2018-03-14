@@ -53,7 +53,7 @@ public interface ScaConnection extends EObject {
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaConnection#getId <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Id</em>' attribute.
 	 * @see #getId()
@@ -66,7 +66,7 @@ public interface ScaConnection extends EObject {
 	 * <!-- begin-user-doc -->
 	 * <p/>
 	 * The provides port on the other end of this connection.
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Target Port</em>' attribute.
 	 * @see #setTargetPort(org.omg.CORBA.Object)
@@ -79,7 +79,7 @@ public interface ScaConnection extends EObject {
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaConnection#getTargetPort <em>Target Port</em>}' attribute.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Target Port</em>' attribute.
 	 * @see #getTargetPort()

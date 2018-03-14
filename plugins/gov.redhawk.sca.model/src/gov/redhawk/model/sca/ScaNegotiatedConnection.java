@@ -16,7 +16,7 @@ import org.eclipse.emf.common.util.EList;
 /**
  * <!-- begin-user-doc -->
  * A negotiated connection is retrieved from a {@link ExtendedCF.NegotiableUsesPort}.
- * @since 21.0
+ * @since 21.1
  * <!-- end-user-doc -->
  *
  * <p>

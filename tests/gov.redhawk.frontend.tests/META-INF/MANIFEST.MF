@@ -3,10 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Tests
 Bundle-SymbolicName: gov.redhawk.frontend.tests
 Bundle-Version: 1.0.0.qualifier
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.junit,
- mil.jpeojtrs.sca.prf,
- gov.redhawk.frontend
+Require-Bundle: org.junit,
+ gov.redhawk.frontend,
+ mil.jpeojtrs.sca.prf
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

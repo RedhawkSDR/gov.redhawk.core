@@ -113,7 +113,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	 * The cached value of the '{@link #getSupportedTransports() <em>Supported Transports</em>}' containment reference
 	 * list.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @see #getSupportedTransports()
 	 * @generated

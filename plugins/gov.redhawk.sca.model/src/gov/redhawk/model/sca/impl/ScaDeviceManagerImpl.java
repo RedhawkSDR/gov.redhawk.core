@@ -1546,7 +1546,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	}
 
 	/**
-	 * @since 21.0
+	 * @since 21.1
 	 */
 	protected Command createMergeDevicesCommand(Device[] devices, IStatus status) {
 		return new ScaDeviceManagerMergeDevicesCommand(this, devices, status);

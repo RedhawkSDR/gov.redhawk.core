@@ -57,7 +57,7 @@ public abstract class ScaModelCommandWithResult< RESULT > extends ScaModelComman
 	 * @param context The context in which to run the command
 	 * @param callable The command to run
 	 * @return The result of the command, or null if there was an error
-	 * @since 21.0
+	 * @since 21.1
 	 */
 	public static < T > T execute(EObject context, Callable<T> callable) {
 		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(context);

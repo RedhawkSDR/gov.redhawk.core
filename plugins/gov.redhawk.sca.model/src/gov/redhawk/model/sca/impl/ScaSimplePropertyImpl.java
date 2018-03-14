@@ -115,7 +115,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * This is specialized for the more specific type known in this context.
 	 * @generated
