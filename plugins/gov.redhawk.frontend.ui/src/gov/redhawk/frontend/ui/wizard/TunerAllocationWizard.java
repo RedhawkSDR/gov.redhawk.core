@@ -88,7 +88,7 @@ public class TunerAllocationWizard extends Wizard {
 
 		IStatus status = allocateTuner(tmpDevice);
 		if (!status.isOK()) {
-			ErrorDialog.openError(getShell(), "Tuner not Allocated", status.getMessage(), status);
+			ErrorDialog.openError(getShell(), "Tuner Not Allocated", "Tuner Not Allocated", status);
 		}
 		return status.isOK();
 	}
