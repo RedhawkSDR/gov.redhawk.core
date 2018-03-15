@@ -57,21 +57,27 @@ public class AllocateJob extends Job {
 		SubMonitor progress = SubMonitor.convert(monitor, "Allocating", WORK_ALLOCATE + WORK_REFRESH);
 
 		try {
-			Boolean result = CorbaUtils.invoke(() -> {
+			// Attempt the allocation
+			IStatus result = CorbaUtils.invoke(() -> {
 				try {
-					return device.allocateCapacity(allocation);
+					if (device.allocateCapacity(allocation)) {
+						return Status.OK_STATUS;
+					} else {
+						return new Status(IStatus.ERROR, ScaModelPlugin.ID, "Allocation failed. Device returned 'false' to allocation requestion.");
+					}
 				} catch (InvalidCapacity e) {
-					throw new CoreException(new Status(IStatus.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e, label), e));
+					return new Status(IStatus.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e, label), e);
 				} catch (InvalidState e) {
-					throw new CoreException(new Status(IStatus.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e, label), e));
+					return new Status(IStatus.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e, label), e);
 				} catch (InsufficientCapacity e) {
-					throw new CoreException(new Status(IStatus.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e, label), e));
+					return new Status(IStatus.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e, label), e);
 				}
 			}, progress.newChild(WORK_ALLOCATE));
-			if (!result.booleanValue()) {
-				return new Status(IStatus.ERROR, ScaModelPlugin.ID, "Allocation failed. Device return 'false' to allocation requestion.");
+			if (!result.isOK()) {
+				return result;
 			}
 
+			// Refresh the model since the allocation succeeded
 			device.refresh(progress.newChild(WORK_REFRESH), RefreshDepth.SELF);
 		} catch (InterruptedException e) {
 			return Status.CANCEL_STATUS;
