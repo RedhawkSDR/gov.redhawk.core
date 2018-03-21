@@ -40,3 +40,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.views.properties.tabbed,
  gov.redhawk.sca.ui;bundle-version="10.2.0"
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: gov.redhawk.ui.views.connmgr

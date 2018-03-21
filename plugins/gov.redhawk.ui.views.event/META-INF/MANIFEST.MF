@@ -25,3 +25,4 @@ Require-Bundle: org.apache.commons.lang,
  org.eclipse.core.expressions
 Import-Package: org.omg.CosEventChannelAdmin,
  org.omg.CosEventComm
+Automatic-Module-Name: gov.redhawk.ui.views.event

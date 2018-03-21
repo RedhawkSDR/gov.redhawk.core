@@ -9,3 +9,4 @@ Require-Bundle: org.eclipse.ui.views.properties.tabbed,
  org.eclipse.nebula.widgets.xviewer;bundle-version="1.0.0",
  org.eclipse.nebula.widgets.xviewer.core;bundle-version="1.0.0",
  gov.redhawk.sca.model;bundle-version="21.0.0"
+Automatic-Module-Name: gov.redhawk.core.application.metrics

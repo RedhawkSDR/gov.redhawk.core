@@ -7,3 +7,4 @@ Bundle-Vendor: REDHAWK
 Fragment-Host: gov.redhawk.core.notification.ui;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-PlatformFilter: (& (osgi.os=linux))
+Automatic-Module-Name: gov.redhawk.core.notification.ui.linux
