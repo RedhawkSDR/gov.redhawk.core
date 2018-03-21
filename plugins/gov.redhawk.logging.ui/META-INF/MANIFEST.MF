@@ -7,7 +7,7 @@ Bundle-Activator: gov.redhawk.logging.ui.LoggingUiPlugin
 Bundle-Vendor: %providerName
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- idl.cf,
+ idl.cf;bundle-version="2.0.0",
  mil.jpeojtrs.sca.util,
  org.eclipse.ui.editors,
  org.eclipse.core.filesystem,
