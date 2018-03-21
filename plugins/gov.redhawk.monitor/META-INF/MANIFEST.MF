@@ -8,7 +8,7 @@ Bundle-Activator: gov.redhawk.monitor.MonitorPlugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore,
  gov.redhawk.sca.model,
- idl.bulkio,
+ idl.bulkio;bundle-version="2.0.0",
  gov.redhawk.sca.model.edit,
  org.eclipse.ui.workbench
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
@@ -18,3 +18,4 @@ Export-Package: gov.redhawk.monitor,
  gov.redhawk.monitor.model.ports.impl,
  gov.redhawk.monitor.model.ports.util
 Bundle-Vendor: REDHAWK
+Automatic-Module-Name: gov.redhawk.monitor

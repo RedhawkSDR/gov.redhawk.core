@@ -10,3 +10,4 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0",
  idl.cf;bundle-version="2.0.0"
 Export-Package: gov.redhawk.scd.validation
 Bundle-Vendor: %Bundle-Vendor
+Automatic-Module-Name: gov.redhawk.scd.validation

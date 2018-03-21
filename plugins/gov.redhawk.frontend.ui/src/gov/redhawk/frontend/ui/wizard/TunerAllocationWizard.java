@@ -87,10 +87,13 @@ public class TunerAllocationWizard extends Wizard {
 		}
 
 		IStatus status = allocateTuner(tmpDevice);
-		if (!status.isOK()) {
+		if (status.getSeverity() == IStatus.CANCEL) {
+			return false;
+		} else if (!status.isOK()) {
 			ErrorDialog.openError(getShell(), "Tuner Not Allocated", "Tuner Not Allocated", status);
+			return false;
 		}
-		return status.isOK();
+		return true;
 	}
 
 	/**
@@ -118,7 +121,7 @@ public class TunerAllocationWizard extends Wizard {
 		} catch (InvocationTargetException e) {
 			return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "An error occurred during the invocation of the allocation request.", e);
 		} catch (InterruptedException e) {
-			return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "The allocation request was cancelled");
+			return Status.CANCEL_STATUS;
 		}
 
 		return retVal[0];

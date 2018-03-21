@@ -16,3 +16,4 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  gov.redhawk.eclipsecorba.idl.edit;bundle-version="3.0.0";visibility:=reexport,
  org.eclipse.ui;bundle-version="3.6.1"
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: gov.redhawk.eclipsecorba.library.edit

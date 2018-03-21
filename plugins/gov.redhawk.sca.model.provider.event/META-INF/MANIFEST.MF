@@ -12,3 +12,4 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
 Bundle-Vendor: %Bundle-Vendor
 Import-Package: org.omg.CosEventChannelAdmin,
  org.omg.CosEventComm
+Automatic-Module-Name: gov.redhawk.sca.model.provider.event

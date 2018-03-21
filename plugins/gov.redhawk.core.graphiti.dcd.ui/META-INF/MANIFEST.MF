@@ -36,3 +36,4 @@ Require-Bundle: gov.redhawk.core.graphiti.ui;bundle-version="1.0.0";visibility:=
  org.eclipse.gef;bundle-version="3.10.1",
  org.eclipse.wst.sse.ui
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: gov.redhawk.core.graphiti.dcd.ui

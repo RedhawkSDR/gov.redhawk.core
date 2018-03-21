@@ -28,3 +28,4 @@ Export-Package: gov.redhawk.bulkio.util,
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Import-Package: nxm.sys.lib
+Automatic-Module-Name: gov.redhawk.bulkio.util

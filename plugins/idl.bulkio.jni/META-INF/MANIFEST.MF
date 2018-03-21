@@ -8,3 +8,4 @@ Require-Bundle: idl.bulkio;bundle-version="2.1.3";visibility:=reexport,
  idl.cf.jni;bundle-version="2.1.3";visibility:=reexport
 Export-Package: BULKIO.jni
 Bundle-Vendor: REDHAWK
+Automatic-Module-Name: idl.bulkio.jni

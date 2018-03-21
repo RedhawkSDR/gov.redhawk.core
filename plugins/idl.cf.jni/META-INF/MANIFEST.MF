@@ -10,3 +10,4 @@ Require-Bundle: omnijni;bundle-version="2.1.3";visibility:=reexport,
 Bundle-Vendor: REDHAWK
 Export-Package: CF.jni,ExtendedCF.jni,ExtendedEvent.jni,org.omg.CosEve
  ntChannelAdmin.jni,org.omg.CosEventComm.jni,org.omg.CosNaming.jni
+Automatic-Module-Name: idl.cf.jni

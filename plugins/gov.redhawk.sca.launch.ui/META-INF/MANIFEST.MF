@@ -20,4 +20,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.sca.launch.ui,
  gov.redhawk.sca.launch.ui.tabs
+Automatic-Module-Name: gov.redhawk.sca.launch.ui
 

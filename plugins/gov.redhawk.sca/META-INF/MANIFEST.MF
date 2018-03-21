@@ -19,3 +19,4 @@ Export-Package: gov.redhawk.sca,
  gov.redhawk.sca.preferences,
  gov.redhawk.sca.properties,
  gov.redhawk.sca.validation
+Automatic-Module-Name: gov.redhawk.sca

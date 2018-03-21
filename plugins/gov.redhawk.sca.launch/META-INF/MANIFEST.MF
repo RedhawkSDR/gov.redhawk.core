@@ -13,3 +13,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: gov.redhawk.sca.launch,
  gov.redhawk.sca.launch.internal;x-friends:="gov.redhawk.sca.launch.tests"
 Bundle-Vendor: %Bundle-Vendor
+Automatic-Module-Name: gov.redhawk.sca.launch

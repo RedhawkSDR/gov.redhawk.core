@@ -24,7 +24,7 @@ Require-Bundle: org.eclipse.core.runtime,
  gov.redhawk.sca.model,
  org.eclipse.zest.layouts;bundle-version="1.1.200",
  gov.redhawk.monitor,
- idl.bulkio,
+ idl.bulkio;bundle-version="2.0.0",
  gov.redhawk.sca.ui
 Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.core.graphiti.ui.adapters,
@@ -80,3 +80,4 @@ Export-Package: gov.redhawk.core.graphiti.ui.adapters,
    gov.redhawk.ide.graphiti.sad.ui.tests,
    gov.redhawk.ide.graphiti.dcd.ui.tests,
    gov.redhawk.ide.graphiti.sad.ui.runtime.chalkboard.tests"
+Automatic-Module-Name: gov.redhawk.core.graphiti.ui

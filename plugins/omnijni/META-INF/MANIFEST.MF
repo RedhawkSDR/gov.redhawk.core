@@ -7,3 +7,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: omnijni,omnijni.impl;x-internal:=true
 Bundle-Vendor: REDHAWK
 Bundle-ClassPath: .
+Automatic-Module-Name: omnijni

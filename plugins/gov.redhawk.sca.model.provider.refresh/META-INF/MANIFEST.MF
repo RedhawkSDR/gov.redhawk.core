@@ -13,3 +13,4 @@ Export-Package: gov.redhawk.sca.model.provider.refresh,
  gov.redhawk.sca.model.provider.refresh.internal;x-friends:="gov.redhawk.sca.model.provider.refresh.ui",
  gov.redhawk.sca.model.provider.refresh.preferences
 Bundle-Vendor: %Bundle-Vendor
+Automatic-Module-Name: gov.redhawk.sca.model.provider.refresh

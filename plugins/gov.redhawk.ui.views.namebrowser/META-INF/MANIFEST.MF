@@ -21,4 +21,5 @@ Export-Package: gov.redhawk.ui.views.namebrowser,
  gov.redhawk.ui.views.namebrowser.internal.command;x-internal:=true,
  gov.redhawk.ui.views.namebrowser.view,
  gov.redhawk.ui.views.namebrowser.view.internal;x-internal:=true
+Automatic-Module-Name: gov.redhawk.ui.views.namebrowser
 
