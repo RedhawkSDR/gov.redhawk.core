@@ -36,3 +36,4 @@ Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.frontend.ui,
  gov.redhawk.frontend.ui.wizard
 Bundle-Vendor: REDHAWK
+Automatic-Module-Name: gov.redhawk.frontend.ui

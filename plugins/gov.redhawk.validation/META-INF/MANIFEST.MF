@@ -14,3 +14,4 @@ Export-Package: gov.redhawk.validation,
  gov.redhawk.validation.util
 Bundle-Localization: plugin
 Bundle-Vendor: %Bundle-Provider.0
+Automatic-Module-Name: gov.redhawk.validation

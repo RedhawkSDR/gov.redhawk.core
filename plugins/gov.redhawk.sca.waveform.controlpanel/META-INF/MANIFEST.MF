@@ -21,3 +21,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %Bundle-Vendor
 Bundle-ClassPath: .
+Automatic-Module-Name: gov.redhawk.sca.waveform.controlpanel

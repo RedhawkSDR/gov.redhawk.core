@@ -11,3 +11,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Service-Component: OSGI-INF/domainRegistry.xml,
  OSGI-INF/compatibility.xml
+Automatic-Module-Name: gov.redhawk.sca.rcp

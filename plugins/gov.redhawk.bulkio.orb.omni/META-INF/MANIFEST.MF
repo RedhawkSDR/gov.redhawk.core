@@ -13,3 +13,4 @@ Service-Component: OSGI-INF/portFactory.xml
 Bundle-Activator: gov.redhawk.bulkio.orb.omni.internal.BulkIOOmniActivator
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: REDHAWK
+Automatic-Module-Name: gov.redhawk.bulkio.orb.omni

@@ -20,3 +20,4 @@ Require-Bundle: org.eclipse.core.expressions;bundle-version="3.4.200",
  gov.redhawk.sca.model;bundle-version="12.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: gov.redhawk.eclipsecorba.library.LibraryPlugin$Implementation
+Automatic-Module-Name: gov.redhawk.eclipsecorba.library

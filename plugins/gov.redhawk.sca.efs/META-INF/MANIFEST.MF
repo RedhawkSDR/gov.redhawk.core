@@ -18,3 +18,4 @@ Export-Package: gov.redhawk.efs.sca.internal;x-friends:="gov.redhawk.sca.efs.tes
  gov.redhawk.sca.efs
 Bundle-Localization: plugin
 Bundle-Vendor: %Bundle-Provider.0
+Automatic-Module-Name: gov.redhawk.sca.efs

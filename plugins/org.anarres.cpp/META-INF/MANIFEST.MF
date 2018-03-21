@@ -10,3 +10,4 @@ Export-Package: org.anarres.cpp
 Require-Bundle: org.apache.ant;bundle-version="1.7.1";resolution:=optional,
  org.slf4j.api;bundle-version="1.7.2"
 Bundle-Vendor: %Bundle-Vendor
+Automatic-Module-Name: org.anarres.cpp

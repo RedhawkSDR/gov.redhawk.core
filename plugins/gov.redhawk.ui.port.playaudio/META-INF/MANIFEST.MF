@@ -23,3 +23,4 @@ Bundle-Vendor: %Bundle-Vendor
 Export-Package: gov.redhawk.ui.port.playaudio.controller,
  gov.redhawk.ui.port.playaudio.controls,
  gov.redhawk.ui.port.playaudio.internal.views;x-internal:=true
+Automatic-Module-Name: gov.redhawk.ui.port.playaudio

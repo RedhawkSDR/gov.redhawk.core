@@ -7,3 +7,4 @@ Bundle-Vendor: %Bundle-Vendor
 Fragment-Host: system.bundle
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: gov.redhawk.interceptor.client
+Automatic-Module-Name: gov.redhawk.interceptor.client

@@ -46,3 +46,4 @@ Export-Package: gov.redhawk.internal.ui;x-internal:=true,
  gov.redhawk.ui.validation,
  gov.redhawk.ui.wizards
 Bundle-Vendor: %Bundle-Vendor
+Automatic-Module-Name: gov.redhawk.ui

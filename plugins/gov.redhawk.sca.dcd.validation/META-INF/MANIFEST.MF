@@ -9,3 +9,4 @@ Require-Bundle: mil.jpeojtrs.sca.dcd;bundle-version="2.2.2",
  gov.redhawk.validation;bundle-version="2.0.0"
 Bundle-Vendor: %Bundle-Vendor
 Export-Package: gov.redhawk.sca.dcd.validation
+Automatic-Module-Name: gov.redhawk.sca.dcd.validation

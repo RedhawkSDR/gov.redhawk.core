@@ -80,3 +80,4 @@ Export-Package: gov.redhawk.core.graphiti.ui.adapters,
    gov.redhawk.ide.graphiti.sad.ui.tests,
    gov.redhawk.ide.graphiti.dcd.ui.tests,
    gov.redhawk.ide.graphiti.sad.ui.runtime.chalkboard.tests"
+Automatic-Module-Name: gov.redhawk.core.graphiti.ui

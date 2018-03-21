@@ -35,3 +35,4 @@ Export-Package: gov.redhawk.internal.ui;x-internal:=true,
  gov.redhawk.ui.port.nxmplot,
  gov.redhawk.ui.port.nxmplot.preferences
 Bundle-ClassPath: .
+Automatic-Module-Name: gov.redhawk.ui.port.nxmplot

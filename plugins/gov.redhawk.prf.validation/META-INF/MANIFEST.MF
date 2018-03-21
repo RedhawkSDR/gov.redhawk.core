@@ -11,3 +11,4 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0",
  mil.jpeojtrs.sca.util;bundle-version="3.3.0"
 Bundle-Vendor: %Bundle-Vendor
 Export-Package: gov.redhawk.validation.prf
+Automatic-Module-Name: gov.redhawk.prf.validation

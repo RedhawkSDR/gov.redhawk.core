@@ -15,3 +15,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.core.filemanager,
  gov.redhawk.core.filemanager.filesystem
+Automatic-Module-Name: gov.redhawk.core.filemanager

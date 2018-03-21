@@ -13,3 +13,4 @@ Export-Package: bulkio,
  bulkio.time,
  bulkio.vita49
 Bundle-Vendor: REDHAWK
+Automatic-Module-Name: bulkio

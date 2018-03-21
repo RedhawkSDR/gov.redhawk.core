@@ -14,3 +14,4 @@ Bundle-Localization: plugin
 Bundle-Vendor: %Bundle-Provider.0
 Bundle-Activator: gov.redhawk.sca.util.internal.ScaUtilPluginActivator
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: gov.redhawk.sca.util

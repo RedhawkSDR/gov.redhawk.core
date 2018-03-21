@@ -15,3 +15,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: gov.redhawk.ui.port,
  gov.redhawk.ui.port.handlers
 Bundle-Vendor: %Bundle-Vendor
+Automatic-Module-Name: gov.redhawk.ui.port

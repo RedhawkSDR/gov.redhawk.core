@@ -51,3 +51,4 @@ Export-Package: gov.redhawk.sca.internal.ui;x-internal:=true,
  gov.redhawk.sca.ui.wizards
 Bundle-Vendor: %Bundle-Vendor
 Bundle-ClassPath: .
+Automatic-Module-Name: gov.redhawk.sca.ui

@@ -18,3 +18,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: gov.redhawk.sca.observables,
  gov.redhawk.sca.observables.strategy
 Bundle-Vendor: %Bundle-Vendor
+Automatic-Module-Name: gov.redhawk.sca.observables

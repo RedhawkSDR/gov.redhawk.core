@@ -18,3 +18,4 @@ Export-Package: gov.redhawk.monitor,
  gov.redhawk.monitor.model.ports.impl,
  gov.redhawk.monitor.model.ports.util
 Bundle-Vendor: REDHAWK
+Automatic-Module-Name: gov.redhawk.monitor

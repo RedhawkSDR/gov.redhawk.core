@@ -21,3 +21,4 @@ Require-Bundle: org.eclipse.core.runtime,
  gov.redhawk.ui.port.nxmplot,
  org.eclipse.ui.workbench
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: gov.redhawk.frontend.edit

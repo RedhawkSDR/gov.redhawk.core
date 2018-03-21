@@ -19,3 +19,4 @@ Require-Bundle: org.eclipse.core.runtime,
  gov.redhawk.sca.model.edit,
  idl.bulkio
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: gov.redhawk.monitor.edit

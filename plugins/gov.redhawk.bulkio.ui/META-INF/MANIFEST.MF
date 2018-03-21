@@ -24,3 +24,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: REDHAWK
 Export-Package: gov.redhawk.bulkio.ui.views;x-friends:="gov.redhawk.frontend.ui"
+Automatic-Module-Name: gov.redhawk.bulkio.ui

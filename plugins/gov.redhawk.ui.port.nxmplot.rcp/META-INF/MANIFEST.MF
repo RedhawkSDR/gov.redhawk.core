@@ -15,3 +15,4 @@ Service-Component: OSGI-INF/component.xml
 Export-Package: gov.redhawk.ui.port.nxmplot.rcp,
  gov.redhawk.ui.port.nxmplot.rcp.internal;x-internal:=true
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: gov.redhawk.ui.port.nxmplot.rcp

@@ -17,3 +17,4 @@ Export-Package: gov.redhawk.common.ui,
  gov.redhawk.common.ui.editor,
  gov.redhawk.common.ui.parts,
  gov.redhawk.common.ui.widgets
+Automatic-Module-Name: gov.redhawk.common.ui

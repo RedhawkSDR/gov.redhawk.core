@@ -12,3 +12,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.frontend.provider
 Bundle-Vendor: REDHAWK
+Automatic-Module-Name: gov.redhawk.frontend.provider

@@ -30,3 +30,4 @@ Export-Package: gov.redhawk.prf.internal.ui;x-internal:=true,
  gov.redhawk.prf.ui.provider,
  gov.redhawk.prf.ui.wizard
 Bundle-Vendor: %Bundle-Vendor
+Automatic-Module-Name: gov.redhawk.prf.ui

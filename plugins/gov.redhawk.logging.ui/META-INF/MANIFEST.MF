@@ -24,3 +24,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.logging.ui,
  gov.redhawk.logging.ui.handlers
+Automatic-Module-Name: gov.redhawk.logging.ui

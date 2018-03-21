@@ -25,3 +25,4 @@ Export-Package: gov.redhawk.sca.ui.singledomain,
  gov.redhawk.sca.ui.singledomain.providers,
  gov.redhawk.sca.ui.singledomain.views
 Import-Package: gov.redhawk.common.ui.doc
+Automatic-Module-Name: gov.redhawk.sca.ui.singledomain
