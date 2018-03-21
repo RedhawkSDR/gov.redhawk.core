@@ -2172,7 +2172,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	}
 
 	/**
-	 * @since 21.0
+	 * @since 21.1
 	 */
 	@Override
 	public float stopTimeout() {
@@ -2180,7 +2180,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	}
 
 	/**
-	 * @since 21.0
+	 * @since 21.1
 	 */
 	@Override
 	public void stopTimeout(float newStopTimeout) {
@@ -2188,7 +2188,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	}
 
 	/**
-	 * @since 21.0
+	 * @since 21.1
 	 */
 	@Override
 	public DataType[] metrics(String[] components, String[] attributes) throws InvalidMetric {

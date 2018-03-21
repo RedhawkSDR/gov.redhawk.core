@@ -499,7 +499,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -511,7 +511,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	// END GENERATED CODE
 
 	/**
-	 * @since 21.0
+	 * @since 21.1
 	 */
 	public ScaNegotiatedConnection createScaNegotiatedConnection(ExtendedCF.ConnectionStatus connectionStatus) {
 		ScaNegotiatedConnection scaNegotiatedConnection = createScaNegotiatedConnection();

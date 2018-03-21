@@ -1131,7 +1131,7 @@ public interface ScaPackage extends EPackage {
 	 * The feature id for the '<em><b>Component Instantiation</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -2611,7 +2611,7 @@ public interface ScaPackage extends EPackage {
 	 * The feature id for the '<em><b>Component Instantiation</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -2827,7 +2827,7 @@ public interface ScaPackage extends EPackage {
 	 * The feature id for the '<em><b>Component Instantiation</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3018,7 +3018,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Supported Transports</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3152,7 +3152,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Supported Transports</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3433,7 +3433,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaTransportImpl <em>Transport</em>}' class.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.impl.ScaTransportImpl
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getScaTransport()
@@ -3443,7 +3443,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Transport Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3452,7 +3452,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Transport Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3461,7 +3461,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The number of structural features of the '<em>Transport</em>' class.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3579,7 +3579,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Supported Transports</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3629,7 +3629,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Target Port</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3655,7 +3655,7 @@ public interface ScaPackage extends EPackage {
 	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaNegotiatedConnectionImpl <em>Negotiated
 	 * Connection</em>}' class.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.impl.ScaNegotiatedConnectionImpl
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getScaNegotiatedConnection()
@@ -3665,7 +3665,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3674,7 +3674,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Target Port</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3683,7 +3683,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Port</b></em>' container reference.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3692,7 +3692,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Alive</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3701,7 +3701,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Transport Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3710,7 +3710,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Transport Info</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3719,7 +3719,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The number of structural features of the '<em>Negotiated Connection</em>' class.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -5097,7 +5097,7 @@ public interface ScaPackage extends EPackage {
 	 * <em>Component Instantiation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Component Instantiation</em>'.
 	 * @see gov.redhawk.model.sca.ScaDevice#getComponentInstantiation()
@@ -5761,7 +5761,7 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the containment reference list
 	 * '{@link gov.redhawk.model.sca.ScaPort#getSupportedTransports <em>Supported Transports</em>}'.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Supported Transports</em>'.
 	 * @see gov.redhawk.model.sca.ScaPort#getSupportedTransports()
@@ -5876,7 +5876,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaTransport <em>Transport</em>}'.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Transport</em>'.
 	 * @see gov.redhawk.model.sca.ScaTransport
@@ -5888,7 +5888,7 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaTransport#getTransportType
 	 * <em>Transport Type</em>}'.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Transport Type</em>'.
 	 * @see gov.redhawk.model.sca.ScaTransport#getTransportType()
@@ -5901,7 +5901,7 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the containment reference list
 	 * '{@link gov.redhawk.model.sca.ScaTransport#getTransportProperties <em>Transport Properties</em>}'.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Transport Properties</em>'.
 	 * @see gov.redhawk.model.sca.ScaTransport#getTransportProperties()
@@ -5957,7 +5957,7 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaConnection#getTargetPort <em>Target
 	 * Port</em>}'.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Target Port</em>'.
 	 * @see gov.redhawk.model.sca.ScaConnection#getTargetPort()
@@ -5982,7 +5982,7 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaNegotiatedConnection <em>Negotiated
 	 * Connection</em>}'.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Negotiated Connection</em>'.
 	 * @see gov.redhawk.model.sca.ScaNegotiatedConnection
@@ -5994,7 +5994,7 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaNegotiatedConnection#isAlive
 	 * <em>Alive</em>}'.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Alive</em>'.
 	 * @see gov.redhawk.model.sca.ScaNegotiatedConnection#isAlive()
@@ -6007,7 +6007,7 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaNegotiatedConnection#getTransportType
 	 * <em>Transport Type</em>}'.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Transport Type</em>'.
 	 * @see gov.redhawk.model.sca.ScaNegotiatedConnection#getTransportType()
@@ -6020,7 +6020,7 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the containment reference list
 	 * '{@link gov.redhawk.model.sca.ScaNegotiatedConnection#getTransportInfo <em>Transport Info</em>}'.
 	 * <!-- begin-user-doc -->
-	 * @since 21.0
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Transport Info</em>'.
 	 * @see gov.redhawk.model.sca.ScaNegotiatedConnection#getTransportInfo()
@@ -7008,7 +7008,7 @@ public interface ScaPackage extends EPackage {
 		 * The meta object literal for the '<em><b>Component Instantiation</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * 
-		 * @since 21.0
+		 * @since 21.1
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
@@ -7452,7 +7452,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Supported Transports</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
-		 * @since 21.0
+		 * @since 21.1
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
@@ -7538,7 +7538,7 @@ public interface ScaPackage extends EPackage {
 		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaTransportImpl <em>Transport</em>}'
 		 * class.
 		 * <!-- begin-user-doc -->
-		 * @since 21.0
+		 * @since 21.1
 		 * <!-- end-user-doc -->
 		 * @see gov.redhawk.model.sca.impl.ScaTransportImpl
 		 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getScaTransport()
@@ -7548,7 +7548,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Transport Type</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
-		 * @since 21.0
+		 * @since 21.1
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
@@ -7556,7 +7556,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Transport Properties</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
-		 * @since 21.0
+		 * @since 21.1
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
@@ -7598,7 +7598,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Target Port</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
-		 * @since 21.0
+		 * @since 21.1
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
@@ -7614,7 +7614,7 @@ public interface ScaPackage extends EPackage {
 		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaNegotiatedConnectionImpl <em>Negotiated
 		 * Connection</em>}' class.
 		 * <!-- begin-user-doc -->
-		 * @since 21.0
+		 * @since 21.1
 		 * <!-- end-user-doc -->
 		 * @see gov.redhawk.model.sca.impl.ScaNegotiatedConnectionImpl
 		 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getScaNegotiatedConnection()
@@ -7624,7 +7624,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Alive</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
-		 * @since 21.0
+		 * @since 21.1
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
@@ -7632,7 +7632,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Transport Type</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
-		 * @since 21.0
+		 * @since 21.1
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
@@ -7640,7 +7640,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Transport Info</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
-		 * @since 21.0
+		 * @since 21.1
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */

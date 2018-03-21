@@ -907,7 +907,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 20.4
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -938,7 +938,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 20.4
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -955,7 +955,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 20.4
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -972,7 +972,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 20.4
+	 * @since 21.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

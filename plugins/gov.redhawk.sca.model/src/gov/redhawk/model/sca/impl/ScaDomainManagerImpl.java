@@ -2803,7 +2803,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 20.4
+	 * @since 21.1
 	 */
 	@Override
 	public LogEvent[] retrieve_records(IntHolder howMany, int startingRecord) {
@@ -2811,7 +2811,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 20.4
+	 * @since 21.1
 	 */
 	@Override
 	public LogEvent[] retrieve_records_by_date(IntHolder howMany, long to_timeStamp) {
@@ -2819,7 +2819,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 20.4
+	 * @since 21.1
 	 */
 	@Override
 	public LogEvent[] retrieve_records_from_date(IntHolder howMany, long from_timeStamp) {
@@ -2827,7 +2827,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 20.4
+	 * @since 21.1
 	 */
 	@Override
 	public int log_level() {
@@ -2839,7 +2839,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 20.4
+	 * @since 21.1
 	 */
 	@Override
 	public void log_level(int newLog_level) {
@@ -2851,7 +2851,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 20.4
+	 * @since 21.1
 	 */
 	@Override
 	public void setLogLevel(String logger_id, int newLevel) throws UnknownIdentifier {
@@ -2863,7 +2863,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 20.4
+	 * @since 21.1
 	 */
 	@Override
 	public String getLogConfig() {
@@ -2875,7 +2875,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 20.4
+	 * @since 21.1
 	 */
 	@Override
 	public void setLogConfig(String config_contents) {
@@ -2887,7 +2887,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 20.4
+	 * @since 21.1
 	 */
 	@Override
 	public void setLogConfigURL(String config_url) {
