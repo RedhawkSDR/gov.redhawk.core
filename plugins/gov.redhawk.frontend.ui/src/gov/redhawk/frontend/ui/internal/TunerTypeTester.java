@@ -10,16 +10,17 @@
  *******************************************************************************/
 package gov.redhawk.frontend.ui.internal;
 
-import gov.redhawk.frontend.TunerStatus;
-
 import org.eclipse.core.expressions.PropertyTester;
+
+import gov.redhawk.frontend.TunerStatus;
 
 public class TunerTypeTester extends PropertyTester {
 
+	private static final String PROP_TUNER_TYPE = "tunerType";
 	private static final String PROP_IS_RX_DIGITIZER = "isRxDigitizer";
 	private static final String PROP_SUPPORTS_ADD_LISTENER_ACTION = "supportsAddListenerAction";
 	private static final String PROP_SUPPORTS_PLOT_ACTIONS = "supportsPlotActions";
-	
+
 	public TunerTypeTester() {
 	}
 
@@ -30,32 +31,28 @@ public class TunerTypeTester extends PropertyTester {
 			return false;
 		}
 		switch (property) {
+		case PROP_TUNER_TYPE:
+			if (expectedValue == null) {
+				return false;
+			}
+			return expectedValue.equals(tuner.getTunerType());
 		case PROP_IS_RX_DIGITIZER:
-			if (FRONTEND.TUNER_TYPE_RX_DIGITIZER.value.equals(tuner.getTunerType())) {
-				return true;
-			}
-			break;
+			return FRONTEND.TUNER_TYPE_RX_DIGITIZER.value.equals(tuner.getTunerType());
 		case PROP_SUPPORTS_ADD_LISTENER_ACTION:
-			if (FRONTEND.TUNER_TYPE_RX_DIGITIZER.value.equals(tuner.getTunerType())
+			return FRONTEND.TUNER_TYPE_RX_DIGITIZER.value.equals(tuner.getTunerType())
 					|| FRONTEND.TUNER_TYPE_RX_SCANNER_DIGITIZER.value.equals(tuner.getTunerType())
 					|| FRONTEND.TUNER_TYPE_DDC.value.equals(tuner.getTunerType())
 					|| FRONTEND.TUNER_TYPE_RX.value.equals(tuner.getTunerType())
-					|| FRONTEND.TUNER_TYPE_RX_DIGITIZER_CHANNELIZER.value.equals(tuner.getTunerType())) {
-				return true;
-			}
-			break;
+					|| FRONTEND.TUNER_TYPE_RX_DIGITIZER_CHANNELIZER.value.equals(tuner.getTunerType());
 		case PROP_SUPPORTS_PLOT_ACTIONS:
-			if (FRONTEND.TUNER_TYPE_RX_DIGITIZER.value.equals(tuner.getTunerType())
+			return FRONTEND.TUNER_TYPE_RX_DIGITIZER.value.equals(tuner.getTunerType())
 					|| FRONTEND.TUNER_TYPE_RX_SCANNER_DIGITIZER.value.equals(tuner.getTunerType())
 					|| FRONTEND.TUNER_TYPE_DDC.value.equals(tuner.getTunerType())
 					|| FRONTEND.TUNER_TYPE_RX.value.equals(tuner.getTunerType())
-					|| FRONTEND.TUNER_TYPE_RX_DIGITIZER_CHANNELIZER.value.equals(tuner.getTunerType())) {
-				return true;
-			}
-			break;
+					|| FRONTEND.TUNER_TYPE_RX_DIGITIZER_CHANNELIZER.value.equals(tuner.getTunerType());
 		default:
+			return false;
 		}
-		return false;
 	}
 
 }

@@ -18,10 +18,14 @@ import gov.redhawk.frontend.UnallocatedTunerContainer;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.ui.filters.AdvancedPropertiesExtensibleFilter;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -81,4 +85,11 @@ public class FrontEndUIActivator extends AbstractUIPlugin {
 		return FrontEndUIActivator.plugin;
 	}
 
+	/**
+	 * @since 1.1
+	 */
+	public ImageDescriptor getImageDescriptor(String path) {
+		URL url = FileLocator.find(getBundle(), new Path(path), null);
+		return ImageDescriptor.createFromURL(url);
+	}
 }

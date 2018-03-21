@@ -119,6 +119,11 @@
             id="gov.redhawk.frontend.commands.addListener"
             name="Add Listener...">
       </command>
+      <command
+            defaultHandler="gov.redhawk.frontend.ui.internal.handler.ScanHandler"
+            id="gov.redhawk.frontend.ui.command.scan"
+            name="Scan">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -172,6 +177,30 @@
                      </test>
                   </and>
                </iterate>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="gov.redhawk.frontend.ui.command.scan"
+               label="Scan"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="gov.redhawk.frontend.TunerStatus">
+                     </instanceof>
+                     <test
+                           property="gov.redhawk.frontend.tunerType"
+                           value="RX_SCANNER_DIGITIZER">
+                     </test>
+                  </iterate>
+               </and>
             </visibleWhen>
          </command>
          <command
@@ -492,7 +521,7 @@
             class="gov.redhawk.frontend.ui.internal.TunerTypeTester"
             id="gov.redhawk.frontend.tunerTypeTester"
             namespace="gov.redhawk.frontend"
-            properties="isRxDigitizer,supportsAddListenerAction,supportsPlotActions"
+            properties="tunerType,isRxDigitizer,supportsAddListenerAction,supportsPlotActions"
             type="gov.redhawk.frontend.TunerStatus">
       </propertyTester>
    </extension>
