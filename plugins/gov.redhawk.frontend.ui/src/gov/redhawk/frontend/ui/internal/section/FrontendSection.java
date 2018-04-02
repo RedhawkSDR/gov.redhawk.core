@@ -150,24 +150,21 @@ public class FrontendSection extends AbstractPropertySection {
 		if (getToolbar() == null) {
 			return;
 		}
+		getToolbar().remove(allocateAction.getId());
+		getToolbar().remove(deallocateAction.getId());
+		getToolbar().remove(plotAction.getId());
 		if (obj instanceof TunerStatus) {
-			getToolbar().remove(allocateAction.getId());
 			addToToolbar(deallocateAction);
 			addToToolbar(plotAction);
 		}
 		if (obj instanceof ListenerAllocation) {
-			getToolbar().remove(allocateAction.getId());
-			getToolbar().remove(plotAction.getId());
 			addToToolbar(deallocateAction);
 		}
 		if (obj instanceof TunerContainer) {
-			getToolbar().remove(plotAction.getId());
 			addToToolbar(allocateAction);
 			addToToolbar(deallocateAction);
 		}
 		if (obj instanceof UnallocatedTunerContainer) {
-			getToolbar().remove(plotAction.getId());
-			getToolbar().remove(deallocateAction.getId());
 			addToToolbar(allocateAction);
 		}
 		page.getSite().getActionBars().updateActionBars();
