@@ -280,7 +280,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			IStructuredSelection structuredSelection = (IStructuredSelection) allocationComboViewer.getSelection();
 			String selection = (String) structuredSelection.getFirstElement();
 			if (LISTEN_TUNER_BY_ID.equals(selection)) {
-				return Status.OK_STATUS;
+				return ValidationStatus.ok();
 			}
 			String s = (String) value;
 			if (s == null || s.trim().isEmpty()) {
@@ -293,7 +293,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			if (!FrontEndUIActivator.SUPPORTED_TUNER_TYPES.contains(s)) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_TunerTypeNotSupported);
 			}
-			return Status.OK_STATUS;
+			return ValidationStatus.ok();
 		});
 
 		ControlDecorationSupport.create(
@@ -326,7 +326,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			if (s.contains(",")) { //$NON-NLS-1$
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_AllocationIDHasComma);
 			}
-			return Status.OK_STATUS;
+			return ValidationStatus.ok();
 		});
 
 		// For model -> target, because we're binding against two models we need to bind in the correct order. We bind
@@ -370,13 +370,13 @@ public class TunerAllocationWizardPage extends WizardPage {
 		UpdateValueStrategy modelToTarget = new UpdateValueStrategy();
 		IValidator validator = value -> {
 			if (allocationMode == AllocationMode.TUNER) {
-				return Status.OK_STATUS;
+				return ValidationStatus.ok();
 			}
 			String s = (String) value;
 			if (s == null | s.trim().isEmpty()) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoExistingAllocationID);
 			}
-			return Status.OK_STATUS;
+			return ValidationStatus.ok();
 		};
 		targetToModel.setAfterGetValidator(validator);
 		modelToTarget.setAfterGetValidator(validator);
@@ -391,7 +391,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		targetToModel.setConverter(stringToDoubleFreqConverter);
 		targetToModel.setAfterGetValidator(value -> {
 			if (allocationMode == AllocationMode.LISTENER) {
-				return Status.OK_STATUS;
+				return ValidationStatus.ok();
 			}
 			String s = (String) value;
 			if (s == null || s.trim().isEmpty()) {
@@ -402,11 +402,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 			} catch (NumberFormatException e) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_InvalidDecimalNumber);
 			}
-			return Status.OK_STATUS;
+			return ValidationStatus.ok();
 		});
 		targetToModel.setAfterConvertValidator(value -> {
 			if (allocationMode == AllocationMode.LISTENER) {
-				return Status.OK_STATUS;
+				return ValidationStatus.ok();
 			}
 			if (value == null) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoCenterFreq);
@@ -418,7 +418,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			if (!cfRange.inRange(val)) {
 				return ValidationStatus.warning(Messages.TunerAllocationWizardPage_Error_FreqOutOfRange);
 			}
-			return Status.OK_STATUS;
+			return ValidationStatus.ok();
 		});
 
 		UpdateValueStrategy modelToTarget = new UpdateValueStrategy();
@@ -434,7 +434,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		targetToModel.setConverter(stringToDoubleFreqConverter);
 		targetToModel.setAfterGetValidator(value -> {
 			if (allocationMode == AllocationMode.LISTENER || bwAnyValue.getSelection()) {
-				return Status.OK_STATUS;
+				return ValidationStatus.ok();
 			}
 			String s = (String) value;
 			if (s == null || s.trim().isEmpty()) {
@@ -445,11 +445,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 			} catch (NumberFormatException e) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_InvalidDecimalNumber);
 			}
-			return Status.OK_STATUS;
+			return ValidationStatus.ok();
 		});
 		targetToModel.setAfterConvertValidator(value -> {
 			if (allocationMode == AllocationMode.LISTENER || bwAnyValue.getSelection()) {
-				return Status.OK_STATUS;
+				return ValidationStatus.ok();
 			}
 			if (value == null) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoBandwidth);
@@ -461,7 +461,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			if (!bwRange.inRange(val)) {
 				return ValidationStatus.warning(Messages.TunerAllocationWizardPage_Error_FreqOutOfRange);
 			}
-			return Status.OK_STATUS;
+			return ValidationStatus.ok();
 		});
 
 		UpdateValueStrategy modelToTarget = new UpdateValueStrategy();
@@ -514,7 +514,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		UpdateValueStrategy targetToModel = new EMFUpdateValueStrategy();
 		targetToModel.setAfterGetValidator(value -> {
 			if (allocationMode == AllocationMode.LISTENER) {
-				return Status.OK_STATUS;
+				return ValidationStatus.ok();
 			}
 			String s = (String) value;
 			if (s == null || s.trim().isEmpty()) {
@@ -525,11 +525,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 			} catch (NumberFormatException e) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_InvalidDecimalNumber);
 			}
-			return Status.OK_STATUS;
+			return ValidationStatus.ok();
 		});
 		targetToModel.setAfterConvertValidator(value -> {
 			if (allocationMode == AllocationMode.LISTENER) {
-				return Status.OK_STATUS;
+				return ValidationStatus.ok();
 			}
 			if (value == null) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoBandwidthTolerance);
@@ -538,7 +538,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			if (val < 0) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_ValueCanNotBeNegative);
 			}
-			return Status.OK_STATUS;
+			return ValidationStatus.ok();
 		});
 
 		UpdateValueStrategy modelToTarget = new UpdateValueStrategy();
@@ -554,7 +554,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		targetToModel.setConverter(stringToDoubleFreqConverter);
 		targetToModel.setAfterGetValidator(value -> {
 			if (allocationMode == AllocationMode.LISTENER || srAnyValue.getSelection()) {
-				return Status.OK_STATUS;
+				return ValidationStatus.ok();
 			}
 			String s = (String) value;
 			if (s == null || s.trim().isEmpty()) {
@@ -565,11 +565,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 			} catch (NumberFormatException e) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_InvalidDecimalNumber);
 			}
-			return Status.OK_STATUS;
+			return ValidationStatus.ok();
 		});
 		targetToModel.setAfterConvertValidator(value -> {
 			if (allocationMode == AllocationMode.LISTENER || srAnyValue.getSelection()) {
-				return Status.OK_STATUS;
+				return ValidationStatus.ok();
 			}
 			if (value == null) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoSampleRate);
@@ -581,7 +581,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			if (!srRange.inRange(val)) {
 				return ValidationStatus.warning(Messages.TunerAllocationWizardPage_Error_FreqOutOfRange);
 			}
-			return Status.OK_STATUS;
+			return ValidationStatus.ok();
 		});
 
 		UpdateValueStrategy modelToTarget = new UpdateValueStrategy();
@@ -602,7 +602,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		UpdateValueStrategy targetToModel = new EMFUpdateValueStrategy();
 		targetToModel.setAfterGetValidator(value -> {
 			if (allocationMode == AllocationMode.LISTENER) {
-				return Status.OK_STATUS;
+				return ValidationStatus.ok();
 			}
 			String s = (String) value;
 			if (s == null || s.trim().isEmpty()) {
@@ -613,11 +613,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 			} catch (NumberFormatException e) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_InvalidDecimalNumber);
 			}
-			return Status.OK_STATUS;
+			return ValidationStatus.ok();
 		});
 		targetToModel.setAfterConvertValidator(value -> {
 			if (allocationMode == AllocationMode.LISTENER) {
-				return Status.OK_STATUS;
+				return ValidationStatus.ok();
 			}
 			if (value == null) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoSampleRateTolerance);
@@ -626,7 +626,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			if (val < 0) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_ValueCanNotBeNegative);
 			}
-			return Status.OK_STATUS;
+			return ValidationStatus.ok();
 		});
 
 		UpdateValueStrategy modelToTarget = new UpdateValueStrategy();
