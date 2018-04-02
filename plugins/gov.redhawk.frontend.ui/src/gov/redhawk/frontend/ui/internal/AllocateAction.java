@@ -31,7 +31,7 @@ public class AllocateAction extends FrontendAction {
 	
 	public AllocateAction(FrontendSection theSection) {
 		super(theSection, "Allocate...", "gov.redhawk.frontend.actions.allocate", "gov.redhawk.frontend.commands.allocate",
-			"icons/allocate.gif");
+			"icons/add.png");
 	}
 
 	@Override

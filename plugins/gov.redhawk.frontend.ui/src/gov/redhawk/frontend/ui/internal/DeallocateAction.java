@@ -36,7 +36,7 @@ public class DeallocateAction extends FrontendAction {
 
 	public DeallocateAction(FrontendSection theSection) {
 		super(theSection, "Deallocate", "gov.redhawk.frontend.actions.deallocate", "gov.redhawk.frontend.commands.deallocate",
-			"icons/deallocate.gif");
+			"icons/remove.png");
 	}
 	
 	@Override
