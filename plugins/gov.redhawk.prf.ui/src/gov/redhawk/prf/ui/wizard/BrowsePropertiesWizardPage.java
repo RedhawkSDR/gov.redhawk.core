@@ -24,6 +24,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -187,6 +188,7 @@ public class BrowsePropertiesWizardPage extends WizardPage {
 					default:
 						break;
 					}
+
 				}
 			}
 			if (properties.isEmpty()) {
@@ -195,6 +197,12 @@ public class BrowsePropertiesWizardPage extends WizardPage {
 			} else {
 				setErrorMessage(null);
 				setPageComplete(true);
+			}
+		});
+		this.propertyTree.addDoubleClickListener(event -> {
+			propertyTree.setSelection(event.getSelection());
+			if (getWizard().canFinish() && getWizard().performFinish()) {
+				((WizardDialog) getWizard().getContainer()).close();
 			}
 		});
 		this.propertyTree.setInput(this.descriptors);
