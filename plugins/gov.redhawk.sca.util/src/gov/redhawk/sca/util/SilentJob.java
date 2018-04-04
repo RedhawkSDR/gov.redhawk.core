@@ -43,16 +43,6 @@ public abstract class SilentJob extends Job {
 	}
 
 	/**
-	 * 
-	 * @return The silent status
-	 * @deprecated Use {@link getSilentStatus()}
-	 */
-	@Deprecated
-	public IStatus getStatus() {
-		return this.status;
-	}
-
-	/**
 	 * @since 3.0
 	 */
 	public IStatus getSilentStatus() {

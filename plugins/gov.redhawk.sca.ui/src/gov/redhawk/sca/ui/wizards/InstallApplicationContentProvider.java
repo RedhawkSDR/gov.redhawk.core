@@ -366,13 +366,4 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 		}
 	}
 
-	/**
-	 * @deprecated Use {@link #addContentCompletionListener(IJobChangeListener)} instead
-	 * @param jobChangeAdapter
-	 * @since 9.0
-	 */
-	@Deprecated
-	public void setContentCompletionListener(final IJobChangeListener jobChangeAdapter) {
-		addContentCompletionListener(jobChangeAdapter);
-	}
 }

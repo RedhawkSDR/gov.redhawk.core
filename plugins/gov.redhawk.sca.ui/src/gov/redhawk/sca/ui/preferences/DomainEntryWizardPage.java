@@ -527,19 +527,4 @@ public class DomainEntryWizardPage extends WizardPage {
 		this.model.setNameServiceInitRef(initRef);
 	}
 
-	/**
-	 * 
-	 * This configures the wizard page to edit a connection, as opposed to
-	 * creating a new one.
-	 * 
-	 * @param domainName the Domain Name of the connection
-	 * @param initRef the NameService Initial Reference of the connection
-	 * @since 8.0
-	 * @deprecated Use {@link #setEdit(String, String, String)}
-	 */
-	@Deprecated
-	public void setEdit(final String domainName, final String initRef) {
-		setEdit(domainName, domainName, initRef);
-	}
-
 }

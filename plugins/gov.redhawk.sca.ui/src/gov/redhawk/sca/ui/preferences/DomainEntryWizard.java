@@ -106,16 +106,6 @@ public class DomainEntryWizard extends Wizard {
 	}
 	
 	/**
-	 * @deprecated Use {@link #setEdit(String, String, String)}
-	 * @param domainName
-	 * @param initRef
-	 */
-	@Deprecated
-	public void setEdit(final String domainName, final String initRef) {
-		this.wizardPage.setEdit(domainName, domainName, initRef);
-	}
-
-	/**
 	 * @since 10.0
 	 */
 	public void setLocalDomainName(String localName) {

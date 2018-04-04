@@ -41,24 +41,6 @@ public class DomainConnectionUtil {
 
 	/**
 	 * @since 10.0
-	 * @deprecated Use new {@link #showDialog(Display, String, String)}
-	 */
-	@Deprecated
-	public static void showDialog(final String host, final String domainName, String localName) {
-		DomainConnectionUtil.showDialog(null, host, domainName, localName);
-	}
-	
-	/**
-	 * @deprecated Use {@link #showDialog(Display, String, String, String)} instead.
-	 * @since 9.3
-	 */
-	@Deprecated
-	public static void showDialog(Display context, final String host, final String domainName) {
-		showDialog(context, host, domainName, null);
-	}
-
-	/**
-	 * @since 10.0
 	 */
 	public static void showDialog(Display context, final String host, final String domainName, final String localName) {
 		final DomainEntryWizard wizard = new DomainEntryWizard();

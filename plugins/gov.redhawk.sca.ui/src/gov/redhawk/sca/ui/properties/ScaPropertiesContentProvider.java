@@ -34,8 +34,6 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.ui.provider.PropertySource;
 import org.eclipse.emf.transaction.RunnableWithResult;
-import org.eclipse.jface.viewers.ICellEditorListener;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.omg.CORBA.Any;
@@ -153,18 +151,6 @@ public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentP
 	 */
 	public ScaPropertiesContentProvider(final AdapterFactory adapterFactory) {
 		super(adapterFactory);
-	}
-
-	/**
-	 * 
-	 * @param adapterFactory
-	 * @param cellListener
-	 * @param object2
-	 * @deprecated Use {@link #ScaPropertiesContentProvider(AdapterFactory)}
-	 */
-	@Deprecated
-	public ScaPropertiesContentProvider(final AdapterFactory adapterFactory, final Listener cellListener, final ICellEditorListener object2) {
-		this(adapterFactory);
 	}
 
 	@Override

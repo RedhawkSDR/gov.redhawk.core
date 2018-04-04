@@ -57,11 +57,6 @@ public class WaveformSelectionWizardPage extends WizardPage {
 
 	private static final String WAVEFORM_ID = "WAVEFORM_ID";
 	private static final String AUTO_START = "AUTO_START";
-	/**
-	 * @deprecated Use {@link #getName()} instead
-	 */
-	@Deprecated
-	private static final String SECTION = "gov.redhawk.sca.internal.ui.wizards.WaveformSelectionWizardPage";
 
 	private String waveformName;
 
@@ -76,6 +71,9 @@ public class WaveformSelectionWizardPage extends WizardPage {
 	private IDialogSettings waveformSelectionPageSettings;
 	private String sadSelection;
 
+	/**
+	 * @param pageName The dialog's settings are stored in a section under the pageName
+	 */
 	public WaveformSelectionWizardPage(final String pageName) {
 		super(pageName);
 		setTitle("Select a Waveform");
@@ -274,10 +272,7 @@ public class WaveformSelectionWizardPage extends WizardPage {
 	private void setupDialogSettings() {
 		this.waveformSelectionPageSettings = getDialogSettings().getSection(getName());
 		if (this.waveformSelectionPageSettings == null) {
-			this.waveformSelectionPageSettings = getDialogSettings().getSection(WaveformSelectionWizardPage.SECTION);
-			if (this.waveformSelectionPageSettings == null) {
-				this.waveformSelectionPageSettings = getDialogSettings().addNewSection(getName());
-			}
+			this.waveformSelectionPageSettings = getDialogSettings().addNewSection(getName());
 		}
 	}
 

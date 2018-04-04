@@ -112,14 +112,6 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 	}
 
 	/**
-	 * @deprecated Use {@link #addValuesPropertyDescriptor(Object)}
-	 */
-	@Deprecated
-	protected void addValuePropertyDescriptor(Object object) {
-		addValuesPropertyDescriptor(object);
-	}
-
-	/**
 	 * This adds a property descriptor for the Values feature.
 	 * <!-- begin-user-doc -->
 	 * @since 12.0
