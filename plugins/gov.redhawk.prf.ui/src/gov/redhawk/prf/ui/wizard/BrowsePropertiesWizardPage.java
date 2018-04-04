@@ -27,11 +27,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -108,29 +107,31 @@ public class BrowsePropertiesWizardPage extends WizardPage {
 		this.propertyTree.setContentProvider(contentProvider);
 		this.propertyTree.setLabelProvider(new PropertiesBrowserLabelProvider(myAdapterFactory));
 		this.propertyTree.setSorter(new ViewerSorter());
-		this.propertyTree.addSelectionChangedListener(new ISelectionChangedListener() {
-
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				properties.clear();
-				List<Object> selection = Arrays.asList(((IStructuredSelection) event.getSelection()).toArray());
-				for (Object obj : selection) {
-					if (obj instanceof AbstractProperty) {
-						AbstractProperty prop = (AbstractProperty) obj;
-						//If children of a selection are also selected, don't add them too.
-						if (!selection.contains(prop.eContainer())) {
-							properties.add(EcoreUtil.copy((EObject) obj));
-						}
-
+		this.propertyTree.addSelectionChangedListener(event -> {
+			properties.clear();
+			List<Object> selection = Arrays.asList(((IStructuredSelection) event.getSelection()).toArray());
+			for (Object obj : selection) {
+				if (obj instanceof AbstractProperty) {
+					AbstractProperty prop = (AbstractProperty) obj;
+					//If children of a selection are also selected, don't add them too.
+					if (!selection.contains(prop.eContainer())) {
+						properties.add(EcoreUtil.copy((EObject) obj));
 					}
+
 				}
-				if (properties.isEmpty()) {
-					setErrorMessage("Select at least one property");
-					setPageComplete(false);
-				} else {
-					setErrorMessage(null);
-					setPageComplete(true);
-				}
+			}
+			if (properties.isEmpty()) {
+				setErrorMessage("Select at least one property");
+				setPageComplete(false);
+			} else {
+				setErrorMessage(null);
+				setPageComplete(true);
+			}
+		});
+		this.propertyTree.addDoubleClickListener(event -> {
+			propertyTree.setSelection(event.getSelection());
+			if (getWizard().canFinish() && getWizard().performFinish()) {
+				((WizardDialog) getWizard().getContainer()).close();
 			}
 		});
 		this.propertyTree.setInput(this.descriptors);
