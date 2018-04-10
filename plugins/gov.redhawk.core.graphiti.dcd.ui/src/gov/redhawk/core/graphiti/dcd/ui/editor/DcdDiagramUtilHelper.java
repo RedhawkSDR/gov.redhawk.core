@@ -26,11 +26,9 @@ import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 public enum DcdDiagramUtilHelper implements IDiagramUtilHelper {
 	INSTANCE;
 
-	public static final String DIAGRAM_FILE_EXTENSION = ".dcd_GDiagram"; //$NON-NLS-1$
-
 	@Override
 	public String getDiagramFileExtension() {
-		return DcdDiagramUtilHelper.DIAGRAM_FILE_EXTENSION;
+		return DcdPackage.DIAGRAM_FILE_EXTENSION;
 	}
 
 	@Override

@@ -26,11 +26,9 @@ import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 public enum SadDiagramUtilHelper implements IDiagramUtilHelper {
 	INSTANCE;
 
-	private static final String SAD_DIAGRAM_FILE_EXTENSION = ".sad_GDiagram"; //$NON-NLS-1$
-
 	@Override
 	public String getDiagramFileExtension() {
-		return SadDiagramUtilHelper.SAD_DIAGRAM_FILE_EXTENSION;
+		return SadPackage.DIAGRAM_FILE_EXTENSION;
 	}
 
 	@Override
