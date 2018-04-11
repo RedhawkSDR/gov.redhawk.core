@@ -93,7 +93,6 @@ public class LaunchWaveformWizard extends Wizard {
 		this.waveformPage.saveWidgetValues();
 		final SoftwareAssembly sad = this.waveformPage.getSoftwareAssembly();
 		final boolean autoStart = this.waveformPage.isAutoStart();
-		final boolean uninstallExistingApplicationFactory = this.waveformPage.isUninstallExistingApplicationFactory();
 		final String name = this.waveformPage.getWaveformName().trim();
 		final DataType[] configProps;
 		final DeviceAssignmentType[] deviceAssn;
@@ -118,7 +117,6 @@ public class LaunchWaveformWizard extends Wizard {
 		        deviceAssn,
 		        configProps,
 		        autoStart);
-		job.setUninstallExistingAppFactory(uninstallExistingApplicationFactory);
 
 		try {
 			getContainer().run(true, true, monitor -> {

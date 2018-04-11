@@ -21,7 +21,6 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -42,8 +41,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PatternFilter;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
-import org.eclipse.ui.forms.widgets.Section;
 
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.WaveformsContainer;
@@ -65,7 +62,6 @@ public class WaveformSelectionWizardPage extends WizardPage {
 	private ScaDomainManager domMgr;
 	private boolean defaultNameChanged;
 	private Button startWaveform;
-	private Button uninstallExistAppFactory;
 	private SoftwareAssembly sad;
 	private InstallApplicationContentProvider contentProvider;
 	private IDialogSettings waveformSelectionPageSettings;
@@ -224,17 +220,6 @@ public class WaveformSelectionWizardPage extends WizardPage {
 			}
 		});
 
-		Section advancedComposite = new Section(composite, ExpandableComposite.TWISTIE);
-		advancedComposite.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
-		advancedComposite.setText("Advanced");
-		advancedComposite.setFont(composite.getFont());
-		advancedComposite.setLayout(GridLayoutFactory.fillDefaults().create());
-		Composite advancedSection = new Composite(advancedComposite, SWT.NONE);
-		advancedComposite.setClient(advancedSection);
-		advancedSection.setLayout(GridLayoutFactory.fillDefaults().create());
-
-		this.uninstallExistAppFactory = new Button(advancedSection, SWT.CHECK);
-		this.uninstallExistAppFactory.setText("Uninstall existing application factory (pre-2.0 Redhawk domains only)");
 		this.waveformSelectionList.getViewer().addSelectionChangedListener(new ISelectionChangedListener() {
 
 			@Override
@@ -338,10 +323,6 @@ public class WaveformSelectionWizardPage extends WizardPage {
 		return this.autoStart;
 	}
 
-	public boolean isUninstallExistingApplicationFactory() {
-		return this.uninstallExistAppFactory.getSelection();
-	}
-	
 	public void saveWidgetValues() {
 		this.waveformSelectionPageSettings.put(WaveformSelectionWizardPage.AUTO_START, this.autoStart);
 		this.waveformSelectionPageSettings.put(WaveformSelectionWizardPage.WAVEFORM_ID, this.sad.getId());

@@ -17,6 +17,8 @@ import CF.DataType;
 import CF.DeviceAssignmentType;
 import gov.redhawk.model.sca.ScaDomainManager;
 
+// CHECKSTYLE:OFF This class is deprecated
+
 /**
  * @since 14.0
  * @deprecated Moved to {@link gov.redhawk.sca.model.jobs.LaunchWaveformJob}
@@ -36,7 +38,6 @@ public class LaunchWaveformJob extends gov.redhawk.sca.model.jobs.LaunchWaveform
 		boolean autoStart, Object waitLock, boolean uninstallExistingAppFactory) {
 		super(domMgr, waveformName, waveformPath, deviceAssn, configProps, autoStart);
 		this.setWaitLock(waitLock);
-		this.setUninstallExistingAppFactory(uninstallExistingAppFactory);
 	}
 
 }
