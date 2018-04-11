@@ -1,13 +1,12 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- *
  */
 package gov.redhawk.sca.internal.ui.wizards;
 
@@ -20,7 +19,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -135,8 +133,7 @@ public class LaunchWaveformWizard extends Wizard {
 					@Override
 					public void run() {
 						try {
-							final boolean useUri = !SWT.getPlatform().startsWith("rap");
-							ScaUI.openEditorOnEObject(activePage, job.getWaveform(), useUri);
+							ScaUI.openEditorOnEObject(activePage, job.getWaveform(), true);
 						} catch (final CoreException e) {
 							StatusManager.getManager().handle(e, ScaUiPlugin.PLUGIN_ID);
 						}
