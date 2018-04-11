@@ -1,13 +1,12 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- *
  */
 package gov.redhawk.sca.ui;
 
@@ -68,7 +67,7 @@ public final class ScaUI {
 	 * REDHAWK Content type registry and then delegating to opening the filestore associated with the EObject.
 	 * @param page The page to open the editor within
 	 * @param object The object to open an editor on
-	 * @param true open an editor on the EObject's URI if REDHAWK Content resolution fails
+	 * @param useUri If true, open an editor on the EObject's URI if REDHAWK Content resolution fails
 	 * @return an open editor or null if we either opened an external editor
 	 * @throws PartInitException if no internal editor can be found or if the editor could not be initialized
 	 * @throws NoEditorAvailableException if no editor could be found
