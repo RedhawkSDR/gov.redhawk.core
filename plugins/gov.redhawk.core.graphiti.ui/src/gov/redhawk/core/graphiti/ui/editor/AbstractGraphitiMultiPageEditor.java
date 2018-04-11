@@ -226,7 +226,6 @@ public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor impl
 			final IEditorInput diagramInput = createDiagramInput();
 			int pageIndex = addPage(this.diagramEditor, diagramInput);
 			setPageText(pageIndex, "Diagram");
-			DUtil.layout(this.diagramEditor);
 			setDiagramPageId(pageIndex);
 			this.textEditor = createTextEditor(getEditorInput());
 			if (this.textEditor != null) {

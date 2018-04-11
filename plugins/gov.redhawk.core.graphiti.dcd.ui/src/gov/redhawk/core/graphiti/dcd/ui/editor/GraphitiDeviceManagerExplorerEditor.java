@@ -87,9 +87,6 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 		// make sure diagram elements reflect current runtime state
 		this.modelMap.reflectRuntimeStatus();
 
-		// set layout for sandbox editors
-		DUtil.layout(getDiagramEditor());
-
 		// Adjust the text editor's title to the profile file name if possible
 		IEditorPart textEditor = getTextEditor();
 		if (textEditor != null) {

@@ -12,7 +12,6 @@ package gov.redhawk.core.graphiti.ui.editor;
 
 import java.util.Map;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
@@ -25,7 +24,5 @@ public interface IDiagramUtilHelper {
 	EObject getRootDiagramObject(Resource resource);
 
 	String getSemanticFileExtension();
-
-	IFile getFile(Resource resource);
 
 }
