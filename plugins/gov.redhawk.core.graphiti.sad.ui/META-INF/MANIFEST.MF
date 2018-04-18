@@ -35,6 +35,7 @@ Require-Bundle: gov.redhawk.core.graphiti.ui;bundle-version="1.0.0";visibility:=
  org.eclipse.graphiti.ui;bundle-version="0.12.0",
  org.eclipse.ui.views.properties.tabbed;bundle-version="3.6.100",
  org.eclipse.gef;bundle-version="3.10.1",
- org.eclipse.wst.sse.ui
+ org.eclipse.wst.sse.ui,
+ org.eclipse.emf.workspace
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: gov.redhawk.core.graphiti.sad.ui
