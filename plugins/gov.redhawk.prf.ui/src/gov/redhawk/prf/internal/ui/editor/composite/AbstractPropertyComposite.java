@@ -81,7 +81,7 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 		this.modeLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
 		final ComboViewer viewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		viewer.getCombo().addListener(SWT.MouseVerticalWheel, getEventIgnorer());
-		toolkit.adapt(viewer.getCombo());
+		toolkit.adapt(viewer.getCombo(), true, false);
 		viewer.getControl().setLayoutData(AbstractPropertyComposite.FACTORY.create());
 		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setLabelProvider(new LabelProvider());
