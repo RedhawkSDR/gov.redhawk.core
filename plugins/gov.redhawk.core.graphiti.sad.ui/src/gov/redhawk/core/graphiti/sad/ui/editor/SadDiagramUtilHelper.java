@@ -17,9 +17,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
 
 import gov.redhawk.core.graphiti.ui.editor.IDiagramUtilHelper;
-import gov.redhawk.model.sca.util.ModelUtil;
 import mil.jpeojtrs.sca.sad.SadPackage;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 
@@ -53,7 +53,7 @@ public enum SadDiagramUtilHelper implements IDiagramUtilHelper {
 
 	@Override
 	public IFile getFile(final Resource resource) {
-		return ModelUtil.getResource(resource);
+		return WorkspaceSynchronizer.getFile(resource);
 	}
 
 }

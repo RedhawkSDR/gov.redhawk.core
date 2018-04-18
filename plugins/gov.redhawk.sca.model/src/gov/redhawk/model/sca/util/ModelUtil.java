@@ -77,7 +77,7 @@ public final class ModelUtil {
 	 * @since 11.0
 	 */
 	public static String getSpdFileName(final SoftPkg softPkg) {
-		final IFile file = ModelUtil.getResource(softPkg.eResource());
+		final IFile file = WorkspaceSynchronizer.getFile(softPkg.eResource());
 		if (file == null) {
 			return null;
 		}
@@ -196,11 +196,11 @@ public final class ModelUtil {
 			return null;
 		}
 		final Resource eResource = eObject.eResource();
-		return ModelUtil.getResource(eResource);
+		return WorkspaceSynchronizer.getFile(eResource);
 	}
 
 	public static IProject getProject(final Resource eResource) {
-		final IFile file = ModelUtil.getResource(eResource);
+		final IFile file = WorkspaceSynchronizer.getFile(eResource);
 		if (file != null) {
 			return file.getProject();
 		}
@@ -220,12 +220,9 @@ public final class ModelUtil {
 	}
 
 	/**
-	 * Gets the resource.
-	 * 
-	 * @param eResource the e resource
-	 * 
-	 * @return the resource
+	 * @deprecated Use {@link WorkspaceSynchronizer#getFile(Resource)}.
 	 */
+	@Deprecated
 	public static IFile getResource(final Resource eResource) {
 		if (eResource == null) {
 			return null;
