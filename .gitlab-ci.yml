@@ -17,8 +17,8 @@ build:
     paths:
       - tests/*/target/surefire-reports/*.xml
     expire_in: 1 day
-  #Skip on tag of following format
   except:
+    - master
     - /^(\d+\.)?(\d+)?(\.\d+)$/
 
 jenkins:
