@@ -141,7 +141,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		this.actionLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
 		final ComboViewer viewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		viewer.getCombo().addListener(SWT.MouseVerticalWheel, getEventIgnorer());
-		toolkit.adapt(viewer.getCombo());
+		toolkit.adapt(viewer.getCombo(), true, false);
 		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setLabelProvider(new LabelProvider());
 		viewer.getControl().setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
@@ -175,7 +175,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		this.kindLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
 		final ComboViewer viewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		viewer.getCombo().addListener(SWT.MouseVerticalWheel, getEventIgnorer());
-		toolkit.adapt(viewer.getCombo());
+		toolkit.adapt(viewer.getCombo(), true, false);
 		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setLabelProvider(new LabelProvider() {
 			@Override
@@ -282,7 +282,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		});
 		this.typeViewer.setInput(PropertyValueType.values());
 		this.typeViewer.setSorter(new ViewerSorter());
-		toolkit.adapt(this.typeViewer.getCombo());
+		toolkit.adapt(this.typeViewer.getCombo(), true, false);
 
 		this.typeViewer.getControl().setLayoutData(GridDataFactory.fillDefaults().span(1, 1).grab(true, false).create());
 		assignTooltip(this.typeViewer.getControl(), HelpConstants.prf_properties_simple_type);
