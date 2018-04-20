@@ -29,11 +29,8 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
-import org.eclipse.swt.SWT;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.progress.UIJob;
 
 import CF.DataType;
 import CF.DeviceAssignmentType;
@@ -44,6 +41,7 @@ import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.launch.ScaLaunchConfigurationConstants;
 import gov.redhawk.sca.launch.ScaLaunchConfigurationUtil;
@@ -114,27 +112,14 @@ public class WaveformLaunchConfigurationDelegate extends LaunchConfigurationDele
 			throw new CoreException(new Status(IStatus.CANCEL, ScaLauncherActivator.PLUGIN_ID, "Cancelled while launching", e));
 		}
 
-		if (job.getWaveform() == null) {
+		final ScaWaveform waveform = job.getWaveform();
+		if (waveform == null) {
 			return;
 		}
 
 		if (openEditor) {
-			final UIJob openEditorJob = new UIJob("Open Waveform Editor") {
-
-				@Override
-				public IStatus runInUIThread(final IProgressMonitor monitor) {
-					try {
-						final boolean useUri = !SWT.getPlatform().startsWith("rap");
-						final IWorkbench workbench = PlatformUI.getWorkbench();
-						final IWorkbenchPage activePage = workbench.getActiveWorkbenchWindow().getActivePage();
-						ScaUI.openEditorOnEObject(activePage, job.getWaveform(), useUri);
-					} catch (final CoreException e) {
-						return new Status(e.getStatus().getSeverity(), ScaLauncherActivator.PLUGIN_ID, e.getLocalizedMessage(), e);
-					}
-					return Status.OK_STATUS;
-				}
-			};
-			openEditorJob.schedule();
+			final IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			ScaUI.openEditor(activePage, waveform);
 		}
 	}
 }

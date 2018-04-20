@@ -10,21 +10,15 @@
  */
 package gov.redhawk.core.graphiti.dcd.ui.editor;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -36,13 +30,11 @@ import gov.redhawk.core.graphiti.dcd.ui.modelmap.GraphitiDCDModelMapInitializerC
 import gov.redhawk.core.graphiti.dcd.ui.modelmap.ScaDeviceManagerModelAdapter;
 import gov.redhawk.core.graphiti.ui.editor.AbstractGraphitiDiagramEditor;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
-import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.commands.NonDirtyingCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.ui.ScaFileStoreEditorInput;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
-import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
  * The multi-page explorer editor for device managers ({@link ScaDeviceManager}). Includes a Graphiti diagram.
@@ -141,41 +133,6 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 		DeviceConfiguration dcd = getDeviceConfiguration();
 		if (dcd == null) {
 			throw new IllegalStateException("Can not initialize the model map without a device configuration (DCD)");
-		}
-
-		if (!deviceManager.isSetDevices()) {
-			if (Display.getCurrent() != null) {
-				ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
-				try {
-					dialog.run(true, true, new IRunnableWithProgress() {
-
-						@Override
-						public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-							try {
-								CorbaUtils.invoke(new Callable<Object>() {
-
-									@Override
-									public Object call() throws Exception {
-										deviceManager.refresh(monitor, RefreshDepth.FULL);
-										return null;
-									}
-
-								}, monitor);
-							} catch (CoreException e) {
-								throw new InvocationTargetException(e);
-							}
-						}
-					});
-				} catch (InvocationTargetException | InterruptedException e) {
-					// PASS
-				}
-			} else {
-				try {
-					deviceManager.refresh(null, RefreshDepth.FULL);
-				} catch (InterruptedException e) {
-					// PASS
-				}
-			}
 		}
 
 		modelMap = createModelMapInstance();

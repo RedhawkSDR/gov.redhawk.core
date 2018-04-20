@@ -22,6 +22,7 @@ import org.eclipse.ui.actions.BaseSelectionListenerAction;
 
 import gov.redhawk.sca.internal.ui.ScaContentTypeRegistry;
 import gov.redhawk.sca.ui.IScaEditorDescriptor;
+import gov.redhawk.sca.ui.ScaUI;
 
 /**
  * Standard action for opening editors on REDHAWK Model Types
@@ -75,7 +76,7 @@ public class OpenFileAction extends BaseSelectionListenerAction {
 
 	@Override
 	public void run() {
-		OpenEditorUtil.openEditor(page, editorDescriptor);
+		ScaUI.openEditor(page, editorDescriptor);
 	}
 
 	@Override
