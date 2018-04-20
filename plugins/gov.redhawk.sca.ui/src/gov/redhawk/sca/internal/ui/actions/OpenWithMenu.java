@@ -30,6 +30,7 @@ import org.eclipse.ui.PlatformUI;
 import gov.redhawk.sca.internal.ui.ResourceRegistry;
 import gov.redhawk.sca.internal.ui.ScaContentTypeRegistry;
 import gov.redhawk.sca.ui.IScaEditorDescriptor;
+import gov.redhawk.sca.ui.ScaUI;
 
 /**
  * A menu for opening files in the workbench.
@@ -101,7 +102,7 @@ public class OpenWithMenu extends ContributionItem {
 			public void handleEvent(final Event event) {
 				switch (event.type) {
 				case SWT.Selection:
-					OpenEditorUtil.openEditor(page, descriptor);
+					ScaUI.openEditor(page, descriptor);
 					break;
 				default:
 					break;

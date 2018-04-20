@@ -10,35 +10,21 @@
  */
 package gov.redhawk.core.graphiti.sad.ui.editor;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.statushandlers.StatusManager;
 
-import gov.redhawk.core.graphiti.sad.ui.GraphitiSadUIPlugin;
 import gov.redhawk.core.graphiti.sad.ui.diagram.providers.WaveformExplorerDiagramTypeProvider;
 import gov.redhawk.core.graphiti.sad.ui.modelmap.GraphitiSADModelAdapter;
 import gov.redhawk.core.graphiti.sad.ui.modelmap.GraphitiSADModelMap;
@@ -46,14 +32,11 @@ import gov.redhawk.core.graphiti.sad.ui.modelmap.GraphitiSADModelMapInitializerC
 import gov.redhawk.core.graphiti.sad.ui.modelmap.ScaWaveformModelAdapter;
 import gov.redhawk.core.graphiti.ui.editor.AbstractGraphitiDiagramEditor;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.NonDirtyingCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.ui.ScaFileStoreEditorInput;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
-import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
  * The multi-page explorer editor for waveforms ({@link ScaWaveform}). Includes a Graphiti diagram.
@@ -150,96 +133,6 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 		SoftwareAssembly sad = getSoftwareAssembly();
 		if (sad == null) {
 			throw new IllegalStateException("Can not initialize the model map without a software assembly (SAD)");
-		}
-
-		if (!waveform.isSetComponents()) {
-			if (Display.getCurrent() != null) {
-				ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
-				try {
-					dialog.run(true, true, new IRunnableWithProgress() {
-
-						@Override
-						public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-							try {
-								CorbaUtils.invoke(new Callable<Object>() {
-
-									@Override
-									public Object call() throws Exception {
-										waveform.refresh(monitor, RefreshDepth.FULL);
-										return null;
-									}
-
-								}, monitor);
-							} catch (CoreException e) {
-								throw new InvocationTargetException(e);
-							}
-						}
-					});
-				} catch (InvocationTargetException | InterruptedException e) {
-					// PASS
-				}
-			} else {
-				try {
-					waveform.refresh(null, RefreshDepth.FULL);
-				} catch (InterruptedException e) {
-					// PASS
-				}
-			}
-		}
-
-		try {
-			ProgressMonitorDialog loadCompDialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
-			final int numOfLoadingItems = waveform.getComponents().size() * 2; // for getProfile and getStarted calls
-			loadCompDialog.run(true, true, new IRunnableWithProgress() {
-
-				@Override
-				public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-					monitor.beginTask("Loading Waveform Components...", numOfLoadingItems);
-
-					ExecutorService executor = Executors.newSingleThreadExecutor();
-					Future<Object> future = executor.submit(new Callable<Object>() {
-
-						@Override
-						public Object call() throws Exception {
-							int totalProgress = 0;
-							while (totalProgress < numOfLoadingItems && !monitor.isCanceled()) {
-								int newProgress = 0;
-
-								for (ScaComponent component : waveform.getComponents()) {
-									if (component.getProfile() != null) {
-										newProgress++;
-									}
-
-									if (component.getStarted() != null) {
-										newProgress++;
-									}
-								}
-
-								if (newProgress > totalProgress) {
-									monitor.worked(newProgress - totalProgress);
-									totalProgress = newProgress;
-								}
-								Thread.sleep(250);
-							}
-							return null;
-						}
-
-					});
-
-					try {
-						future.get(30, TimeUnit.SECONDS);
-					} catch (InterruptedException | ExecutionException | TimeoutException e) {
-						monitor.setCanceled(true);
-						StatusManager.getManager().handle(new Status(IStatus.ERROR, GraphitiSadUIPlugin.PLUGIN_ID, "Waveform components failed to load", e),
-							StatusManager.SHOW | StatusManager.LOG);
-					} finally {
-						monitor.done();
-					}
-				}
-			});
-		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
-			StatusManager.getManager().handle(new Status(IStatus.ERROR, GraphitiSadUIPlugin.PLUGIN_ID, "Errors occured while loading waveform components", e),
-				StatusManager.SHOW | StatusManager.LOG);
 		}
 
 		modelMap = createModelMapInstance();

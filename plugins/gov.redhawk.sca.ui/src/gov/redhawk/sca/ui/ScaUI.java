@@ -10,10 +10,8 @@
  */
 package gov.redhawk.sca.ui;
 
-import gov.redhawk.sca.internal.ui.ScaContentTypeRegistry;
-import gov.redhawk.sca.ui.editors.IScaContentDescriber;
-
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
@@ -22,6 +20,12 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -32,18 +36,26 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.progress.WorkbenchJob;
+import org.eclipse.ui.statushandlers.StatusManager;
+
+import gov.redhawk.model.sca.IRefreshable;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.sca.internal.ui.ScaContentTypeRegistry;
+import gov.redhawk.sca.ui.editors.IScaContentDescriber;
+import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
  * @since 7.0
  * 
  */
 public final class ScaUI {
-	
+
 	/**
 	 * @since 10.0
 	 */
 	public static final String WIDGET_TEST_ID = "org.eclipse.swtbot.search.defaultKey";
-	
+
 	private ScaUI() {
 
 	}
@@ -72,8 +84,8 @@ public final class ScaUI {
 	 * @throws PartInitException if no internal editor can be found or if the editor could not be initialized
 	 * @throws NoEditorAvailableException if no editor could be found
 	 */
-	public static IEditorPart openEditorOnEObject(final IWorkbenchPage page, final EObject object, final boolean useUri) throws PartInitException,
-	        NoEditorAvailableException {
+	public static IEditorPart openEditorOnEObject(final IWorkbenchPage page, final EObject object, final boolean useUri)
+		throws PartInitException, NoEditorAvailableException {
 		Assert.isNotNull(object);
 		final IScaContentTypeRegistry contentTypeRegistry = ScaUiPlugin.getContentTypeRegistry();
 		final String contentTypeId = contentTypeRegistry.findContentType(object);
@@ -151,7 +163,7 @@ public final class ScaUI {
 	 * 
 	 * @param fileStore The <code>IFileStore</code> to test
 	 * @return The workspace's <code>IFile</code> if it exists or
-	 *         <code>null</code> if not
+	 * <code>null</code> if not
 	 */
 	public static IFile getWorkspaceFile(final IFileStore fileStore) {
 		final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
@@ -209,4 +221,110 @@ public final class ScaUI {
 	 * @since 10.1
 	 */
 	public static final Object FAMILY_OPEN_EDITOR = new Object();
+
+	/**
+	 * Asynchronously opens the default editor for the {@link EObject}. If the {@link EObject} is an
+	 * {@link IRefreshable}, it will be refreshed first. Any jobs scheduled will belong to the family
+	 * {@link ScaUI#FAMILY_OPEN_EDITOR}, which allows tracking job progress.
+	 * @param page The workbench page (e.g. <code>PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()</code>
+	 * @param eObject
+	 * @since 11.1
+	 */
+	public static void openEditor(IWorkbenchPage page, EObject eObject) {
+		openEditor(page, ScaUiPlugin.getContentTypeRegistry().getScaEditorDescriptor(eObject));
+	}
+
+	/**
+	 * Asynchronously opens the editor for the provided descriptor. If the descriptor's object is an
+	 * {@link IRefreshable}, it will be refreshed first. Any jobs scheduled will belong to the family
+	 * {@link ScaUI#FAMILY_OPEN_EDITOR}, which allows tracking job progress.
+	 * @param page The workbench page (e.g. <code>PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()</code>
+	 * @param editorDescriptor
+	 * @since 11.1
+	 */
+	public static void openEditor(IWorkbenchPage page, IScaEditorDescriptor editorDescriptor) {
+		if (editorDescriptor == null) {
+			return;
+		}
+
+		// A job to open the editor
+		final WorkbenchJob openJob = new WorkbenchJob(page.getWorkbenchWindow().getShell().getDisplay(), "Opening editor") {
+
+			@Override
+			public boolean belongsTo(Object family) {
+				return (family == ScaUI.FAMILY_OPEN_EDITOR) || super.belongsTo(family);
+			}
+
+			@Override
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				open(page, editorDescriptor);
+				return Status.OK_STATUS;
+			}
+		};
+		openJob.setUser(true);
+		openJob.setPriority(Job.SHORT);
+
+		if (editorDescriptor.getSelectedObject() instanceof IRefreshable) {
+			final IRefreshable refreshable = (IRefreshable) editorDescriptor.getSelectedObject();
+
+			// This job will first perform a full refresh of the item
+			final Job refreshJob = new Job("Refreshing state...") {
+
+				@Override
+				public boolean belongsTo(Object family) {
+					return (family == ScaUI.FAMILY_OPEN_EDITOR) || super.belongsTo(family);
+				}
+
+				@Override
+				protected IStatus run(final IProgressMonitor monitor) {
+					try {
+						CorbaUtils.invoke(new Callable<Object>() {
+
+							public Object call() throws Exception {
+								refreshable.refresh(monitor, RefreshDepth.FULL);
+								return null;
+							}
+
+						}, monitor);
+						return Status.OK_STATUS;
+					} catch (CoreException e) {
+						return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
+					} catch (InterruptedException e) {
+						return new Status(IStatus.CANCEL, ScaUiPlugin.PLUGIN_ID, "Interrupted while refreshing prior to opening an editor", e);
+					}
+				}
+			};
+			refreshJob.setUser(true);
+			refreshJob.setPriority(Job.SHORT);
+
+			// Successful completion of refresh job -> triggers open job
+			refreshJob.addJobChangeListener(new JobChangeAdapter() {
+				@Override
+				public void done(IJobChangeEvent event) {
+					if (event.getResult().isOK()) {
+						openJob.schedule();
+					}
+				}
+			});
+
+			refreshJob.schedule();
+		} else {
+			// Not refreshable - just schedule the open job
+			openJob.schedule();
+		}
+	}
+
+	private static void open(IWorkbenchPage page, IScaEditorDescriptor editorDescriptor) {
+		IEditorInput editorInput = editorDescriptor.getEditorInput();
+		String editorId = editorDescriptor.getEditorDescriptor().getId();
+		if (editorInput == null || editorId == null) {
+			return;
+		}
+
+		try {
+			page.openEditor(editorInput, editorId, true, IWorkbenchPage.MATCH_ID | IWorkbenchPage.MATCH_INPUT);
+		} catch (final PartInitException e) {
+			StatusManager.getManager().handle(e, ScaUiPlugin.PLUGIN_ID);
+		}
+	}
 }

@@ -12,7 +12,6 @@ package gov.redhawk.sca.internal.ui.wizards;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -26,6 +25,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import CF.DataType;
 import CF.DeviceAssignmentType;
 import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.model.jobs.LaunchWaveformJob;
 import gov.redhawk.sca.ui.ScaUI;
@@ -122,22 +122,11 @@ public class LaunchWaveformWizard extends Wizard {
 				job.schedule();
 				job.join(0, monitor);
 
-				if (job.getWaveform() == null) {
+				ScaWaveform waveform = job.getWaveform();
+				if (waveform == null) {
 					return;
 				}
-
-				activePage.getWorkbenchWindow().getShell().getDisplay().asyncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						try {
-							ScaUI.openEditorOnEObject(activePage, job.getWaveform(), true);
-						} catch (final CoreException e) {
-							StatusManager.getManager().handle(e, ScaUiPlugin.PLUGIN_ID);
-						}
-					}
-
-				});
+				ScaUI.openEditor(activePage, waveform);
 			});
 		} catch (final InvocationTargetException e) {
 			String msg = e.getMessage();
@@ -155,11 +144,9 @@ public class LaunchWaveformWizard extends Wizard {
 			return false;
 		}
 
-		if (!job.getSilentStatus().isOK()) {
-			if (job.getSilentStatus().getSeverity() != IStatus.CANCEL) {
-				StatusManager.getManager().handle(job.getSilentStatus(), StatusManager.SHOW);
-				return false;
-			}
+		if (!job.getSilentStatus().isOK() && job.getSilentStatus().getSeverity() != IStatus.CANCEL) {
+			StatusManager.getManager().handle(job.getSilentStatus(), StatusManager.SHOW);
+			return false;
 		}
 
 		return true;
