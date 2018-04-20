@@ -24,8 +24,12 @@ public class SADNodeMapEntry {
 	}
 
 	public SADNodeMapEntry(ScaComponent comp, SadComponentInstantiation profile) {
-		setScaComponent(comp);
-		setProfile(profile);
+		if (comp != null) {
+			setScaComponent(comp);
+		}
+		if (profile != null) {
+			setProfile(profile);
+		}
 	}
 
 	public String getKey() {

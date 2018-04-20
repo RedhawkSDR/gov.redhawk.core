@@ -10,6 +10,8 @@
  */
 package gov.redhawk.core.graphiti.sad.ui.modelmap;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -17,12 +19,11 @@ import java.util.concurrent.TimeoutException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.command.AbstractCommand;
 
 import gov.redhawk.core.graphiti.sad.ui.GraphitiSadUIPlugin;
+import gov.redhawk.core.graphiti.ui.modelmap.AbstractGraphitiModelMapInitializerCommand;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaConnection;
-import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaPortContainer;
 import gov.redhawk.model.sca.ScaProvidesPort;
@@ -51,19 +52,21 @@ import mil.jpeojtrs.sca.util.ScaUriHelpers;
 /**
  * Uses the REDHAWK SCA model to build a corresponding SAD
  */
-public class GraphitiSADModelMapInitializerCommand extends AbstractCommand {
+public class GraphitiSADModelMapInitializerCommand extends AbstractGraphitiModelMapInitializerCommand {
 
 	private final GraphitiSADModelMap modelMap;
 	private final ScaWaveform waveform;
 	private final SoftwareAssembly sad;
 
-	public GraphitiSADModelMapInitializerCommand(final GraphitiSADModelMap map, final SoftwareAssembly sad, final ScaWaveform waveform) {
-		this.modelMap = map;
+	public GraphitiSADModelMapInitializerCommand(final GraphitiSADModelMap modelMap, final SoftwareAssembly sad, final ScaWaveform waveform) {
+		super(modelMap);
+		this.modelMap = modelMap;
 		this.waveform = waveform;
 		this.sad = sad;
 	}
 
-	private void initConnection(final ScaConnection con) {
+	@Override
+	protected void initConnection(final ScaConnection con) {
 		final ScaUsesPort uses = con.getPort();
 		final ScaPortContainer container = uses.getPortContainer();
 		if (!(container instanceof ScaComponent)) {
@@ -82,9 +85,6 @@ public class GraphitiSADModelMapInitializerCommand extends AbstractCommand {
 			return;
 		}
 
-		if (sad.getConnections() == null) {
-			sad.setConnections(SadFactory.eINSTANCE.createSadConnections());
-		}
 		sad.getConnections().getConnectInterface().add(sadCon);
 		modelMap.put(con, sadCon);
 	}
@@ -155,7 +155,7 @@ public class GraphitiSADModelMapInitializerCommand extends AbstractCommand {
 	}
 
 	/**
-	 * Adds the XML to the SAD for a {@link ScaDevice}.
+	 * Adds the XML to the SAD for an {@link ScaComponent}.
 	 * @param device
 	 */
 	private void initComponent(final ScaComponent comp) {
@@ -241,28 +241,44 @@ public class GraphitiSADModelMapInitializerCommand extends AbstractCommand {
 
 	@Override
 	public void execute() {
-		this.sad.setComponentFiles(PartitioningFactory.eINSTANCE.createComponentFiles());
-		this.sad.setPartitioning(SadFactory.eINSTANCE.createSadPartitioning());
-		this.sad.setConnections(SadFactory.eINSTANCE.createSadConnections());
-		this.sad.setAssemblyController(null);
-		this.sad.setExternalPorts(null);
-		if (waveform != null) {
-			for (final ScaComponent comp : this.waveform.getComponents()) {
-				initComponent(comp);
-			}
+		// Create any missing XML elements we need to have present
+		if (sad.getComponentFiles() == null) {
+			sad.setComponentFiles(PartitioningFactory.eINSTANCE.createComponentFiles());
+		}
+		if (sad.getPartitioning() == null) {
+			this.sad.setPartitioning(SadFactory.eINSTANCE.createSadPartitioning());
+		}
+		if (sad.getConnections() == null) {
+			this.sad.setConnections(SadFactory.eINSTANCE.createSadConnections());
+		}
 
-			for (final ScaComponent comp : this.waveform.getComponents()) {
-				for (final ScaPort< ? , ? > port : comp.getPorts()) {
-					if (port instanceof ScaUsesPort) {
-						final ScaUsesPort uses = (ScaUsesPort) port;
-						for (final ScaConnection con : uses.getConnections()) {
-							if (con != null) {
-								initConnection(con);
-							}
-						}
-					}
+		createComponentMappings();
+		createConnectionMappings(waveform.getComponents(), sad.getConnections().getConnectInterface());
+	}
+
+	/**
+	 * Map each component instantiation in the XML to an actual running component
+	 */
+	private void createComponentMappings() {
+		List<ScaComponent> liveComponents = new ArrayList<>(this.waveform.getComponents());
+		for (SadComponentInstantiation xmlComponent : sad.getAllComponentInstantiations()) {
+			ScaComponent component = null;
+			for (ScaComponent liveComponent : liveComponents) {
+				if (PluginUtil.equals(liveComponent.getInstantiationIdentifier(), xmlComponent.getId())) {
+					liveComponents.remove(liveComponent);
+					component = liveComponent;
+					break;
 				}
 			}
+
+			// Put component <--> XML profile mapping in our map; component may be null if a component is mentioned
+			// in the XML but missing in the live waveform
+			modelMap.put(component, xmlComponent);
+		}
+
+		// Create XML for any live components we can't find XML for
+		for (ScaComponent liveComponent : liveComponents) {
+			initComponent(liveComponent);
 		}
 	}
 
