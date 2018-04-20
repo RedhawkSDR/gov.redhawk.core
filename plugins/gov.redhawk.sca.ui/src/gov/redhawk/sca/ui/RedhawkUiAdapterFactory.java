@@ -70,7 +70,7 @@ public class RedhawkUiAdapterFactory implements IAdapterFactory {
 	}
 
 	/**
-	 * @since 11.0
+	 * @since 11.1
 	 */
 	protected IPropertySource2 createPropertySource(final Object adaptableObject, final IItemPropertySource itemPropertySource) {
 		return new ScaPropertySource(adaptableObject, itemPropertySource);

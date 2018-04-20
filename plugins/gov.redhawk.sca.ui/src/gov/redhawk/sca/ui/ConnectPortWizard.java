@@ -50,7 +50,7 @@ public class ConnectPortWizard extends Wizard {
 	}
 
 	/**
-	 * @since 11.0
+	 * @since 11.1
 	 */
 	public ConnectPortWizard(Map<String, Boolean> connectionIds) {
 		setWindowTitle("Connect");

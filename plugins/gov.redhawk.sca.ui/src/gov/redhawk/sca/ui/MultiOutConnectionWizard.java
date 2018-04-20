@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * @since 11.0
+ * @since 11.1
  * 
  * Creates a dialog that allows for selection of predefined connection IDs
  */
