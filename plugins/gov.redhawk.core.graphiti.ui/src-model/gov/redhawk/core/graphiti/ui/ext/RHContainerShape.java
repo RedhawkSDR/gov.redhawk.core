@@ -55,15 +55,15 @@ public interface RHContainerShape extends ContainerShape {
 	public static final String SUPER_USES_PORTS_RECTANGLE = "superUsesPortsContainer";
 
 	/**
-	 * @since 2.0
+	 * @since 2.1
 	 */
 	public static final String SHAPE_START_ORDER_ELLIPSE_SHAPE = "startOrderEllipseShape";
 	/**
-	 * @since 2.0
+	 * @since 2.1
 	 */
 	public static final String GA_START_ORDER_TEXT = "startOrderText";
 	/**
-	 * @since 2.0
+	 * @since 2.1
 	 */
 	public static final String GA_START_ORDER_ELLIPSE = "startOrderEllipse";
 
@@ -390,7 +390,7 @@ public interface RHContainerShape extends ContainerShape {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 2.0
+	 * @since 2.1
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * Returns the start order ellipse
@@ -402,7 +402,7 @@ public interface RHContainerShape extends ContainerShape {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 2.0
+	 * @since 2.1
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * Returns the start order text

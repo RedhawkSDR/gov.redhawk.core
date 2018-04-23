@@ -30,7 +30,7 @@ import mil.jpeojtrs.sca.dcd.DcdConnectInterface;
 import mil.jpeojtrs.sca.sad.SadConnectInterface;
 
 /**
- * @since 2.0
+ * @since 2.1
  */
 public class ConnectionAdapterFactory implements IAdapterFactory {
 
