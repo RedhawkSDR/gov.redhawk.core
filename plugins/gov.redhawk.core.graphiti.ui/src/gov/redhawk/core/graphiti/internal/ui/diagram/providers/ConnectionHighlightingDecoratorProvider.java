@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  */
-package gov.redhawk.core.graphiti.ui.diagram.providers;
+package gov.redhawk.core.graphiti.internal.ui.diagram.providers;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
@@ -17,6 +17,7 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.tb.ColorDecorator;
 import org.eclipse.graphiti.tb.IDecorator;
 
+import gov.redhawk.core.graphiti.ui.diagram.providers.IDecoratorProvider;
 import gov.redhawk.core.graphiti.ui.util.InterfacesUtil;
 import gov.redhawk.core.graphiti.ui.util.StyleUtil;
 import mil.jpeojtrs.sca.partitioning.UsesPortStub;

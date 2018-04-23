@@ -42,6 +42,8 @@ import org.eclipse.graphiti.ui.editor.DiagramBehavior;
 import org.eclipse.graphiti.util.IColorConstant;
 import org.eclipse.swt.graphics.Color;
 
+import gov.redhawk.core.graphiti.internal.ui.diagram.providers.ConnectionHighlightingDecoratorProvider;
+import gov.redhawk.core.graphiti.internal.ui.diagram.providers.PortMonitorDecoratorProvider;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentSupportedInterfaceStub;

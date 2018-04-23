@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  */
-package gov.redhawk.core.graphiti.ui.diagram.providers;
+package gov.redhawk.core.graphiti.internal.ui.diagram.providers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +35,7 @@ import org.omg.CORBA.BAD_OPERATION;
 import BULKIO.PortStatistics;
 import CF.DataType;
 import gov.redhawk.core.graphiti.ui.GraphitiUIPlugin;
+import gov.redhawk.core.graphiti.ui.diagram.providers.IDecoratorProvider;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.preferences.DiagramPreferenceConstants;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
