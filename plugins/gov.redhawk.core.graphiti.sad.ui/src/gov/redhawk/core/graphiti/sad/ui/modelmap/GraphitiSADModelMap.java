@@ -97,7 +97,7 @@ public class GraphitiSADModelMap extends AbstractGraphitiModelMap {
 				try {
 					newComp = (SadComponentInstantiation) GraphitiSADModelMap.this.create(comp, subMonitor.newChild(1));
 					nodeMapEntry.setProfile(newComp);
-					reflectRuntimeStatus();
+					startStopComponent(comp, comp.getStarted());
 					return Status.OK_STATUS;
 				} catch (CoreException e) {
 					nodes.remove(nodeMapEntry.getKey());
