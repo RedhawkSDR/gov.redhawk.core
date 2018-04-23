@@ -11,23 +11,18 @@
 package gov.redhawk.logging.ui.handlers;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.Callable;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.omg.CORBA.BAD_OPERATION;
@@ -35,7 +30,7 @@ import org.omg.CORBA.TRANSIENT;
 
 import CF.LogConfigurationOperations;
 import gov.redhawk.logging.ui.dialogs.SetLogLevelDialog;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 
 public class SetLoggingLevel extends AbstractHandler {
 
@@ -85,28 +80,12 @@ public class SetLoggingLevel extends AbstractHandler {
 		/**
 		 * This is the first progress monitor dialog, fetching the current log level of the resource.
 		 */
-		ProgressMonitorDialog fetchingCurrentDialog = new ProgressMonitorDialog(activeShell);
 		try {
-			fetchingCurrentDialog.run(true, true, new IRunnableWithProgress() {
-
-				@Override
-				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-					try {
-						monitor.beginTask("Fetching current log level...", IProgressMonitor.UNKNOWN);
-
-						currentLogLevel = CorbaUtils.invoke(new Callable<Integer>() {
-							@Override
-							public Integer call() throws Exception {
-								return resource.log_level();
-							}
-
-						}, monitor);
-					} catch (CoreException e) {
-						// Wrap the exception so we can deal with it outside of this UI thread.
-						throw new InvocationTargetException(e);
-					}
-
-				}
+			new ProgressMonitorDialog(activeShell).run(true, true, monitor -> {
+				monitor.beginTask("Fetching current log level...", IProgressMonitor.UNKNOWN);
+				currentLogLevel = CorbaUtils2.invokeUI(() -> {
+					return resource.log_level();
+				}, monitor);
 			});
 		} catch (InvocationTargetException e) {
 			// Determine what caused the error via getErrorCause.
@@ -122,35 +101,20 @@ public class SetLoggingLevel extends AbstractHandler {
 		// This is our custom dialog to set the log level of the resource.
 		SetLogLevelDialog dialog = new SetLogLevelDialog(activeShell, currentLogLevel);
 		if (dialog.open() == Dialog.OK) {
-
 			final int desiredLogLevel = dialog.getDesiredLogLevel();
 
 			// Our third and final dialog, showing progress as the logging level is set.
-			ProgressMonitorDialog settingDesiredDialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
 			try {
-				settingDesiredDialog.run(true, true, new IRunnableWithProgress() {
-
-					@Override
-					public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+				new ProgressMonitorDialog(activeShell).run(true, true, monitor -> {
+					monitor.beginTask("Setting log level...", IProgressMonitor.UNKNOWN);
+					CorbaUtils2.invokeUI(() -> {
 						try {
-							monitor.beginTask("Setting log level...", IProgressMonitor.UNKNOWN);
-							CorbaUtils.invoke(new Callable<IStatus>() {
-								@Override
-								public IStatus call() throws Exception {
-									try {
-										resource.log_level(desiredLogLevel);
-									} catch (IllegalStateException e) {
-										throw new Exception("The resource is no longer available.");
-									}
-									return Status.OK_STATUS;
-								}
-
-							}, monitor);
-						} catch (CoreException e) {
-							throw new InvocationTargetException(e);
+							resource.log_level(desiredLogLevel);
+							return null;
+						} catch (IllegalStateException e) {
+							throw new Exception("The resource is no longer available.");
 						}
-
-					}
+					}, monitor);
 				});
 			} catch (InvocationTargetException e) {
 				MessageDialog warnDialog = new MessageDialog(activeShell, "Could not set log level", null, getErrorCause(e), MessageDialog.ERROR,
@@ -166,12 +130,12 @@ public class SetLoggingLevel extends AbstractHandler {
 
 	private String getErrorCause(InvocationTargetException e) {
 		StringBuffer sb = new StringBuffer();
-		if (e.getTargetException().getCause() instanceof BAD_OPERATION) {
+		if (e.getCause() instanceof BAD_OPERATION) {
 			sb.append("The resource is responding but does not appear to support the logging API (Received BAD_OPERATION exception)");
-		} else if (e.getTargetException().getCause() instanceof TRANSIENT) {
-			sb.append("The resource is not responding: " + e.getTargetException().getCause().getMessage());
+		} else if (e.getCause() instanceof TRANSIENT) {
+			sb.append("The resource is not responding: " + e.getCause().getMessage());
 		} else {
-			sb.append("An unexpected exception occured: " + e.getTargetException().getCause().getMessage());
+			sb.append("An unexpected exception occured: " + e.getCause().getMessage());
 		}
 		return sb.toString();
 	}

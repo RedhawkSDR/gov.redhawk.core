@@ -10,30 +10,22 @@
  *******************************************************************************/
 package gov.redhawk.frontend.ui;
 
-import java.util.concurrent.Callable;
-
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 
 import CF.DataType;
 import CF.PropertiesHelper;
-import CF.DevicePackage.InsufficientCapacity;
-import CF.DevicePackage.InvalidCapacity;
-import CF.DevicePackage.InvalidState;
 import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
 import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperty;
 import gov.redhawk.frontend.util.TunerUtils;
-import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaStructProperty;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import gov.redhawk.sca.model.jobs.AllocateJob;
+import gov.redhawk.sca.model.jobs.DeallocateJob;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public final class TunerStatusUtil {
@@ -77,90 +69,21 @@ public final class TunerStatusUtil {
 
 	public static Job createDeallocationJob(final TunerStatus tuner, final DataType[] props) {
 		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
-		Job job = new Job("FEI Deallocate Listener") {
-			@Override
-			protected IStatus run(IProgressMonitor parentMonitor) {
-				if (!TunerStatusUtil.containsListener(tuner, props)) {
-					return Status.CANCEL_STATUS;
-				}
-				try {
-					SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Deallocating listener...", 2);
-					if (device != null && !device.isDisposed()) {
-						CorbaUtils.invoke(new Callable<IStatus>() {
-
-							@Override
-							public IStatus call() throws Exception {
-								try {
-									device.deallocateCapacity(props);
-									return Status.OK_STATUS;
-								} catch (InvalidCapacity e) {
-									return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in deallocation: " + e.msg, e);
-								} catch (InvalidState e) {
-									return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in deallocation: " + e.msg, e);
-								}
-							}
-
-						}, subMonitor.newChild(1));
-						device.refresh(subMonitor.newChild(1), RefreshDepth.SELF);
-					}
-				} catch (InterruptedException e) {
-					return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during deallocation", e);
-				} catch (CoreException e) {
-					return new Status(e.getStatus().getSeverity(), FrontEndUIActivator.PLUGIN_ID, "Failed to deallocate tuner", e);
-				}
-				return Status.OK_STATUS;
-			}
-		};
+		DeallocateJob job = new DeallocateJob(device, props);
+		job.setName("FEI Deallocate Listener");
 		return job;
 	}
 
 	public static IStatus allocateTuner(IProgressMonitor monitor, final TunerStatus tuner, final DataType[] props) {
 		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
-		final SubMonitor subMonitor = SubMonitor.convert(monitor, "Allocating tuner " + tuner.getAllocationID(), IProgressMonitor.UNKNOWN);
-		try {
-			IStatus status = CorbaUtils.invoke(new Callable<IStatus>() {
-
-				@Override
-				public IStatus call() throws Exception {
-					try {
-						subMonitor.subTask("Allocating capacity...");
-						if (device.allocateCapacity(props)) {
-							return Status.OK_STATUS;
-						} else {
-							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Allocation failed.", null);
-						}
-					} catch (InvalidCapacity e) {
-						return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in allocation: " + e.msg, e);
-					} catch (InvalidState e) {
-						return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in allocation: " + e.msg, e);
-					} catch (InsufficientCapacity e) {
-						return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Insufficient Capacity in allocation: " + e.msg, e);
-					}
-				}
-
-			}, subMonitor.newChild(1));
-			if (!status.isOK()) {
-				return status;
-			}
-			subMonitor.subTask("Refeshing device...");
-			device.refresh(subMonitor.newChild(1), RefreshDepth.SELF);
-			return Status.OK_STATUS;
-		} catch (InterruptedException e) {
-			return Status.CANCEL_STATUS;
-		} catch (CoreException e) {
-			return new Status(e.getStatus().getSeverity(), FrontEndUIActivator.PLUGIN_ID, "Failed to allocate tuner.", e);
-		} finally {
-			subMonitor.done();
-		}
+		AllocateJob job = new AllocateJob(device, props);
+		return job.run(monitor);
 	}
 
 	public static Job createAllocationJob(final TunerStatus tuner, final DataType[] props) {
-		return new Job("Allocating tuner " + tuner.getAllocationID()) {
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				return TunerStatusUtil.allocateTuner(monitor, tuner, props);
-			}
-		};
-
+		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
+		AllocateJob job = new AllocateJob(device, props);
+		job.setName("Allocating tuner " + tuner.getAllocationID());
+		return job;
 	}
 }

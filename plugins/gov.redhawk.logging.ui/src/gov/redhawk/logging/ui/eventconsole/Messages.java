@@ -17,11 +17,9 @@ public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "gov.redhawk.logging.ui.eventconsole.messages"; //$NON-NLS-1$
 	public static String EventChannelToConsoleStream_1;
 	public static String EventChannelToConsoleStream_2;
-	public static String EventChannelToConsoleStream_3;
 	public static String EventChannelToConsoleStream_4;
 	public static String EventChannelToConsoleStream_5;
 	public static String EventChannelToConsoleStream_6;
-	public static String EventChannelToConsoleStream_7;
 	public static String EventChannelToConsoleStream_8;
 	public static String StopEventConsoleAction_0;
 	static {

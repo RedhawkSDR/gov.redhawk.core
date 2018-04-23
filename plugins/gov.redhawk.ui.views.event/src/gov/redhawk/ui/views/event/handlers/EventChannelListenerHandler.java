@@ -15,7 +15,6 @@ import java.util.List;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -45,7 +44,7 @@ import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.ui.views.event.EventView;
 import gov.redhawk.ui.views.event.EventViewPlugin;
 import gov.redhawk.ui.views.namebrowser.view.BindingNode;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public class EventChannelListenerHandler extends AbstractHandler {
@@ -144,19 +143,16 @@ public class EventChannelListenerHandler extends AbstractHandler {
 		Job connectJob = Job.create(Messages.bind(Messages.EventChannelListenerHandler_ConnectToEventChannelJobTitle, uiName), monitor -> {
 			try {
 				// Make the connection
-				CorbaUtils.invoke(() -> {
+				return CorbaUtils2.invoke(() -> {
 					finalView.connect(channel, usesPort, connectionID);
-					return null;
+					return Status.OK_STATUS;
 				}, monitor);
-				return Status.CANCEL_STATUS;
-			} catch (CoreException e1) {
-				return new Status(e1.getStatus().getSeverity(), EventViewPlugin.PLUGIN_ID, Messages.bind(Messages.EventChannelListenerHandler_CannotConnectToEventChannel, uiName), e1);
-			} catch (InterruptedException e1) {
-				return Status.CANCEL_STATUS;
+			} catch (java.util.concurrent.ExecutionException e) {
+				return new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID,
+					Messages.bind(Messages.EventChannelListenerHandler_CannotConnectToEventChannel, uiName), e.getCause());
 			}
 		});
 		connectJob.setUser(true);
-		connectJob.setSystem(false);
 		connectJob.schedule();
 		return finalView;
 	}
@@ -186,23 +182,20 @@ public class EventChannelListenerHandler extends AbstractHandler {
 		// Connect the event channel to the view
 		Job connectJob = Job.create(Messages.bind(Messages.EventChannelListenerHandler_ConnectToEventChannelJobTitle, uiName), monitor -> {
 			try {
-				CorbaUtils.invoke(() -> {
+				return CorbaUtils2.invoke(() -> {
 					try {
 						org.omg.CORBA.Object ref = node.getNamingContext().resolve_str(name);
 						EventChannel eventChannel = EventChannelHelper.narrow(ref);
 						finalView.connect(name, eventChannel);
+						return Status.OK_STATUS;
 					} catch (NotFound | CannotProceed | InvalidName e) {
-						throw new CoreException(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID,
-							Messages.bind(Messages.EventChannelListenerHandler_CannotConnectToEventChannel, uiName), e));
+						return new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID,
+							Messages.bind(Messages.EventChannelListenerHandler_CannotConnectToEventChannel, uiName), e);
 					}
-					return null;
 				}, monitor);
-				return Status.CANCEL_STATUS;
-			} catch (CoreException e1) {
-				return new Status(e1.getStatus().getSeverity(), EventViewPlugin.PLUGIN_ID,
-					Messages.bind(Messages.EventChannelListenerHandler_CannotConnectToEventChannel, name), e1);
-			} catch (InterruptedException e1) {
-				return Status.CANCEL_STATUS;
+			} catch (java.util.concurrent.ExecutionException e) {
+				return new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID,
+					Messages.bind(Messages.EventChannelListenerHandler_CannotConnectToEventChannel, uiName), e.getCause());
 			}
 		});
 		connectJob.setUser(true);
@@ -237,16 +230,13 @@ public class EventChannelListenerHandler extends AbstractHandler {
 		// Connect the event channel to the view
 		Job connectJob = Job.create(Messages.bind(Messages.EventChannelListenerHandler_ConnectToEventChannelJobTitle, uiName), monitor -> {
 			try {
-				CorbaUtils.invoke(() -> {
+				return CorbaUtils2.invoke(() -> {
 					finalView.connect(domMgr, channel.getName());
-					return null;
+					return Status.OK_STATUS;
 				}, monitor);
-				return Status.OK_STATUS;
-			} catch (CoreException e1) {
-				return new Status(e1.getStatus().getSeverity(), EventViewPlugin.PLUGIN_ID,
-					Messages.bind(Messages.EventChannelListenerHandler_CannotConnectToEventChannel, uiName), e1);
-			} catch (InterruptedException e1) {
-				return Status.CANCEL_STATUS;
+			} catch (java.util.concurrent.ExecutionException e) {
+				return new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID,
+					Messages.bind(Messages.EventChannelListenerHandler_CannotConnectToEventChannel, uiName), e.getCause());
 			}
 		});
 		connectJob.setUser(true);

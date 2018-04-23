@@ -15,7 +15,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -105,7 +103,6 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
@@ -163,7 +160,7 @@ import gov.redhawk.internal.ui.editor.DeletionWatcher;
 import gov.redhawk.internal.ui.editor.validation.ValidatingEContentAdapter;
 import gov.redhawk.ui.RedhawkUiActivator;
 import gov.redhawk.ui.util.ViewerUtil;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 import mil.jpeojtrs.sca.validator.AdvancedEObjectValidator;
 
 /**
@@ -1077,24 +1074,11 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			//
 			if (Display.getCurrent() != null) {
 				ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
-				dialog.run(true, true, new IRunnableWithProgress() {
-
-					@Override
-					public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-						try {
-							monitor.beginTask("Loading XML...", IProgressMonitor.UNKNOWN);
-							mainResource = CorbaUtils.invoke(new Callable<Resource>() {
-								@Override
-								public Resource call() throws Exception {
-									return editingDomain.getResourceSet().getResource(decodedURI, true);
-								}
-
-							}, monitor);
-						} catch (CoreException e) {
-							throw new InvocationTargetException(e);
-						}
-
-					}
+				dialog.run(true, true, monitor -> {
+					monitor.beginTask("Loading XML...", IProgressMonitor.UNKNOWN);
+					mainResource = CorbaUtils2.invokeUI(() -> {
+						return editingDomain.getResourceSet().getResource(decodedURI, true);
+					}, monitor);
 				});
 			} else {
 				mainResource = editingDomain.getResourceSet().getResource(decodedURI, true);

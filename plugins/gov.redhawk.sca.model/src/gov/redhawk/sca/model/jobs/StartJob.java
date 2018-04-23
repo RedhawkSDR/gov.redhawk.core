@@ -10,9 +10,8 @@
  */
 package gov.redhawk.sca.model.jobs;
 
-import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -22,7 +21,7 @@ import CF.ResourceOperations;
 import CF.ResourcePackage.StartError;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import mil.jpeojtrs.sca.util.CFErrorFormatter;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 
 /**
  * @since 21.1
@@ -42,27 +41,18 @@ public class StartJob extends Job {
 	protected IStatus run(IProgressMonitor monitor) {
 		monitor.beginTask(getName(), IProgressMonitor.UNKNOWN);
 		try {
-			CorbaUtils.invoke(new Callable<Void>() {
-				public Void call() throws Exception {
+			return CorbaUtils2.invoke(() -> {
+				try {
 					resource.start();
-					return null;
+					return Status.OK_STATUS;
+				} catch (StartError e) {
+					return new Status(IStatus.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e, this.resourceName), e);
 				}
 			}, monitor);
-		} catch (CoreException e) {
-			Throwable cause = e.getCause();
-			if (cause instanceof StartError) {
-				StartError startError = (StartError) cause;
-				return new Status(IStatus.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(startError, this.resourceName), startError);
-			} else {
-				String errorMsg = String.format("Unable to start %s", this.resourceName);
-				return new Status(IStatus.ERROR, ScaModelPlugin.ID, errorMsg, cause);
-			}
-		} catch (InterruptedException e) {
-			return Status.CANCEL_STATUS;
-		} finally {
-			monitor.done();
+		} catch (ExecutionException e) {
+			String errorMsg = String.format("Unable to start %s", this.resourceName);
+			return new Status(IStatus.ERROR, ScaModelPlugin.ID, errorMsg, e.getCause());
 		}
-		return Status.OK_STATUS;
 	}
 
 }

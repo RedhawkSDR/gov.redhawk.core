@@ -13,7 +13,7 @@ package gov.redhawk.frontend.util;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -52,7 +52,7 @@ import mil.jpeojtrs.sca.prf.PropertyValueType;
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructSequence;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 import mil.jpeojtrs.sca.util.collections.FeatureMapList;
 
@@ -333,33 +333,20 @@ public enum TunerProperties {
 				if (simple == null || PluginUtil.equals(simple.getValue(), notification.getNewValue())) {
 					return;
 				}
-				Job job = new Job("Update device property: " + prop.getName()) {
-
-					@Override
-					protected IStatus run(IProgressMonitor parentMonitor) {
-						final SubMonitor subMonitor = SubMonitor.convert(parentMonitor,
-							"Setting value of " + prop.getName() + " to " + notification.getNewValue(), IProgressMonitor.UNKNOWN);
-						IStatus retVal;
-						try {
-							retVal = CorbaUtils.invoke(new Callable<IStatus>() {
-
-								@Override
-								public IStatus call() throws CoreException {
-									TunerStatusAllocationProperties.doRun(device, feiAttr, finalAllocationId, notification.getNewValue());
-									return Status.OK_STATUS;
-								}
-
-							}, subMonitor.newChild(1));
-						} catch (CoreException e) {
-							return new Status(e.getStatus().getSeverity(), "gov.redhawk.frontend", "Failed to update device property: " + prop.getName(), e);
-						} catch (InterruptedException e) {
-							return Status.CANCEL_STATUS;
-						}
+				Job job = Job.create("Update device property: " + prop.getName(), parentMonitor -> {
+					final SubMonitor subMonitor = SubMonitor.convert(parentMonitor,
+						"Setting value of " + prop.getName() + " to " + notification.getNewValue(), IProgressMonitor.UNKNOWN);
+					try {
+						return CorbaUtils2.invoke(() -> {
+							TunerStatusAllocationProperties.doRun(device, feiAttr, finalAllocationId, notification.getNewValue());
+							return Status.OK_STATUS;
+						}, subMonitor.newChild(1));
+					} catch (ExecutionException e) {
+						return new Status(IStatus.ERROR, "gov.redhawk.frontend", "Failed to update device property: " + prop.getName(), e.getCause());
+					} finally {
 						device.fetchProperties(subMonitor.newChild(1));
-						return retVal;
 					}
-
-				};
+				});
 				job.setUser(true);
 				job.setSystem(false);
 				job.schedule();

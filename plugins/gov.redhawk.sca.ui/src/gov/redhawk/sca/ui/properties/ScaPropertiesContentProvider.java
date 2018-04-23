@@ -11,21 +11,8 @@
  */
 package gov.redhawk.sca.ui.properties;
 
-import gov.redhawk.model.sca.ScaAbstractProperty;
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaPropertyContainer;
-import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
-import gov.redhawk.sca.internal.ui.properties.ScaSimplePropertyValuePropertyDescriptor;
-import gov.redhawk.sca.internal.ui.properties.SequencePropertyValueDescriptor;
-import gov.redhawk.sca.ui.ScaModelAdapterFactoryContentProvider;
-import gov.redhawk.sca.ui.ScaUiPlugin;
-import mil.jpeojtrs.sca.util.CFErrorFormatter;
+import java.util.concurrent.ExecutionException;
 
-import mil.jpeojtrs.sca.util.CorbaUtils;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
@@ -40,6 +27,17 @@ import org.omg.CORBA.Any;
 
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
+import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaPropertyContainer;
+import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
+import gov.redhawk.sca.internal.ui.properties.ScaSimplePropertyValuePropertyDescriptor;
+import gov.redhawk.sca.internal.ui.properties.SequencePropertyValueDescriptor;
+import gov.redhawk.sca.ui.ScaModelAdapterFactoryContentProvider;
+import gov.redhawk.sca.ui.ScaUiPlugin;
+import mil.jpeojtrs.sca.util.CFErrorFormatter;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 /**
  * A content provider for SCA model property objects. Supports both design time and runtime.
@@ -103,45 +101,42 @@ public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentP
 
 			// Use a job to set the remote value via CORBA call
 			final String jobText = String.format("Setting value for property %s", prop.getId());
-			final Job setJob = new Job(jobText) {
-				@Override
-				protected IStatus run(final IProgressMonitor monitor) {
-					boolean okay = true;
-					try {
-						IStatus status = CorbaUtils.invoke(() -> {
-							try {
-								prop.setRemoteValue(any);
-								return Status.OK_STATUS;
-							} catch (final PartialConfiguration e) {
-								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
-							} catch (final InvalidConfiguration e) {
-								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
-							}
-						}, monitor);
-						okay = status.isOK();
-						return status;
-					} catch (CoreException e) {
+			final Job setJob = Job.create(jobText, monitor -> {
+				boolean okay = true;
+				try {
+					IStatus status = CorbaUtils2.invoke(() -> {
+						try {
+							prop.setRemoteValue(any);
+							return Status.OK_STATUS;
+						} catch (final PartialConfiguration e) {
+							return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
+						} catch (final InvalidConfiguration e) {
+							return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
+						}
+					}, monitor);
+					if (!status.isOK()) {
 						okay = false;
-						return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getStatus().getMessage(), e);
-					} catch (InterruptedException e) {
-						return Status.CANCEL_STATUS;
-					} finally {
-						// If there was a problem, we fetch properties to try and get them back in a representative
-						// state. If there wasn't a problem, the model should already be consistent.
-						if (!okay) {
-							final ScaPropertyContainer< ? , ? > parent = ScaEcoreUtils.getEContainerOfType(prop, ScaPropertyContainer.class);
-							try {
-								CorbaUtils.invoke(() -> {
-									parent.fetchProperties(monitor);
-									return null;
-								}, monitor);
-							} catch (CoreException | InterruptedException e) {
-								// PASS
-							}
+					}
+					return status;
+				} catch (ExecutionException e) {
+					okay = false;
+					return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Unable to set remote property value", e.getCause());
+				} finally {
+					// If there was a problem, we fetch properties to try and get them back in a representative
+					// state. If there wasn't a problem, the model should already be consistent.
+					if (!okay) {
+						final ScaPropertyContainer< ? , ? > parent = ScaEcoreUtils.getEContainerOfType(prop, ScaPropertyContainer.class);
+						try {
+							CorbaUtils2.invoke(() -> {
+								parent.fetchProperties(monitor);
+								return null;
+							}, monitor);
+						} catch (ExecutionException e) {
+							// PASS
 						}
 					}
 				}
-			};
+			});
 			setJob.schedule();
 		}
 	}

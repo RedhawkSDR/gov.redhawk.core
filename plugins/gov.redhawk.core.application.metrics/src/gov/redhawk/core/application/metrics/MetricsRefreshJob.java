@@ -12,8 +12,8 @@ package gov.redhawk.core.application.metrics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -26,7 +26,7 @@ import org.omg.CORBA.BAD_PARAM;
 
 import CF.DataType;
 import gov.redhawk.model.sca.ScaWaveform;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 import mil.jpeojtrs.sca.util.metrics.Metric;
 
 public class MetricsRefreshJob extends Job {
@@ -52,31 +52,23 @@ public class MetricsRefreshJob extends Job {
 		boolean unsupported = false;
 		List<Metric> metrics = new ArrayList<>();
 		try {
-			DataType[] props = CorbaUtils.invoke(() -> {
+			DataType[] props = CorbaUtils2.invoke(() -> {
 				return this.waveform.metrics(new String[0], new String[0]);
 			}, progress.newChild(9));
 			for (int i = 0; i < props.length; i++) {
 				metrics.add(new Metric(props[i]));
 			}
-		} catch (CoreException e) {
+		} catch (ExecutionException e) {
 			if (e.getCause() instanceof BAD_PARAM) {
 				unsupported = true;
 				Metric metric = new Metric();
 				metric.setId(Messages.MetricsRefreshJob_NotSupported);
 				metrics.add(metric);
-			} else if (!progress.isCanceled()) {
+			} else {
 				Metric metric = new Metric();
 				metric.setId(Messages.MetricsRefreshJob_ErrorRetrieving);
 				metrics.add(metric);
-			} else {
-				return Status.CANCEL_STATUS;
 			}
-		} catch (InterruptedException e) {
-			return Status.CANCEL_STATUS;
-		}
-
-		if (progress.isCanceled()) {
-			return Status.CANCEL_STATUS;
 		}
 
 		// Send to viewer

@@ -13,14 +13,12 @@ package gov.redhawk.sca.internal.ui.handlers;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.Callable;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.expressions.IEvaluationContext;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -48,7 +46,8 @@ import gov.redhawk.sca.ui.ScaContentProvider;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.scd.SupportsInterface;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CFErrorFormatter;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 
 public class ConnectPortHandler extends AbstractHandler implements IHandler {
 
@@ -69,32 +68,24 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 
 		@Override
 		protected IStatus run(final IProgressMonitor monitor) {
-			monitor.beginTask("Connecting " + usesPort.getName(), IProgressMonitor.UNKNOWN);
+			final String resourceName = "port " + usesPort.getName();
+			monitor.beginTask("Connecting " + resourceName, IProgressMonitor.UNKNOWN);
 			try {
-				CorbaUtils.invoke(new Callable<Object>() {
-
-					@Override
-					public Object call() throws Exception {
-						try {
-							usesPort.connectPort(target, connectionID);
-						} catch (final InvalidPort e) {
-							throw new CoreException(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect " + e.msg, e));
-						} catch (final OccupiedPort e) {
-							throw new CoreException(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect", e));
-						} catch (final SystemException e) {
-							throw new CoreException(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect", e));
-						}
-						return null;
+				return CorbaUtils2.invoke(() -> {
+					try {
+						usesPort.connectPort(target, connectionID);
+						return Status.OK_STATUS;
+					} catch (final InvalidPort e) {
+						return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e, resourceName), e);
+					} catch (final OccupiedPort e) {
+						return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e, resourceName), e);
+					} catch (final SystemException e) {
+						return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect " + resourceName, e);
 					}
-
 				}, monitor);
-			} catch (CoreException e) {
-				return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
-			} catch (InterruptedException e) {
-				return Status.CANCEL_STATUS;
+			} catch (java.util.concurrent.ExecutionException e) {
+				return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect " + resourceName, e.getCause());
 			}
-
-			return Status.OK_STATUS;
 		}
 	}
 

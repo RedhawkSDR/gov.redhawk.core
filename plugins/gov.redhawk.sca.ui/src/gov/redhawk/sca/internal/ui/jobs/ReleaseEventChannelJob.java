@@ -10,7 +10,8 @@
  */
 package gov.redhawk.sca.internal.ui.jobs;
 
-import org.eclipse.core.runtime.CoreException;
+import java.util.concurrent.ExecutionException;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -28,7 +29,7 @@ import gov.redhawk.model.sca.ScaEventChannel;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.util.SubMonitor;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 
 public class ReleaseEventChannelJob extends Job {
 
@@ -53,44 +54,36 @@ public class ReleaseEventChannelJob extends Job {
 
 		EventChannelManager ecm;
 		try {
-			ecm = CorbaUtils.invoke(() -> {
+			ecm = CorbaUtils2.invoke(() -> {
 				return domMgr.eventChannelMgr();
 			}, progress.split(1));
-		} catch (InterruptedException e) {
-			return Status.CANCEL_STATUS;
-		} catch (CoreException e) {
+		} catch (ExecutionException e) {
 			String msg = Messages.bind(Messages.ReleaseEventChannelJob_CannotGetECM, name);
-			return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, msg, e);
+			return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, msg, e.getCause());
 		}
 
 		try {
-			CorbaUtils.invoke(() -> {
-				String msg = null;
-				Exception ex = null;
+			IStatus status = CorbaUtils2.invoke(() -> {
 				try {
 					ecm.release(name);
+					return Status.OK_STATUS;
 				} catch (ChannelDoesNotExist e) {
-					msg = Messages.bind(Messages.ReleaseEventChannelJob_ChannelDoesNotExist, name);
-					ex = e;
+					String msg = Messages.bind(Messages.ReleaseEventChannelJob_ChannelDoesNotExist, name);
+					return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, msg, e);
 				} catch (RegistrationsExists e) {
-					msg = Messages.bind(Messages.ReleaseEventChannelJob_RegistrationExists, name);
-					ex = e;
+					String msg = Messages.bind(Messages.ReleaseEventChannelJob_RegistrationExists, name);
+					return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, msg, e);
 				} catch (OperationNotAllowed | OperationFailed | ServiceUnavailable e) {
-					msg = Messages.bind(Messages.ReleaseEventChannelJob_OtherECMError, e.getClass().getName());
-					ex = e;
+					String msg = Messages.bind(Messages.ReleaseEventChannelJob_OtherECMError, name);
+					return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, msg, e);
 				}
-				if (msg != null) {
-					IStatus status = new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, msg, ex);
-					throw new CoreException(status);
-				}
-
-				return null;
 			}, progress.split(1));
-		} catch (InterruptedException e) {
-			return Status.CANCEL_STATUS;
-		} catch (CoreException e) {
+			if (!status.isOK()) {
+				return status;
+			}
+		} catch (ExecutionException e) {
 			String msg = Messages.bind(Messages.ReleaseEventChannelJob_ErrorStatusMessage, name);
-			return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, msg, e);
+			return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, msg, e.getCause());
 		}
 
 		// Remove the ScaEventChannel from the model

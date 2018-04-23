@@ -19,7 +19,6 @@ public class Messages extends NLS {
 	public static String CreateEventChannelLogger_1;
 	public static String CreateEventChannelLogger_10;
 	public static String CreateEventChannelLogger_11;
-	public static String CreateEventChannelLogger_12;
 	public static String CreateEventChannelLogger_13;
 	public static String CreateEventChannelLogger_3;
 	public static String CreateEventChannelLogger_4;

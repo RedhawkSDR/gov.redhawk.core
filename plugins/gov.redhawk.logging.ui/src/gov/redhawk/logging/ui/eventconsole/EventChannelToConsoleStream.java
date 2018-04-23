@@ -11,7 +11,7 @@
 package gov.redhawk.logging.ui.eventconsole;
 
 import java.io.IOException;
-import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -42,6 +42,7 @@ import gov.redhawk.model.sca.ScaEventChannel;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.SubMonitor;
 import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 
 /**
  * Receives {@link LogEvent}s from an event channel and writes them to an {@link IOConsole} output stream.
@@ -86,30 +87,23 @@ public class EventChannelToConsoleStream extends PushConsumerPOA {
 
 		// Connect to the event channel
 		try {
-			CorbaUtils.invoke(new Callable<Object>() {
-				@Override
-				public Object call() throws Exception {
-					// Create a new push supplier
-					ProxyPushSupplier tmpPushSupplier = eventChannel.getObj().for_consumers().obtain_push_supplier();
+			CorbaUtils2.invoke(() -> {
+				// Create a new push supplier
+				ProxyPushSupplier tmpPushSupplier = eventChannel.getObj().for_consumers().obtain_push_supplier();
 
-					// Transition the object to our ORB (so we won't lose it if the domain gets disposed)
-					String ior = session.getOrb().object_to_string(tmpPushSupplier);
-					CorbaUtils.release(tmpPushSupplier);
-					pushSupplier = ProxyPushSupplierHelper.unchecked_narrow(session.getOrb().string_to_object(ior));
+				// Transition the object to our ORB (so we won't lose it if the domain gets disposed)
+				String ior = session.getOrb().object_to_string(tmpPushSupplier);
+				CorbaUtils.release(tmpPushSupplier);
+				pushSupplier = ProxyPushSupplierHelper.unchecked_narrow(session.getOrb().string_to_object(ior));
 
-					// Connect this class as a push consumer
-					pushSupplier.connect_push_consumer(pushConsumer);
-					return null;
-				}
+				// Connect this class as a push consumer
+				pushSupplier.connect_push_consumer(pushConsumer);
+				return null;
 			}, progress.newChild(WORK_CONNECT));
-		} catch (CoreException e) {
+		} catch (ExecutionException e) {
 			deactivate();
 			disposeSession();
-			throw new CoreException(new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.EventChannelToConsoleStream_2, e));
-		} catch (InterruptedException e) {
-			deactivate();
-			disposeSession();
-			throw new CoreException(new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.EventChannelToConsoleStream_3));
+			throw new CoreException(new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.EventChannelToConsoleStream_2, e.getCause()));
 		}
 	}
 
@@ -157,18 +151,12 @@ public class EventChannelToConsoleStream extends PushConsumerPOA {
 		}
 
 		try {
-			CorbaUtils.invoke(new Callable<Object>() {
-				@Override
-				public Object call() throws Exception {
-					pushSupplier.disconnect_push_supplier();
-					return null;
-				}
+			CorbaUtils2.invoke(() -> {
+				pushSupplier.disconnect_push_supplier();
+				return null;
 			}, monitor);
-		} catch (CoreException e) {
-			IStatus status = new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.EventChannelToConsoleStream_6, e);
-			LoggingUiPlugin.getDefault().getLog().log(status);
-		} catch (InterruptedException e) {
-			IStatus status = new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.EventChannelToConsoleStream_7);
+		} catch (ExecutionException e) {
+			IStatus status = new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.EventChannelToConsoleStream_6, e.getCause());
 			LoggingUiPlugin.getDefault().getLog().log(status);
 		}
 
