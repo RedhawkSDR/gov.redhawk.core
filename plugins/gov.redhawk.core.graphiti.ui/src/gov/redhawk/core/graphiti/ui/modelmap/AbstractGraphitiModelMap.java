@@ -630,11 +630,8 @@ public abstract class AbstractGraphitiModelMap {
 
 		// Run Graphiti model commands in the UI thread
 		if (Display.getCurrent() == null) {
-			Display.getDefault().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					delete(deleteObj, peClass);
-				}
+			Display.getDefault().asyncExec(() -> {
+				delete(deleteObj, peClass);
 			});
 			return;
 		}

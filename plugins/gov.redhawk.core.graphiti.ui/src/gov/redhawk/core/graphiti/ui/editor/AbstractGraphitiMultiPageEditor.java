@@ -348,25 +348,20 @@ public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor impl
 	 * @param businessObject
 	 */
 	public void refreshSelectedObject(final Object businessObject) {
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				ISelection selection = getSelection();
-				if (!selection.isEmpty()) {
-					IStructuredSelection ss = (IStructuredSelection) selection;
-					Object element = ss.getFirstElement();
-					if (element instanceof EditPart) {
-						EditPart part = (EditPart) element;
-						Object bo = DUtil.getBusinessObject((PictogramElement) part.getModel());
-						if (bo == businessObject) {
-							// The properties view ignores the new selection if it's equal to the old selection, even
-							// though in our case it may lead to a change in input; setting the selection to the whole
-							// diagram and then back to the original selection triggers a refresh.
-							getSite().getSelectionProvider().setSelection(new StructuredSelection(part.getRoot()));
-							getSite().getSelectionProvider().setSelection(selection);
-						}
-					}
-				}
+		Display.getDefault().asyncExec(() -> {
+			IStructuredSelection selection = (IStructuredSelection) getSelection();
+			Object element = selection.getFirstElement();
+			if (!(element instanceof EditPart)) {
+				return;
+			}
+			EditPart part = (EditPart) element;
+			Object bo = DUtil.getBusinessObject((PictogramElement) part.getModel());
+			if (bo == businessObject) {
+				// The properties view ignores the new selection if it's equal to the old selection, even
+				// though in our case it may lead to a change in input; setting the selection to the whole
+				// diagram and then back to the original selection triggers a refresh.
+				setSelection(new StructuredSelection(part.getRoot()));
+				setSelection(selection);
 			}
 		});
 	}
