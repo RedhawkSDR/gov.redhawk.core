@@ -2,13 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: gov.redhawk.core.graphiti.sad.ui;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: gov.redhawk.core.graphiti.sad.ui.diagram.feature;
   x-friends:="gov.redhawk.ide.graphiti.sad.ui",
+ gov.redhawk.core.graphiti.sad.ui.diagram.patterns,
  gov.redhawk.core.graphiti.sad.ui.diagram.providers;
   x-friends:="gov.redhawk.ide.graphiti.sad.ui",
  gov.redhawk.core.graphiti.sad.ui.editor;

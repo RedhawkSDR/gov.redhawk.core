@@ -44,10 +44,12 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.URIHandlerImpl;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.datatypes.IDimension;
+import org.eclipse.graphiti.datatypes.ILocation;
 import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.ILayoutFeature;
 import org.eclipse.graphiti.features.IRemoveFeature;
+import org.eclipse.graphiti.features.context.IResizeShapeContext;
 import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
 import org.eclipse.graphiti.features.context.impl.AddContext;
 import org.eclipse.graphiti.features.context.impl.LayoutContext;
@@ -726,6 +728,26 @@ public class DUtil {
 	}
 
 	/**
+	 * Checks the container shape and all its children and returns any which overlap any of the specified area.
+	 * @param containerShape Usually this should be the {@link Diagram}
+	 * @param width
+	 * @param height
+	 * @param x Absolute x
+	 * @param y Absolute y
+	 * @return
+	 */
+	public static List<Shape> getShapesInArea(final ContainerShape containerShape, int width, int height, int x, int y) {
+		List<Shape> retList = new ArrayList<Shape>();
+		EList<Shape> shapes = containerShape.getChildren();
+		for (Shape s : shapes) {
+			if (shapeExistsPartiallyInArea(s, width, height, x, y)) {
+				retList.add(s);
+			}
+		}
+		return retList;
+	}
+
+	/**
 	 * Layout PictogramElement via feature
 	 * Relies on the framework determining which feature should be used and whether it lay out the shape
 	 * @param featureProvider
@@ -850,6 +872,76 @@ public class DUtil {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Determine if a shape overlaps an area. Coordinates should be absolute.
+	 * @param s
+	 * @param width
+	 * @param height
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public static boolean shapeExistsPartiallyInArea(final Shape s, int width, int height, int x, int y) {
+		GraphicsAlgorithm ga = s.getGraphicsAlgorithm();
+		ILocation shapeLoc = GraphitiUi.getUiLayoutService().getLocationRelativeToDiagram(s);
+		return ((x + width) > ga.getX() && x < (shapeLoc.getX() + ga.getWidth()) && (y + height) > ga.getY() && y < (shapeLoc.getY() + ga.getHeight()));
+	}
+
+	/**
+	 * Adjust children x/y so they remain in the same relative position after resize
+	 * @param containerShape
+	 * @param context
+	 */
+	public static void shiftChildrenRelativeToParentResize(ContainerShape containerShape, IResizeShapeContext context) {
+
+		int widthDiff = containerShape.getGraphicsAlgorithm().getWidth() - context.getWidth();
+		int heightDiff = containerShape.getGraphicsAlgorithm().getHeight() - context.getHeight();
+		switch (context.getDirection()) {
+		case (IResizeShapeContext.DIRECTION_NORTH_EAST):
+			shiftChildrenYPositionUp(containerShape, heightDiff);
+			break;
+		case (IResizeShapeContext.DIRECTION_WEST):
+		case (IResizeShapeContext.DIRECTION_SOUTH_WEST):
+			shiftChildrenXPositionLeft(containerShape, widthDiff);
+			break;
+		case (IResizeShapeContext.DIRECTION_NORTH_WEST):
+			shiftChildrenXPositionLeft(containerShape, widthDiff);
+			shiftChildrenYPositionUp(containerShape, heightDiff);
+			break;
+		case (IResizeShapeContext.DIRECTION_NORTH): // handle top of box getting smaller
+			shiftChildrenYPositionUp(containerShape, heightDiff);
+			break;
+		default:
+			break;
+		}
+	}
+
+	/**
+	 * Shifts children of container x value to the left by specified amount
+	 * Can be negative
+	 * @param ga
+	 * @param shiftLeftAmount
+	 */
+	private static void shiftChildrenXPositionLeft(ContainerShape containerShape, int shiftLeftAmount) {
+		for (Shape s : containerShape.getChildren()) {
+			GraphicsAlgorithm ga = s.getGraphicsAlgorithm();
+			Graphiti.getGaService().setLocation(ga, ga.getX() - shiftLeftAmount, ga.getY());
+		}
+	}
+
+	/**
+	 * Shifts children of container Y value up by specified amount
+	 * Can be negative
+	 * @param ga
+	 * @param shiftUpAmount
+	 */
+	private static void shiftChildrenYPositionUp(ContainerShape containerShape, int shiftUpAmount) {
+		for (Shape s : containerShape.getChildren()) {
+			GraphicsAlgorithm ga = s.getGraphicsAlgorithm();
+			Graphiti.getGaService().setLocation(ga, ga.getX(), ga.getY() - shiftUpAmount);
+		}
 	}
 
 	/**

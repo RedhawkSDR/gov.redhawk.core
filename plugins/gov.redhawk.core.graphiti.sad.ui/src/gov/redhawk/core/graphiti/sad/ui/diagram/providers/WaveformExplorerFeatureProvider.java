@@ -23,6 +23,7 @@ import org.eclipse.graphiti.features.context.impl.CustomContext;
 import org.eclipse.graphiti.features.custom.ICustomFeature;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 
+import gov.redhawk.core.graphiti.sad.ui.diagram.patterns.HostCollocationExplorerPattern;
 import gov.redhawk.core.graphiti.ui.diagram.features.StartFeature;
 import gov.redhawk.core.graphiti.ui.diagram.features.StopFeature;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
@@ -33,6 +34,9 @@ public class WaveformExplorerFeatureProvider extends SADGraphitiFeatureProvider 
 
 	public WaveformExplorerFeatureProvider(IDiagramTypeProvider diagramTypeProvider) {
 		super(diagramTypeProvider);
+
+		// Add the "light" host collocation pattern (no editing)
+		addPattern(new HostCollocationExplorerPattern());
 	}
 
 	@Override

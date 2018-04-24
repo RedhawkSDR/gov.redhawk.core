@@ -170,18 +170,18 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 	}
 
 	public boolean canMoveShape(IMoveShapeContext context) {
-
 		SadComponentInstantiation sadComponentInstantiation = (SadComponentInstantiation) DUtil.getBusinessObject(context.getPictogramElement());
 		if (sadComponentInstantiation == null) {
 			return false;
 		}
 
-		// if moving to HostCollocation to Sad Partitioning
-		if (context.getTargetContainer() instanceof Diagram || DUtil.getBusinessObject(context.getTargetContainer(), HostCollocation.class) != null) {
-			return true;
+		// Disallow moving between containers at runtime
+		if (context.getSourceContainer() != context.getTargetContainer() && DUtil.isDiagramRuntime(getDiagram())) {
+			return false;
 		}
-		return false;
 
+		// Allow moving to the top-level partitioning element, or within a host collocation
+		return context.getTargetContainer() instanceof Diagram || DUtil.getBusinessObject(context.getTargetContainer(), HostCollocation.class) != null;
 	}
 
 	/**
@@ -203,20 +203,13 @@ public class ComponentPattern extends AbstractPortSupplierPattern {
 		HostCollocation sourceHostCollocation = DUtil.getBusinessObject(context.getSourceContainer(), HostCollocation.class);
 		HostCollocation targetHostCollocation = DUtil.getBusinessObject(context.getTargetContainer(), HostCollocation.class);
 
-		if (sourceHostCollocation != null && targetHostCollocation != null && sourceHostCollocation != targetHostCollocation) {
-			// Moving from one host collocation to another
-			sourceHostCollocation.getComponentPlacement().remove((SadComponentPlacement) ci.getPlacement());
-			targetHostCollocation.getComponentPlacement().add((SadComponentPlacement) ci.getPlacement());
-			super.moveShape(context);
-		} else if (targetHostCollocation != null && context.getSourceContainer() instanceof Diagram) {
-			// Moving from top-level partitioning to a host collocation
-			sad.getPartitioning().getComponentPlacement().remove(ci.getPlacement());
+		if (targetHostCollocation != null && (sourceHostCollocation != null || context.getSourceContainer() instanceof Diagram)) {
+			// Moving into a host collocation (from another host collocation, or the top level)
 			targetHostCollocation.getComponentPlacement().add((SadComponentPlacement) ci.getPlacement());
 			super.moveShape(context);
 		} else if (sourceHostCollocation != null && context.getTargetContainer() instanceof Diagram) {
-			// Moving from a host collocation to top-level partitioning
+			// Moving out of a host collocation to the top-level partitioning
 			sad.getPartitioning().getComponentPlacement().add((SadComponentPlacement) ci.getPlacement());
-			sourceHostCollocation.getComponentPlacement().remove((SadComponentPlacement) ci.getPlacement());
 			super.moveShape(context);
 		}
 	}
