@@ -27,6 +27,7 @@ import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import mil.jpeojtrs.sca.dcd.DcdConnectInterface;
+import mil.jpeojtrs.sca.partitioning.ConnectInterface;
 import mil.jpeojtrs.sca.sad.SadConnectInterface;
 
 /**
@@ -34,20 +35,22 @@ import mil.jpeojtrs.sca.sad.SadConnectInterface;
  */
 public class ConnectionAdapterFactory implements IAdapterFactory {
 
-	private static final Class< ? >[] ADAPTER_TYPES = new Class< ? >[] { ScaConnection.class };
+	private static final Class< ? >[] ADAPTER_TYPES = new Class< ? >[] { ScaConnection.class, ConnectInterface.class };
 
 	@Override
 	public < T > T getAdapter(Object adaptableObject, Class<T> adapterType) {
-		if (!(adaptableObject instanceof GraphitiConnectionEditPart)) {
-			return null;
-		}
-
 		GraphitiConnectionEditPart connectionEditPart = (GraphitiConnectionEditPart) adaptableObject;
+
 		if (!(connectionEditPart.getModel() instanceof Connection)) {
 			return null;
 		}
-
 		Connection peConnection = (Connection) connectionEditPart.getPictogramElement();
+
+		ConnectInterface< ? , ? , ? > connectInterface = DUtil.getBusinessObject(peConnection, ConnectInterface.class);
+		if (adapterType.isInstance(connectInterface)) {
+			return adapterType.cast(connectInterface);
+		}
+
 		EObject container = peConnection.eContainer();
 		if (!(container instanceof Diagram)) {
 			return null;
@@ -62,6 +65,7 @@ public class ConnectionAdapterFactory implements IAdapterFactory {
 		if (deviceManager != null) {
 			return getScaConnection(deviceManager, peConnection, adapterType);
 		}
+
 		return null;
 	}
 

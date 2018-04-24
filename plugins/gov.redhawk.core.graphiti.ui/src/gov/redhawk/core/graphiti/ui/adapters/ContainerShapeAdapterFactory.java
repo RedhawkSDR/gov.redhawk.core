@@ -11,8 +11,10 @@
 package gov.redhawk.core.graphiti.ui.adapters;
 
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
+import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.ui.platform.GraphitiShapeEditPart;
 
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
@@ -23,8 +25,10 @@ import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaService;
 import gov.redhawk.model.sca.ScaWaveform;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
+import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
+import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 
 /**
  * Can adapt either:
@@ -38,12 +42,15 @@ import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
  * <li>{@link ScaDevice}</li>
  * <li>{@link ScaService}</li>
  * <li>{@link ScaWaveform}</li>
+ * <li>{@link ScaDeviceManager}</li>
+ * <li>{@link SoftwareAssembly}</li>
+ * <li>{@link DeviceConfiguration}</li>
  * </ul>
  */
 public class ContainerShapeAdapterFactory implements IAdapterFactory {
 
 	private static final Class< ? >[] ADAPTER_TYPES = new Class< ? >[] { ScaWaveform.class, ScaDeviceManager.class, ScaComponent.class, ScaDevice.class,
-		ScaService.class };
+		ScaService.class, SoftwareAssembly.class, DeviceConfiguration.class };
 
 	@Override
 	public < T > T getAdapter(Object adaptableObject, Class<T> adapterType) {
@@ -54,17 +61,12 @@ public class ContainerShapeAdapterFactory implements IAdapterFactory {
 
 		if (adaptableObject instanceof Diagram) {
 			Diagram diagram = (Diagram) adaptableObject;
-			ScaWaveform waveform = DUtil.getBusinessObject(diagram, ScaWaveform.class);
-			ScaDeviceManager deviceManager = DUtil.getBusinessObject(diagram, ScaDeviceManager.class);
-			if (waveform != null) {
-				if (adapterType.isInstance(waveform)) {
-					return adapterType.cast(waveform);
-				}
-			} else if (deviceManager != null) {
-				if (adapterType.isInstance(deviceManager)) {
-					return adapterType.cast(deviceManager);
+			for (EObject eObj : Graphiti.getLinkService().getAllBusinessObjectsForLinkedPictogramElement(diagram)) {
+				if (adapterType.isInstance(eObj)) {
+					return adapterType.cast(eObj);
 				}
 			}
+			return null;
 		}
 
 		// PictogramElement must be an RHContainerShape

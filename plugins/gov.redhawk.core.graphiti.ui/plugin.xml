@@ -127,6 +127,12 @@
          <adapter
                type="CF.LogConfigurationOperations">
          </adapter>
+         <adapter
+               type="mil.jpeojtrs.sca.sad.SoftwareAssembly">
+         </adapter>
+         <adapter
+               type="mil.jpeojtrs.sca.dcd.DeviceConfiguration">
+         </adapter>
       </factory>
       <factory
             adaptableType="gov.redhawk.core.graphiti.ui.ext.RHContainerShape"
@@ -161,6 +167,12 @@
          <adapter
                type="CF.LogConfigurationOperations">
          </adapter>
+         <adapter
+               type="mil.jpeojtrs.sca.sad.SoftwareAssembly">
+         </adapter>
+         <adapter
+               type="mil.jpeojtrs.sca.dcd.DeviceConfiguration">
+         </adapter>
       </factory>
       <factory
             adaptableType="org.eclipse.graphiti.ui.internal.parts.AdvancedAnchorEditPart"
@@ -183,6 +195,9 @@
             class="gov.redhawk.core.graphiti.ui.adapters.ConnectionAdapterFactory">
          <adapter
                type="gov.redhawk.model.sca.ScaConnection">
+         </adapter>
+         <adapter
+               type="mil.jpeojtrs.sca.partitioning.ConnectInterface">
          </adapter>
       </factory>
    </extension>
