@@ -26,7 +26,7 @@ import gov.redhawk.ui.port.nxmplot.PlotSettings;
  * @since 4.4
  */
 public class PlotWizard extends Wizard {
-	private PlotWizardPage page = new PlotWizardPage("settings", "Plot Port Settings", null);
+	private PlotWizardPage page = new PlotWizardPage();
 
 	public PlotWizard(boolean containsBulkIOPort, boolean containsSDDSPort) {
 		this(new HashMap<String, Boolean>(), containsBulkIOPort, containsSDDSPort);
@@ -46,14 +46,6 @@ public class PlotWizard extends Wizard {
 	@Override
 	public void addPages() {
 		addPage(page);
-	}
-	
-	@Override
-	public boolean canFinish() {
-		if (getBulkIOBlockSettings().getConnectionID() == null) {
-			return false;
-		}
-		return super.canFinish();
 	}
 
 	@Override

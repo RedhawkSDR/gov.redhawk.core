@@ -10,10 +10,9 @@
  */
 package gov.redhawk.ui.port.nxmblocks;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import org.apache.commons.lang.WordUtils;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -22,20 +21,15 @@ import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.SelectObservableValue;
-import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
-import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
@@ -43,8 +37,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
 import gov.redhawk.sca.util.ArrayUtil;
 import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings.BlockingOption;
@@ -63,8 +55,7 @@ public class BulkIONxmBlockControls {
 
 	private final BulkIONxmBlockSettings settings;
 	private final DataBindingContext dataBindingCtx;
-	private final Map<String, Boolean> connectionIds;
-	private final List<String> connectionIdList;
+	private final Map<String, Boolean> connectionIdToUsage;
 
 	// widgets
 	private Text connectionIDTextField;
@@ -73,23 +64,18 @@ public class BulkIONxmBlockControls {
 	private Button removeOnEOSButton;
 
 	/**
-	 * 
 	 * @param settings
 	 * @param dataBindingCtx
-	 * @param connectionIds - A {@link String} list. If not empty, indicates that connect ID should be set via a combo
-	 * widget populated with these values.
+	 * @param connectionIdToUsage - If the map is not empty, it contains valid connectino IDs mapped to whether the ID
+	 * is in use. The user will be presented the IDs in a combo box, and validation will be attached.
 	 */
-	public BulkIONxmBlockControls(BulkIONxmBlockSettings settings, DataBindingContext dataBindingCtx, Map<String, Boolean> connectionIds) {
+	public BulkIONxmBlockControls(BulkIONxmBlockSettings settings, DataBindingContext dataBindingCtx, Map<String, Boolean> connectionIdToUsage) {
 		this.settings = settings;
 		this.dataBindingCtx = dataBindingCtx;
-		this.connectionIds = connectionIds;
-		connectionIdList = new ArrayList<String>();
-		for (String key : connectionIds.keySet()) {
-			connectionIdList.add(key);
-		}
+		this.connectionIdToUsage = connectionIdToUsage;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	public void createControls(final Composite container) {
 		container.setLayout(new GridLayout(2, false));
 		Label label;
@@ -97,7 +83,7 @@ public class BulkIONxmBlockControls {
 		// === connection ID ==
 		label = new Label(container, SWT.None);
 		label.setText("Connection ID:");
-		if (connectionIds.isEmpty()) {
+		if (connectionIdToUsage.isEmpty()) {
 			connectionIDTextField = new Text(container, SWT.BORDER);
 			connectionIDTextField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 			connectionIDTextField.setToolTipText("Custom Port connection ID to use vs a generated one.");
@@ -115,34 +101,12 @@ public class BulkIONxmBlockControls {
 				@Override
 				public String getText(Object element) {
 					if (element instanceof Entry) {
-						return ((Entry) element).getKey().toString();
+						return ((Entry< ? , ? >) element).getKey().toString();
 					}
 					return super.getText(element);
 				}
 			});
-			connectionIDComboField.setInput(connectionIds.entrySet());
-
-			// Add control decorator to warning against custom connection ID's for multiout ports
-			ControlDecoration dec = new ControlDecoration(connectionIDComboField.getControl(), SWT.TOP | SWT.LEFT);
-			dec.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_DEC_FIELD_WARNING));
-			dec.hide();
-			String text = WordUtils.wrap(gov.redhawk.model.sca.provider.Messages.MultiOutPortManualConnectionIDWarning, 80);
-			dec.setDescriptionText(text);
-			connectionIDComboField.getControl().addKeyListener(new KeyAdapter() {
-				@Override
-				public void keyReleased(KeyEvent e) {
-					if (!(connectionIdList.contains(connectionIDComboField.getCombo().getText()))) {
-						dec.show();
-					} else {
-						dec.hide();
-					}
-				}
-			});
-			connectionIDComboField.addSelectionChangedListener((event) -> {
-				if (connectionIdList.contains(connectionIDComboField.getCombo().getText()) && dec.isVisible()) {
-					dec.hide();
-				}
-			});
+			connectionIDComboField.setInput(connectionIdToUsage.entrySet());
 		}
 
 		// === sample rate ===
@@ -167,15 +131,15 @@ public class BulkIONxmBlockControls {
 		blockingOptionGroup.setLayout(rowLayout);
 		// add blocking options into radio group
 		BlockingOption[] blockingOptions = BlockingOption.values();
-		SelectObservableValue radioBtnGroupWidgetValue = new SelectObservableValue(BlockingOption.class);
+		SelectObservableValue<BlockingOption> radioBtnGroupWidgetValue = new SelectObservableValue<>(BlockingOption.class);
 		for (BlockingOption b : blockingOptions) {
 			Button button = new Button(blockingOptionGroup, SWT.RADIO);
 			button.setText(b.getLabel());
-			IObservableValue btnWidgetValue = WidgetProperties.selection().observe(button);
+			IObservableValue<Boolean> btnWidgetValue = WidgetProperties.selection().observe(button);
 			radioBtnGroupWidgetValue.addOption(b, btnWidgetValue);
 		}
 		// do data binding here since we need the above radioBtnGroupWidgetValue
-		IObservableValue blockingModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_BLOCKING_OPTION).observe(settings);
+		IObservableValue<BlockingOption> blockingModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_BLOCKING_OPTION).observe(settings);
 		dataBindingCtx.bindValue(radioBtnGroupWidgetValue, blockingModelValue);
 
 		// === remove source from plot on end-of-stream (EOS) ===
@@ -185,53 +149,40 @@ public class BulkIONxmBlockControls {
 		this.removeOnEOSButton.setToolTipText("On/checked to remove streams from plot when an end-of-stream is received in pushPacket.");
 
 		initDataBindings();
-
-		// Set selection at first available connectionId
-		// This needs to happen after the data bindings have been initialized
-		if (connectionIDComboField != null) {
-			for (Entry<String, Boolean> entry : connectionIds.entrySet()) {
-				if (entry.getValue()) {
-					connectionIDComboField.setSelection(new StructuredSelection(entry));
-					return;
-				}
-			}
-			// If we get here, then all the connections are in use, so don't have an entry
-			connectionIDComboField.getCombo().setText("");
-//			connectionIDComboField.setSelection(new StructuredSelection(connectionIds.entrySet().toArray()[0]));
-		}
+		setConnectionIDDefault();
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	private void initDataBindings() {
+		Binding bindingValue;
+		IObservableValue<String> connectionIdModel = PojoProperties.value(BulkIONxmBlockSettings.PROP_CONNECTION_ID).observe(settings);
 		if (connectionIDTextField != null) {
-			IObservableValue target = WidgetProperties.text(SWT.Modify).observe(connectionIDTextField);
-			IObservableValue model = PojoProperties.value(BulkIONxmBlockSettings.PROP_CONNECTION_ID).observe(settings);
-			dataBindingCtx.bindValue(target, model);
+			IObservableValue<String> connectionIdTarget = WidgetProperties.text(SWT.Modify).observe(connectionIDTextField);
+			bindingValue = dataBindingCtx.bindValue(connectionIdTarget, connectionIdModel);
 		} else {
-			IObservableValue target = WidgetProperties.selection().observe(connectionIDComboField.getCombo());
-			IObservableValue model = PojoProperties.value(BulkIONxmBlockSettings.PROP_CONNECTION_ID).observe(settings);
+			IObservableValue< ? > connectionIdTarget = WidgetProperties.selection().observe(connectionIDComboField.getCombo());
 			UpdateValueStrategy targetToModel = new UpdateValueStrategy();
-			targetToModel.setBeforeSetValidator(new IValidator() {
-
-				@Override
-				public IStatus validate(Object value) {
-					String comboText = connectionIDComboField.getCombo().getText();
-					if (comboText == null || comboText.isEmpty()) {
-						return new Status(Status.ERROR, PlotActivator.PLUGIN_ID, "Must enter valid connection ID");
-					}
-
-					Boolean isValid = connectionIds.get(comboText);
-					if (isValid != null && !isValid) {
+			targetToModel.setBeforeSetValidator(value -> {
+				// Determine if the connection ID is in our list, and if it's already in use or not
+				Boolean isValid = connectionIdToUsage.get(value);
+				if (isValid != null) {
+					if (isValid) {
+						return Status.OK_STATUS;
+					} else {
 						return new Status(Status.ERROR, PlotActivator.PLUGIN_ID, "Selected connection ID is already in use");
 					}
-					return Status.OK_STATUS;
 				}
-			});
-			dataBindingCtx.bindValue(target, model, targetToModel, null);
-		}
 
-		IObservableValue srWidgetValue = WidgetProperties.selection().observe(sampleRateField.getCombo());
-		IObservableValue srModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_SAMPLE_RATE).observe(settings);
+				// Warn about using a connection ID that isn't in the connection table
+				String text = WordUtils.wrap(gov.redhawk.model.sca.provider.Messages.MultiOutPortManualConnectionIDWarning, 60);
+				return new Status(Status.WARNING, PlotActivator.PLUGIN_ID, text);
+			});
+			bindingValue = dataBindingCtx.bindValue(connectionIdTarget, connectionIdModel, targetToModel, null);
+		}
+		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
+
+		IObservableValue<String> srWidgetValue = WidgetProperties.selection().observe(sampleRateField.getCombo());
+		IObservableValue<Integer> srModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_SAMPLE_RATE).observe(settings);
 		UpdateValueStrategy srTargetToModel = new UpdateValueStrategy();
 		srTargetToModel.setAfterGetValidator(
 			new StringToIntegerValidator(BulkIONxmBlockControls.SAMPLE_RATE_FIELD_NAME, BulkIONxmBlockControls.VALUE_USE_DEFAULT));
@@ -239,12 +190,26 @@ public class BulkIONxmBlockControls {
 		srTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(BulkIONxmBlockControls.SAMPLE_RATE_FIELD_NAME, Integer.class, 0, true));
 		UpdateValueStrategy srModelToTarget = new UpdateValueStrategy();
 		srModelToTarget.setConverter(new ObjectToNullConverter()); // converts null to null, otherwise uses toString()
-		Binding bindingValue = dataBindingCtx.bindValue(srWidgetValue, srModelValue, srTargetToModel, srModelToTarget);
+		bindingValue = dataBindingCtx.bindValue(srWidgetValue, srModelValue, srTargetToModel, srModelToTarget);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 
-		IObservableValue removeOnEOSWidgetValue = WidgetProperties.selection().observe(removeOnEOSButton);
-		IObservableValue removeOnEOSModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_REMOVE_ON_EOS).observe(settings);
+		IObservableValue<Boolean> removeOnEOSWidgetValue = WidgetProperties.selection().observe(removeOnEOSButton);
+		IObservableValue<Boolean> removeOnEOSModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_REMOVE_ON_EOS).observe(settings);
 		dataBindingCtx.bindValue(removeOnEOSWidgetValue, removeOnEOSModelValue);
+	}
+
+	private void setConnectionIDDefault() {
+		if (connectionIDComboField == null) {
+			return;
+		}
+		for (Entry<String, Boolean> entry : connectionIdToUsage.entrySet()) {
+			if (entry.getValue()) {
+				connectionIDComboField.setSelection(new StructuredSelection(entry));
+				return;
+			}
+		}
+		// If we get here, then all the connections are in use, so don't have an entry
+		connectionIDComboField.getCombo().setText("");
 	}
 
 }

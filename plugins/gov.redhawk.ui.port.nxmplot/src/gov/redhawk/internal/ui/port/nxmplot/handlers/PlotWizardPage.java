@@ -21,7 +21,6 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -63,8 +62,8 @@ public class PlotWizardPage extends WizardPage {
 
 	private DataBindingContext dataBindingContext = new DataBindingContext();
 
-	protected PlotWizardPage(String pageName, String title, ImageDescriptor titleImage) {
-		super(pageName, title, titleImage);
+	protected PlotWizardPage() {
+		super("settings", "Plot Port Settings", null);
 		setDescription("Provide the initial settings for the new plot.");
 	}
 
@@ -122,7 +121,7 @@ public class PlotWizardPage extends WizardPage {
 			group = new Group(parent, SWT.None);
 			group.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
 			group.setText("BULKIO SDDS");
-			new SddsNxmBlockControls(sddsBlockSettings, dataBindingContext).createControls(group);
+			new SddsNxmBlockControls(sddsBlockSettings, dataBindingContext, connectionIds).createControls(group);
 		}
 
 		// == FFT settings ==

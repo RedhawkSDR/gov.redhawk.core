@@ -12,21 +12,31 @@
 package gov.redhawk.ui.port.nxmblocks;
 
 import java.nio.ByteOrder;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.apache.commons.lang.WordUtils;
+import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
 
 /**
  * Adjust/override SDDS NXM block settings user entry dialog.
@@ -37,14 +47,23 @@ public class SddsNxmBlockControls {
 
 	private final SddsNxmBlockSettings settings;
 	private final DataBindingContext dataBindingCtx;
+	private final Map<String, Boolean> connectionIdToUsage;
 
 	// widgets
-	private Text connectionIDField;
+	private Text connectionIDTextField;
+	private ComboViewer connectionIDComboField;
 	private ComboViewer dataByteOrderField;
 
-	public SddsNxmBlockControls(SddsNxmBlockSettings settings, DataBindingContext dataBindingCtx) {
+	/**
+	 * @param settings
+	 * @param dataBindingCtx
+	 * @param connectionIdToUsage - If the map is not empty, it contains valid connectino IDs mapped to whether the ID
+	 * is in use. The user will be presented the IDs in a combo box, and validation will be attached.
+	 */
+	public SddsNxmBlockControls(SddsNxmBlockSettings settings, DataBindingContext dataBindingCtx, Map<String, Boolean> connectionIdToUsage) {
 		this.settings = settings;
 		this.dataBindingCtx = dataBindingCtx;
+		this.connectionIdToUsage = connectionIdToUsage;
 	}
 
 	public void createControls(final Composite container) {
@@ -54,13 +73,30 @@ public class SddsNxmBlockControls {
 		// === connection ID ==
 		label = new Label(container, SWT.None);
 		label.setText("Connection ID:");
-		connectionIDField = new Text(container, SWT.BORDER);
-		connectionIDField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
-		connectionIDField.setToolTipText("Custom Port connection ID to use vs a generated one.");
-		if (this.settings.getConnectionID() != null && !this.settings.getConnectionID().isEmpty()) {
-			// Can't change the ID after it has been set
-			connectionIDField.setEditable(false);
-			connectionIDField.setEnabled(false);
+		if (connectionIdToUsage.isEmpty()) {
+			connectionIDTextField = new Text(container, SWT.BORDER);
+			connectionIDTextField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+			connectionIDTextField.setToolTipText("Custom Port connection ID to use vs a generated one.");
+			if (this.settings.getConnectionID() != null && !this.settings.getConnectionID().isEmpty()) {
+				// Can't change the ID after it has been set
+				connectionIDTextField.setEditable(false);
+				connectionIDTextField.setEnabled(false);
+			}
+		} else {
+			connectionIDComboField = new ComboViewer(container, SWT.BORDER);
+			connectionIDComboField.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+			connectionIDComboField.getCombo().setToolTipText("Available mulit-out port connection IDs");
+			connectionIDComboField.setContentProvider(ArrayContentProvider.getInstance());
+			connectionIDComboField.setLabelProvider(new LabelProvider() {
+				@Override
+				public String getText(Object element) {
+					if (element instanceof Entry) {
+						return ((Entry< ? , ? >) element).getKey().toString();
+					}
+					return super.getText(element);
+				}
+			});
+			connectionIDComboField.setInput(connectionIdToUsage.entrySet());
 		}
 
 		// === data byte order ===
@@ -74,17 +110,54 @@ public class SddsNxmBlockControls {
 		dataByteOrderField.setInput(new ByteOrder[] { ByteOrder.BIG_ENDIAN, ByteOrder.LITTLE_ENDIAN });
 
 		addDataBindings();
+		setConnectionIDDefault();
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void addDataBindings() {
-		IObservableValue< ? > target = WidgetProperties.text(SWT.Modify).observe(connectionIDField);
-		IObservableValue< ? > model = PojoProperties.value(SddsNxmBlockSettings.PROP_CONNECTION_ID).observe(settings);
-		dataBindingCtx.bindValue(target, model);
+		Binding bindingValue;
+		IObservableValue<String> connectionIdModel = PojoProperties.value(SddsNxmBlockSettings.PROP_CONNECTION_ID).observe(settings);
+		if (connectionIDTextField != null) {
+			IObservableValue<String> connectionIdTarget = WidgetProperties.text(SWT.Modify).observe(connectionIDTextField);
+			bindingValue = dataBindingCtx.bindValue(connectionIdTarget, connectionIdModel);
+		} else {
+			IObservableValue< ? > connectionIdTarget = WidgetProperties.selection().observe(connectionIDComboField.getCombo());
+			UpdateValueStrategy targetToModel = new UpdateValueStrategy();
+			targetToModel.setBeforeSetValidator(value -> {
+				// Determine if the connection ID is in our list, and if it's already in use or not
+				Boolean isValid = connectionIdToUsage.get(value);
+				if (isValid != null) {
+					if (isValid) {
+						return Status.OK_STATUS;
+					} else {
+						return new Status(Status.ERROR, PlotActivator.PLUGIN_ID, "Selected connection ID is already in use");
+					}
+				}
 
-		target = ViewerProperties.singleSelection().observe(this.dataByteOrderField);
-		model = PojoProperties.value(SddsNxmBlockSettings.PROP_DATA_BYTE_ORDER).observe(this.settings);
-		dataBindingCtx.bindValue(target, model);
+				// Warn about using a connection ID that isn't in the connection table
+				String text = WordUtils.wrap(gov.redhawk.model.sca.provider.Messages.MultiOutPortManualConnectionIDWarning, 60);
+				return new Status(Status.WARNING, PlotActivator.PLUGIN_ID, text);
+			});
+			bindingValue = dataBindingCtx.bindValue(connectionIdTarget, connectionIdModel, targetToModel, null);
+		}
+		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
+
+		IObservableValue<ByteOrder> byteOrderTarget = ViewerProperties.singleSelection().observe(this.dataByteOrderField);
+		IObservableValue<ByteOrder> byteOrderModel = PojoProperties.value(SddsNxmBlockSettings.PROP_DATA_BYTE_ORDER).observe(this.settings);
+		dataBindingCtx.bindValue(byteOrderTarget, byteOrderModel);
 	}
 
+	private void setConnectionIDDefault() {
+		if (connectionIDComboField == null) {
+			return;
+		}
+		for (Entry<String, Boolean> entry : connectionIdToUsage.entrySet()) {
+			if (entry.getValue()) {
+				connectionIDComboField.setSelection(new StructuredSelection(entry));
+				return;
+			}
+		}
+		// If we get here, then all the connections are in use, so don't have an entry
+		connectionIDComboField.getCombo().setText("");
+	}
 }
