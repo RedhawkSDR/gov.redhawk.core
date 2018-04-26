@@ -37,6 +37,9 @@ public abstract class ChannelListener implements PushConsumerOperations {
 
 	public abstract void disconnect();
 
+	/**
+	 * @return The full channel name used to unambiguously identify a connection to some object for this view.
+	 */
 	public abstract String getFullChannelName();
 
 	@Override

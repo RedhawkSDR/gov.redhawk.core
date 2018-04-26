@@ -40,6 +40,7 @@ import ExtendedEvent.MessageEventPOATie;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
+import gov.redhawk.ui.views.event.handlers.Messages;
 import mil.jpeojtrs.sca.util.CFErrorFormatter;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
@@ -48,15 +49,24 @@ public class MessagePortListener extends ChannelListener implements MessageEvent
 	private OrbSession session;
 
 	private ScaUsesPort port;
-	private String connectionID;
+	private String connectionId;
+	private boolean generatedId;
+	private boolean connected = false;
 
 	private MessageEvent messageEventPort;
 	private ProxyPushConsumer proxyPushConsumer;
 	private SupplierAdmin supplierAdmin;
 
-	public MessagePortListener(IObservableList<Event> history, String channel, ScaUsesPort port) {
+	public MessagePortListener(IObservableList<Event> history, String channel, ScaUsesPort port, String connectionId) {
 		super(history, channel);
 		this.port = port;
+		if (connectionId == null) {
+			this.generatedId = true;
+			this.connectionId = System.getProperty("user.name", Messages.EventChannelListenerHandler_DefaultUserName) + '_' + System.currentTimeMillis(); //$NON-NLS-1$
+		} else {
+			this.generatedId = false;
+			this.connectionId = connectionId;
+		}
 	}
 
 	/** CHANNEL LISTENER **/
@@ -69,9 +79,8 @@ public class MessagePortListener extends ChannelListener implements MessageEvent
 			messageEventPort = MessageEventHelper.narrow(session.getPOA().servant_to_reference(new MessageEventPOATie(this)));
 
 			// Call connect port with the CORBA object ref we created
-			String newConnectionID = createConnectionID();
-			port.connectPort(messageEventPort, newConnectionID);
-			connectionID = newConnectionID;
+			port.connectPort(messageEventPort, connectionId);
+			connected = true;
 		} catch (ServantNotActive | WrongPolicy e) {
 			String msg = String.format("Failed to connect to port '%s'", port.getName());
 			logError(msg, e);
@@ -82,21 +91,17 @@ public class MessagePortListener extends ChannelListener implements MessageEvent
 		}
 	}
 
-	private String createConnectionID() {
-		return System.getProperty("user.name", "user") + "_" + System.currentTimeMillis();
-	}
-
 	@Override
 	public void disconnect() {
-		if (connectionID != null) {
+		if (connected) {
 			try {
-				port.disconnectPort(connectionID);
+				port.disconnectPort(connectionId);
 			} catch (InvalidPort e) {
 				logError(CFErrorFormatter.format(e, port.getName()), e);
 			} catch (SystemException e) {
 				logError("Unable to disconnect port", e);
 			}
-			connectionID = null;
+			connected = false;
 		}
 
 		for (org.omg.CORBA.Object reference : new org.omg.CORBA.Object[] { proxyPushConsumer, supplierAdmin, messageEventPort }) {
@@ -118,7 +123,11 @@ public class MessagePortListener extends ChannelListener implements MessageEvent
 
 	@Override
 	public String getFullChannelName() {
-		return this.getChannel();
+		if (generatedId) {
+			return this.getChannel();
+		} else {
+			return this.getChannel() + '/' + connectionId;
+		}
 	}
 
 	/** EVENT CHANNEL OPERATIONS **/

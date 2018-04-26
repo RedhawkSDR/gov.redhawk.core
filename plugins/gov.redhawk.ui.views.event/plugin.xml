@@ -38,6 +38,20 @@
                   checkEnabled="true">
             </visibleWhen>
          </command>
+         <command
+               commandId="gov.redhawk.ui.views.event.portMessageListener"
+               icon="icons/emblem-documents.png"
+               label="%portMessageListener.advanced.label"
+               style="push"
+               tooltip="%portMessageListener.advanced.tooltip">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+            <parameter
+                  name="gov.redhawk.ui.views.event.portMessageListener.promptConnectionId"
+                  value="true">
+            </parameter>
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -50,8 +64,14 @@
       </command>
       <command
             categoryId="gov.redhawk.ui.commands.category.sca"
+            description="%portMessageListener.command.description"
             id="gov.redhawk.ui.views.event.portMessageListener"
-            name="Listen to Message Events">
+            name="%portMessageListener.command.name">
+         <commandParameter
+               id="gov.redhawk.ui.views.event.portMessageListener.promptConnectionId"
+               name="%portMessageListener.promptConnectionId.name"
+               optional="true">
+         </commandParameter>
       </command>
    </extension>
    <extension

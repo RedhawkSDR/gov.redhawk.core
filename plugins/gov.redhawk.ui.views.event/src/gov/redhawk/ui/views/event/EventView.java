@@ -218,10 +218,22 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 		channelListeners.add(newListener);
 	}
 
-	public synchronized void connect(final String channel, final ScaUsesPort port) throws CoreException {
+	/**
+	 * Connect to a port and listen for messages. Note that the channel name and connection ID should be consistent
+	 * between method calls. This allows the code to ignore duplicate calls for a connection.
+	 * @param channel The channel name
+	 * @param port The port to connect to
+	 * @param connectionId The connection ID to use, or null to generate one
+	 * @throws CoreException
+	 */
+	public synchronized void connect(final String channel, final ScaUsesPort port, String connectionId) throws CoreException {
 		// Don't add duplicate listeners
+		String fullChannelId = channel;
+		if (connectionId != null) {
+			fullChannelId = fullChannelId + '/' + connectionId;
+		}
 		for (ChannelListener l : channelListeners) {
-			if (l.getFullChannelName().equals(port.getName())) {
+			if (l.getFullChannelName().equals(fullChannelId)) {
 				return;
 			}
 		}
@@ -230,7 +242,7 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 			disconnectAction.setEnabled(true);
 		}
 
-		final ChannelListener newListener = new MessagePortListener(history, channel, port);
+		final ChannelListener newListener = new MessagePortListener(history, channel, port, connectionId);
 		newListener.connect(session);
 		channelListeners.add(newListener);
 	}

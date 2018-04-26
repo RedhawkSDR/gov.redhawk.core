@@ -20,6 +20,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IPageLayout;
@@ -35,8 +39,9 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaEventChannel;
-import gov.redhawk.model.sca.ScaAbstractComponent;
+import gov.redhawk.model.sca.ScaPortContainer;
 import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.ui.views.event.EventView;
 import gov.redhawk.ui.views.event.EventViewPlugin;
 import gov.redhawk.ui.views.namebrowser.view.BindingNode;
@@ -44,6 +49,11 @@ import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public class EventChannelListenerHandler extends AbstractHandler {
+
+	/**
+	 * Parameter used to indicate the user should be prompted for the connection ID (for {@link ScaUsesPort} only).
+	 */
+	private static final String PARAM_PROMPT_CONN_ID = "gov.redhawk.ui.views.event.portMessageListener.promptConnectionId"; //$NON-NLS-1$
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -57,10 +67,16 @@ public class EventChannelListenerHandler extends AbstractHandler {
 		if (!(selection instanceof IStructuredSelection)) {
 			return null;
 		}
-		List< ? > selectedItems = ((IStructuredSelection) selection).toList();
 
-		EventView view = null;
+		// Selection
+		List< ? > selectedItems = ((IStructuredSelection) selection).toList();
 		boolean isMany = selectedItems.size() > 1;
+
+		// Parameters
+		boolean promptConnId = Boolean.parseBoolean(event.getParameter(PARAM_PROMPT_CONN_ID));
+
+		// Iterate each selection element - all are added to the same view
+		EventView view = null;
 		for (final Object obj : selectedItems) {
 			if (obj instanceof BindingNode) {
 				view = showBindingNode((BindingNode) obj, page, view, isMany);
@@ -68,35 +84,73 @@ public class EventChannelListenerHandler extends AbstractHandler {
 				view = showScaEventChannel((ScaEventChannel) obj, page, view, isMany);
 			} else if (Platform.getAdapterManager().getAdapter(obj, ScaUsesPort.class) != null) {
 				ScaUsesPort usesPort = Platform.getAdapterManager().getAdapter(obj, ScaUsesPort.class);
-				view = showPort(usesPort, page, view, isMany);
+				view = showPort(usesPort, page, view, isMany, promptConnId);
 			}
 		}
 
 		return null;
 	}
 
-	private EventView showPort(final ScaUsesPort usesPort, IWorkbenchPage page, EventView view, boolean isMany) throws ExecutionException {
+	private EventView showPort(final ScaUsesPort usesPort, IWorkbenchPage page, EventView view, boolean isMany, boolean promptConnId)
+		throws ExecutionException {
+		ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
+		AdapterFactoryLabelProvider labelProvider = new AdapterFactoryLabelProvider(factory);
+		ScaPortContainer portContainer = ScaEcoreUtils.getEContainerOfType(usesPort, ScaPortContainer.class);
+
+		// Parameters we'll need
+		final String channel = EcoreUtil.getID(portContainer).replace(':', '/') + '/' + usesPort.getName();
+		final String uiName = usesPort.getName();
+		String tooltip = labelProvider.getText(portContainer) + " -> " + usesPort.getName();
+		final String connectionID;
+
+		factory.dispose();
+
+		// If requested, prompt the user for the connection ID
+		if (promptConnId) {
+			// Dialog params
+			String genConnectionID = System.getProperty("user.name", Messages.EventChannelListenerHandler_DefaultUserName) + '_' + System.currentTimeMillis(); //$NON-NLS-1$
+			IInputValidator validator = newText -> {
+				return newText.isEmpty() ? Messages.EventChannelListenerHandler_Error_ConnIdEmpty : null;
+			};
+
+			// Show dialog
+			InputDialog dialog = new InputDialog(page.getWorkbenchWindow().getShell(), Messages.EventChannelListenerHandler_ConnectionId_DialogTitle,
+				Messages.bind(Messages.EventChannelListenerHandler_ConnectionId_DialogMessage, uiName), genConnectionID, validator);
+			dialog.setBlockOnOpen(true);
+			if (dialog.open() == InputDialog.CANCEL) {
+				return null;
+			}
+
+			// Use what the user specified
+			connectionID = dialog.getValue();
+		} else {
+			// No specific ID requested
+			connectionID = null;
+		}
+
 		// Open the event view
-		final String name = usesPort.getName();
 		final EventView finalView;
-		try {
-			finalView = showView(page, view, isMany, name);
-		} catch (PartInitException e) {
-			throw new ExecutionException("Failed to open event view.", e);
+		if (view == null) {
+			try {
+				finalView = showView(page, isMany, channel, uiName, tooltip);
+			} catch (PartInitException e) {
+				throw new ExecutionException(Messages.EventChannelListenerHandler_CannotOpenEventViewer, e);
+			}
+		} else {
+			finalView = view;
 		}
 
 		// Connect the event channel to the view
-		Job connectJob = Job.create(Messages.bind(Messages.EventChannelListenerHandler_ConnectToEventChannelJobTitle, name), monitor -> {
+		Job connectJob = Job.create(Messages.bind(Messages.EventChannelListenerHandler_ConnectToEventChannelJobTitle, uiName), monitor -> {
 			try {
+				// Make the connection
 				CorbaUtils.invoke(() -> {
-					final ScaAbstractComponent< ? > resource = ScaEcoreUtils.getEContainerOfType(usesPort, ScaAbstractComponent.class);
-					final String channel = resource.getIdentifier() + "_" + usesPort.getName();
-					finalView.connect(channel, usesPort);
+					finalView.connect(channel, usesPort, connectionID);
 					return null;
 				}, monitor);
 				return Status.CANCEL_STATUS;
 			} catch (CoreException e1) {
-				return new Status(e1.getStatus().getSeverity(), EventViewPlugin.PLUGIN_ID, "Failed to connect to : " + name, e1);
+				return new Status(e1.getStatus().getSeverity(), EventViewPlugin.PLUGIN_ID, Messages.bind(Messages.EventChannelListenerHandler_CannotConnectToEventChannel, uiName), e1);
 			} catch (InterruptedException e1) {
 				return Status.CANCEL_STATUS;
 			}
@@ -108,32 +162,45 @@ public class EventChannelListenerHandler extends AbstractHandler {
 	}
 
 	private EventView showBindingNode(final BindingNode node, IWorkbenchPage page, EventView view, boolean isMany) throws ExecutionException {
-		// Open the event view
 		final String name = node.getPath();
+		final String uiName;
+		if (name.indexOf('/') != -1) {
+			uiName = name.substring(name.lastIndexOf('/') + 1);
+		} else {
+			uiName = name;
+		}
+		final String tooltip = name.replaceAll("/", " -> ");
+
+		// Open the event view
 		final EventView finalView;
-		try {
-			finalView = showView(page, view, isMany, name);
-		} catch (PartInitException e) {
-			throw new ExecutionException(Messages.EventChannelListenerHandler_CannotOpenEventViewer, e);
+		if (view == null) {
+			try {
+				finalView = showView(page, isMany, name, uiName, tooltip);
+			} catch (PartInitException e) {
+				throw new ExecutionException(Messages.EventChannelListenerHandler_CannotOpenEventViewer, e);
+			}
+		} else {
+			finalView = view;
 		}
 
 		// Connect the event channel to the view
-		Job connectJob = Job.create(Messages.bind(Messages.EventChannelListenerHandler_ConnectToEventChannelJobTitle, name), monitor -> {
+		Job connectJob = Job.create(Messages.bind(Messages.EventChannelListenerHandler_ConnectToEventChannelJobTitle, uiName), monitor -> {
 			try {
 				CorbaUtils.invoke(() -> {
 					try {
 						org.omg.CORBA.Object ref = node.getNamingContext().resolve_str(name);
-						EventChannel channel = EventChannelHelper.narrow(ref);
-						finalView.connect(name, channel);
+						EventChannel eventChannel = EventChannelHelper.narrow(ref);
+						finalView.connect(name, eventChannel);
 					} catch (NotFound | CannotProceed | InvalidName e) {
-						throw new CoreException(
-							new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID, Messages.bind(Messages.EventChannelListenerHandler_CannotConnectToEventChannel, name), e));
+						throw new CoreException(new Status(IStatus.ERROR, EventViewPlugin.PLUGIN_ID,
+							Messages.bind(Messages.EventChannelListenerHandler_CannotConnectToEventChannel, uiName), e));
 					}
 					return null;
 				}, monitor);
 				return Status.CANCEL_STATUS;
 			} catch (CoreException e1) {
-				return new Status(e1.getStatus().getSeverity(), EventViewPlugin.PLUGIN_ID, Messages.bind(Messages.EventChannelListenerHandler_CannotConnectToEventChannel, name), e1);
+				return new Status(e1.getStatus().getSeverity(), EventViewPlugin.PLUGIN_ID,
+					Messages.bind(Messages.EventChannelListenerHandler_CannotConnectToEventChannel, name), e1);
 			} catch (InterruptedException e1) {
 				return Status.CANCEL_STATUS;
 			}
@@ -151,17 +218,24 @@ public class EventChannelListenerHandler extends AbstractHandler {
 			return view;
 		}
 
+		// Parameters
+		final String uiName = domMgr.getLabel() + '/' + channel.getName();
+		String tooltip = domMgr.getLabel() + " -> " + channel.getName();
+
 		// Open the event view
-		final String name = domMgr.getLabel() + "/" + channel.getName();
 		final EventView finalView;
-		try {
-			finalView = showView(page, view, isMany, name);
-		} catch (PartInitException e) {
-			throw new ExecutionException(Messages.EventChannelListenerHandler_CannotOpenEventViewer, e);
+		if (view == null) {
+			try {
+				finalView = showView(page, isMany, uiName, channel.getName(), tooltip);
+			} catch (PartInitException e) {
+				throw new ExecutionException(Messages.EventChannelListenerHandler_CannotOpenEventViewer, e);
+			}
+		} else {
+			finalView = view;
 		}
 
 		// Connect the event channel to the view
-		Job connectJob = Job.create(Messages.bind(Messages.EventChannelListenerHandler_ConnectToEventChannelJobTitle, name), monitor -> {
+		Job connectJob = Job.create(Messages.bind(Messages.EventChannelListenerHandler_ConnectToEventChannelJobTitle, uiName), monitor -> {
 			try {
 				CorbaUtils.invoke(() -> {
 					finalView.connect(domMgr, channel.getName());
@@ -169,7 +243,8 @@ public class EventChannelListenerHandler extends AbstractHandler {
 				}, monitor);
 				return Status.OK_STATUS;
 			} catch (CoreException e1) {
-				return new Status(e1.getStatus().getSeverity(), EventViewPlugin.PLUGIN_ID, Messages.bind(Messages.EventChannelListenerHandler_CannotConnectToEventChannel, name), e1);
+				return new Status(e1.getStatus().getSeverity(), EventViewPlugin.PLUGIN_ID,
+					Messages.bind(Messages.EventChannelListenerHandler_CannotConnectToEventChannel, uiName), e1);
 			} catch (InterruptedException e1) {
 				return Status.CANCEL_STATUS;
 			}
@@ -180,23 +255,25 @@ public class EventChannelListenerHandler extends AbstractHandler {
 		return finalView;
 	}
 
-	private EventView showView(IWorkbenchPage page, EventView view, boolean isMany, final String name) throws PartInitException {
-		if (view == null) {
-			String shortName = name;
-			if (name.contains("/")) {
-				shortName = name.substring(name.lastIndexOf("/") + 1);
-			}
-			if (isMany) {
-				view = (EventView) page.showView(EventView.ID, String.valueOf(System.currentTimeMillis()), IWorkbenchPage.VIEW_ACTIVATE);
-			} else {
-				view = (EventView) page.showView(EventView.ID, name, IWorkbenchPage.VIEW_ACTIVATE);
-				view.setPartName(shortName);
-				view.setTitleToolTip(shortName);
-			}
-
-			// Show the Properties view whenever the Event View is opened
-			page.showView(IPageLayout.ID_PROP_SHEET);
+	/**
+	 * @param page
+	 * @param isMany
+	 * @param name
+	 * @return
+	 * @throws PartInitException
+	 */
+	private EventView showView(IWorkbenchPage page, boolean isMany, String viewId, String viewTitle, String viewTooltip) throws PartInitException {
+		EventView view;
+		if (isMany) {
+			view = (EventView) page.showView(EventView.ID, String.valueOf(System.currentTimeMillis()), IWorkbenchPage.VIEW_ACTIVATE);
+		} else {
+			view = (EventView) page.showView(EventView.ID, viewId, IWorkbenchPage.VIEW_ACTIVATE);
+			view.setPartName(viewTitle);
+			view.setTitleToolTip(viewTooltip);
 		}
+
+		// Show the Properties view whenever the Event View is opened
+		page.showView(IPageLayout.ID_PROP_SHEET);
 
 		return view;
 	}

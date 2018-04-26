@@ -18,7 +18,11 @@ public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "gov.redhawk.ui.views.event.handlers.messages"; //$NON-NLS-1$
 	public static String EventChannelListenerHandler_CannotConnectToEventChannel;
 	public static String EventChannelListenerHandler_CannotOpenEventViewer;
+	public static String EventChannelListenerHandler_ConnectionId_DialogMessage;
+	public static String EventChannelListenerHandler_ConnectionId_DialogTitle;
 	public static String EventChannelListenerHandler_ConnectToEventChannelJobTitle;
+	public static String EventChannelListenerHandler_DefaultUserName;
+	public static String EventChannelListenerHandler_Error_ConnIdEmpty;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
