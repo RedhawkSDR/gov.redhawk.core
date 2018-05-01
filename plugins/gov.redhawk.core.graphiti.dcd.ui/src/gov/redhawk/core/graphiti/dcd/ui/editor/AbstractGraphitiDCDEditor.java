@@ -14,7 +14,6 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -61,10 +60,7 @@ public abstract class AbstractGraphitiDCDEditor extends AbstractGraphitiMultiPag
 	@Override
 	protected IEditorInput createDiagramInput() throws IOException, CoreException {
 		// Create the diagram resource which will hold information only relevant to the Graphiti diagram
-		final URI diagramURI = DUtil.getDiagramResourceURI(DcdDiagramUtilHelper.INSTANCE, getMainResource());
-		DUtil.initializeDiagramResource(DcdDiagramUtilHelper.INSTANCE, DCDDiagramTypeProvider.DIAGRAM_TYPE_ID, getDiagramTypeProviderID(), diagramURI);
-		Resource diagramResource = getEditingDomain().getResourceSet().getResource(diagramURI, true);
-		final Diagram diagram = (Diagram) diagramResource.getContents().get(0);
+		final Diagram diagram = DUtil.getDiagram(DcdDiagramUtilHelper.INSTANCE, getMainResource(), DCDDiagramTypeProvider.DIAGRAM_TYPE_ID);
 
 		// Link the diagram with the DCD
 		NonDirtyingCommand.execute(diagram, new NonDirtyingCommand() {

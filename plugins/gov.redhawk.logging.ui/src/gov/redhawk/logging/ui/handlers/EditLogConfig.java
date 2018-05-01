@@ -20,13 +20,13 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -46,7 +46,7 @@ import CF.LogConfigurationOperations;
 import gov.redhawk.logging.ui.LoggingUiPlugin;
 import gov.redhawk.logging.ui.editors.LogConfigEditor;
 import gov.redhawk.logging.ui.preferences.LoggingPreferenceInitializer;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 
 public class EditLogConfig extends AbstractHandler {
 
@@ -85,51 +85,47 @@ public class EditLogConfig extends AbstractHandler {
 			return;
 		}
 
-		final Job editLogConfigJob = new Job("Fetching Log Configuration File...") {
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				monitor.beginTask(getName(), IProgressMonitor.UNKNOWN);
-				try {
-					// Retrieve the logging config from the running resource
-					String logConfig = CorbaUtils.invoke(() -> {
-						return resource.getLogConfig();
-					}, monitor);
+		final Job editLogConfigJob = Job.create("Fetching Log Configuration File...", monitor -> {
+			SubMonitor progress = SubMonitor.convert(monitor, IProgressMonitor.UNKNOWN);
+			String logConfig;
+			try {
+				// Retrieve the logging config from the running resource
+				logConfig = CorbaUtils2.invoke(() -> {
+					return resource.getLogConfig();
+				}, progress);
+			} catch (java.util.concurrent.ExecutionException e) {
+				return new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, "Unable to retrieve logging configuration from resource", e.getCause());
+			}
 
-					// Create a temporary file to use as input for the editor; write the config to it
-					File directory = LoggingUiPlugin.getDefault().getStateLocation().toFile();
-					File file = File.createTempFile("logConfiguration", ".tmp.txt", directory);
+			try {
+				// Create a temporary file to use as input for the editor; write the config to it
+				File directory = LoggingUiPlugin.getDefault().getStateLocation().toFile();
+				File file = File.createTempFile("logConfiguration", ".tmp.txt", directory);
 
-					try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-						bw.write(logConfig);
-					}
-
-					final IPath path = new Path(file.getAbsolutePath());
-					final IFileStore fileStore = EFS.getLocalFileSystem().getStore(path);
-					final FileStoreEditorInput input = new FileStoreEditorInput(fileStore);
-
-					Display.getDefault().asyncExec(() -> {
-						try {
-							LogConfigEditor editor = (LogConfigEditor) activePage.openEditor(input, LogConfigEditor.ID);
-							editor.setResource(resource);
-						} catch (PartInitException e) {
-							ErrorDialog.openError(PlatformUI.getWorkbench().getDisplay().getActiveShell(), "Log Config Editor Error",
-								"Failed to open LogConfigurationEditor",
-								new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, "Log Config Editor could not open"));
-						}
-					});
-				} catch (CoreException e) {
-					return new Status(e.getStatus().getSeverity(), LoggingUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
-				} catch (InterruptedException e) {
-					return Status.CANCEL_STATUS;
-				} catch (IOException e) {
-					return new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, "Unable to write logging config to a temporary file", e);
-				} finally {
-					monitor.done();
+				try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+					bw.write(logConfig);
 				}
 
-				return Status.OK_STATUS;
+				final IPath path = new Path(file.getAbsolutePath());
+				final IFileStore fileStore = EFS.getLocalFileSystem().getStore(path);
+				final FileStoreEditorInput input = new FileStoreEditorInput(fileStore);
+
+				Display.getDefault().asyncExec(() -> {
+					try {
+						LogConfigEditor editor = (LogConfigEditor) activePage.openEditor(input, LogConfigEditor.ID);
+						editor.setResource(resource);
+					} catch (PartInitException e) {
+						ErrorDialog.openError(PlatformUI.getWorkbench().getDisplay().getActiveShell(), "Log Config Editor Error",
+							"Failed to open LogConfigurationEditor",
+							new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, "Log Config Editor could not open"));
+					}
+				});
+			} catch (IOException e) {
+				return new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, "Unable to write logging config to a temporary file", e);
 			}
-		};
+
+			return Status.OK_STATUS;
+		});
 
 		editLogConfigJob.setUser(true);
 		editLogConfigJob.schedule();

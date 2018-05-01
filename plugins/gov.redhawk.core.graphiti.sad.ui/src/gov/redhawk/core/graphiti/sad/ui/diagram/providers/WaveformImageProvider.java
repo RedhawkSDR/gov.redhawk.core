@@ -24,13 +24,21 @@ public class WaveformImageProvider extends AbstractImageProvider {
 	@SuppressWarnings("unused")
 	private static final String PREFIX = "gov.redhawk.core.graphiti.sad.ui.WaveformImageProvider.";
 
+	// Both diagram and custom feature / pattern
+
 	/**
 	 * Image for a component.
 	 */
 	public static final String IMG_COMPONENT = OLD_PREFIX + "componentInstance";
 
+	/**
+	 * Image for host collocations. Note that the prefix is omitted for backwards-compatibility reasons.
+	 */
+	public static final String IMG_HOST_COLLOCATION = "hostCollocation";
+
 	@Override
 	protected void addAvailableImages() {
 		addImageFilePath(IMG_COMPONENT, "icons/Component.gif");
+		addImageFilePath(IMG_HOST_COLLOCATION, "icons/HostCollocation.gif");
 	}
 }

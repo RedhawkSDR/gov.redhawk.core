@@ -10,48 +10,50 @@
  */
 package gov.redhawk.core.graphiti.ui.util;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileInfo;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.transaction.RecordingCommand;
-import org.eclipse.emf.transaction.TransactionalCommandStack;
-import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.ecore.xmi.impl.URIHandlerImpl;
+import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.datatypes.IDimension;
+import org.eclipse.graphiti.datatypes.ILocation;
 import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.ILayoutFeature;
 import org.eclipse.graphiti.features.IRemoveFeature;
-import org.eclipse.graphiti.features.context.ICustomContext;
+import org.eclipse.graphiti.features.context.IResizeShapeContext;
 import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
 import org.eclipse.graphiti.features.context.impl.AddContext;
-import org.eclipse.graphiti.features.context.impl.CustomContext;
 import org.eclipse.graphiti.features.context.impl.LayoutContext;
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
-import org.eclipse.graphiti.features.custom.ICustomFeature;
 import org.eclipse.graphiti.mm.Property;
 import org.eclipse.graphiti.mm.PropertyContainer;
 import org.eclipse.graphiti.mm.algorithms.AbstractText;
@@ -67,26 +69,28 @@ import org.eclipse.graphiti.mm.pictograms.FixPointAnchor;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
-import org.eclipse.graphiti.ui.editor.DiagramBehavior;
-import org.eclipse.graphiti.ui.editor.DiagramEditor;
 import org.eclipse.graphiti.ui.services.GraphitiUi;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 import gov.redhawk.core.graphiti.ui.GraphitiUIPlugin;
-import gov.redhawk.core.graphiti.ui.diagram.features.LayoutDiagramFeature;
 import gov.redhawk.core.graphiti.ui.editor.IDiagramUtilHelper;
 import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.internal.diagram.wizards.SuperPortConnectionWizard;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.partitioning.ConnectInterface;
 import mil.jpeojtrs.sca.partitioning.ConnectionTarget;
 import mil.jpeojtrs.sca.partitioning.UsesPortStub;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
-import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
+import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
 
 public class DUtil {
 
@@ -256,7 +260,7 @@ public class DUtil {
 	public static IDimension calculateTextSize(AbstractText text) {
 		return GraphitiUi.getUiLayoutService().calculateTextSize(text.getValue(), Graphiti.getGaService().getFont(text, true));
 	}
-	
+
 	/**
 	 * Creates a {@link FixPointAnchor} overlay for a shape, with the anchor point vertically centered at horizontal
 	 * position x. The returned anchor has no graphics algorithm.
@@ -500,17 +504,162 @@ public class DUtil {
 		return (DeviceConfiguration) getBusinessObject(diagram, DeviceConfiguration.class);
 	}
 
-	public static URI getDiagramResourceURI(final IDiagramUtilHelper options, final Resource resource) throws IOException {
-		if (resource != null) {
-			final URI uri = resource.getURI();
-			if (uri.isPlatformResource()) {
-				final IFile file = options.getFile(resource);
-				return getRelativeDiagramResourceURI(options, file);
+	/**
+	 * Loads (and possibly creates) the diagram.
+	 * @param helper The diagram helper
+	 * @param profileResource The resource containing the profile (SAD/DCD XML file)
+	 * @param diagramTypeId The type of diagram to create
+	 * @return
+	 * @throws CoreException
+	 */
+	public static Diagram getDiagram(IDiagramUtilHelper helper, Resource profileResource, String diagramTypeId) throws CoreException {
+		final URI profileURI = profileResource.getURI();
+		if (profileURI.isPlatformResource()) {
+			URI diagramURI = getDiagramRelativeURI(profileURI, helper);
+
+			// Get the IFile in the workspace
+			IPath path = new Path(diagramURI.toPlatformString(true));
+			IFile diagramFile = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+
+			// Refresh Eclipse's info on the file
+			diagramFile.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+
+			// Load the diagram, or create a new one, as appropriate
+			if (diagramFile.exists()) {
+				return loadDiagram(profileResource.getResourceSet(), diagramURI);
 			} else {
-				return getTemporaryDiagramResourceURI(options, uri);
+				return createDiagram(profileResource.getResourceSet(), diagramURI, helper.getSaveOptions(), diagramTypeId);
+			}
+		} else if (profileURI.isFile()) {
+			URI diagramURI = getDiagramRelativeURI(profileURI, helper);
+
+			// If the file exists, load it
+			if (Files.exists(Paths.get(diagramURI.toFileString()))) {
+				return loadDiagram(profileResource.getResourceSet(), diagramURI);
+			}
+		} else if (ScaFileSystemConstants.SCHEME.equals(profileURI.scheme())) {
+			URI diagramURI = getDiagramRelativeURI(profileURI, helper);
+
+			// Code to load the diagram using the SCA EFS file system (may perform a CORBA call)
+			Diagram[] retVal = new Diagram[1];
+			IRunnableWithProgress runnable = monitor -> {
+				CorbaUtils2.invokeUI(() -> {
+					// Get file store / info for the diagram
+					IFileStore fileStore = EFS.getStore(new java.net.URI(diagramURI.toString()));
+					IFileInfo info = fileStore.fetchInfo(EFS.NONE, new NullProgressMonitor());
+
+					// Load the diagram if the file exists. Otherwise we'll fall back to a temporary diagram.
+					if (info.exists()) {
+						retVal[0] = loadDiagram(profileResource.getResourceSet(), diagramURI);
+					}
+					return null;
+				}, monitor);
+			};
+
+			try {
+				// If we're in the display thread, use a progress monitor dialog so it can be cancelled
+				if (Display.getCurrent() != null) {
+					new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(true, true, runnable);
+				} else {
+					runnable.run(new NullProgressMonitor());
+				}
+				if (retVal[0] != null) {
+					return retVal[0];
+				}
+			} catch (InvocationTargetException e) {
+				Throwable cause = e.getCause();
+				if (cause instanceof CoreException) {
+					// Log a warning. We'll use a temporary diagram instead.
+					IStatus status = new Status(IStatus.WARNING, GraphitiUIPlugin.PLUGIN_ID, "Unable to retrieve diagram file from " + diagramURI.toString(),
+						cause);
+					Platform.getLog(Platform.getBundle(GraphitiUIPlugin.PLUGIN_ID)).log(status);
+				} else if (cause instanceof URISyntaxException) {
+					throw new CoreException(new Status(IStatus.ERROR, GraphitiUIPlugin.PLUGIN_ID, "Unable to format URI " + diagramURI.toString(), cause));
+				} else {
+					throw new CoreException(new Status(IStatus.ERROR, GraphitiUIPlugin.PLUGIN_ID, cause.getMessage(), cause));
+				}
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
 			}
 		}
-		return null;
+
+		// Diagram doesn't exist, can't be loaded, or has some URI we weren't expecting. Create an ephemeral one.
+		return createDiagram(profileResource.getResourceSet(), URI.createURI("mem:/" + (int) (Math.random() * 1e6) + helper.getDiagramFileExtension()),
+			helper.getSaveOptions(), diagramTypeId);
+	}
+
+	/**
+	 * Construct the URI for a diagram relative to the profile
+	 * @param profileURI The profile's URI
+	 * @param helper The diagram helper
+	 * @return The diagram resource's URI
+	 */
+	private static URI getDiagramRelativeURI(URI profileURI, IDiagramUtilHelper helper) {
+		String profileName = profileURI.lastSegment();
+		String basename = profileName.substring(0, profileName.length() - helper.getSemanticFileExtension().length());
+		return profileURI.trimSegments(1).appendSegment(basename + helper.getDiagramFileExtension());
+	}
+
+	/**
+	 * Creates a diagram for a profile in the workspace.
+	 * @param resourceSet The resource set to use
+	 * @param diagramURI The diagram resource's URI
+	 * @param saveOptions EMF save options
+	 * @param diagramTypeId The type of the diagram to create
+	 * @return The diagram
+	 * @throws CoreException
+	 */
+	private static Diagram createDiagram(ResourceSet resourceSet, URI diagramURI, Map< ? , ? > saveOptions, final String diagramTypeId) throws CoreException {
+		// Create diagram
+		final Resource diagramResource = resourceSet.createResource(diagramURI);
+		Diagram diagram = Graphiti.getPeCreateService().createDiagram(diagramTypeId, diagramURI.lastSegment(), true);
+		TransactionUtil.getEditingDomain(resourceSet).getCommandStack().execute(new ScaModelCommand() {
+			@Override
+			public void execute() {
+				diagramResource.getContents().add(diagram);
+			}
+		});
+
+		// Save if local
+		if (diagramURI.isPlatform()) {
+			try {
+				diagramResource.save(saveOptions);
+			} catch (IOException e) {
+				throw new CoreException(new Status(IStatus.ERROR, GraphitiUIPlugin.PLUGIN_ID, "Unable to create diagram file contents", e));
+			}
+		}
+
+		return diagram;
+	}
+
+	/**
+	 * Loads a diagram for a profile in the workspace.
+	 * @param resourceSet The resource set to use
+	 * @param diagramURI The diagram resource's URI
+	 * @return The diagram
+	 * @throws CoreException
+	 */
+	private static Diagram loadDiagram(ResourceSet resourceSet, URI diagramURI) throws CoreException {
+		Resource diagramResource = resourceSet.createResource(diagramURI);
+		Map<String, Object> options = new HashMap<>();
+		options.put(XMLResource.OPTION_URI_HANDLER, new URIHandlerImpl() {
+			@Override
+			public URI resolve(URI uri) {
+				// Unfortunately, our style URIs are being encoded as relative paths to the SAD file i.e.
+				// "../../plugin/plugin_id/etc"
+				if (uri.toString().startsWith("../../plugin/")) {
+					String path = String.join("/", uri.segmentsList().subList(3, uri.segmentCount()));
+					return URI.createPlatformPluginURI(path, true).appendFragment(uri.fragment());
+				}
+				return uri.resolve(baseURI).appendQuery(baseURI.query());
+			}
+		});
+		try {
+			diagramResource.load(options);
+		} catch (IOException e) {
+			throw new CoreException(new Status(IStatus.ERROR, GraphitiUIPlugin.PLUGIN_ID, "Unable to load diagram resource", e));
+		}
+		return (Diagram) diagramResource.getContents().get(0);
 	}
 
 	/**
@@ -579,70 +728,23 @@ public class DUtil {
 	}
 
 	/**
-	 * Create a {@link URI} for the Graphiti diagram's resource file that is relative to the XML file that will be
-	 * edited.
-	 * @param options
-	 * @param file The {@link IFile} (XML) that will be edited
+	 * Checks the container shape and all its children and returns any which overlap any of the specified area.
+	 * @param containerShape Usually this should be the {@link Diagram}
+	 * @param width
+	 * @param height
+	 * @param x Absolute x
+	 * @param y Absolute y
+	 * @return
 	 */
-	private static URI getRelativeDiagramResourceURI(final IDiagramUtilHelper options, final IFile file) {
-		int fileNameLengthNoExtension = file.getName().length() - options.getSemanticFileExtension().length();
-		final IFile diagramFile = file.getParent().getFile(
-			new Path(file.getName().substring(0, fileNameLengthNoExtension) + options.getDiagramFileExtension()));
-		final URI uri = URI.createPlatformResourceURI(diagramFile.getFullPath().toString(), true);
-		return uri;
-	}
-
-	/**
-	 * Create a temporary file to contain the Graphiti diagram's resource. Return a {@link URI} to that file.
-	 * @param options
-	 * @param uri The {@link URI} of the XML that will be edited
-	 * @throws IOException
-	 */
-	private static URI getTemporaryDiagramResourceURI(final IDiagramUtilHelper options, final URI uri) throws IOException {
-		final String name = uri.lastSegment();
-		int fileNameLengthNoExtension = name.length() - options.getSemanticFileExtension().length();
-
-		java.nio.file.Path tmpFile;
-		try {
-			// Create a temporary file in our bundle's state location
-			IPath statePath = Platform.getStateLocation(Platform.getBundle(GraphitiUIPlugin.PLUGIN_ID));
-			java.nio.file.Path stateDir = Paths.get(statePath.toFile().getAbsolutePath());
-			tmpFile = Files.createTempFile(stateDir, name.substring(0, fileNameLengthNoExtension), options.getDiagramFileExtension());
-		} catch (IllegalStateException e) {
-			// Unable to init the bundle state location; create the file in the system temporary directory
-			tmpFile = Files.createTempFile(name.substring(0, fileNameLengthNoExtension), options.getDiagramFileExtension());
-		}
-
-		tmpFile.toFile().deleteOnExit();
-		return URI.createURI(tmpFile.toUri().toString());
-	}
-
-	/**
-	 * Causes a diagram layout to be invoked for runtime diagrams and target SDR diagrams.
-	 * @param diagramEditor
-	 */
-	public static void layout(DiagramEditor diagramEditor) {
-		Diagram diagram = diagramEditor.getDiagramTypeProvider().getDiagram();
-		if (isDiagramTargetSdr(diagram) || isDiagramRuntime(diagram)) {
-			DiagramBehavior diagramBehavior = diagramEditor.getDiagramBehavior();
-			IFeatureProvider featureProvider = diagramEditor.getDiagramTypeProvider().getFeatureProvider();
-
-			final ICustomContext context = new CustomContext(new PictogramElement[] { diagram });
-			ICustomFeature[] features = featureProvider.getCustomFeatures(context);
-			for (final ICustomFeature feature : features) {
-				if (feature instanceof LayoutDiagramFeature) {
-					TransactionalEditingDomain ed = diagramBehavior.getEditingDomain();
-					TransactionalCommandStack cs = (TransactionalCommandStack) ed.getCommandStack();
-					cs.execute(new RecordingCommand(ed) {
-
-						@Override
-						protected void doExecute() {
-							((LayoutDiagramFeature) feature).execute(context);
-						}
-					});
-				}
+	public static List<Shape> getShapesInArea(final ContainerShape containerShape, int width, int height, int x, int y) {
+		List<Shape> retList = new ArrayList<Shape>();
+		EList<Shape> shapes = containerShape.getChildren();
+		for (Shape s : shapes) {
+			if (shapeExistsPartiallyInArea(s, width, height, x, y)) {
+				retList.add(s);
 			}
 		}
+		return retList;
 	}
 
 	/**
@@ -659,37 +761,6 @@ public class DUtil {
 			return layoutFeature.layout(updateContext);
 		}
 		return false;
-	}
-
-	public static void initializeDiagramResource(final IDiagramUtilHelper options, final String diagramTypeId, final String diagramTypeProviderId,
-		final URI diagramURI) throws IOException, CoreException {
-		if (diagramURI.isPlatform()) {
-			final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(diagramURI.toPlatformString(true)));
-
-			file.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
-
-			if (!file.exists()) {
-				final IWorkspaceRunnable operation = new IWorkspaceRunnable() {
-
-					@Override
-					public void run(final IProgressMonitor monitor) throws CoreException {
-						final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-						try {
-							populateDiagram(options, diagramTypeId, diagramTypeProviderId, diagramURI, buffer);
-						} catch (final IOException e) {
-							// PASS
-						}
-						file.create(new ByteArrayInputStream(buffer.toByteArray()), true, monitor);
-					}
-
-				};
-				final ISchedulingRule rule = ResourcesPlugin.getWorkspace().getRuleFactory().createRule(file);
-
-				ResourcesPlugin.getWorkspace().run(operation, rule, 0, null);
-			}
-		} else {
-			populateDiagram(options, diagramTypeId, diagramTypeProviderId, diagramURI, null);
-		}
 	}
 
 	/**
@@ -775,23 +846,6 @@ public class DUtil {
 		return ga.getLineVisible() || ga.getFilled();
 	}
 
-	private static void populateDiagram(final IDiagramUtilHelper options, final String diagramTypeId, final String diagramTypeProviderId, final URI diagramURI,
-		final OutputStream buffer) throws IOException {
-		// Create Resource
-		final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
-		final Resource diagramResource = resourceSet.createResource(diagramURI);
-
-		// Create Diagram and add to Resource
-		final String diagramName = diagramURI.lastSegment();
-		Diagram diagram = Graphiti.getPeCreateService().createDiagram(diagramTypeId, diagramName, true);
-		diagramResource.getContents().add(diagram);
-		if (buffer != null) {
-			diagramResource.save(buffer, options.getSaveOptions());
-		} else {
-			diagramResource.save(options.getSaveOptions());
-		}
-	}
-
 	/**
 	 * Remove a {@link PictogramElement} using the appropriate Graphiti remove feature, if available.
 	 * @param featureProvider
@@ -818,6 +872,76 @@ public class DUtil {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Determine if a shape overlaps an area. Coordinates should be absolute.
+	 * @param s
+	 * @param width
+	 * @param height
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public static boolean shapeExistsPartiallyInArea(final Shape s, int width, int height, int x, int y) {
+		GraphicsAlgorithm ga = s.getGraphicsAlgorithm();
+		ILocation shapeLoc = GraphitiUi.getUiLayoutService().getLocationRelativeToDiagram(s);
+		return ((x + width) > ga.getX() && x < (shapeLoc.getX() + ga.getWidth()) && (y + height) > ga.getY() && y < (shapeLoc.getY() + ga.getHeight()));
+	}
+
+	/**
+	 * Adjust children x/y so they remain in the same relative position after resize
+	 * @param containerShape
+	 * @param context
+	 */
+	public static void shiftChildrenRelativeToParentResize(ContainerShape containerShape, IResizeShapeContext context) {
+
+		int widthDiff = containerShape.getGraphicsAlgorithm().getWidth() - context.getWidth();
+		int heightDiff = containerShape.getGraphicsAlgorithm().getHeight() - context.getHeight();
+		switch (context.getDirection()) {
+		case (IResizeShapeContext.DIRECTION_NORTH_EAST):
+			shiftChildrenYPositionUp(containerShape, heightDiff);
+			break;
+		case (IResizeShapeContext.DIRECTION_WEST):
+		case (IResizeShapeContext.DIRECTION_SOUTH_WEST):
+			shiftChildrenXPositionLeft(containerShape, widthDiff);
+			break;
+		case (IResizeShapeContext.DIRECTION_NORTH_WEST):
+			shiftChildrenXPositionLeft(containerShape, widthDiff);
+			shiftChildrenYPositionUp(containerShape, heightDiff);
+			break;
+		case (IResizeShapeContext.DIRECTION_NORTH): // handle top of box getting smaller
+			shiftChildrenYPositionUp(containerShape, heightDiff);
+			break;
+		default:
+			break;
+		}
+	}
+
+	/**
+	 * Shifts children of container x value to the left by specified amount
+	 * Can be negative
+	 * @param ga
+	 * @param shiftLeftAmount
+	 */
+	private static void shiftChildrenXPositionLeft(ContainerShape containerShape, int shiftLeftAmount) {
+		for (Shape s : containerShape.getChildren()) {
+			GraphicsAlgorithm ga = s.getGraphicsAlgorithm();
+			Graphiti.getGaService().setLocation(ga, ga.getX() - shiftLeftAmount, ga.getY());
+		}
+	}
+
+	/**
+	 * Shifts children of container Y value up by specified amount
+	 * Can be negative
+	 * @param ga
+	 * @param shiftUpAmount
+	 */
+	private static void shiftChildrenYPositionUp(ContainerShape containerShape, int shiftUpAmount) {
+		for (Shape s : containerShape.getChildren()) {
+			GraphicsAlgorithm ga = s.getGraphicsAlgorithm();
+			Graphiti.getGaService().setLocation(ga, ga.getX(), ga.getY() - shiftUpAmount);
+		}
 	}
 
 	/**

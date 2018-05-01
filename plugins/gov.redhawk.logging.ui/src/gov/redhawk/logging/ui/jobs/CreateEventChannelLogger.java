@@ -14,9 +14,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
@@ -39,6 +38,7 @@ import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.SubMonitor;
 import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public class CreateEventChannelLogger extends Job {
@@ -115,26 +115,20 @@ public class CreateEventChannelLogger extends Job {
 
 		// Update the logging config
 		try {
-			oldLogConfig = CorbaUtils.invoke(new Callable<String>() {
-				@Override
-				public String call() throws Exception {
-					String logConfig = corbaObject.getLogConfig();
-					List<String> oldAppenders = Log4JConfigGenerator.getExistingAppenders(logConfig, logger);
-					String appendToConfig = Log4JConfigGenerator.createLog4jConfig(domMgr.getName(), eventChannelName, logger, logLevel, oldAppenders);
-					corbaObject.setLogConfig(logConfig + appendToConfig);
-					return logConfig;
-
-				}
+			oldLogConfig = CorbaUtils2.invoke(() -> {
+				String logConfig = corbaObject.getLogConfig();
+				List<String> oldAppenders = Log4JConfigGenerator.getExistingAppenders(logConfig, logger);
+				String appendToConfig = Log4JConfigGenerator.createLog4jConfig(domMgr.getName(), eventChannelName, logger, logLevel, oldAppenders);
+				corbaObject.setLogConfig(logConfig + appendToConfig);
+				return logConfig;
 			}, progress.newChild(WORK_ADJUST_LOG_CONFIG));
-		} catch (CoreException e) {
+		} catch (ExecutionException e) {
 			if (e.getCause() instanceof BAD_PARAM) {
-				Status status = new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.CreateEventChannelLogger_3, e);
+				Status status = new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.CreateEventChannelLogger_3, e.getCause());
 				return rollback(progress, status);
 			}
-			Status status = new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.CreateEventChannelLogger_4, e);
+			Status status = new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.CreateEventChannelLogger_4, e.getCause());
 			return rollback(progress, status);
-		} catch (InterruptedException e) {
-			return rollback(progress, null);
 		}
 
 		// Allow the event channel a little time to show up and be found
@@ -224,18 +218,13 @@ public class CreateEventChannelLogger extends Job {
 		// Attempt rollback of log config
 		try {
 			if (oldLogConfig != null) {
-				CorbaUtils.invoke(new Callable<Object>() {
-					@Override
-					public String call() throws Exception {
-						corbaObject.setLogConfig(oldLogConfig);
-						return null;
-					}
+				CorbaUtils2.invoke(() -> {
+					corbaObject.setLogConfig(oldLogConfig);
+					return null;
 				}, monitor);
 			}
-		} catch (CoreException e) {
-			statuses.add(new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.CreateEventChannelLogger_11, e));
-		} catch (InterruptedException e) {
-			statuses.add(new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.CreateEventChannelLogger_12));
+		} catch (ExecutionException e) {
+			statuses.add(new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.CreateEventChannelLogger_11, e.getCause()));
 		}
 
 		// Release the CORBA object

@@ -11,6 +11,7 @@
 package gov.redhawk.logging.ui.editors;
 
 import java.net.URI;
+import java.util.concurrent.ExecutionException;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.runtime.CoreException;
@@ -35,7 +36,7 @@ import CF.LogConfigurationOperations;
 import gov.redhawk.logging.ui.LoggingUiPlugin;
 import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaWaveform;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 
 public class LogConfigEditor extends TextEditor {
 
@@ -92,15 +93,12 @@ public class LogConfigEditor extends TextEditor {
 		final String newLogConfig = getEditorText();
 		final Job saveLogConfigJob = Job.create("Saving log configuration file...", monitor -> {
 			try {
-				CorbaUtils.invoke(() -> {
+				return CorbaUtils2.invoke(() -> {
 					resource.setLogConfig(newLogConfig);
-					return null;
+					return Status.OK_STATUS;
 				}, monitor);
-				return Status.OK_STATUS;
-			} catch (CoreException e) {
-				return new Status(e.getStatus().getSeverity(), LoggingUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
-			} catch (InterruptedException e) {
-				return Status.CANCEL_STATUS;
+			} catch (ExecutionException e) {
+				return new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, "Unable to set logging configuration on resource", e.getCause());
 			}
 		});
 		saveLogConfigJob.setUser(true);

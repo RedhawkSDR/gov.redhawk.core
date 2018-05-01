@@ -11,26 +11,14 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.monitor.model.ports.impl;
 
-import gov.redhawk.model.sca.ScaPort;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.monitor.internal.MergeUsesStatsCommand;
-import gov.redhawk.monitor.model.ports.PortConnectionMonitor;
-import gov.redhawk.monitor.model.ports.PortMonitor;
-import gov.redhawk.monitor.model.ports.PortStatisticsProvider;
-import gov.redhawk.monitor.model.ports.PortsFactory;
-import gov.redhawk.monitor.model.ports.PortsPackage;
-
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Callable;
-
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import java.util.concurrent.ExecutionException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -49,6 +37,15 @@ import BULKIO.ProvidesPortStatisticsProviderHelper;
 import BULKIO.UsesPortStatistics;
 import BULKIO.UsesPortStatisticsProvider;
 import BULKIO.UsesPortStatisticsProviderHelper;
+import gov.redhawk.model.sca.ScaPort;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.monitor.internal.MergeUsesStatsCommand;
+import gov.redhawk.monitor.model.ports.PortConnectionMonitor;
+import gov.redhawk.monitor.model.ports.PortMonitor;
+import gov.redhawk.monitor.model.ports.PortStatisticsProvider;
+import gov.redhawk.monitor.model.ports.PortsPackage;
+import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 
 /**
  * <!-- begin-user-doc -->
@@ -268,27 +265,26 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 
 		@Override
 		protected IStatus run(final IProgressMonitor monitor) {
-			monitor.beginTask("Fetching stats for " + PortMonitorImpl.this.port.getName(), IProgressMonitor.UNKNOWN);
+			SubMonitor progress = SubMonitor.convert(monitor, "Fetching stats for " + PortMonitorImpl.this.port.getName(), 6);
 			final org.omg.CORBA.Object portObj = PortMonitorImpl.this.port.getObj();
 			if (portObj == null) {
 				return Status.CANCEL_STATUS;
 			}
 
 			try {
-				if (CorbaUtils.non_existent(portObj, monitor)) {
+				if (CorbaUtils.non_existent(portObj, progress.split(1))) {
 					return Status.CANCEL_STATUS;
 				}
 
-				if (CorbaUtils.is_a(portObj, ProvidesPortStatisticsProviderHelper.id(), monitor)) {
-					final ProvidesPortStatisticsProvider provider = CorbaUtils.invoke(new Callable<ProvidesPortStatisticsProvider>() {
-						@Override
-						public ProvidesPortStatisticsProvider call() throws Exception {
-							return ProvidesPortStatisticsProviderHelper.narrow(portObj);
-						}
-
-					}, monitor);
-					final PortUsageType newState = provider.state();
-					final PortStatistics newStats = provider.statistics();
+				if (CorbaUtils.is_a(portObj, ProvidesPortStatisticsProviderHelper.id(), progress.split(1))) {
+					final PortUsageType newState = CorbaUtils2.invoke(() -> {
+						ProvidesPortStatisticsProvider provider =  ProvidesPortStatisticsProviderHelper.unchecked_narrow(portObj);
+						return provider.state();
+					}, progress.split(1));
+					final PortStatistics newStats = CorbaUtils2.invoke(() -> {
+						ProvidesPortStatisticsProvider provider =  ProvidesPortStatisticsProviderHelper.unchecked_narrow(portObj);
+						return provider.statistics();
+					}, progress.split(1));
 
 					ScaModelCommand.execute(PortMonitorImpl.this, new ScaModelCommand() {
 						@Override
@@ -306,16 +302,13 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 						}
 					});
 				}
+				progress.setWorkRemaining(2);
 
-				if (CorbaUtils.is_a(portObj, UsesPortStatisticsProviderHelper.id(), monitor)) {
-					final UsesPortStatisticsProvider provider = CorbaUtils.invoke(new Callable<UsesPortStatisticsProvider>() {
-						@Override
-						public UsesPortStatisticsProvider call() throws Exception {
-							return UsesPortStatisticsProviderHelper.narrow(portObj);
-						}
-
-					}, monitor);
-					final UsesPortStatistics[] newStats = provider.statistics();
+				if (CorbaUtils.is_a(portObj, UsesPortStatisticsProviderHelper.id(), progress.split(1))) {
+					UsesPortStatistics[] newStats = CorbaUtils2.invoke(() -> {
+						UsesPortStatisticsProvider provider = UsesPortStatisticsProviderHelper.unchecked_narrow(portObj);
+						return provider.statistics();
+					}, progress.split(1));
 
 					ScaModelCommand.execute(PortMonitorImpl.this, new MergeUsesStatsCommand(PortMonitorImpl.this, newStats));
 				} else {
@@ -326,9 +319,7 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 						}
 					});
 				}
-			} catch (CoreException e) {
-				return Status.CANCEL_STATUS;
-			} catch (InterruptedException e) {
+			} catch (CoreException | InterruptedException | ExecutionException e) {
 				return Status.CANCEL_STATUS;
 			}
 

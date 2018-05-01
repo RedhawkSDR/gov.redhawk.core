@@ -16,19 +16,18 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.expressions.EvaluationContext;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -38,8 +37,6 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -50,9 +47,6 @@ import org.eclipse.ui.progress.UIJob;
 
 import CF.DataType;
 import CF.PropertiesHelper;
-import CF.DevicePackage.InsufficientCapacity;
-import CF.DevicePackage.InvalidCapacity;
-import CF.DevicePackage.InvalidState;
 import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerStatus;
@@ -60,16 +54,16 @@ import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.TunerStatusUtil;
 import gov.redhawk.frontend.ui.internal.section.FrontendSection;
 import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
-import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
+import gov.redhawk.sca.model.jobs.AllocateJob;
+import gov.redhawk.sca.model.jobs.DeallocateJob;
 import gov.redhawk.ui.port.nxmplot.IPlotView;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
-import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public class FeiPlotAction extends FrontendAction {
@@ -89,69 +83,42 @@ public class FeiPlotAction extends FrontendAction {
 			String listenerAllocationID = "Plot_" + System.getProperty("user.name") + ":" + System.currentTimeMillis();
 			final DataType[] props = TunerStatusUtil.createAllocationProperties(listenerAllocationID, tuner);
 
-			Job job = new Job("Plotting tuner " + tuner.getAllocationID()) {
-				@Override
-				protected IStatus run(IProgressMonitor parentMonitor) {
-					final SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Plotting tuner " + tuner.getAllocationID(), IProgressMonitor.UNKNOWN);
-					try {
-						IStatus status = CorbaUtils.invoke(new Callable<IStatus>() {
-
-							@Override
-							public IStatus call() throws Exception {
-								try {
-									subMonitor.subTask("Allocating capacity...");
-									if (device.allocateCapacity(props)) {
-										return Status.OK_STATUS;
-									} else {
-										return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Allocation failed, plot could not launch.", null);
-									}
-								} catch (InvalidCapacity e) {
-									return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in plot allocation: " + e.msg, e);
-								} catch (InvalidState e) {
-									return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in plot allocation: " + e.msg, e);
-								} catch (InsufficientCapacity e) {
-									return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Insufficient Capacity in plot allocation: " + e.msg, e);
-								}
-							}
-
-						}, subMonitor.newChild(1));
-						if (!status.isOK()) {
-							return status;
-						}
-						subMonitor.subTask("Refeshing device...");
-						device.refresh(subMonitor.newChild(1), RefreshDepth.SELF);
-					} catch (InterruptedException e) {
-						return Status.CANCEL_STATUS;
-					} catch (CoreException e) {
-						return new Status(e.getStatus().getSeverity(), FrontEndUIActivator.PLUGIN_ID, "Failed to plot allocation", e);
-					} finally {
-						subMonitor.done();
-					}
-					UIJob uiJob = new UIJob("Launching Plot View...") {
-
-						@Override
-						public IStatus runInUIThread(IProgressMonitor monitor) {
-							try {
-								IStatus retVal = createPlotView(props, device, tuner);
-								if (!retVal.isOK()) {
-									deallocate(tuner, props, device);
-								}
-
-								return retVal;
-							} catch (ExecutionException e) {
-								deallocate(tuner, props, device);
-								return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to open plot view", e);
-							}
-						}
-
-					};
-					uiJob.setUser(false);
-					uiJob.setSystem(true);
-					uiJob.schedule();
-					return Status.OK_STATUS;
-				}
-			};
+			Job job = new AllocateJob(device, props);
+			job.setName("Allocate listener for tuner " + tuner.getAllocationID());
 			job.setUser(true);
+
+			UIJob uiJob = new UIJob("Launching Plot View...") {
+
+				@Override
+				public IStatus runInUIThread(IProgressMonitor monitor) {
+					try {
+						IStatus retVal = createPlotView(props, device, tuner);
+						if (!retVal.isOK()) {
+							deallocate(tuner, props, device);
+						}
+
+						return retVal;
+					} catch (ExecutionException e) {
+						deallocate(tuner, props, device);
+						return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to open plot view", e);
+					}
+				}
+
+			};
+			uiJob.setUser(false);
+			uiJob.setSystem(true);
+
+			// Successful listener allocation -> open plot view
+			job.addJobChangeListener(new JobChangeAdapter() {
+				@Override
+				public void done(IJobChangeEvent event) {
+					if (event.getResult().isOK()) {
+						uiJob.schedule();
+					}
+				}
+			});
+
+			// Kick off the first job
 			job.schedule();
 		}
 	}
@@ -226,7 +193,7 @@ public class FeiPlotAction extends FrontendAction {
 		if (view != null) {
 			view.setPartName(name.toString());
 			view.setTitleToolTip(tooltip.toString());
-			view.getPlotPageBook().addDisposeListener(getDisposeListener(tuner, props, device));
+			view.getPlotPageBook().addDisposeListener(event -> deallocate(tuner, props, device));
 
 			ScaModelCommand.execute(tuner, new ScaModelCommand() {
 
@@ -272,65 +239,24 @@ public class FeiPlotAction extends FrontendAction {
 		return Status.OK_STATUS;
 	}
 
-	private DisposeListener getDisposeListener(final TunerStatus tuner, final DataType[] props, final ScaDevice< ? > device) {
-		DisposeListener disposeListener = new DisposeListener() {
-
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-				if (containsListener(tuner, props)) {
-					deallocate(tuner, props, device);
-				}
-			}
-		};
-		return disposeListener;
-	}
-
-	private boolean containsListener(TunerStatus tuner, DataType[] props) {
-		String listenerId = getListenerID(props);
-		for (ListenerAllocation a : tuner.getListenerAllocations()) {
-			if (a.getListenerID().equals(listenerId)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	private void deallocate(final TunerStatus tuner, final DataType[] props, final ScaDevice< ? > device) {
-		if (!containsListener(tuner, props)) {
-			return;
-		}
-		Job job = new Job("Fei Deallocate Listener") {
+		Job job = new DeallocateJob(device, props) {
 			@Override
 			protected IStatus run(IProgressMonitor parentMonitor) {
-				if (!containsListener(tuner, props)) {
+				String listenerId = getListenerID(props);
+				boolean containsListener = ScaModelCommand.runExclusive(tuner, () -> {
+					for (ListenerAllocation a : tuner.getListenerAllocations()) {
+						if (a.getListenerID().equals(listenerId)) {
+							return true;
+						}
+					}
+					return false;
+				});
+				if (containsListener) {
+					return super.run(parentMonitor);
+				} else {
 					return Status.CANCEL_STATUS;
 				}
-				try {
-					SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Deallocating listener...", 2);
-					if (device != null && !device.isDisposed()) {
-						CorbaUtils.invoke(new Callable<IStatus>() {
-
-							@Override
-							public IStatus call() throws Exception {
-								try {
-									device.deallocateCapacity(props);
-									return Status.OK_STATUS;
-								} catch (InvalidCapacity e) {
-									return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in plot deallocation: " + e.msg, e);
-								} catch (InvalidState e) {
-									return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in plot deallocation: " + e.msg, e);
-								}
-							}
-
-						}, subMonitor.newChild(1));
-						device.refresh(subMonitor.newChild(1), RefreshDepth.SELF);
-					}
-				} catch (InterruptedException e) {
-					return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during plot deallocation", e);
-				} catch (CoreException e) {
-					return new Status(e.getStatus().getSeverity(), FrontEndUIActivator.PLUGIN_ID, "Failed to deallocate", e);
-				}
-				return Status.OK_STATUS;
 			}
 		};
 		job.setUser(false);

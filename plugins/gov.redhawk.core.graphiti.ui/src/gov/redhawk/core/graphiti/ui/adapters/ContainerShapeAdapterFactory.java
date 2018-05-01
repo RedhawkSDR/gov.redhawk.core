@@ -17,7 +17,6 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.ui.platform.GraphitiShapeEditPart;
 
-import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaDevice;
@@ -27,6 +26,8 @@ import gov.redhawk.model.sca.ScaWaveform;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
+import mil.jpeojtrs.sca.partitioning.ComponentPlacement;
+import mil.jpeojtrs.sca.sad.HostCollocation;
 import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 
@@ -34,7 +35,7 @@ import mil.jpeojtrs.sca.sad.SoftwareAssembly;
  * Can adapt either:
  * <ul>
  * <li>{@link GraphitiShapeEditPart} (Graphiti UI part)</li>
- * <li>{@link RHContainerShape} (our Graphiti model object)</li>
+ * <li>{@link ContainerShape} (Graphiti model object)</li>
  * </ul>
  * from the diagrams to the following types (and a few of their super types):
  * <ul>
@@ -59,7 +60,14 @@ public class ContainerShapeAdapterFactory implements IAdapterFactory {
 			adaptableObject = ((GraphitiShapeEditPart) adaptableObject).getPictogramElement();
 		}
 
-		if (adaptableObject instanceof Diagram) {
+		// We must have a ContainerShape to proceed
+		if (!(adaptableObject instanceof ContainerShape)) {
+			return null;
+		}
+		ContainerShape containerShape = (ContainerShape) adaptableObject;
+
+		// Handle diagram, host collocation
+		if (containerShape instanceof Diagram) {
 			Diagram diagram = (Diagram) adaptableObject;
 			for (EObject eObj : Graphiti.getLinkService().getAllBusinessObjectsForLinkedPictogramElement(diagram)) {
 				if (adapterType.isInstance(eObj)) {
@@ -68,12 +76,6 @@ public class ContainerShapeAdapterFactory implements IAdapterFactory {
 			}
 			return null;
 		}
-
-		// PictogramElement must be an RHContainerShape
-		if (!(adaptableObject instanceof RHContainerShape)) {
-			return null;
-		}
-		RHContainerShape containerShape = (RHContainerShape) adaptableObject;
 
 		// Get the diagram
 		// Check to make sure the container is not null, possible in a multi-delete and probably other actions
@@ -86,9 +88,31 @@ public class ContainerShapeAdapterFactory implements IAdapterFactory {
 		}
 		Diagram diagram = (Diagram) container;
 
+		HostCollocation hostCollocation = DUtil.getBusinessObject(containerShape, HostCollocation.class);
+		if (hostCollocation != null) {
+			return adaptHostCollocation(diagram, hostCollocation, adapterType);
+		}
+
 		// Try to convert the Graphiti PictogramElement to a SAD ComponentInstantiation
 		ComponentInstantiation instantiation = DUtil.getBusinessObject(containerShape, ComponentInstantiation.class);
 		return adaptCompInstToScaModel(diagram, instantiation, adapterType);
+	}
+
+	private < T > T adaptHostCollocation(Diagram diagram, HostCollocation hostCollocation, Class<T> adapterType) {
+		for (ComponentPlacement< ? > cp : hostCollocation.getComponentPlacement()) {
+			for (ComponentInstantiation ci : cp.getComponentInstantiation()) {
+				ScaComponent component = adaptCompInstToScaModel(diagram, ci, ScaComponent.class);
+				if (component != null && component.getDevices().size() > 0) {
+					ScaDevice< ? > device = component.getDevices().get(0);
+					if (adapterType.isInstance(device)) {
+						return adapterType.cast(device);
+					} else {
+						return null;
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 	/**

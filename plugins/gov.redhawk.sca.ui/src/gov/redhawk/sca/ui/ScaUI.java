@@ -11,7 +11,7 @@
 package gov.redhawk.sca.ui;
 
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
+import java.util.Collections;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
@@ -42,8 +42,8 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import gov.redhawk.model.sca.IRefreshable;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.sca.internal.ui.ScaContentTypeRegistry;
+import gov.redhawk.sca.model.jobs.RefreshJob;
 import gov.redhawk.sca.ui.editors.IScaContentDescriber;
-import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
  * @since 7.0
@@ -268,30 +268,11 @@ public final class ScaUI {
 			final IRefreshable refreshable = (IRefreshable) editorDescriptor.getSelectedObject();
 
 			// This job will first perform a full refresh of the item
-			final Job refreshJob = new Job("Refreshing state...") {
+			final Job refreshJob = new RefreshJob("Refreshing state...", Collections.singletonList(refreshable), RefreshDepth.FULL) {
 
 				@Override
 				public boolean belongsTo(Object family) {
 					return (family == ScaUI.FAMILY_OPEN_EDITOR) || super.belongsTo(family);
-				}
-
-				@Override
-				protected IStatus run(final IProgressMonitor monitor) {
-					try {
-						CorbaUtils.invoke(new Callable<Object>() {
-
-							public Object call() throws Exception {
-								refreshable.refresh(monitor, RefreshDepth.FULL);
-								return null;
-							}
-
-						}, monitor);
-						return Status.OK_STATUS;
-					} catch (CoreException e) {
-						return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
-					} catch (InterruptedException e) {
-						return new Status(IStatus.CANCEL, ScaUiPlugin.PLUGIN_ID, "Interrupted while refreshing prior to opening an editor", e);
-					}
 				}
 			};
 			refreshJob.setUser(true);

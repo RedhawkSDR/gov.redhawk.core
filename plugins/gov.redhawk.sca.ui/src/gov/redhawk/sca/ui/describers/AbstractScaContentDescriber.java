@@ -13,18 +13,15 @@ package gov.redhawk.sca.ui.describers;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.CommonPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 
@@ -33,7 +30,7 @@ import gov.redhawk.model.sca.ProfileObjectWrapper;
 import gov.redhawk.sca.ui.ScaFileStoreEditorInput;
 import gov.redhawk.sca.ui.ScaUI;
 import gov.redhawk.sca.ui.editors.IScaContentDescriber;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 import mil.jpeojtrs.sca.util.QueryParser;
 import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
 
@@ -89,22 +86,14 @@ public abstract class AbstractScaContentDescriber implements IScaContentDescribe
 		if (Display.getCurrent() != null) {
 			ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
 			try {
-				dialog.run(true, true, new IRunnableWithProgress() {
-					public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-						try {
-							CorbaUtils.invoke(new Callable<Object>() {
-								public Object call() throws Exception {
-									return obj.fetchProfileObject(monitor);
-								}
-							}, monitor);
-						} catch (CoreException e) {
-							throw new InvocationTargetException(e);
-						}
-					}
+				dialog.run(true, true, monitor -> {
+					CorbaUtils2.invokeUI(() -> {
+						return obj.fetchProfileObject(monitor);
+					}, monitor);
 				});
 				return obj.getProfileObj();
 			} catch (InvocationTargetException e) {
-				throw new IllegalStateException("Unable to fetch profile URI for waveform", e);
+				throw new IllegalStateException("Unable to fetch profile URI for waveform", e.getCause());
 			} catch (InterruptedException e) {
 				throw new IllegalStateException("Interrupted while fetching profile URI for waveform");
 			}

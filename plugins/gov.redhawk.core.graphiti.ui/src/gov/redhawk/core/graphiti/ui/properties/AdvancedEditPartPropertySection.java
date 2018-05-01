@@ -14,13 +14,13 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.gef.EditPart;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.Connection;
+import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.tabbed.AdvancedPropertySection;
 
-import gov.redhawk.core.graphiti.ui.ext.RHContainerShape;
 import gov.redhawk.core.graphiti.ui.util.DUtil;
 import gov.redhawk.model.sca.ScaConnection;
 import gov.redhawk.model.sca.ScaDeviceManager;
@@ -50,9 +50,7 @@ public class AdvancedEditPartPropertySection extends AdvancedPropertySection {
 
 	protected Object getScaObjectForEditPart(EditPart ep) {
 		Object graphitiModel = ep.getModel();
-		if (graphitiModel instanceof RHContainerShape) {
-			return Platform.getAdapterManager().getAdapter(ep, ScaPropertyContainer.class);
-		} else if (graphitiModel instanceof Anchor) {
+		if (graphitiModel instanceof Anchor) {
 			Object rhModel = ((Anchor) graphitiModel).getLink().getBusinessObjects().get(0);
 			if (rhModel instanceof ProvidesPortStub) {
 				return Platform.getAdapterManager().getAdapter(ep, ScaProvidesPort.class);
@@ -66,6 +64,8 @@ public class AdvancedEditPartPropertySection extends AdvancedPropertySection {
 			} else {
 				return DUtil.getBusinessObject((Diagram) graphitiModel, ScaDeviceManager.class);
 			}
+		} else if (graphitiModel instanceof ContainerShape) {
+			return Platform.getAdapterManager().getAdapter(ep, ScaPropertyContainer.class);
 		} else if (graphitiModel instanceof Connection) {
 			return Platform.getAdapterManager().getAdapter(ep, ScaConnection.class);
 		}

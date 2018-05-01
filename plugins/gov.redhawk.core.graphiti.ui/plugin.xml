@@ -135,7 +135,7 @@
          </adapter>
       </factory>
       <factory
-            adaptableType="gov.redhawk.core.graphiti.ui.ext.RHContainerShape"
+            adaptableType="org.eclipse.graphiti.mm.pictograms.ContainerShape"
             class="gov.redhawk.core.graphiti.ui.adapters.ContainerShapeAdapterFactory">
          <adapter
                type="gov.redhawk.model.sca.ScaService">

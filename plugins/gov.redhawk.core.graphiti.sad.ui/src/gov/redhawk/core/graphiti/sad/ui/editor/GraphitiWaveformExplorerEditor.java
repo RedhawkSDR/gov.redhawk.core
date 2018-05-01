@@ -87,9 +87,6 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 		// reflect runtime aspects here
 		modelMap.reflectRuntimeStatus();
 
-		// set layout for sandbox editors
-		DUtil.layout(getDiagramEditor());
-
 		// Adjust the text editor's title to the profile file name if possible
 		IEditorPart textEditor = getTextEditor();
 		if (textEditor != null) {

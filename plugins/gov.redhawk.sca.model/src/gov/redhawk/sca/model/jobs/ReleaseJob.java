@@ -10,9 +10,8 @@
  */
 package gov.redhawk.sca.model.jobs;
 
-import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -24,7 +23,7 @@ import CF.LifeCyclePackage.ReleaseError;
 import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaWaveform;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 
 /**
  * Interruptible job that performs a CORBA call to {@link LifeCycleOperations#releaseObject()}.
@@ -62,24 +61,17 @@ public class ReleaseJob extends Job {
 
 		SubMonitor progress = SubMonitor.convert(monitor, "Releasing: " + name, IProgressMonitor.UNKNOWN);
 		try {
-			CorbaUtils.invoke(new Callable<Void>() {
-
-				@Override
-				public Void call() throws Exception {
-					try {
-						obj.releaseObject();
-					} catch (final ReleaseError e) {
-						throw new CoreException(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release: " + name, e));
-					}
-					return null;
+			return CorbaUtils2.invoke(() -> {
+				try {
+					obj.releaseObject();
+					return Status.OK_STATUS;
+				} catch (final ReleaseError e) {
+					return new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release: " + name, e);
 				}
-
 			}, progress);
-			return Status.OK_STATUS;
-		} catch (CoreException e) {
-			return new Status(e.getStatus().getSeverity(), ScaModelPlugin.ID, "Failed to release: " + name, e);
-		} catch (InterruptedException e) {
-			return Status.CANCEL_STATUS;
+		} catch (ExecutionException e) {
+			Throwable cause = e.getCause();
+			return new Status(IStatus.ERROR, ScaModelPlugin.ID, cause.getMessage(), cause);
 		} finally {
 			progress.done();
 		}

@@ -10,7 +10,7 @@
  */
 package gov.redhawk.logging.ui.jobs;
 
-import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -25,7 +25,7 @@ import CF.LogConfigurationOperations;
 import gov.redhawk.logging.ui.LoggingUiPlugin;
 import gov.redhawk.logging.ui.config.Log4JConfigGenerator;
 import gov.redhawk.sca.util.OrbSession;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 
 public class DestroyEventChannelLoggerJob extends Job {
 
@@ -53,29 +53,22 @@ public class DestroyEventChannelLoggerJob extends Job {
 
 		// Update the logging config
 		try {
-			CorbaUtils.invoke(new Callable<Object>() {
-				@Override
-				public String call() throws Exception {
-					String logConfig = resource.getLogConfig();
-					logConfig = purgeEventChannel(logConfig);
-					resource.setLogConfig(logConfig);
-					return null;
-				}
+			return CorbaUtils2.invoke(() -> {
+				String logConfig = resource.getLogConfig();
+				logConfig = purgeEventChannel(logConfig);
+				resource.setLogConfig(logConfig);
+				return Status.OK_STATUS;
 			}, progress.newChild(WORK_ADJUST_LOG_CONFIG));
-		} catch (CoreException e) {
+		} catch (ExecutionException e) {
 			// Ignore CORBA transients that occur when shutting down. Normally these will be because the domain was
 			// running in the IDE and shutdown before we could remove the logging
 			if (e.getCause() instanceof TRANSIENT && PlatformUI.getWorkbench().isClosing()) {
 				return Status.OK_STATUS;
 			}
 			return new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.DestroyEventChannelLoggerJob_1, e);
-		} catch (InterruptedException e) {
-			return Status.CANCEL_STATUS;
 		} finally {
 			this.session.dispose();
 		}
-
-		return Status.OK_STATUS;
 	}
 
 	private String purgeEventChannel(String logConfig) throws CoreException {

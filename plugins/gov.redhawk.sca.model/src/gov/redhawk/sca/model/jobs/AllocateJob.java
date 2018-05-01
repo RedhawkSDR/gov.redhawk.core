@@ -10,7 +10,8 @@
  */
 package gov.redhawk.sca.model.jobs;
 
-import org.eclipse.core.runtime.CoreException;
+import java.util.concurrent.ExecutionException;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -25,7 +26,7 @@ import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import mil.jpeojtrs.sca.util.CFErrorFormatter;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 
 /**
  * @since 21.1
@@ -55,7 +56,7 @@ public class AllocateJob extends Job {
 
 		try {
 			// Attempt the allocation
-			IStatus result = CorbaUtils.invoke(() -> {
+			IStatus result = CorbaUtils2.invoke(() -> {
 				try {
 					if (device.allocateCapacity(allocation)) {
 						return Status.OK_STATUS;
@@ -73,13 +74,16 @@ public class AllocateJob extends Job {
 			if (!result.isOK()) {
 				return result;
 			}
+		} catch (ExecutionException e) {
+			return new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to allocate", e);
+		}
 
-			// Refresh the model since the allocation succeeded
+		// Refresh the model since the allocation succeeded
+		try {
 			device.refresh(progress.newChild(WORK_REFRESH), RefreshDepth.SELF);
 		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
 			return Status.CANCEL_STATUS;
-		} catch (CoreException e) {
-			return new Status(e.getStatus().getSeverity(), ScaModelPlugin.ID, "Failed to allocate", e);
 		}
 
 		return Status.OK_STATUS;

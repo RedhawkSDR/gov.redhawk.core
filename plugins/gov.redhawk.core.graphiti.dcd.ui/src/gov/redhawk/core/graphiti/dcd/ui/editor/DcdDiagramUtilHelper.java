@@ -13,11 +13,9 @@ package gov.redhawk.core.graphiti.dcd.ui.editor;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
 
 import gov.redhawk.core.graphiti.ui.editor.IDiagramUtilHelper;
 import mil.jpeojtrs.sca.dcd.DcdPackage;
@@ -26,11 +24,9 @@ import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 public enum DcdDiagramUtilHelper implements IDiagramUtilHelper {
 	INSTANCE;
 
-	public static final String DIAGRAM_FILE_EXTENSION = ".dcd_GDiagram"; //$NON-NLS-1$
-
 	@Override
 	public String getDiagramFileExtension() {
-		return DcdDiagramUtilHelper.DIAGRAM_FILE_EXTENSION;
+		return DcdPackage.DIAGRAM_FILE_EXTENSION;
 	}
 
 	@Override
@@ -50,10 +46,4 @@ public enum DcdDiagramUtilHelper implements IDiagramUtilHelper {
 	public String getSemanticFileExtension() {
 		return DcdPackage.FILE_EXTENSION;
 	}
-
-	@Override
-	public IFile getFile(Resource resource) {
-		return WorkspaceSynchronizer.getFile(resource);
-	}
-
 }

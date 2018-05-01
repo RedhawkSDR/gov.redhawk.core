@@ -10,7 +10,8 @@
  */
 package gov.redhawk.sca.model.jobs;
 
-import org.eclipse.core.runtime.CoreException;
+import java.util.concurrent.ExecutionException;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -23,7 +24,7 @@ import CF.DevicePackage.InvalidState;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import mil.jpeojtrs.sca.util.CFErrorFormatter;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 
 /**
  * Performs a deallocation against a device.
@@ -59,22 +60,29 @@ public class DeallocateJob extends Job {
 		SubMonitor progress = SubMonitor.convert(monitor, "Deallocating", WORK_DEALLOCATE + WORK_REFRESH);
 
 		try {
-			CorbaUtils.invoke(() -> {
+			IStatus status = CorbaUtils2.invoke(() -> {
 				try {
 					device.deallocateCapacity(deallocation);
+					return Status.OK_STATUS;
 				} catch (InvalidCapacity e) {
-					throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, CFErrorFormatter.format(e, label), e));
+					return new Status(IStatus.ERROR, PLUGIN_ID, CFErrorFormatter.format(e, label), e);
 				} catch (InvalidState e) {
-					throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, CFErrorFormatter.format(e, label), e));
+					return new Status(IStatus.ERROR, PLUGIN_ID, CFErrorFormatter.format(e, label), e);
 				}
-				return null;
 			}, progress.newChild(WORK_DEALLOCATE));
+			if (!status.isOK()) {
+				return status;
+			}
+		} catch (ExecutionException e) {
+			return new Status(IStatus.ERROR, PLUGIN_ID, "Failed to deallocate", e);
+		}
 
+		// Refresh the model since the de-allocation succeeded
+		try {
 			device.refresh(progress.newChild(WORK_REFRESH), RefreshDepth.SELF);
 		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
 			return Status.CANCEL_STATUS;
-		} catch (CoreException e) {
-			return new Status(e.getStatus().getSeverity(), PLUGIN_ID, "Failed to deallocate", e);
 		}
 
 		return Status.OK_STATUS;

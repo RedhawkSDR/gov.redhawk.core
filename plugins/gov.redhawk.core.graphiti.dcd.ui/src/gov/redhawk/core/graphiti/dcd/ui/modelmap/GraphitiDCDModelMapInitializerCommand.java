@@ -19,9 +19,9 @@ import java.util.concurrent.TimeoutException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.command.AbstractCommand;
 
 import gov.redhawk.core.graphiti.dcd.ui.GraphitiDcdUIPlugin;
+import gov.redhawk.core.graphiti.ui.modelmap.AbstractGraphitiModelMapInitializerCommand;
 import gov.redhawk.model.sca.CorbaObjWrapper;
 import gov.redhawk.model.sca.ScaConnection;
 import gov.redhawk.model.sca.ScaDevice;
@@ -48,13 +48,13 @@ import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
 import mil.jpeojtrs.sca.sad.SadFactory;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 import mil.jpeojtrs.sca.util.ScaUriHelpers;
-import mil.jpeojtrs.sca.util.collections.FeatureMapList;
 
 /**
  * Uses the REDHAWK SCA model to build a corresponding DCD
  */
-public class GraphitiDCDModelMapInitializerCommand extends AbstractCommand {
+public class GraphitiDCDModelMapInitializerCommand extends AbstractGraphitiModelMapInitializerCommand {
 
 	private final GraphitiDCDModelMap modelMap;
 
@@ -65,12 +65,14 @@ public class GraphitiDCDModelMapInitializerCommand extends AbstractCommand {
 	private final DeviceConfiguration dcd;
 
 	public GraphitiDCDModelMapInitializerCommand(final GraphitiDCDModelMap modelMap, final DeviceConfiguration dcd, final ScaDeviceManager deviceManager) {
+		super(modelMap);
 		this.modelMap = modelMap;
 		this.deviceManager = deviceManager;
 		this.dcd = dcd;
 	}
 
-	private void initConnection(final ScaConnection con) {
+	@Override
+	protected void initConnection(final ScaConnection con) {
 		final ScaUsesPort uses = con.getPort();
 		final ScaPortContainer container = uses.getPortContainer();
 		if (!(container instanceof ScaDevice || container instanceof ScaService)) {
@@ -87,9 +89,6 @@ public class GraphitiDCDModelMapInitializerCommand extends AbstractCommand {
 			return;
 		}
 
-		if (dcd.getConnections() == null) {
-			dcd.setConnections(DcdFactory.eINSTANCE.createDcdConnections());
-		}
 		dcd.getConnections().getConnectInterface().add(dcdCon);
 		modelMap.put(con, dcdCon);
 	}
@@ -256,37 +255,60 @@ public class GraphitiDCDModelMapInitializerCommand extends AbstractCommand {
 
 	@Override
 	public void execute() {
-		this.dcd.setComponentFiles(PartitioningFactory.eINSTANCE.createComponentFiles());
-		this.dcd.setPartitioning(DcdFactory.eINSTANCE.createDcdPartitioning());
-		this.dcd.setConnections(DcdFactory.eINSTANCE.createDcdConnections());
+		// Create any missing XML elements we need to have present
+		if (dcd.getComponentFiles() == null) {
+			dcd.setComponentFiles(PartitioningFactory.eINSTANCE.createComponentFiles());
+		}
+		if (dcd.getPartitioning() == null) {
+			dcd.setPartitioning(DcdFactory.eINSTANCE.createDcdPartitioning());
+		}
+		if (dcd.getConnections() == null) {
+			dcd.setConnections(DcdFactory.eINSTANCE.createDcdConnections());
+		}
 
-		if (deviceManager != null) {
-			portContainers = new ArrayList<>();
-			componentSupportedInterfaceTargets = new ArrayList<>();
+		createInstanceMappings();
 
-			for (ScaDevice< ? > device : new FeatureMapList<>(this.deviceManager.getDevices(), ScaDevice.class)) {
-				portContainers.add(device);
-				componentSupportedInterfaceTargets.add(device);
-				initDevice(device);
-			}
-			for (ScaService service : this.deviceManager.getServices()) {
-				portContainers.add(service);
-				componentSupportedInterfaceTargets.add(service);
-				initService(service);
-			}
+		portContainers = new ArrayList<ScaPortContainer>(this.deviceManager.getRootDevices());
+		portContainers.addAll(this.deviceManager.getChildDevices());
+		portContainers.addAll(this.deviceManager.getServices());
+		componentSupportedInterfaceTargets = new ArrayList<CorbaObjWrapper< ? >>(this.deviceManager.getRootDevices());
+		componentSupportedInterfaceTargets.addAll(this.deviceManager.getChildDevices());
+		componentSupportedInterfaceTargets.addAll(this.deviceManager.getServices());
+		createConnectionMappings(portContainers, dcd.getConnections().getConnectInterface());
+	}
 
-			for (final ScaPortContainer portContainer : portContainers) {
-				for (final ScaPort< ? , ? > port : portContainer.getPorts()) {
-					if (port instanceof ScaUsesPort) {
-						final ScaUsesPort uses = (ScaUsesPort) port;
-						for (final ScaConnection con : uses.getConnections()) {
-							if (con != null) {
-								initConnection(con);
-							}
-						}
-					}
+	private void createInstanceMappings() {
+		// Iterate all the running devices / services
+		List<ScaDevice<?>> liveDevices = new ArrayList<>(this.deviceManager.getRootDevices());
+		liveDevices.addAll(this.deviceManager.getChildDevices());
+		List<ScaService> liveServices = new ArrayList<>(this.deviceManager.getServices());
+		outer: for (DcdComponentInstantiation xmlInstance : dcd.getAllComponentInstantiations()) {
+			for (ScaDevice< ? > liveDevice : liveDevices) {
+				if (PluginUtil.equals(liveDevice.getIdentifier(), xmlInstance.getId())) {
+					liveDevices.remove(liveDevice);
+					modelMap.put(liveDevice, xmlInstance);
+					continue outer;
 				}
 			}
+			for (ScaService liveService : liveServices) {
+				if (PluginUtil.equals(liveService.getName(), xmlInstance.getId())) {
+					liveServices.remove(liveService);
+					modelMap.put(liveService, xmlInstance);
+					continue outer;
+				}
+			}
+
+			// No device or service for this instance. In node diagrams, we delete the XML.
+			DcdComponentPlacement placement = ScaEcoreUtils.getEContainerOfType(xmlInstance, DcdComponentPlacement.class);
+			placement.getComponentInstantiation().remove(xmlInstance);
+		}
+
+		// Create XML for any live devices or services we can't find XML for
+		for (ScaDevice<?> device : liveDevices) {
+			initDevice(device);
+		}
+		for (ScaService service : liveServices) {
+			initService(service);
 		}
 	}
 

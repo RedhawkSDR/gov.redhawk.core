@@ -12,6 +12,7 @@ package gov.redhawk.ui.views.event;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.CoreException;
@@ -51,7 +52,7 @@ import gov.redhawk.ui.views.event.model.DomainChannelListener;
 import gov.redhawk.ui.views.event.model.Event;
 import gov.redhawk.ui.views.event.model.EventChannelListener;
 import gov.redhawk.ui.views.event.model.MessagePortListener;
-import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CorbaUtils2;
 
 public class EventView extends ViewPart implements ITabbedPropertySheetPageContributor {
 
@@ -183,11 +184,11 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 				SubMonitor subMonitor = SubMonitor.convert(monitor, channelListeners.size());
 				for (final ChannelListener listener : channelListeners) {
 					try {
-						CorbaUtils.invoke(() -> {
+						CorbaUtils2.invoke(() -> {
 							listener.disconnect();
 							return null;
 						}, subMonitor.newChild(1));
-					} catch (CoreException | InterruptedException e) {
+					} catch (ExecutionException e) {
 						// PASS
 					}
 				}
