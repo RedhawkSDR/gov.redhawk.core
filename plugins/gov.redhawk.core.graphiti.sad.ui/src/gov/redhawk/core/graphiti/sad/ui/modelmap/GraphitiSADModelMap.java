@@ -309,7 +309,7 @@ public class GraphitiSADModelMap extends AbstractGraphitiModelMap {
 				ScaComponent component = nodeMapEntry.getScaComponent();
 				if (component == null) {
 					updateEnabledState(nodeMapEntry.getProfile(), false);
-					updateErrorState(nodeMapEntry.getProfile(), new Status(IStatus.ERROR, GraphitiSadUIPlugin.PLUGIN_ID, "Compponent is missing"));
+					updateErrorState(nodeMapEntry.getProfile(), new Status(IStatus.ERROR, GraphitiSadUIPlugin.PLUGIN_ID, "Component is missing"));
 				} else {
 					updateEnabledState(nodeMapEntry.getProfile(), true);
 					startStopComponent(component, component.getStarted());
