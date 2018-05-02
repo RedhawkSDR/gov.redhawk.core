@@ -8,3 +8,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.junit;bundle-version="4.8.1",
  gov.redhawk.sca.ui;bundle-version="9.1.0",
  gov.redhawk.sca.model
+Automatic-Module-Name: gov.redhawk.sca.ui.tests

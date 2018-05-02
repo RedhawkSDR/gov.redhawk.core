@@ -10,3 +10,4 @@ Require-Bundle: org.eclipse.core.runtime,
  gov.redhawk.sca.sad.validation,
  mil.jpeojtrs.sca.sad,
  gov.redhawk.prf.validation
+Automatic-Module-Name: gov.redhawk.sca.sad.validation.tests

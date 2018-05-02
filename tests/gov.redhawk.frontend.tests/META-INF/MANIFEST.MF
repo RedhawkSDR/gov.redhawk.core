@@ -8,3 +8,4 @@ Require-Bundle: org.junit,
  mil.jpeojtrs.sca.prf
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: gov.redhawk.frontend.tests
