@@ -22,7 +22,6 @@
   <properties>
     <tycho.scmUrl>scm:git:https://github.com/RedhawkSDR/eclipse-gov.redhawk.core.git</tycho.scmUrl>
     <eclipse>http://download.eclipse.org/releases/photon</eclipse>
-    <orbit>http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository</orbit>
     <mil.jpeojtrs.sca>http://download.redhawksdr.org/mil.jpeojtrs.sca/releases/2.1</mil.jpeojtrs.sca>
     <nebula>http://download.eclipse.org/nebula/releases/2.0.0/</nebula>
     <nxm>http://nextmidas.techma.com/p2/nxm/updates/3.6/latest/</nxm>
@@ -44,12 +43,6 @@
       <id>eclipse</id>
       <layout>p2</layout>
       <url>${eclipse}</url>
-    </repository>
-
-    <repository>
-      <id>orbit</id>
-      <layout>p2</layout>
-      <url>${orbit}</url>
     </repository>
 
     <repository>

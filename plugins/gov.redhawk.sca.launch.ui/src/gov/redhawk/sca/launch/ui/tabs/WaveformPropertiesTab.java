@@ -1,19 +1,18 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- *
  */
 package gov.redhawk.sca.launch.ui.tabs;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
-import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.sca.launch.ScaLaunchConfigurationUtil;
 import gov.redhawk.sca.launch.ui.ScaUIImages;
 import gov.redhawk.sca.ui.ScaComponentFactory;
@@ -41,14 +40,11 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * 
- */
 public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 
 	private Image propImage;
 	private final AdapterFactory adapterFactory;
-	private ScaComponent assemblyController = null;
+	private ScaWaveform waveform = null;
 	private ILaunchConfiguration configuration;
 	private boolean loadFromConfig = true;
 	private TreeViewer viewer;
@@ -66,29 +62,37 @@ public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 
 	private void setSoftwareAssembly(final SoftwareAssembly sad, final ILaunchConfiguration configuration) {
 		if (sad == null || sad.getAssemblyController() == null) {
-			this.assemblyController = null;
+			this.waveform = null;
 			this.viewer.setInput(null);
 			setErrorMessage("Invalid Software Assembly Descriptor");
-		} else if (sad.getAssemblyController().getComponentInstantiationRef() != null) {
-			this.assemblyController = ScaFactory.eINSTANCE.createScaComponent();
-			this.assemblyController.setProfileObj(sad.getAssemblyController().getComponentInstantiationRef().getInstantiation().getPlacement().getComponentFileRef().getFile().getSoftPkg());
-			for (final ScaAbstractProperty< ? > prop : this.assemblyController.fetchProperties(null)) {
+		} else {
+			// Initialize an ScaWaveform object with the properties
+			this.waveform = ScaFactory.eINSTANCE.createScaWaveform();
+			this.waveform.setDataProvidersEnabled(false);
+			this.waveform.setProfileObj(sad);
+			for (final ScaAbstractProperty< ? > prop : this.waveform.fetchProperties(null)) {
 				prop.setIgnoreRemoteSet(true);
 			}
+
+			// Load saved property values
 			try {
-				ScaLaunchConfigurationUtil.loadProperties(configuration, this.assemblyController);
-			} catch (final CoreException e1) {
-				setErrorMessage(e1.getMessage());
+				ScaLaunchConfigurationUtil.loadProperties(configuration, this.waveform);
+			} catch (final CoreException e) {
+				setErrorMessage(e.getMessage());
 				return;
 			}
-			this.viewer.setInput(this.assemblyController);
-			this.assemblyController.eAdapters().add(new EContentAdapter() {
+
+			// Set input, watch for changes
+			this.viewer.setInput(this.waveform);
+			this.waveform.eAdapters().add(new EContentAdapter() {
 				@Override
 				public void notifyChanged(final Notification notification) {
 					super.notifyChanged(notification);
 					updateLaunchConfigurationDialog();
 				}
 			});
+
+			// Clear error message, if any
 			setErrorMessage(null);
 		}
 	}
@@ -107,9 +111,6 @@ public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 		super.dispose();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void createControl(final Composite parent) {
 		final Composite main = new Composite(parent, SWT.None);
@@ -124,9 +125,7 @@ public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 		resetButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				for (final ScaAbstractProperty< ? > prop : WaveformPropertiesTab.this.assemblyController.getProperties()) {
-					prop.restoreDefaultValue();
-				}
+				setDefaults(null);
 			}
 		});
 		resetButton.setLayoutData(GridDataFactory.swtDefaults().align(SWT.END, SWT.FILL).create());
@@ -135,21 +134,15 @@ public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void setDefaults(final ILaunchConfigurationWorkingCopy configuration) {
-		if (this.assemblyController != null) {
-			for (final ScaAbstractProperty< ? > prop : this.assemblyController.getProperties()) {
+		if (this.waveform != null) {
+			for (final ScaAbstractProperty< ? > prop : this.waveform.getProperties()) {
 				prop.restoreDefaultValue();
 			}
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void initializeFrom(final ILaunchConfiguration configuration) {
 		this.configuration = configuration;
@@ -171,20 +164,14 @@ public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void performApply(final ILaunchConfigurationWorkingCopy configuration) {
-		if (this.assemblyController != null) {
-			ScaLaunchConfigurationUtil.saveProperties(configuration, this.assemblyController);
+		if (this.waveform != null) {
+			ScaLaunchConfigurationUtil.saveProperties(configuration, this.waveform);
 		}
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String getName() {
 		return "&Properties";
