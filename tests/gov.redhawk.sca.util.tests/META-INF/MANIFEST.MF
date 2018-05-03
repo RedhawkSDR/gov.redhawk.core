@@ -7,3 +7,4 @@ Bundle-Vendor: REDHAWK
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: gov.redhawk.sca.util,
  org.junit
+Automatic-Module-Name: gov.redhawk.sca.util.tests

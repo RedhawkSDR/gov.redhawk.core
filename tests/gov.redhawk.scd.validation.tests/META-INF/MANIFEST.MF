@@ -12,3 +12,4 @@ Require-Bundle: gov.redhawk.scd.validation;bundle-version="1.1.0",
  org.eclipse.core.runtime;bundle-version="3.6.0",
  org.junit;bundle-version="4.8.1"
 Export-Package: gov.redhawk.scd.validation.tests
+Automatic-Module-Name: gov.redhawk.scd.validation.tests

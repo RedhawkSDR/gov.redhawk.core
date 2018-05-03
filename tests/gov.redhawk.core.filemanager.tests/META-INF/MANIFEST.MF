@@ -11,3 +11,4 @@ Require-Bundle: gov.redhawk.core.filemanager;bundle-version="2.0.0",
  org.eclipse.core.runtime;bundle-version="3.6.0",
  idl.cf,
  org.jacorb;bundle-version="3.3.0"
+Automatic-Module-Name: gov.redhawk.core.filemanager.tests

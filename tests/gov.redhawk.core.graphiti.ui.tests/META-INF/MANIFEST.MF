@@ -9,3 +9,4 @@ Require-Bundle: mil.jpeojtrs.sca.sad,
  org.eclipse.core.runtime,
  gov.redhawk.core.graphiti.ui,
  gov.redhawk.sca.efs
+Automatic-Module-Name: gov.redhawk.core.graphiti.ui.tests
