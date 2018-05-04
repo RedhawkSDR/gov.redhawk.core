@@ -1,13 +1,12 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- *
  */
 package gov.redhawk.sca.launch.ui;
 
@@ -26,20 +25,12 @@ import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
 /**
  * @since 8.0
- * 
  */
 public class WaveformLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
 
-	/**
-	 * 
-	 */
 	public WaveformLaunchConfigurationTabGroup() {
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void createTabs(final ILaunchConfigurationDialog dialog, final String mode) {
 		final WaveformMainTab mainTab = new WaveformMainTab();
@@ -51,10 +42,6 @@ public class WaveformLaunchConfigurationTabGroup extends AbstractLaunchConfigura
 			public void propertyChange(final PropertyChangeEvent evt) {
 				if (WaveformMainTab.DOMAIN.equals(evt.getPropertyName())) {
 					deviceAssignment.setScaDomainManager((ScaDomainManager) evt.getNewValue());
-				}
-				if (WaveformMainTab.SAD.equals(evt.getPropertyName())) {
-					propTabs.setSoftwareAssembly(mainTab.getSoftwareAssembly());
-					deviceAssignment.setSoftwareAssembly(mainTab.getSoftwareAssembly());
 				}
 			}
 

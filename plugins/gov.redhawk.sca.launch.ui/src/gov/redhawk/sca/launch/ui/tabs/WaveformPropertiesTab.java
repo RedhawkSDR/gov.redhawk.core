@@ -10,26 +10,18 @@
  */
 package gov.redhawk.sca.launch.ui.tabs;
 
-import gov.redhawk.model.sca.ScaAbstractProperty;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaWaveform;
-import gov.redhawk.sca.launch.ScaLaunchConfigurationUtil;
-import gov.redhawk.sca.launch.ui.ScaUIImages;
-import gov.redhawk.sca.ui.ScaComponentFactory;
-import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
-import mil.jpeojtrs.sca.sad.SoftwareAssembly;
-import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
-
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -40,75 +32,52 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
+import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.sca.launch.ScaLaunchConfigurationConstants;
+import gov.redhawk.sca.launch.ScaLaunchConfigurationUtil;
+import gov.redhawk.sca.launch.ui.ScaLauncherActivator;
+import gov.redhawk.sca.launch.ui.ScaUIImages;
+import gov.redhawk.sca.ui.ScaComponentFactory;
+import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
+import mil.jpeojtrs.sca.sad.SoftwareAssembly;
+import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
+
 public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 
 	private Image propImage;
-	private final AdapterFactory adapterFactory;
-	private ScaWaveform waveform = null;
-	private ILaunchConfiguration configuration;
-	private boolean loadFromConfig = true;
 	private TreeViewer viewer;
+	private final AdapterFactory adapterFactory;
+
+	/**
+	 * The SAD XML model, associated SPD and PRF XMLs, and property overrides
+	 * <p/>
+	 * Contains the results from the last time {@link #loadSadAndProperties(ILaunchConfiguration)} was called. It
+	 * should never be assumed to hold the "current" mappings unless it was just loaded.
+	 */
+	private ScaWaveform waveform = null;
 
 	public WaveformPropertiesTab() {
 		this.propImage = ScaUIImages.DESC_VARIABLE_TAB.createImage();
 		this.adapterFactory = new ScaPropertiesAdapterFactory();
 	}
 
-	public void setSoftwareAssembly(final SoftwareAssembly sad) {
-		this.loadFromConfig = false;
-		setSoftwareAssembly(sad, this.configuration);
-		updateLaunchConfigurationDialog();
+	@Override
+	public void dispose() {
+		this.propImage.dispose();
+		this.propImage = null;
+		super.dispose();
 	}
 
-	private void setSoftwareAssembly(final SoftwareAssembly sad, final ILaunchConfiguration configuration) {
-		if (sad == null || sad.getAssemblyController() == null) {
-			this.waveform = null;
-			this.viewer.setInput(null);
-			setErrorMessage("Invalid Software Assembly Descriptor");
-		} else {
-			// Initialize an ScaWaveform object with the properties
-			this.waveform = ScaFactory.eINSTANCE.createScaWaveform();
-			this.waveform.setDataProvidersEnabled(false);
-			this.waveform.setProfileObj(sad);
-			for (final ScaAbstractProperty< ? > prop : this.waveform.fetchProperties(null)) {
-				prop.setIgnoreRemoteSet(true);
-			}
-
-			// Load saved property values
-			try {
-				ScaLaunchConfigurationUtil.loadProperties(configuration, this.waveform);
-			} catch (final CoreException e) {
-				setErrorMessage(e.getMessage());
-				return;
-			}
-
-			// Set input, watch for changes
-			this.viewer.setInput(this.waveform);
-			this.waveform.eAdapters().add(new EContentAdapter() {
-				@Override
-				public void notifyChanged(final Notification notification) {
-					super.notifyChanged(notification);
-					updateLaunchConfigurationDialog();
-				}
-			});
-
-			// Clear error message, if any
-			setErrorMessage(null);
-		}
+	@Override
+	public String getName() {
+		return "&Properties";
 	}
 
 	@Override
 	public Image getImage() {
 		return this.propImage;
-	}
-
-	@Override
-	public void dispose() {
-		if (this.propImage != null) {
-			this.propImage.dispose();
-			this.propImage = null;
-		}
-		super.dispose();
 	}
 
 	@Override
@@ -136,32 +105,17 @@ public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void setDefaults(final ILaunchConfigurationWorkingCopy configuration) {
-		if (this.waveform != null) {
-			for (final ScaAbstractProperty< ? > prop : this.waveform.getProperties()) {
-				prop.restoreDefaultValue();
-			}
-		}
+		configuration.removeAttribute(ScaLaunchConfigurationConstants.ATT_PROPERTIES);
 	}
 
 	@Override
 	public void initializeFrom(final ILaunchConfiguration configuration) {
-		this.configuration = configuration;
-		if (this.loadFromConfig) {
-			updateSoftwareAssembly(configuration);
-		}
-	}
-
-	private void updateSoftwareAssembly(final ILaunchConfiguration configuration) {
 		try {
-			URI uri = ScaLaunchConfigurationUtil.getProfileURI(configuration);
-			final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
-			final Resource resource = resourceSet.getResource(uri, true);
-			setSoftwareAssembly(SoftwareAssembly.Util.getSoftwareAssembly(resource), configuration);
-		} catch (final CoreException e) {
-			setSoftwareAssembly(null, configuration);
-		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
-			setSoftwareAssembly(null, configuration);
+			loadSadAndProperties(configuration);
+		} catch (CoreException e) {
+			// PASS - Handled in isValid(ILaunchConfiguration)
 		}
+		this.viewer.setInput(waveform);
 	}
 
 	@Override
@@ -169,12 +123,63 @@ public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 		if (this.waveform != null) {
 			ScaLaunchConfigurationUtil.saveProperties(configuration, this.waveform);
 		}
-
 	}
 
 	@Override
-	public String getName() {
-		return "&Properties";
+	public boolean isValid(ILaunchConfiguration launchConfig) {
+		try {
+			loadSadAndProperties(launchConfig);
+			setWarningMessage(null);
+			setErrorMessage(null);
+			return true;
+		} catch (CoreException e) {
+			if (e.getStatus().getSeverity() == IStatus.WARNING) {
+				setWarningMessage(e.getMessage());
+			} else {
+				setErrorMessage(e.getMessage());
+			}
+			return false;
+		}
 	}
 
+	/**
+	 * Loads the SAD XML, associated XML, and property overrides into {@link #waveform}.
+	 * @param configuration The configuration to load
+	 * @throws CoreException An error occurs while loading. The {@link #waveform} member variable may contain
+	 * partially loaded results (e.g. SAD XML was loaded, but prop overrides couldn't all be loaded/applied)
+	 */
+	private void loadSadAndProperties(final ILaunchConfiguration configuration) throws CoreException {
+		this.waveform = null;
+
+		// Load the SAD file
+		SoftwareAssembly sad;
+		try {
+			URI uri = ScaLaunchConfigurationUtil.getProfileURI(configuration);
+			final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
+			final Resource resource = resourceSet.getResource(uri, true);
+			sad = SoftwareAssembly.Util.getSoftwareAssembly(resource);
+		} catch (WrappedException e) {
+			throw new CoreException(new Status(IStatus.ERROR, ScaLauncherActivator.PLUGIN_ID, "Unable to load SAD file", e));
+		}
+
+		// Initialize properties
+		this.waveform = ScaFactory.eINSTANCE.createScaWaveform();
+		this.waveform.setDataProvidersEnabled(false);
+		this.waveform.setProfileObj(sad);
+		for (final ScaAbstractProperty< ? > prop : this.waveform.fetchProperties(new NullProgressMonitor())) {
+			prop.setIgnoreRemoteSet(true);
+		}
+
+		// Load saved property overrides
+		ScaLaunchConfigurationUtil.loadProperties(configuration, this.waveform);
+	}
+
+	/**
+	 * @deprecated Do not call. No effect.
+	 */
+	@Deprecated
+	public void setSoftwareAssembly(final SoftwareAssembly sad) {
+		ScaLauncherActivator.getDefault().getLog().log(new Status(IStatus.WARNING, ScaLauncherActivator.PLUGIN_ID,
+			"The method gov.redhawk.sca.launch.ui.tabs.WaveformPropertiesTab.setSoftwareAssembly(SoftwareAssembly) is deprecated. Do not use."));
+	}
 }
