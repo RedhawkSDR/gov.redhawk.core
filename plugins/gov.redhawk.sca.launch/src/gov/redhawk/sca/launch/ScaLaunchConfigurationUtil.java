@@ -167,11 +167,15 @@ public final class ScaLaunchConfigurationUtil {
 	 */
 	public static URI getProfileURI(ILaunchConfiguration config) throws CoreException {
 		String profile = config.getAttribute(ScaLaunchConfigurationConstants.ATT_PROFILE, (String) null);
+		if (profile == null || profile.isEmpty()) {
+			throw new CoreException(new Status(Status.ERROR, ScaLaunchActivator.ID, "No XML profile specified"));
+		}
 		File file = locationToFile(profile);
 		if (file != null) {
 			return URI.createFileURI(file.getAbsolutePath());
+		} else {
+			throw new CoreException(new Status(Status.ERROR, ScaLaunchActivator.ID, "Failed to load XML profile: " + profile));
 		}
-		throw new CoreException(new Status(Status.ERROR, ScaLaunchActivator.ID, "Failed to load profile uri: " + profile, new Exception().fillInStackTrace()));
 	}
 
 	/**

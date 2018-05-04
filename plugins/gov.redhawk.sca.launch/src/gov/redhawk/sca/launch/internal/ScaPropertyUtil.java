@@ -48,11 +48,12 @@ public class ScaPropertyUtil {
 	 * @param serializedValue The serialized string
 	 */
 	public static void load(final ScaPropertyContainer< ? , ? > component, final String serializedValue) {
-		if (component != null && serializedValue != null) {
-			final XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(serializedValue.getBytes()));
+		if (component == null || serializedValue == null) {
+			return;
+		}
+		try (XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(serializedValue.getBytes()))) {
 			final Map< ? , ? > propMap = (Map< ? , ? >) decoder.readObject();
 			ScaPropertyUtil.restoreProperties(component, propMap);
-			decoder.close();
 		}
 	}
 
