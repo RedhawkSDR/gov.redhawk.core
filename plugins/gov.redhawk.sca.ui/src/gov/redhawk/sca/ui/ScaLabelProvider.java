@@ -47,7 +47,7 @@ import org.eclipse.ui.navigator.IDescriptionProvider;
 import org.eclipse.ui.progress.UIJob;
 
 /**
- * The Class ScaLabelProvider.
+ * Label provider for the SCA model. Used primarily by the REDHAWK Explorer common navigator, and a few other places.
  * @since 8.0
  */
 public class ScaLabelProvider extends ScaModelAdapterFactoryLabelProvider implements IDescriptionProvider, ITooltipProvider {

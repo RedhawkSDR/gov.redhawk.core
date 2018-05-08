@@ -11,14 +11,6 @@
  */
 package gov.redhawk.sca.ui;
 
-import gov.redhawk.model.sca.ScaDocumentRoot;
-import gov.redhawk.model.sca.ScaDomainManagerRegistry;
-import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
-import gov.redhawk.model.sca.provider.TransientItemProvider;
-import gov.redhawk.sca.internal.ui.DeferredAdapterSwitch;
-import gov.redhawk.sca.internal.ui.DeferredAdapterSwitch.IDeferredAdapter;
-import gov.redhawk.sca.util.SilentJob;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,8 +31,16 @@ import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.ICommonContentProvider;
 import org.eclipse.ui.progress.UIJob;
 
+import gov.redhawk.model.sca.ScaDocumentRoot;
+import gov.redhawk.model.sca.ScaDomainManagerRegistry;
+import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
+import gov.redhawk.model.sca.provider.TransientItemProvider;
+import gov.redhawk.sca.internal.ui.DeferredAdapterSwitch;
+import gov.redhawk.sca.internal.ui.DeferredAdapterSwitch.IDeferredAdapter;
+import gov.redhawk.sca.util.SilentJob;
+
 /**
- * The Class ScaContentProvider.
+ * Content provider for the SCA model. Used primarily by the REDHAWK Explorer common navigator, and a few other places.
  * @since 8.0
  */
 public class ScaContentProvider extends ScaModelAdapterFactoryContentProvider implements ICommonContentProvider {
@@ -156,19 +156,12 @@ public class ScaContentProvider extends ScaModelAdapterFactoryContentProvider im
 	@Override
 	public boolean hasChildren(final Object object) {
 		final IDeferredAdapter adapter = DeferredAdapterSwitch.doSwitch(object);
-		if (adapter != null) {
-			if (adapter.isContainer()) {
-				if (!adapter.isSet()) {
-					return true;
-				}
-			}
+		if (adapter != null && adapter.isContainer() && !adapter.isSet()) {
+			return true;
 		}
 		return super.hasChildren(object);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void dispose() {
 		((ComposedAdapterFactory) this.adapterFactory).dispose();
