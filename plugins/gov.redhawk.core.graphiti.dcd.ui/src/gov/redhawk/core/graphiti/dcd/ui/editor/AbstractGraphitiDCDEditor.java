@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramLink;
@@ -109,16 +108,5 @@ public abstract class AbstractGraphitiDCDEditor extends AbstractGraphitiMultiPag
 		factory.addAdapterFactory(new ScdItemProviderAdapterFactory());
 		factory.addAdapterFactory(new PrfItemProviderAdapterFactory());
 		return factory;
-	}
-
-	@Override
-	public boolean isPersisted(final Resource resource) {
-		if (resource == null || resource.getURI() == null) {
-			return false;
-		}
-		if (getDeviceConfiguration() == null || getDeviceConfiguration().eResource() == null) {
-			return false;
-		}
-		return resource.getURI().equals(getDeviceConfiguration().eResource().getURI()) && super.isPersisted(resource);
 	}
 }
