@@ -113,9 +113,4 @@ public abstract class AbstractGraphitiSADEditor extends AbstractGraphitiMultiPag
 		factory.addAdapterFactory(new PrfItemProviderAdapterFactory());
 		return factory;
 	}
-
-	@Override
-	public boolean isPersisted(final Resource resource) {
-		return resource.getURI().equals(getSoftwareAssembly().eResource().getURI()) && super.isPersisted(resource);
-	}
 }

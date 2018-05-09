@@ -114,15 +114,4 @@ public abstract class AbstractGraphitiDCDEditor extends AbstractGraphitiMultiPag
 		factory.addAdapterFactory(new PrfItemProviderAdapterFactory());
 		return factory;
 	}
-
-	@Override
-	public boolean isPersisted(final Resource resource) {
-		if (resource == null || resource.getURI() == null) {
-			return false;
-		}
-		if (getDeviceConfiguration() == null || getDeviceConfiguration().eResource() == null) {
-			return false;
-		}
-		return resource.getURI().equals(getDeviceConfiguration().eResource().getURI()) && super.isPersisted(resource);
-	}
 }
