@@ -114,4 +114,12 @@ public abstract class AbstractGraphitiDCDEditor extends AbstractGraphitiMultiPag
 		factory.addAdapterFactory(new PrfItemProviderAdapterFactory());
 		return factory;
 	}
+
+	@Override
+	public boolean isPersisted(final Resource resource) {
+		// This method is overridden to filter out the .dcd_GDiagram file. If that file is reported as persisted,
+		// then internalDoValidate() will try to validate it. Any error in the diagram model (which is probably not
+		// the user's fault) will cause the user to be prompted to save with errors.
+		return getMainResource() == resource && super.isPersisted(resource);
+	}
 }
