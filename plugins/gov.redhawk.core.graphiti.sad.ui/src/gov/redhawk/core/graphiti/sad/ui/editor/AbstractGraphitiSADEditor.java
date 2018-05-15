@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramLink;
@@ -107,5 +108,13 @@ public abstract class AbstractGraphitiSADEditor extends AbstractGraphitiMultiPag
 		factory.addAdapterFactory(new ScdItemProviderAdapterFactory());
 		factory.addAdapterFactory(new PrfItemProviderAdapterFactory());
 		return factory;
+	}
+
+	@Override
+	public boolean isPersisted(final Resource resource) {
+		// This method is overridden to filter out the .sad_GDiagram file. If that file is reported as persisted,
+		// then internalDoValidate() will try to validate it. Any error in the diagram model (which is probably not
+		// the user's fault) will cause the user to be prompted to save with errors.
+		return getMainResource() == resource && super.isPersisted(resource);
 	}
 }
