@@ -31,18 +31,15 @@ import gov.redhawk.sca.internal.ui.DeferredAdapterSwitch.IDeferredAdapter;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 
 import CF.Device;
 import ExtendedCF.QueryablePortHelper;
 
-/**
- * 
- */
 public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 	public static final DeferredAdapterSwitch INSTANCE = new DeferredAdapterSwitch();
 
 	private DeferredAdapterSwitch() {
-
 	}
 
 	public static interface IDeferredAdapter {
@@ -197,6 +194,7 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 
 		};
 	}
+
 	@Override
 	public IDeferredAdapter caseScaDomainManager(ScaDomainManager object) {
 		return new IDeferredAdapter() {
@@ -294,28 +292,22 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 	}
 
 	public static IDeferredAdapter doSwitch(final Object obj) {
-		if (obj instanceof ScaDeviceManagersContainerItemProvider) {
-			return DeferredAdapterSwitch.INSTANCE.caseScaDeviceManagersContainerItemProvider((ScaDeviceManagersContainerItemProvider) obj);
-		} else if (obj instanceof ScaWaveformFactoriesContainerItemProvider) {
-			return DeferredAdapterSwitch.INSTANCE.caseScaWaveformFactoriesContainerItemProvider((ScaWaveformFactoriesContainerItemProvider) obj);
-		} else if (obj instanceof ScaWaveformsContainerItemProvider) {
-			return DeferredAdapterSwitch.INSTANCE.caseScaWaveformsContainerItemProvider((ScaWaveformsContainerItemProvider) obj);
-		} else if (obj instanceof ScaEventChannelsContainerItemProvider) {
-			return DeferredAdapterSwitch.INSTANCE.caseScaEventChannelsContainerItemProvider((ScaEventChannelsContainerItemProvider) obj);
-		} else if (obj instanceof ScaWaveform) {
-			return DeferredAdapterSwitch.INSTANCE.caseScaWaveform((ScaWaveform) obj);
-		} else if (obj instanceof ScaDevice< ? >) {
-			return DeferredAdapterSwitch.INSTANCE.caseScaDevice((ScaDevice< ? >) obj);
-		} else if (obj instanceof ScaComponent) {
-			return DeferredAdapterSwitch.INSTANCE.caseScaComponent((ScaComponent) obj);
-		} else if (obj instanceof ScaDomainManager) {
-			return DeferredAdapterSwitch.INSTANCE.caseScaDomainManager((ScaDomainManager) obj);
-		} else if (obj instanceof ScaDeviceManager) {
-			return DeferredAdapterSwitch.INSTANCE.caseScaDeviceManager((ScaDeviceManager) obj);
-		} else if (obj instanceof EObject) {
+		if (obj instanceof EObject) {
+			// Use standard EMF switch for SCA model
 			return DeferredAdapterSwitch.INSTANCE.doSwitch((EObject) obj);
-		} else {
-			return null;
+		} else if (obj instanceof IItemLabelProvider) {
+			// The Redhawk Explorer view introduces several folders that contain items as various places in the tree.
+			// We use the item provider for the folder as the model object
+			if (obj instanceof ScaDeviceManagersContainerItemProvider) {
+				return DeferredAdapterSwitch.INSTANCE.caseScaDeviceManagersContainerItemProvider((ScaDeviceManagersContainerItemProvider) obj);
+			} else if (obj instanceof ScaWaveformFactoriesContainerItemProvider) {
+				return DeferredAdapterSwitch.INSTANCE.caseScaWaveformFactoriesContainerItemProvider((ScaWaveformFactoriesContainerItemProvider) obj);
+			} else if (obj instanceof ScaWaveformsContainerItemProvider) {
+				return DeferredAdapterSwitch.INSTANCE.caseScaWaveformsContainerItemProvider((ScaWaveformsContainerItemProvider) obj);
+			} else if (obj instanceof ScaEventChannelsContainerItemProvider) {
+				return DeferredAdapterSwitch.INSTANCE.caseScaEventChannelsContainerItemProvider((ScaEventChannelsContainerItemProvider) obj);
+			}
 		}
+		return null;
 	}
 }
