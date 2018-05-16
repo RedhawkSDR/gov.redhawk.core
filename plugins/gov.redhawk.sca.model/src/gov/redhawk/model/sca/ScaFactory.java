@@ -257,6 +257,15 @@ public interface ScaFactory extends EFactory {
 	 */
 	ScaEventChannel createScaEventChannel();
 
+	// END GENERATED CODE
+
+	/**
+	 * @since 21.1
+	 */
+	ScaEventChannel createScaEventChannel(CF.EventChannelManagerPackage.EventChannelInfo info);
+
+	// BEGIN GENERATED CODE
+
 	/**
 	 * Returns a new object of class '<em>Waveforms Container</em>'.
 	 * <!-- begin-user-doc -->
