@@ -21,6 +21,7 @@ import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.util.DceUuidUtil;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.omg.PortableServer.POA;
@@ -33,6 +34,7 @@ import CF.ApplicationHelper;
 import CF.ApplicationPOATie;
 import CF.DataType;
 import CF.DeviceAssignmentType;
+import CF.ErrorNumberType;
 import CF.Resource;
 import CF.ResourceHelper;
 import CF.ResourcePOATie;
@@ -85,7 +87,7 @@ public class ApplicationFactoryImpl extends ApplicationFactoryPOA {
 					continue;
 				} else if (obj instanceof SadComponentInstantiation) {
 					SadComponentInstantiation inst = (SadComponentInstantiation) obj;
-					AbstractResourceImpl component = new AbstractResourceImpl(inst.getId(), inst.getUsageName(), dmd.getOrb(), dmd.getPoa());
+					AbstractResourceImpl component = new AbstractResourceImpl(inst.getId(), inst.getUsageName(), softwareProfile(), dmd.getSession());
 					component.init(inst.getPlacement().getComponentFileRef().getFile().getSoftPkg());
 					Resource resource = ResourceHelper.narrow(poa.servant_to_reference(new ResourcePOATie(component)));
 					ResourceRef ref = new ResourceRef(resource, inst.getUsageName(), 
@@ -105,6 +107,8 @@ public class ApplicationFactoryImpl extends ApplicationFactoryPOA {
 		} catch (WrongPolicy e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace(); // CHECKSTYLE: DEBUG CODE
+		} catch (CoreException e) {
+			throw new CreateApplicationError(ErrorNumberType.CF_EIO, "Problem with session");
 		}
 		throw new CreateApplicationError();
 	}

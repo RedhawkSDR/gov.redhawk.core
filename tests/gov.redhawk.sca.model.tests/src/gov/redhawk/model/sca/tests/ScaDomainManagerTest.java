@@ -11,20 +11,9 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaDeviceManager;
-import gov.redhawk.model.sca.ScaDomainManager;
-import gov.redhawk.model.sca.ScaWaveform;
-import gov.redhawk.model.sca.ScaWaveformFactory;
-import gov.redhawk.model.sca.tests.stubs.DomainManagerImpl;
-import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
-import gov.redhawk.sca.util.OrbSession;
-
 import java.io.File;
 import java.net.URL;
 import java.util.List;
-
-import junit.textui.TestRunner;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -33,6 +22,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.junit.Assert;
+import org.omg.CosNaming.NamingContextExt;
 
 import CF.DeviceManager;
 import CF.DomainManager;
@@ -55,6 +45,15 @@ import CF.DomainManagerPackage.InvalidIdentifier;
 import CF.DomainManagerPackage.NotConnected;
 import CF.DomainManagerPackage.RegisterError;
 import CF.DomainManagerPackage.UnregisterError;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaDeviceManager;
+import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.model.sca.ScaWaveformFactory;
+import gov.redhawk.model.sca.tests.stubs.DomainManagerImpl;
+import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
+import gov.redhawk.sca.util.OrbSession;
+import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
@@ -781,7 +780,8 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		File domRoot = new File(domFileUrl.toURI());
 		Assert.assertTrue(domRoot.exists());
 		OrbSession session = TestEnvirornment.getInstance().getOrbSession();
-		DomainManagerImpl domainMgrImpl = new DomainManagerImpl(domRoot, "/domain2/DomainManager.dmd.xml", null, null, session.getOrb(), session.getPOA());
+		NamingContextExt context = TestEnvirornment.getInstance().getNamingContext();
+		DomainManagerImpl domainMgrImpl = new DomainManagerImpl(domRoot, "/domain2/DomainManager.dmd.xml", "REDHAWK_DEV2", "REDHAWK_DEV2", session, context);
 		DomainManager dmdRef = DomainManagerHelper.narrow(session.getPOA().servant_to_reference(new DomainManagerPOATie(domainMgrImpl)));
 		getFixture().registerRemoteDomainManager(dmdRef);
 		Assert.assertEquals(1, getFixture().remoteDomainManagers().length);
