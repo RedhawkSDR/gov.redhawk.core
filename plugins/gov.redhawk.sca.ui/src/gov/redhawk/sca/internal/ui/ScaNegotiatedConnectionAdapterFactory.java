@@ -10,8 +10,7 @@
  */
 package gov.redhawk.sca.internal.ui;
 
-import java.util.Arrays;
-
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.ui.provider.PropertyDescriptor;
@@ -25,8 +24,8 @@ import org.eclipse.ui.views.properties.IPropertySource2;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaNegotiatedConnection;
 import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaTransport;
-import gov.redhawk.sca.internal.ui.dialogs.TransportListDetailsDialog;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.sca.internal.ui.dialogs.TransportDetailsDialog;
 import gov.redhawk.sca.ui.RedhawkUiAdapterFactory;
 
 public class ScaNegotiatedConnectionAdapterFactory extends RedhawkUiAdapterFactory {
@@ -43,10 +42,15 @@ public class ScaNegotiatedConnectionAdapterFactory extends RedhawkUiAdapterFacto
 
 				@Override
 				protected Object openDialogBox(Control cellEditorWindow) {
+					// Clone the object so we don't have to worry about model changes
 					ScaNegotiatedConnection connection = (ScaNegotiatedConnection) object;
-					ScaTransport transport = ScaFactory.eINSTANCE.createScaTransport();
-					transport.setTransportType(connection.getTransportType());
-					new TransportListDetailsDialog(cellEditorWindow.getShell(), Arrays.asList(transport)).open();
+					ScaNegotiatedConnection connectionCopy = ScaModelCommand.runExclusive(connection, () -> {
+						ScaNegotiatedConnection copy = ScaFactory.eINSTANCE.createScaNegotiatedConnection();
+						copy.setTransportType(connection.getTransportType());
+						copy.getTransportInfo().addAll(EcoreUtil.copyAll(connection.getTransportInfo()));
+						return copy;
+					});
+					new TransportDetailsDialog(cellEditorWindow.getShell(), connectionCopy).open();
 					return null;
 				}
 

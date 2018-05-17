@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.ui.provider.PropertyDescriptor;
@@ -26,8 +27,9 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource2;
 
 import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaTransport;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.sca.internal.ui.dialogs.TransportListDetailsDialog;
+import gov.redhawk.sca.internal.ui.dialogs.TransportDetailsDialog;
 import gov.redhawk.sca.ui.RedhawkUiAdapterFactory;
 
 public class ScaPortAdapterFactory extends RedhawkUiAdapterFactory {
@@ -46,11 +48,17 @@ public class ScaPortAdapterFactory extends RedhawkUiAdapterFactory {
 
 				@Override
 				protected Object openDialogBox(Control cellEditorWindow) {
+					// Clone the objects so we don't have to worry about model changes
 					EcoreEList< ? > list = (EcoreEList< ? >) getValue();
-					List< ? > transportListCopy = ScaModelCommand.runExclusive(list.getEObject(), () -> {
-						return new ArrayList<>(list);
+					List<ScaTransport> transportListCopy = ScaModelCommand.runExclusive(list.getEObject(), () -> {
+						List<ScaTransport> listCopy = new ArrayList<>();
+						for (Object transport : list) {
+							listCopy.add(EcoreUtil.copy((ScaTransport) transport));
+						}
+						return listCopy;
 					});
-					new TransportListDetailsDialog(cellEditorWindow.getShell(), transportListCopy).open();
+
+					new TransportDetailsDialog(cellEditorWindow.getShell(), transportListCopy).open();
 					return null;
 				}
 
