@@ -20,7 +20,6 @@ import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
-import gov.redhawk.sca.util.ORBUtil;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,6 +28,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -36,7 +36,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EMap;
@@ -355,6 +354,9 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 				}
 				setIor(ior);
 				clearAllStatus();
+				if (msg.getOldValue() instanceof org.omg.CORBA.Object) {
+					CorbaUtils.release((org.omg.CORBA.Object) msg.getOldValue());
+				}
 				break;
 			case ScaPackage.CORBA_OBJ_WRAPPER__OBJ:
 				clearAllStatus();
@@ -362,17 +364,6 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 					attachDataProviders();
 				} else {
 					detachDataProviders();
-				}
-				if (msg.getOldValue() instanceof org.omg.CORBA.Object) {
-					Job job = new SilentModelJob("Release Object Job") {
-
-						@Override
-						protected IStatus runSilent(IProgressMonitor monitor) {
-							ORBUtil.release(((org.omg.CORBA.Object) msg.getOldValue()));
-							return Status.OK_STATUS;
-						}
-					};
-					job.schedule();
 				}
 				break;
 			default:
