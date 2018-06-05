@@ -209,17 +209,6 @@ public class ScaWaveformItemProvider extends ScaPropertyContainerItemProvider {
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String getTextGen(Object object) {
-		String label = ((ScaWaveform) object).getName();
-		return label == null || label.length() == 0 ? getString("_UI_ScaWaveform_type") : getString("_UI_ScaWaveform_type") + " " + label;
-	}
-
-	/**
-	 * This returns the label text for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -252,7 +241,6 @@ public class ScaWaveformItemProvider extends ScaPropertyContainerItemProvider {
 
 		switch (notification.getFeatureID(ScaWaveform.class)) {
 		case ScaPackage.SCA_WAVEFORM__NAME:
-		case ScaPackage.SCA_WAVEFORM__PROFILE:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		case ScaPackage.SCA_WAVEFORM__PORTS:

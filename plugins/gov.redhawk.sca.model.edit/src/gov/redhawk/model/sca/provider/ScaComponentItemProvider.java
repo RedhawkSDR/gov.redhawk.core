@@ -145,17 +145,6 @@ public class ScaComponentItemProvider extends ScaAbstractComponentItemProvider {
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String getTextGen(Object object) {
-		String label = ((ScaComponent) object).getName();
-		return label == null || label.length() == 0 ? getString("_UI_ScaComponent_type") : getString("_UI_ScaComponent_type") + " " + label;
-	}
-
-	/**
-	 * This returns the label text for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override

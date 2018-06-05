@@ -142,17 +142,6 @@ public class ScaWaveformFactoryItemProvider extends CorbaObjWrapperItemProvider 
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String getTextGen(Object object) {
-		String label = ((ScaWaveformFactory) object).getName();
-		return label == null || label.length() == 0 ? getString("_UI_ScaWaveformFactory_type") : getString("_UI_ScaWaveformFactory_type") + " " + label;
-	}
-
-	/**
-	 * This returns the label text for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -168,20 +157,21 @@ public class ScaWaveformFactoryItemProvider extends CorbaObjWrapperItemProvider 
 	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public void notifyChanged(Notification notification) {
+		// END GENERATED CODE
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaWaveformFactory.class)) {
-		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI:
 		case ScaPackage.SCA_WAVEFORM_FACTORY__NAME:
-		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
+		default:
+			break;
 		}
-		super.notifyChanged(notification);
+		// BEGIN GENERATED CODE
 	}
 
 	/**

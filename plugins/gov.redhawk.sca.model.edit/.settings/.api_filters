@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="gov.redhawk.sca.model.edit" version="2">
+    <resource path="src/gov/redhawk/model/sca/provider/ScaComponentItemProvider.java" type="gov.redhawk.model.sca.provider.ScaComponentItemProvider">
+        <filter comment="Method not used by EMF" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.provider.ScaComponentItemProvider"/>
+                <message_argument value="getTextGen(Object)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/gov/redhawk/model/sca/provider/ScaDeviceManagerItemProvider.java" type="gov.redhawk.model.sca.provider.ScaDeviceManagerItemProvider">
+        <filter comment="Method not used by EMF" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.provider.ScaDeviceManagerItemProvider"/>
+                <message_argument value="getTextGen(Object)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/gov/redhawk/model/sca/provider/ScaDomainManagerItemProvider.java" type="gov.redhawk.model.sca.provider.ScaDomainManagerItemProvider">
+        <filter comment="Method not used by EMF" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.provider.ScaDomainManagerItemProvider"/>
+                <message_argument value="notifyChangedGen(Notification)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/gov/redhawk/model/sca/provider/ScaFileManagerItemProvider.java" type="gov.redhawk.model.sca.provider.ScaFileManagerItemProvider">
+        <filter comment="Method not used by EMF" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.provider.ScaFileManagerItemProvider"/>
+                <message_argument value="getTextGen(Object)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/gov/redhawk/model/sca/provider/ScaFileStoreItemProvider.java" type="gov.redhawk.model.sca.provider.ScaFileStoreItemProvider">
+        <filter comment="Method not used by EMF" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.provider.ScaFileStoreItemProvider"/>
+                <message_argument value="getTextGen(Object)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/gov/redhawk/model/sca/provider/ScaFileSystemItemProvider.java" type="gov.redhawk.model.sca.provider.ScaFileSystemItemProvider">
+        <filter comment="Method not used by EMF" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.provider.ScaFileSystemItemProvider"/>
+                <message_argument value="getTextGen(Object)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/gov/redhawk/model/sca/provider/ScaPortItemProvider.java" type="gov.redhawk.model.sca.provider.ScaPortItemProvider">
+        <filter comment="Method not used by EMF" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.provider.ScaPortItemProvider"/>
+                <message_argument value="getTextGen(Object)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/gov/redhawk/model/sca/provider/ScaSimplePropertyItemProvider.java" type="gov.redhawk.model.sca.provider.ScaSimplePropertyItemProvider">
+        <filter comment="Method not used by EMF" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.provider.ScaSimplePropertyItemProvider"/>
+                <message_argument value="addValuePropertyDescriptorGen(Object)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/gov/redhawk/model/sca/provider/ScaSimpleSequencePropertyItemProvider.java" type="gov.redhawk.model.sca.provider.ScaSimpleSequencePropertyItemProvider">
+        <filter comment="Method not used by EMF" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.provider.ScaSimpleSequencePropertyItemProvider"/>
+                <message_argument value="addValuesPropertyDescriptorGen(Object)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/gov/redhawk/model/sca/provider/ScaStructPropertyItemProvider.java" type="gov.redhawk.model.sca.provider.ScaStructPropertyItemProvider">
+        <filter comment="Method not used by EMF" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.provider.ScaStructPropertyItemProvider"/>
+                <message_argument value="addSimplesPropertyDescriptorGen(Object)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/gov/redhawk/model/sca/provider/ScaStructSequencePropertyItemProvider.java" type="gov.redhawk.model.sca.provider.ScaStructSequencePropertyItemProvider">
+        <filter comment="Method not used by EMF" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.provider.ScaStructSequencePropertyItemProvider"/>
+                <message_argument value="addStructsPropertyDescriptorGen(Object)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/gov/redhawk/model/sca/provider/ScaWaveformFactoryItemProvider.java" type="gov.redhawk.model.sca.provider.ScaWaveformFactoryItemProvider">
+        <filter comment="Method not used by EMF" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.provider.ScaWaveformFactoryItemProvider"/>
+                <message_argument value="getTextGen(Object)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/gov/redhawk/model/sca/provider/ScaWaveformItemProvider.java" type="gov.redhawk.model.sca.provider.ScaWaveformItemProvider">
+        <filter comment="Method not used by EMF" id="338792546">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.provider.ScaWaveformItemProvider"/>
+                <message_argument value="getTextGen(Object)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>

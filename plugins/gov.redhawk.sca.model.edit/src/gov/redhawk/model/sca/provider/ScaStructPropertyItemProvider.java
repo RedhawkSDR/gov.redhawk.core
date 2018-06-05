@@ -79,28 +79,17 @@ public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvid
 	 * This adds a property descriptor for the Simples feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addSimplesPropertyDescriptorGen(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
-			getString("_UI_ScaStructProperty_simples_feature"),
-			getString("_UI_PropertyDescriptor_description", "_UI_ScaStructProperty_simples_feature", "_UI_ScaStructProperty_type"),
-			ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES, false, false, false, null, null, null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Simples feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	protected void addSimplesPropertyDescriptor(Object object) {
+		// END GENERATED CODE
 		ItemPropertyDescriptor propertyDescriptor = createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
 			getResourceLocator(), getString("_UI_ScaStructProperty_simples_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_ScaStructProperty_simples_feature", "_UI_ScaStructProperty_type"),
 			ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES, false, false, false, null, null, null);
 
 		itemPropertyDescriptors.add(new ScaStructValuePropertyDescriptor(object, propertyDescriptor, getRootAdapterFactory()));
+		// BEGIN GENERATED CODE
 	}
 
 	/**

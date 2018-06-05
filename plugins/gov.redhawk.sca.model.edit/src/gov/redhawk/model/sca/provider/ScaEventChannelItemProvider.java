@@ -99,18 +99,21 @@ public class ScaEventChannelItemProvider extends CorbaObjWrapperItemProvider {
 	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public void notifyChanged(Notification notification) {
+		// END GENERATED CODE
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaEventChannel.class)) {
 		case ScaPackage.SCA_EVENT_CHANNEL__NAME:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
+		default:
+			break;
 		}
-		super.notifyChanged(notification);
+		// BEGIN GENERATED CODE
 	}
 
 	/**
