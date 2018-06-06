@@ -391,7 +391,7 @@
       <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
           ecoreFeature="ecore:EReference sca.ecore#//ScaPort/profileObj"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaPort/repid"/>
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaPort/supportedTransports"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaPort/supportedTransports"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaPort/portContainer"/>
       <genOperations ecoreOperation="sca.ecore#//ScaPort/fetchSupportedTransports">
         <genParameters ecoreParameter="sca.ecore#//ScaPort/fetchSupportedTransports/monitor"/>
@@ -450,10 +450,10 @@
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaConnection/port"/>
     </genClasses>
     <genClasses ecoreClass="sca.ecore#//ScaNegotiatedConnection">
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaNegotiatedConnection/alive"/>
-      <genFeatures property="Readonly" createChild="false" propertyDescription="The type of the underlying transport being used"
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaNegotiatedConnection/alive"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" propertyDescription="The type of the underlying transport being used"
           ecoreFeature="ecore:EAttribute sca.ecore#//ScaNegotiatedConnection/transportType"/>
-      <genFeatures property="Readonly" children="true" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaNegotiatedConnection/transportInfo"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaNegotiatedConnection/transportInfo"/>
     </genClasses>
     <genClasses provider="Stateful" ecoreClass="sca.ecore#//ScaWaveform">
       <genFeatures property="Readonly" children="true" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaWaveform/components"/>

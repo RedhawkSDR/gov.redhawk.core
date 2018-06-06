@@ -166,7 +166,6 @@ public class ScaPortItemProvider extends CorbaObjWrapperItemProvider {
 
 		switch (notification.getFeatureID(ScaPort.class)) {
 		case ScaPackage.SCA_PORT__NAME:
-		case ScaPackage.SCA_PORT__SUPPORTED_TRANSPORTS:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		}
