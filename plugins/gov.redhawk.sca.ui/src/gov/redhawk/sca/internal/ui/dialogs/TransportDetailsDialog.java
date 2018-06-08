@@ -72,6 +72,11 @@ public class TransportDetailsDialog extends Dialog {
 	}
 
 	@Override
+	protected boolean isResizable() {
+		return true;
+	}
+
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		this.getShell().setText(Messages.TransportListDetailsDialog_ShellTitle);
 		this.getShell().setMinimumSize(500, 400);
