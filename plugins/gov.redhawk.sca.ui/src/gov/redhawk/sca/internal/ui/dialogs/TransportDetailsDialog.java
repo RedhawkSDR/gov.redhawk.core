@@ -32,8 +32,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import gov.redhawk.model.sca.ScaComponent;
-import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaNegotiatedConnection;
 import gov.redhawk.model.sca.ScaTransport;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
@@ -111,17 +109,13 @@ public class TransportDetailsDialog extends Dialog {
 		Composite propertiesComposite = new Composite(composite, SWT.BORDER);
 		propertiesComposite.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).span(2, 1).create());
 		TreeViewer propertiesViewer = ScaComponentFactory.createPropertyTable(propertiesComposite, SWT.NONE, propAdapterFactory);
-		ScaComponent propHolder = ScaFactory.eINSTANCE.createScaComponent();
-		propHolder.getProperties();
-		propertiesViewer.setInput(propHolder);
 
 		if (transports != null) {
 			// Selection handlers
 			transportDropDown.addSelectionChangedListener(event -> {
 				// Show the transport's properties
 				ScaTransport transport = (ScaTransport) ((IStructuredSelection) event.getSelection()).getFirstElement();
-				propHolder.getProperties().clear();
-				propHolder.getProperties().addAll(transport.getTransportProperties());
+				propertiesViewer.setInput(transport);
 				setDescriptionFor(transport.getTransportType());
 			});
 
@@ -131,7 +125,7 @@ public class TransportDetailsDialog extends Dialog {
 			}
 		} else {
 			// Show the connection's properties
-			propHolder.getProperties().addAll(connection.getTransportInfo());
+			propertiesViewer.setInput(connection);
 			setDescriptionFor(connection.getTransportType());
 		}
 

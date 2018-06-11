@@ -11,20 +11,6 @@
  */
 package gov.redhawk.sca.ui.properties;
 
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaPropertyContainer;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
-import gov.redhawk.model.sca.ScaStructProperty;
-import gov.redhawk.model.sca.ScaStructSequenceProperty;
-import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
-import gov.redhawk.model.sca.provider.ScaPropertyContainerItemProvider;
-import gov.redhawk.model.sca.provider.ScaSimplePropertyItemProvider;
-import gov.redhawk.model.sca.provider.ScaSimpleSequencePropertyItemProvider;
-import gov.redhawk.model.sca.provider.ScaStructPropertyItemProvider;
-import gov.redhawk.model.sca.provider.ScaStructSequencePropertyItemProvider;
-import gov.redhawk.model.sca.util.ScaSwitch;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -32,26 +18,59 @@ import java.util.Collections;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
+import org.eclipse.emf.edit.provider.IItemColorProvider;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
+import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
+import org.eclipse.emf.edit.provider.ITableItemColorProvider;
+import org.eclipse.emf.edit.provider.ITableItemLabelProvider;
+import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+
+import gov.redhawk.model.sca.ScaNegotiatedConnection;
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaPropertyContainer;
+import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
+import gov.redhawk.model.sca.ScaStructProperty;
+import gov.redhawk.model.sca.ScaStructSequenceProperty;
+import gov.redhawk.model.sca.ScaTransport;
+import gov.redhawk.model.sca.provider.ScaEditPlugin;
+import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
+import gov.redhawk.model.sca.provider.ScaSimplePropertyItemProvider;
+import gov.redhawk.model.sca.provider.ScaSimpleSequencePropertyItemProvider;
+import gov.redhawk.model.sca.provider.ScaStructPropertyItemProvider;
+import gov.redhawk.model.sca.provider.ScaStructSequencePropertyItemProvider;
+import gov.redhawk.model.sca.util.ScaSwitch;
 
 /**
  * @since 9.0
  */
 public class ScaPropertiesAdapterFactory extends ScaItemProviderAdapterFactory {
 
-	private static class ScaPropertyContainerValueItemProvider extends ScaPropertyContainerItemProvider {
+	/**
+	 * An item provider that only provides children, and only for one specific feature.
+	 */
+	private static class ScaSingleChildFeatureItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+			ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 
-		public ScaPropertyContainerValueItemProvider(final AdapterFactory adapterFactory) {
+		private EStructuralFeature propertyFeature;
+
+		public ScaSingleChildFeatureItemProvider(final AdapterFactory adapterFactory, EStructuralFeature propertyFeature) {
 			super(adapterFactory);
+			this.propertyFeature = propertyFeature;
 		}
 
 		@Override
 		protected Collection< ? extends EStructuralFeature> getChildrenFeatures(final Object object) {
 			if (this.childrenFeatures == null) {
 				this.childrenFeatures = new ArrayList<EStructuralFeature>();
-				this.childrenFeatures.add(ScaPackage.Literals.SCA_PROPERTY_CONTAINER__PROPERTIES);
+				this.childrenFeatures.add(this.propertyFeature);
 			}
 			return this.childrenFeatures;
 		}
@@ -59,15 +78,14 @@ public class ScaPropertiesAdapterFactory extends ScaItemProviderAdapterFactory {
 		@Override
 		public void notifyChanged(final Notification notification) {
 			updateChildren(notification);
-
-			switch (notification.getFeatureID(ScaPropertyContainer.class)) {
-			case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
+			if (notification.getFeature() == this.propertyFeature) {
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-				return;
-			default:
-				break;
 			}
-			super.notifyChanged(notification);
+		}
+
+		@Override
+		public ResourceLocator getResourceLocator() {
+			return ScaEditPlugin.INSTANCE;
 		}
 
 	}
@@ -100,6 +118,16 @@ public class ScaPropertiesAdapterFactory extends ScaItemProviderAdapterFactory {
 			@Override
 			public < P extends org.omg.CORBA.Object, E > Adapter caseScaPropertyContainer(final ScaPropertyContainer<P, E> object) {
 				return createScaPropertyContainerAdapter();
+			}
+
+			@Override
+			public Adapter caseScaNegotiatedConnection(ScaNegotiatedConnection object) {
+				return createScaNegotiatedConnectionAdapter();
+			}
+
+			@Override
+			public Adapter caseScaTransport(ScaTransport object) {
+				return createScaTransportAdapter();
 			}
 
 			@Override
@@ -173,6 +201,16 @@ public class ScaPropertiesAdapterFactory extends ScaItemProviderAdapterFactory {
 
 	@Override
 	public Adapter createScaPropertyContainerAdapter() {
-		return new ScaPropertyContainerValueItemProvider(this);
+		return new ScaSingleChildFeatureItemProvider(this, ScaPackage.Literals.SCA_PROPERTY_CONTAINER__PROPERTIES);
+	}
+
+	@Override
+	public Adapter createScaNegotiatedConnectionAdapter() {
+		return new ScaSingleChildFeatureItemProvider(this, ScaPackage.Literals.SCA_NEGOTIATED_CONNECTION__TRANSPORT_INFO);
+	}
+
+	@Override
+	public Adapter createScaTransportAdapter() {
+		return new ScaSingleChildFeatureItemProvider(this, ScaPackage.Literals.SCA_TRANSPORT__TRANSPORT_PROPERTIES);
 	}
 }
