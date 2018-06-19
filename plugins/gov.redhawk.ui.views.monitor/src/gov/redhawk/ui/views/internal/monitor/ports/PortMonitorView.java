@@ -9,14 +9,13 @@
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
-package gov.redhawk.ui.views.monitor.ports;
+package gov.redhawk.ui.views.internal.monitor.ports;
 
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaPortContainer;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.monitor.MonitorPlugin;
 import gov.redhawk.monitor.MonitorUtils;
-import gov.redhawk.ui.views.internal.monitor.ports.PortMonitorViewConfigDialog;
 import gov.redhawk.monitor.model.ports.Monitor;
 import gov.redhawk.monitor.model.ports.MonitorRegistry;
 import gov.redhawk.monitor.model.ports.PortMonitor;
@@ -40,6 +39,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -114,6 +114,7 @@ public class PortMonitorView extends ViewPart {
 		        providesPortAdapterFactory, new ScaItemProviderAdapterFactory()
 		});
 		this.viewer.setContentProvider(new ScaModelAdapterFactoryContentProvider(this.adapterFactory));
+		ColumnViewerToolTipSupport.enableFor(this.viewer);
 		this.input = MonitorPlugin.getDefault().getMonitorRegistry();
 		this.viewer.setInput(this.input);
 		makeActions();

@@ -8,14 +8,14 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  */
-package gov.redhawk.ui.views.internal.monitor.ports;
+package gov.redhawk.ui.views.internal.monitor.values;
 
-import CF.DataType;
-import gov.redhawk.ui.views.internal.monitor.labels.DataTypeCellLabelProvider;
+/**
+ * Provide a raw data value associated with a viewer's cell.
+ * @param <T> The type of the raw data
+ */
+public interface ValueProvider< T > {
 
-public class DataTypeColumn extends Column {
+	T getValue(Object input);
 
-	public DataTypeColumn(final DataType type) {
-		super(type.id, type.id, new DataTypeCellLabelProvider(type.id));
-	}
 }

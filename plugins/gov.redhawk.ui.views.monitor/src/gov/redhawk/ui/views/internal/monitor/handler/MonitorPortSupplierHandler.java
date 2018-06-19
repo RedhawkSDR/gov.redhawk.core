@@ -13,8 +13,8 @@ package gov.redhawk.ui.views.internal.monitor.handler;
 
 import gov.redhawk.model.sca.ScaPortContainer;
 import gov.redhawk.sca.util.PluginUtil;
+import gov.redhawk.ui.views.internal.monitor.ports.PortMonitorView;
 import gov.redhawk.ui.views.monitor.MonitorViewPlugin;
-import gov.redhawk.ui.views.monitor.ports.PortMonitorView;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;

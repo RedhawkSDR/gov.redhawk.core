@@ -11,18 +11,8 @@
  */
 package gov.redhawk.ui.views.internal.monitor.ports;
 
-import gov.redhawk.monitor.model.ports.Monitor;
-import gov.redhawk.monitor.model.ports.MonitorRegistry;
-import gov.redhawk.monitor.model.ports.PortConnectionMonitor;
-import gov.redhawk.monitor.model.ports.PortMonitor;
-import gov.redhawk.monitor.model.ports.PortStatisticsProvider;
-import gov.redhawk.monitor.model.ports.PortSupplierMonitor;
-import gov.redhawk.sca.util.PropertyChangeSupport;
-import gov.redhawk.ui.views.monitor.ports.Column;
-import gov.redhawk.ui.views.monitor.ports.PortMonitorView;
-import gov.redhawk.ui.views.monitor.ports.StatisticsColumns;
-
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,8 +21,6 @@ import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
-import org.eclipse.core.databinding.observable.value.IValueChangeListener;
-import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
@@ -40,8 +28,7 @@ import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.databinding.viewers.ViewerSupport;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -57,12 +44,20 @@ import org.eclipse.ui.preferences.ViewSettingsDialog;
 
 import BULKIO.PortStatistics;
 import CF.DataType;
+import gov.redhawk.monitor.model.ports.Monitor;
+import gov.redhawk.monitor.model.ports.MonitorRegistry;
+import gov.redhawk.monitor.model.ports.PortConnectionMonitor;
+import gov.redhawk.monitor.model.ports.PortMonitor;
+import gov.redhawk.monitor.model.ports.PortStatisticsProvider;
+import gov.redhawk.monitor.model.ports.PortSupplierMonitor;
+import gov.redhawk.sca.util.PropertyChangeSupport;
 
 /**
  * 
  */
 public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 
+	@SuppressWarnings("unused")
 	private static class State {
 		private long refresh = 10;
 		private Set<Column> checked = new HashSet<Column>();
@@ -102,9 +97,18 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 		}
 
 		public void setInput(List<Column> input) {
-			List<Column> oldValue = input;
+			List<Column> oldValue = this.input;
 			this.input = input;
 			pcs.firePropertyChange("input", oldValue, input);
+		}
+
+		public boolean inputHasColumn(String id) {
+			for (Column column : input) {
+				if (column.getId().equals(id)) {
+					return true;
+				}
+			}
+			return false;
 		}
 
 	}
@@ -128,13 +132,13 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 	}
 
 	private void initializeColumnMap() {
-		state.checked.clear();
-		state.input.clear();
+		state.getChecked().clear();
+		state.getInput().clear();
 		for (final Column c : StatisticsColumns.DEFAULT_COLUMNS) {
 			if (view.hasColumn(c)) {
-				state.checked.add(c);
+				state.getChecked().add(c);
 			}
-			state.input.add(c);
+			state.getInput().add(c);
 		}
 		for (final Monitor m : this.data.getMonitors()) {
 			if (m instanceof PortSupplierMonitor) {
@@ -171,12 +175,15 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 	}
 
 	private void addDataType(final DataType type) {
-		if (!state.input.contains(type.id)) {
-			final DataTypeColumn dataTypeColumn = new DataTypeColumn(type);
-			if (this.view.hasColumn(dataTypeColumn)) {
-				state.checked.add(dataTypeColumn);
+		if (!state.inputHasColumn(type.id)) {
+			Column dataTypeColumn = StatisticsColumns.DATA_TYPE_COLUMNS.get(type.id);
+			if (dataTypeColumn == null) {
+				dataTypeColumn = new DataTypeColumn(type);
 			}
-			state.input.add(dataTypeColumn);
+			if (this.view.hasColumn(dataTypeColumn)) {
+				state.getChecked().add(dataTypeColumn);
+			}
+			state.getInput().add(dataTypeColumn);
 		}
 	}
 
@@ -191,6 +198,7 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 		return composite;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void createRefreshGroup(final Composite parent) {
 		final Group group = new Group(parent, SWT.None);
 		group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -202,21 +210,19 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 
 		refreshText = new Text(group, SWT.BORDER);
 		refreshText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		Binding binding = context.bindValue(WidgetProperties.text(SWT.Modify).observe(refreshText), BeanProperties.value(state.getClass(), "refresh").observe(state));
-		binding.getValidationStatus().addValueChangeListener(new IValueChangeListener() {
-			
-			@Override
-			public void handleValueChange(ValueChangeEvent event) {
-				IStatus status = (IStatus) event.getObservableValue().getValue();
-				Button button = getButton(IDialogConstants.OK_ID);
-				if (button != null) {
-					button.setEnabled(status.isOK());
-				}
+		Binding binding = context.bindValue(WidgetProperties.text(SWT.Modify).observe(refreshText),
+			BeanProperties.value(state.getClass(), "refresh").observe(state));
+		binding.getValidationStatus().addValueChangeListener(event -> {
+			IStatus status = (IStatus) event.getObservableValue().getValue();
+			Button button = getButton(IDialogConstants.OK_ID);
+			if (button != null) {
+				button.setEnabled(status.isOK());
 			}
 		});
 		ControlDecorationSupport.create(binding, SWT.TOP | SWT.LEFT);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void createColumnGroup(final Composite parent) {
 		final Group group = new Group(parent, SWT.None);
 		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -224,16 +230,14 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 		group.setLayout(new GridLayout(1, false));
 		CheckboxTableViewer viewer = CheckboxTableViewer.newCheckList(group, SWT.BORDER | SWT.FULL_SELECTION | SWT.V_SCROLL);
 		final Table table = viewer.getTable();
-		final GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-		gd_table.minimumHeight = 200;
-		table.setLayoutData(gd_table);
+		final GridData gdTable = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		gdTable.heightHint = 400;
+		table.setLayoutData(gdTable);
 		viewer.getTable().setHeaderVisible(false);
-		viewer.setSorter(new ViewerSorter() {
+		viewer.setComparator(new ViewerComparator() {
 			@Override
-			public int compare(final Viewer viewer, final Object e1, final Object e2) {
-				final Column c1 = (Column) e1;
-				final Column c2 = (Column) e2;
-				return c1.getName().compareToIgnoreCase(c2.getName());
+			protected Comparator< ? super String> getComparator() {
+				return (s1, s2) -> ((String) s1).compareToIgnoreCase((String) s2);
 			}
 		});
 		ViewerSupport.bind(viewer, BeanProperties.list(state.getClass(), "input").observe(state), PojoProperties.value("name"));
@@ -244,8 +248,8 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 	protected void okPressed() {
 		this.view.setRefreshDelta(state.refresh * 1000L);
 
-		for (Column c : state.input) {
-			if (state.checked.contains(c)) {
+		for (Column c : state.getInput()) {
+			if (state.getChecked().contains(c)) {
 				view.addColumn(c);
 			} else {
 				view.removeColumn(c);

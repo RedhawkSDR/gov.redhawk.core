@@ -18,7 +18,7 @@
       <view
             allowMultiple="false"
             category="gov.redhawk.ui.category.sca"
-            class="gov.redhawk.ui.views.monitor.ports.PortMonitorView"
+            class="gov.redhawk.ui.views.internal.monitor.ports.PortMonitorView"
             fastViewWidthRatio="0.33"
             icon="icons/sample.gif"
             id="gov.redhawk.ui.views.monitor.ports.PortMonitorView"
