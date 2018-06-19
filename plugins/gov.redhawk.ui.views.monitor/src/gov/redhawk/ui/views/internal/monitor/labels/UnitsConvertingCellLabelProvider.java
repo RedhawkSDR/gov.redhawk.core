@@ -23,10 +23,15 @@ import gov.redhawk.ui.views.internal.monitor.values.ValueProvider;
  */
 public class UnitsConvertingCellLabelProvider extends CellLabelProvider {
 
-	private static final long TO_KIBIBYTES = 1024L;
-	private static final long TO_MEBIBYTES = 1024L * TO_KIBIBYTES;
-	private static final long TO_GIBIBYTES = 1024L * TO_MEBIBYTES;
-	private static final long TO_TEBIBYTES = 1024L * TO_GIBIBYTES;
+	private static final double TO_KIBIBYTES = 1024L;
+	private static final double TO_MEBIBYTES = 1024L * TO_KIBIBYTES;
+	private static final double TO_GIBIBYTES = 1024L * TO_MEBIBYTES;
+	private static final double TO_TEBIBYTES = 1024L * TO_GIBIBYTES;
+
+	private static final long BYTES_THRESHOLD = 10000;
+	private static final long KIBIBYTES_THRESHOLD = (long) TO_MEBIBYTES;
+	private static final long MEBIBYTES_THRESHOLD = (long) TO_GIBIBYTES;
+	private static final long GIBIBYTES_THRESHOLD = (long) TO_TEBIBYTES;
 
 	private static final double TO_THOUSANDS = 1e3;
 	private static final double TO_MILLIONS = 1e3 * TO_THOUSANDS;
@@ -185,16 +190,16 @@ public class UnitsConvertingCellLabelProvider extends CellLabelProvider {
 	}
 
 	private String bytes(long bytes) {
-		if (bytes < TO_KIBIBYTES) {
+		if (bytes < BYTES_THRESHOLD) {
 			return Messages.bind(Messages.UnitsConvertingCellLabelProvider_Bytes, NumberFormat.getNumberInstance().format(bytes));
-		} else if (bytes < TO_MEBIBYTES) {
-			return Messages.bind(Messages.UnitsConvertingCellLabelProvider_Kibibytes, NumberFormat.getNumberInstance().format(bytes / TO_KIBIBYTES));
-		} else if (bytes < TO_GIBIBYTES) {
-			return Messages.bind(Messages.UnitsConvertingCellLabelProvider_Mebibytes, NumberFormat.getNumberInstance().format(bytes / TO_MEBIBYTES));
-		} else if (bytes < TO_TEBIBYTES) {
-			return Messages.bind(Messages.UnitsConvertingCellLabelProvider_Gibibytes, NumberFormat.getNumberInstance().format(bytes / TO_GIBIBYTES));
+		} else if (bytes < KIBIBYTES_THRESHOLD) {
+			return Messages.bind(Messages.UnitsConvertingCellLabelProvider_Kibibytes, Formatters.DECIMAL_FORMATTER.format(bytes / TO_KIBIBYTES));
+		} else if (bytes < MEBIBYTES_THRESHOLD) {
+			return Messages.bind(Messages.UnitsConvertingCellLabelProvider_Mebibytes, Formatters.DECIMAL_FORMATTER.format(bytes / TO_MEBIBYTES));
+		} else if (bytes < GIBIBYTES_THRESHOLD) {
+			return Messages.bind(Messages.UnitsConvertingCellLabelProvider_Gibibytes, Formatters.DECIMAL_FORMATTER.format(bytes / TO_GIBIBYTES));
 		} else {
-			return Messages.bind(Messages.UnitsConvertingCellLabelProvider_Tebibytes, NumberFormat.getNumberInstance().format(bytes / TO_TEBIBYTES));
+			return Messages.bind(Messages.UnitsConvertingCellLabelProvider_Tebibytes, Formatters.DECIMAL_FORMATTER.format(bytes / TO_TEBIBYTES));
 		}
 	}
 
@@ -240,9 +245,11 @@ public class UnitsConvertingCellLabelProvider extends CellLabelProvider {
 		long min = seconds / SEC_PER_MIN;
 		seconds = seconds % SEC_PER_MIN;
 		if (day > 0) {
-			return Messages.bind(Messages.UnitsConvertingCellLabelProvider_DaysHoursMinutes, new String[] { formatter.format(day), formatter.format(hour), formatter.format(min) });
+			return Messages.bind(Messages.UnitsConvertingCellLabelProvider_DaysHoursMinutes,
+				new String[] { formatter.format(day), formatter.format(hour), formatter.format(min) });
 		} else if (hour > 0) {
-			return Messages.bind(Messages.UnitsConvertingCellLabelProvider_HoursMinutesSeconds, new String[] { formatter.format(hour), formatter.format(min), formatter.format(seconds) });
+			return Messages.bind(Messages.UnitsConvertingCellLabelProvider_HoursMinutesSeconds,
+				new String[] { formatter.format(hour), formatter.format(min), formatter.format(seconds) });
 		} else if (min > 0) {
 			return Messages.bind(Messages.UnitsConvertingCellLabelProvider_MinutesSeconds, formatter.format(min), formatter.format(seconds));
 		} else {
