@@ -23,17 +23,17 @@ import gov.redhawk.ui.views.internal.monitor.values.ValueProvider;
  */
 public class UnitsConvertingCellLabelProvider extends CellLabelProvider {
 
-	private static final long TO_KIBIBYTES = 2 << 9;
-	private static final long TO_MEBIBYTES = 2 << 19;
-	private static final long TO_GIBIBYTES = 2 << 29;
-	private static final long TO_TEBIBYTES = 2 << 39;
+	private static final long TO_KIBIBYTES = 1024L;
+	private static final long TO_MEBIBYTES = 1024L * TO_KIBIBYTES;
+	private static final long TO_GIBIBYTES = 1024L * TO_MEBIBYTES;
+	private static final long TO_TEBIBYTES = 1024L * TO_GIBIBYTES;
 
 	private static final double TO_THOUSANDS = 1e3;
-	private static final double TO_MILLIONS = 1e6;
+	private static final double TO_MILLIONS = 1e3 * TO_THOUSANDS;
 
-	private static final double BITS_TO_BYTES = 8;
-	private static final double BITS_TO_KIBIBYTES = 2 << 12;
-	private static final double BITS_TO_MEBIBYTES = 2 << 22;
+	private static final double BITS_TO_BYTES = 8.0;
+	private static final double BITS_TO_KIBIBYTES = 1024.0 * BITS_TO_BYTES;
+	private static final double BITS_TO_MEBIBYTES = 1024.0 * BITS_TO_KIBIBYTES;
 
 	private static final long SEC_PER_MIN = 60;
 	private static final long SEC_PER_HOUR = SEC_PER_MIN * 60;
