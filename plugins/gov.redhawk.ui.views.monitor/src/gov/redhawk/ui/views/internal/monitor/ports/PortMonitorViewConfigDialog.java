@@ -28,7 +28,9 @@ import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.databinding.viewers.ViewerSupport;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -200,12 +202,12 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 
 	@SuppressWarnings("unchecked")
 	private void createRefreshGroup(final Composite parent) {
-		final Group group = new Group(parent, SWT.None);
+		final Group group = new Group(parent, SWT.NONE);
 		group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		group.setText("Preferences");
 		group.setLayout(new GridLayout(2, false));
 
-		final Label label = new Label(group, SWT.None);
+		Label label = new Label(group, SWT.NONE);
 		label.setText("Refresh Interval (sec):");
 
 		refreshText = new Text(group, SWT.BORDER);
@@ -224,14 +226,14 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 
 	@SuppressWarnings("unchecked")
 	private void createColumnGroup(final Composite parent) {
-		final Group group = new Group(parent, SWT.None);
+		final Group group = new Group(parent, SWT.NONE);
 		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		group.setText("Column Configuration");
 		group.setLayout(new GridLayout(1, false));
 		CheckboxTableViewer viewer = CheckboxTableViewer.newCheckList(group, SWT.BORDER | SWT.FULL_SELECTION | SWT.V_SCROLL);
 		final Table table = viewer.getTable();
 		final GridData gdTable = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-		gdTable.heightHint = 400;
+		gdTable.heightHint = 350;
 		table.setLayoutData(gdTable);
 		viewer.getTable().setHeaderVisible(false);
 		viewer.setComparator(new ViewerComparator() {
@@ -242,6 +244,24 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 		});
 		ViewerSupport.bind(viewer, BeanProperties.list(state.getClass(), "input").observe(state), PojoProperties.value("name"));
 		context.bindSet(ViewerProperties.checkedElements(Column.class).observe(viewer), BeanProperties.set(state.getClass(), "checked").observe(state));
+
+		final ViewerFilter filter = new ViewerFilter() {
+			@Override
+			public boolean select(Viewer viewer, Object parentElement, Object element) {
+				return !(element instanceof DataTypeColumn);
+			}
+		};
+		viewer.setFilters(filter);
+
+		Button checkbox = new Button(group, SWT.CHECK);
+		checkbox.setText("Show advanced");
+		checkbox.addListener(SWT.Selection, event -> {
+			if (checkbox.getSelection()) {
+				viewer.setFilters();
+			} else {
+				viewer.setFilters(filter);
+			}
+		});
 	}
 
 	@Override
