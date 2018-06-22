@@ -531,7 +531,8 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	@Override
 	public DataType getProperty() {
 		// END GENERATED CODE
-		return new DataType(getId(), toAny());
+		Any any = toAny();
+		return (any == null) ? null : new DataType(getId(), any);
 		// BEGIN GENERATED CODE
 	}
 

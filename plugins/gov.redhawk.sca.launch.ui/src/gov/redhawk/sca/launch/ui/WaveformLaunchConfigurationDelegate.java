@@ -94,7 +94,10 @@ public class WaveformLaunchConfigurationDelegate extends LaunchConfigurationDele
 		final List<DataType> configPropsList = new ArrayList<DataType>();
 		for (final ScaAbstractProperty< ? > property : assemblyController.getProperties()) {
 			if (!property.isDefaultValue()) {
-				configPropsList.add(property.getProperty());
+				DataType dt = property.getProperty();
+				if (dt != null) {
+					configPropsList.add(dt);
+				}
 			}
 		}
 		final DataType[] configProps = configPropsList.toArray(new DataType[configPropsList.size()]);

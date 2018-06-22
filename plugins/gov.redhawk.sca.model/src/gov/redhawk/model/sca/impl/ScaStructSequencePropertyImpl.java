@@ -473,7 +473,13 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 		Any retVal = JacorbUtil.init().create_any();
 		List<Any> structVals = new ArrayList<Any>();
 		for (ScaStructProperty structProp : getStructs()) {
-			structVals.add(structProp.toAny());
+			Any any = structProp.toAny();
+			if (any == null) {
+				// If a field in a struct value is missing a value, then the struct value is partially configured,
+				// likely due to bad XML.
+				return null;
+			}
+			structVals.add(any);
 		}
 		AnySeqHelper.insert(retVal, structVals.toArray(new Any[structVals.size()]));
 		return retVal;

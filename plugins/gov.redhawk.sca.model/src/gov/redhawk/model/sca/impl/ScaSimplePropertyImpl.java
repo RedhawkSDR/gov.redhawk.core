@@ -309,13 +309,18 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 
 	@Override
 	public Any toAny() {
+		if (value == null) {
+			// Can't return an Any if there is no value
+			return null;
+		}
 		return AnyUtils.toAny(value, getType(), isComplex());
 	}
 
 	@Override
 	public boolean isDefaultValue() {
 		Object newValue;
-		if (getDefinition() != null && getDefinition().getType() != null) {
+		Simple simpleDef = getDefinition();
+		if (simpleDef != null && simpleDef.getType() != null && simpleDef.getValue() != null) {
 			newValue = AnyUtils.convertString(getDefinition().getValue(), getDefinition().getType().getLiteral(), getDefinition().isComplex());
 		} else {
 			newValue = null;
