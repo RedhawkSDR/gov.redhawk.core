@@ -15,8 +15,13 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.junit.Assert;
+import org.omg.CORBA.Any;
+import org.omg.CORBA.AnySeqHelper;
+import org.omg.CORBA.StringSeqHelper;
+import org.omg.CORBA.TCKind;
 
 import CF.DataType;
+import CF.PropertiesHelper;
 import CF.PropertiesHolder;
 import CF.UnknownProperties;
 import CF.PropertySetPackage.InvalidConfiguration;
@@ -144,6 +149,38 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 	// END GENERATED CODE
 
 	@Override
+	public void testToAny() {
+		Any any = getFixture().toAny();
+		validateAny(any);
+
+		// Struct sequences must have a value - but it can be a zero-length sequence
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().setIgnoreRemoteSet(true);
+			getFixture().getStructs().clear();
+		});
+		any = getFixture().toAny();
+		Assert.assertEquals(AnySeqHelper.type(), any.type());
+		Assert.assertEquals(0, AnySeqHelper.extract(any).length);
+	}
+
+	private void validateAny(Any any) {
+		Assert.assertEquals(AnySeqHelper.type(), any.type());
+		Any[] structVals = AnySeqHelper.extract(any);
+		Assert.assertEquals(1, structVals.length);
+		Assert.assertEquals(PropertiesHelper.type(), structVals[0].type());
+		DataType[] fields = PropertiesHelper.extract(structVals[0]);
+		Assert.assertEquals("DCE:b34d9204-46fa-43ea-9ef2-189674bfc366", fields[0].id);
+		Assert.assertEquals(TCKind.tk_string, fields[0].value.type().kind());
+		Assert.assertEquals("string", fields[0].value.extract_string());
+		Assert.assertEquals("DCE:29948519-5c45-4732-86e1-b8815f4647d1", fields[1].id);
+		Assert.assertEquals(TCKind.tk_boolean, fields[1].value.type().kind());
+		Assert.assertEquals(true, fields[1].value.extract_boolean());
+		Assert.assertEquals("DCE:3c8fdc02-5f93-48ca-bf87-db13271b8254", fields[2].id);
+		Assert.assertEquals(StringSeqHelper.type(), fields[2].value.type());
+		Assert.assertArrayEquals(new String[] { "string1", "string2", "string3" }, StringSeqHelper.extract(fields[2].value));
+	}
+
+	@Override
 	public void testFromAny__Any() {
 		// TODO: Write a better test. See same method in ScaSimplePropertyTest / ScaSimpleSequencePropertyTest
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
@@ -153,6 +190,23 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 				getFixture().fromAny(getFixture().toAny());
 			}
 		});
+	}
+
+	@Override
+	public void testGetProperty() {
+		DataType dt = getFixture().getProperty();
+		Assert.assertEquals("DCE:7fb68ed6-2d60-4652-8e78-ac0974659350", dt.id);
+		validateAny(dt.value);
+
+		// Struct sequences must have a value - but it can be a zero-length sequence
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().setIgnoreRemoteSet(true);
+			getFixture().getStructs().clear();
+		});
+		dt = getFixture().getProperty();
+		Assert.assertEquals("DCE:7fb68ed6-2d60-4652-8e78-ac0974659350", dt.id);
+		Assert.assertEquals(AnySeqHelper.type(), dt.value.type());
+		Assert.assertEquals(0, AnySeqHelper.extract(dt.value).length);
 	}
 
 	// BEGIN GENERATED CODE

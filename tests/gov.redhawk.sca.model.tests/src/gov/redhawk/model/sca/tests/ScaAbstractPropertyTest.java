@@ -193,11 +193,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	 * @see gov.redhawk.model.sca.ScaAbstractProperty#toAny()
 	 * @generated NOT
 	 */
-	public void testToAny() {
-		// END GENERATED CODE
-		Assert.assertNotNull(getFixture().toAny());
-		// BEGIN GENERATED CODE
-	}
+	public abstract void testToAny();
 
 	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#fromAny(org.omg.CORBA.Any) <em>From Any</em>}'
@@ -232,11 +228,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	 * @see gov.redhawk.model.sca.ScaAbstractProperty#getProperty()
 	 * @generated NOT
 	 */
-	public void testGetProperty() {
-		// END GENERATED CODE
-		Assert.assertNotNull(getFixture().getProperty());
-		// BEGIN GENERATED CODE
-	}
+	public abstract void testGetProperty();
 
 	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#isDefaultValue() <em>Is Default Value</em>}'
