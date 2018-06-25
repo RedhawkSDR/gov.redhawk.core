@@ -136,7 +136,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	protected void setUp() throws Exception {
 		this.env = TestEnvirornment.getInstance();
 
-		final ScaWaveform waveform = this.env.getDomMgr().getWaveformFactories().get(0).createWaveform(null, "testWaveform", null, null);
+		final ScaWaveform waveform = this.env.getDomMgr().getWaveformFactories().get(0).createWaveform(null, "testWaveform", null, null, RefreshDepth.SELF);
 		Assert.assertNotNull(waveform);
 		waveform.refresh(null, RefreshDepth.FULL);
 		this.env.validateStartState();
@@ -829,7 +829,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		for (ScaWaveformFactory factory : domMgr.getWaveformFactories()) {
 			String profile = factory.getProfile();
 			if ((SAD_PATH).equals(profile.substring(1, profile.length()))) {
-				waveform = this.env.getDomMgr().getWaveformFactories().get(1).createWaveform(null, "PropertyOverrideWF", null, null);
+				waveform = this.env.getDomMgr().getWaveformFactories().get(1).createWaveform(null, "PropertyOverrideWF", null, null, RefreshDepth.SELF);
 			}
 		}
 		Assert.assertNotNull(waveform);

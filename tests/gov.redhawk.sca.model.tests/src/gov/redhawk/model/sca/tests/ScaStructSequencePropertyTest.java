@@ -107,7 +107,7 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 	protected void setUp() throws Exception {
 		// END GENERATED CODE
 		this.env = TestEnvirornment.getInstance();
-		final ScaWaveform waveform = this.env.getDomMgr().getWaveformFactories().get(0).createWaveform(null, "name", null, null);
+		final ScaWaveform waveform = this.env.getDomMgr().getWaveformFactories().get(0).createWaveform(null, "name", null, null, RefreshDepth.SELF);
 		Assert.assertNotNull(waveform);
 		waveform.refresh(null, RefreshDepth.FULL);
 		this.env.validateStartState();
