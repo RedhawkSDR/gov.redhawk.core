@@ -30,6 +30,12 @@
     <kind kindtype="configure"/>
     <action type="external"/>
   </simple>
+  <simple id="simple_ulonglong" mode="readwrite" name="simple_ulonglong" type="ulonglong">
+   <description>My Description</description>
+    <value>12345678901234567</value>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
   <!-- 
   <simple id="DCE:4f4f325d-dec2-4219-a8cd-7595b6bd5a3c" mode="readwrite" name="objrefProp" type="objref">
    <description>My Description</description>
@@ -45,7 +51,7 @@
   </simple>
   <simple id="DCE:0e26ba48-1ee9-41e5-9a4b-80841ba5244e" mode="readwrite" name="floatProp" type="float">
    <description>My Description</description>
-    <value>100.123456e123</value>
+    <value>100.123456e12</value>
     <kind kindtype="configure"/>
     <action type="external"/>
   </simple>
@@ -83,6 +89,51 @@
    <description>My Description</description>
     <value>999999999999999999</value>
     <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple_complexdouble" mode="readwrite" name="simple_complexdouble" type="double" complex="true">
+    <value>123e45+j567e89</value>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple_complexfloat" mode="readwrite" name="simple_complexfloat" type="float" complex="true">
+    <value>123.4-j567.8</value>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple_complexlong" mode="readwrite" name="simple_complexlong" type="long" complex="true">
+    <value>123456+j78901</value>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple_complexlonglong" mode="readwrite" name="simple_complexlonglong" type="longlong" complex="true">
+    <value>1234567890123-j4567890123456</value>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple_complexoctet" mode="readwrite" name="simple_complexoctet" type="octet" complex="true">
+    <value>78+j25</value>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple_complexshort" mode="readwrite" name="simple_complexshort" type="short" complex="true">
+    <value>30000-j1537</value>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple_complexulong" mode="readwrite" name="simple_complexulong" type="ulong" complex="true">
+    <value>4294967295+j324086</value>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple_complexulonglong" mode="readwrite" name="simple_complexulonglong" type="ulonglong" complex="true">
+    <value>18446744073709551615+j3214623047623046</value>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple_complexushort" mode="readwrite" name="simple_complexushort" type="ushort" complex="true">
+    <value>65535+j12473</value>
+    <kind kindtype="property"/>
     <action type="external"/>
   </simple>
   <simplesequence id="DCE:e4a63886-8bb7-403d-bdd7-3bc79717f5b5" mode="readwrite" name="stringSequence" type="string">
@@ -201,12 +252,89 @@
     <kind kindtype="configure"/>
     <action type="external"/>
   </simplesequence>
+  <simplesequence id="simpleseq_ulonglong" mode="readwrite" name="simpleseq_ulonglong" type="ulonglong">
+    <values>
+      <value>18446744073709551615</value>
+      <value>3214623047623046</value>
+    </values>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="simpleseq_complexdouble" mode="readwrite" name="simpleseq_complexdouble" type="double" complex="true">
+    <values>
+      <value>123e45+j567e89</value>
+      <value>1.0-j2.0</value>
+    </values>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="simpleseq_complexfloat" mode="readwrite" name="simpleseq_complexfloat" type="float" complex="true">
+    <values>
+      <value>123.4-j567.8</value>
+      <value>1.0-j2.0</value>
+    </values>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="simpleseq_complexlong" mode="readwrite" name="simpleseq_complexlong" type="long" complex="true">
+    <values>
+      <value>1000000000-j1000000000</value>
+      <value>1+j2</value>
+    </values>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="simpleseq_complexlonglong" mode="readwrite" name="simpleseq_complexlonglong" type="longlong" complex="true">
+    <values>
+      <value>1234567890123-j4567890123456</value>
+    </values>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="simpleseq_complexoctet" mode="readwrite" name="simpleseq_complexoctet" type="octet" complex="true">
+    <values>
+      <value>78+j25</value>
+      <value>2+j255</value>
+    </values>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="simpleseq_complexshort" mode="readwrite" name="simpleseq_complexshort" type="short" complex="true">
+    <values>
+      <value>30000-j1537</value>
+      <value>-1+j234</value>
+    </values>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="simpleseq_complexulong" mode="readwrite" name="simpleseq_complexulong" type="ulong" complex="true">
+    <values>
+      <value>4294967295+j324086</value>
+      <value>1+j2</value>
+    </values>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="simpleseq_complexulonglong" mode="readwrite" name="simpleseq_complexulonglong" type="ulonglong" complex="true">
+    <values>
+      <value>18446744073709551615+j3214623047623046</value>
+    </values>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="simpleseq_complexushort" mode="readwrite" name="simpleseq_complexushort" type="ushort" complex="true">
+    <values>
+      <value>65535+j12473</value>
+      <value>1+j2</value>
+    </values>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
   <struct id="DCE:5e410c54-750b-41ea-9fd4-176ce624d849" mode="readwrite" name="testStruct">
    <description>My Description</description>
     <simple id="DCE:e0a68e78-a562-416e-8ce1-27c9c622083c" mode="readwrite" name="structSimpleString" type="string">
      <description>My Description</description>
       <value>string</value>
-      <kind kindtype="configure"/>
       <action type="external"/>
     </simple>
     <simplesequence id="simpleseq" name="simpleseq" type="string">
@@ -219,13 +347,11 @@
     <simple id="DCE:5a839b6d-6246-49b6-ae9d-5c184e0360ca" mode="readwrite" name="structSimpleBoolean" type="boolean">
      <description>My Description</description>
       <value>true</value>
-      <kind kindtype="configure"/>
       <action type="external"/>
     </simple>
     <simple id="DCE:a00dd5e7-1956-4a81-8f4e-d98ef11e635a" mode="readwrite" name="structSimpleUlong" type="ulong">
      <description>My Description</description>
       <value>1000000000</value>
-      <kind kindtype="configure"/>
       <action type="external"/>
     </simple>
     <!-- 
@@ -238,49 +364,41 @@
     <simple id="DCE:6ae08109-9a03-4f5f-8ffa-543b67b2b324" mode="readwrite" name="structSimpleShort" type="short">
      <description>My Description</description>
       <value>-10000</value>
-      <kind kindtype="configure"/>
       <action type="external"/>
     </simple>
     <simple id="DCE:6f11e90a-40ba-414b-915d-d2eb6e6dc82c" mode="readwrite" name="structSimpleFloat" type="float">
      <description>My Description</description>
-      <value>12e78</value>
-      <kind kindtype="configure"/>
+      <value>12e34</value>
       <action type="external"/>
     </simple>
     <simple id="DCE:a128bcc3-d867-49b9-b699-fc69efdd653e" mode="readwrite" name="structSimpleOctet" type="octet">
      <description>My Description</description>
       <value>100</value>
-      <kind kindtype="configure"/>
       <action type="external"/>
     </simple>
     <simple id="DCE:3cf6feef-b4ed-42b0-b89a-234c16feb573" mode="readwrite" name="structSimpleChar" type="char">
      <description>My Description</description>
       <value>a</value>
-      <kind kindtype="configure"/>
       <action type="external"/>
     </simple>
     <simple id="DCE:c3bb82aa-45b3-40e0-878b-f066e353fad0" mode="readwrite" name="structSimpleUShort" type="ushort">
      <description>My Description</description>
       <value>10000</value>
-      <kind kindtype="configure"/>
       <action type="external"/>
     </simple>
     <simple id="DCE:bf73d0d7-7a72-4bfa-be29-8ef05e3fe490" mode="readwrite" name="structSimpleDouble" type="double">
      <description>My Description</description>
       <value>123.225e199</value>
-      <kind kindtype="configure"/>
       <action type="external"/>
     </simple>
     <simple id="DCE:76f0f577-d15a-4898-bf7b-0283bb857e57" mode="readwrite" name="structSimpleLong" type="long">
      <description>My Description</description>
       <value>-1000000000</value>
-      <kind kindtype="configure"/>
       <action type="external"/>
     </simple>
     <simple id="DCE:a57188bd-b1d7-4320-928f-b48ff1928b12" mode="readwrite" name="structSimpleLongLong" type="longlong">
      <description>My Description</description>
       <value>-1000000000000000000</value>
-      <kind kindtype="configure"/>
       <action type="external"/>
     </simple>
     <simple id="DCE:89739802-cffc-4d5e-bf09-ca85057a9823" mode="readwrite" name="structEnum" type="string">
@@ -291,7 +409,6 @@
         <enumeration label="StructEnum2" value="155"/>
         <enumeration label="StructEnum3" value="25"/>
       </enumerations>
-      <kind kindtype="configure"/>
       <action type="external"/>
     </simple>
     <configurationkind kindtype="configure"/>
@@ -320,14 +437,8 @@
    <structsequence id="DCE:7fb68ed6-2d60-4652-8e78-ac0974659350" mode="readwrite" name="testStructSequence">
     <description>My Description</description>
     <struct id="DCE:9347e452-fa82-4da1-9b43-056933c77dba" mode="readwrite" name="testStruct">
-      <simple id="DCE:b34d9204-46fa-43ea-9ef2-189674bfc366" mode="readwrite" name="structSeqString" type="string">
-        <kind kindtype="configure"/>
-        <action type="external"/>
-      </simple>
-      <simple id="DCE:29948519-5c45-4732-86e1-b8815f4647d1" mode="readwrite" name="structSeqBoolean" type="string">
-        <kind kindtype="configure"/>
-        <action type="external"/>
-      </simple>
+      <simple id="DCE:b34d9204-46fa-43ea-9ef2-189674bfc366" mode="readwrite" name="structSeqString" type="string"/>
+      <simple id="DCE:29948519-5c45-4732-86e1-b8815f4647d1" mode="readwrite" name="structSeqBoolean" type="boolean"/>
       <simplesequence id="DCE:3c8fdc02-5f93-48ca-bf87-db13271b8254" mode="readwrite" name="structSeqStringSequence" type="string">
         <values>
           <value>string1</value>
@@ -335,7 +446,6 @@
           <value>string3</value>
         </values>
       </simplesequence>
-      <configurationkind kindtype="configure"/>
     </struct>
     <structvalue>
       <simpleref refid="DCE:b34d9204-46fa-43ea-9ef2-189674bfc366" value="string"/>

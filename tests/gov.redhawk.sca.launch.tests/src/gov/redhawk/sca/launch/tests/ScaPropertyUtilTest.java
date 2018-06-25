@@ -23,11 +23,11 @@ import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.sca.launch.internal.ScaPropertyUtil;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
-import mil.jpeojtrs.sca.util.math.ComplexByte;
 import mil.jpeojtrs.sca.util.math.ComplexDouble;
 import mil.jpeojtrs.sca.util.math.ComplexFloat;
 import mil.jpeojtrs.sca.util.math.ComplexLong;
 import mil.jpeojtrs.sca.util.math.ComplexLongLong;
+import mil.jpeojtrs.sca.util.math.ComplexOctet;
 import mil.jpeojtrs.sca.util.math.ComplexShort;
 import mil.jpeojtrs.sca.util.math.ComplexULong;
 import mil.jpeojtrs.sca.util.math.ComplexULongLong;
@@ -130,7 +130,7 @@ public class ScaPropertyUtilTest {
 		((ScaSimpleProperty) component1.getProperty("float")).setValue(new ComplexFloat(3.0f, 4.0f));
 		((ScaSimpleProperty) component1.getProperty("long")).setValue(new ComplexLong(5, 6));
 		((ScaSimpleProperty) component1.getProperty("longlong")).setValue(new ComplexLongLong(7, 8));
-		((ScaSimpleProperty) component1.getProperty("octet")).setValue(new ComplexByte((byte) 9, (byte) 10));
+		((ScaSimpleProperty) component1.getProperty("octet")).setValue(new ComplexOctet((short) 9, (short) 10));
 		((ScaSimpleProperty) component1.getProperty("short")).setValue(new ComplexShort((short) 11, (short) 12));
 		((ScaSimpleProperty) component1.getProperty("ulong")).setValue(new ComplexULong(13, 14));
 		((ScaSimpleProperty) component1.getProperty("ulonglong")).setValue(new ComplexULongLong(new BigInteger("15"), new BigInteger("16")));
@@ -162,7 +162,7 @@ public class ScaPropertyUtilTest {
 		((ScaSimpleSequenceProperty) component1.getProperty("floatseq")).setValue(new Object[] { new ComplexFloat(3.0f, 4.0f) });
 		((ScaSimpleSequenceProperty) component1.getProperty("longseq")).setValue(new Object[] { new ComplexLong(5, 6) });
 		((ScaSimpleSequenceProperty) component1.getProperty("longlongseq")).setValue(new Object[] { new ComplexLongLong(7, 8) });
-		((ScaSimpleSequenceProperty) component1.getProperty("octetseq")).setValue(new Object[] { new ComplexByte((byte) 9, (byte) 10) });
+		((ScaSimpleSequenceProperty) component1.getProperty("octetseq")).setValue(new Object[] { new ComplexOctet((short) 9, (short) 10) });
 		((ScaSimpleSequenceProperty) component1.getProperty("shortseq")).setValue(new Object[] { new ComplexShort((short) 11, (short) 12) });
 		((ScaSimpleSequenceProperty) component1.getProperty("ulongseq")).setValue(new Object[] { new ComplexULong(13, 14) });
 		((ScaSimpleSequenceProperty) component1.getProperty("ulonglongseq")).setValue(

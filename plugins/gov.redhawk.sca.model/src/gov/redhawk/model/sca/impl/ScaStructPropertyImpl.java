@@ -542,11 +542,17 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	@Override
 	public Any toAny() {
-		Any retVal = JacorbUtil.init().create_any();
 		List<DataType> fieldValues = new ArrayList<DataType>(getFields().size());
 		for (ScaAbstractProperty< ? > field : getFields()) {
-			fieldValues.add(new DataType(field.getId(), field.toAny()));
+			Any any = field.toAny();
+			if (any == null) {
+				// If a field doesn't have a value, the struct is not configured (or is partially-configured due to
+				// bad XML). We can't produce an Any for the value.
+				return null;
+			}
+			fieldValues.add(new DataType(field.getId(), any));
 		}
+		Any retVal = JacorbUtil.init().create_any();
 		PropertiesHelper.insert(retVal, fieldValues.toArray(new DataType[fieldValues.size()]));
 		return retVal;
 	}

@@ -15,8 +15,11 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.junit.Assert;
+import org.omg.CORBA.Any;
+import org.omg.CORBA.StringSeqHelper;
 
 import CF.DataType;
+import CF.PropertiesHelper;
 import CF.PropertiesHolder;
 import CF.UnknownProperties;
 import CF.PropertySetPackage.InvalidConfiguration;
@@ -114,7 +117,7 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 	protected void setUp() throws Exception {
 		// END GENERATED CODE
 		this.env = TestEnvirornment.getInstance();
-		final ScaWaveform waveform = this.env.getDomMgr().getWaveformFactories().get(0).createWaveform(null, "name", null, null);
+		final ScaWaveform waveform = this.env.getDomMgr().getWaveformFactories().get(0).createWaveform(null, "name", null, null, RefreshDepth.SELF);
 		Assert.assertNotNull(waveform);
 		waveform.refresh(null, RefreshDepth.FULL);
 		this.env.validateStartState();
@@ -192,6 +195,53 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 	// END GENERATED CODE
 
 	@Override
+	public void testToAny() {
+		Any any = getFixture().toAny();
+		validateAny(any);
+
+		// Any field not having a value should mean we don't get a value for the struct.
+		// This is only used when the SCA model is being used to determine what properties have non-null values for a
+		// call to initializeProperties(), configure(), etc.
+		ScaModelCommand.execute(getFixture(), () -> {
+			ScaSimpleProperty prop = getFixture().getSimples().get(2);
+			prop.setIgnoreRemoteSet(true);
+			prop.setValue(null);
+		});
+		Assert.assertNull(getFixture().getProperty());
+	}
+
+	private void validateAny(Any any) {
+		Assert.assertEquals(PropertiesHelper.type(), any.type());
+		DataType[] fields = PropertiesHelper.extract(any);
+		Assert.assertEquals("DCE:e0a68e78-a562-416e-8ce1-27c9c622083c", fields[0].id);
+		Assert.assertEquals("string", fields[0].value.extract_string());
+		Assert.assertEquals("simpleseq", fields[1].id);
+		Assert.assertArrayEquals(new String[] { "ABC", "DEF" }, StringSeqHelper.extract(fields[1].value));
+		Assert.assertEquals("DCE:5a839b6d-6246-49b6-ae9d-5c184e0360ca", fields[2].id);
+		Assert.assertEquals(true, fields[2].value.extract_boolean());
+		Assert.assertEquals("DCE:a00dd5e7-1956-4a81-8f4e-d98ef11e635a", fields[3].id);
+		Assert.assertEquals(1000000000, fields[3].value.extract_ulong());
+		Assert.assertEquals("DCE:6ae08109-9a03-4f5f-8ffa-543b67b2b324", fields[4].id);
+		Assert.assertEquals(-10000, fields[4].value.extract_short());
+		Assert.assertEquals("DCE:6f11e90a-40ba-414b-915d-d2eb6e6dc82c", fields[5].id);
+		Assert.assertEquals(12e34F, fields[5].value.extract_float(), 0);
+		Assert.assertEquals("DCE:a128bcc3-d867-49b9-b699-fc69efdd653e", fields[6].id);
+		Assert.assertEquals((byte) 100, fields[6].value.extract_octet());
+		Assert.assertEquals("DCE:3cf6feef-b4ed-42b0-b89a-234c16feb573", fields[7].id);
+		Assert.assertEquals('a', fields[7].value.extract_char());
+		Assert.assertEquals("DCE:c3bb82aa-45b3-40e0-878b-f066e353fad0", fields[8].id);
+		Assert.assertEquals((short) 10000, fields[8].value.extract_ushort());
+		Assert.assertEquals("DCE:bf73d0d7-7a72-4bfa-be29-8ef05e3fe490", fields[9].id);
+		Assert.assertEquals(123.225e199, fields[9].value.extract_double(), 0);
+		Assert.assertEquals("DCE:76f0f577-d15a-4898-bf7b-0283bb857e57", fields[10].id);
+		Assert.assertEquals(-1000000000, fields[10].value.extract_long());
+		Assert.assertEquals("DCE:a57188bd-b1d7-4320-928f-b48ff1928b12", fields[11].id);
+		Assert.assertEquals(-1000000000000000000L, fields[11].value.extract_longlong());
+		Assert.assertEquals("DCE:89739802-cffc-4d5e-bf09-ca85057a9823", fields[12].id);
+		Assert.assertEquals("155", fields[12].value.extract_string());
+	}
+
+	@Override
 	public void testFromAny__Any() {
 		// TODO: Write a better test. See same method in ScaSimplePropertyTest / ScaSimpleSequencePropertyTest
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
@@ -201,6 +251,23 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 				getFixture().fromAny(getFixture().toAny());
 			}
 		});
+	}
+
+	@Override
+	public void testGetProperty() {
+		DataType dt = getFixture().getProperty();
+		Assert.assertEquals("DCE:5e410c54-750b-41ea-9fd4-176ce624d849", dt.id);
+		validateAny(dt.value);
+
+		// Any field not having a value should mean we don't get a value for the struct.
+		// This is only used when the SCA model is being used to determine what properties have non-null values for a
+		// call to initializeProperties(), configure(), etc.
+		ScaModelCommand.execute(getFixture(), () -> {
+			ScaSimpleProperty prop = getFixture().getSimples().get(2);
+			prop.setIgnoreRemoteSet(true);
+			prop.setValue(null);
+		});
+		Assert.assertNull(getFixture().getProperty());
 	}
 
 	// BEGIN GENERATED CODE

@@ -17,22 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mil.jpeojtrs.sca.prf.AbstractProperty;
-import mil.jpeojtrs.sca.prf.ConfigurationKind;
-import mil.jpeojtrs.sca.prf.Properties;
-import mil.jpeojtrs.sca.prf.Simple;
-import mil.jpeojtrs.sca.prf.SimpleRef;
-import mil.jpeojtrs.sca.prf.SimpleSequence;
-import mil.jpeojtrs.sca.prf.Struct;
-import mil.jpeojtrs.sca.prf.StructSequence;
-import mil.jpeojtrs.sca.prf.StructValue;
-import mil.jpeojtrs.sca.scd.Ports;
-import mil.jpeojtrs.sca.scd.Provides;
-import mil.jpeojtrs.sca.scd.Uses;
-import mil.jpeojtrs.sca.spd.SoftPkg;
-import mil.jpeojtrs.sca.util.AnyUtils;
-import mil.jpeojtrs.sca.util.CFErrorFormatter;
-
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -51,6 +35,26 @@ import org.ossie.properties.BooleanProperty;
 import org.ossie.properties.BooleanSequenceProperty;
 import org.ossie.properties.CharProperty;
 import org.ossie.properties.CharSequenceProperty;
+import org.ossie.properties.ComplexBooleanProperty;
+import org.ossie.properties.ComplexBooleanSequenceProperty;
+import org.ossie.properties.ComplexDoubleProperty;
+import org.ossie.properties.ComplexDoubleSequenceProperty;
+import org.ossie.properties.ComplexFloatProperty;
+import org.ossie.properties.ComplexFloatSequenceProperty;
+import org.ossie.properties.ComplexLongLongProperty;
+import org.ossie.properties.ComplexLongLongSequenceProperty;
+import org.ossie.properties.ComplexLongProperty;
+import org.ossie.properties.ComplexLongSequenceProperty;
+import org.ossie.properties.ComplexOctetProperty;
+import org.ossie.properties.ComplexOctetSequenceProperty;
+import org.ossie.properties.ComplexShortProperty;
+import org.ossie.properties.ComplexShortSequenceProperty;
+import org.ossie.properties.ComplexULongLongProperty;
+import org.ossie.properties.ComplexULongLongSequenceProperty;
+import org.ossie.properties.ComplexULongProperty;
+import org.ossie.properties.ComplexULongSequenceProperty;
+import org.ossie.properties.ComplexUShortProperty;
+import org.ossie.properties.ComplexUShortSequenceProperty;
 import org.ossie.properties.DoubleProperty;
 import org.ossie.properties.DoubleSequenceProperty;
 import org.ossie.properties.FloatProperty;
@@ -81,6 +85,16 @@ import org.ossie.properties.UShortSequenceProperty;
 import CF.DataType;
 import CF.PortOperations;
 import CF.PortPOATie;
+import CF.complexBoolean;
+import CF.complexDouble;
+import CF.complexFloat;
+import CF.complexLong;
+import CF.complexLongLong;
+import CF.complexOctet;
+import CF.complexShort;
+import CF.complexULong;
+import CF.complexULongLong;
+import CF.complexUShort;
 import CF.LifeCyclePackage.InitializeError;
 import CF.PortPackage.InvalidPort;
 import CF.PortPackage.OccupiedPort;
@@ -94,6 +108,31 @@ import ExtendedCF.NegotiationError;
 import ExtendedCF.NegotiationResult;
 import ExtendedCF.TransportInfo;
 import ExtendedCF.UsesConnection;
+import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.prf.ConfigurationKind;
+import mil.jpeojtrs.sca.prf.Properties;
+import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.SimpleRef;
+import mil.jpeojtrs.sca.prf.SimpleSequence;
+import mil.jpeojtrs.sca.prf.Struct;
+import mil.jpeojtrs.sca.prf.StructSequence;
+import mil.jpeojtrs.sca.prf.StructValue;
+import mil.jpeojtrs.sca.scd.Ports;
+import mil.jpeojtrs.sca.scd.Provides;
+import mil.jpeojtrs.sca.scd.Uses;
+import mil.jpeojtrs.sca.spd.SoftPkg;
+import mil.jpeojtrs.sca.util.AnyUtils;
+import mil.jpeojtrs.sca.util.CFErrorFormatter;
+import mil.jpeojtrs.sca.util.math.ComplexBoolean;
+import mil.jpeojtrs.sca.util.math.ComplexDouble;
+import mil.jpeojtrs.sca.util.math.ComplexFloat;
+import mil.jpeojtrs.sca.util.math.ComplexLong;
+import mil.jpeojtrs.sca.util.math.ComplexLongLong;
+import mil.jpeojtrs.sca.util.math.ComplexOctet;
+import mil.jpeojtrs.sca.util.math.ComplexShort;
+import mil.jpeojtrs.sca.util.math.ComplexULong;
+import mil.jpeojtrs.sca.util.math.ComplexULongLong;
+import mil.jpeojtrs.sca.util.math.ComplexUShort;
 
 public class AbstractResourceImpl extends Resource {
 
@@ -249,29 +288,25 @@ public class AbstractResourceImpl extends Resource {
 			} else if (prop instanceof Struct) {
 				Struct struct = (Struct) prop;
 
-				List<String> kinds = new ArrayList<String>(struct.getConfigurationKind().size());
+				List<String> kinds = new ArrayList<>(struct.getConfigurationKind().size());
 				for (ConfigurationKind k : struct.getConfigurationKind()) {
 					kinds.add(k.getType().toString());
 				}
 
 				StructDef structDef = createStructDef(struct);
-				StructProperty<StructDef> newProperty = new StructProperty<StructDef>(struct.getId(),
-						struct.getName(),
-						structDef,
-						structDef,
-						struct.getMode().toString(),
-						kinds.toArray(new String[kinds.size()]));
+				StructProperty<StructDef> newProperty = new StructProperty<>(struct.getId(), struct.getName(), structDef, structDef,
+					struct.getMode().toString(), kinds.toArray(new String[kinds.size()]));
 				addProperty(newProperty);
 			} else if (prop instanceof StructSequence) {
 				StructSequence structSequence = (StructSequence) prop;
 
-				List<String> kindsList = new ArrayList<String>(structSequence.getConfigurationKind().size());
+				List<String> kindsList = new ArrayList<>(structSequence.getConfigurationKind().size());
 				for (ConfigurationKind k : structSequence.getConfigurationKind()) {
 					kindsList.add(k.getType().toString());
 				}
-				Class< StructDef> structClass = (Class<StructDef>) createStructDef(structSequence.getStruct()).getClass();
+				Class<StructDef> structClass = (Class<StructDef>) createStructDef(structSequence.getStruct()).getClass();
 
-				List<StructDef> value = new ArrayList<StructDef>();
+				List<StructDef> value = new ArrayList<>();
 				if (structSequence.getStructValue() != null) {
 					for (StructValue v : structSequence.getStructValue()) {
 						StructDef newValue = createStructDef(v.getStruct());
@@ -284,12 +319,8 @@ public class AbstractResourceImpl extends Resource {
 
 				Mode mode = Mode.get(structSequence.getMode().getLiteral());
 				Kind[] kinds = Kind.get(kindsList.toArray(new String[kindsList.size()]));
-				StructSequenceProperty<StructDef> newProperty = new StructSequenceProperty<StructDef>(structSequence.getId(),
-						structSequence.getName(),
-						structClass,
-						value,
-						mode,
-						kinds);
+				StructSequenceProperty<StructDef> newProperty = new StructSequenceProperty<>(structSequence.getId(), structSequence.getName(), structClass,
+					value, mode, kinds);
 				addProperty(newProperty);
 			}
 		}
@@ -307,72 +338,146 @@ public class AbstractResourceImpl extends Resource {
 		}
 		String type = sequence.getType().toString();
 
-		switch (type) {
-		case "boolean":
-			List<Boolean> booleanValue = createValueList(sequence, type, Boolean.class);
-			return new BooleanSequenceProperty(id, name, booleanValue, mode, action, kinds);
-		case "char":
-			List<Character> characterValue = createValueList(sequence, type, Character.class);
-			return new CharSequenceProperty(id, name, characterValue, mode, action, kinds);
-		case "double":
-			List<Double> doubleValue = createValueList(sequence, type, Double.class);
-			return new DoubleSequenceProperty(id, name, doubleValue, mode, action, kinds);
-		case "float":
-			List<Float> floatValue = createValueList(sequence, type, Float.class);
-			return new FloatSequenceProperty(id, name, floatValue, mode, action, kinds);
-		case "longlong":
-			List<Long> longLongValue = createValueList(sequence, type, Long.class);
-			return new LongLongSequenceProperty(id, name, longLongValue, mode, action, kinds);
-		case "long":
-			List<Integer> longValue = createValueList(sequence, type, Integer.class);
-			return new LongSequenceProperty(id, name, longValue, mode, action, kinds);
-		case "octet":
-			List<Short> octetRealValue = createValueList(sequence, type, Short.class);
-			List<Byte> octetValue = new ArrayList<Byte>();
-			for (Short s : octetRealValue) {
-				octetValue.add(s.byteValue());
+		if (sequence.isComplex()) {
+			switch (type) {
+			case "boolean":
+				List<complexBoolean> booleanList = createValueList(sequence, type, complexBoolean.class);
+				return new ComplexBooleanSequenceProperty(id, name, booleanList, mode, action, kinds);
+			case "double":
+				List<complexDouble> doubleList = createValueList(sequence, type, complexDouble.class);
+				return new ComplexDoubleSequenceProperty(id, name, doubleList, mode, action, kinds);
+			case "float":
+				List<complexFloat> floatList = createValueList(sequence, type, complexFloat.class);
+				return new ComplexFloatSequenceProperty(id, name, floatList, mode, action, kinds);
+			case "long":
+				List<complexLong> longList = createValueList(sequence, type, complexLong.class);
+				return new ComplexLongSequenceProperty(id, name, longList, mode, action, kinds);
+			case "longlong":
+				List<complexLongLong> longLongList = createValueList(sequence, type, complexLongLong.class);
+				return new ComplexLongLongSequenceProperty(id, name, longLongList, mode, action, kinds);
+			case "octet":
+				List<complexOctet> octetList = createValueList(sequence, type, complexOctet.class);
+				return new ComplexOctetSequenceProperty(id, name, octetList, mode, action, kinds);
+			case "short":
+				List<complexShort> shortList = createValueList(sequence, type, complexShort.class);
+				return new ComplexShortSequenceProperty(id, name, shortList, mode, action, kinds);
+			case "ulong":
+				List<complexULong> uLongList = createValueList(sequence, type, complexULong.class);
+				return new ComplexULongSequenceProperty(id, name, uLongList, mode, action, kinds);
+			case "ulonglong":
+				List<complexULongLong> uLongLongList = createValueList(sequence, type, complexULongLong.class);
+				return new ComplexULongLongSequenceProperty(id, name, uLongLongList, mode, action, kinds);
+			case "ushort":
+				List<complexUShort> uShortList = createValueList(sequence, type, complexUShort.class);
+				return new ComplexUShortSequenceProperty(id, name, uShortList, mode, action, kinds);
+			default:
+				throw new IllegalArgumentException("Test harness doesn't have support for type: " + type);
 			}
-			return new OctetSequenceProperty(id, name, octetValue, mode, action, kinds);
-		case "short":
-			List<Short> shortValue = createValueList(sequence, type, Short.class);
-			return new ShortSequenceProperty(id, name, shortValue, mode, action, kinds);
-		case "string":
-			List<String> stringValue = createValueList(sequence, type, String.class);
-			return new StringSequenceProperty(id, name, stringValue, mode, action, kinds);
-		case "ulonglong":
-			List<BigInteger> uLongLongRealValue = createValueList(sequence, type, BigInteger.class);
-			List<Long> uLongLongValue = createValueList(sequence, type, Long.class);
-			for (BigInteger bi : uLongLongRealValue) {
-				uLongLongValue.add(bi.longValue());
+		} else {
+			switch (type) {
+			case "boolean":
+				List<Boolean> booleanValue = createValueList(sequence, type, Boolean.class);
+				return new BooleanSequenceProperty(id, name, booleanValue, mode, action, kinds);
+			case "char":
+				List<Character> characterValue = createValueList(sequence, type, Character.class);
+				return new CharSequenceProperty(id, name, characterValue, mode, action, kinds);
+			case "double":
+				List<Double> doubleValue = createValueList(sequence, type, Double.class);
+				return new DoubleSequenceProperty(id, name, doubleValue, mode, action, kinds);
+			case "float":
+				List<Float> floatValue = createValueList(sequence, type, Float.class);
+				return new FloatSequenceProperty(id, name, floatValue, mode, action, kinds);
+			case "long":
+				List<Integer> longValue = createValueList(sequence, type, Integer.class);
+				return new LongSequenceProperty(id, name, longValue, mode, action, kinds);
+			case "longlong":
+				List<Long> longLongValue = createValueList(sequence, type, Long.class);
+				return new LongLongSequenceProperty(id, name, longLongValue, mode, action, kinds);
+			case "octet":
+				List<Short> octetRealValue = createValueList(sequence, type, Short.class);
+				List<Byte> octetValue = new ArrayList<Byte>();
+				for (Short s : octetRealValue) {
+					octetValue.add(s.byteValue());
+				}
+				return new OctetSequenceProperty(id, name, octetValue, mode, action, kinds);
+			case "short":
+				List<Short> shortValue = createValueList(sequence, type, Short.class);
+				return new ShortSequenceProperty(id, name, shortValue, mode, action, kinds);
+			case "string":
+				List<String> stringValue = createValueList(sequence, type, String.class);
+				return new StringSequenceProperty(id, name, stringValue, mode, action, kinds);
+			case "ulong":
+				List<Long> uLongRealValue = createValueList(sequence, type, Long.class);
+				List<Integer> uLongValue = new ArrayList<Integer>();
+				for (Long l : uLongRealValue) {
+					uLongValue.add(l.intValue());
+				}
+				return new ULongSequenceProperty(id, name, uLongValue, mode, action, kinds);
+			case "ulonglong":
+				List<BigInteger> uLongLongRealValue = createValueList(sequence, type, BigInteger.class);
+				List<Long> uLongLongValue = new ArrayList<>();
+				for (BigInteger bi : uLongLongRealValue) {
+					uLongLongValue.add(bi.longValue());
+				}
+				return new ULongLongSequenceProperty(id, name, uLongLongValue, mode, action, kinds);
+			case "ushort":
+				List<Integer> uShortRealValue = createValueList(sequence, type, Integer.class);
+				List<Short> uShortValue = new ArrayList<Short>();
+				for (Integer i : uShortRealValue) {
+					uShortValue.add(i.shortValue());
+				}
+				return new UShortSequenceProperty(id, name, uShortValue, mode, action, kinds);
+			default:
+				throw new IllegalArgumentException("Test harness doesn't have support for type: " + type);
 			}
-			return new ULongLongSequenceProperty(id, name, uLongLongValue, mode, action, kinds);
-		case "ulong":
-			List<Long> uLongRealValue = createValueList(sequence, type, Long.class);
-			List<Integer> uLongValue = new ArrayList<Integer>();
-			for (Long l : uLongRealValue) {
-				uLongValue.add(l.intValue());
-			}
-			return new ULongSequenceProperty(id, name, uLongValue, mode, action, kinds);
-		case "ushort":
-			List<Integer> uShortRealValue = createValueList(sequence, type, Integer.class);
-			List<Short> uShortValue = new ArrayList<Short>();
-			for (Integer i : uShortRealValue) {
-				uShortValue.add(i.shortValue());
-			}
-			return new UShortSequenceProperty(id, name, uShortValue, mode, action, kinds);
-		default:
-			throw new IllegalArgumentException("Test harness doesn't have support for type: " + type);
 		}
 	}
 
 	private < T > List<T> createValueList(SimpleSequence sequence, String type, Class<T> valueType) {
-		List<T> value = new ArrayList<T>();
+		List<T> values = new ArrayList<>();
 		if (sequence.getValues() != null) {
 			for (String v : sequence.getValues().getValue()) {
-				value.add(valueType.cast(AnyUtils.convertString(v, type, sequence.isComplex())));
+				Object value = AnyUtils.convertString(v, type, sequence.isComplex());
+				if (sequence.isComplex()) {
+					switch (type) {
+					case "boolean":
+						value = ((ComplexBoolean) value).toCFType();
+						break;
+					case "double":
+						value = ((ComplexDouble) value).toCFType();
+						break;
+					case "float":
+						value = ((ComplexFloat) value).toCFType();
+						break;
+					case "long":
+						value = ((ComplexLong) value).toCFType();
+						break;
+					case "longlong":
+						value = ((ComplexLongLong) value).toCFType();
+						break;
+					case "octet":
+						value = ((ComplexOctet) value).toCFType();
+						break;
+					case "short":
+						value = ((ComplexShort) value).toCFType();
+						break;
+					case "ulong":
+						value = ((ComplexULong) value).toCFType();
+						break;
+					case "ulonglong":
+						value = ((ComplexULongLong) value).toCFType();
+						break;
+					case "ushort":
+						value = ((ComplexUShort) value).toCFType();
+						break;
+					default:
+						throw new IllegalArgumentException("Test harness doesn't have support for type: " + type);
+					}
+				}
+				values.add(valueType.cast(value));
 			}
 		}
-		return value;
+		return values;
 	}
 
 	private IProperty createSimpleProperty(Simple simple) {
@@ -387,45 +492,72 @@ public class AbstractResourceImpl extends Resource {
 		}
 		String type = simple.getType().toString();
 
-		switch (type) {
-		case "boolean":
-			return new BooleanProperty(id, name, (Boolean) value, mode, action, kinds);
-		case "char":
-			return new CharProperty(id, name, (Character) value, mode, action, kinds);
-		case "double":
-			return new DoubleProperty(id, name, (Double) value, mode, action, kinds);
-		case "float":
-			return new FloatProperty(id, name, (Float) value, mode, action, kinds);
-		case "longlong":
-			return new LongLongProperty(id, name, (Long) value, mode, action, kinds);
-		case "long":
-			return new LongProperty(id, name, (Integer) value, mode, action, kinds);
-		case "octet":
-			if (value != null) {
-				value = ((Short) value).byteValue();
+		if (simple.isComplex()) {
+			switch (type) {
+			case "boolean":
+				return new ComplexBooleanProperty(id, name, ((ComplexBoolean) value).toCFType(), mode, action, kinds);
+			case "double":
+				return new ComplexDoubleProperty(id, name, ((ComplexDouble) value).toCFType(), mode, action, kinds);
+			case "float":
+				return new ComplexFloatProperty(id, name, ((ComplexFloat) value).toCFType(), mode, action, kinds);
+			case "longlong":
+				return new ComplexLongLongProperty(id, name, ((ComplexLongLong) value).toCFType(), mode, action, kinds);
+			case "long":
+				return new ComplexLongProperty(id, name, ((ComplexLong) value).toCFType(), mode, action, kinds);
+			case "octet":
+				return new ComplexOctetProperty(id, name, ((ComplexOctet) value).toCFType(), mode, action, kinds);
+			case "short":
+				return new ComplexShortProperty(id, name, ((ComplexShort) value).toCFType(), mode, action, kinds);
+			case "ulonglong":
+				return new ComplexULongLongProperty(id, name, ((ComplexULongLong) value).toCFType(), mode, action, kinds);
+			case "ulong":
+				return new ComplexULongProperty(id, name, ((ComplexULong) value).toCFType(), mode, action, kinds);
+			case "ushort":
+				return new ComplexUShortProperty(id, name, ((ComplexUShort) value).toCFType(), mode, action, kinds);
+			default:
+				throw new IllegalArgumentException("Test harness doesn't have support for type: " + type);
 			}
-			return new OctetProperty(id, name, (Byte) value, mode, action, kinds);
-		case "short":
-			return new ShortProperty(id, name, (Short) value, mode, action, kinds);
-		case "string":
-			return new StringProperty(id, name, (String) value, mode, action, kinds);
-		case "ulonglong":
-			if (value != null) {
-				value = ((BigInteger) value).longValue();
+		} else {
+			switch (type) {
+			case "boolean":
+				return new BooleanProperty(id, name, (Boolean) value, mode, action, kinds);
+			case "char":
+				return new CharProperty(id, name, (Character) value, mode, action, kinds);
+			case "double":
+				return new DoubleProperty(id, name, (Double) value, mode, action, kinds);
+			case "float":
+				return new FloatProperty(id, name, (Float) value, mode, action, kinds);
+			case "longlong":
+				return new LongLongProperty(id, name, (Long) value, mode, action, kinds);
+			case "long":
+				return new LongProperty(id, name, (Integer) value, mode, action, kinds);
+			case "octet":
+				if (value != null) {
+					value = ((Short) value).byteValue();
+				}
+				return new OctetProperty(id, name, (Byte) value, mode, action, kinds);
+			case "short":
+				return new ShortProperty(id, name, (Short) value, mode, action, kinds);
+			case "string":
+				return new StringProperty(id, name, (String) value, mode, action, kinds);
+			case "ulonglong":
+				if (value != null) {
+					value = ((BigInteger) value).longValue();
+				}
+				return new ULongLongProperty(id, name, (Long) value, mode, action, kinds);
+			case "ulong":
+				if (value != null) {
+					value = ((Long) value).intValue();
+				}
+				return new ULongProperty(id, name, (Integer) value, mode, action, kinds);
+			case "ushort":
+				if (value != null) {
+					value = ((Integer) value).shortValue();
+				}
+				return new UShortProperty(id, name, (Short) value, mode, action, kinds);
+			default:
+				throw new IllegalArgumentException("Test harness doesn't have support for type: " + type);
 			}
-			return new ULongLongProperty(id, name, (Long) value, mode, action, kinds);
-		case "ulong":
-			if (value != null) {
-				value = ((Long) value).intValue();
-			}
-			return new ULongProperty(id, name, (Integer) value, mode, action, kinds);
-		case "ushort":
-			if (value != null) {
-				value = ((Integer) value).shortValue();
-			}
-			return new UShortProperty(id, name, (Short) value, mode, action, kinds);
-		default:
-			throw new IllegalArgumentException("Test harness doesn't have support for type: " + type);
 		}
 	}
 
@@ -447,7 +579,7 @@ public class AbstractResourceImpl extends Resource {
 
 		return retVal;
 	}
-	
+
 	@Override
 	public void run() {
 		// Do Nothing
