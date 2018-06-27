@@ -27,11 +27,9 @@ import gov.redhawk.common.ui.AdapterFactoryCellLabelProvider;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.monitor.model.ports.PortStatisticsProvider;
 import gov.redhawk.monitor.model.ports.provider.PortsItemProviderAdapterFactory;
-import gov.redhawk.ui.views.internal.monitor.labels.ULongLongValueCellLabelProvider;
 import gov.redhawk.ui.views.internal.monitor.labels.UnitsConvertingCellLabelProvider;
 import gov.redhawk.ui.views.internal.monitor.labels.UnitsConvertingCellLabelProvider.Units;
 import gov.redhawk.ui.views.internal.monitor.values.DoubleDataTypeValueProvider;
-import gov.redhawk.ui.views.internal.monitor.values.ULongLongDataTypeValueProvider;
 
 public final class StatisticsColumns {
 
@@ -137,6 +135,7 @@ public final class StatisticsColumns {
 	public static final Column BIO_TIME_LAST_FLUSH = new Column("timeSinceLastFlush", "Last Flush", "The time since the last flush",
 		new UnitsConvertingCellLabelProvider(new DoubleDataTypeValueProvider("timeSinceLastFlush"), Units.TIME_SPAN));
 
+	/*
 	private static final String VITA49_PREFIX = "bulkio::transport::vita49::";
 
 	public static final Column V49_AVG_PKT_RATE = new Column(VITA49_PREFIX + "avg_pkt_rate", "V49 Packets/sec", "Average VITA49 packets received per second",
@@ -163,11 +162,13 @@ public final class StatisticsColumns {
 
 	public static final Column V49_WARNINGS = new Column(VITA49_PREFIX + "warnings", "V49 Warnings", "Number of reported VITA49 warnings",
 		new ULongLongValueCellLabelProvider(new ULongLongDataTypeValueProvider(VITA49_PREFIX + "warnings")));
+	*/
 
 	public static final Map<String, Column> DATA_TYPE_COLUMNS;
 	static {
 		Map<String, Column> values = new HashMap<>();
 		values.put(BIO_TIME_LAST_FLUSH.getId(), BIO_TIME_LAST_FLUSH);
+		/*
 		values.put(V49_AVG_PKT_RATE.getId(), V49_AVG_PKT_RATE);
 		values.put(V49_BYTES_RECV.getId(), V49_BYTES_RECV);
 		values.put(V49_ERRORS.getId(), V49_ERRORS);
@@ -176,6 +177,7 @@ public final class StatisticsColumns {
 		values.put(V49_TOTAL_TIME.getId(), V49_TOTAL_TIME);
 		values.put(V49_TRANS_FLUSH.getId(), V49_TRANS_FLUSH);
 		values.put(V49_WARNINGS.getId(), V49_WARNINGS);
+		*/
 		DATA_TYPE_COLUMNS = Collections.unmodifiableMap(values);
 	}
 }

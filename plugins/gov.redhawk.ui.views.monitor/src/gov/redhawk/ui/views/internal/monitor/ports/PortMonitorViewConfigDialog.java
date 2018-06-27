@@ -245,6 +245,7 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 		ViewerSupport.bind(viewer, BeanProperties.list(state.getClass(), "input").observe(state), PojoProperties.value("name"));
 		context.bindSet(ViewerProperties.checkedElements(Column.class).observe(viewer), BeanProperties.set(state.getClass(), "checked").observe(state));
 
+		// Filter out anything where we don't have a pre-defined column
 		final ViewerFilter filter = new ViewerFilter() {
 			@Override
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
@@ -253,6 +254,7 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 		};
 		viewer.setFilters(filter);
 
+		// Allow use to toggle viewing things we don't have a column for
 		Button checkbox = new Button(group, SWT.CHECK);
 		checkbox.setText("Show advanced");
 		checkbox.addListener(SWT.Selection, event -> {
