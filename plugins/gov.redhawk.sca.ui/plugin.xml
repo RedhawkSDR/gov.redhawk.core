@@ -599,7 +599,7 @@
          </command>
          <command
                commandId="org.eclipse.ui.edit.delete"
-               icon="icons/clcl16/Release.gif"
+               icon="icons/clcl16/release.gif"
                label="%command.label.0"
                style="push"
                tooltip="Call releaseObject() requesting a graceful shutdown">
