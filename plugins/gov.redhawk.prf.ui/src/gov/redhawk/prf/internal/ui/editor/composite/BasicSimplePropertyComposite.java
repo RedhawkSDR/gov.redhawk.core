@@ -289,7 +289,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		this.typeModifier = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		this.typeModifier.addListener(SWT.MouseVerticalWheel, getEventIgnorer());
 		this.typeModifier.setItems(new String[] { "", "real", "complex" });
-		toolkit.adapt(this.typeModifier);
+		toolkit.adapt(this.typeModifier, true, false);
 		typeModifier.setLayoutData(GridDataFactory.fillDefaults().span(1, 1).grab(false, false).create());
 
 		return this.typeViewer;
