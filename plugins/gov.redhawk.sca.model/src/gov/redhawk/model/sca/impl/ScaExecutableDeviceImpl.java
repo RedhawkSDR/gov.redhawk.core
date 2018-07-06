@@ -34,7 +34,7 @@ import CF.ExecutableDevicePackage.InvalidProcess;
  * An implementation of the model object '<em><b>Executable Device</b></em>'.
  * 
  * @since 12.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
  * @generated
  */
@@ -51,7 +51,6 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -78,7 +77,7 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public ExecutableDevice getExecutableDev() {
@@ -107,7 +106,7 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 	 * This is an EMF-generated wrapper for {@link #executeLinked(String, DataType[], DataType[], String[])}.
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */

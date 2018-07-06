@@ -19,18 +19,18 @@ import CF.FileSystem;
  * A representation of the model object '<em><b>Device Manager File System</b></em>'.
  * 
  * @since 10.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *        <p>
- *        The following features are supported:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager <em>Device Manager</em>}</li>
- *        </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager <em>Device Manager</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManagerFileSystem()
  * @model superTypes="gov.redhawk.model.sca.ScaFileSystem&lt;mil.jpeojtrs.sca.cf.FileSystem&gt;"
- *        extendedMetaData="name='ScaDeviceManagerFileSystem' kind='empty'"
+ * extendedMetaData="name='ScaDeviceManagerFileSystem' kind='empty'"
  * @generated
  */
 public interface ScaDeviceManagerFileSystem extends ScaFileSystem<FileSystem> {
@@ -45,7 +45,6 @@ public interface ScaDeviceManagerFileSystem extends ScaFileSystem<FileSystem> {
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Device Manager</em>' container reference.
 	 * @see #setDeviceManager(ScaDeviceManager)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManagerFileSystem_DeviceManager()
@@ -60,7 +59,6 @@ public interface ScaDeviceManagerFileSystem extends ScaFileSystem<FileSystem> {
 	 * Manager</em>}' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Device Manager</em>' container reference.
 	 * @see #getDeviceManager()
 	 * @generated

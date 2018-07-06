@@ -34,15 +34,15 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * An implementation of the model object '<em><b>Waveforms Container</b></em>'.
  * 
  * @since 20.2
- *        <!-- end-user-doc -->
- *        <p>
- *        The following features are implemented:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl#getSubContainers <em>Sub Containers</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl#getWaveforms <em>Waveforms</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl#getContainerName <em>Container Name</em>}</li>
- *        </ul>
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl#getSubContainers <em>Sub Containers</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl#getWaveforms <em>Waveforms</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl#getContainerName <em>Container Name</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -51,7 +51,6 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 	 * The cached value of the '{@link #getSubContainers() <em>Sub Containers</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getSubContainers()
 	 * @generated
 	 * @ordered
@@ -62,7 +61,6 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 	 * The cached value of the '{@link #getWaveforms() <em>Waveforms</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getWaveforms()
 	 * @generated
 	 * @ordered
@@ -73,7 +71,6 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 	 * The default value of the '{@link #getContainerName() <em>Container Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getContainerName()
 	 * @generated
 	 * @ordered
@@ -84,7 +81,6 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 	 * The cached value of the '{@link #getContainerName() <em>Container Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getContainerName()
 	 * @generated
 	 * @ordered
@@ -94,7 +90,6 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected WaveformsContainerImpl() {
@@ -104,7 +99,6 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -115,7 +109,6 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EList<WaveformsContainer> getSubContainers() {
@@ -128,7 +121,6 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EList<SoftwareAssembly> getWaveforms() {
@@ -141,7 +133,6 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String getContainerName() {
@@ -151,7 +142,6 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setContainerName(String newContainerName) {
@@ -164,7 +154,6 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -183,7 +172,6 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -208,7 +196,6 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -230,7 +217,6 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -249,7 +235,6 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -257,11 +242,11 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (containerName: ");
 		result.append(containerName);
 		result.append(')');
 		return result.toString();
 	}
 
-} //WaveformsContainerImpl
+} // WaveformsContainerImpl

@@ -47,8 +47,7 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
  * <em>Fetch Properties</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaPropertyContainer#getProperty(java.lang.String) <em>Get Property</em>}</li>
  * <li>{@link CF.PropertyEmitterOperations#initializeProperties(CF.DataType[]) <em>Initialize Properties</em>}</li>
- * <li>
- * {@link CF.PropertyEmitterOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList, float)
+ * <li>{@link CF.PropertyEmitterOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList, float)
  * <em>Register Property Listener</em>}</li>
  * <li>{@link CF.PropertyEmitterOperations#unregisterPropertyListener(java.lang.String) <em>Unregister Property
  * Listener</em>}</li>
@@ -351,8 +350,8 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @throws AlreadyInitialized
-	 * @throws PartialConfiguration 
-	 * @throws InvalidConfiguration 
+	 * @throws PartialConfiguration
+	 * @throws InvalidConfiguration
 	 * @see CF.PropertyEmitterOperations#initializeProperties(CF.DataType[])
 	 * @generated NOT
 	 */

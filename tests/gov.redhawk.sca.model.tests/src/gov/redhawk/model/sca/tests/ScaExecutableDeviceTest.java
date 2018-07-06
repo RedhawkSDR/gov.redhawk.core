@@ -30,10 +30,9 @@ import CF.ExecutableDevicePackage.InvalidProcess;
  * The following operations are tested:
  * <ul>
  * <li>{@link CF.ExecutableDeviceOperations#terminate(int) <em>Terminate</em>}</li>
- * <li>{@link CF.ExecutableDeviceOperations#execute(java.lang.String, CF.DataType[], CF.DataType[]) <em>Execute</em>}
- * </li>
- * <li>
- * {@link CF.ExecutableDeviceOperations#executeLinked(java.lang.String, CF.DataType[], CF.DataType[], org.eclipse.emf.common.util.EList)
+ * <li>{@link CF.ExecutableDeviceOperations#execute(java.lang.String, CF.DataType[], CF.DataType[])
+ * <em>Execute</em>}</li>
+ * <li>{@link CF.ExecutableDeviceOperations#executeLinked(java.lang.String, CF.DataType[], CF.DataType[], org.eclipse.emf.common.util.EList)
  * <em>Execute Linked</em>}</li>
  * </ul>
  * </p>

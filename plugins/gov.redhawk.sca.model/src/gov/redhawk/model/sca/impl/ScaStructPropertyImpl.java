@@ -71,14 +71,14 @@ import CF.PropertySetPackage.PartialConfiguration;
  * An implementation of the model object ' <em><b>Struct Property</b></em>'.
  * 
  * @since 13.0
- *        <!-- end-user-doc -->
- *        <p>
- *        The following features are implemented:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl#getFields <em>Fields</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl#getSimples <em>Simples</em>}</li>
- *        </ul>
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl#getFields <em>Fields</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl#getSimples <em>Simples</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -88,7 +88,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getFields()
 	 * @generated
 	 * @ordered
@@ -134,7 +134,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ScaStructPropertyImpl() {
@@ -144,7 +143,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -156,7 +154,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -179,7 +177,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EList<ScaAbstractProperty< ? >> getFields() {
@@ -193,7 +191,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 13.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -212,7 +210,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -231,7 +229,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -274,7 +272,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 21.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -343,7 +341,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -373,7 +371,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 *
 	 */
@@ -403,7 +401,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 * 
 	 */
@@ -422,7 +420,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * This is an EMF-generated wrapper for {@link #registerPropertyListener(org.omg.CORBA.Object, String[], float)}.
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -435,7 +433,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -450,7 +447,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -494,7 +490,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -510,7 +505,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -615,8 +609,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, Status.OK_STATUS);
 		} catch (SystemException e) {
 			String msg = String.format("Failed to demarshal value of property '%s'", getId());
-			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS,
-				new Status(Status.ERROR, ScaModelPlugin.ID, msg, e));
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, new Status(Status.ERROR, ScaModelPlugin.ID, msg, e));
 		}
 	}
 

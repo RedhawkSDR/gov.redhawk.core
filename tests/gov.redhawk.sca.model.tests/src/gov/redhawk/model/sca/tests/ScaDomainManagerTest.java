@@ -71,42 +71,34 @@ import CF.DomainManagerPackage.UnregisterError;
  * The following operations are tested:
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaDomainManager#getDevice(java.lang.String) <em>Get Device</em>}</li>
- * <li>
- * {@link gov.redhawk.model.sca.ScaDomainManager#connect(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#connect(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Connect</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDomainManager#disconnect() <em>Disconnect</em>}</li>
- * <li>
- * {@link gov.redhawk.model.sca.ScaDomainManager#fetchDeviceManagers(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchDeviceManagers(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch Device Managers</em>}</li>
- * <li>
- * {@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveformFactories(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveformFactories(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch Waveform Factories</em>}</li>
- * <li>
- * {@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveforms(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveforms(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch Waveforms</em>}</li>
- * <li>
- * {@link gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch File Manager</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
  * <em>Fetch Identifier</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDomainManager#installScaWaveformFactory(java.lang.String) <em>Install Sca
  * Waveform Factory</em>}</li>
- * <li>
- * {@link gov.redhawk.model.sca.ScaDomainManager#uninstallScaWaveformFactory(gov.redhawk.model.sca.ScaWaveformFactory)
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#uninstallScaWaveformFactory(gov.redhawk.model.sca.ScaWaveformFactory)
  * <em>Uninstall Sca Waveform Factory</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
  * Profile</em>}</li>
- * <li>
- * {@link gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch Event Channels</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDomainManager#getLabel() <em>Get Label</em>}</li>
  * <li>{@link CF.DomainManagerOperations#registerDevice(CF.Device, CF.DeviceManager) <em>Register Device</em>}</li>
  * <li>{@link CF.DomainManagerOperations#registerDeviceManager(CF.DeviceManager) <em>Register Device Manager</em>}</li>
- * <li>{@link CF.DomainManagerOperations#unregisterDeviceManager(CF.DeviceManager) <em>Unregister Device Manager</em>}
- * </li>
+ * <li>{@link CF.DomainManagerOperations#unregisterDeviceManager(CF.DeviceManager) <em>Unregister Device
+ * Manager</em>}</li>
  * <li>{@link CF.DomainManagerOperations#unregisterDevice(CF.Device) <em>Unregister Device</em>}</li>
- * <li>
- * {@link CF.DomainManagerOperations#createApplication(java.lang.String, java.lang.String, CF.DataType[], CF.DeviceAssignmentType[])
+ * <li>{@link CF.DomainManagerOperations#createApplication(java.lang.String, java.lang.String, CF.DataType[], CF.DeviceAssignmentType[])
  * <em>Create Application</em>}</li>
  * <li>{@link CF.DomainManagerOperations#installApplication(java.lang.String) <em>Install Application</em>}</li>
  * <li>{@link CF.DomainManagerOperations#uninstallApplication(java.lang.String) <em>Uninstall Application</em>}</li>
@@ -114,8 +106,7 @@ import CF.DomainManagerPackage.UnregisterError;
  * <em>Register Service</em>}</li>
  * <li>{@link CF.DomainManagerOperations#unregisterService(org.omg.CORBA.Object, java.lang.String) <em>Unregister
  * Service</em>}</li>
- * <li>
- * {@link CF.DomainManagerOperations#registerWithEventChannel(org.omg.CORBA.Object, java.lang.String, java.lang.String)
+ * <li>{@link CF.DomainManagerOperations#registerWithEventChannel(org.omg.CORBA.Object, java.lang.String, java.lang.String)
  * <em>Register With Event Channel</em>}</li>
  * <li>{@link CF.DomainManagerOperations#unregisterFromEventChannel(java.lang.String, java.lang.String) <em>Unregister
  * From Event Channel</em>}</li>

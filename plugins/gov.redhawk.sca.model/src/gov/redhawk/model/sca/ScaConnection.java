@@ -21,16 +21,16 @@ import ExtendedCF.UsesConnection;
  * A representation of the model object '<em><b>Connection</b></em>'.
  * 
  * @since 14.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *        <p>
- *        The following features are supported:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.ScaConnection#getData <em>Data</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.ScaConnection#getId <em>Id</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.ScaConnection#getPort <em>Port</em>}</li>
- *        </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaConnection#getData <em>Data</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaConnection#getId <em>Id</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaConnection#getPort <em>Port</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaConnection()
  * @model
@@ -45,7 +45,6 @@ public interface ScaConnection extends EObject {
 	 * If the meaning of the '<em>Data</em>' attribute isn't clear, there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Data</em>' attribute.
 	 * @see #setData(UsesConnection)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaConnection_Data()
@@ -58,7 +57,6 @@ public interface ScaConnection extends EObject {
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaConnection#getData <em>Data</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Data</em>' attribute.
 	 * @see #getData()
 	 * @generated
@@ -72,7 +70,6 @@ public interface ScaConnection extends EObject {
 	 * If the meaning of the '<em>Id</em>' attribute isn't clear, there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Id</em>' attribute.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaConnection_Id()
 	 * @model transient="true" changeable="false" volatile="true" derived="true"
@@ -90,7 +87,6 @@ public interface ScaConnection extends EObject {
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Port</em>' container reference.
 	 * @see #setPort(ScaUsesPort)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaConnection_Port()
@@ -104,7 +100,6 @@ public interface ScaConnection extends EObject {
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaConnection#getPort <em>Port</em>}' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Port</em>' container reference.
 	 * @see #getPort()
 	 * @generated

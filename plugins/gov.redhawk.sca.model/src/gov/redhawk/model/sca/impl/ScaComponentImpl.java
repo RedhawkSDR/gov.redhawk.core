@@ -66,19 +66,19 @@ import CF.ResourceHelper;
  * An implementation of the model object '<em><b>Component</b></em>'.
  * 
  * @since 12.0
- *        <!-- end-user-doc -->
- *        <p>
- *        The following features are implemented:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getComponentInstantiation <em>Component
- *        Instantiation</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getDevices <em>Devices</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getInstantiationIdentifier <em>Instantiation
- *        Identifier</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getWaveform <em>Waveform</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getName <em>Name</em>}</li>
- *        </ul>
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getComponentInstantiation <em>Component
+ * Instantiation</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getDevices <em>Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getInstantiationIdentifier <em>Instantiation
+ * Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getWaveform <em>Waveform</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getName <em>Name</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -88,7 +88,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * The cached value of the '{@link #getComponentInstantiation() <em>Component Instantiation</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getComponentInstantiation()
 	 * @generated
 	 * @ordered
@@ -98,7 +97,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * This is true if the Component Instantiation reference has been set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -107,7 +105,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * The cached value of the '{@link #getDevices() <em>Devices</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getDevices()
 	 * @generated
 	 * @ordered
@@ -117,7 +114,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * The default value of the '{@link #getInstantiationIdentifier() <em>Instantiation Identifier</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getInstantiationIdentifier()
 	 * @generated
 	 * @ordered
@@ -127,7 +123,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -137,7 +132,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -147,7 +141,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ScaComponentImpl() {
@@ -157,7 +150,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -168,7 +160,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -188,7 +179,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public SadComponentInstantiation basicGetComponentInstantiation() {
@@ -198,7 +188,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -215,7 +204,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -232,7 +220,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -243,7 +230,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -257,7 +243,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -269,7 +254,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -318,7 +302,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -331,7 +315,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -344,7 +327,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ScaWaveform basicGetWaveform() {
@@ -356,7 +338,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetWaveform(ScaWaveform newWaveform, NotificationChain msgs) {
@@ -367,7 +348,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -390,7 +370,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -401,7 +380,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -493,7 +471,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -510,7 +487,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -525,7 +501,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -540,7 +515,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -567,7 +541,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -594,7 +567,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -619,7 +591,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -642,7 +613,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -650,7 +620,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
 		result.append(')');
@@ -800,7 +770,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override

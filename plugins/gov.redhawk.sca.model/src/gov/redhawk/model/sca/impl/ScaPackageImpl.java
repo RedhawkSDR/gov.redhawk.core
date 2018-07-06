@@ -99,420 +99,361 @@ import CF.DevicePackage.UsageType;
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>.
  * 
  * @since 13.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  * @generated
  */
 public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass corbaObjWrapperEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass dataProviderObjectEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass iDisposableEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass profileObjectWrapperEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass propertiesEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaAbstractComponentEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaPropertyContainerEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaPortContainerEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaAbstractPropertyEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaComponentEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaDeviceEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaDeviceManagerEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaServiceEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaDeviceManagerFileSystemEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaDocumentRootEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaDomainManagerEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaDomainManagerFileSystemEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaDomainManagerRegistryEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaExecutableDeviceEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaFileManagerEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaFileStoreEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaFileSystemEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaLoadableDeviceEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaPortEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaProvidesPortEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaSimplePropertyEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaSimpleSequencePropertyEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaStructPropertyEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaUsesPortEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaConnectionEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaWaveformEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaWaveformFactoryEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass stringToStringMapEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaStructSequencePropertyEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass iStatusProviderEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass eventChannelEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass iRefreshableEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass scaEventChannelEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass stringToObjectMapEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass waveformsContainerEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EEnum domainConnectionStateEEnum = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EEnum refreshDepthEEnum = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType adminTypeEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType domainConnectionExceptionEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType domainConnectionStateObjectEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType iFileStoreEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType iProgressMonitorEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType iScaDataProviderEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType iScaDataProviderServiceEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType iStatusEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType objectEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType objectArrayEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType operationalTypeEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType refreshDepthObjectEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType poaEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType uriEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType usageTypeEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType dataTypeArrayEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType anyEDataType = null;
@@ -538,20 +479,18 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private static boolean isInited = false;
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
+	 *
 	 * <p>
 	 * This method is used to initialize {@link ScaPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
@@ -562,9 +501,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 			return (ScaPackage) EPackage.Registry.INSTANCE.getEPackage(ScaPackage.eNS_URI);
 
 		// Obtain or create and register package
-		ScaPackageImpl theScaPackage = (ScaPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof ScaPackageImpl
-			? EPackage.Registry.INSTANCE.get(eNS_URI)
-			: new ScaPackageImpl());
+		Object registeredScaPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		ScaPackageImpl theScaPackage = registeredScaPackage instanceof ScaPackageImpl ? (ScaPackageImpl) registeredScaPackage : new ScaPackageImpl();
 
 		isInited = true;
 
@@ -606,7 +544,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -617,7 +554,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -628,7 +564,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -639,7 +574,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -651,7 +585,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getCorbaObjWrapper_FeatureData() {
@@ -661,7 +595,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -672,7 +605,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -683,7 +615,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -695,7 +626,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getDataProviderObject_EnabledDataProviders() {
@@ -705,7 +636,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -716,7 +646,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -727,7 +656,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -738,7 +666,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -749,7 +676,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -760,7 +686,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -771,7 +696,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -782,7 +706,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -793,7 +716,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -804,7 +726,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -816,7 +737,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getScaAbstractComponent_Profile() {
@@ -826,7 +747,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -837,7 +757,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -848,7 +767,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -859,7 +777,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -870,7 +787,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -881,7 +797,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -892,7 +807,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -903,7 +817,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -914,7 +827,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -925,7 +837,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -936,7 +847,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -947,7 +857,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -958,7 +867,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -969,7 +877,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -980,7 +887,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -991,7 +897,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1002,7 +907,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1013,7 +917,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1024,7 +927,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1035,7 +937,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1046,7 +947,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1057,7 +957,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1068,7 +967,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1079,7 +977,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1090,7 +987,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1101,7 +997,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1112,7 +1007,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1123,7 +1017,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1134,7 +1027,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1145,7 +1037,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1156,7 +1047,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1167,7 +1057,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1178,7 +1067,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1189,7 +1077,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1200,7 +1087,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1211,7 +1097,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1222,7 +1107,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1233,7 +1117,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1245,7 +1128,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 18.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -1256,7 +1139,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1267,7 +1149,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1278,7 +1159,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1289,7 +1169,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1300,7 +1179,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1311,7 +1189,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1322,7 +1199,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1333,7 +1209,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1344,7 +1219,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1355,7 +1229,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1366,7 +1239,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1377,7 +1249,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1388,7 +1259,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1399,7 +1269,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1410,7 +1279,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1421,7 +1289,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1432,7 +1299,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1443,7 +1309,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1454,7 +1319,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1465,7 +1329,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1476,7 +1339,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1488,7 +1350,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getScaDomainManager_EventChannels() {
@@ -1499,7 +1361,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getScaDomainManager_LocalName() {
@@ -1509,7 +1371,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1520,7 +1381,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1531,7 +1391,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1542,7 +1401,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1553,7 +1411,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1564,7 +1421,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1575,7 +1431,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1586,7 +1441,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1597,7 +1451,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1608,7 +1461,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1619,7 +1471,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1630,7 +1481,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1641,7 +1491,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1652,7 +1501,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1663,7 +1511,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1674,7 +1521,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1685,7 +1531,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1696,7 +1541,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1707,7 +1551,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1718,7 +1561,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1729,7 +1571,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1740,7 +1581,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1751,7 +1591,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1762,7 +1601,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1773,7 +1611,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1784,7 +1621,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1796,7 +1632,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -1807,7 +1643,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1818,7 +1653,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1829,7 +1663,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1840,7 +1673,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1851,7 +1683,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1862,7 +1693,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1873,7 +1703,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1884,7 +1713,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1895,7 +1723,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1906,7 +1733,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1917,7 +1743,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1928,7 +1753,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1939,7 +1763,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1950,7 +1773,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1961,7 +1783,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1972,7 +1793,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1983,7 +1803,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -1994,7 +1813,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2005,7 +1823,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2016,7 +1833,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2027,7 +1843,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2038,7 +1853,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2049,7 +1863,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2060,7 +1873,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2071,7 +1883,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2082,7 +1893,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2093,7 +1903,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2105,7 +1914,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getEventChannel() {
@@ -2115,7 +1924,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2127,7 +1935,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getScaEventChannel() {
@@ -2138,7 +1946,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getScaEventChannel_Name() {
@@ -2149,7 +1957,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getStringToObjectMap() {
@@ -2160,7 +1968,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getStringToObjectMap_Key() {
@@ -2171,7 +1979,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getStringToObjectMap_Value() {
@@ -2182,7 +1990,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.2
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getWaveformsContainer() {
@@ -2193,7 +2001,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.2
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getWaveformsContainer_SubContainers() {
@@ -2204,7 +2012,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.2
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getWaveformsContainer_Waveforms() {
@@ -2215,7 +2023,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.2
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EAttribute getWaveformsContainer_ContainerName() {
@@ -2225,7 +2033,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2236,7 +2043,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2247,7 +2053,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2258,7 +2063,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2270,7 +2074,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 8.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 */
 	@Override
 	public EDataType getDomainConnectionStateObject() {
@@ -2280,7 +2084,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2291,7 +2094,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2302,7 +2104,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2313,7 +2114,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2324,7 +2124,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2335,7 +2134,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2346,7 +2144,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2357,7 +2154,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2368,7 +2164,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2379,7 +2174,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2390,7 +2184,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2401,7 +2194,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2412,7 +2204,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2423,7 +2214,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2434,7 +2224,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -2445,7 +2234,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private boolean isCreated = false;
@@ -2455,7 +2243,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * guarded to have no affect on any invocation but its first.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void createPackageContents() {
@@ -2678,7 +2465,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private boolean isInitialized = false;
@@ -2688,7 +2474,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * method is guarded to have no affect on any invocation but its first.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void initializePackageContents() {
@@ -3426,7 +3211,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		initEClass(scaSimpleSequencePropertyEClass, ScaSimpleSequenceProperty.class, "ScaSimpleSequenceProperty", !IS_ABSTRACT, !IS_INTERFACE,
 			IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getScaSimpleSequenceProperty_Values(), ecorePackage.getEJavaObject(), "values", null, 0, -1, ScaSimpleSequenceProperty.class,
-			IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+			IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(scaSimpleSequencePropertyEClass, null, "setValue", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getObjectArray(), "newValue", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3566,7 +3351,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		initEClass(scaStructSequencePropertyEClass, ScaStructSequenceProperty.class, "ScaStructSequenceProperty", !IS_ABSTRACT, !IS_INTERFACE,
 			IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getScaStructSequenceProperty_Structs(), this.getScaStructProperty(), null, "structs", null, 0, -1, ScaStructSequenceProperty.class,
-			IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+			IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(scaStructSequencePropertyEClass, this.getScaStructProperty(), "createScaStructProperty", 0, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -3658,7 +3443,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * Initializes the annotations for <b>http:///org/eclipse/emf/ecore/util/ExtendedMetaData</b>.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected void createExtendedMetaDataAnnotations() {

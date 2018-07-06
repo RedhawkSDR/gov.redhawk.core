@@ -20,14 +20,14 @@ import mil.jpeojtrs.sca.prf.SimpleRef;
  * A representation of the model object '<em><b>Simple Property</b></em>'.
  * 
  * @since 9.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *        <p>
- *        The following features are supported:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.ScaSimpleProperty#getValue <em>Value</em>}</li>
- *        </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaSimpleProperty#getValue <em>Value</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaSimpleProperty()
  * @model extendedMetaData="name='ScaSimpleProperty' kind='empty'"
@@ -43,12 +43,11 @@ public interface ScaSimpleProperty extends ScaAbstractProperty<Simple> {
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Value</em>' attribute.
 	 * @see #setValue(Object)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaSimpleProperty_Value()
 	 * @model transient="true"
-	 *        extendedMetaData="kind='attribute' name='currentValue'"
+	 * extendedMetaData="kind='attribute' name='currentValue'"
 	 * @generated
 	 */
 	Object getValue();
@@ -57,7 +56,6 @@ public interface ScaSimpleProperty extends ScaAbstractProperty<Simple> {
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaSimpleProperty#getValue <em>Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Value</em>' attribute.
 	 * @see #getValue()
 	 * @generated
@@ -68,7 +66,7 @@ public interface ScaSimpleProperty extends ScaAbstractProperty<Simple> {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */
@@ -79,7 +77,7 @@ public interface ScaSimpleProperty extends ScaAbstractProperty<Simple> {
 	 * <!-- begin-user-doc -->
 	 * See {@link ScaAbstractProperty#setValueFromRef(mil.jpeojtrs.sca.prf.AbstractPropertyRef)}
 	 * @since 21.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */

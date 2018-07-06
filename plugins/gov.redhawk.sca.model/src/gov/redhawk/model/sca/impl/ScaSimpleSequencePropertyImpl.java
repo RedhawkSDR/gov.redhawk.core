@@ -34,6 +34,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.util.EDataTypeEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.omg.CORBA.Any;
 
 /**
@@ -41,13 +42,13 @@ import org.omg.CORBA.Any;
  * An implementation of the model object ' <em><b>Simple Sequence Property</b></em>'.
  * 
  * @since 12.0
- *        <!-- end-user-doc -->
- *        <p>
- *        The following features are implemented:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaSimpleSequencePropertyImpl#getValues <em>Values</em>}</li>
- *        </ul>
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaSimpleSequencePropertyImpl#getValues <em>Values</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -57,7 +58,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 13.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getValues()
 	 * @generated NOT
 	 * @ordered
@@ -160,7 +161,6 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ScaSimpleSequencePropertyImpl() {
@@ -170,7 +170,6 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -182,7 +181,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -194,9 +193,28 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void unsetValues() {
+		if (values != null)
+			((InternalEList.Unsettable< ? >) values).unset();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isSetValues() {
+		return values != null && ((InternalEList.Unsettable< ? >) values).isSet();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 13.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -215,7 +233,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -246,7 +264,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 21.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -266,7 +284,6 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -282,7 +299,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 13.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -329,14 +346,13 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 		case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES:
-			getValues().clear();
+			unsetValues();
 			return;
 		}
 		super.eUnset(featureID);
@@ -345,14 +361,13 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 		case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES:
-			return values != null && !values.isEmpty();
+			return isSetValues();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -360,7 +375,6 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -368,7 +382,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (values: ");
 		result.append(values);
 		result.append(')');

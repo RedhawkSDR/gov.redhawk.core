@@ -23,14 +23,14 @@ import org.eclipse.emf.ecore.resource.Resource;
  * A representation of the model object '<em><b>Domain Manager Registry</b></em>'.
  * 
  * @since 8.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *        <p>
- *        The following features are supported:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#getDomains <em>Domains</em>}</li>
- *        </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#getDomains <em>Domains</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManagerRegistry()
  * @model extendedMetaData="name='ScaDomainManagerRegistry' kind='elementOnly'"
@@ -46,11 +46,10 @@ public interface ScaDomainManagerRegistry extends IDisposable {
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Domains</em>' containment reference list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManagerRegistry_Domains()
 	 * @model containment="true" resolveProxies="true"
-	 *        extendedMetaData="kind='element' name='domain'"
+	 * extendedMetaData="kind='element' name='domain'"
 	 * @generated
 	 */
 	EList<ScaDomainManager> getDomains();
@@ -58,7 +57,6 @@ public interface ScaDomainManagerRegistry extends IDisposable {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model
 	 * @generated
 	 */
@@ -68,7 +66,7 @@ public interface ScaDomainManagerRegistry extends IDisposable {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */

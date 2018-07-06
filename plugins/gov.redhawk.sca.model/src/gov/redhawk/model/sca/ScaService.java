@@ -20,19 +20,19 @@ import mil.jpeojtrs.sca.spd.SoftPkg;
  * A representation of the model object '<em><b>Service</b></em>'.
  * 
  * @since 12.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *        <p>
- *        The following features are supported:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.ScaService#getName <em>Name</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.ScaService#getDevMgr <em>Dev Mgr</em>}</li>
- *        </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaService#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaService#getDevMgr <em>Dev Mgr</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaService()
  * @model superTypes="gov.redhawk.model.sca.ScaPropertyContainer&lt;gov.redhawk.model.sca.Object,
- *        mil.jpeojtrs.sca.spd.SoftPkg&gt; gov.redhawk.model.sca.ScaPortContainer"
+ * mil.jpeojtrs.sca.spd.SoftPkg&gt; gov.redhawk.model.sca.ScaPortContainer"
  * @generated
  */
 public interface ScaService extends ScaPropertyContainer<org.omg.CORBA.Object, SoftPkg>, ScaPortContainer {
@@ -44,7 +44,6 @@ public interface ScaService extends ScaPropertyContainer<org.omg.CORBA.Object, S
 	 * If the meaning of the '<em>Name</em>' attribute isn't clear, there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaService_Name()
@@ -57,7 +56,6 @@ public interface ScaService extends ScaPropertyContainer<org.omg.CORBA.Object, S
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaService#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Name</em>' attribute.
 	 * @see #getName()
 	 * @generated
@@ -71,7 +69,7 @@ public interface ScaService extends ScaPropertyContainer<org.omg.CORBA.Object, S
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 18.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Dev Mgr</em>' container reference.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaService_DevMgr()
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#getServices
@@ -89,7 +87,7 @@ public interface ScaService extends ScaPropertyContainer<org.omg.CORBA.Object, S
 	 * ({@link #fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor)}) or it will return false.
 	 * 
 	 * @since 20.4
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean" intfRequired="true"
 	 * @generated
 	 */

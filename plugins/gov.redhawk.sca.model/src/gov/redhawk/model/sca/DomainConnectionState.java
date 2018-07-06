@@ -23,7 +23,6 @@ import org.eclipse.emf.common.util.Enumerator;
  * A representation of the literals of the enumeration '<em><b>Domain Connection State</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
- * 
  * @see gov.redhawk.model.sca.ScaPackage#getDomainConnectionState()
  * @model extendedMetaData="name='DomainConnectionState'"
  * @generated
@@ -33,7 +32,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * The '<em><b>Disconnected</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #DISCONNECTED_VALUE
 	 * @generated
 	 * @ordered
@@ -43,7 +41,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * The '<em><b>Connecting</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #CONNECTING_VALUE
 	 * @generated
 	 * @ordered
@@ -53,7 +50,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * The '<em><b>Connected</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #CONNECTED_VALUE
 	 * @generated
 	 * @ordered
@@ -63,7 +59,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * The '<em><b>Disconnecting</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #DISCONNECTING_VALUE
 	 * @generated
 	 * @ordered
@@ -73,7 +68,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * The '<em><b>Failed</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #FAILED_VALUE
 	 * @generated
 	 * @ordered
@@ -88,7 +82,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #DISCONNECTED
 	 * @model name="disconnected"
 	 * @generated
@@ -103,7 +96,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #CONNECTING
 	 * @model name="connecting"
 	 * @generated
@@ -118,7 +110,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #CONNECTED
 	 * @model name="connected"
 	 * @generated
@@ -133,7 +124,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #DISCONNECTING
 	 * @model name="disconnecting"
 	 * @generated
@@ -148,7 +138,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #FAILED
 	 * @model name="failed"
 	 * @generated
@@ -159,7 +148,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * An array of all the '<em><b>Domain Connection State</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private static final DomainConnectionState[] VALUES_ARRAY = new DomainConnectionState[] { DISCONNECTED, CONNECTING, CONNECTED, DISCONNECTING, FAILED, };
@@ -167,7 +155,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * A public read-only list of all the '<em><b>Domain Connection State</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public static final List<DomainConnectionState> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
@@ -176,7 +163,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * Returns the '<em><b>Domain Connection State</b></em>' literal with the specified literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param literal the literal.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -195,7 +181,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * Returns the '<em><b>Domain Connection State</b></em>' literal with the specified name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param name the name.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -214,7 +199,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * Returns the '<em><b>Domain Connection State</b></em>' literal with the specified integer value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the integer value.
 	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
@@ -238,21 +222,18 @@ public enum DomainConnectionState implements Enumerator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private final int value;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private final String name;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private final String literal;
@@ -261,7 +242,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * Only this class can construct instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private DomainConnectionState(int value, String name, String literal) {
@@ -273,7 +253,6 @@ public enum DomainConnectionState implements Enumerator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -284,7 +263,6 @@ public enum DomainConnectionState implements Enumerator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -295,7 +273,6 @@ public enum DomainConnectionState implements Enumerator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -307,7 +284,6 @@ public enum DomainConnectionState implements Enumerator {
 	 * Returns the literal value of the enumerator, which is its string representation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

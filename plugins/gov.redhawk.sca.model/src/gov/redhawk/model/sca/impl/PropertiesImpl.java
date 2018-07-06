@@ -29,13 +29,13 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * An implementation of the model object '<em><b>Properties</b></em>'.
  * 
  * @since 12.0
- *        <!-- end-user-doc -->
- *        <p>
- *        The following features are implemented:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.PropertiesImpl#getProperty <em>Property</em>}</li>
- *        </ul>
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.impl.PropertiesImpl#getProperty <em>Property</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -45,7 +45,6 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 	 * The cached value of the '{@link #getProperty() <em>Property</em>}' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getProperty()
 	 * @generated
 	 * @ordered
@@ -55,7 +54,6 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected PropertiesImpl() {
@@ -65,7 +63,6 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -76,7 +73,6 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -91,7 +87,6 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -106,7 +101,6 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -124,7 +118,6 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -140,7 +133,6 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -156,7 +148,6 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

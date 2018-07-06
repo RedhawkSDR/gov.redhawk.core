@@ -36,9 +36,8 @@ import CF.FileSystemOperations;
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaFileSystem()
  * @model abstract="true" superTypes="gov.redhawk.model.sca.CorbaObjWrapper&lt;F&gt;
- *        mil.jpeojtrs.sca.cf.FileSystemOperations gov.redhawk.model.sca.ScaFileStore"
- *        FBounds="mil.jpeojtrs.sca.cf.FileSystem"
- *        extendedMetaData="name='ScaFileSystem' kind='empty'"
+ * mil.jpeojtrs.sca.cf.FileSystemOperations gov.redhawk.model.sca.ScaFileStore" FBounds="mil.jpeojtrs.sca.cf.FileSystem"
+ * extendedMetaData="name='ScaFileSystem' kind='empty'"
  * @generated
  */
 public interface ScaFileSystem< F extends FileSystem > extends CorbaObjWrapper<F>, FileSystemOperations, ScaFileStore {
@@ -51,12 +50,11 @@ public interface ScaFileSystem< F extends FileSystem > extends CorbaObjWrapper<F
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>File System URI</em>' attribute.
 	 * @see #setFileSystemURI(URI)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaFileSystem_FileSystemURI()
 	 * @model default="" dataType="gov.redhawk.model.sca.URI" required="true" transient="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='fileSystemURI'"
+	 * extendedMetaData="kind='attribute' name='fileSystemURI'"
 	 * @generated
 	 */
 	URI getFileSystemURI();
@@ -67,7 +65,7 @@ public interface ScaFileSystem< F extends FileSystem > extends CorbaObjWrapper<F
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 16.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>File System URI</em>' attribute.
 	 * @see #getFileSystemURI()
 	 * @generated
@@ -77,7 +75,6 @@ public interface ScaFileSystem< F extends FileSystem > extends CorbaObjWrapper<F
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model dataType="mil.jpeojtrs.sca.spd.URI"
 	 * @generated
 	 */

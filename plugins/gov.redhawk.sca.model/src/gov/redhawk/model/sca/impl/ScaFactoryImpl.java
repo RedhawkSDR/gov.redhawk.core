@@ -39,7 +39,7 @@ import CF.DevicePackage.UsageType;
  * An implementation of the model <b>Factory</b>.
  * 
  * @since 12.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  * @generated
  */
 public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
@@ -47,7 +47,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public static ScaFactory init() {
@@ -66,7 +65,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * Creates an instance of the factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ScaFactoryImpl() {
@@ -76,7 +74,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -142,7 +139,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -178,7 +174,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -214,7 +209,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -226,7 +220,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -238,7 +231,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -250,7 +242,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -262,7 +253,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -274,7 +264,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -286,7 +275,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -298,7 +286,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -310,7 +297,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -322,7 +308,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -334,7 +319,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -346,7 +330,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -358,7 +341,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -370,7 +352,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -382,7 +363,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	// END GENERATED CODE
 
 	@Override
-	public ScaAbstractProperty< ? extends AbstractProperty > createScaProperty(AbstractProperty definition) {
+	public ScaAbstractProperty< ? extends AbstractProperty> createScaProperty(AbstractProperty definition) {
 		switch (definition.eClass().getClassifierID()) {
 		case PrfPackage.SIMPLE:
 			ScaSimpleProperty simple = createScaSimpleProperty();
@@ -410,7 +391,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -422,7 +402,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -434,7 +413,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -446,7 +424,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -458,7 +435,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -470,7 +446,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -482,7 +457,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -494,7 +468,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public Map.Entry<String, String> createStringToStringMap() {
@@ -505,7 +478,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -518,7 +490,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ScaEventChannel createScaEventChannel() {
@@ -530,7 +502,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 19.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Map.Entry<String, EObject> createStringToObjectMap() {
@@ -542,7 +514,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.2
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public WaveformsContainer createWaveformsContainer() {
@@ -553,7 +525,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public DomainConnectionState createDomainConnectionStateFromString(EDataType eDataType, String initialValue) {
@@ -566,7 +537,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String convertDomainConnectionStateToString(EDataType eDataType, Object instanceValue) {
@@ -576,7 +546,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public RefreshDepth createRefreshDepthFromString(EDataType eDataType, String initialValue) {
@@ -589,7 +558,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String convertRefreshDepthToString(EDataType eDataType, Object instanceValue) {
@@ -600,7 +568,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 3.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public String convertIFileStoreToString(EDataType eDataType, Object instanceValue) {
@@ -613,7 +581,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public org.omg.CORBA.Object createObjectFromString(EDataType eDataType, String initialValue) {
@@ -623,7 +590,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String convertObjectToString(EDataType eDataType, Object instanceValue) {
@@ -643,7 +609,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String convertURIToString(EDataType eDataType, Object instanceValue) {
@@ -654,7 +619,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public OperationalType createOperationalTypeFromString(EDataType eDataType, String initialValue) {
@@ -670,7 +635,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 10.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public String convertOperationalTypeToString(EDataType eDataType, Object instanceValue) {
@@ -685,7 +650,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public RefreshDepth createRefreshDepthObjectFromString(EDataType eDataType, String initialValue) {
@@ -695,7 +659,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String convertRefreshDepthObjectToString(EDataType eDataType, Object instanceValue) {
@@ -706,7 +669,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 *
 	 */
@@ -725,7 +688,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 10.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public String convertUsageTypeToString(EDataType eDataType, Object instanceValue) {
@@ -742,7 +705,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -753,7 +715,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @deprecated
 	 * @generated
 	 */
@@ -766,7 +727,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public AdminType createAdminTypeFromString(EDataType eDataType, String initialValue) {
@@ -784,7 +745,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 10.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public String convertAdminTypeToString(EDataType eDataType, Object instanceValue) {
@@ -801,7 +762,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public DomainConnectionException createDomainConnectionExceptionFromString(EDataType eDataType, String initialValue) {
@@ -811,7 +771,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String convertDomainConnectionExceptionToString(EDataType eDataType, Object instanceValue) {
@@ -821,7 +780,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public DomainConnectionState createDomainConnectionStateObjectFromString(EDataType eDataType, String initialValue) {
@@ -831,7 +789,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public String convertDomainConnectionStateObjectToString(EDataType eDataType, Object instanceValue) {
@@ -841,7 +798,6 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public IFileStore createIFileStoreFromString(EDataType eDataType, String initialValue) {

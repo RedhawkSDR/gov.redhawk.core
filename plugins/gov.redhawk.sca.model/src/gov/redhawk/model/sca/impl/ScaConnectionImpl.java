@@ -31,15 +31,15 @@ import ExtendedCF.UsesConnection;
  * An implementation of the model object '<em><b>Connection</b></em>'.
  * 
  * @since 14.0
- *        <!-- end-user-doc -->
- *        <p>
- *        The following features are implemented:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaConnectionImpl#getData <em>Data</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaConnectionImpl#getId <em>Id</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaConnectionImpl#getPort <em>Port</em>}</li>
- *        </ul>
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaConnectionImpl#getData <em>Data</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaConnectionImpl#getId <em>Id</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaConnectionImpl#getPort <em>Port</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -48,7 +48,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	 * The default value of the '{@link #getData() <em>Data</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getData()
 	 * @generated
 	 * @ordered
@@ -58,7 +57,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	 * The cached value of the '{@link #getData() <em>Data</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getData()
 	 * @generated
 	 * @ordered
@@ -68,7 +66,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getId()
 	 * @generated
 	 * @ordered
@@ -78,7 +75,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ScaConnectionImpl() {
@@ -88,7 +84,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -99,7 +94,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -110,7 +104,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setDataGen(UsesConnection newData) {
@@ -154,7 +147,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -167,7 +159,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ScaUsesPort basicGetPort() {
@@ -179,7 +170,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetPort(ScaUsesPort newPort, NotificationChain msgs) {
@@ -190,7 +180,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -213,7 +202,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -230,7 +218,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -245,7 +232,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -260,7 +246,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -281,7 +266,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -300,7 +284,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -319,7 +302,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -338,7 +320,6 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -346,7 +327,7 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (data: ");
 		result.append(data);
 		result.append(')');

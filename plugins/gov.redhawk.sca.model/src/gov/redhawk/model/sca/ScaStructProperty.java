@@ -25,20 +25,20 @@ import CF.PropertySetOperations;
  * A representation of the model object '<em><b>Struct Property</b></em>'.
  * 
  * @since 9.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *        <p>
- *        The following features are supported:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.ScaStructProperty#getFields <em>Fields</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSimples <em>Simples</em>}</li>
- *        </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaStructProperty#getFields <em>Fields</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSimples <em>Simples</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaStructProperty()
  * @model superTypes="gov.redhawk.model.sca.ScaAbstractProperty&lt;mil.jpeojtrs.sca.prf.Struct&gt;
- *        mil.jpeojtrs.sca.cf.PropertySetOperations"
- *        extendedMetaData="name='ScaStructProperty' kind='empty'"
+ * mil.jpeojtrs.sca.cf.PropertySetOperations"
+ * extendedMetaData="name='ScaStructProperty' kind='empty'"
  * @generated
  */
 public interface ScaStructProperty extends ScaAbstractProperty<Struct>, PropertySetOperations {
@@ -53,11 +53,11 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	 * </p>
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Fields</em>' containment reference list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaStructProperty_Fields()
 	 * @model containment="true" resolveProxies="true" transient="true"
-	 *        extendedMetaData="kind='attribute' name='fields'"
+	 * extendedMetaData="kind='attribute' name='fields'"
 	 * @generated
 	 */
 	EList<ScaAbstractProperty< ? >> getFields();
@@ -71,11 +71,10 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Simples</em>' reference list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaStructProperty_Simples()
 	 * @model transient="true" changeable="false" volatile="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='simples'"
+	 * extendedMetaData="kind='attribute' name='simples'"
 	 * @generated
 	 */
 	EList<ScaSimpleProperty> getSimples();
@@ -83,7 +82,6 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model
 	 * @generated
 	 */
@@ -93,7 +91,7 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */
@@ -103,7 +101,7 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */
@@ -114,7 +112,7 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 21.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */
@@ -124,7 +122,7 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	 * <!-- begin-user-doc -->
 	 * See {@link ScaAbstractProperty#setValueFromRef(mil.jpeojtrs.sca.prf.AbstractPropertyRef)}
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */

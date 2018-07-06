@@ -31,7 +31,7 @@ import CF.LoadableDevicePackage.LoadType;
  * An implementation of the model object '<em><b>Loadable Device</b></em>'.
  * 
  * @since 12.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
  * @generated
  */
@@ -48,7 +48,6 @@ public class ScaLoadableDeviceImpl< L extends LoadableDevice > extends ScaDevice
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

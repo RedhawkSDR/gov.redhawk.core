@@ -52,8 +52,7 @@ import CF.DevicePackage.UsageType;
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaDevice#fetchAggregateDevices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
  * Aggregate Devices</em>}</li>
- * <li>
- * {@link gov.redhawk.model.sca.ScaDevice#fetchAggregateDevices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#fetchAggregateDevices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch Aggregate Devices</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDevice#fetchAdminState(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Admin
  * State</em>}</li>

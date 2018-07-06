@@ -20,18 +20,18 @@ import org.eclipse.emf.common.util.EList;
  * A representation of the model object '<em><b>Port Container</b></em>'.
  * 
  * @since 14.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *        <p>
- *        The following features are supported:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.ScaPortContainer#getPorts <em>Ports</em>}</li>
- *        </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaPortContainer#getPorts <em>Ports</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaPortContainer()
  * @model interface="true" abstract="true" superTypes="gov.redhawk.model.sca.IRefreshable
- *        gov.redhawk.model.sca.IStatusProvider"
+ * gov.redhawk.model.sca.IStatusProvider"
  * @generated
  */
 public interface ScaPortContainer extends IRefreshable, IStatusProvider {
@@ -47,7 +47,6 @@ public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Ports</em>' containment reference list.
 	 * @see #isSetPorts()
 	 * @see #unsetPorts()
@@ -63,7 +62,6 @@ public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 	 * reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetPorts()
 	 * @see #getPorts()
 	 * @generated
@@ -75,7 +73,6 @@ public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 	 * containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Ports</em>' containment reference list is set.
 	 * @see #unsetPorts()
 	 * @see #getPorts()
@@ -86,7 +83,6 @@ public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model
 	 * @generated
 	 */
@@ -95,7 +91,6 @@ public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */

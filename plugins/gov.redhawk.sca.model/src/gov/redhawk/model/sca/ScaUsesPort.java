@@ -35,8 +35,8 @@ import CF.PortPackage.InvalidPort;
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaUsesPort()
  * @model superTypes="gov.redhawk.model.sca.ScaPort&lt;mil.jpeojtrs.sca.scd.Uses, mil.jpeojtrs.sca.cf.Port&gt;
- *        mil.jpeojtrs.sca.cf.PortOperations"
- *        extendedMetaData="name='ScaUsesPort' kind='empty'"
+ * mil.jpeojtrs.sca.cf.PortOperations"
+ * extendedMetaData="name='ScaUsesPort' kind='empty'"
  * @generated
  */
 public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
@@ -51,7 +51,6 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	 * of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Connections</em>' containment reference list.
 	 * @see #isSetConnections()
 	 * @see #unsetConnections()
@@ -67,7 +66,6 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	 * containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetConnections()
 	 * @see #getConnections()
 	 * @generated
@@ -79,7 +77,6 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	 * containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Connections</em>' containment reference list is set.
 	 * @see #unsetConnections()
 	 * @see #getConnections()
@@ -90,7 +87,6 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -99,7 +95,6 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model exceptions="mil.jpeojtrs.sca.cf.InvalidPort"
 	 * @generated
 	 */

@@ -32,19 +32,19 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  * A representation of the model object '<em><b>Object Wrapper</b></em>'.
  * 
  * @since 5.0
- *        <!-- end-user-doc -->
+ * <!-- end-user-doc -->
  *
- *        <p>
- *        The following features are supported:
- *        </p>
- *        <ul>
- *        <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI <em>Profile URI</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj <em>Profile Obj</em>}</li>
- *        </ul>
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI <em>Profile URI</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj <em>Profile Obj</em>}</li>
+ * </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getProfileObjectWrapper()
  * @model interface="true" abstract="true" OBounds="org.eclipse.emf.ecore.EJavaObject"
- *        extendedMetaData="name='ProfileObjectWrapper' kind='empty'"
+ * extendedMetaData="name='ProfileObjectWrapper' kind='empty'"
  * @generated
  */
 public interface ProfileObjectWrapper< O extends Object > extends IStatusProvider {
@@ -56,14 +56,13 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Profile URI</em>' attribute.
 	 * @see #isSetProfileURI()
 	 * @see #unsetProfileURI()
 	 * @see #setProfileURI(URI)
 	 * @see gov.redhawk.model.sca.ScaPackage#getProfileObjectWrapper_ProfileURI()
 	 * @model unsettable="true" dataType="mil.jpeojtrs.sca.spd.URI" transient="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='profile'"
+	 * extendedMetaData="kind='attribute' name='profile'"
 	 * @generated
 	 */
 	URI getProfileURI();
@@ -73,7 +72,6 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	 * attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Profile URI</em>' attribute.
 	 * @see #isSetProfileURI()
 	 * @see #unsetProfileURI()
@@ -87,7 +85,6 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	 * attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetProfileURI()
 	 * @see #getProfileURI()
 	 * @see #setProfileURI(URI)
@@ -100,7 +97,6 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	 * URI</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Profile URI</em>' attribute is set.
 	 * @see #unsetProfileURI()
 	 * @see #getProfileURI()
@@ -117,14 +113,13 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Profile Obj</em>' reference.
 	 * @see #isSetProfileObj()
 	 * @see #unsetProfileObj()
 	 * @see #setProfileObj(Object)
 	 * @see gov.redhawk.model.sca.ScaPackage#getProfileObjectWrapper_ProfileObj()
 	 * @model kind="reference" unsettable="true" transient="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='profileObj'"
+	 * extendedMetaData="kind='attribute' name='profileObj'"
 	 * @generated
 	 */
 	O getProfileObj();
@@ -134,7 +129,6 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	 * reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @param value the new value of the '<em>Profile Obj</em>' reference.
 	 * @see #isSetProfileObj()
 	 * @see #unsetProfileObj()
@@ -148,7 +142,6 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	 * reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #isSetProfileObj()
 	 * @see #getProfileObj()
 	 * @see #setProfileObj(Object)
@@ -161,7 +154,6 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	 * Obj</em>}' reference is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return whether the value of the '<em>Profile Obj</em>' reference is set.
 	 * @see #unsetProfileObj()
 	 * @see #getProfileObj()
@@ -173,7 +165,6 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -182,7 +173,6 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @model dataType="mil.jpeojtrs.sca.spd.URI" monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */

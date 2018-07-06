@@ -40,8 +40,7 @@ import CF.ResourceHelper;
  * <p>
  * The following operations are tested:
  * <ul>
- * <li>
- * {@link gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <li>{@link gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch Devices</em>}</li>
  * </ul>
  * </p>

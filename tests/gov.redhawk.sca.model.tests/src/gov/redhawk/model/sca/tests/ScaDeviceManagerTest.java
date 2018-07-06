@@ -30,6 +30,7 @@ import org.omg.PortableServer.POAPackage.ServantNotActive;
 import CF.Device;
 import CF.DeviceManagerHelper;
 import CF.InvalidObjectReference;
+import CF.PortSetPackage.PortInfoType;
 import CF.PortSupplierPackage.UnknownPort;
 
 /**
@@ -50,18 +51,15 @@ import CF.PortSupplierPackage.UnknownPort;
  * The following operations are tested:
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getDevice(java.lang.String) <em>Get Device</em>}</li>
- * <li>
- * {@link gov.redhawk.model.sca.ScaDeviceManager#fetchDevices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchDevices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch Devices</em>}</li>
- * <li>
- * {@link gov.redhawk.model.sca.ScaDeviceManager#fetchFileSystem(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchFileSystem(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch File System</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
  * <em>Fetch Identifier</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchLabel(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
  * Label</em>}</li>
- * <li>
- * {@link gov.redhawk.model.sca.ScaDeviceManager#fetchServices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchServices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch Services</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#registerScaService(org.omg.CORBA.Object, java.lang.String)
  * <em>Register Sca Service</em>}</li>
@@ -80,7 +78,7 @@ import CF.PortSupplierPackage.UnknownPort;
  * Service</em>}</li>
  * <li>{@link CF.DeviceManagerOperations#getComponentImplementationId(java.lang.String) <em>Get Component Implementation
  * Id</em>}</li>
- * <li>{@link CF.PortSupplierOperations#getPort(java.lang.String) <em>Get Port</em>}</li>
+ * <li>{@link CF.PortSetOperations#getPortSet() <em>Get Port Set</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -764,6 +762,20 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
+	 * Tests the '{@link CF.PortSetOperations#getPortSet() <em>Get Port Set</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see CF.PortSetOperations#getPortSet()
+	 * @generated NOT
+	 */
+	public void testGetPortSet() {
+		// END GENERATED CODE
+		PortInfoType[] ports = getFixture().getPortSet();
+		Assert.assertEquals(0, ports.length);
+		// BEGIN GENERATED CODE
+	}
+
+	/**
 	 * Tests the '{@link mil.jpeojtrs.sca.cf.PortSupplierOperations#getPort(java.lang.String) <em>Get Port</em>}'
 	 * operation.
 	 * <!-- begin-user-doc -->
@@ -774,7 +786,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testGetPort__String() throws UnknownPort {
 		// END GENERATED CODE
-		getFixture().getPort("port");
+		Assert.assertNull(getFixture().getPort("nonexistentPort"));
 		// BEGIN GENERATED CODE
 	}
 
