@@ -112,7 +112,7 @@ public class TunerStatusItemProvider extends ItemProviderAdapter
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_TunerStatus_tunerStatusStruct_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_tunerStatusStruct_feature", "_UI_TunerStatus_type"),
-			FrontendPackage.Literals.TUNER_STATUS__TUNER_STATUS_STRUCT, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+			FrontendPackage.Literals.TUNER_STATUS__TUNER_STATUS_STRUCT, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -390,6 +390,22 @@ public class TunerStatusItemProvider extends ItemProviderAdapter
 	}
 
 	/**
+	 * This returns <code>getImage(object)</code> for the column index <code>0</code> or
+	 * <code>super.getImage(object)</code> otherwise.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getText(Object)
+	 * @see #getColumnText(Object, int)
+	 * @generated
+	 */
+	@Override
+	public Object getColumnImage(Object object, int columnIndex) {
+		// TODO: implement this method to return appropriate information for each column.
+		// Ensure that you remove @generated or mark it @generated NOT
+		return columnIndex == 0 ? getImage(object) : super.getImage(object);
+	}
+
+	/**
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -411,6 +427,22 @@ public class TunerStatusItemProvider extends ItemProviderAdapter
 				: (allocationID == null || allocationID.length() == 0 ? label : label + " " + allocationID);
 		}
 		return getString("_UI_TunerStatus_type");
+	}
+
+	/**
+	 * This returns <code>getText(object)</code> for the column index <code>0</code> or
+	 * <code>super.getText(object)</code> otherwise.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getImage(Object)
+	 * @see #getColumnImage(Object, int)
+	 * @generated
+	 */
+	@Override
+	public String getColumnText(Object object, int columnIndex) {
+		// TODO: implement this method to return appropriate information for each column.
+		// Ensure that you remove @generated or mark it @generated NOT
+		return columnIndex == 0 ? getText(object) : super.getText(object);
 	}
 
 	/**

@@ -1434,7 +1434,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (devices: ");
 		result.append(devices);
 		result.append(", identifier: ");
@@ -1546,7 +1546,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	}
 
 	/**
-	 * @since 21.1
+	 * @since 22.0
 	 */
 	protected Command createMergeDevicesCommand(Device[] devices, IStatus status) {
 		return new ScaDeviceManagerMergeDevicesCommand(this, devices, status);

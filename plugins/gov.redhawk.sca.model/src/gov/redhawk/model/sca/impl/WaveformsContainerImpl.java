@@ -242,7 +242,7 @@ public class WaveformsContainerImpl extends EObjectImpl implements WaveformsCont
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (containerName: ");
 		result.append(containerName);
 		result.append(')');

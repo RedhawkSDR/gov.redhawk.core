@@ -686,7 +686,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (description: ");
 		result.append(description);
 		result.append(", id: ");

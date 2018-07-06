@@ -169,7 +169,7 @@ public interface ScaFactory extends EFactory {
 	 *
 	 * @param definition
 	 * @return
-	 * @since 21.1
+	 * @since 22.0
 	 */
 	ScaAbstractProperty< ? extends AbstractProperty> createScaProperty(AbstractProperty definition);
 
@@ -205,7 +205,7 @@ public interface ScaFactory extends EFactory {
 	/**
 	 * Returns a new object of class '<em>Transport</em>'.
 	 * <!-- begin-user-doc -->
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @return a new object of class '<em>Transport</em>'.
 	 * @generated
@@ -215,7 +215,7 @@ public interface ScaFactory extends EFactory {
 	// END GENERATED CODE
 
 	/**
-	 * @since 21.1
+	 * @since 22.0
 	 */
 	ScaTransport createScaTransport(ExtendedCF.TransportInfo transportInfo);
 
@@ -242,7 +242,7 @@ public interface ScaFactory extends EFactory {
 	/**
 	 * Returns a new object of class '<em>Negotiated Connection</em>'.
 	 * <!-- begin-user-doc -->
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @return a new object of class '<em>Negotiated Connection</em>'.
 	 * @generated
@@ -252,7 +252,7 @@ public interface ScaFactory extends EFactory {
 	// END GENERATED CODE
 
 	/**
-	 * @since 21.1
+	 * @since 22.0
 	 */
 	ScaNegotiatedConnection createScaNegotiatedConnection(ExtendedCF.ConnectionStatus connectionStatus);
 

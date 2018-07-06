@@ -533,7 +533,7 @@ public class ScaValidator extends EObjectValidator {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -562,7 +562,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

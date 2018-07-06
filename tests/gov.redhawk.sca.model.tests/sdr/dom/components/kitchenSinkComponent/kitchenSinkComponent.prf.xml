@@ -330,6 +330,10 @@
     <kind kindtype="property"/>
     <action type="external"/>
   </simplesequence>
+  <simplesequence id="simpleSeqNoValues" mode="readwrite" name="simpleSeqNoValues" type="boolean">
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simplesequence>
   <struct id="DCE:5e410c54-750b-41ea-9fd4-176ce624d849" mode="readwrite" name="testStruct">
    <description>My Description</description>
     <simple id="DCE:e0a68e78-a562-416e-8ce1-27c9c622083c" mode="readwrite" name="structSimpleString" type="string">
@@ -434,7 +438,7 @@
     <kind kindtype="configure"/>
     <action type="external"/>
   </simple>
-   <structsequence id="DCE:7fb68ed6-2d60-4652-8e78-ac0974659350" mode="readwrite" name="testStructSequence">
+  <structsequence id="DCE:7fb68ed6-2d60-4652-8e78-ac0974659350" mode="readwrite" name="testStructSequence">
     <description>My Description</description>
     <struct id="DCE:9347e452-fa82-4da1-9b43-056933c77dba" mode="readwrite" name="testStruct">
       <simple id="DCE:b34d9204-46fa-43ea-9ef2-189674bfc366" mode="readwrite" name="structSeqString" type="string"/>
@@ -459,5 +463,13 @@
       </simplesequenceref>
     </structvalue>
     <configurationkind kindtype="configure"/>
+  </structsequence>
+  <structsequence id="structSeqNoStructValues" mode="readwrite" name="structSeqNoStructValues">
+    <struct id="structSeqNoStructValues::struct" name="struct">
+      <simple id="structSeqNoStructValues::simple" name="simple" type="string">
+        <value>abc</value>
+      </simple>
+    </struct>
+    <configurationkind kindtype="property"/>
   </structsequence>
 </properties>

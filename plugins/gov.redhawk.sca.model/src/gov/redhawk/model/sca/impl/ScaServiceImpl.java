@@ -269,7 +269,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
@@ -459,7 +459,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
 		result.append(')');
@@ -700,7 +700,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	/**
 	 * Retrieves the {@link VersionedFeature} for the profile URI feature.
 	 * 
-	 * @since 21.1
+	 * @since 22.0
 	 */
 	protected VersionedFeature getProfileURIVersionedFeature() {
 		return profileURIFeature;

@@ -277,7 +277,7 @@ public class StringToObjectMapImpl extends EObjectImpl implements BasicEMap.Entr
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (key: ");
 		result.append(key);
 		result.append(')');

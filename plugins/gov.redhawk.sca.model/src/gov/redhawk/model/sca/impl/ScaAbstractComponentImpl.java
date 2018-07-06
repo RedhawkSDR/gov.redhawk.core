@@ -820,7 +820,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (identifier: ");
 		if (identifierESet)
 			result.append(identifier);

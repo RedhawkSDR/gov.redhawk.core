@@ -47,12 +47,43 @@ public interface ScaSimpleSequenceProperty extends ScaAbstractProperty<SimpleSeq
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Values</em>' attribute list.
+	 * @see #isSetValues()
+	 * @see #unsetValues()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaSimpleSequenceProperty_Values()
+<<<<<<< HEAD
 	 * @model unique="false" transient="true"
+=======
+	 * @model unique="false" unsettable="true" transient="true"
+>>>>>>> origin/develop-2.0
 	 * extendedMetaData="kind='attribute' name='currentValue'"
 	 * @generated
 	 */
 	EList<Object> getValues();
+
+	/**
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#getValues <em>Values</em>}'
+	 * attribute list.
+	 * <!-- begin-user-doc -->
+	 * @since 22.0
+	 * <!-- end-user-doc -->
+	 * @see #isSetValues()
+	 * @see #getValues()
+	 * @generated
+	 */
+	void unsetValues();
+
+	/**
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#getValues
+	 * <em>Values</em>}' attribute list is set.
+	 * <!-- begin-user-doc -->
+	 * @since 22.0
+	 * <!-- end-user-doc -->
+	 * @return whether the value of the '<em>Values</em>' attribute list is set.
+	 * @see #unsetValues()
+	 * @see #getValues()
+	 * @generated
+	 */
+	boolean isSetValues();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -84,7 +115,7 @@ public interface ScaSimpleSequenceProperty extends ScaAbstractProperty<SimpleSeq
 	/**
 	 * <!-- begin-user-doc -->
 	 * See {@link ScaAbstractProperty#setValueFromRef(mil.jpeojtrs.sca.prf.AbstractPropertyRef)}
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated

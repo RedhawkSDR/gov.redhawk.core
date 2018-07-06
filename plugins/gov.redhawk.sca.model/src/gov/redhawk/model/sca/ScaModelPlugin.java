@@ -32,13 +32,13 @@ public class ScaModelPlugin extends Plugin implements IScaObjectLocator {
 
 	/**
 	 * {@link IStatus} code for multiple bad statuses for an {@link IStatusProvider}.
-	 * @since 21.1
+	 * @since 22.0
 	 */
 	public static final int ERR_MULTIPLE_BAD_STATUS = 100;
 
 	/**
 	 * {@link IStatus} code for problems with one or more properties.
-	 * @since 21.1
+	 * @since 22.0
 	 */
 	public static final int ERR_BAD_PROPS = 101;
 

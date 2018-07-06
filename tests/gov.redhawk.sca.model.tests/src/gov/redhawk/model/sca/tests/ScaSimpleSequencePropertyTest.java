@@ -11,6 +11,7 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.jacorb.JacorbUtil;
 import org.junit.Assert;
@@ -222,15 +223,21 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 		any = component.getProperty("simpleseq_complexushort").toAny();
 		validateAny(any, PropertyValueType.USHORT, true);
 
-		// Simple sequences must have a value - but it can be a zero-length sequence
-		ScaSimpleSequenceProperty prop = (ScaSimpleSequenceProperty) component.getProperty("DCE:3566d9bb-e691-4ab8-9323-fff5d8a8cfb5");
-		ScaModelCommand.execute(prop, () -> {
-			prop.setIgnoreRemoteSet(true);
-			prop.setValue(new Object[0]);
-		});
-		any = prop.toAny();
+		// A simple sequence can be zero-length
+		any = component.getProperty("simpleSeqNoValues").toAny();
 		Assert.assertEquals(BooleanSeqHelper.type(), any.type());
 		Assert.assertEquals(0, BooleanSeqHelper.extract(any).length);
+
+		// We often use the SCA model to load properties from XML and apply user overrides to those properties. A
+		// property with no values in its PRF should not return an Any because it is uninitialized. This is only the
+		// case when it's being used for this purpose, or before the running resource has been queried for the
+		// property's value.
+		final ScaComponent propHolder = ScaFactory.eINSTANCE.createScaComponent();
+		propHolder.setProfileURI(component.getProfileURI());
+		propHolder.fetchProfileObject(new NullProgressMonitor());
+		propHolder.fetchProperties(new NullProgressMonitor());
+		any = propHolder.getProperty("simpleSeqNoValues").toAny();
+		Assert.assertNull(any);
 	}
 
 	private void validateAny(Any any, PropertyValueType type, boolean complex) {
@@ -497,16 +504,22 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 		Assert.assertEquals("simpleseq_complexushort", dt.id);
 		validateAny(dt.value, PropertyValueType.USHORT, true);
 
-		// Simple sequences must have a value - but it can be a zero-length sequence
-		ScaSimpleSequenceProperty prop = (ScaSimpleSequenceProperty) component.getProperty("DCE:3566d9bb-e691-4ab8-9323-fff5d8a8cfb5");
-		ScaModelCommand.execute(prop, () -> {
-			prop.setIgnoreRemoteSet(true);
-			prop.setValue(null);
-		});
-		dt = prop.getProperty();
-		Assert.assertEquals("DCE:3566d9bb-e691-4ab8-9323-fff5d8a8cfb5", dt.id);
+		// A simple sequence can be zero-length
+		dt = component.getProperty("simpleSeqNoValues").getProperty();
+		Assert.assertEquals("simpleSeqNoValues", dt.id);
 		Assert.assertEquals(BooleanSeqHelper.type(), dt.value.type());
 		Assert.assertEquals(0, BooleanSeqHelper.extract(dt.value).length);
+
+		// We often use the SCA model to load properties from XML and apply user overrides to those properties. A
+		// property with no values in its PRF should not return an Any because it is uninitialized. This is only the
+		// case when it's being used for this purpose, or before the running resource has been queried for the
+		// property's value.
+		final ScaComponent propHolder = ScaFactory.eINSTANCE.createScaComponent();
+		propHolder.setProfileURI(component.getProfileURI());
+		propHolder.fetchProfileObject(new NullProgressMonitor());
+		propHolder.fetchProperties(new NullProgressMonitor());
+		dt = propHolder.getProperty("simpleSeqNoValues").getProperty();
+		Assert.assertNull(dt);
 	}
 
 	// BEGIN GENERATED CODE

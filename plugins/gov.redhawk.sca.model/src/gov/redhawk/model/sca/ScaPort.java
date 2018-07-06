@@ -116,7 +116,7 @@ public interface ScaPort< P extends AbstractPort, P2 extends org.omg.CORBA.Objec
 	 * <!-- begin-user-doc -->
 	 * <p/>
 	 * If the port implements {@link ExtendedCF.NegotiablePort}, then this provides the list of supported transports.
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Supported Transports</em>' containment reference list.
 	 * @see #isSetSupportedTransports()
@@ -131,7 +131,7 @@ public interface ScaPort< P extends AbstractPort, P2 extends org.omg.CORBA.Objec
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaPort#getSupportedTransports <em>Supported
 	 * Transports</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @see #isSetSupportedTransports()
 	 * @see #getSupportedTransports()
@@ -143,7 +143,7 @@ public interface ScaPort< P extends AbstractPort, P2 extends org.omg.CORBA.Objec
 	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaPort#getSupportedTransports <em>Supported
 	 * Transports</em>}' containment reference list is set.
 	 * <!-- begin-user-doc -->
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Supported Transports</em>' containment reference list is set.
 	 * @see #unsetSupportedTransports()
@@ -183,7 +183,7 @@ public interface ScaPort< P extends AbstractPort, P2 extends org.omg.CORBA.Objec
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated

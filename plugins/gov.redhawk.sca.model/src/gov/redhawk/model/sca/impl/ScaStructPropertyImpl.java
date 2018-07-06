@@ -25,6 +25,7 @@ import gov.redhawk.sca.util.PluginUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +33,9 @@ import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.AbstractPropertyRef;
 import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.PrfPackage;
+import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleRef;
+import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructRef;
@@ -271,7 +274,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
@@ -294,7 +297,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * Set the value of this struct from a structvalue. Used by {@link ScaStructSequenceProperty}.
 	 * 
-	 * @since 21.1
+	 * @since 22.0
 	 */
 	protected void setValueFromRef(StructValue refValue) {
 		// END GENERATED CODE
@@ -520,26 +523,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	// END GENERATED CODE
 
-	/**
-	 * @since 14.0
-	 */
-	@Override
-	public void setDefinition(Struct newDefinition) {
-		// Save the old definition so that we can test that it changed, but call the superclass version first to allow
-		// it to do any validity checking first
-		Struct oldDefinition = getDefinition();
-		super.setDefinition(newDefinition);
-		if (newDefinition != oldDefinition) {
-			getFields().clear();
-			if (newDefinition != null) {
-				for (FeatureMap.Entry entry : newDefinition.getFields()) {
-					ScaAbstractProperty< ? extends AbstractProperty> field = ScaFactory.eINSTANCE.createScaProperty((AbstractProperty) entry.getValue());
-					fields.add(field);
-				}
-			}
-		}
-	}
-
 	@Override
 	public Any toAny() {
 		List<DataType> fieldValues = new ArrayList<DataType>(getFields().size());
@@ -579,8 +562,50 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	@Override
 	public void restoreDefaultValue() {
-		for (ScaAbstractProperty< ? > field : getFields()) {
-			field.restoreDefaultValue();
+		boolean someFieldsHaveValues = false;
+		List<ScaSimpleSequenceProperty> simpleSeqWithoutValues = new LinkedList<>();
+
+		if (getDefinition() == null) {
+			getFields().clear();
+		} else {
+			int i = 0;
+			for (FeatureMap.Entry entry : getDefinition().getFields()) {
+				AbstractProperty fieldDef = (AbstractProperty) entry.getValue();
+				ScaAbstractProperty< ? extends AbstractProperty> currentField;
+				if (getFields().size() <= i) {
+					// Need to add a new field
+					currentField = ScaFactory.eINSTANCE.createScaProperty(fieldDef);
+					getFields().add(currentField);
+				} else if (getFields().get(i).getDefinition() != fieldDef) {
+					// Field at this index doesn't match - replace with a new one
+					currentField = ScaFactory.eINSTANCE.createScaProperty(fieldDef);
+					getFields().set(i, currentField);
+				} else {
+					// Field at this index matches - just restore the value
+					currentField = getFields().get(i);
+					currentField.restoreDefaultValue();
+				}
+
+				// Keep track of whether any fields have values
+				if (fieldDef instanceof Simple) {
+					someFieldsHaveValues |= fieldDef.eIsSet(PrfPackage.eINSTANCE.getSimple_Value());
+				} else if (fieldDef instanceof SimpleSequence) {
+					if (fieldDef.eIsSet(PrfPackage.eINSTANCE.getSimpleSequence_Values())) {
+						someFieldsHaveValues = true;
+					} else {
+						simpleSeqWithoutValues.add((ScaSimpleSequenceProperty) currentField);
+					}
+				}
+
+				i++;
+			}
+		}
+
+		// At least one field has a value. Treat all simple sequence fields without a value as zero-length sequences.
+		if (someFieldsHaveValues) {
+			for (ScaSimpleSequenceProperty prop : simpleSeqWithoutValues) {
+				prop.getValues().clear();
+			}
 		}
 	}
 

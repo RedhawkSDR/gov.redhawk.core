@@ -113,7 +113,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	 * The cached value of the '{@link #getSupportedTransports() <em>Supported Transports</em>}' containment reference
 	 * list.
 	 * <!-- begin-user-doc -->
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @see #getSupportedTransports()
 	 * @generated
@@ -530,7 +530,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
 		result.append(')');

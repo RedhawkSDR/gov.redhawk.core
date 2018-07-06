@@ -1708,7 +1708,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (identifier: ");
 		if (identifierESet)
 			result.append(identifier);
@@ -2172,7 +2172,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	}
 
 	/**
-	 * @since 21.1
+	 * @since 22.0
 	 */
 	@Override
 	public float stopTimeout() {
@@ -2180,7 +2180,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	}
 
 	/**
-	 * @since 21.1
+	 * @since 22.0
 	 */
 	@Override
 	public void stopTimeout(float newStopTimeout) {
@@ -2188,7 +2188,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	}
 
 	/**
-	 * @since 21.1
+	 * @since 22.0
 	 */
 	@Override
 	public DataType[] metrics(String[] components, String[] attributes) throws InvalidMetric {

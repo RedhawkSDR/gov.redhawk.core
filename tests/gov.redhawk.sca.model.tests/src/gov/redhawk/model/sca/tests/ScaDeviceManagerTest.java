@@ -770,9 +770,8 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testGetPortSet() {
 		// END GENERATED CODE
-		PortInfoType[] portInfo = getFixture().getPortSet();
-		Assert.assertNotNull(portInfo);
-		Assert.assertEquals(0, portInfo.length);
+		PortInfoType[] ports = getFixture().getPortSet();
+		Assert.assertEquals(0, ports.length);
 		// BEGIN GENERATED CODE
 	}
 
@@ -787,7 +786,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testGetPort__String() throws UnknownPort {
 		// END GENERATED CODE
-		Assert.assertNull(getFixture().getPort("nonexistentport"));
+		Assert.assertNull(getFixture().getPort("nonexistentPort"));
 		// BEGIN GENERATED CODE
 	}
 

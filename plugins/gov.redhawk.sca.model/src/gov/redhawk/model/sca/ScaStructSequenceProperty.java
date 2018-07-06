@@ -51,12 +51,39 @@ public interface ScaStructSequenceProperty extends ScaAbstractProperty<StructSeq
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Structs</em>' containment reference list.
+	 * @see #isSetStructs()
+	 * @see #unsetStructs()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaStructSequenceProperty_Structs()
-	 * @model containment="true" resolveProxies="true" transient="true"
+	 * @model containment="true" resolveProxies="true" unsettable="true" transient="true"
 	 * extendedMetaData="kind='attribute' name='structs'"
 	 * @generated
 	 */
 	EList<ScaStructProperty> getStructs();
+
+	/**
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaStructSequenceProperty#getStructs <em>Structs</em>}'
+	 * containment reference list.
+	 * <!-- begin-user-doc -->
+	 * @since 22.0
+	 * <!-- end-user-doc -->
+	 * @see #isSetStructs()
+	 * @see #getStructs()
+	 * @generated
+	 */
+	void unsetStructs();
+
+	/**
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaStructSequenceProperty#getStructs
+	 * <em>Structs</em>}' containment reference list is set.
+	 * <!-- begin-user-doc -->
+	 * @since 22.0
+	 * <!-- end-user-doc -->
+	 * @return whether the value of the '<em>Structs</em>' containment reference list is set.
+	 * @see #unsetStructs()
+	 * @see #getStructs()
+	 * @generated
+	 */
+	boolean isSetStructs();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -81,7 +108,7 @@ public interface ScaStructSequenceProperty extends ScaAbstractProperty<StructSeq
 	 * <!-- begin-user-doc -->
 	 * See {@link ScaAbstractProperty#setValueFromRef(mil.jpeojtrs.sca.prf.AbstractPropertyRef)}
 	 * 
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated

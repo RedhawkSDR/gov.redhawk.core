@@ -109,7 +109,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
+	 *
 	 * <p>
 	 * This method is used to initialize {@link FrontendPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
@@ -125,9 +125,9 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
 			return (FrontendPackage) EPackage.Registry.INSTANCE.getEPackage(FrontendPackage.eNS_URI);
 
 		// Obtain or create and register package
-		FrontendPackageImpl theFrontendPackage = (FrontendPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof FrontendPackageImpl
-			? EPackage.Registry.INSTANCE.get(eNS_URI)
-			: new FrontendPackageImpl());
+		Object registeredFrontendPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		FrontendPackageImpl theFrontendPackage = registeredFrontendPackage instanceof FrontendPackageImpl ? (FrontendPackageImpl) registeredFrontendPackage
+			: new FrontendPackageImpl();
 
 		isInited = true;
 

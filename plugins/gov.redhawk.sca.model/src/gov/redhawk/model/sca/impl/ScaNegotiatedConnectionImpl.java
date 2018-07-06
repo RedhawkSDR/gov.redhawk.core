@@ -31,7 +31,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Negotiated Connection</b></em>'.
  * 
- * @since 21.1
+ * @since 22.0
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:

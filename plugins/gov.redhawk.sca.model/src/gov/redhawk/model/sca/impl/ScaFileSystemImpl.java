@@ -778,7 +778,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (fileStore: ");
 		result.append(fileStore);
 		result.append(", imageDesc: ");

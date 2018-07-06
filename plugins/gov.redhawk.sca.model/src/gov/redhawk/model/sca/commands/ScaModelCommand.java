@@ -57,7 +57,7 @@ public abstract class ScaModelCommand extends AbstractCommand {
 	 *
 	 * @param context The object whose editing domain should be used
 	 * @param runnable The write operation to run
-	 * @since 21.1
+	 * @since 22.0
 	 */
 	public static void execute(EObject context, Runnable runnable) {
 		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(context);
@@ -97,7 +97,7 @@ public abstract class ScaModelCommand extends AbstractCommand {
 	 * @param context The object whose editing domain should be used
 	 * @param callable The read-only operation to run
 	 * @return The result of the callable
-	 * @since 21.1
+	 * @since 22.0
 	 */
 	public static < T > T runExclusive(EObject context, Callable<T> callable) {
 		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(context);

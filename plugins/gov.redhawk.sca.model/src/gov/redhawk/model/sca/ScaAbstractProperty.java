@@ -302,7 +302,7 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	 * <p/>
 	 * If the ref's type doesn't appropriately match the property (e.g. ScaSimpleProperty with StructRef), then the
 	 * status for the property will indicate an error.
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated

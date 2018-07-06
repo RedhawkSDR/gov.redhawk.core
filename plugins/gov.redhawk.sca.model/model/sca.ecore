@@ -1063,7 +1063,7 @@
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="values" unique="false"
         upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"
-        transient="true">
+        transient="true" unsettable="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="name" value="currentValue"/>
@@ -1332,7 +1332,7 @@
       <eParameters name="refValue" eType="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//StructSequenceRef"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="structs" upperBound="-1"
-        eType="#//ScaStructProperty" transient="true" containment="true">
+        eType="#//ScaStructProperty" transient="true" unsettable="true" containment="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="name" value="structs"/>

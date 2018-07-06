@@ -499,7 +499,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
+	 *
 	 * <p>
 	 * This method is used to initialize {@link ScaPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
@@ -515,9 +515,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 			return (ScaPackage) EPackage.Registry.INSTANCE.getEPackage(ScaPackage.eNS_URI);
 
 		// Obtain or create and register package
-		ScaPackageImpl theScaPackage = (ScaPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof ScaPackageImpl
-			? EPackage.Registry.INSTANCE.get(eNS_URI)
-			: new ScaPackageImpl());
+		Object registeredScaPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		ScaPackageImpl theScaPackage = registeredScaPackage instanceof ScaPackageImpl ? (ScaPackageImpl) registeredScaPackage : new ScaPackageImpl();
 
 		isInited = true;
 
@@ -1012,7 +1011,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1755,7 +1754,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1776,7 +1775,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1787,7 +1786,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1798,7 +1797,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1808,7 +1807,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -3335,7 +3334,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		initEClass(scaSimpleSequencePropertyEClass, ScaSimpleSequenceProperty.class, "ScaSimpleSequenceProperty", !IS_ABSTRACT, !IS_INTERFACE,
 			IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getScaSimpleSequenceProperty_Values(), ecorePackage.getEJavaObject(), "values", null, 0, -1, ScaSimpleSequenceProperty.class,
-			IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+			IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(scaSimpleSequencePropertyEClass, null, "setValue", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getObjectArray(), "newValue", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3496,7 +3495,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		initEClass(scaStructSequencePropertyEClass, ScaStructSequenceProperty.class, "ScaStructSequenceProperty", !IS_ABSTRACT, !IS_INTERFACE,
 			IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getScaStructSequenceProperty_Structs(), this.getScaStructProperty(), null, "structs", null, 0, -1, ScaStructSequenceProperty.class,
-			IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+			IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(scaStructSequencePropertyEClass, this.getScaStructProperty(), "createScaStructProperty", 0, 1, IS_UNIQUE, IS_ORDERED);
 

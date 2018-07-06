@@ -261,7 +261,7 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (disposed: ");
 		result.append(disposed);
 		result.append(')');

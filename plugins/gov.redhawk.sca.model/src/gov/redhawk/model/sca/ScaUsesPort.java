@@ -110,7 +110,7 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	// END GENERATED CODE
 
 	/**
-	 * @since 21.1
+	 * @since 22.0
 	 */
 	public static class Util {
 		private static final String CONNECTION_TABLE = "connectionTable";

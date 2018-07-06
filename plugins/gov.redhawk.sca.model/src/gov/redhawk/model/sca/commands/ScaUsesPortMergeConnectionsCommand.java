@@ -28,7 +28,7 @@ import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 
 /**
- * @since 21.1
+ * @since 22.0
  */
 public class ScaUsesPortMergeConnectionsCommand extends SetStatusCommand<ScaUsesPort> {
 

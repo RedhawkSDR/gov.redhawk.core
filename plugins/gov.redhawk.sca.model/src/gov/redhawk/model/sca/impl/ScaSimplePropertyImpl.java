@@ -115,7 +115,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * This is specialized for the more specific type known in this context.
 	 * @generated
@@ -202,7 +202,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
@@ -288,7 +288,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (value: ");
 		result.append(value);
 		result.append(')');
@@ -321,13 +321,14 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	@Override
 	public void restoreDefaultValue() {
 		// value = VALUE_EDEFAULT;
-		Object newValue;
-		if (getDefinition() != null && getDefinition().getType() != null) {
-			newValue = AnyUtils.convertString(getDefinition().getValue(), getDefinition().getType().getLiteral(), getDefinition().isComplex());
+		Simple definition = getDefinition();
+		Object defaultValue;
+		if (definition != null && definition.getType() != null && definition.getValue() != null) {
+			defaultValue = AnyUtils.convertString(definition.getValue(), definition.getType().getLiteral(), definition.isComplex());
 		} else {
-			newValue = null;
+			defaultValue = null;
 		}
-		setValue(newValue);
+		setValue(defaultValue);
 	}
 
 	@Override

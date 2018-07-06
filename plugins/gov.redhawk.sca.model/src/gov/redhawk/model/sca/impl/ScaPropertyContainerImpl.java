@@ -542,7 +542,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 		if (eIsProxy())
 			return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (profileURI: ");
 		if (profileURIESet)
 			result.append(profileURI);
