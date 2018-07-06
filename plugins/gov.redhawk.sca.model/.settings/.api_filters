@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="gov.redhawk.sca.model" version="2">
+    <resource path="META-INF/MANIFEST.MF">
+        <filter comment="Method added to EMF interface" id="923795461">
+            <message_arguments>
+                <message_argument value="21.1.0"/>
+                <message_argument value="21.0.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/gov/redhawk/model/sca/ScaSimpleSequenceProperty.java" type="gov.redhawk.model.sca.ScaSimpleSequenceProperty">
+        <filter comment="Method added to EMF interface" id="403804204">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.ScaSimpleSequenceProperty"/>
+                <message_argument value="isSetValues()"/>
+            </message_arguments>
+        </filter>
+        <filter comment="Method added to EMF interface" id="403804204">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.ScaSimpleSequenceProperty"/>
+                <message_argument value="unsetValues()"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/gov/redhawk/model/sca/ScaStructSequenceProperty.java" type="gov.redhawk.model.sca.ScaStructSequenceProperty">
+        <filter comment="Method added to EMF interface" id="403804204">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.ScaStructSequenceProperty"/>
+                <message_argument value="isSetStructs()"/>
+            </message_arguments>
+        </filter>
+        <filter comment="Method added to EMF interface" id="403804204">
+            <message_arguments>
+                <message_argument value="gov.redhawk.model.sca.ScaStructSequenceProperty"/>
+                <message_argument value="unsetStructs()"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>
