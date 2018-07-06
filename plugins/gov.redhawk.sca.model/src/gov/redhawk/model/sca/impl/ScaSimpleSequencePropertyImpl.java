@@ -91,7 +91,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	/**
 	 * @since 14.0
 	 */
-	protected static class ObjectList extends EDataTypeEList<Object> {
+	protected static class ObjectList extends EDataTypeEList.Unsettable<Object> {
 		private static final long serialVersionUID = 1L;
 
 		public ObjectList(ScaSimpleSequencePropertyImpl property) {
@@ -102,17 +102,17 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 			return (ScaSimpleSequencePropertyImpl) owner;
 		}
 
-		private static Object[] getDefaultValues(SimpleSequence definition) {
-			if (definition == null) {
-				return new Object[0];
+		private static List<Object> getDefaultValues(SimpleSequence definition) {
+			if (definition == null || definition.getType() == null || definition.getValues() == null) {
+				return null;
 			}
-			List<Object> array = new ArrayList<Object>();
+			List<Object> values = new ArrayList<Object>();
 			if (definition != null && definition.getValues() != null) {
 				for (String value : definition.getValues().getValue()) {
-					array.add(AnyUtils.convertString(value, definition.getType().getLiteral(), definition.isComplex()));
+					values.add(AnyUtils.convertString(value, definition.getType().getLiteral(), definition.isComplex()));
 				}
 			}
-			return array.toArray();
+			return values;
 		}
 
 		@Override
@@ -129,17 +129,28 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 		 * @since 14.0
 		 */
 		public boolean isDefaultValue() {
-			return Arrays.equals(toArray(), getDefaultValues(getOwner().getDefinition()));
+			List<Object> defaultValues = getDefaultValues(getOwner().getDefinition());
+			if (defaultValues == null) {
+				// The definition doesn't provide default values for the property
+				// As long as no values have been added, we'll consider that equivalent
+				return size() == 0;
+			}
+			return equals(defaultValues);
 		}
 
 		/**
 		 * @since 14.0
 		 */
 		public void restoreDefaultValue() {
-			Object[] defaultValues = getDefaultValues(getOwner().getDefinition());
-			clear();
-			if (defaultValues.length > 0) {
-				addAll(Arrays.asList(defaultValues));
+			List<Object> defaultValues = getDefaultValues(getOwner().getDefinition());
+			if (defaultValues == null) {
+				// No default values provided in the definition
+				unset();
+			} else {
+				clear();
+				if (defaultValues.size() > 0) {
+					addAll(defaultValues);
+				}
 			}
 		}
 	}
@@ -277,7 +288,8 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	@Override
 	public void setValue(Object[] newValue) {
 		// END GENERATED CODE
-		if (Arrays.equals(getValues().toArray(), newValue)) {
+		// Ignore the change if the value has been set previously (i.e. initialized), and this value is the same
+		if (getValues().isSet() && Arrays.equals(getValues().toArray(), newValue)) {
 			return;
 		}
 		if (newValue != null && newValue.length > 0) {
@@ -375,7 +387,11 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 
 	@Override
 	public Any toAny() {
-		return AnyUtils.toAnySequence(values.toArray(), getType(), isComplex());
+		if (!getValues().isSet()) {
+			// Can't return an Any if unset - this implies there has been no initializing, not even to "zero values"
+			return null;
+		}
+		return AnyUtils.toAnySequence(getValues().toArray(), getType(), isComplex());
 	}
 
 	@Override

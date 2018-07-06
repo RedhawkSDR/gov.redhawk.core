@@ -147,7 +147,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	/**
 	 * @since 14.0
 	 */
-	protected class StructList extends EObjectContainmentEList<ScaStructProperty> {
+	protected class StructList extends EObjectContainmentEList.Unsettable<ScaStructProperty> {
 		private static final long serialVersionUID = 1L;
 
 		public StructList(ScaStructSequencePropertyImpl owner) {
@@ -167,17 +167,20 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 		}
 
 		public void restoreDefaultValue() {
-			List<ScaStructProperty> props = new ArrayList<ScaStructProperty>();
-			if (definition != null) {
+			if (definition == null || definition.getStructValue().size() == 0) {
+				unset();
+			} else {
 				List<StructValue> structValues = definition.getStructValue();
+				List<ScaStructProperty> props = new ArrayList<ScaStructProperty>();
 				for (StructValue structVal : structValues) {
 					ScaStructProperty prop = createStructValue(definition, structVal);
 					props.add(prop);
 				}
+				clear();
+				if (props.size() > 0) {
+					addAll(props);
+				}
 			}
-
-			clear();
-			addAll(props);
 		}
 	}
 
@@ -470,6 +473,11 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	 */
 	@Override
 	public Any toAny() {
+		if (!getStructs().isSet()) {
+			// Can't return an Any if unset - this implies there has been no initializing, not even to "zero values"
+			return null;
+		}
+
 		Any retVal = JacorbUtil.init().create_any();
 		List<Any> structVals = new ArrayList<Any>();
 		for (ScaStructProperty structProp : getStructs()) {
@@ -507,6 +515,13 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 			} else {
 				structAnys = AnySeqHelper.extract(any);
 			}
+
+			// Zero-length case
+			if (structAnys.length == 0) {
+				getStructs().clear();
+			}
+
+			// Update existing structs, adding new ones if necessary
 			for (int i = 0; i < structAnys.length; i++) {
 				ScaStructProperty structProp;
 				if (i < getStructs().size()) {
@@ -518,9 +533,11 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 				structProp.fromAny(structAnys[i]);
 			}
 
+			// Remove old structs if length of new ones is shorter
 			for (int i = structAnys.length; i < getStructs().size();) {
 				getStructs().remove(i);
 			}
+
 			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, Status.OK_STATUS);
 		} catch (SystemException e) {
 			String msg = String.format("Failed to demarshal value of property '%s'", getId());

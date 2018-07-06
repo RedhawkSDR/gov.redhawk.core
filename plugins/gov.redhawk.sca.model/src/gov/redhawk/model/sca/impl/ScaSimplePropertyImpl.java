@@ -331,13 +331,14 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	@Override
 	public void restoreDefaultValue() {
 		// value = VALUE_EDEFAULT;
-		Object newValue;
-		if (getDefinition() != null && getDefinition().getType() != null) {
-			newValue = AnyUtils.convertString(getDefinition().getValue(), getDefinition().getType().getLiteral(), getDefinition().isComplex());
+		Simple definition = getDefinition();
+		Object defaultValue;
+		if (definition != null && definition.getType() != null && definition.getValue() != null) {
+			defaultValue = AnyUtils.convertString(definition.getValue(), definition.getType().getLiteral(), definition.isComplex());
 		} else {
-			newValue = null;
+			defaultValue = null;
 		}
-		setValue(newValue);
+		setValue(defaultValue);
 	}
 
 	@Override

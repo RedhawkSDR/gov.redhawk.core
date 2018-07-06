@@ -11,6 +11,7 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -153,14 +154,24 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		Any any = getFixture().toAny();
 		validateAny(any);
 
-		// Struct sequences must have a value - but it can be a zero-length sequence
-		ScaModelCommand.execute(getFixture(), () -> {
-			getFixture().setIgnoreRemoteSet(true);
-			getFixture().getStructs().clear();
+		// A struct sequence can be zero-length
+		ScaComponent component = ScaModelCommand.runExclusive(env.getDomMgr(), () -> {
+			return env.getDomMgr().getWaveforms().get(0).getScaComponent(ScaTestConstaints.DCE_KITCHEN_SINK_COMPONENT);
 		});
-		any = getFixture().toAny();
+		any = component.getProperty("structSeqNoStructValues").toAny();
 		Assert.assertEquals(AnySeqHelper.type(), any.type());
 		Assert.assertEquals(0, AnySeqHelper.extract(any).length);
+
+		// We often use the SCA model to load properties from XML and apply user overrides to those properties. A
+		// property with no values in its PRF should not return an Any because it is uninitialized. This is only the
+		// case when it's being used for this purpose, or before the running resource has been queried for the
+		// property's value.
+		final ScaComponent propHolder = ScaFactory.eINSTANCE.createScaComponent();
+		propHolder.setProfileURI(component.getProfileURI());
+		propHolder.fetchProfileObject(new NullProgressMonitor());
+		propHolder.fetchProperties(new NullProgressMonitor());
+		any = propHolder.getProperty("structSeqNoStructValues").toAny();
+		Assert.assertNull(any);
 	}
 
 	private void validateAny(Any any) {
@@ -198,15 +209,25 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		Assert.assertEquals("DCE:7fb68ed6-2d60-4652-8e78-ac0974659350", dt.id);
 		validateAny(dt.value);
 
-		// Struct sequences must have a value - but it can be a zero-length sequence
-		ScaModelCommand.execute(getFixture(), () -> {
-			getFixture().setIgnoreRemoteSet(true);
-			getFixture().getStructs().clear();
+		// A struct sequence can be zero-length
+		ScaComponent component = ScaModelCommand.runExclusive(env.getDomMgr(), () -> {
+			return env.getDomMgr().getWaveforms().get(0).getScaComponent(ScaTestConstaints.DCE_KITCHEN_SINK_COMPONENT);
 		});
-		dt = getFixture().getProperty();
-		Assert.assertEquals("DCE:7fb68ed6-2d60-4652-8e78-ac0974659350", dt.id);
+		dt = component.getProperty("structSeqNoStructValues").getProperty();
+		Assert.assertEquals("structSeqNoStructValues", dt.id);
 		Assert.assertEquals(AnySeqHelper.type(), dt.value.type());
 		Assert.assertEquals(0, AnySeqHelper.extract(dt.value).length);
+
+		// We often use the SCA model to load properties from XML and apply user overrides to those properties. A
+		// property with no values in its PRF should not return an Any because it is uninitialized. This is only the
+		// case when it's being used for this purpose, or before the running resource has been queried for the
+		// property's value.
+		final ScaComponent propHolder = ScaFactory.eINSTANCE.createScaComponent();
+		propHolder.setProfileURI(component.getProfileURI());
+		propHolder.fetchProfileObject(new NullProgressMonitor());
+		propHolder.fetchProperties(new NullProgressMonitor());
+		dt = propHolder.getProperty("structSeqNoStructValues").getProperty();
+		Assert.assertNull(dt);
 	}
 
 	// BEGIN GENERATED CODE
