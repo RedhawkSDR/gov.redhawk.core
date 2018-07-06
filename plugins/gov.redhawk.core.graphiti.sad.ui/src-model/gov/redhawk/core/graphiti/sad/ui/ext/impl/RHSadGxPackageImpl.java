@@ -74,7 +74,7 @@ public class RHSadGxPackageImpl extends EPackageImpl implements RHSadGxPackage {
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
+	 *
 	 * <p>This method is used to initialize {@link RHSadGxPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
@@ -89,9 +89,9 @@ public class RHSadGxPackageImpl extends EPackageImpl implements RHSadGxPackage {
 			return (RHSadGxPackage) EPackage.Registry.INSTANCE.getEPackage(RHSadGxPackage.eNS_URI);
 
 		// Obtain or create and register package
-		RHSadGxPackageImpl theRHSadGxPackage = (RHSadGxPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof RHSadGxPackageImpl
-			? EPackage.Registry.INSTANCE.get(eNS_URI)
-			: new RHSadGxPackageImpl());
+		Object registeredRHSadGxPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		RHSadGxPackageImpl theRHSadGxPackage = registeredRHSadGxPackage instanceof RHSadGxPackageImpl ? (RHSadGxPackageImpl) registeredRHSadGxPackage
+			: new RHSadGxPackageImpl();
 
 		isInited = true;
 

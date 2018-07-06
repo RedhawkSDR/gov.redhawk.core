@@ -82,7 +82,7 @@ public class RHDeviceGxPackageImpl extends EPackageImpl implements RHDeviceGxPac
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
+	 *
 	 * <p>This method is used to initialize {@link RHDeviceGxPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
@@ -97,9 +97,10 @@ public class RHDeviceGxPackageImpl extends EPackageImpl implements RHDeviceGxPac
 			return (RHDeviceGxPackage) EPackage.Registry.INSTANCE.getEPackage(RHDeviceGxPackage.eNS_URI);
 
 		// Obtain or create and register package
-		RHDeviceGxPackageImpl theRHDeviceGxPackage = (RHDeviceGxPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof RHDeviceGxPackageImpl
-			? EPackage.Registry.INSTANCE.get(eNS_URI)
-			: new RHDeviceGxPackageImpl());
+		Object registeredRHDeviceGxPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		RHDeviceGxPackageImpl theRHDeviceGxPackage = registeredRHDeviceGxPackage instanceof RHDeviceGxPackageImpl
+			? (RHDeviceGxPackageImpl) registeredRHDeviceGxPackage
+			: new RHDeviceGxPackageImpl();
 
 		isInited = true;
 
