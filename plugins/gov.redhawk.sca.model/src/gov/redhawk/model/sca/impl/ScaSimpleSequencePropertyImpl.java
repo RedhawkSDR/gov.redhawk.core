@@ -306,7 +306,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	public void setValue(Object[] newValue) {
 		// END GENERATED CODE
 		// Ignore the change if the value has been set previously (i.e. initialized), and this value is the same
-		if (getValues().isSet() && Arrays.equals(getValues().toArray(), newValue)) {
+		if (isSetValues() && Arrays.equals(getValues().toArray(), newValue)) {
 			return;
 		}
 		if (newValue != null && newValue.length > 0) {
@@ -401,7 +401,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 
 	@Override
 	public Any toAny() {
-		if (!getValues().isSet()) {
+		if (!isSetValues()) {
 			// Can't return an Any if unset - this implies there has been no initializing, not even to "zero values"
 			return null;
 		}

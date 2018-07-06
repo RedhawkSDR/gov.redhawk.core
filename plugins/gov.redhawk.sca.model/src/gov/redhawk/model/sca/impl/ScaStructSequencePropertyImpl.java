@@ -485,7 +485,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	 */
 	@Override
 	public Any toAny() {
-		if (!getStructs().isSet()) {
+		if (!isSetStructs()) {
 			// Can't return an Any if unset - this implies there has been no initializing, not even to "zero values"
 			return null;
 		}
@@ -528,7 +528,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 				structAnys = AnySeqHelper.extract(any);
 			}
 
-			// Zero-length case
+			// Zero-length case (ensures the structs become "set" vs "unset")
 			if (structAnys.length == 0) {
 				getStructs().clear();
 			}
