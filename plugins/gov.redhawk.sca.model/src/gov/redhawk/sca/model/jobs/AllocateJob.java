@@ -48,7 +48,7 @@ public class AllocateJob extends Job {
 	}
 
 	/**
-	 * @since 21.1
+	 * @since 22.0
 	 */
 	@Override
 	public IStatus run(IProgressMonitor monitor) {

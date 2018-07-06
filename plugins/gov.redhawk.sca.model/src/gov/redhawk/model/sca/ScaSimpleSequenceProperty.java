@@ -60,7 +60,7 @@ public interface ScaSimpleSequenceProperty extends ScaAbstractProperty<SimpleSeq
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#getValues <em>Values</em>}'
 	 * attribute list.
 	 * <!-- begin-user-doc -->
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @see #isSetValues()
 	 * @see #getValues()
@@ -72,7 +72,7 @@ public interface ScaSimpleSequenceProperty extends ScaAbstractProperty<SimpleSeq
 	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#getValues
 	 * <em>Values</em>}' attribute list is set.
 	 * <!-- begin-user-doc -->
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Values</em>' attribute list is set.
 	 * @see #unsetValues()

@@ -64,7 +64,7 @@ public interface ScaStructSequenceProperty extends ScaAbstractProperty<StructSeq
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaStructSequenceProperty#getStructs <em>Structs</em>}'
 	 * containment reference list.
 	 * <!-- begin-user-doc -->
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @see #isSetStructs()
 	 * @see #getStructs()
@@ -76,7 +76,7 @@ public interface ScaStructSequenceProperty extends ScaAbstractProperty<StructSeq
 	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaStructSequenceProperty#getStructs
 	 * <em>Structs</em>}' containment reference list is set.
 	 * <!-- begin-user-doc -->
-	 * @since 21.1
+	 * @since 22.0
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Structs</em>' containment reference list is set.
 	 * @see #unsetStructs()
