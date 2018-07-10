@@ -20,6 +20,7 @@ build:
   except:
     - master
     - /^(\d+\.)?(\d+)?(\.\d+)$/
+    - /.*-external$/
 
 jenkins:
   image: ${docker_registry}centos:7
@@ -33,6 +34,8 @@ jenkins:
       fi
   only:
     - branches
+  except:
+    - /.*-external$/
 
 trigger-product:
   image: ${docker_registry}centos:7
@@ -47,3 +50,5 @@ trigger-product:
                               $product_url
   only:
     - branches
+  except:
+    - /.*-external$/
