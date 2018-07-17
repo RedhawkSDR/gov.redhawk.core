@@ -20,16 +20,17 @@
 package bulkio;
 
 class FileDataHelper implements DataHelper<String> {
-    public int elementSize() {
-        return 1;
-    }
-
     public int bitSize() {
         return 8;
     }
 
     public int arraySize(String data) {
         return data.length();
+    }
+
+    public boolean isEmpty(String data)
+    {
+        return data.isEmpty();
     }
 
     public String emptyArray() {

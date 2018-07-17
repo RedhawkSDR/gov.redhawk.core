@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 
 import CF.DataType;
-import org.ossie.component.PortBase;
+import org.ossie.component.RHLogger;
 
 import BULKIO.PortStatistics;
 import BULKIO.PortUsageType;
@@ -41,7 +41,7 @@ import BULKIO.StreamSRI;
 /**
  * 
  */
-public class InPortImpl<A> {
+class InPortImpl<A> {
 
     /**
      * 
@@ -117,7 +117,7 @@ public class InPortImpl<A> {
     public InPortImpl(String portName, Logger logger, bulkio.sri.Comparator compareSRI, bulkio.SriListener sriCallback, DataHelper<A> helper) {
         this.name = portName;
         this.logger = logger;
-        this.stats = new linkStatistics(this.name, helper.elementSize());
+        this.stats = new linkStatistics(this.name, 1);
         // Update bit size from the helper, because element size does not take
         // sub-byte elements (i.e., dataBit) into account.
         this.stats.setBitSize(helper.bitSize());
@@ -151,6 +151,14 @@ public class InPortImpl<A> {
     public void setLogger(Logger newlogger) {
         synchronized (this.sriUpdateLock) {
             logger = newlogger;
+        }
+    }
+
+    public void setLogger(RHLogger logger) {
+        if (logger != null) {
+            setLogger(logger.getL4Logger());
+        } else {
+            setLogger((Logger) null);
         }
     }
 
@@ -312,6 +320,14 @@ public class InPortImpl<A> {
         if ( logger != null ) {
             logger.trace("bulkio.InPort pushPacket ENTER (port=" + name +")" );
         }
+
+        // Discard empty packets if EOS is not set, as there is no useful data
+        // or metadata to be had--since T applies to the 1st sample (which does
+        // not exist), all we have is a stream ID
+        if (helper.isEmpty(data) && !eos) {
+            return;
+        }
+
         synchronized (this.dataBufferLock) {
             if (this.maxQueueDepth == 0) {
                 if ( logger != null ) {

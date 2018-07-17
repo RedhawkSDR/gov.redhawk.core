@@ -25,24 +25,24 @@ package bulkio;
 
 import java.util.Arrays;
 
-class Int8DataHelper implements DataHelper<char[]> {
-    public int elementSize() {
-        return 1;
-    }
-
+class ShortDataHelper implements DataHelper<short[]> {
     public int bitSize() {
-        return 1 * 8;
+        return 16;
     }
 
-    public int arraySize(char[] data) {
+    public int arraySize(short[] data) {
         return data.length;
     }
 
-    public char[] emptyArray() {
-        return new char[0];
+    public boolean isEmpty(short[] data) {
+        return (data.length == 0);
     }
 
-    public char[] slice(char[] data, int start, int end) {
+    public short[] emptyArray() {
+        return new short[0];
+    }
+
+    public short[] slice(short[] data, int start, int end) {
         return Arrays.copyOfRange(data, start, end);
     }
 }

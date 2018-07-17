@@ -101,11 +101,29 @@ public class _ExecutableDeviceStub extends omnijni.ObjectImpl implements CF.Exec
   }
   private static native void _set_log_level (long __ref__, int value);
 
+  public int getLogLevel (String logger_id)
+  {
+    return getLogLevel(this.ref_, logger_id);
+  }
+  private static native int getLogLevel (long __ref__, String logger_id);
+
   public void setLogLevel (String logger_id, int newLevel)
   {
     setLogLevel(this.ref_, logger_id, newLevel);
   }
   private static native void setLogLevel (long __ref__, String logger_id, int newLevel);
+
+  public String[] getNamedLoggers ()
+  {
+    return getNamedLoggers(this.ref_);
+  }
+  private static native String[] getNamedLoggers (long __ref__);
+
+  public void resetLog ()
+  {
+    resetLog(this.ref_);
+  }
+  private static native void resetLog (long __ref__);
 
   public String getLogConfig ()
   {

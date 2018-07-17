@@ -25,17 +25,17 @@ package bulkio;
 
 import java.util.Arrays;
 
-class UInt32DataHelper implements DataHelper<int[]> {
-    public int elementSize() {
-        return 4;
-    }
-
+class ULongDataHelper implements DataHelper<int[]> {
     public int bitSize() {
-        return 4 * 8;
+        return 32;
     }
 
     public int arraySize(int[] data) {
         return data.length;
+    }
+
+    public boolean isEmpty(int[] data) {
+        return (data.length == 0);
     }
 
     public int[] emptyArray() {

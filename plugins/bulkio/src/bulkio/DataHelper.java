@@ -19,10 +19,10 @@
  */
 package bulkio;
 
-public interface DataHelper<E> {
-    int elementSize();
+interface DataHelper<E> {
     int bitSize();
     E emptyArray();
+    boolean isEmpty(E data);
     int arraySize(E data);
     E slice(E data, int start, int end);
 }

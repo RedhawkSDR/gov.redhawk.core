@@ -18,48 +18,25 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
 /*
- * WARNING: This file is generated from OutPort.java.template.
+ * WARNING: This file is generated from DeprecatedOutPort.java.template.
  *          Do not modify directly.
  */
 package bulkio;
 
 import org.apache.log4j.Logger;
 
-import BULKIO.PrecisionUTCTime;
-import BULKIO.dataUlongLongOperations;
-
-/**
- * BulkIO output port implementation for dataUlongLong.
- */
-public class OutUInt64Port extends OutStreamPort<dataUlongLongOperations,long[]> {
+@Deprecated
+public class OutUInt64Port extends OutULongLongPort {
 
     public OutUInt64Port(String portName) {
-        this(portName, null, null);
+        super(portName);
     }
 
     public OutUInt64Port(String portName, Logger logger) {
-        this(portName, logger, null);
+        super(portName, logger);
     }
 
     public OutUInt64Port(String portName, Logger logger, ConnectionEventListener eventCB) {
-        super(portName, logger, eventCB, new UInt64DataHelper());
-        if (this.logger != null) {
-            this.logger.debug("bulkio.OutPort CTOR port: " + portName);
-        }
-
-    }
-
-    protected dataUlongLongOperations narrow(final org.omg.CORBA.Object obj) {
-        return BULKIO.jni.dataUlongLongHelper.narrow(obj);
-    }
-
-    protected void sendPacket(dataUlongLongOperations port, long[] data, PrecisionUTCTime time,
-                              boolean endOfStream, String streamID) {
-        port.pushPacket(data, time, endOfStream, streamID);
-    }
-
-    public String getRepid() {
-        return BULKIO.dataUlongLongHelper.id();
+        super(portName, logger, eventCB);
     }
 }
-

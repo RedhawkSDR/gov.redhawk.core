@@ -17,32 +17,49 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+/*
+ * WARNING: This file is generated from OutPort.java.template.
+ *          Do not modify directly.
+ */
 package bulkio;
+
 import org.apache.log4j.Logger;
 
+import BULKIO.PrecisionUTCTime;
+import BULKIO.dataCharOperations;
+
 /**
- * 
+ * BulkIO output port implementation for dataChar.
  */
-public class OutCharPort extends OutInt8Port  {
+public class OutCharPort extends ChunkingOutPort<dataCharOperations,char[]> {
 
-    /**
-     * @generated
-     */
-    public OutCharPort(String portName)
-    {
-	super(portName );
+    public OutCharPort(String portName) {
+        this(portName, null, null);
     }
 
-    public OutCharPort(String portName, Logger logger)
-    {
-	super(portName, logger );
+    public OutCharPort(String portName, Logger logger) {
+        this(portName, logger, null);
     }
 
+    public OutCharPort(String portName, Logger logger, ConnectionEventListener eventCB) {
+        super(portName, logger, eventCB, new CharDataHelper());
+        if (this.logger != null) {
+            this.logger.debug("bulkio.OutPort CTOR port: " + portName);
+        }
 
-    public OutCharPort(String portName, Logger logger, ConnectionEventListener eventCB )
-    {
-	super(portName, logger, eventCB );
     }
 
+    protected dataCharOperations narrow(final org.omg.CORBA.Object obj) {
+        return BULKIO.jni.dataCharHelper.narrow(obj);
+    }
+
+    protected void sendPacket(dataCharOperations port, char[] data, PrecisionUTCTime time,
+                              boolean endOfStream, String streamID) {
+        port.pushPacket(data, time, endOfStream, streamID);
+    }
+
+    public String getRepid() {
+        return BULKIO.dataCharHelper.id();
+    }
 }
 

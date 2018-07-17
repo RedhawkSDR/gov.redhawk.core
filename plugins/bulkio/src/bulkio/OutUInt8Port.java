@@ -18,48 +18,25 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
 /*
- * WARNING: This file is generated from OutPort.java.template.
+ * WARNING: This file is generated from DeprecatedOutPort.java.template.
  *          Do not modify directly.
  */
 package bulkio;
 
 import org.apache.log4j.Logger;
 
-import BULKIO.PrecisionUTCTime;
-import BULKIO.dataOctetOperations;
-
-/**
- * BulkIO output port implementation for dataOctet.
- */
-public class OutUInt8Port extends OutStreamPort<dataOctetOperations,byte[]> {
+@Deprecated
+public class OutUInt8Port extends OutOctetPort {
 
     public OutUInt8Port(String portName) {
-        this(portName, null, null);
+        super(portName);
     }
 
     public OutUInt8Port(String portName, Logger logger) {
-        this(portName, logger, null);
+        super(portName, logger);
     }
 
     public OutUInt8Port(String portName, Logger logger, ConnectionEventListener eventCB) {
-        super(portName, logger, eventCB, new UInt8DataHelper());
-        if (this.logger != null) {
-            this.logger.debug("bulkio.OutPort CTOR port: " + portName);
-        }
-
-    }
-
-    protected dataOctetOperations narrow(final org.omg.CORBA.Object obj) {
-        return BULKIO.jni.dataOctetHelper.narrow(obj);
-    }
-
-    protected void sendPacket(dataOctetOperations port, byte[] data, PrecisionUTCTime time,
-                              boolean endOfStream, String streamID) {
-        port.pushPacket(data, time, endOfStream, streamID);
-    }
-
-    public String getRepid() {
-        return BULKIO.dataOctetHelper.id();
+        super(portName, logger, eventCB);
     }
 }
-

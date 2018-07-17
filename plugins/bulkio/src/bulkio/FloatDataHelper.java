@@ -26,16 +26,16 @@ package bulkio;
 import java.util.Arrays;
 
 class FloatDataHelper implements DataHelper<float[]> {
-    public int elementSize() {
-        return 4;
-    }
-
     public int bitSize() {
-        return 4 * 8;
+        return 32;
     }
 
     public int arraySize(float[] data) {
         return data.length;
+    }
+
+    public boolean isEmpty(float[] data) {
+        return (data.length == 0);
     }
 
     public float[] emptyArray() {

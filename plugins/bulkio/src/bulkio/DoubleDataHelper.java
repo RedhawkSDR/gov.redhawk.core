@@ -26,16 +26,16 @@ package bulkio;
 import java.util.Arrays;
 
 class DoubleDataHelper implements DataHelper<double[]> {
-    public int elementSize() {
-        return 8;
-    }
-
     public int bitSize() {
-        return 8 * 8;
+        return 64;
     }
 
     public int arraySize(double[] data) {
         return data.length;
+    }
+
+    public boolean isEmpty(double[] data) {
+        return (data.length == 0);
     }
 
     public double[] emptyArray() {

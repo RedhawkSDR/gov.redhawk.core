@@ -31,7 +31,7 @@ import BULKIO.dataDoubleOperations;
 /**
  * BulkIO output port implementation for dataDouble.
  */
-public class OutDoublePort extends OutStreamPort<dataDoubleOperations,double[]> {
+public class OutDoublePort extends ChunkingOutPort<dataDoubleOperations,double[]> {
 
     public OutDoublePort(String portName) {
         this(portName, null, null);

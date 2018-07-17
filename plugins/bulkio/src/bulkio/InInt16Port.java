@@ -18,173 +18,38 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
 /*
- * WARNING: This file is generated from InPort.java.template.
+ * WARNING: This file is generated from DeprecatedInPort.java.template.
  *          Do not modify directly.
  */
 package bulkio;
 
 import org.apache.log4j.Logger;
 
-import BULKIO.PortStatistics;
-import BULKIO.PortUsageType;
-import BULKIO.PrecisionUTCTime;
-import BULKIO.StreamSRI;
+@Deprecated
+public class InInt16Port extends InShortPort {
 
-/**
- * 
- */
-public class InInt16Port extends BULKIO.jni.dataShortPOA implements InDataPort<BULKIO.dataShortOperations,short[]> {
-
-    /**
-     * A class to hold packet data.
-     * 
-     */
-    public class Packet extends DataTransfer < short[] > {
-
-        public Packet(short[] data, PrecisionUTCTime time, boolean endOfStream, String streamID, StreamSRI H, boolean sriChanged, boolean inputQueueFlushed ) {
-            super(data,time,endOfStream,streamID,H,sriChanged,inputQueueFlushed);
-        };
-    };
-
-    private InPortImpl<short[]> impl;
-
-    /**
-     * 
-     */
-    public InInt16Port( String portName ) {
-        this( portName, null, new bulkio.sri.DefaultComparator(), null );
+    public InInt16Port(String portName) {
+        super(portName);
     }
 
-    public InInt16Port( String portName,
-                       bulkio.sri.Comparator compareSRI ){
-        this( portName, null, compareSRI, null );
+    public InInt16Port(String portName, bulkio.sri.Comparator compareSRI) {
+        super(portName, compareSRI);
     }
 
-    public InInt16Port( String portName,
-                        bulkio.sri.Comparator compareSRI,
-                        bulkio.SriListener sriCallback
-                       ) {
-        this( portName, null, compareSRI, sriCallback );
+    public InInt16Port(String portName, 
+                        bulkio.sri.Comparator compareSRI, 
+                        bulkio.SriListener sriCallback) {
+        super(portName, compareSRI, sriCallback);
     }
 
-    public InInt16Port( String portName, Logger logger ) {
-        this( portName, logger, new bulkio.sri.DefaultComparator(), null );
+    public InInt16Port(String portName, Logger logger) {
+        super(portName, logger);
     }
 
-    public InInt16Port( String portName,
-                       Logger logger,
-                       bulkio.sri.Comparator compareSRI,
-                       bulkio.SriListener sriCallback ) {
-        impl = new InPortImpl<short[]>(portName, logger, compareSRI, sriCallback, new Int16DataHelper());
+    public InInt16Port(String portName, 
+                        Logger logger,
+                        bulkio.sri.Comparator compareSRI, 
+                        bulkio.SriListener sriCallback) {
+        super(portName, logger, compareSRI, sriCallback);
     }
-
-    public Logger getLogger() {
-        return impl.getLogger();
-    }
-
-    public void setLogger(Logger logger){
-        impl.setLogger(logger);
-    }
-
-    /**
-     * 
-     */
-    public void setSriListener(bulkio.SriListener sriCallback) {
-        impl.setSriListener(sriCallback);
-    }
-
-    /**
-     * 
-     */
-    public String getName() {
-        return impl.getName();
-    }
-
-    /**
-     * 
-     */
-    public void enableStats(boolean enable) {
-        impl.enableStats(enable);
-    }
-
-    /**
-     * 
-     */
-    public PortStatistics statistics() {
-        return impl.statistics();
-    }
-
-    /**
-     * 
-     */
-    public PortUsageType state() {
-        return impl.state();
-    }
-
-    /**
-     * 
-     */
-    public StreamSRI[] activeSRIs() {
-        return impl.activeSRIs();
-    }
-
-    /**
-     * 
-     */
-    public int getCurrentQueueDepth() {
-        return impl.getCurrentQueueDepth();
-    }
-
-    /**
-     * 
-     */
-    public int getMaxQueueDepth() {
-        return impl.getMaxQueueDepth();
-    }
-
-    /**
-     * 
-     */
-    public void setMaxQueueDepth(int newDepth) {
-        impl.setMaxQueueDepth(newDepth);
-    }
-
-    /**
-     * 
-     */
-    public void pushSRI(StreamSRI header) {
-        impl.pushSRI(header);
-    }
-
-    /**
-     * 
-     */
-    public void pushPacket(short[] data, PrecisionUTCTime time, boolean eos, String streamID)
-    {
-        impl.pushPacket(data, time, eos, streamID);
-    }
-
-    /**
-     * 
-     */
-    public Packet getPacket(long wait)
-    {
-        DataTransfer<short[]> p = impl.getPacket(wait);
-        if (p == null) {
-            return null;
-        } else {
-            return new Packet(p.getData(), p.getTime(), p.getEndOfStream(), p.getStreamID(), p.getSRI(), p.sriChanged(), p.inputQueueFlushed());
-        }
-    }
-
-    public String getRepid()
-    {
-        return BULKIO.dataShortHelper.id();
-    }
-
-    public String getDirection()
-    {
-        return CF.PortSet.DIRECTION_PROVIDES;
-    }
-
 }

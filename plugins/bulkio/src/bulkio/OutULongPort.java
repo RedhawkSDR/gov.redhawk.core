@@ -17,29 +17,49 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+/*
+ * WARNING: This file is generated from OutPort.java.template.
+ *          Do not modify directly.
+ */
 package bulkio;
+
 import org.apache.log4j.Logger;
 
+import BULKIO.PrecisionUTCTime;
+import BULKIO.dataUlongOperations;
+
 /**
- * 
+ * BulkIO output port implementation for dataUlong.
  */
-public class OutULongPort extends OutUInt32Port  {
+public class OutULongPort extends ChunkingOutPort<dataUlongOperations,int[]> {
 
-    public OutULongPort(String portName)
-    {
-        super(portName );
+    public OutULongPort(String portName) {
+        this(portName, null, null);
     }
 
-    public OutULongPort(String portName, Logger logger)
-    {
-        super(portName, logger );
+    public OutULongPort(String portName, Logger logger) {
+        this(portName, logger, null);
     }
 
+    public OutULongPort(String portName, Logger logger, ConnectionEventListener eventCB) {
+        super(portName, logger, eventCB, new ULongDataHelper());
+        if (this.logger != null) {
+            this.logger.debug("bulkio.OutPort CTOR port: " + portName);
+        }
 
-    public OutULongPort(String portName, Logger logger, ConnectionEventListener eventCB )
-    {
-        super(portName, logger, eventCB );
     }
 
+    protected dataUlongOperations narrow(final org.omg.CORBA.Object obj) {
+        return BULKIO.jni.dataUlongHelper.narrow(obj);
+    }
+
+    protected void sendPacket(dataUlongOperations port, int[] data, PrecisionUTCTime time,
+                              boolean endOfStream, String streamID) {
+        port.pushPacket(data, time, endOfStream, streamID);
+    }
+
+    public String getRepid() {
+        return BULKIO.dataUlongHelper.id();
+    }
 }
 

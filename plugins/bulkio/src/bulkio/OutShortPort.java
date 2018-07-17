@@ -17,32 +17,49 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+/*
+ * WARNING: This file is generated from OutPort.java.template.
+ *          Do not modify directly.
+ */
 package bulkio;
+
 import org.apache.log4j.Logger;
 
+import BULKIO.PrecisionUTCTime;
+import BULKIO.dataShortOperations;
+
 /**
- * 
+ * BulkIO output port implementation for dataShort.
  */
-public class OutShortPort extends OutInt16Port  {
+public class OutShortPort extends ChunkingOutPort<dataShortOperations,short[]> {
 
-    /**
-     * @generated
-     */
-    public OutShortPort(String portName)
-    {
-        super(portName );
+    public OutShortPort(String portName) {
+        this(portName, null, null);
     }
 
-    public OutShortPort(String portName, Logger logger)
-    {
-        super(portName, logger );
+    public OutShortPort(String portName, Logger logger) {
+        this(portName, logger, null);
     }
 
+    public OutShortPort(String portName, Logger logger, ConnectionEventListener eventCB) {
+        super(portName, logger, eventCB, new ShortDataHelper());
+        if (this.logger != null) {
+            this.logger.debug("bulkio.OutPort CTOR port: " + portName);
+        }
 
-    public OutShortPort(String portName, Logger logger, ConnectionEventListener eventCB )
-    {
-        super(portName, logger, eventCB );
     }
 
+    protected dataShortOperations narrow(final org.omg.CORBA.Object obj) {
+        return BULKIO.jni.dataShortHelper.narrow(obj);
+    }
+
+    protected void sendPacket(dataShortOperations port, short[] data, PrecisionUTCTime time,
+                              boolean endOfStream, String streamID) {
+        port.pushPacket(data, time, endOfStream, streamID);
+    }
+
+    public String getRepid() {
+        return BULKIO.dataShortHelper.id();
+    }
 }
 

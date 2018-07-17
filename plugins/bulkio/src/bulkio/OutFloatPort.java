@@ -31,7 +31,7 @@ import BULKIO.dataFloatOperations;
 /**
  * BulkIO output port implementation for dataFloat.
  */
-public class OutFloatPort extends OutStreamPort<dataFloatOperations,float[]> {
+public class OutFloatPort extends ChunkingOutPort<dataFloatOperations,float[]> {
 
     public OutFloatPort(String portName) {
         this(portName, null, null);
