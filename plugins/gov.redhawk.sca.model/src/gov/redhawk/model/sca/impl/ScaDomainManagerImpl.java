@@ -2850,6 +2850,17 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		domMgr.log_level(newLog_level);
 	}
 
+	@Override
+	public int getLogLevel(String logger_id) throws CF.UnknownIdentifier {
+		// END GENERATED CODE
+		DomainManager domMgr = fetchNarrowedObject(null);
+		if (domMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		return domMgr.getLogLevel(logger_id);
+		// BEGIN GENERATED CODE
+	}
+
 	/**
 	 * @since 22.0
 	 */
@@ -2860,6 +2871,28 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			throw new IllegalStateException("CORBA Object is Null");
 		}
 		domMgr.setLogLevel(logger_id, newLevel);
+	}
+
+	@Override
+	public String[] getNamedLoggers() {
+		// END GENERATED CODE
+		DomainManager domMgr = fetchNarrowedObject(null);
+		if (domMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		return domMgr.getNamedLoggers();
+		// BEGIN GENERATED CODE
+	}
+
+	@Override
+	public void resetLog() {
+		// END GENERATED CODE
+		DomainManager domMgr = fetchNarrowedObject(null);
+		if (domMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		domMgr.resetLog();
+		// BEGIN GENERATED CODE
 	}
 
 	/**

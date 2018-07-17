@@ -2091,12 +2091,27 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		getObj().log_level(newLog_level);
 	}
 
+	@Override
+	public int getLogLevel(String logger_id) throws CF.UnknownIdentifier {
+		return getObj().getLogLevel(logger_id);
+	}
+
 	/**
 	 * @since 19.0
 	 */
 	@Override
 	public void setLogLevel(String logger_id, int newLevel) throws UnknownIdentifier {
 		getObj().setLogLevel(logger_id, newLevel);
+	}
+
+	@Override
+	public String[] getNamedLoggers() {
+		return getObj().getNamedLoggers();
+	}
+
+	@Override
+	public void resetLog() {
+		getObj().resetLog();
 	}
 
 	/**
