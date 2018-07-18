@@ -781,7 +781,8 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		File domRoot = new File(domFileUrl.toURI());
 		Assert.assertTrue(domRoot.exists());
 		OrbSession session = TestEnvirornment.getInstance().getOrbSession();
-		DomainManagerImpl domainMgrImpl = new DomainManagerImpl(domRoot, "/domain2/DomainManager.dmd.xml", null, null, session.getOrb(), session.getPOA());
+		DomainManagerImpl domainMgrImpl = new DomainManagerImpl(domRoot, "/domain2/DomainManager.dmd.xml", "DCE:43661053-a981-4f7a-834e-98d229b58c7a",
+			"REDHAWK_DEV2", session.getOrb(), session.getPOA());
 		DomainManager dmdRef = DomainManagerHelper.narrow(session.getPOA().servant_to_reference(new DomainManagerPOATie(domainMgrImpl)));
 		getFixture().registerRemoteDomainManager(dmdRef);
 		Assert.assertEquals(1, getFixture().remoteDomainManagers().length);
