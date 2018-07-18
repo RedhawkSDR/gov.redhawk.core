@@ -1252,6 +1252,17 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
+	public int getLogLevel(String logger_id) throws CF.UnknownIdentifier {
+		// END GENERATED CODE
+		R resource = fetchNarrowedObject(null);
+		if (resource == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		return resource.getLogLevel(logger_id);
+		// BEGIN GENERATED CODE
+	}
+
 	/**
 	 * @since 19.0
 	 */
@@ -1263,6 +1274,28 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 			throw new IllegalStateException("CORBA Object is Null");
 		}
 		resource.setLogLevel(logger_id, newLevel);
+		// BEGIN GENERATED CODE
+	}
+
+	@Override
+	public String[] getNamedLoggers() {
+		// END GENERATED CODE
+		R resource = fetchNarrowedObject(null);
+		if (resource == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		return resource.getNamedLoggers();
+		// BEGIN GENERATED CODE
+	}
+
+	@Override
+	public void resetLog() {
+		// END GENERATED CODE
+		R resource = fetchNarrowedObject(null);
+		if (resource == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		resource.resetLog();
 		// BEGIN GENERATED CODE
 	}
 

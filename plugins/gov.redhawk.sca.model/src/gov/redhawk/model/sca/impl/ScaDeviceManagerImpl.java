@@ -89,6 +89,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.edit.command.DeleteCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.omg.CORBA.IntHolder;
 import org.omg.CORBA.SystemException;
 
 import CF.DataType;
@@ -101,8 +102,10 @@ import CF.ExecutableDeviceHelper;
 import CF.FileSystem;
 import CF.InvalidObjectReference;
 import CF.LoadableDeviceHelper;
+import CF.LogEvent;
 import CF.PortSetOperations;
 import CF.PropertiesHolder;
+import CF.UnknownIdentifier;
 import CF.UnknownProperties;
 import CF.DeviceManagerPackage.ServiceType;
 import CF.PortSetPackage.PortInfoType;
@@ -2312,6 +2315,108 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	@Override
 	public DomainManager domMgr() {
 		return getObj().domMgr();
+	}
+	
+	@Override
+	public LogEvent[] retrieve_records(IntHolder howMany, int startingRecord) {
+		return getObj().retrieve_records(howMany, startingRecord);
+	}
+
+	@Override
+	public LogEvent[] retrieve_records_by_date(IntHolder howMany, long to_timeStamp) {
+		return getObj().retrieve_records_by_date(howMany, to_timeStamp);
+	}
+
+	@Override
+	public LogEvent[] retrieve_records_from_date(IntHolder howMany, long from_timeStamp) {
+		return getObj().retrieve_records_from_date(howMany, from_timeStamp);
+	}
+
+	@Override
+	public int log_level() {
+		DeviceManager devMgr = fetchNarrowedObject(null);
+		if (devMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		return devMgr.log_level();
+	}
+
+	@Override
+	public void log_level(int newLog_level) {
+		DeviceManager devMgr = fetchNarrowedObject(null);
+		if (devMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		devMgr.log_level(newLog_level);
+	}
+
+	@Override
+	public int getLogLevel(String logger_id) throws CF.UnknownIdentifier {
+		// END GENERATED CODE
+		DeviceManager devMgr = fetchNarrowedObject(null);
+		if (devMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		return devMgr.getLogLevel(logger_id);
+		// BEGIN GENERATED CODE
+	}
+
+	@Override
+	public void setLogLevel(String logger_id, int newLevel) throws UnknownIdentifier {
+		DeviceManager devMgr = fetchNarrowedObject(null);
+		if (devMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		devMgr.setLogLevel(logger_id, newLevel);
+	}
+
+	@Override
+	public String[] getNamedLoggers() {
+		// END GENERATED CODE
+		DeviceManager devMgr = fetchNarrowedObject(null);
+		if (devMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		return devMgr.getNamedLoggers();
+		// BEGIN GENERATED CODE
+	}
+
+	@Override
+	public void resetLog() {
+		// END GENERATED CODE
+		DeviceManager devMgr = fetchNarrowedObject(null);
+		if (devMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		devMgr.resetLog();
+		// BEGIN GENERATED CODE
+	}
+
+	@Override
+	public String getLogConfig() {
+		DeviceManager devMgr = fetchNarrowedObject(null);
+		if (devMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		return devMgr.getLogConfig();
+	}
+
+	@Override
+	public void setLogConfig(String config_contents) {
+		DeviceManager devMgr = fetchNarrowedObject(null);
+		if (devMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		devMgr.setLogConfig(config_contents);
+	}
+
+	@Override
+	public void setLogConfigURL(String config_url) {
+		DeviceManager devMgr = fetchNarrowedObject(null);
+		if (devMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		devMgr.setLogConfigURL(config_url);
 	}
 
 } // ScaDeviceManagerImpl

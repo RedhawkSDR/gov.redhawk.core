@@ -93,7 +93,7 @@ public class TestEnvirornment {
 		URL domFileUrl = FileLocator.toFileURL(FileLocator.find(Platform.getBundle("gov.redhawk.sca.model.tests"), new Path("sdr/dom"), null));
 		File domRoot = new File(domFileUrl.toURI());
 		Assert.assertTrue(domRoot.exists());
-		domainMgrImpl = new DomainManagerImpl(domRoot, "/domain/DomainManager.dmd.xml", null, null, session.getOrb(), session.getPOA());
+		domainMgrImpl = new DomainManagerImpl(domRoot, "/domain/DomainManager.dmd.xml", "DCE:9ae444e0-0bfd-4e3d-b16c-1cffb3dc0f46", "REDHAWK_DEV", session.getOrb(), session.getPOA());
 		dmdRef = DomainManagerHelper.narrow(session.getPOA().servant_to_reference(new DomainManagerPOATie(domainMgrImpl)));
 
 		for (String name : new String[] { "IDM_CHANNEL", "ODM_CHANNEL" }) {
@@ -107,7 +107,7 @@ public class TestEnvirornment {
 				null));
 		File devRoot = new File(devFileUrl.toURI());
 		Assert.assertTrue(devRoot.exists());
-		devMgrImpl = new DeviceManagerImpl(devRoot, "/nodes/REDHAWK_DevMgr/DeviceManager.dcd.xml", null, null, session.getPOA(), session.getOrb());
+		devMgrImpl = new DeviceManagerImpl(devRoot, "/nodes/REDHAWK_DevMgr/DeviceManager.dcd.xml", "DCE:ddba96fd-1f97-4524-a393-116ede2668c2", "REDHAWK_DevMgr", session.getPOA(), session.getOrb());
 		devMgrRef = DeviceManagerHelper.narrow(session.getPOA().servant_to_reference(new DeviceManagerPOATie(devMgrImpl)));
 
 		execute(new ScaModelCommand() {
