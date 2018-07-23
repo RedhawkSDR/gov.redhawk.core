@@ -529,7 +529,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 			}
 
 			// Zero-length case (ensures the structs become "set" vs "unset")
-			if (structAnys.length == 0) {
+			if (structAnys.length == 0 && !isSetStructs()) {
 				getStructs().clear();
 			}
 

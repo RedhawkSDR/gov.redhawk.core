@@ -12,9 +12,11 @@
 package gov.redhawk.model.sca.tests;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.jacorb.JacorbUtil;
 import org.junit.Assert;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.AnySeqHelper;
@@ -193,14 +195,116 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 
 	@Override
 	public void testFromAny__Any() {
-		// TODO: Write a better test. See same method in ScaSimplePropertyTest / ScaSimpleSequencePropertyTest
-		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-
-			@Override
-			public void execute() {
-				getFixture().fromAny(getFixture().toAny());
-			}
+		// Zero-length struct seq
+		Any zeroLenSS = JacorbUtil.init().create_any();
+		Any[] zeroValues = new Any[0];
+		AnySeqHelper.insert(zeroLenSS, zeroValues);
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().fromAny(zeroLenSS);
 		});
+		Assert.assertTrue(getFixture().isSetStructs());
+		Assert.assertEquals(0, getFixture().getStructs().size());
+		Assert.assertTrue(getFixture().getStatus().isOK());
+
+		// Ensure that using a zero-length struct sequence a second time does not generate any change events (IDE-2228)
+		Boolean[] changed = new Boolean[] { Boolean.FALSE };
+		Adapter changeListener = new EContentAdapter() {
+			public void notifyChanged(Notification notification) {
+				super.notifyChanged(notification);
+				if (notification.getEventType() == Notification.REMOVING_ADAPTER) {
+					return;
+				}
+				if (notification.getNotifier() instanceof ScaAbstractProperty) {
+					switch (notification.getFeatureID(ScaAbstractProperty.class)) {
+					case ScaPackage.SCA_ABSTRACT_PROPERTY__IGNORE_REMOTE_SET:
+						return;
+					default:
+						break;
+					}
+				}
+				changed[0] = Boolean.TRUE;
+			}
+		};
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().eAdapters().add(changeListener);
+		});
+		try {
+			ScaModelCommand.execute(getFixture(), () -> {
+				getFixture().fromAny(zeroLenSS);
+			});
+		} finally {
+			ScaModelCommand.execute(getFixture(), () -> {
+				getFixture().eAdapters().remove(changeListener);
+			});
+		}
+		Assert.assertFalse(changed[0]);
+		Assert.assertTrue(getFixture().getStatus().isOK());
+
+		// Valid 1-length struct seq
+		Any oneLenSS = JacorbUtil.init().create_any();
+		Any oneValue = createKitchenSinkStructValue("abc", true, new String[] { "d", "e", "f" });
+		AnySeqHelper.insert(oneLenSS, new Any[] { oneValue });
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().fromAny(oneLenSS);
+		});
+		Assert.assertEquals(1, getFixture().getStructs().size());
+		validateStructValue(getFixture().getStructs().get(0), "abc", true, new String[] { "d", "e", "f" });
+		Assert.assertTrue(getFixture().getStatus().isOK());
+
+		// Any with non-sequence
+		Any nonArrayValue = JacorbUtil.init().create_any();
+		nonArrayValue.insert_string("abc");
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().fromAny(nonArrayValue);
+		});
+		Assert.assertFalse(getFixture().getStatus().isOK());
+
+		// Valid 3-length struct seq
+		Any threeLenSS = JacorbUtil.init().create_any();
+		Any twoValue = createKitchenSinkStructValue("ghi", false, new String[] { "j", "k" });
+		Any threeValue = createKitchenSinkStructValue("", true, new String[0]);
+		AnySeqHelper.insert(threeLenSS, new Any[] { oneValue, twoValue, threeValue });
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().fromAny(threeLenSS);
+		});
+		Assert.assertEquals(3, getFixture().getStructs().size());
+		validateStructValue(getFixture().getStructs().get(0), "abc", true, new String[] { "d", "e", "f" });
+		validateStructValue(getFixture().getStructs().get(1), "ghi", false, new String[] { "j", "k" });
+		validateStructValue(getFixture().getStructs().get(2), "", true, new String[0]);
+		Assert.assertTrue(getFixture().getStatus().isOK());
+	}
+
+	private Any createKitchenSinkStructValue(String str, boolean bool, String[] strSeq) {
+		DataType[] members = new DataType[3];
+		Any memberValue = JacorbUtil.init().create_any();
+		memberValue.insert_string(str);
+		members[0] = new DataType("DCE:b34d9204-46fa-43ea-9ef2-189674bfc366", memberValue);
+		memberValue = JacorbUtil.init().create_any();
+		memberValue.insert_boolean(bool);
+		members[1] = new DataType("DCE:29948519-5c45-4732-86e1-b8815f4647d1", memberValue);
+		memberValue = JacorbUtil.init().create_any();
+		StringSeqHelper.insert(memberValue, strSeq);
+		members[2] = new DataType("DCE:3c8fdc02-5f93-48ca-bf87-db13271b8254", memberValue);
+
+		Any structVal = JacorbUtil.init().create_any();
+		PropertiesHelper.insert(structVal, members);
+		return structVal;
+	}
+
+	private void validateStructValue(ScaStructProperty prop, String str, boolean bool, String[] strSeq) {
+		Assert.assertEquals(3, prop.getFields().size());
+
+		ScaAbstractProperty< ? > field = prop.getField("DCE:b34d9204-46fa-43ea-9ef2-189674bfc366");
+		Assert.assertTrue(field instanceof ScaSimpleProperty);
+		Assert.assertEquals(str, ((ScaSimpleProperty) field).getValue());
+
+		field = prop.getField("DCE:29948519-5c45-4732-86e1-b8815f4647d1");
+		Assert.assertTrue(field instanceof ScaSimpleProperty);
+		Assert.assertEquals(bool, ((ScaSimpleProperty) field).getValue());
+
+		field = prop.getField("DCE:3c8fdc02-5f93-48ca-bf87-db13271b8254");
+		Assert.assertTrue(field instanceof ScaSimpleSequenceProperty);
+		Assert.assertArrayEquals(strSeq, ((ScaSimpleSequenceProperty) field).getValue());
 	}
 
 	@Override

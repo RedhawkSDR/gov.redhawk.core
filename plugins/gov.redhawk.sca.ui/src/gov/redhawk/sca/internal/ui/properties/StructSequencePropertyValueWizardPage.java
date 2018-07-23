@@ -100,14 +100,19 @@ public class StructSequencePropertyValueWizardPage extends AbstractSequencePrope
 		final ScaStructSequenceProperty structSeqProperty = (ScaStructSequenceProperty) property;
 		final ScaStructProperty newStruct = structSeqProperty.createScaStructProperty();
 		for (final ScaAbstractProperty< ? > field : newStruct.getFields()) {
-			// For simple fields, if there is no default value, set one; simple sequences without a default value will
-			// will be an empty list
+			// For simple fields, if there is no default value, set one appropriate for the type. For simple sequences
+			// that do not have a default value, set them to a zero-length list
 			if (field instanceof ScaSimpleProperty) {
 				final ScaSimpleProperty simple = (ScaSimpleProperty) field;
 				if (simple.getValue() == null) {
 					final Simple definition = simple.getDefinition();
 					final Object value = getDefaultValue(definition.getType(), definition.isComplex());
 					simple.setValue(value);
+				}
+			} else if (field instanceof ScaSimpleSequenceProperty) {
+				final ScaSimpleSequenceProperty simpleSeq = (ScaSimpleSequenceProperty) field;
+				if (!simpleSeq.isSetValues()) {
+					simpleSeq.getValues().clear();
 				}
 			}
 		}
