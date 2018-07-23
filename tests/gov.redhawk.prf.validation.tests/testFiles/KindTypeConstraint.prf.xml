@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+-->
+<!DOCTYPE properties PUBLIC "-//JTRS//DTD SCA V2.2.2 PRF//EN" "properties.dtd">
+<properties>
+  <simple id="simple1" mode="readwrite" type="string">
+    <kind kindtype="event"/>
+    <kind kindtype="allocation"/>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple2" mode="readwrite" type="string">
+    <kind kindtype="event"/>
+    <kind kindtype="allocation"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple3" mode="readwrite" type="string">
+    <kind kindtype="event"/>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple4" mode="readwrite" type="string">
+    <kind kindtype="property"/>
+    <kind/>
+    <kind kindtype="event"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple5" mode="readwrite" type="string">
+    <kind kindtype="event"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple6" mode="readwrite" type="string">
+    <kind kindtype="property"/>
+    <kind kindtype="event"/>
+    <action type="external"/>
+  </simple>
+  <struct id="struct1" mode="readwrite" name="struct1">
+    <simple id="struct1::simple1" name="simple1" type="string"/>
+    <configurationkind kindtype="event"/>
+    <configurationkind kindtype="allocation"/>
+    <configurationkind kindtype="configure"/>
+  </struct>
+  <struct id="struct2" mode="readwrite" name="struct2">
+    <simple id="struct2::simple2" name="simple2" type="string"/>
+    <configurationkind kindtype="event"/>
+    <configurationkind kindtype="allocation"/>
+  </struct>
+  <struct id="struct3" mode="readwrite" name="struct3">
+    <simple id="struct3::simple3" name="simple3" type="string"/>
+    <configurationkind kindtype="event"/>
+    <configurationkind kindtype="configure"/>
+  </struct>
+  <struct id="struct4" mode="readwrite" name="struct4">
+    <simple id="struct4::simple4" name="simple4" type="string"/>
+    <configurationkind kindtype="property"/>
+    <configurationkind/>
+    <configurationkind kindtype="event"/>
+  </struct>
+  <struct id="struct5" mode="readwrite" name="struct5">
+    <simple id="struct5::simple5" name="simple5" type="string"/>
+    <configurationkind kindtype="event"/>
+  </struct>
+  <struct id="struct6" mode="readwrite" name="struct6">
+    <simple id="struct6::simple6" name="simple6" type="string"/>
+    <configurationkind kindtype="property"/>
+    <configurationkind kindtype="event"/>
+  </struct>
+</properties>

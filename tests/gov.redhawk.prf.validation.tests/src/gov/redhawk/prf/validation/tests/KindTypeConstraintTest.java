@@ -10,12 +10,7 @@
  *******************************************************************************/
 package gov.redhawk.prf.validation.tests;
 
-import gov.redhawk.validation.prf.KindTypeConstraint;
-
 import java.io.IOException;
-
-import mil.jpeojtrs.sca.prf.Properties;
-import mil.jpeojtrs.sca.prf.Simple;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -27,10 +22,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * 
- */
+import gov.redhawk.validation.prf.KindTypeConstraint;
+import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.prf.Properties;
+
 public class KindTypeConstraintTest {
+
 	private AbstractModelConstraint constraint;
 	private ResourceSet resourceSet;
 	private Properties prf;
@@ -39,8 +36,8 @@ public class KindTypeConstraintTest {
 	public void setUp() throws Exception {
 		this.constraint = new KindTypeConstraint();
 		this.resourceSet = new ResourceSetImpl();
-		
-		this.prf = Properties.Util.getProperties(this.resourceSet.getResource(PrfValidationTestUtil.getURI("testFiles/testKindTypeEvent.prf.xml"), true));
+
+		this.prf = Properties.Util.getProperties(this.resourceSet.getResource(PrfValidationTestUtil.getURI("testFiles/KindTypeConstraint.prf.xml"), true));
 	}
 
 	@After
@@ -48,7 +45,7 @@ public class KindTypeConstraintTest {
 		this.constraint = null;
 		this.resourceSet = null;
 	}
-	
+
 	@Test
 	public void testValidateNonNull() throws IOException {
 		IValidationContext context = new TestValidationContext(KindTypeConstraint.ID, null);
@@ -58,37 +55,53 @@ public class KindTypeConstraintTest {
 	@Test
 	public void testValidateKindTypeEvent() throws IOException {
 		IValidationContext context;
-		
-		Simple simple = (Simple) this.prf.getProperty("simple");
-		context = new TestValidationContext(KindTypeConstraint.ID, simple);
+
+		AbstractProperty prop = this.prf.getProperty("simple1");
+		context = new TestValidationContext(KindTypeConstraint.ID, prop);
 		Assert.assertEquals(IStatus.OK, this.constraint.validate(context).getSeverity());
-		
-		simple = (Simple) this.prf.getProperty("simple1");
-		context = new TestValidationContext(KindTypeConstraint.ID, simple);
+
+		prop = this.prf.getProperty("simple2");
+		context = new TestValidationContext(KindTypeConstraint.ID, prop);
 		Assert.assertEquals(IStatus.OK, this.constraint.validate(context).getSeverity());
-		
-		simple = (Simple) this.prf.getProperty("simple2");
-		context = new TestValidationContext(KindTypeConstraint.ID, simple);
+
+		prop = this.prf.getProperty("simple3");
+		context = new TestValidationContext(KindTypeConstraint.ID, prop);
 		Assert.assertEquals(IStatus.OK, this.constraint.validate(context).getSeverity());
-		
-		simple = (Simple) this.prf.getProperty("simple3");
-		context = new TestValidationContext(KindTypeConstraint.ID, simple);
+
+		prop = this.prf.getProperty("simple4");
+		context = new TestValidationContext(KindTypeConstraint.ID, prop);
 		Assert.assertEquals(IStatus.OK, this.constraint.validate(context).getSeverity());
-		
-		simple = (Simple) this.prf.getProperty("simple4");
-		context = new TestValidationContext(KindTypeConstraint.ID, simple);
-		Assert.assertEquals(IStatus.OK, this.constraint.validate(context).getSeverity());
-		
-		simple = (Simple) this.prf.getProperty("simple5");
-		context = new TestValidationContext(KindTypeConstraint.ID, simple);
-		Assert.assertEquals(IStatus.OK, this.constraint.validate(context).getSeverity());
-		
-		simple = (Simple) this.prf.getProperty("simple6");
-		context = new TestValidationContext(KindTypeConstraint.ID, simple);
+
+		prop = this.prf.getProperty("simple5");
+		context = new TestValidationContext(KindTypeConstraint.ID, prop);
 		Assert.assertEquals(IStatus.ERROR, this.constraint.validate(context).getSeverity());
-		
-		simple = (Simple) this.prf.getProperty("simple7");
-		context = new TestValidationContext(KindTypeConstraint.ID, simple);
+
+		prop = this.prf.getProperty("simple6");
+		context = new TestValidationContext(KindTypeConstraint.ID, prop);
+		Assert.assertEquals(IStatus.ERROR, this.constraint.validate(context).getSeverity());
+
+		prop = this.prf.getProperty("struct1");
+		context = new TestValidationContext(KindTypeConstraint.ID, prop);
+		Assert.assertEquals(IStatus.OK, this.constraint.validate(context).getSeverity());
+
+		prop = this.prf.getProperty("struct2");
+		context = new TestValidationContext(KindTypeConstraint.ID, prop);
+		Assert.assertEquals(IStatus.OK, this.constraint.validate(context).getSeverity());
+
+		prop = this.prf.getProperty("struct3");
+		context = new TestValidationContext(KindTypeConstraint.ID, prop);
+		Assert.assertEquals(IStatus.OK, this.constraint.validate(context).getSeverity());
+
+		prop = this.prf.getProperty("struct4");
+		context = new TestValidationContext(KindTypeConstraint.ID, prop);
+		Assert.assertEquals(IStatus.OK, this.constraint.validate(context).getSeverity());
+
+		prop = this.prf.getProperty("struct5");
+		context = new TestValidationContext(KindTypeConstraint.ID, prop);
+		Assert.assertEquals(IStatus.ERROR, this.constraint.validate(context).getSeverity());
+
+		prop = this.prf.getProperty("struct6");
+		context = new TestValidationContext(KindTypeConstraint.ID, prop);
 		Assert.assertEquals(IStatus.ERROR, this.constraint.validate(context).getSeverity());
 	}
 }
