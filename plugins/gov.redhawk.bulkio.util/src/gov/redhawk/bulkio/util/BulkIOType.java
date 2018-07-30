@@ -70,7 +70,7 @@ public enum BulkIOType {
 	FLOAT(4, float.class, false, dataFloatOperations.class, 'F'),
 	LONG(4, int.class, false, dataLongOperations.class, 'L'),
 	LONG_LONG(8, long.class, false, dataLongLongOperations.class, 'X'),
-	OCTET(1, byte.class, false, dataOctetOperations.class, 'B'),
+	OCTET(1, byte.class, true, dataOctetOperations.class, 'I'),
 	SHORT(2, short.class, false, dataShortOperations.class, 'I'),
 	ULONG(4, int.class, true, dataUlongOperations.class, 'X'),
 	ULONG_LONG(8, long.class, true, dataUlongLongOperations.class, 'X'),
@@ -108,7 +108,8 @@ public enum BulkIOType {
 	}
 
 	/**
-	 * @return The number of bytes per 'atom' (size of 1 scalar sample). For {@link #BIT}, this returns 0.
+	 * @return The number of bytes per 'atom' (size of 1 scalar sample). For {@link #BIT}, this returns 0. Unsigned
+	 * types are not upcast.
 	 */
 	public int getBytePerAtom() {
 		return bytePerAtom;
@@ -205,7 +206,7 @@ public enum BulkIOType {
 	}
 
 	/**
-	 * @return The non-upcast Java class container type
+	 * @return The Java type used by BulkIO (non-upcast for unsigned types)
 	 * @since 2.0
 	 */
 	public Class< ? > getJavaType() {
@@ -228,6 +229,7 @@ public enum BulkIOType {
 	}
 
 	/**
+	 * @return the X-Midas type that correctly represents the BulkIO type in Java (unsigned types are upcast)
 	 * @since 2.0
 	 */
 	public char getMidasType() {
