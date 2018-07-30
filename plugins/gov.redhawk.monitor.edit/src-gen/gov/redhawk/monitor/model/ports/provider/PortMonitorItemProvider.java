@@ -12,6 +12,9 @@
 package gov.redhawk.monitor.model.ports.provider;
 
 import gov.redhawk.model.sca.ScaPort;
+import gov.redhawk.model.sca.ScaProvidesPort;
+import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.model.sca.provider.ScaEditPlugin;
 import gov.redhawk.monitor.edit.MonitorEditPlugin;
 import gov.redhawk.monitor.model.ports.PortMonitor;
 import gov.redhawk.monitor.model.ports.PortsFactory;
@@ -93,8 +96,8 @@ public class PortMonitorItemProvider extends ItemProviderAdapter implements IEdi
 	protected void addStatePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_PortMonitor_state_feature"),
-			getString("_UI_PropertyDescriptor_description", "_UI_PortMonitor_state_feature", "_UI_PortMonitor_type"),
-			PortsPackage.Literals.PORT_MONITOR__STATE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+			getString("_UI_PropertyDescriptor_description", "_UI_PortMonitor_state_feature", "_UI_PortMonitor_type"), PortsPackage.Literals.PORT_MONITOR__STATE,
+			true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -128,18 +131,40 @@ public class PortMonitorItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
+	 * This returns PortMonitor.gif.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@Override
+	public Object getImage(Object object) {
+		// END GENERATED CODE
+		ScaPort< ? , ? > port = ((PortMonitor) object).getPort();
+		if (port instanceof ScaUsesPort) {
+			return overlayImage(object, ScaEditPlugin.INSTANCE.getImage("full/obj16/ScaUsesPort"));
+		} else if (port instanceof ScaProvidesPort) {
+			return overlayImage(object, ScaEditPlugin.INSTANCE.getImage("full/obj16/ScaProvidesPort"));
+		} else {
+			return null;
+		}
+		// BEGIN GENERATED CODE
+	}
+
+	/**
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public String getText(Object object) {
+		// END GENERATED CODE
 		final ScaPort< ? , ? > port = ((PortMonitor) object).getPort();
 		final IItemLabelProvider lpPort = (IItemLabelProvider) getRootAdapterFactory().adapt(port, IItemLabelProvider.class);
 		final IItemLabelProvider lpComponent = (IItemLabelProvider) getRootAdapterFactory().adapt(port.eContainer(), IItemLabelProvider.class);
 		String qualifiedName = lpComponent.getText(port.eContainer()) + " -> " + lpPort.getText(port);
 		return qualifiedName;
+		// BEGIN GENERATED CODE
 	}
 
 	/**
