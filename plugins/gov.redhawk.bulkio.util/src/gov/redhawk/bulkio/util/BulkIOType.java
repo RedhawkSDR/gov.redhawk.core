@@ -62,7 +62,7 @@ public enum BulkIOType {
 	ULONG(4, int.class, true, dataUlongOperations.class, 'X'),
 	SHORT(2, short.class, false, dataShortOperations.class, 'I'),
 	USHORT(2, short.class, true, dataUshortOperations.class, 'L'),
-	OCTET(1, byte.class, false, dataOctetOperations.class, 'B'),
+	OCTET(1, byte.class, true, dataOctetOperations.class, 'I'),
 	CHAR(2, char.class, false, dataCharOperations.class, 'I');
 
 	private static final Map<String, BulkIOType> MAP;
@@ -95,6 +95,10 @@ public enum BulkIOType {
 		this.midasType = midasType;
 	}
 
+	/**
+	 * @return The number of bytes per atom for BulkIO (i.e. a scalar sample, not a complex sample; unsigned types are
+	 * not upcast)
+	 */
 	public int getBytePerAtom() {
 		return bytePerAtom;
 	}
@@ -184,7 +188,7 @@ public enum BulkIOType {
 	}
 
 	/**
-	 * @return The non upcasted Java class container type
+	 * @return The Java type used by BulkIO (non-upcast for unsigned types)
 	 * @since 2.0
 	 */
 	public Class< ? > getJavaType() {
@@ -207,6 +211,7 @@ public enum BulkIOType {
 	}
 
 	/**
+	 * @return the X-Midas type that correctly represents the BulkIO type in Java (unsigned types are upcast)
 	 * @since 2.0
 	 */
 	public char getMidasType() {

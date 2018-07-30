@@ -95,9 +95,11 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	 */
 	public static final String SW_PS_MULTIPLIER = "/PSMULT";
 
-	/** treat dataOctet as 8-bit unsigned integer (this will upcast format type to 16-bit signed integer to hold value).
+	/**
+	 * @deprecated Do not use. Octet will always be treated as unsigned.
 	 * @since 10.2
 	 */
+	@Deprecated
 	public static final String SW_TREAT_OCTET_AS_UNSIGNED = "/UNSIGNEDOCTET";
 
 	/** max seconds allowed since UTC (J1950) */
@@ -171,7 +173,6 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 		this.frameSizeAttribute = this.MA.getL(A_FRAMESIZE, 0);
 		this.overrideSRISubSize = this.MA.getState(A_OVERRIDE_SRI_SUBSIZE, false);
 		this.blocking = this.MA.getState(SW_BLOCKING, false);
-		boolean unsignedOctet = MA.getState(SW_TREAT_OCTET_AS_UNSIGNED);
 		this.canGrowPipe = MA.getState(SW_GROW_PIPE, true);
 		setPipeSizeMultiplier(MA.getL(SW_PS_MULTIPLIER, 4));
 
@@ -179,7 +180,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 		this.type = newType;
 		
 		if (this.receiver == null) {
-			this.receiver = new BulkIOReceiver(this, newType, unsignedOctet, null);
+			this.receiver = new BulkIOReceiver(this, newType, null);
 		}
 		if (origFrameSizeArg == null) {
 			origFrameSizeArg = this.frameSizeAttribute;
