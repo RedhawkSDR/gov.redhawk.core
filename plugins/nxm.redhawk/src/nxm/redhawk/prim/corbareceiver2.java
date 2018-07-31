@@ -62,7 +62,10 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	/** Name of switch to grab number of seconds to wait for SRI during open(). */
 	public static final String SW_WAIT = "/WAIT";
 
-	/** Name of switch to treat dataOctet as 8-bit unsigned integer (this will upcast format type to 16-bit signed integer to hold value). */
+	/**
+	 * @deprecated Do not use. Octet will always be treated as unsigned.
+	 */
+	@Deprecated
 	public static final String SW_TREAT_OCTET_AS_UNSIGNED = "/UNSIGNEDOCTET";
 
 	/** Name of switch to specify desired connection ID. */
@@ -150,7 +153,6 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		this.streamId = MA.getCS(corbareceiver2.A_STREAM_ID, null);
 		BlockingOption defBlockingOption = BlockingOption.FROMSRI;
 		this.blockingOption = MA.getSelection(corbareceiver2.SW_BLOCKING_OPTION, defBlockingOption);
-		boolean unsignedOctet = MA.getState(corbareceiver2.SW_TREAT_OCTET_AS_UNSIGNED);
 		this.connectionId = MA.getCS(corbareceiver2.SW_CONNECTION_ID, null);
 		this.canGrowPipe = MA.getState(corbareceiver2.SW_GROW_PIPE, true);
 		this.sampleRate = MA.getL(corbareceiver2.SW_SAMPLE_RATE, sampleRate);
@@ -160,7 +162,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		this.bulkioType = newType;
 
 		if (this.receiver == null) {
-			this.receiver = new BulkIOReceiver(this, newType, unsignedOctet, this.streamId);
+			this.receiver = new BulkIOReceiver(this, newType, this.streamId);
 		}
 
 		// Check if we were able to connect to the Port

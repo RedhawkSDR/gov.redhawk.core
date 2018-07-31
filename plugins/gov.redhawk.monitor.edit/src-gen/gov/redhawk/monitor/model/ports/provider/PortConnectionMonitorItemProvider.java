@@ -11,6 +11,7 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.monitor.model.ports.provider;
 
+import gov.redhawk.model.sca.provider.ScaEditPlugin;
 import gov.redhawk.monitor.model.ports.PortConnectionMonitor;
 import gov.redhawk.monitor.model.ports.PortsPackage;
 
@@ -75,11 +76,13 @@ public class PortConnectionMonitorItemProvider extends PortStatisticsProviderIte
 	 * This returns PortConnectionMonitor.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/PortConnectionMonitor"));
+		// END GENERATED CODE
+		return overlayImage(object, ScaEditPlugin.INSTANCE.getImage("full/obj16/ScaConnection"));
+		// BEGIN GENERATED CODE
 	}
 
 	/**

@@ -13,7 +13,20 @@
       ecorePackage="ports.ecore#/">
     <genDataTypes ecoreDataType="ports.ecore#//PortUsageType"/>
     <genDataTypes ecoreDataType="ports.ecore#//PortStatistics"/>
-    <genClasses image="false" ecoreClass="ports.ecore#//PortMonitor">
+    <genClasses ecoreClass="ports.ecore#//MonitorRegistry">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ports.ecore#//MonitorRegistry/monitors"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="ports.ecore#//Monitor">
+      <genOperations ecoreOperation="ports.ecore#//Monitor/fetchStats"/>
+    </genClasses>
+    <genClasses ecoreClass="ports.ecore#//PortStatisticsProvider">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ports.ecore#//PortStatisticsProvider/data"/>
+    </genClasses>
+    <genClasses ecoreClass="ports.ecore#//PortSupplierMonitor">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ports.ecore#//PortSupplierMonitor/portContainer"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ports.ecore#//PortSupplierMonitor/monitors"/>
+    </genClasses>
+    <genClasses ecoreClass="ports.ecore#//PortMonitor">
       <genFeatures property="None" notify="false" createChild="false" propertySortChoices="true"
           ecoreFeature="ecore:EReference ports.ecore#//PortMonitor/port"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ports.ecore#//PortMonitor/connections"/>
@@ -22,19 +35,6 @@
     <genClasses ecoreClass="ports.ecore#//PortConnectionMonitor">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ports.ecore#//PortConnectionMonitor/port"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ports.ecore#//PortConnectionMonitor/connectionId"/>
-    </genClasses>
-    <genClasses ecoreClass="ports.ecore#//MonitorRegistry">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ports.ecore#//MonitorRegistry/monitors"/>
-    </genClasses>
-    <genClasses ecoreClass="ports.ecore#//PortSupplierMonitor">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ports.ecore#//PortSupplierMonitor/portContainer"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ports.ecore#//PortSupplierMonitor/monitors"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="ports.ecore#//Monitor">
-      <genOperations ecoreOperation="ports.ecore#//Monitor/fetchStats"/>
-    </genClasses>
-    <genClasses ecoreClass="ports.ecore#//PortStatisticsProvider">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ports.ecore#//PortStatisticsProvider/data"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -32,34 +32,24 @@ public class BulkIOReceiver extends AbstractUberBulkIOPort {
 	private String filterStreamId = null;
 
 	public BulkIOReceiver(final IMidasDataWriter receiver, BulkIOType type) {
-		this(receiver, type, false, null);
+		this(receiver, type, null);
+	}
+
+	public BulkIOReceiver(final IMidasDataWriter receiver, BulkIOType type, String streamId) {
+		super(type);
+		this.receiver = receiver;
+		this.signed = !type.isUnsigned();
+		this.midasType = type.getMidasType();
+		this.filterStreamId = streamId;
 	}
 
 	/**
 	 * @since 10.1
+	 * @deprecated Use {@link #BulkIOReceiver(IMidasDataWriter, BulkIOType, String)}
 	 */
+	@Deprecated
 	public BulkIOReceiver(final IMidasDataWriter receiver, BulkIOType type, boolean treatOctetAsUnsigned, String streamId) {
-		super(type);
-		this.receiver = receiver;
-		switch (type) {
-		case OCTET:
-			if (treatOctetAsUnsigned) {
-				this.signed = false;
-				this.midasType = 'I'; // need to upcast to signed 16-bit integer to represent unsigned 8-bit
-			} else {
-				this.signed = !type.isUnsigned();
-				this.midasType = type.getMidasType();
-			}
-			break;
-		case BIT:
-			this.signed = false;
-			this.midasType = BulkIOType.OCTET.getMidasType();
-			break;
-		default:
-			this.signed = !type.isUnsigned();
-			this.midasType = type.getMidasType();
-		}
-		this.filterStreamId = streamId;
+		this(receiver, type, streamId);
 	}
 
 	public char getMidasType() {
