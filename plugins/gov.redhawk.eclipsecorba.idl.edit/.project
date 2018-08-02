@@ -53,6 +53,5 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.pde.api.tools.apiAnalysisNature</nature>
 		<nature>net.sf.eclipsecs.core.CheckstyleNature</nature>
-		<nature>sf.eclipse.javacc.javaccnature</nature>
 	</natures>
 </projectDescription>
