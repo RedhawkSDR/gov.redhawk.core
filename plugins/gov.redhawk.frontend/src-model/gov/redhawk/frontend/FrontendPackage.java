@@ -33,8 +33,8 @@ import org.eclipse.emf.ecore.EReference;
  * @see gov.redhawk.frontend.FrontendFactory
  * @model kind="package"
  * annotation="http://www.eclipse.org/emf/2002/GenModel prefix='Frontend' dataTypeConverters='true'
- * binaryCompantibleReflectiveMethods='true' fileExtensions='xml' colorProviders='true' fontProviders='true'
- * tablesProviders='true' resource='XML' templateDirectory='/gov.redhawk.frontend/templates' forceOverwrite='true'
+ * binaryCompatibleReflectiveMethods='true' fileExtensions='xml' colorProviders='true' fontProviders='true'
+ * resource='XML' templateDirectory='/gov.redhawk.frontend/templates' forceOverwrite='true'
  * modelPluginVariables='org.eclipse.xtext.xbase.lib' tableProviders='true' runtimeVersion='2.9' codeFormatting='true'
  * commentFormatting='true' dynamicTemplates='true' contentTypeIdentifier='http://redhawk.gov/frontend/1.0.0'
  * modelDirectory='/gov.redhawk.frontend/src-model' editDirectory='/gov.redhawk.frontend.edit/src-gen'
