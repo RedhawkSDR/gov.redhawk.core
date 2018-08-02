@@ -1,20 +1,14 @@
-/*******************************************************************************
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
  * This file is part of REDHAWK IDE.
  *
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ */
 package gov.redhawk.bulkio.orb.omni.internal;
-
-import gov.redhawk.bulkio.util.BulkIOType;
-import gov.redhawk.bulkio.util.IPortFactory;
-import gov.redhawk.bulkio.util.PortReference;
-import gov.redhawk.sca.util.OrbSession;
-import omnijni.Servant;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
@@ -44,17 +38,19 @@ import bulkio.InBitPort;
 import bulkio.InCharPort;
 import bulkio.InDoublePort;
 import bulkio.InFloatPort;
-import bulkio.InInt16Port;
-import bulkio.InInt32Port;
-import bulkio.InInt64Port;
-import bulkio.InUInt16Port;
-import bulkio.InUInt32Port;
-import bulkio.InUInt64Port;
-import bulkio.InUInt8Port;
+import bulkio.InLongLongPort;
+import bulkio.InLongPort;
+import bulkio.InOctetPort;
+import bulkio.InShortPort;
+import bulkio.InULongLongPort;
+import bulkio.InULongPort;
+import bulkio.InUShortPort;
+import gov.redhawk.bulkio.util.BulkIOType;
+import gov.redhawk.bulkio.util.IPortFactory;
+import gov.redhawk.bulkio.util.PortReference;
+import gov.redhawk.sca.util.OrbSession;
+import omnijni.Servant;
 
-/**
- * 
- */
 public class PortFactory implements IPortFactory {
 
 	private static final OrbSession SESSION = OrbSession.createSession();
@@ -90,14 +86,8 @@ public class PortFactory implements IPortFactory {
 		}
 	}
 
-	/**
-	 * @param connectionID
-	 * @param port
-	 * @param handler
-	 * @return
-	 */
 	private PortReference connect(final String connectionID, final Port port, final dataUshortOperations handler) throws CoreException {
-		final InUInt16Port inPort = new InUInt16Port(connectionID) {
+		final InUShortPort inPort = new InUShortPort(connectionID) {
 			public void pushPacket(short[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 				handler.pushPacket(data, time, eos, streamID);
 			}
@@ -124,14 +114,8 @@ public class PortFactory implements IPortFactory {
 		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
-	/**
-	 * @param connectionID
-	 * @param port
-	 * @param handler
-	 * @return
-	 */
 	private PortReference connect(final String connectionID, final Port port, final dataUlongLongOperations handler) throws CoreException {
-		final InUInt64Port inPort = new InUInt64Port(connectionID) {
+		final InULongLongPort inPort = new InULongLongPort(connectionID) {
 			public void pushPacket(long[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 				handler.pushPacket(data, time, eos, streamID);
 			}
@@ -158,14 +142,8 @@ public class PortFactory implements IPortFactory {
 		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
-	/**
-	 * @param connectionID
-	 * @param port
-	 * @param handler
-	 * @return
-	 */
 	private PortReference connect(final String connectionID, final Port port, final dataUlongOperations handler) throws CoreException {
-		final InUInt32Port inPort = new InUInt32Port(connectionID) {
+		final InULongPort inPort = new InULongPort(connectionID) {
 			public void pushPacket(int[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 				handler.pushPacket(data, time, eos, streamID);
 			}
@@ -192,14 +170,8 @@ public class PortFactory implements IPortFactory {
 		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
-	/**
-	 * @param connectionID
-	 * @param port
-	 * @param handler
-	 * @return
-	 */
 	private PortReference connect(final String connectionID, final Port port, final dataShortOperations handler) throws CoreException {
-		final InInt16Port inPort = new InInt16Port(connectionID) {
+		final InShortPort inPort = new InShortPort(connectionID) {
 			public void pushPacket(short[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 				handler.pushPacket(data, time, eos, streamID);
 			}
@@ -226,14 +198,8 @@ public class PortFactory implements IPortFactory {
 		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
-	/**
-	 * @param connectionID
-	 * @param port
-	 * @param handler
-	 * @return
-	 */
 	private PortReference connect(final String connectionID, final Port port, final dataOctetOperations handler) throws CoreException {
-		final InUInt8Port inPort = new InUInt8Port(connectionID) {
+		final InOctetPort inPort = new InOctetPort(connectionID) {
 			public void pushPacket(byte[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 				handler.pushPacket(data, time, eos, streamID);
 			}
@@ -260,14 +226,8 @@ public class PortFactory implements IPortFactory {
 		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
-	/**
-	 * @param connectionID
-	 * @param port
-	 * @param handler
-	 * @return
-	 */
 	private PortReference connect(final String connectionID, final Port port, final dataLongLongOperations handler) throws CoreException {
-		final InInt64Port inPort = new InInt64Port(connectionID) {
+		final InLongLongPort inPort = new InLongLongPort(connectionID) {
 			public void pushPacket(long[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 				handler.pushPacket(data, time, eos, streamID);
 			}
@@ -294,14 +254,8 @@ public class PortFactory implements IPortFactory {
 		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
-	/**
-	 * @param connectionID
-	 * @param port
-	 * @param handler
-	 * @return
-	 */
 	private PortReference connect(final String connectionID, final Port port, final dataLongOperations handler) throws CoreException {
-		final InInt32Port inPort = new InInt32Port(connectionID) {
+		final InLongPort inPort = new InLongPort(connectionID) {
 			public void pushPacket(int[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 				handler.pushPacket(data, time, eos, streamID);
 			}
@@ -328,12 +282,6 @@ public class PortFactory implements IPortFactory {
 		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
-	/**
-	 * @param connectionID
-	 * @param port
-	 * @param handler
-	 * @return
-	 */
 	private PortReference connect(final String connectionID, final Port port, final dataFloatOperations handler) throws CoreException {
 		final InFloatPort inPort = new InFloatPort(connectionID) {
 			public void pushPacket(float[] data, PrecisionUTCTime time, boolean eos, String streamID) {
@@ -362,12 +310,6 @@ public class PortFactory implements IPortFactory {
 		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
-	/**
-	 * @param connectionID
-	 * @param port
-	 * @param handler
-	 * @return
-	 */
 	private PortReference connect(final String connectionID, final Port port, final dataDoubleOperations handler) throws CoreException {
 		final InDoublePort inPort = new InDoublePort(connectionID) {
 			public void pushPacket(double[] data, PrecisionUTCTime time, boolean eos, String streamID) {
@@ -396,12 +338,6 @@ public class PortFactory implements IPortFactory {
 		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
-	/**
-	 * @param connectionID
-	 * @param port
-	 * @param handler
-	 * @return
-	 */
 	private PortReference connect(final String connectionID, final Port port, final dataCharOperations handler) throws CoreException {
 		final InCharPort inPort = new InCharPort(connectionID) {
 			public void pushPacket(char[] data, PrecisionUTCTime time, boolean eos, String streamID) {
@@ -430,12 +366,6 @@ public class PortFactory implements IPortFactory {
 		return createAndConnectHandler(connectionID, port, inPort);
 	}
 
-	/**
-	 * @param connectionID
-	 * @param port
-	 * @param handler
-	 * @return
-	 */
 	private PortReference connect(final String connectionID, final Port port, final dataBitOperations handler) throws CoreException {
 		final InBitPort inPort = new InBitPort(connectionID) {
 			public void pushPacket(BULKIO.BitSequence data, PrecisionUTCTime time, boolean eos, String streamID) {
