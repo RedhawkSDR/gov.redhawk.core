@@ -299,7 +299,7 @@ public interface ScaFactory extends EFactory {
 	// END GENERATED CODE
 
 	/**
-	 * @since 22.0
+	 * @since 23.0
 	 */
 	ScaEventChannel createScaEventChannel(CF.EventChannelManagerPackage.EventChannelInfo info);
 

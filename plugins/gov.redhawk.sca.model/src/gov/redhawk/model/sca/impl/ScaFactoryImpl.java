@@ -585,7 +585,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	// END GENERATED CODE
 
 	/**
-	 * @since 22.0
+	 * @since 23.0
 	 */
 	public ScaEventChannel createScaEventChannel(CF.EventChannelManagerPackage.EventChannelInfo info) {
 		ScaEventChannel scaEventChannel = createScaEventChannel();
