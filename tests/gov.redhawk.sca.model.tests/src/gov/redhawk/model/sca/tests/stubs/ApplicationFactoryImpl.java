@@ -16,14 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mil.jpeojtrs.sca.sad.HostCollocation;
-import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
-import mil.jpeojtrs.sca.sad.SadComponentPlacement;
-import mil.jpeojtrs.sca.sad.SadConnectInterface;
-import mil.jpeojtrs.sca.sad.SoftwareAssembly;
-import mil.jpeojtrs.sca.util.DceUuidUtil;
-
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.omg.CORBA.SystemException;
@@ -37,6 +31,7 @@ import CF.ApplicationHelper;
 import CF.ApplicationPOATie;
 import CF.DataType;
 import CF.DeviceAssignmentType;
+import CF.ErrorNumberType;
 import CF.Port;
 import CF.PortHelper;
 import CF.Resource;
@@ -48,6 +43,12 @@ import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
 import CF.PortPackage.InvalidPort;
 import CF.PortPackage.OccupiedPort;
 import CF.PortSupplierPackage.UnknownPort;
+import mil.jpeojtrs.sca.sad.HostCollocation;
+import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
+import mil.jpeojtrs.sca.sad.SadComponentPlacement;
+import mil.jpeojtrs.sca.sad.SadConnectInterface;
+import mil.jpeojtrs.sca.sad.SoftwareAssembly;
+import mil.jpeojtrs.sca.util.DceUuidUtil;
 
 /**
  * 
@@ -97,7 +98,7 @@ public class ApplicationFactoryImpl extends ApplicationFactoryPOA {
 					continue;
 				} else if (obj instanceof SadComponentInstantiation) {
 					SadComponentInstantiation inst = (SadComponentInstantiation) obj;
-					AbstractResourceImpl component = new AbstractResourceImpl(inst.getId(), inst.getUsageName(), dmd.getOrb(), dmd.getPoa());
+					AbstractResourceImpl component = new AbstractResourceImpl(inst.getId(), inst.getUsageName(), softwareProfile(), dmd.getSession());
 					component.init(inst.getPlacement().getComponentFileRef().getFile().getSoftPkg());
 					Resource resource = ResourceHelper.narrow(poa.servant_to_reference(new ResourcePOATie(component)));
 					idToComponent.put(inst.getId(), resource);
@@ -146,6 +147,8 @@ public class ApplicationFactoryImpl extends ApplicationFactoryPOA {
 		} catch (WrongPolicy e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace(); // CHECKSTYLE: DEBUG CODE
+		} catch (CoreException e) {
+			throw new CreateApplicationError(ErrorNumberType.CF_EIO, "Problem with session");
 		}
 		throw new CreateApplicationError();
 	}

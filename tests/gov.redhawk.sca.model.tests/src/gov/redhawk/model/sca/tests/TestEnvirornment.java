@@ -13,12 +13,12 @@ package gov.redhawk.model.sca.tests;
 
 import java.io.File;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
@@ -29,18 +29,12 @@ import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.junit.Assert;
-import org.omg.CosEventChannelAdmin.EventChannel;
-import org.omg.CosEventChannelAdmin.EventChannelHelper;
 import org.omg.CosNaming.NamingContextExt;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 import CF.DataType;
 import CF.DeviceAssignmentType;
-import CF.DeviceManager;
-import CF.DeviceManagerHelper;
-import CF.DeviceManagerPOATie;
-import CF.DomainManager;
-import CF.DomainManagerHelper;
-import CF.DomainManagerPOATie;
 import gov.redhawk.model.sca.DomainConnectionState;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaAbstractProperty;
@@ -56,25 +50,25 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.impl.ScaDomainManagerImpl;
 import gov.redhawk.model.sca.tests.stubs.DeviceManagerImpl;
 import gov.redhawk.model.sca.tests.stubs.DomainManagerImpl;
-import gov.redhawk.model.sca.tests.stubs.EventChannelImpl;
-import gov.redhawk.model.sca.tests.stubs.NamingContextExtImpl;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
+import gov.redhawk.model.sca.tests.stubs.naming.NamingContextExtImpl;
 import gov.redhawk.sca.model.internal.DataProviderServicesRegistry;
 import gov.redhawk.sca.util.OrbSession;
 
 public class TestEnvirornment {
 
+	private static final String DOMAIN_NAME = "REDHAWK_DEV";
+	private static final String DEV_MGR_NAME = "DevMgr_localhost";
 	public static final String EDITING_DOMAIN_ID = "gov.redhawk.sc.model.tests.editingDomain";
-	private final ScaDomainManagerImpl domMgr;
 
 	private final TransactionalEditingDomain editingDomain;
-	private final DeviceManager devMgrRef;
-	private DomainManager dmdRef;
-	private NamingContextExt context;
-	private Map<String, org.omg.CORBA.Object> eventChannelRefs = new HashMap<String, org.omg.CORBA.Object>();
+
 	private OrbSession session;
-	private DeviceManagerImpl devMgrImpl;
+	private NamingContextExt namingContextRef;
+
+	private final ScaDomainManagerImpl domMgr;
 	private DomainManagerImpl domainMgrImpl;
+	private DeviceManagerImpl devMgrImpl;
 
 	static {
 		DataProviderServicesRegistry.INSTANCE.clearDataProviders();
@@ -90,25 +84,19 @@ public class TestEnvirornment {
 
 		session = OrbSession.createSession();
 
+		NamingContextExtImpl namingContextImpl = new NamingContextExtImpl(session);
+		namingContextRef = namingContextImpl.getNarrowedObj();
+
 		URL domFileUrl = FileLocator.toFileURL(FileLocator.find(Platform.getBundle("gov.redhawk.sca.model.tests"), new Path("sdr/dom"), null));
 		File domRoot = new File(domFileUrl.toURI());
 		Assert.assertTrue(domRoot.exists());
-		domainMgrImpl = new DomainManagerImpl(domRoot, "/domain/DomainManager.dmd.xml", "DCE:9ae444e0-0bfd-4e3d-b16c-1cffb3dc0f46", "REDHAWK_DEV", session.getOrb(), session.getPOA());
-		dmdRef = DomainManagerHelper.narrow(session.getPOA().servant_to_reference(new DomainManagerPOATie(domainMgrImpl)));
+		domainMgrImpl = new DomainManagerImpl(domRoot, "/domain/DomainManager.dmd.xml", DOMAIN_NAME, DOMAIN_NAME, session, namingContextRef);
 
-		for (String name : new String[] { "IDM_CHANNEL", "ODM_CHANNEL" }) {
-			EventChannelImpl eventChannelImpl = new EventChannelImpl();
-			EventChannel eventChannelRef = EventChannelHelper.narrow(session.getPOA().servant_to_reference(eventChannelImpl));
-			eventChannelRefs.put(name, eventChannelRef);
-		}
-		context = new NamingContextExtImpl(eventChannelRefs);
-
-		URL devFileUrl = FileLocator.toFileURL(FileLocator.find(Platform.getBundle("gov.redhawk.sca.model.tests"), new Path("sdr/dev"),
-				null));
+		URL devFileUrl = FileLocator.toFileURL(FileLocator.find(Platform.getBundle("gov.redhawk.sca.model.tests"), new Path("sdr/dev"), null));
 		File devRoot = new File(devFileUrl.toURI());
 		Assert.assertTrue(devRoot.exists());
-		devMgrImpl = new DeviceManagerImpl(devRoot, "/nodes/REDHAWK_DevMgr/DeviceManager.dcd.xml", "DCE:ddba96fd-1f97-4524-a393-116ede2668c2", "REDHAWK_DevMgr", session.getPOA(), session.getOrb());
-		devMgrRef = DeviceManagerHelper.narrow(session.getPOA().servant_to_reference(new DeviceManagerPOATie(devMgrImpl)));
+		devMgrImpl = new DeviceManagerImpl(devRoot, "/nodes/REDHAWK_DevMgr/DeviceManager.dcd.xml", DOMAIN_NAME, DEV_MGR_NAME, DEV_MGR_NAME, session,
+			namingContextRef);
 
 		execute(new ScaModelCommand() {
 
@@ -148,20 +136,20 @@ public class TestEnvirornment {
 				domMgr.unsetDeviceManagers();
 				domMgr.unsetFileManager();
 				domMgr.clearAllStatus();
-				domMgr.setCorbaObj(dmdRef);
-				domMgr.setRootContext(context);
+				domMgr.setCorbaObj(domainMgrImpl.getRef());
+				domMgr.setRootContext(namingContextRef);
 				domMgr.setState(DomainConnectionState.CONNECTED);
 			}
 
 		});
-		domMgr.registerDeviceManager(devMgrRef);
+		domMgr.registerDeviceManager(devMgrImpl.getRef());
 		domMgr.installApplication("waveforms/FinishedExampleWaveform/ExampleWaveform.sad.xml");
 		domMgr.applicationFactories()[0].create("Waveform", new DataType[0], new DeviceAssignmentType[0]);
 
 		domMgr.refresh(null, RefreshDepth.FULL);
 	}
 
-	private void validateStartState(final ScaPort<?, ?> port) {
+	private void validateStartState(final ScaPort< ? , ? > port) {
 		Assert.assertNotNull(port.toString(), port);
 		Assert.assertNotNull(port.toString(), port.getCorbaObj());
 		Assert.assertNotNull(port.toString(), port.getObj());
@@ -171,7 +159,7 @@ public class TestEnvirornment {
 		Assert.assertNotNull(port.toString(), port.getRepid());
 	}
 
-	private void validateStartState(final ScaAbstractProperty<?> property) {
+	private void validateStartState(final ScaAbstractProperty< ? > property) {
 		Assert.assertNotNull(property.getDefinition());
 		Assert.assertNotNull(property.getId());
 		Assert.assertNotNull(property.getMode());
@@ -206,8 +194,7 @@ public class TestEnvirornment {
 		Assert.assertNotNull(this.domMgr.getFileManager().getFileStore());
 		Assert.assertNotNull(this.domMgr.getProfileURI());
 		Assert.assertNotNull(this.domMgr.getProfileObj());
-		for (final ScaAbstractProperty<?> property : this.domMgr
-				.getProperties()) {
+		for (final ScaAbstractProperty< ? > property : this.domMgr.getProperties()) {
 			validateStartState(property);
 		}
 
@@ -229,16 +216,16 @@ public class TestEnvirornment {
 			Assert.assertNotNull(devMgr.getProfileURI());
 			Assert.assertNotNull(devMgr.getProfileObj());
 
-			for (final ScaAbstractProperty<?> property : devMgr.getProperties()) {
+			for (final ScaAbstractProperty< ? > property : devMgr.getProperties()) {
 				validateStartState(property);
 			}
 
-			for (final ScaPort<?, ?> port : devMgr.getPorts()) {
+			for (final ScaPort< ? , ? > port : devMgr.getPorts()) {
 				validateStartState(port);
 			}
 
 			Assert.assertFalse(devMgr.getDevices().isEmpty());
-			for (final ScaDevice<?> device : devMgr.getAllDevices()) {
+			for (final ScaDevice< ? > device : devMgr.getAllDevices()) {
 				Assert.assertNotNull(device);
 				Assert.assertNotNull(device.getCorbaObj());
 				Assert.assertNotNull(device.getObj());
@@ -252,20 +239,18 @@ public class TestEnvirornment {
 				Assert.assertNotNull(device.getProfileURI());
 				Assert.assertNotNull(device.getProfileObj());
 
-				for (final ScaAbstractProperty<?> property : device
-						.getProperties()) {
+				for (final ScaAbstractProperty< ? > property : device.getProperties()) {
 					validateStartState(property);
 				}
 
-				for (final ScaPort<?, ?> port : device.getPorts()) {
+				for (final ScaPort< ? , ? > port : device.getPorts()) {
 					validateStartState(port);
 				}
 			}
 		}
 
 		Assert.assertFalse(this.domMgr.getWaveformFactories().isEmpty());
-		for (final ScaWaveformFactory factory : this.domMgr
-				.getWaveformFactories()) {
+		for (final ScaWaveformFactory factory : this.domMgr.getWaveformFactories()) {
 			Assert.assertNotNull(factory.getCorbaObj());
 			Assert.assertNotNull(factory.getObj());
 			Assert.assertNotNull(factory.getProfileURI());
@@ -290,12 +275,11 @@ public class TestEnvirornment {
 
 			Assert.assertNotNull(waveform.getAssemblyController());
 
-			for (final ScaAbstractProperty<?> property : waveform
-					.getProperties()) {
+			for (final ScaAbstractProperty< ? > property : waveform.getProperties()) {
 				validateStartState(property);
 			}
 
-			for (final ScaPort<?, ?> port : waveform.getPorts()) {
+			for (final ScaPort< ? , ? > port : waveform.getPorts()) {
 				validateStartState(port);
 			}
 
@@ -309,12 +293,11 @@ public class TestEnvirornment {
 				Assert.assertNotNull(component.getObj());
 				Assert.assertNotNull(component.getProfileObj());
 
-				for (final ScaAbstractProperty<?> property : component
-						.getProperties()) {
+				for (final ScaAbstractProperty< ? > property : component.getProperties()) {
 					validateStartState(property);
 				}
 
-				for (final ScaPort<?, ?> port : component.getPorts()) {
+				for (final ScaPort< ? , ? > port : component.getPorts()) {
 					validateStartState(port);
 				}
 			}
@@ -325,12 +308,21 @@ public class TestEnvirornment {
 		this.editingDomain.getCommandStack().execute(command);
 	}
 
-	public <T> T runExclusive(final RunnableWithResult<T> runnable)
-			throws InterruptedException {
+	public < T > T runExclusive(final RunnableWithResult<T> runnable) throws InterruptedException {
 		return TransactionUtil.runExclusive(this.editingDomain, runnable);
 	}
 
 	public OrbSession getOrbSession() {
 		return this.session;
+	}
+
+	public NamingContextExt getNamingContext() {
+		return namingContextRef;
+	}
+
+	public static void log(int severity, String message, Throwable exception) {
+		Bundle bundle = FrameworkUtil.getBundle(TestEnvirornment.class);
+		IStatus status = new Status(severity, bundle.getSymbolicName(), message, exception);
+		Platform.getLog(bundle).log(status);
 	}
 }

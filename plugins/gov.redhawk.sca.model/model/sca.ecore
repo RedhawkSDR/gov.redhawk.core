@@ -841,7 +841,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         transient="true" unsettable="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eventChannels" upperBound="-1"
-        eType="#//ScaEventChannel" unsettable="true" containment="true"/>
+        eType="#//ScaEventChannel" transient="true" unsettable="true" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="localName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eGenericSuperTypes eClassifier="#//ScaPropertyContainer">
       <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//DomainManager"/>

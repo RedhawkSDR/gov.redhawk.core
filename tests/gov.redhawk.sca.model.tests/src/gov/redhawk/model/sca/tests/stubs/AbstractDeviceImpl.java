@@ -11,8 +11,7 @@
  */
 package gov.redhawk.model.sca.tests.stubs;
 
-import org.omg.CORBA.ORB;
-import org.omg.PortableServer.POA;
+import org.eclipse.core.runtime.CoreException;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 
@@ -25,6 +24,7 @@ import CF.DevicePackage.InvalidCapacity;
 import CF.DevicePackage.InvalidState;
 import CF.DevicePackage.OperationalType;
 import CF.DevicePackage.UsageType;
+import gov.redhawk.sca.util.OrbSession;
 
 public class AbstractDeviceImpl extends AbstractResourceImpl implements
 		DeviceOperations {
@@ -37,9 +37,9 @@ public class AbstractDeviceImpl extends AbstractResourceImpl implements
 		super();
 	}
 
-	public AbstractDeviceImpl(String compId, String compName, ORB orb, POA poa)
-			throws ServantNotActive, WrongPolicy {
-		super(compId, compName, orb, poa);
+	public AbstractDeviceImpl(String compId, String compName, String profile, OrbSession session)
+			throws ServantNotActive, WrongPolicy, CoreException {
+		super(compId, compName, profile, session);
 	}
 
 	@Override

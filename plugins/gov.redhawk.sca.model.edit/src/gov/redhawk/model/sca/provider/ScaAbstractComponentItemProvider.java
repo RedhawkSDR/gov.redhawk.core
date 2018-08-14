@@ -155,9 +155,6 @@ public class ScaAbstractComponentItemProvider extends ScaPropertyContainerItemPr
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaAbstractComponent.class)) {
-		case ScaPackage.SCA_ABSTRACT_COMPONENT__PROFILE:
-			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-			return;
 		case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;

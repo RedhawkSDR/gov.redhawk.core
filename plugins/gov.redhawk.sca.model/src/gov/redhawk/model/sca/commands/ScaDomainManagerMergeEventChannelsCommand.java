@@ -10,63 +10,58 @@
  *******************************************************************************/
 package gov.redhawk.model.sca.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaEventChannel;
 import gov.redhawk.model.sca.ScaPackage;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @since 19.0
  */
 public class ScaDomainManagerMergeEventChannelsCommand extends SetStatusCommand<ScaDomainManager> {
-	
-	private List<ScaEventChannel> channels;
 
-	public ScaDomainManagerMergeEventChannelsCommand(ScaDomainManager provider, List<ScaEventChannel> channels) {
+	private List<ScaEventChannel> currentChannels;
+
+	public ScaDomainManagerMergeEventChannelsCommand(ScaDomainManager provider, List<ScaEventChannel> currentChannels) {
 		super(provider, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS, null);
-		this.channels = channels;
+		this.currentChannels = currentChannels;
 	}
 
 	@Override
 	public void execute() {
-		final Map<String, ScaEventChannel> newChannelMap = new HashMap<String, ScaEventChannel>();
-		if (channels != null) {
-			for (final ScaEventChannel channel : channels) {
-				newChannelMap.put(channel.getName(), channel);
+		// We identify unique channels by name + IOR
+		Set<String> currentChannelIds = currentChannels.stream() //
+				.map(channel -> channel.getName() + ':' + channel.getIor()) //
+				.collect(Collectors.toSet());
+
+		Set<String> existingChannelIds = provider.getEventChannels().stream() //
+				.map(channel -> channel.getName() + ':' + channel.getIor()) //
+				.collect(Collectors.toSet());
+
+		List<ScaEventChannel> channelsToAdd = new ArrayList<>();
+		for (ScaEventChannel channel : currentChannels) {
+			if (existingChannelIds.contains(channel.getName() + ':' + channel.getIor())) {
+				channel.dispose();
+			} else {
+				channelsToAdd.add(channel);
 			}
 		}
 
-		// Current Factory Map
-		final Map<String, ScaEventChannel> existingChannelMap = new HashMap<String, ScaEventChannel>();
-		for (final ScaEventChannel channel : provider.getEventChannels()) {
-			existingChannelMap.put(channel.getName(), channel);
+		List<ScaEventChannel> channelsToRemove = provider.getEventChannels().stream() //
+				.filter(channel -> !currentChannelIds.contains(channel.getName() + ':' + channel.getIor())) //
+				.collect(Collectors.toList());
+
+		// Change the model
+		if (!channelsToRemove.isEmpty()) {
+			provider.getEventChannels().removeAll(channelsToRemove);
 		}
-
-		// Factories to remove
-		final Map<String, ScaEventChannel> channelsToRemove = new HashMap<String, ScaEventChannel>();
-		channelsToRemove.putAll(existingChannelMap);
-		channelsToRemove.keySet().removeAll(newChannelMap.keySet());
-
-		// Remove all duplicates
-		newChannelMap.keySet().removeAll(existingChannelMap.keySet());
-
-		// Remove factories
-		if (!channelsToRemove.isEmpty() && !provider.getEventChannels().isEmpty()) {
-			provider.getEventChannels().removeAll(channelsToRemove.values());
+		if (!channelsToAdd.isEmpty()) {
+			provider.getEventChannels().addAll(channelsToAdd);
 		}
-
-		// Add Factories
-		if (!newChannelMap.isEmpty()) {
-			provider.getEventChannels().addAll(newChannelMap.values());
-		}
-		
-		if (!provider.isSetEventChannels()) {
-			provider.getEventChannels().clear();
-		}
-
 		super.execute();
 	}
 

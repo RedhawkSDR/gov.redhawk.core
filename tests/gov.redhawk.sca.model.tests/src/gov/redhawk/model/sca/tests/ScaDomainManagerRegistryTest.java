@@ -13,10 +13,19 @@ package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.ScaDocumentRoot;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
+import gov.redhawk.model.sca.ScaEventChannel;
+import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import org.junit.Assert;
+import org.junit.Test;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -190,6 +199,25 @@ public class ScaDomainManagerRegistryTest extends TestCase {
 		// END GENERATED CODE
 
 		// BEGIN GENERATED CODE
+	}
+
+	// END GENERATED CODE
+
+	/**
+	 * IDE-2203 Ensure event channels aren't saved when saving the registry.
+	 * @throws IOException
+	 */
+	public void testSaveNoEventChannels() throws IOException {
+		// Add an event channel to the domain manager in the model
+		ScaEventChannel eventChannel = ScaFactory.eINSTANCE.createScaEventChannel();
+		eventChannel.setName("nosave");
+		getFixture().getDomains().get(0).getEventChannels().add(eventChannel);
+
+		// Save to XML and check for the event channel
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		getFixture().eResource().save(outputStream, null);
+		String xml = outputStream.toString();
+		Assert.assertFalse(xml.contains("nosave"));
 	}
 
 } // ScaDomainManagerRegistryTest

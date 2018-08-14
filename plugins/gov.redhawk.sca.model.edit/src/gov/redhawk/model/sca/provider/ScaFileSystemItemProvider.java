@@ -156,18 +156,6 @@ public class ScaFileSystemItemProvider extends CorbaObjWrapperItemProvider {
 	/**
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
-	 * @since 2.0
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String getTextGen(Object object) {
-		String label = ((ScaFileSystem< ? >) object).getName();
-		return label == null || label.length() == 0 ? getString("_UI_ScaFileSystem_type") : getString("_UI_ScaFileSystem_type") + " " + label;
-	}
-
-	/**
-	 * This returns the label text for the adapted class.
-	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -187,6 +175,7 @@ public class ScaFileSystemItemProvider extends CorbaObjWrapperItemProvider {
 	 */
 	@Override
 	public void notifyChanged(Notification notification) {
+		// END GENERATED CODE
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaFileSystem.class)) {
@@ -194,8 +183,10 @@ public class ScaFileSystemItemProvider extends CorbaObjWrapperItemProvider {
 		case ScaPackage.SCA_FILE_SYSTEM__CHILDREN:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
+		default:
+			break;
 		}
-		super.notifyChanged(notification);
+		// BEGIN GENERATED CODE
 	}
 
 	/**

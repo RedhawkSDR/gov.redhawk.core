@@ -124,22 +124,7 @@ public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvid
 	 * <!-- begin-user-doc -->
 	 * @since 9.0
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addValuePropertyDescriptorGen(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
-			getString("_UI_ScaSimpleProperty_value_feature"),
-			getString("_UI_PropertyDescriptor_description", "_UI_ScaSimpleProperty_value_feature", "_UI_ScaSimpleProperty_type"),
-			ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Value feature.
-	 * <!-- begin-user-doc -->
-	 * @since 9.0
-	 * <!-- end-user-doc -->
 	 * @generated NOT
-	 * 
 	 */
 	protected void addValuePropertyDescriptor(Object object) {
 		// END GENERATED CODE

@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-import gov.redhawk.model.sca.ScaFileManager;
 import java.util.Collection;
 import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -49,18 +48,6 @@ public class ScaFileManagerItemProvider extends ScaFileSystemItemProvider {
 
 		}
 		return itemPropertyDescriptors;
-	}
-
-	/**
-	 * This returns the label text for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String getTextGen(Object object) {
-		String label = ((ScaFileManager) object).getName();
-		return label == null || label.length() == 0 ? getString("_UI_ScaFileManager_type") : getString("_UI_ScaFileManager_type") + " " + label;
 	}
 
 	/**
