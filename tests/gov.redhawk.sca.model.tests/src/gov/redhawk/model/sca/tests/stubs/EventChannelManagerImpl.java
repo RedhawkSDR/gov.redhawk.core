@@ -21,6 +21,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.omg.CosEventChannelAdmin.EventChannel;
 import org.omg.CosEventChannelAdmin.EventChannelHelper;
+import org.omg.CosEventComm.PushConsumer;
+import org.omg.CosEventComm.PushSupplier;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming.NamingContextPackage.AlreadyBound;
@@ -48,6 +50,7 @@ import CF.EventChannelManagerPackage.EventRegistration;
 import CF.EventChannelManagerPackage.InvalidChannelName;
 import CF.EventChannelManagerPackage.OperationFailed;
 import CF.EventChannelManagerPackage.OperationNotAllowed;
+import CF.EventChannelManagerPackage.PublisherReg;
 import CF.EventChannelManagerPackage.RegistrationAlreadyExists;
 import CF.EventChannelManagerPackage.RegistrationDoesNotExist;
 import CF.EventChannelManagerPackage.RegistrationsExists;
@@ -118,6 +121,12 @@ public class EventChannelManagerImpl implements EventChannelManagerOperations {
 	}
 
 	@Override
+	public EventChannel get(String channelName) throws ChannelDoesNotExist, OperationNotAllowed, OperationFailed, ServiceUnavailable {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public EventChannel createForRegistrations(String channelName) throws ChannelAlreadyExists, OperationNotAllowed, OperationFailed, ServiceUnavailable {
 		EventChannel retVal = create(channelName);
 		releaseWhenUnused.add(channelName);
@@ -143,6 +152,18 @@ public class EventChannelManagerImpl implements EventChannelManagerOperations {
 		releaseInternal(channelName, false);
 	}
 
+	@Override
+	public void forceRelease(String channelName) throws ChannelDoesNotExist, OperationNotAllowed, OperationFailed, ServiceUnavailable {
+		if (!eventChannels.containsKey(channelName)) {
+			throw new ChannelDoesNotExist();
+		}
+
+		// TODO: Remove registrants?
+
+		releaseInternal(channelName, true);
+		return;
+	}
+
 	private void releaseInternal(String channelName, boolean force) throws OperationFailed {
 		try {
 			context.unbind(new NameComponent[] { new NameComponent(channelName, "") });
@@ -162,6 +183,20 @@ public class EventChannelManagerImpl implements EventChannelManagerOperations {
 
 		eventChannels.remove(channelName);
 		releaseWhenUnused.remove(channelName);
+	}
+
+	@Override
+	public EventChannelReg registerConsumer(PushConsumer consumer, EventRegistration req)
+		throws InvalidChannelName, RegistrationAlreadyExists, OperationFailed, OperationNotAllowed, ServiceUnavailable {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PublisherReg registerPublisher(EventRegistration req, PushSupplier disconnectReceiver)
+		throws InvalidChannelName, RegistrationAlreadyExists, OperationFailed, OperationNotAllowed, ServiceUnavailable {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
