@@ -11,20 +11,13 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaDeviceManager;
-import gov.redhawk.model.sca.ScaDomainManager;
-import gov.redhawk.model.sca.ScaWaveform;
-import gov.redhawk.model.sca.ScaWaveformFactory;
-import gov.redhawk.model.sca.tests.stubs.DomainManagerImpl;
-import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
-import gov.redhawk.sca.util.OrbSession;
-
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-
-import junit.textui.TestRunner;
+import java.util.Set;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -33,11 +26,14 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.junit.Assert;
+import org.omg.CosEventChannelAdmin.EventChannel;
+import org.omg.CosNaming.NamingContextExt;
 
 import CF.DeviceManager;
 import CF.DomainManager;
 import CF.DomainManagerHelper;
 import CF.DomainManagerPOATie;
+import CF.EventChannelManager;
 import CF.InvalidFileName;
 import CF.InvalidObjectReference;
 import CF.InvalidProfile;
@@ -55,6 +51,24 @@ import CF.DomainManagerPackage.InvalidIdentifier;
 import CF.DomainManagerPackage.NotConnected;
 import CF.DomainManagerPackage.RegisterError;
 import CF.DomainManagerPackage.UnregisterError;
+import CF.EventChannelManagerPackage.ChannelAlreadyExists;
+import CF.EventChannelManagerPackage.ChannelDoesNotExist;
+import CF.EventChannelManagerPackage.OperationFailed;
+import CF.EventChannelManagerPackage.OperationNotAllowed;
+import CF.EventChannelManagerPackage.RegistrationsExists;
+import CF.EventChannelManagerPackage.ServiceUnavailable;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaDeviceManager;
+import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaEventChannel;
+import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.model.sca.ScaWaveformFactory;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.tests.stubs.DomainManagerImpl;
+import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
+import gov.redhawk.sca.util.OrbSession;
+import junit.textui.TestRunner;
+import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
  * <!-- begin-user-doc -->
@@ -461,19 +475,6 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 
 	/**
 	 * Tests the '
-	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor)
-	 * <em>Fetch Event Channels</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor)
-	 * @generated NOT
-	 */
-	public void testFetchEventChannels__IProgressMonitor() {
-		// PASS - We don't have a naming context in the test domain manager
-	}
-
-	/**
-	 * Tests the '
 	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
 	 * <em>Fetch Event Channels</em>}' operation.
 	 * <!-- begin-user-doc -->
@@ -483,7 +484,71 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	 * @generated NOT
 	 */
 	public void testFetchEventChannels__IProgressMonitor_RefreshDepth() {
-		// PASS - We don't have a naming context in the test domain manager
+		// END GENERATED CODE
+		// Clear existing event channels
+		ScaModelCommand.execute(getFixture(), () -> {
+			getFixture().unsetEventChannels();
+		});
+
+		// Fetch event channels
+		List<ScaEventChannel> eventChannels = getFixture().fetchEventChannels(new NullProgressMonitor(), RefreshDepth.NONE);
+
+		// Verify expected event channels are present
+		Set<String> channelNames = new HashSet<>(Arrays.asList("ODM_Channel", "IDM_Channel"));
+		Assert.assertEquals(channelNames.size(), eventChannels.size());
+		for (ScaEventChannel eventChannel : eventChannels) {
+			if (!channelNames.remove(eventChannel.getName())) {
+				Assert.fail("Did not expect event channel " + eventChannel.getName());
+			}
+		}
+		Assert.assertArrayEquals(eventChannels.toArray(), getFixture().getEventChannels().toArray());
+
+		List<org.omg.CORBA.Object> objsToRelease = new ArrayList<>();
+		try {
+			// Create a new event channel
+			final String CHAN_NAME = "new_channel";
+			EventChannelManager ecm = getFixture().eventChannelMgr();
+			objsToRelease.add(ecm);
+			EventChannel newChannel = ecm.create(CHAN_NAME);
+			objsToRelease.add(ecm);
+			String ior = newChannel.toString();
+
+			// Fetch event channels again
+			eventChannels = getFixture().fetchEventChannels(new NullProgressMonitor(), RefreshDepth.SELF);
+
+			// The new event channel should be present
+			Assert.assertEquals(3, eventChannels.size());
+			boolean found = false;
+			for (ScaEventChannel eventChannel : eventChannels) {
+				if (CHAN_NAME.equals(eventChannel.getName())) {
+					found = true;
+					Assert.assertEquals(ior, eventChannel.getIor());
+				}
+			}
+			Assert.assertTrue("New event channel was not found", found);
+
+			// Release the event channel
+			ecm.release(CHAN_NAME);
+
+			// Fetch event channels again
+			eventChannels = getFixture().fetchEventChannels(new NullProgressMonitor(), RefreshDepth.SELF);
+
+			// The event channel should no longer be present
+			channelNames = new HashSet<>(Arrays.asList("ODM_Channel", "IDM_Channel"));
+			Assert.assertEquals(channelNames.size(), eventChannels.size());
+			for (ScaEventChannel eventChannel : eventChannels) {
+				if (!channelNames.remove(eventChannel.getName())) {
+					Assert.fail("Did not expect event channel " + eventChannel.getName());
+				}
+			}
+		} catch (ChannelAlreadyExists | OperationNotAllowed | OperationFailed | ServiceUnavailable | ChannelDoesNotExist | RegistrationsExists e) {
+			Assert.fail(e.toString());
+		} finally {
+			for (org.omg.CORBA.Object obj : objsToRelease) {
+				CorbaUtils.release(obj);
+			}
+		}
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -781,8 +846,8 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		File domRoot = new File(domFileUrl.toURI());
 		Assert.assertTrue(domRoot.exists());
 		OrbSession session = TestEnvirornment.getInstance().getOrbSession();
-		DomainManagerImpl domainMgrImpl = new DomainManagerImpl(domRoot, "/domain2/DomainManager.dmd.xml", "DCE:43661053-a981-4f7a-834e-98d229b58c7a",
-			"REDHAWK_DEV2", session.getOrb(), session.getPOA());
+		NamingContextExt context = TestEnvirornment.getInstance().getNamingContext();
+		DomainManagerImpl domainMgrImpl = new DomainManagerImpl(domRoot, "/domain2/DomainManager.dmd.xml", "REDHAWK_DEV2", "REDHAWK_DEV2", session, context);
 		DomainManager dmdRef = DomainManagerHelper.narrow(session.getPOA().servant_to_reference(new DomainManagerPOATie(domainMgrImpl)));
 		getFixture().registerRemoteDomainManager(dmdRef);
 		Assert.assertEquals(1, getFixture().remoteDomainManagers().length);

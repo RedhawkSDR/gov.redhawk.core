@@ -46,14 +46,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.transaction.RunnableWithResult;
-import org.jacorb.naming.Name;
 import org.omg.CORBA.IntHolder;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.SystemException;
-import org.omg.CosEventChannelAdmin.EventChannelHelper;
-import org.omg.CosNaming.Binding;
-import org.omg.CosNaming.BindingIteratorHolder;
-import org.omg.CosNaming.BindingListHolder;
+import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
@@ -70,6 +66,7 @@ import CF.DeviceAssignmentType;
 import CF.DeviceManager;
 import CF.DomainManager;
 import CF.DomainManagerHelper;
+import CF.EventChannelInfoIteratorHolder;
 import CF.EventChannelManager;
 import CF.FileManager;
 import CF.InvalidFileName;
@@ -93,6 +90,8 @@ import CF.DomainManagerPackage.InvalidIdentifier;
 import CF.DomainManagerPackage.NotConnected;
 import CF.DomainManagerPackage.RegisterError;
 import CF.DomainManagerPackage.UnregisterError;
+import CF.EventChannelManagerPackage.EventChannelInfo;
+import CF.EventChannelManagerPackage.EventChannelInfoListHolder;
 import CF.PropertyEmitterPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
@@ -2423,66 +2422,80 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			return;
 		}
 
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
+		SubMonitor progress = SubMonitor.convert(monitor, 10);
+
 		NamingContextExt localRootContext = getRootContext();
-
-		Transaction transaction = eventChannelFeature.createTransaction();
-		if (localRootContext != null) {
-			try {
-				// Resolve the naming context
-				if (subMonitor.isCanceled()) {
-					throw new OperationCanceledException();
-				}
-				NamingContextExt context = NamingContextExtHelper.narrow(localRootContext.resolve_str(getName()));
-				subMonitor.worked(1);
-
-				// List children
-				BindingIteratorHolder bi = new BindingIteratorHolder();
-				BindingListHolder bl = new BindingListHolder();
-				if (subMonitor.isCanceled()) {
-					throw new OperationCanceledException();
-				}
-				context.list(-1, bl, bi);
-				subMonitor.worked(1);
-
-				// Iterate children looking for EventChannel's
-				SubMonitor checkChildProgress = subMonitor.newChild(1).setWorkRemaining(bl.value.length);
-				List<ScaEventChannel> newChannels = new ArrayList<ScaEventChannel>();
-				for (Binding b : bl.value) {
-					if (subMonitor.isCanceled()) {
-						throw new OperationCanceledException();
-					}
-					org.omg.CORBA.Object objC = context.resolve(b.binding_name);
-					if (objC._is_a(EventChannelHelper.id())) {
-						ScaEventChannel channel = ScaFactory.eINSTANCE.createScaEventChannel();
-						channel.setName(Name.toString(b.binding_name));
-						channel.setCorbaObj(objC);
-						newChannels.add(channel);
-					}
-					checkChildProgress.worked(1);
-				}
-				transaction.addCommand(new ScaDomainManagerMergeEventChannelsCommand(this, newChannels));
-			} catch (SystemException e) {
-				Status status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch Event Channels.", e);
-				transaction.addCommand(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS));
-			} catch (NotFound e) {
-				Status status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch Event Channels.", e);
-				transaction.addCommand(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS));
-			} catch (CannotProceed e) {
-				Status status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch Event Channels.", e);
-				transaction.addCommand(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS));
-			} catch (InvalidName e) {
-				Status status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch Event Channels.", e);
-				transaction.addCommand(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS));
-			}
-		} else {
-			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS));
+		NameComponent rootName = new NameComponent(getName(), "");
+		if (localRootContext == null) {
+			return;
+		}
+		DomainManager domMgr = fetchNarrowedObject(progress.newChild(1));
+		if (domMgr == null) {
+			return;
 		}
 
-		// Perform Actions
-		subMonitor.setWorkRemaining(1);
+		Transaction transaction = eventChannelFeature.createTransaction();
+		EventChannelManager ecm = null;
+
+		try {
+			// Get the event channel manager
+			if (progress.isCanceled()) {
+				throw new OperationCanceledException();
+			}
+			ecm = domMgr.eventChannelMgr();
+			progress.worked(1);
+
+			// Get basic info on all event channels from the event channel manager
+			if (progress.isCanceled()) {
+				throw new OperationCanceledException();
+			}
+			EventChannelInfoListHolder listHolder = new EventChannelInfoListHolder();
+			EventChannelInfoIteratorHolder listIter = new EventChannelInfoIteratorHolder();
+			ecm.listChannels(-1, listHolder, listIter);
+			if (listIter.value != null) {
+				listIter.value.destroy();
+			}
+			progress.worked(1);
+
+			// For each info we received
+			SubMonitor resolveProgress = progress.newChild(6).setWorkRemaining(listHolder.value.length);
+			List<ScaEventChannel> currentChannels = new ArrayList<>();
+			for (EventChannelInfo info : listHolder.value) {
+				if (progress.isCanceled()) {
+					throw new OperationCanceledException();
+				}
+
+				// Create an event channel with the info
+				ScaEventChannel eventChannel = ScaFactory.eINSTANCE.createScaEventChannel(info);
+				currentChannels.add(eventChannel);
+
+				// Resolve the CORBA object for the channel from the naming service
+				try {
+					org.omg.CORBA.Object obj = localRootContext.resolve(new NameComponent[] { rootName, new NameComponent(info.channel_name, "") });
+					eventChannel.setCorbaObj(obj);
+				} catch (NotFound e) {
+					IStatus status = new Status(IStatus.WARNING, ScaModelPlugin.ID, "CORBA object not registered in naming service", e);
+					eventChannel.setStatus(ScaPackage.Literals.CORBA_OBJ_WRAPPER__CORBA_OBJ, status);
+				} catch (CannotProceed | InvalidName | SystemException e) {
+					IStatus status = new Status(IStatus.ERROR, ScaModelPlugin.ID, "Unable to resolve event channel in naming service", e);
+					eventChannel.setStatus(ScaPackage.Literals.CORBA_OBJ_WRAPPER__CORBA_OBJ, status);
+				}
+				resolveProgress.worked(1);
+			}
+
+			transaction.addCommand(new ScaDomainManagerMergeEventChannelsCommand(this, currentChannels));
+		} catch (SystemException e) {
+			Status status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch Event Channels.", e);
+			transaction.addCommand(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS));
+		} finally {
+			if (ecm != null) {
+				CorbaUtils.release(ecm);
+			}
+		}
+
+		progress.setWorkRemaining(1);
 		transaction.commit();
-		subMonitor.done();
+		progress.done();
 		// BEGIN GENERATED CODE
 	}
 

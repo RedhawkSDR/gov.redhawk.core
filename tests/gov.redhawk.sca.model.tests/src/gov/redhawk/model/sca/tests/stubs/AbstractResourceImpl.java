@@ -17,18 +17,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.omg.CORBA.Any;
-import org.omg.CORBA.ORB;
-import org.omg.PortableServer.POA;
 import org.omg.PortableServer.Servant;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
-import org.osgi.framework.FrameworkUtil;
 import org.ossie.component.Resource;
 import org.ossie.properties.Action;
 import org.ossie.properties.BooleanProperty;
@@ -108,6 +103,8 @@ import ExtendedCF.NegotiationError;
 import ExtendedCF.NegotiationResult;
 import ExtendedCF.TransportInfo;
 import ExtendedCF.UsesConnection;
+import gov.redhawk.model.sca.tests.TestEnvirornment;
+import gov.redhawk.sca.util.OrbSession;
 import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.ConfigurationKind;
 import mil.jpeojtrs.sca.prf.Properties;
@@ -137,17 +134,19 @@ import mil.jpeojtrs.sca.util.math.ComplexUShort;
 public class AbstractResourceImpl extends Resource {
 
 	protected SoftPkg spd; // SUPPRESS CHECKSTYLE Protected Field
-	private static final String PLUGIN_ID = "gov.redhawk.sca.model.tests";
-	private ILog log;
+	private OrbSession session;
 
 	public AbstractResourceImpl() {
 		super();
-		log = Platform.getLog(FrameworkUtil.getBundle(getClass()));
 	}
 
-	public AbstractResourceImpl(String compId, String compName, ORB orb, POA poa) throws ServantNotActive, WrongPolicy {
-		super(compId, compName, orb, poa);
-		log = Platform.getLog(FrameworkUtil.getBundle(getClass()));
+	public AbstractResourceImpl(String compId, String compName, String profile, OrbSession session) throws ServantNotActive, WrongPolicy, CoreException {
+		setup(compId, compName, profile, session.getOrb(), session.getPOA());
+		this.session = session;
+	}
+
+	public OrbSession getSession() {
+		return session;
 	}
 
 	public void init(SoftPkg spd) {
@@ -168,7 +167,7 @@ public class AbstractResourceImpl extends Resource {
 		try {
 			initialize();
 		} catch (InitializeError e) {
-			log.log(new Status(IStatus.ERROR, PLUGIN_ID, CFErrorFormatter.format(e, spd.getName())));
+			TestEnvirornment.log(IStatus.ERROR, CFErrorFormatter.format(e, spd.getName()), e);
 		}
 	}
 

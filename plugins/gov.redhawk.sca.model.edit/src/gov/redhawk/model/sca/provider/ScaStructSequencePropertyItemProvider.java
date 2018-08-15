@@ -66,30 +66,18 @@ public class ScaStructSequencePropertyItemProvider extends ScaAbstractPropertyIt
 	/**
 	 * This adds a property descriptor for the Structs feature.
 	 * <!-- begin-user-doc -->
-	 * @since 12.0
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addStructsPropertyDescriptorGen(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
-			getString("_UI_ScaStructSequenceProperty_structs_feature"),
-			getString("_UI_PropertyDescriptor_description", "_UI_ScaStructSequenceProperty_structs_feature", "_UI_ScaStructSequenceProperty_type"),
-			ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, true, false, false, null, null, null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Simples feature.
-	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	protected void addStructsPropertyDescriptor(Object object) {
+		// END GENERATED CODE
 		ItemPropertyDescriptor propertyDescriptor = createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
 			getResourceLocator(), getString("_UI_ScaStructSequenceProperty_structs_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_ScaStructSequenceProperty_structs_feature", "_UI_ScaStructSequenceProperty_type"),
 			ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, true, false, false, null, null, null);
 
 		itemPropertyDescriptors.add(new ScaStructSequenceValuePropertyDescriptor(object, propertyDescriptor, getRootAdapterFactory()));
+		// BEGIN GENERATED CODE
 	}
 
 	/**

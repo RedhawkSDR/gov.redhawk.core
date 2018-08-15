@@ -261,17 +261,6 @@ public class ScaFileStoreItemProvider extends IStatusProviderItemProvider {
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String getTextGen(Object object) {
-		String label = ((ScaFileStore) object).getName();
-		return label == null || label.length() == 0 ? getString("_UI_ScaFileStore_type") : getString("_UI_ScaFileStore_type") + " " + label;
-	}
-
-	/**
-	 * This returns the label text for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override

@@ -601,7 +601,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * @see #isSetEventChannels()
 	 * @see #unsetEventChannels()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager_EventChannels()
-	 * @model containment="true" resolveProxies="true" unsettable="true"
+	 * @model containment="true" resolveProxies="true" unsettable="true" transient="true"
 	 * @generated
 	 */
 	EList<ScaEventChannel> getEventChannels();

@@ -112,26 +112,11 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 	}
 
 	/**
-	 * This adds a property descriptor for the Values feature.
-	 * <!-- begin-user-doc -->
-	 * @since 12.0
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addValuesPropertyDescriptorGen(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
-			getString("_UI_ScaSimpleSequenceProperty_values_feature"),
-			getString("_UI_PropertyDescriptor_description", "_UI_ScaSimpleSequenceProperty_values_feature", "_UI_ScaSimpleSequenceProperty_type"),
-			ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-	}
-
-	/**
 	 * This adds a property descriptor for the Current Value feature.
 	 * <!-- begin-user-doc -->
 	 * @since 11.0
 	 * <!-- end-user-doc -->
 	 * @generated NOT
-	 * 
 	 */
 	protected void addValuesPropertyDescriptor(Object object) {
 		// END GENERATED CODE

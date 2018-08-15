@@ -33,7 +33,7 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 
 	@Override
 	public IRefresher caseScaDeviceManager(final ScaDeviceManager object) {
-		return createRefresher(object, RefreshDepth.CHILDREN);
+		return createRefresher(object, RefreshDepth.SELF);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 
 	@Override
 	public IRefresher caseScaDomainManager(final ScaDomainManager object) {
-		return createRefresher(object, RefreshDepth.CHILDREN);
+		return createRefresher(object, RefreshDepth.SELF);
 	}
 
 	@Override

@@ -104,19 +104,21 @@ public class ScaPropertyContainerItemProvider extends CorbaObjWrapperItemProvide
 	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOTE
 	 */
 	@Override
 	public void notifyChanged(Notification notification) {
+		// END GENERATED CODE
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaPropertyContainer.class)) {
-		case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI:
 		case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
+		default:
+			break;
 		}
-		super.notifyChanged(notification);
+		// BEGIN GENERATED CODE
 	}
 
 	/**

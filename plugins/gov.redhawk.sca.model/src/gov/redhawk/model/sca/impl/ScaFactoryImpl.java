@@ -582,6 +582,19 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 		return scaEventChannel;
 	}
 
+	// END GENERATED CODE
+
+	/**
+	 * @since 23.0
+	 */
+	public ScaEventChannel createScaEventChannel(CF.EventChannelManagerPackage.EventChannelInfo info) {
+		ScaEventChannel scaEventChannel = createScaEventChannel();
+		scaEventChannel.setName(info.channel_name);
+		return scaEventChannel;
+	}
+
+	// BEGIN GENERATED CODE
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * 

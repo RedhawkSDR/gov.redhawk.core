@@ -152,29 +152,6 @@ public class ScaDeviceManagerItemProvider extends ScaPropertyContainerItemProvid
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public String getTextGen(final Object object) {
-		// END GENERATED CODE
-		final org.omg.CORBA.Object labelValue = ((ScaDeviceManager) object).getObj();
-		final String label;
-		if (labelValue == null) {
-			label = null;
-		} else {
-			label = labelValue.toString();
-		}
-		if (label == null || label.length() == 0) {
-			return getString("_UI_ScaDeviceManager_type");
-		} else {
-			return getString("_UI_ScaDeviceManager_type") + " " + label;
-		}
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * This returns the label text for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
 	@Override
 	public String getText(final Object object) {
 		// END GENERATED CODE
@@ -205,7 +182,6 @@ public class ScaDeviceManagerItemProvider extends ScaPropertyContainerItemProvid
 
 		switch (notification.getFeatureID(ScaDeviceManager.class)) {
 		case ScaPackage.SCA_DEVICE_MANAGER__LABEL:
-		case ScaPackage.SCA_DEVICE_MANAGER__PROFILE:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		case ScaPackage.SCA_DEVICE_MANAGER__PORTS:

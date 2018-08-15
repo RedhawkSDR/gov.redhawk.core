@@ -296,13 +296,12 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void notifyChangedGen(Notification notification) {
+	@Override
+	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaDomainManager.class)) {
-		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTED:
 		case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
-		case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
 		case ScaPackage.SCA_DOMAIN_MANAGER__EVENT_CHANNELS:
 		case ScaPackage.SCA_DOMAIN_MANAGER__LOCAL_NAME:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
@@ -312,19 +311,6 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 			return;
 		}
 		super.notifyChanged(notification);
-	}
-
-	@Override
-	public void notifyChanged(Notification notification) {
-		updateChildren(notification);
-
-		switch (notification.getFeatureID(ScaDomainManager.class)) {
-		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTED:
-			disposeContainerItemProviders();
-			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, true));
-			return;
-		}
-		notifyChangedGen(notification);
 	}
 
 	/**

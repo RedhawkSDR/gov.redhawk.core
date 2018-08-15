@@ -18,6 +18,7 @@ import java.util.List;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 
@@ -51,8 +52,8 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 
 	public ApplicationImpl(final SoftwareAssembly sad, final String name,
 			final String identifier, DomainManagerImpl dmd) throws ServantNotActive,
-			WrongPolicy {
-		super(identifier, name, dmd.getOrb(), dmd.getPoa());
+			WrongPolicy, CoreException {
+		super(identifier, name, sad.eResource().getURI().path(), dmd.getSession());
 		Assert.isNotNull(sad);
 		this.sad = sad;
 	}
@@ -137,7 +138,7 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 	 */
 	@Override
 	public String profile() {
-		return (this.sad == null) ? null : this.sad.eResource().getURI().path();
+		return softwareProfile;
 	}
 
 	/**
