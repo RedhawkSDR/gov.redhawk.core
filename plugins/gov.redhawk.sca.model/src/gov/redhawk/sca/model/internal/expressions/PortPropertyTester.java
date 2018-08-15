@@ -33,6 +33,10 @@ public class PortPropertyTester extends PropertyTester {
 		if (expectedValue == null) {
 			return false;
 		}
-		return Pattern.matches(expectedValue.toString(), port.getRepid());
+		String repid = port.getRepid();
+		if (repid == null) {
+			return false;
+		}
+		return Pattern.matches(expectedValue.toString(), repid);
 	}
 }
