@@ -23,6 +23,7 @@ import mil.jpeojtrs.sca.scd.Uses;
 
 public class PortPropertyTesterTest {
 
+	private static final String PROPERTY = "interface";
 	private static final String IDL_BULKIO_LONG = "IDL:BULKIO/dataLong";
 	private static final String IDL_BULKIO_WILDCARD = "IDL:BULKIO/data.*";
 	private static final String IDL_BURSTIO_FLOAT = "IDL:BURSTIO/burstFloat";
@@ -35,9 +36,9 @@ public class PortPropertyTesterTest {
 		port.setProfileObj(uses);
 
 		PortPropertyTester tester = new PortPropertyTester();
-		Assert.assertTrue(tester.test(port, "interface", new Object[0], IDL_BULKIO_WILDCARD));
-		Assert.assertTrue(tester.test(port, "interface", new Object[0], IDL_BULKIO_LONG));
-		Assert.assertFalse(tester.test(port, "interface", new Object[0], IDL_BURSTIO_FLOAT));
+		Assert.assertTrue(tester.test(port, PROPERTY, new Object[0], IDL_BULKIO_WILDCARD));
+		Assert.assertTrue(tester.test(port, PROPERTY, new Object[0], IDL_BULKIO_LONG));
+		Assert.assertFalse(tester.test(port, PROPERTY, new Object[0], IDL_BURSTIO_FLOAT));
 	}
 
 	@Test
@@ -48,8 +49,19 @@ public class PortPropertyTesterTest {
 		port.setProfileObj(provides);
 
 		PortPropertyTester tester = new PortPropertyTester();
-		Assert.assertTrue(tester.test(port, "interface", new Object[0], IDL_BULKIO_WILDCARD));
-		Assert.assertTrue(tester.test(port, "interface", new Object[0], IDL_BULKIO_LONG));
-		Assert.assertFalse(tester.test(port, "interface", new Object[0], IDL_BURSTIO_FLOAT));
+		Assert.assertTrue(tester.test(port, PROPERTY, new Object[0], IDL_BULKIO_WILDCARD));
+		Assert.assertTrue(tester.test(port, PROPERTY, new Object[0], IDL_BULKIO_LONG));
+		Assert.assertFalse(tester.test(port, PROPERTY, new Object[0], IDL_BURSTIO_FLOAT));
+	}
+
+	/**
+	 * IDE-2230 If the profile isn't set, the rep ID will come back as null. Ensure this isn't a problem for the tester.
+	 */
+	@Test
+	public void nullRepId() {
+		ScaUsesPort port = ScaFactory.eINSTANCE.createScaUsesPort();
+
+		PortPropertyTester tester = new PortPropertyTester();
+		Assert.assertFalse(tester.test(port, PROPERTY, new Object[0], IDL_BULKIO_WILDCARD));
 	}
 }
