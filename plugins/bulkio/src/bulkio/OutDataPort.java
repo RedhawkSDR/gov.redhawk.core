@@ -111,9 +111,6 @@ public abstract class OutDataPort<E extends BULKIO.updateSRIOperations,A> extend
                 final BULKIO.PrecisionUTCTime tstamp = bulkio.time.utils.notSet();
                 for (Map.Entry<String, SriMapStruct> entry: this.currentSRIs.entrySet()) {
                     final String streamID = entry.getKey();
-                    if (!isStreamRoutedToConnection(streamID, connectionId)) {
-                        continue;
-                    }
 
                     final SriMapStruct sriMap = entry.getValue();
                     if (sriMap.connections.contains(connectionId)) {
@@ -234,9 +231,12 @@ public abstract class OutDataPort<E extends BULKIO.updateSRIOperations,A> extend
 
                         // Update entry in currentSRIs
                         this.currentSRIs.get(header.streamID).connections.add(connectionID);
+                        this.updateStats(connectionID);
                     } catch (Exception e) {
-                        if (logger != null) {
-                            logger.error("Call to pushSRI failed on port " + name + " connection " + connectionID);
+                        if ( this.reportConnectionErrors(connectionID)) {
+                            if (this.logger != null) {
+                                logger.error("Call to pushSRI failed on port " + name + " connection " + connectionID);
+                            }
                         }
                     }
                 }
@@ -375,8 +375,10 @@ public abstract class OutDataPort<E extends BULKIO.updateSRIOperations,A> extend
                     this.sendPacket(port, data, time, endOfStream, streamID);
                     this.stats.get(connectionID).update(length, (float)0.0, endOfStream, streamID, false);
                 } catch (Exception e) {
-                    if (logger != null) {
-                        logger.error("Call to pushPacket failed on port " + name + " connection " + connectionID);
+                    if ( this.reportConnectionErrors(connectionID)) {
+                        if ( this.logger != null ) {
+                            logger.error("Call to pushPacket failed on port " + name + " connection " + connectionID);
+                        }
                     }
                 }
             }
