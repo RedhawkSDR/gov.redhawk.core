@@ -1923,9 +1923,7 @@ public class Preprocessor implements Closeable {
 
                         case PP_ELIF:
                             State state = states.peek();
-                            if (false) {
-                                /* Check for 'if' */;
-                            } else if (state.sawElse()) {
+                            if (state.sawElse()) {
                                 error(tok,
                                         "#elif after #" + "else");
                                 return source_skipline(false);
@@ -1952,8 +1950,7 @@ public class Preprocessor implements Closeable {
 
                         case PP_ELSE:
                             state = states.peek();
-                            if (false)
-								/* Check for 'if' */ ; else if (state.sawElse()) {
+                            if (state.sawElse()) {
                                 error(tok,
                                         "#" + "else after #" + "else");
                                 return source_skipline(false);
