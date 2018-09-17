@@ -14,7 +14,6 @@ package gov.redhawk.model.sca.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -43,7 +42,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.omg.CORBA.IntHolder;
@@ -97,7 +95,6 @@ import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 import gov.redhawk.model.sca.DomainConnectionException;
 import gov.redhawk.model.sca.DomainConnectionState;
-import gov.redhawk.model.sca.ProfileObjectWrapper;
 import gov.redhawk.model.sca.Properties;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
@@ -126,11 +123,9 @@ import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.sca.util.SilentJob;
 import mil.jpeojtrs.sca.dmd.DmdPackage;
 import mil.jpeojtrs.sca.dmd.DomainManagerConfiguration;
-import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.spd.SpdPackage;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.NamedThreadFactory;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 /**
  * <!-- begin-user-doc -->
@@ -2315,59 +2310,22 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 	// END GENERATED CODE
 
+	@Override
+	protected Class<DomainManagerConfiguration> getProfileObjectType() {
+		return DomainManagerConfiguration.class;
+	}
+
 	private static final EStructuralFeature[] PRF_PATH = { DmdPackage.Literals.DOMAIN_MANAGER_CONFIGURATION__DOMAIN_MANAGER_SOFT_PKG,
 		DmdPackage.Literals.DOMAIN_MANAGER_SOFT_PKG__SOFT_PKG, SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, SpdPackage.Literals.PROPERTY_FILE__PROPERTIES };
 
 	@Override
-	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
-		if (isDisposed()) {
-			return Collections.emptyList();
-		}
-
-		DomainManagerConfiguration dmd = fetchProfileObject(monitor);
-		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(dmd, PRF_PATH);
-		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
-		if (propDefintions != null) {
-			for (ValueListIterator<Object> i = propDefintions.getProperties().valueListIterator(); i.hasNext();) {
-				Object propDef = i.next();
-				if (propDef instanceof AbstractProperty) {
-					retVal.add((AbstractProperty) propDef);
-				}
-			}
-		}
-		return retVal;
-	}
-
-	private final VersionedFeature profileObjectFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);
-
-	// BEGIN GENERATED CODE
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @since 14.0
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	@Override
-	public DomainManagerConfiguration fetchProfileObject(IProgressMonitor monitor) {
-		// END GENERATED CODE
-		if (isDisposed()) {
-			return null;
-		}
-		if (isSetProfileObj()) {
-			return getProfileObj();
-		}
-
-		Transaction transaction = profileObjectFeature.createTransaction();
-		transaction.addCommand(
-			ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, DomainManagerConfiguration.class, DomainManagerConfiguration.EOBJECT_PATH));
-		transaction.commit();
-		return getProfileObj();
-		// BEGIN GENERATED CODE
+	protected EStructuralFeature[] getEmfPathToPropertyDefinitions() {
+		return PRF_PATH;
 	}
 
 	private final VersionedFeature profileRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__PROFILE);
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * @since 14.0

@@ -15,15 +15,17 @@ import gov.redhawk.model.sca.ProfileObjectWrapper;
 import gov.redhawk.model.sca.ScaPackage;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * @since 14.0
  */
-public class SetProfileObjectCommand< T extends EObject > extends SetStatusCommand<ProfileObjectWrapper<T>> {
+public class SetProfileObjectCommand< T > extends SetStatusCommand<ProfileObjectWrapper<T>> {
 
 	private T profileObject;
 
+	/**
+	 * @since 23.0
+	 */
 	public SetProfileObjectCommand(ProfileObjectWrapper<T> provider, T profileObject, IStatus status) {
 		super(provider, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ, status);
 		this.profileObject = profileObject;

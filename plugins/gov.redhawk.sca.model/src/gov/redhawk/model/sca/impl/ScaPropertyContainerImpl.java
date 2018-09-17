@@ -12,6 +12,45 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.ECollections;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.transaction.RunnableWithResult;
+import org.omg.CORBA.SystemException;
+
+import CF.DataType;
+import CF.InvalidIdentifier;
+import CF.InvalidObjectReference;
+import CF.PropertiesHolder;
+import CF.PropertyEmitter;
+import CF.PropertyEmitterOperations;
+import CF.PropertySetOperations;
+import CF.UnknownProperties;
+import CF.PropertyEmitterPackage.AlreadyInitialized;
+import CF.PropertySetPackage.InvalidConfiguration;
+import CF.PropertySetPackage.PartialConfiguration;
 import gov.redhawk.model.sca.ProfileObjectWrapper;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaModelPlugin;
@@ -24,40 +63,9 @@ import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 import gov.redhawk.sca.util.PluginUtil;
-import java.util.Collection;
-import java.util.List;
 import mil.jpeojtrs.sca.prf.AbstractProperty;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.MultiStatus;
-import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.ECollections;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.emf.transaction.RunnableWithResult;
-import org.omg.CORBA.SystemException;
-import CF.DataType;
-import CF.InvalidIdentifier;
-import CF.InvalidObjectReference;
-import CF.PropertiesHolder;
-import CF.PropertyEmitter;
-import CF.PropertyEmitterOperations;
-import CF.PropertyEmitterPackage.AlreadyInitialized;
-import CF.PropertySetOperations;
-import CF.UnknownProperties;
-import CF.PropertySetPackage.InvalidConfiguration;
-import CF.PropertySetPackage.PartialConfiguration;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
+import mil.jpeojtrs.sca.util.collections.FeatureMapList;
 
 /**
  * <!-- begin-user-doc -->
@@ -353,14 +361,40 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * 
 	 * @since 14.0
 	 * <!-- end-user-doc -->
 	 * @generated NOT
-	 * 
 	 */
 	@Override
-	public abstract E fetchProfileObject(IProgressMonitor monitor);
+	public E fetchProfileObject(IProgressMonitor monitor) {
+		// END GENERATED CODE
+		if (isDisposed()) {
+			return null;
+		}
+		if (isSetProfileObj()) {
+			return getProfileObj();
+		}
+
+		Transaction transaction = profileObjectFeature.createTransaction();
+		Command command = ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, getProfileObjectType(), "/");
+		transaction.addCommand(command);
+		transaction.commit();
+		return getProfileObj();
+		// BEGIN GENERATED CODE
+	}
+
+	// END GENERATED CODE
+
+	private final VersionedFeature profileObjectFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);
+
+	/**
+	 * The method is called by the default implementation of {@link #fetchProfileObject(IProgressMonitor)}.
+	 * @return the {@link Class} object for the profile object's type.
+	 * @since 23.0
+	 */
+	protected abstract Class<E> getProfileObjectType();
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -651,10 +685,48 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	@Override
 	public abstract void configure(DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration;
 
+	// END GENERATED CODE
+
+	private VersionedObject<List<AbstractProperty>> propDefs = new VersionedObject<List<AbstractProperty>>(null, 0);
+
 	/**
 	 * @since 18.0
 	 */
-	protected abstract List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor);
+	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return Collections.emptyList();
+		}
+
+		// Use cached property definitions if available
+		VersionedObject<List<AbstractProperty>> cachedPropDefs = propDefs;
+		int profileObjRevision = profileObjectFeature.getCurrentRevision();
+		if (cachedPropDefs.stamp == profileObjRevision) {
+			return cachedPropDefs.object;
+		}
+
+		// Fetch profile
+		EObject tmpProfileObj = (EObject) fetchProfileObject(monitor);
+		profileObjRevision = profileObjectFeature.getCurrentRevision();
+
+		// Find the properties and cache them
+		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(tmpProfileObj, getEmfPathToPropertyDefinitions());
+		if (propDefintions != null) {
+			List<AbstractProperty> retVal = new ArrayList<>(new FeatureMapList<>(propDefintions.getProperties(), AbstractProperty.class));
+			propDefs = new VersionedObject<List<AbstractProperty>>(retVal, profileObjRevision);
+			return retVal;
+		} else {
+			return Collections.emptyList();
+		}
+	}
+
+	/**
+	 * The method is called by the default implementation of {@link #fetchPropertyDefinitions(IProgressMonitor)}.
+	 * @return The EMF path from the profile object to the {@link mil.jpeojtrs.sca.prf.Properties} object.
+	 * @since 23.0
+	 */
+	protected abstract EStructuralFeature[] getEmfPathToPropertyDefinitions();
+
+	// BEGIN GENERATED CODE
 
 	@Override
 	public IStatus getStatus() {

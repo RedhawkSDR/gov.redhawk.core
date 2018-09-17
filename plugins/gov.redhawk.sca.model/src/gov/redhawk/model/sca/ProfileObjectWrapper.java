@@ -199,8 +199,8 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 		 * @param type The type of the returned profile object
 		 * @param rootPath The path within the XML Object to the root element
 		 */
-		public static < T extends EObject > Command fetchProfileObject(final IProgressMonitor monitor, final ProfileObjectWrapper<T> wrapper,
-			final Class<T> type, final String rootPath) {
+		public static < T > Command fetchProfileObject(final IProgressMonitor monitor, final ProfileObjectWrapper<T> wrapper, final Class<T> type,
+			final String rootPath) {
 			if (wrapper.isSetProfileObj()) {
 				return UnexecutableCommand.INSTANCE;
 			}
