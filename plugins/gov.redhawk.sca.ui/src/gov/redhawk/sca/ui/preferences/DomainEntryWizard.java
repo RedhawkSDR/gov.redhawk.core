@@ -1,13 +1,12 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- *
  */
 package gov.redhawk.sca.ui.preferences;
 
@@ -22,7 +21,6 @@ import java.util.List;
 import org.eclipse.jface.wizard.Wizard;
 
 /**
- * The Class HostEntryDialog.
  * @since 7.0
  */
 public class DomainEntryWizard extends Wizard {
@@ -95,7 +93,8 @@ public class DomainEntryWizard extends Wizard {
 	 * @since 8.0
 	 */
 	public void setConnectionMode(final boolean connect) {
-		this.wizardPage.setConnectionMode(connect ? ConnectionMode.AUTO : ConnectionMode.MANUAL); // SUPPRESS CHECKSTYLE AvoidInline
+		ConnectionMode mode = (connect) ? ConnectionMode.AUTO : ConnectionMode.MANUAL;
+		this.wizardPage.setConnectionMode(mode);
 	}
 
 	/**
@@ -104,7 +103,7 @@ public class DomainEntryWizard extends Wizard {
 	public void setEdit(final String localName, final String domainName, final String initRef) {
 		this.wizardPage.setEdit(localName, domainName, initRef);
 	}
-	
+
 	/**
 	 * @since 10.0
 	 */

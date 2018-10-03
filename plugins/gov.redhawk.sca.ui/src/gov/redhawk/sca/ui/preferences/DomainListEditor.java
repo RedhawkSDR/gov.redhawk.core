@@ -1,13 +1,12 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- *
  */
 package gov.redhawk.sca.ui.preferences;
 
@@ -53,8 +52,6 @@ import org.eclipse.swt.widgets.Control;
 /**
  * A field editor that manages a list of input values. The editor displays a list containing the values, buttons for
  * connecting and disconnecting a domain and setting the target deployment domain.
- * <p>
- * </p>
  */
 public class DomainListEditor extends FieldEditor {
 	/**
@@ -99,9 +96,6 @@ public class DomainListEditor extends FieldEditor {
 		this.registry = registry;
 	}
 
-	/*
-	 * (non-Javadoc) Method declared on FieldEditor.
-	 */
 	@Override
 	protected void adjustForNumColumns(final int numColumns) {
 		final Control control = getLabelControl();
@@ -131,7 +125,8 @@ public class DomainListEditor extends FieldEditor {
 				wizard.setWindowTitle("New Domain Manager");
 				final WizardDialog dialog = new WizardDialog(box.getShell(), wizard);
 				if (dialog.open() == IStatus.OK) {
-					final ScaDomainConnectionDef def = new ScaDomainConnectionDef(wizard.getLocalDomainName(), wizard.getDomainName(), wizard.getNameServiceInitRef(), false);
+					final ScaDomainConnectionDef def = new ScaDomainConnectionDef(wizard.getLocalDomainName(), wizard.getDomainName(),
+						wizard.getNameServiceInitRef(), false);
 					DomainListEditor.this.domainConnectionDefs.add(def);
 					DomainListEditor.this.list.refresh();
 				}
@@ -158,7 +153,8 @@ public class DomainListEditor extends FieldEditor {
 				wizard.setConnectionMode(def.isConnectOnStartup());
 				final WizardDialog dialog = new WizardDialog(box.getShell(), wizard);
 				if (dialog.open() == IStatus.OK) {
-					final ScaDomainConnectionDef newDef = new ScaDomainConnectionDef(wizard.getLocalDomainName(), wizard.getDomainName(), wizard.getNameServiceInitRef(), false);
+					final ScaDomainConnectionDef newDef = new ScaDomainConnectionDef(wizard.getLocalDomainName(), wizard.getDomainName(),
+						wizard.getNameServiceInitRef(), false);
 					if (!def.equals(newDef)) {
 						final int index = DomainListEditor.this.domainConnectionDefs.indexOf(def);
 						DomainListEditor.this.domainConnectionDefs.remove(index);
@@ -231,9 +227,6 @@ public class DomainListEditor extends FieldEditor {
 		return button;
 	}
 
-	/*
-	 * (non-Javadoc) Method declared on FieldEditor.
-	 */
 	@Override
 	protected void doFillIntoGrid(final Composite parent, final int numColumns) {
 		final Control control = getLabelControl(parent);
@@ -268,16 +261,13 @@ public class DomainListEditor extends FieldEditor {
 		this.buttonBox.setLayoutData(gd);
 	}
 
-	/*
-	 * (non-Javadoc) Method declared on FieldEditor.
-	 */
 	@Override
 	protected void doLoad() {
 		this.domainConnectionDefs.clear();
 
 		for (final ScaDomainManager manager : this.registry.getDomains()) {
-			final ScaDomainConnectionDef def = new ScaDomainConnectionDef(manager.getLocalName(), manager.getName(), manager.getConnectionProperties().get(
-				ScaDomainManager.NAMING_SERVICE_PROP), manager.isAutoConnect());
+			final ScaDomainConnectionDef def = new ScaDomainConnectionDef(manager.getLocalName(), manager.getName(),
+				manager.getConnectionProperties().get(ScaDomainManager.NAMING_SERVICE_PROP), manager.isAutoConnect());
 			this.domainConnectionDefs.add(def);
 		}
 		if (this.list != null) {
@@ -285,16 +275,13 @@ public class DomainListEditor extends FieldEditor {
 		}
 	}
 
-	/*
-	 * (non-Javadoc) Method declared on FieldEditor.
-	 */
 	@Override
 	protected void doLoadDefault() {
 		this.domainConnectionDefs.clear();
 
 		for (final ScaDomainManager manager : ScaPreferenceInitializer.getDefaultScaDomainManagerRegistry().getDomains()) {
-			final ScaDomainConnectionDef def = new ScaDomainConnectionDef(manager.getLocalName(), manager.getName(), manager.getConnectionProperties().get(
-				ScaDomainManager.NAMING_SERVICE_PROP), manager.isAutoConnect());
+			final ScaDomainConnectionDef def = new ScaDomainConnectionDef(manager.getLocalName(), manager.getName(),
+				manager.getConnectionProperties().get(ScaDomainManager.NAMING_SERVICE_PROP), manager.isAutoConnect());
 			this.domainConnectionDefs.add(def);
 		}
 
@@ -303,9 +290,6 @@ public class DomainListEditor extends FieldEditor {
 		}
 	}
 
-	/*
-	 * (non-Javadoc) Method declared on FieldEditor.
-	 */
 	@Override
 	protected void doStore() {
 		for (final ScaDomainConnectionDef def : this.domainConnectionDefs) {
@@ -321,8 +305,8 @@ public class DomainListEditor extends FieldEditor {
 
 								@Override
 								public void execute() {
-									newDomain[0] = DomainListEditor.this.registry.createDomain(def.getLocalName(), def.getDomainName(), def.isConnectOnStartup(),
-										Collections.singletonMap(ScaDomainManager.NAMING_SERVICE_PROP, def.getNameServiceInitRef()));
+									newDomain[0] = DomainListEditor.this.registry.createDomain(def.getLocalName(), def.getDomainName(),
+										def.isConnectOnStartup(), Collections.singletonMap(ScaDomainManager.NAMING_SERVICE_PROP, def.getNameServiceInitRef()));
 
 								}
 
@@ -408,17 +392,11 @@ public class DomainListEditor extends FieldEditor {
 		return this.buttonBox;
 	}
 
-	/*
-	 * (non-Javadoc) Method declared on FieldEditor.
-	 */
 	@Override
 	public int getNumberOfControls() {
 		return 2;
 	}
 
-	/*
-	 * (non-Javadoc) Method declared on FieldEditor.
-	 */
 	@Override
 	public void setFocus() {
 		if (this.list != null) {
@@ -426,13 +404,9 @@ public class DomainListEditor extends FieldEditor {
 		}
 	}
 
-	/*
-	 * @see FieldEditor.setEnabled(boolean,Composite).
-	 */
 	@Override
 	public void setEnabled(final boolean enabled, final Composite parent) {
 		super.setEnabled(enabled, parent);
 		this.list.getList().setEnabled(enabled);
 	}
-
 }
