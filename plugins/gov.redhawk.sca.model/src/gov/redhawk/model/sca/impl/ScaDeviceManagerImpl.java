@@ -1774,7 +1774,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 				MergePortsCommand command = new MergePortsCommand(this, newPorts, fetchPortsStatus);
 				transaction.addCommand(command);
 			} else {
-				transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS));
+				IStatus status = new Status(IStatus.ERROR, ScaModelPlugin.ID, "No profile available. Ports cannot be retrieved.");
+				transaction.addCommand(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS));
 			}
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS));

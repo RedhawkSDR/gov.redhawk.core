@@ -300,7 +300,7 @@
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/rootContext"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/state"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/profile"/>
-      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaDomainManager/eventChannels"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaDomainManager/eventChannels"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/localName"/>
       <genOperations ecoreOperation="sca.ecore#//ScaDomainManager/getDevice">
         <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/getDevice/deviceId"/>

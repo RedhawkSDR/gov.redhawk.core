@@ -227,10 +227,12 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 		return overlayImage(object, getResourceLocator().getImage("full/obj16/ScaDomainManager"));
 	}
 
+	// END GENERATED CODE
+
 	private ScaDeviceManagersContainerItemProvider deviceManagersItemProvider;
+	private ScaEventChannelsContainerItemProvider eventChannelItemProvider;
 	private ScaWaveformFactoriesContainerItemProvider waveformFactoriesItemProvider;
 	private ScaWaveformsContainerItemProvider waveformItemProvider;
-	private ScaEventChannelsContainerItemProvider eventChannelItemProvider;
 
 	@Override
 	public Collection< ? > getChildren(final Object object) {
@@ -243,11 +245,7 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 			retVal.addAll(super.getChildren(object));
 			if (domMgr.isConnected()) {
 				retVal.add(getWaveformFactoriesContainerItemProvider());
-			}
-			if (domMgr.isConnected()) {
 				retVal.add(getWaveformContainerItemProvider());
-			}
-			if (domMgr.isConnected()) {
 				retVal.add(getEventChannelContainerItemProvider());
 			}
 			return retVal;
@@ -255,6 +253,8 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 			return Collections.emptyList();
 		}
 	}
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * This returns the label text for the adapted class.
@@ -294,7 +294,7 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	 * <!-- begin-user-doc -->
 	 * @since 11.0
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public void notifyChanged(Notification notification) {
@@ -302,13 +302,38 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 
 		switch (notification.getFeatureID(ScaDomainManager.class)) {
 		case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
-		case ScaPackage.SCA_DOMAIN_MANAGER__EVENT_CHANNELS:
 		case ScaPackage.SCA_DOMAIN_MANAGER__LOCAL_NAME:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
+			// END GENERATED CODE
+		case ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS:
+			if (notification.getEventType() == Notification.UNSET && this.deviceManagersItemProvider != null) {
+				this.deviceManagersItemProvider.dispose();
+				this.deviceManagersItemProvider = null;
+			}
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__EVENT_CHANNELS:
+			if (notification.getEventType() == Notification.UNSET && this.eventChannelItemProvider != null) {
+				this.eventChannelItemProvider.dispose();
+				this.eventChannelItemProvider = null;
+			}
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES:
+			if (notification.getEventType() == Notification.UNSET && this.waveformFactoriesItemProvider != null) {
+				this.waveformFactoriesItemProvider.dispose();
+				this.waveformFactoriesItemProvider = null;
+			}
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS:
+			if (notification.getEventType() == Notification.UNSET && this.waveformItemProvider != null) {
+				this.waveformItemProvider.dispose();
+				this.waveformItemProvider = null;
+			}
+			return;
+			// BEGIN GENERATED CODE
 		}
 		super.notifyChanged(notification);
 	}
@@ -325,7 +350,17 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 	}
 
+	// END GENERATED CODE
+
 	private void disposeContainerItemProviders() {
+		if (this.deviceManagersItemProvider != null) {
+			this.deviceManagersItemProvider.dispose();
+			this.deviceManagersItemProvider = null;
+		}
+		if (this.eventChannelItemProvider != null) {
+			this.eventChannelItemProvider.dispose();
+			this.eventChannelItemProvider = null;
+		}
 		if (this.waveformFactoriesItemProvider != null) {
 			this.waveformFactoriesItemProvider.dispose();
 			this.waveformFactoriesItemProvider = null;
@@ -333,10 +368,6 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 		if (this.waveformItemProvider != null) {
 			this.waveformItemProvider.dispose();
 			this.waveformItemProvider = null;
-		}
-		if (this.deviceManagersItemProvider != null) {
-			this.deviceManagersItemProvider.dispose();
-			this.deviceManagersItemProvider = null;
 		}
 	}
 
@@ -386,4 +417,5 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 		super.dispose();
 	}
 
+	// BEGIN GENERATED CODE
 }
