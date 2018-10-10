@@ -11,13 +11,14 @@
  */
 package gov.redhawk.sca.ui;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -25,11 +26,13 @@ import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.ICommonContentProvider;
 import org.eclipse.ui.progress.UIJob;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 
 import gov.redhawk.model.sca.ScaDocumentRoot;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
@@ -84,72 +87,82 @@ public class ScaContentProvider extends ScaModelAdapterFactoryContentProvider im
 		return retVal;
 	}
 
-	private abstract static class FetchJob extends SilentJob {
+	private static class FetchJob extends SilentJob {
+
+		private final IDeferredAdapter adapter;
+
+		public FetchJob(IDeferredAdapter adapter) {
+			super("Loading...");
+			this.adapter = adapter;
+			setPriority(Job.LONG);
+		}
+
+		@Override
+		protected final IStatus runSilent(final IProgressMonitor monitor) {
+			adapter.fetchDeferredChildren(monitor);
+			return Status.OK_STATUS;
+		}
+	}
+
+	private static class RefreshJob extends UIJob {
 
 		private final Object element;
 		private final Viewer viewer;
 
-		public FetchJob(final Object element, final Viewer viewer) {
-			super("Loading...");
+		public RefreshJob(Object element, Viewer viewer) {
+			super(viewer.getControl().getDisplay(), "Refresh element...");
 			this.element = element;
-			setPriority(Job.LONG);
 			this.viewer = viewer;
+			setSystem(true);
 		}
 
-		protected abstract IStatus doFetch(IProgressMonitor monitor);
-
 		@Override
-		protected final IStatus runSilent(final IProgressMonitor monitor) {
-			try {
-				return doFetch(monitor);
-			} finally {
-				if (this.viewer != null && this.viewer.getControl() != null && !this.viewer.getControl().isDisposed()) {
-					final Display display = this.viewer.getControl().getDisplay();
-					final UIJob refreshJob = new UIJob(display, "Refresh") {
-
-						@Override
-						public IStatus runInUIThread(final IProgressMonitor monitor) {
-							if (FetchJob.this.viewer.getControl().isDisposed()) {
-								return Status.CANCEL_STATUS;
-							}
-							if (FetchJob.this.viewer instanceof StructuredViewer) {
-								((StructuredViewer) FetchJob.this.viewer).refresh(FetchJob.this.element);
-							} else {
-								FetchJob.this.viewer.refresh();
-							}
-							return Status.OK_STATUS;
-						}
-					};
-					refreshJob.setSystem(true);
-					refreshJob.schedule();
-				}
+		public IStatus runInUIThread(IProgressMonitor monitor) {
+			if (this.viewer.getControl() == null || this.viewer.getControl().isDisposed()) {
+				return Status.CANCEL_STATUS;
 			}
+
+			if (this.viewer instanceof StructuredViewer) {
+				((StructuredViewer) this.viewer).refresh(this.element);
+			} else {
+				this.viewer.refresh();
+			}
+			return Status.OK_STATUS;
 		}
 	}
 
-	private final Set<Integer> fetched = new HashSet<Integer>();
+	private Cache<Object, Job> fetchJobs = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build();
 
 	@Override
 	public Object[] getChildren(final Object object) {
+		// See if this object isn't set
 		final IDeferredAdapter adapter = DeferredAdapterSwitch.doSwitch(object);
 		if (adapter != null && !adapter.isSet()) {
-			final int systemHash = System.identityHashCode(object);
-			if (!this.fetched.contains(systemHash)) {
-				this.fetched.add(System.identityHashCode(object));
-				final FetchJob job = new FetchJob(object, this.viewer) {
+			// See if we've scheduled a fetch
+			Job fetchJob = this.fetchJobs.getIfPresent(object);
 
-					@Override
-					protected IStatus doFetch(final IProgressMonitor monitor) {
-						adapter.fetchDeferredChildren(monitor);
-						return Status.OK_STATUS;
-					}
+			// If not fetched, schedule fetch (and then refresh) jobs
+			if (fetchJob == null) {
+				fetchJob = new FetchJob(adapter);
+				this.fetchJobs.put(object, fetchJob);
+				if (this.viewer != null && this.viewer.getControl() != null && !this.viewer.getControl().isDisposed()) {
+					final Job refreshJob = new RefreshJob(object, viewer);
+					fetchJob.addJobChangeListener(new JobChangeAdapter() {
+						@Override
+						public void done(IJobChangeEvent event) {
+							refreshJob.schedule();
+						}
+					});
+				}
+				fetchJob.schedule();
+			}
 
-				};
-				job.schedule();
-
-				return new Object[] { job };
+			// If the fetch job hasn't completed, return it as the only child
+			if (fetchJob.getResult() == null) {
+				return new Object[] { fetchJob };
 			}
 		}
+
 		return super.getChildren(object);
 	}
 
@@ -165,8 +178,7 @@ public class ScaContentProvider extends ScaModelAdapterFactoryContentProvider im
 	@Override
 	public void dispose() {
 		((ComposedAdapterFactory) this.adapterFactory).dispose();
-		this.adapterFactory = null;
-		this.fetched.clear();
+		this.fetchJobs.invalidateAll();
 		super.dispose();
 	}
 
