@@ -282,7 +282,7 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 	 * @param devMgrName The device manager's label
 	 * @return
 	 * @throws URISyntaxException
-	 * @since 22.0
+	 * @since 23.0
 	 */
 	protected static URI createFileSystemURI(String ior, String domMgrName, String domMgrFS, String devMgrName) throws URISyntaxException {
 		if (ior == null) {
