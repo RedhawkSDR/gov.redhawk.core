@@ -158,16 +158,16 @@ public class DomainEntryWizardPage extends WizardPage {
 		container.setLayout(gridLayout);
 		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		// Display Name
-		final Label displayNameLabel = new Label(container, SWT.NONE);
-		displayNameLabel.setText(Messages.DomainEntryWizardPage_DisplayName);
+		// Name service
+		final Label nameServiceLabel = new Label(container, SWT.NONE);
+		nameServiceLabel.setText(Messages.DomainEntryWizardPage_NameService);
 		GridDataFactory labelGdf = GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER);
-		displayNameLabel.setLayoutData(labelGdf.create());
+		nameServiceLabel.setLayoutData(labelGdf.create());
 
-		displayNameText = new Text(container, SWT.BORDER);
-		displayNameText.setToolTipText(Messages.DomainEntryWizardPage_DisplayNameTooltip);
+		nameServiceText = new Text(container, SWT.BORDER);
+		nameServiceText.setToolTipText(Messages.DomainEntryWizardPage_NameServiceTooltip);
 		GridDataFactory textGdf = GridDataFactory.fillDefaults().grab(true, false).span(2, 1);
-		displayNameText.setLayoutData(textGdf.create());
+		nameServiceText.setLayoutData(textGdf.create());
 
 		// Domain name
 		final Label domainNameLabel = new Label(container, SWT.NONE);
@@ -183,14 +183,14 @@ public class DomainEntryWizardPage extends WizardPage {
 		domainSelectButton.setToolTipText(Messages.DomainEntryWizardPage_DomainButtonTooltip_InvalidNameServiceRef);
 		domainSelectButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 
-		// Name service
-		final Label nameServiceLabel = new Label(container, SWT.NONE);
-		nameServiceLabel.setText(Messages.DomainEntryWizardPage_NameService);
-		nameServiceLabel.setLayoutData(labelGdf.create());
+		// Display Name
+		final Label displayNameLabel = new Label(container, SWT.NONE);
+		displayNameLabel.setText(Messages.DomainEntryWizardPage_DisplayName);
+		displayNameLabel.setLayoutData(labelGdf.create());
 
-		nameServiceText = new Text(container, SWT.BORDER);
-		nameServiceText.setToolTipText(Messages.DomainEntryWizardPage_NameServiceTooltip);
-		nameServiceText.setLayoutData(textGdf.create());
+		displayNameText = new Text(container, SWT.BORDER);
+		displayNameText.setToolTipText(Messages.DomainEntryWizardPage_DisplayNameTooltip);
+		displayNameText.setLayoutData(textGdf.create());
 
 		// Display name binding & validation
 		UpdateValueStrategy validator = new UpdateValueStrategy();
@@ -233,8 +233,8 @@ public class DomainEntryWizardPage extends WizardPage {
 			BeanProperties.value(this.model.getClass(), DomainSettingModel.PROP_NAME_SERVICE_INIT_REF).observe(this.model), validator, null);
 		ControlDecorationSupport.create(nameServiceBinding, SWT.TOP | SWT.LEFT);
 
-		// Setting display name -> sets domain name
-		context.bindValue(WidgetProperties.text(SWT.Modify).observe(displayNameText), WidgetProperties.text(SWT.Modify).observe(domainNameText), null,
+		// Setting domain name -> sets display name
+		context.bindValue(WidgetProperties.text(SWT.Modify).observe(domainNameText), WidgetProperties.text(SWT.Modify).observe(displayNameText), null,
 			new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
 
 		// Setting the name service reference -> search for domains

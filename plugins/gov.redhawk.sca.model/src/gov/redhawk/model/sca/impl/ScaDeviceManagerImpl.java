@@ -12,49 +12,11 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
-import gov.redhawk.model.sca.IRefreshable;
-import gov.redhawk.model.sca.ProfileObjectWrapper;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaDeviceManager;
-import gov.redhawk.model.sca.ScaDeviceManagerFileSystem;
-import gov.redhawk.model.sca.ScaDomainManager;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaModelPlugin;
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaPort;
-import gov.redhawk.model.sca.ScaPortContainer;
-import gov.redhawk.model.sca.ScaPropertyContainer;
-import gov.redhawk.model.sca.ScaService;
-import gov.redhawk.model.sca.commands.MergePortsCommand;
-import gov.redhawk.model.sca.commands.MergePortsCommand.PortData;
-import gov.redhawk.model.sca.commands.MergeServicesCommand;
-import gov.redhawk.model.sca.commands.ScaDeviceManagerMergeDevicesCommand;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
-import gov.redhawk.model.sca.commands.SetDeviceManagerFileSystemCommand;
-import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
-import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
-import gov.redhawk.model.sca.commands.VersionedFeature;
-import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
-import gov.redhawk.sca.util.PluginUtil;
-
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import mil.jpeojtrs.sca.dcd.DcdPackage;
-import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
-import mil.jpeojtrs.sca.prf.AbstractProperty;
-import mil.jpeojtrs.sca.scd.AbstractPort;
-import mil.jpeojtrs.sca.scd.Ports;
-import mil.jpeojtrs.sca.scd.ScdPackage;
-import mil.jpeojtrs.sca.spd.SpdPackage;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
-import mil.jpeojtrs.sca.util.collections.FeatureMapList;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -74,7 +36,6 @@ import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -113,6 +74,39 @@ import CF.PortSupplierPackage.UnknownPort;
 import CF.PropertyEmitterPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
+import gov.redhawk.model.sca.IRefreshable;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaDeviceManager;
+import gov.redhawk.model.sca.ScaDeviceManagerFileSystem;
+import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaModelPlugin;
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaPort;
+import gov.redhawk.model.sca.ScaPortContainer;
+import gov.redhawk.model.sca.ScaPropertyContainer;
+import gov.redhawk.model.sca.ScaService;
+import gov.redhawk.model.sca.commands.MergePortsCommand;
+import gov.redhawk.model.sca.commands.MergePortsCommand.PortData;
+import gov.redhawk.model.sca.commands.MergeServicesCommand;
+import gov.redhawk.model.sca.commands.ScaDeviceManagerMergeDevicesCommand;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
+import gov.redhawk.model.sca.commands.SetDeviceManagerFileSystemCommand;
+import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
+import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
+import gov.redhawk.model.sca.commands.VersionedFeature;
+import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
+import gov.redhawk.sca.util.PluginUtil;
+import mil.jpeojtrs.sca.dcd.DcdPackage;
+import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
+import mil.jpeojtrs.sca.scd.AbstractPort;
+import mil.jpeojtrs.sca.scd.Ports;
+import mil.jpeojtrs.sca.scd.ScdPackage;
+import mil.jpeojtrs.sca.spd.SpdPackage;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
+import mil.jpeojtrs.sca.util.collections.FeatureMapList;
 
 /**
  * <!-- begin-user-doc -->
@@ -1752,7 +1746,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 				MergePortsCommand command = new MergePortsCommand(this, newPorts, fetchPortsStatus);
 				transaction.addCommand(command);
 			} else {
-				transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS));
+				IStatus status = new Status(IStatus.ERROR, ScaModelPlugin.ID, "No profile available. Ports cannot be retrieved.");
+				transaction.addCommand(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS));
 			}
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS));
@@ -2015,6 +2010,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		// BEGIN GENERATED CODE
 	}
 
+	// END GENERATED CODE
+
 	/**
 	 * @since 14.0
 	 */
@@ -2045,48 +2042,17 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		}
 	}
 
+	@Override
+	protected Class<DeviceConfiguration> getProfileObjectType() {
+		return DeviceConfiguration.class;
+	}
+
 	private static final EStructuralFeature[] PRF_PATH = { DcdPackage.Literals.DEVICE_CONFIGURATION__DEVICE_MANAGER_SOFT_PKG,
 		DcdPackage.Literals.DEVICE_MANAGER_SOFT_PKG__SOFT_PKG, SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, SpdPackage.Literals.PROPERTY_FILE__PROPERTIES };
 
 	@Override
-	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
-		if (isDisposed()) {
-			return Collections.emptyList();
-		}
-
-		EObject localProfile = fetchProfileObject(monitor);
-		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(localProfile, PRF_PATH);
-		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
-		if (propDefintions != null) {
-			for (ValueListIterator<Object> i = propDefintions.getProperties().valueListIterator(); i.hasNext();) {
-				Object propDef = i.next();
-				if (propDef instanceof AbstractProperty) {
-					retVal.add((AbstractProperty) propDef);
-				}
-			}
-		}
-		return retVal;
-	}
-
-	private final VersionedFeature profileObjectFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);
-
-	/**
-	 * @since 14.0
-	 */
-	@Override
-	public DeviceConfiguration fetchProfileObject(IProgressMonitor monitor) {
-		if (isDisposed()) {
-			return null;
-		}
-		if (isSetProfileObj()) {
-			return getProfileObj();
-		}
-
-		Transaction transaction = profileObjectFeature.createTransaction();
-		transaction.addCommand(
-			ProfileObjectWrapper.Util.fetchProfileObject(monitor, ScaDeviceManagerImpl.this, DeviceConfiguration.class, DeviceConfiguration.EOBJECT_PATH));
-		transaction.commit();
-		return getProfileObj();
+	protected EStructuralFeature[] getEmfPathToPropertyDefinitions() {
+		return PRF_PATH;
 	}
 
 	/**
@@ -2097,6 +2063,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	}
 
 	private final VersionedFeature profileFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE_MANAGER__PROFILE);
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * @since 14.0

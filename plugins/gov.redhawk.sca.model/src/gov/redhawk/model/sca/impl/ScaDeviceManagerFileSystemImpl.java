@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDeviceManagerFileSystem;
+import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPackage;
 import mil.jpeojtrs.sca.util.QueryParser;
 import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
@@ -246,35 +247,54 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 		ScaDeviceManager devMgr = getDeviceManager();
 		String devMgrName = null;
 		String domMgrName = null;
+		String domMgrFS = null;
 		if (devMgr != null) {
-			if (devMgr.getDomMgr() != null) {
-				domMgrName = devMgr.getDomMgr().getLabel();
+			ScaDomainManager domMgr = devMgr.getDomMgr();
+			if (domMgr != null) {
+				domMgrName = domMgr.getLabel();
+				if (domMgr.getFileManager() != null) {
+					domMgrFS = domMgr.getFileManager().getIor();
+				}
 			}
 			devMgrName = devMgr.getLabel();
 		}
 
 		try {
-			return createFileSystemURI(ior, domMgrName, devMgrName);
+			return createFileSystemURI(ior, domMgrName, domMgrFS, devMgrName);
 		} catch (final URISyntaxException e) {
 			return null;
 		}
 	}
 
 	/**
+	 * @deprecated Use {@link #createFileSystemURI()}
 	 * @since 19.0
+	 */
+	@Deprecated
+	protected static URI createFileSystemURI(String ior, String domMgrName, String devMgrName) throws URISyntaxException {
+		return createFileSystemURI(ior, domMgrName, null, devMgrName);
+	}
+
+	/**
 	 * @param ior
-	 * @param dmName
+	 * @param domMgrName The domain manager's name
+	 * @param domMgrFS The IOR or file URI of the domain manager's file system
+	 * @param devMgrName The device manager's label
 	 * @return
 	 * @throws URISyntaxException
+	 * @since 23.0
 	 */
-	protected static URI createFileSystemURI(String ior, String dmName, String devName) throws URISyntaxException {
+	protected static URI createFileSystemURI(String ior, String domMgrName, String domMgrFS, String devMgrName) throws URISyntaxException {
 		if (ior == null) {
 			return null;
 		}
 		final Map<String, String> queryParams = new HashMap<String, String>();
 		queryParams.put(ScaFileSystemConstants.QUERY_PARAM_FS, ior);
-		queryParams.put(ScaFileSystemConstants.QUERY_PARAM_DOMAIN_NAME, dmName);
-		queryParams.put(ScaFileSystemConstants.QUERY_PARAM_DEVICE_MGR_NAME, devName);
+		queryParams.put(ScaFileSystemConstants.QUERY_PARAM_DOMAIN_NAME, domMgrName);
+		if (domMgrFS != null) {
+			queryParams.put(ScaFileSystemConstants.QUERY_PARAM_DOM_FS, domMgrFS);
+		}
+		queryParams.put(ScaFileSystemConstants.QUERY_PARAM_DEVICE_MGR_NAME, devMgrName);
 		return new URI(ScaFileSystemConstants.SCHEME + "://?" + QueryParser.createQuery(queryParams));
 	}
 

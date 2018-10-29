@@ -12,34 +12,9 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
-import gov.redhawk.model.sca.ProfileObjectWrapper;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaAbstractComponent;
-import gov.redhawk.model.sca.ScaModelPlugin;
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaPort;
-import gov.redhawk.model.sca.ScaPortContainer;
-import gov.redhawk.model.sca.commands.MergePortsCommand;
-import gov.redhawk.model.sca.commands.MergePortsCommand.PortData;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
-import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
-import gov.redhawk.model.sca.commands.VersionedFeature;
-import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
-
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-
-import mil.jpeojtrs.sca.prf.AbstractProperty;
-import mil.jpeojtrs.sca.prf.Properties;
-import mil.jpeojtrs.sca.scd.AbstractPort;
-import mil.jpeojtrs.sca.scd.Ports;
-import mil.jpeojtrs.sca.scd.ScdPackage;
-import mil.jpeojtrs.sca.spd.SoftPkg;
-import mil.jpeojtrs.sca.spd.SpdPackage;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -59,7 +34,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
@@ -88,6 +62,25 @@ import CF.PropertySetPackage.PartialConfiguration;
 import CF.ResourcePackage.StartError;
 import CF.ResourcePackage.StopError;
 import CF.TestableObjectPackage.UnknownTest;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaAbstractComponent;
+import gov.redhawk.model.sca.ScaModelPlugin;
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaPort;
+import gov.redhawk.model.sca.ScaPortContainer;
+import gov.redhawk.model.sca.commands.MergePortsCommand;
+import gov.redhawk.model.sca.commands.MergePortsCommand.PortData;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
+import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
+import gov.redhawk.model.sca.commands.VersionedFeature;
+import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
+import mil.jpeojtrs.sca.scd.AbstractPort;
+import mil.jpeojtrs.sca.scd.Ports;
+import mil.jpeojtrs.sca.scd.ScdPackage;
+import mil.jpeojtrs.sca.spd.SoftPkg;
+import mil.jpeojtrs.sca.spd.SpdPackage;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 /**
  * <!-- begin-user-doc -->
@@ -1099,55 +1092,21 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		}
 	}
 
+	@Override
+	protected Class<SoftPkg> getProfileObjectType() {
+		return SoftPkg.class;
+	}
+
 	private static final EStructuralFeature[] PRF_PATH = { SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, SpdPackage.Literals.PROPERTY_FILE__PROPERTIES };
 
 	@Override
-	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
-		if (isDisposed()) {
-			return Collections.emptyList();
-		}
-
-		Properties propertyDefs = ScaEcoreUtils.getFeature(fetchProfileObject(monitor), PRF_PATH);
-		List<AbstractProperty> retVal;
-		if (propertyDefs != null) {
-			retVal = new ArrayList<AbstractProperty>(propertyDefs.getProperties().size());
-			for (ValueListIterator<Object> i = propertyDefs.getProperties().valueListIterator(); i.hasNext();) {
-				Object propertyDefObj = i.next();
-				if (propertyDefObj instanceof AbstractProperty) {
-					retVal.add((AbstractProperty) propertyDefObj);
-				}
-			}
-		} else {
-			retVal = Collections.emptyList();
-		}
-		return retVal;
-	}
-
-	private final VersionedFeature profileObjectRevision = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);
-
-	// BEGIN GENERATED CODE
-
-	/**
-	 * @generated NOT {@inheritDoc}
-	 * @since 14.0
-	 */
-	@Override
-	public SoftPkg fetchProfileObject(IProgressMonitor monitor) {
-		if (isDisposed()) {
-			return null;
-		}
-		if (isSetProfileObj()) {
-			return getProfileObj();
-		}
-
-		Transaction transaction = profileObjectRevision.createTransaction();
-		Command command = ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, SoftPkg.class, SoftPkg.EOBJECT_PATH);
-		transaction.addCommand(command);
-		transaction.commit();
-		return getProfileObj();
+	protected EStructuralFeature[] getEmfPathToPropertyDefinitions() {
+		return PRF_PATH;
 	}
 
 	private final VersionedFeature profileFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__PROFILE);
+
+	// BEGIN GENERATED CODE
 
 	/**
 	 * @since 19.0

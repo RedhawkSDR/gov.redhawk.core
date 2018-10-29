@@ -76,7 +76,6 @@ import CF.ResourcePackage.StartError;
 import CF.ResourcePackage.StopError;
 import CF.TestableObjectPackage.UnknownTest;
 import gov.redhawk.model.sca.IRefreshable;
-import gov.redhawk.model.sca.ProfileObjectWrapper;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaDomainManager;
@@ -1812,6 +1811,11 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		PartitioningPackage.Literals.COMPONENT_INSTANTIATION__COMPONENT_PROPERTIES };
 
 	@Override
+	protected Class<SoftwareAssembly> getProfileObjectType() {
+		return SoftwareAssembly.class;
+	}
+
+	@Override
 	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
 		SoftwareAssembly localProfile = fetchProfileObject(monitor);
 		if (localProfile == null) {
@@ -1822,6 +1826,11 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		retVal.addAll(getAssemblyControllerProps(localProfile));
 		retVal.addAll(getExternalControllerProps(localProfile));
 		return retVal;
+	}
+
+	protected EStructuralFeature[] getEmfPathToPropertyDefinitions() {
+		// Not used
+		return null;
 	}
 
 	private Collection< ? extends AbstractProperty> getAssemblyControllerProps(SoftwareAssembly localProfile) {
@@ -1890,31 +1899,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		return values;
 	}
 
-	private final VersionedFeature profileObjectFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);
-
 	// BEGIN GENERATED CODE
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @since 14.0
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	@Override
-	public SoftwareAssembly fetchProfileObject(IProgressMonitor monitor) {
-		if (isDisposed()) {
-			return null;
-		}
-		if (isSetProfileObj()) {
-			return getProfileObj();
-		}
-
-		Transaction transaction = profileObjectFeature.createTransaction();
-		transaction.addCommand(ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, SoftwareAssembly.class, SoftwareAssembly.EOBJECT_PATH));
-		transaction.commit();
-		return getProfileObj();
-	}
 
 	/**
 	 * @since 14.0

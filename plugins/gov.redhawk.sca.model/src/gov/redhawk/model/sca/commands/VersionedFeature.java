@@ -114,4 +114,10 @@ public class VersionedFeature {
 		return new Transaction(currentRevision.get());
 	}
 
+	/**
+	 * @since 23.0
+	 */
+	public int getCurrentRevision() {
+		return currentRevision.get();
+	}
 }
