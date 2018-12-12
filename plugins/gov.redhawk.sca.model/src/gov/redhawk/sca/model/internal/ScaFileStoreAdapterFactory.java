@@ -16,30 +16,21 @@ import gov.redhawk.model.sca.ScaFileStore;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IAdapterFactory;
 
-/**
- * 
- */
 public class ScaFileStoreAdapterFactory implements IAdapterFactory {
 
 	private static final Class< ? >[] LIST = new Class[] { IFileStore.class };
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public Object getAdapter(Object adaptableObject, @SuppressWarnings("rawtypes") Class adapterType) {
+	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 		if (adaptableObject instanceof ScaFileStore) {
 			ScaFileStore store = (ScaFileStore) adaptableObject;
 			if (adapterType == IFileStore.class && !store.isDirectory()) {
-				return store.getFileStore();
+				return adapterType.cast(store.getFileStore());
 			}
 		}
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Class< ? >[] getAdapterList() {
 		return LIST;

@@ -36,10 +36,10 @@ public class CorbaObjWrapperAdapterFactory implements IAdapterFactory {
 	};
 
 	@Override
-	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
+	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 		if (adaptableObject instanceof CorbaObjWrapper< ? >) {
 			if (adapterType == ICorbaObjectDescriptorAdapter.class) {
-				return CorbaObjWrapperAdapterFactory.ADAPTER;
+				return adapterType.cast(CorbaObjWrapperAdapterFactory.ADAPTER);
 			}
 		}
 		return null;

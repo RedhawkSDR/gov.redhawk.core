@@ -24,71 +24,47 @@ import org.eclipse.ui.part.MultiPageEditorPart;
 
 /**
  * @since 6.0
- * 
  */
 public abstract class AbstractMultiPageScaEditor extends MultiPageEditorPart {
 
 	private final Map<String, IAction> actionMap = new HashMap<String, IAction>();
 
-	/**
-	 * 
-	 */
 	public AbstractMultiPageScaEditor() {
 		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void doSave(final IProgressMonitor monitor) {
-		// PASS REDHAWK Runtime Editors do not Save
 		throw new UnsupportedOperationException("Runtime editors can not be saved");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void doSaveAs() {
-		// PASS REDHAWK Runtime Editors do not Save
 		throw new UnsupportedOperationException("Runtime editors can not be saved");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void init(final IEditorSite site, final IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean isDirty() {
 		// Should always NOT be dirty
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean isSaveAsAllowed() {
 		// Never save
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
+	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter == ISelectionProvider.class) {
-			return this.getSelectionProvider();
+			return adapter.cast(this.getSelectionProvider());
 		}
 		return super.getAdapter(adapter);
 	}
