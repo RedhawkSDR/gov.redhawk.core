@@ -29,7 +29,6 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * @since 6.0
- * 
  */
 public abstract class AbstractMultiPageScaContentEditor< T extends EObject > extends AbstractMultiPageScaEditor {
 
@@ -54,9 +53,6 @@ public abstract class AbstractMultiPageScaContentEditor< T extends EObject > ext
 		}
 	};
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public EObjectEditorInput getEditorInput() {
 		return (EObjectEditorInput) super.getEditorInput();
@@ -75,13 +71,10 @@ public abstract class AbstractMultiPageScaContentEditor< T extends EObject > ext
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
+	public <T2> T2 getAdapter(Class<T2> adapter) {
 		if (adapter == EObject.class) {
-			return getInput();
+			return adapter.cast(getInput());
 		}
 		return super.getAdapter(adapter);
 	}
@@ -129,9 +122,6 @@ public abstract class AbstractMultiPageScaContentEditor< T extends EObject > ext
 		return retVal;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void dispose() {
 		super.dispose();

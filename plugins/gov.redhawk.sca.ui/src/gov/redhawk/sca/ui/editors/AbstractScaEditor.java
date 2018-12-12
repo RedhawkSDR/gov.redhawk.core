@@ -82,13 +82,10 @@ public abstract class AbstractScaEditor extends EditorPart {
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
+	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter == ISelectionProvider.class) {
-			return this.getSelectionProvider();
+			return adapter.cast(this.getSelectionProvider());
 		}
 		return super.getAdapter(adapter);
 	}
