@@ -88,13 +88,10 @@ public abstract class AbstractScaContentEditor< T extends EObject > extends Abst
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
+	public <T2> T2 getAdapter(Class<T2> adapter) {
 		if (adapter == EObject.class) {
-			return getInput();
+			return adapter.cast(getInput());
 		}
 		return super.getAdapter(adapter);
 	}

@@ -18,9 +18,6 @@ import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-/**
- * 
- */
 public class ScaObjectWrapperAdapterFactory implements IAdapterFactory {
 	private static final Class< ? >[] LIST = new Class[] { IScaObjectIdentifierAdapter.class };
 
@@ -42,27 +39,20 @@ public class ScaObjectWrapperAdapterFactory implements IAdapterFactory {
 
 	};
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public Object getAdapter(final Object adaptableObject, final Class adapterType) {
+	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 		if (adaptableObject instanceof ProfileObjectWrapper< ? >) {
 			final ProfileObjectWrapper< ? > wrapper = (ProfileObjectWrapper< ? >) adaptableObject;
 			if (!(wrapper.getProfileObj() instanceof EObject)) {
 				return null;
 			}
 			if (adapterType == IScaObjectIdentifierAdapter.class) {
-				return ScaObjectWrapperAdapterFactory.ADAPTER;
+				return adapterType.cast(ScaObjectWrapperAdapterFactory.ADAPTER);
 			}
 		}
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Class< ? >[] getAdapterList() {
 		return ScaObjectWrapperAdapterFactory.LIST;
