@@ -99,10 +99,10 @@ public class Dval extends Composite {
 	private final DvalSliderDialog sliderdlg;
 
 	/** The modify listeners. */
-	private ListenerList modifyListeners;
+	private ListenerList<Listener> modifyListeners;
 
 	/** The default listeners. */
-	private final ListenerList defaultListeners = new ListenerList(ListenerList.IDENTITY);
+	private final ListenerList<Listener> defaultListeners = new ListenerList<>(ListenerList.IDENTITY);
 
 	/** The mouse down listener. */
 	private final Listener mouseDownListener = new Listener() {
@@ -561,21 +561,16 @@ public class Dval extends Composite {
 		e.doit = true;
 		e.widget = this.textbox;
 		e.display = e.widget.getDisplay();
-		final Object[] listeners = this.defaultListeners.getListeners();
-		for (final Object listener : listeners) {
-			((Listener) listener).handleEvent(e);
+		for (Listener listener : this.defaultListeners) {
+			listener.handleEvent(e);
 		}
-
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void addListener(final int eventType, final Listener listener) {
 		if (eventType == SWT.Modify) {
 			if (this.modifyListeners == null) {
-				this.modifyListeners = new ListenerList(ListenerList.IDENTITY);
+				this.modifyListeners = new ListenerList<>(ListenerList.IDENTITY);
 			}
 			this.modifyListeners.add(listener);
 		} else {
@@ -724,8 +719,8 @@ public class Dval extends Composite {
 		e.item = this;
 		e.type = SWT.Modify;
 		if (this.modifyListeners != null) {
-			for (final Object listener : this.modifyListeners.getListeners()) {
-				((Listener) listener).handleEvent(e);
+			for (final Listener listener : this.modifyListeners) {
+				listener.handleEvent(e);
 			}
 		}
 	}
