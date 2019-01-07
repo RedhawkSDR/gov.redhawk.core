@@ -183,7 +183,7 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 			@Override
 			public boolean isSet() {
 				final ScaDomainManager domMgr = (ScaDomainManager) object.getParent(null);
-				return domMgr.isSetDeviceManagers();
+				return domMgr != null && domMgr.isSetDeviceManagers();
 			}
 
 			@Override
@@ -228,7 +228,7 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 			@Override
 			public boolean isSet() {
 				final ScaDomainManager domMgr = (ScaDomainManager) object.getParent(null);
-				return domMgr.isSetWaveformFactories();
+				return domMgr != null && domMgr.isSetWaveformFactories();
 			}
 
 			@Override
@@ -251,7 +251,7 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 			@Override
 			public boolean isSet() {
 				final ScaDomainManager domMgr = (ScaDomainManager) object.getParent(null);
-				return domMgr.isSetWaveforms();
+				return domMgr != null && domMgr.isSetWaveforms();
 			}
 
 			@Override
@@ -274,7 +274,7 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 			@Override
 			public boolean isSet() {
 				final ScaDomainManager domMgr = (ScaDomainManager) object.getParent(null);
-				return domMgr.isSetEventChannels();
+				return domMgr != null && domMgr.isSetEventChannels();
 			}
 
 			@Override
