@@ -15,6 +15,7 @@ import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
@@ -24,6 +25,8 @@ import gov.redhawk.sca.model.provider.event.AbstractEventChannelDataProvider;
 import gov.redhawk.sca.model.provider.event.internal.EventServiceDataProviderService;
 import gov.redhawk.sca.util.PluginUtil;
 
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.OBJECT_NOT_EXIST;
 import org.omg.CORBA.SystemException;
@@ -42,15 +45,56 @@ import StandardEvent.DomainManagementObjectRemovedEventTypeHelper;
 import StandardEvent.SourceCategoryType;
 
 /**
- * 
+ * Responsible for performing model updates based on notifications from the ODM_Channel associated with a domain
+ * manager.
  */
 public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChannelDataProvider<ScaDomainManager> implements IScaDataProvider {
 
+	/**
+	 * Handles the domain manager connecting/disconnecting or being disposed
+	 */
+	private final Adapter domMgrListener = new AdapterImpl() {
+		@Override
+		public void notifyChanged(final org.eclipse.emf.common.notify.Notification msg) {
+			Object feature = msg.getFeature();
+			if (feature == ScaPackage.Literals.IDISPOSABLE__DISPOSED && msg.getNewBooleanValue()) {
+				dispose();
+			} else if (feature == ScaPackage.Literals.SCA_DOMAIN_MANAGER__CONNECTED && !msg.isTouch()) {
+				if (msg.getNewBooleanValue()) {
+					connectAsync();
+				} else {
+					disconnectAsync();
+				}
+			}
+		}
+	};
+
 	public ScaDomainManagerEventServiceDataProvider(final ScaDomainManager domain) {
 		super(domain, domain);
+		ScaModelCommand.execute(domain, () -> {
+			domain.eAdapters().add(domMgrListener);
+		});
 		addChannel(domain.getName() + ".ODM_Channel");
 	}
-	
+
+	@Override
+	public void dispose() {
+		ScaModelCommand.execute(getContainer(), () -> {
+			getContainer().eAdapters().remove(domMgrListener);
+		});
+		super.dispose();
+	}
+
+	@Override
+	protected void connectAsync() {
+		// Don't connect if the domain manager isn't connected or if we're not enabled
+		if (!getContainer().isConnected() || !isEnabled()) {
+			return;
+		}
+
+		super.connectAsync();
+	}
+
 	@Override
 	public String getID() {
 		return EventServiceDataProviderService.ID;
