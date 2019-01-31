@@ -171,6 +171,7 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.CorbaObjWrapper#getCorbaObj <em>Corba Obj</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * Note that setting the CORBA object may unset other attributes of the model object.
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Corba Obj</em>' attribute.
 	 * @see #isSetCorbaObj()
