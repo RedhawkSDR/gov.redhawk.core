@@ -11,26 +11,15 @@
  */
 package gov.redhawk.sca.model.provider.event.internal.listener;
 
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaDeviceManager;
-import gov.redhawk.model.sca.ScaDomainManager;
-import gov.redhawk.model.sca.ScaEventChannel;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaWaveform;
-import gov.redhawk.model.sca.ScaWaveformFactory;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
-import gov.redhawk.model.sca.services.IScaDataProvider;
-import gov.redhawk.sca.model.provider.event.AbstractEventChannelDataProvider;
-import gov.redhawk.sca.model.provider.event.DataProviderActivator;
-import gov.redhawk.sca.model.provider.event.internal.EventServiceDataProviderService;
-import gov.redhawk.sca.util.PluginUtil;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.omg.CORBA.Any;
-import org.omg.CORBA.OBJECT_NOT_EXIST;
 import org.omg.CORBA.SystemException;
 import org.omg.CORBA.TypeCode;
 
@@ -45,17 +34,74 @@ import StandardEvent.DomainManagementObjectAddedEventTypeHelper;
 import StandardEvent.DomainManagementObjectRemovedEventType;
 import StandardEvent.DomainManagementObjectRemovedEventTypeHelper;
 import StandardEvent.SourceCategoryType;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaDeviceManager;
+import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaEventChannel;
+import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.model.sca.ScaWaveformFactory;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
+import gov.redhawk.model.sca.services.IScaDataProvider;
+import gov.redhawk.sca.model.provider.event.AbstractEventChannelDataProvider;
+import gov.redhawk.sca.model.provider.event.DataProviderActivator;
+import gov.redhawk.sca.model.provider.event.internal.EventServiceDataProviderService;
+import gov.redhawk.sca.util.PluginUtil;
 
 /**
- * 
+ * Responsible for performing model updates based on notifications from the ODM_Channel associated with a domain
+ * manager.
  */
 public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChannelDataProvider<ScaDomainManager> implements IScaDataProvider {
 
+	/**
+	 * Handles the domain manager connecting/disconnecting or being disposed
+	 */
+	private final Adapter domMgrListener = new AdapterImpl() {
+		@Override
+		public void notifyChanged(final org.eclipse.emf.common.notify.Notification msg) {
+			Object feature = msg.getFeature();
+			if (feature == ScaPackage.Literals.IDISPOSABLE__DISPOSED && msg.getNewBooleanValue()) {
+				dispose();
+			} else if (feature == ScaPackage.Literals.SCA_DOMAIN_MANAGER__CONNECTED && !msg.isTouch()) {
+				if (msg.getNewBooleanValue()) {
+					connectAsync();
+				} else {
+					disconnectAsync();
+				}
+			}
+		}
+	};
+
 	public ScaDomainManagerEventServiceDataProvider(final ScaDomainManager domain) {
 		super(domain, domain);
+		ScaModelCommand.execute(domain, () -> {
+			domain.eAdapters().add(domMgrListener);
+		});
 		addChannel(domain.getName() + ".ODM_Channel");
 	}
-	
+
+	@Override
+	public void dispose() {
+		ScaModelCommand.execute(getContainer(), () -> {
+			getContainer().eAdapters().remove(domMgrListener);
+		});
+		super.dispose();
+	}
+
+	@Override
+	protected void connectAsync() {
+		// Don't connect if the domain manager isn't connected or if we're not enabled
+		if (!getContainer().isConnected() || !isEnabled()) {
+			return;
+		}
+
+		super.connectAsync();
+	}
+
 	@Override
 	public String getID() {
 		return EventServiceDataProviderService.ID;
@@ -98,32 +144,43 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 	}
 
 	private void handleRemoveDevice(final DomainManagementObjectRemovedEventType event) {
-		for (final ScaDeviceManager manager : getContainer().getDeviceManagers()) {
-			manager.fetchDevices(null, RefreshDepth.SELF);
-		}
+		ScaModelCommand.execute(getContainer(), () -> {
+			for (final ScaDeviceManager devMgr : getContainer().getDeviceManagers()) {
+				for (ScaDevice< ? > dev : devMgr.getRootDevices()) {
+					if (PluginUtil.equals(dev.identifier(), event.sourceId)) {
+						devMgr.getRootDevices().remove(dev);
+						return;
+					}
+				}
+				for (ScaDevice< ? > dev : devMgr.getChildDevices()) {
+					if (PluginUtil.equals(dev.identifier(), event.sourceId)) {
+						devMgr.getChildDevices().remove(dev);
+						return;
+					}
+				}
+			}
+		});
 	}
 
 	private void handleRemoveDeviceManager(final DomainManagementObjectRemovedEventType event) {
-		final String sourceId = event.sourceId;
 		final ScaDomainManager domain = getContainer();
 		ScaModelCommand.execute(domain, () -> {
 			for (final ScaDeviceManager deviceManager : domain.getDeviceManagers()) {
-				if (deviceManager != null && PluginUtil.equals(deviceManager.identifier(), sourceId)) {
+				if (PluginUtil.equals(deviceManager.identifier(), event.sourceId)) {
 					domain.getDeviceManagers().remove(deviceManager);
-					break;
+					return;
 				}
 			}
 		});
 	}
 
 	private void handleRemoveApplicationFactory(final DomainManagementObjectRemovedEventType event) {
-		final String sourceId = event.sourceId;
 		final ScaDomainManager domain = getContainer();
 		ScaModelCommand.execute(domain, () -> {
 			for (final ScaWaveformFactory factory : domain.getWaveformFactories()) {
-				if (factory != null && PluginUtil.equals(sourceId, factory.getIdentifier())) {
+				if (PluginUtil.equals(event.sourceId, factory.getIdentifier())) {
 					domain.getWaveformFactories().remove(factory);
-					break;
+					return;
 				}
 			}
 		});
@@ -133,9 +190,9 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 		final ScaDomainManager domain = getContainer();
 		ScaModelCommand.execute(domain, () -> {
 			for (final ScaWaveform waveform : domain.getWaveforms()) {
-				if (waveform != null && PluginUtil.equals(event.sourceId, waveform.getIdentifier())) {
+				if (PluginUtil.equals(event.sourceId, waveform.getIdentifier())) {
 					domain.getWaveforms().remove(waveform);
-					break;
+					return;
 				}
 			}
 		});
@@ -156,13 +213,13 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 	private void handleAddEvent(final DomainManagementObjectAddedEventType event) {
 		switch (event.sourceCategory.value()) {
 		case SourceCategoryType._APPLICATION:
-			handleAddApplicationEvent(event);
+			handleAddApplication(event);
 			break;
 		case SourceCategoryType._APPLICATION_FACTORY:
 			handleAddApplicationFactory(event);
 			break;
 		case SourceCategoryType._DEVICE:
-			handleAddDeviceEvent(event);
+			handleAddDevice(event);
 			break;
 		case SourceCategoryType._DEVICE_MANAGER:
 			handleAddDeviceManager(event);
@@ -175,96 +232,143 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 		default:
 			break;
 		}
-
 	}
 
-	private void handleAddDeviceEvent(final DomainManagementObjectAddedEventType event) {
-		for (final ScaDeviceManager manager : getContainer().getDeviceManagers()) {
-			manager.fetchDevices(null, RefreshDepth.SELF);
+	private void handleAddDevice(final DomainManagementObjectAddedEventType event) {
+		List<ScaDeviceManager> devMgrs = ScaModelCommand.runExclusive(getContainer(), () -> {
+			return new ArrayList<>(getContainer().getDeviceManagers());
+		});
+		for (final ScaDeviceManager devMgr : devMgrs) {
+			if (devMgr.isSetDevices()) {
+				devMgr.fetchDevices(null, RefreshDepth.SELF);
+			}
 		}
 	}
 
 	private void handleAddDeviceManager(final DomainManagementObjectAddedEventType event) {
+		final DeviceManager devMgrObj;
+		final String ior;
 		try {
-			final DeviceManager devMgrObj = DeviceManagerHelper.narrow(event.sourceIOR);
-			final String ior = devMgrObj.toString();
-			final ScaDomainManager domain = getContainer();
-			final ScaDeviceManager newDeviceManager = ScaModelCommandWithResult.execute(domain, () -> {
-				for (final ScaDeviceManager deviceManager : domain.getDeviceManagers()) {
-					if (deviceManager != null && PluginUtil.equals(ior, deviceManager.getIor())) {
-						return null;
-					}
-				}
-				final ScaDeviceManager retVal = ScaFactory.eINSTANCE.createScaDeviceManager();
-				retVal.setCorbaObj(devMgrObj);
-				domain.getDeviceManagers().add(retVal);
-				return retVal;
-			});
-			if (newDeviceManager != null) {
-				newDeviceManager.refresh(null, RefreshDepth.SELF);
+			devMgrObj = DeviceManagerHelper.narrow(event.sourceIOR);
+			ior = event.sourceIOR.toString();
+		} catch (SystemException e) {
+			return;
+		}
+
+		final ScaDeviceManager devMgr = ScaFactory.eINSTANCE.createScaDeviceManager();
+		devMgr.setCorbaObj(devMgrObj);
+		devMgr.setIdentifier(event.sourceId);
+		devMgr.setLabel(event.sourceName);
+
+		final ScaDomainManager domain = getContainer();
+		final Boolean added = ScaModelCommandWithResult.execute(domain, () -> {
+			if (!domain.isSetDeviceManagers()) {
+				return false;
 			}
-		} catch (final InterruptedException | SystemException e) {
-			// PASS
+			for (final ScaDeviceManager deviceManager : domain.getDeviceManagers()) {
+				if (PluginUtil.equals(ior, deviceManager.getIor())) {
+					return false;
+				}
+			}
+			domain.getDeviceManagers().add(devMgr);
+			return true;
+		});
+
+		if (added != null && added) {
+			try {
+				devMgr.refresh(null, RefreshDepth.SELF);
+			} catch (InterruptedException e) {
+				return;
+			}
 		}
 	}
 
 	private void handleAddApplicationFactory(final DomainManagementObjectAddedEventType event) {
+		final ApplicationFactory appFactoryObj;
+		final String ior;
 		try {
-			final ApplicationFactory appFactoryObj = ApplicationFactoryHelper.narrow(event.sourceIOR);
-			final String ior = appFactoryObj.toString();
-			final ScaDomainManager domain = getContainer();
-			final ScaWaveformFactory newWaveformFactory = ScaModelCommandWithResult.execute(domain, () -> {
-				for (final ScaWaveformFactory factory : domain.getWaveformFactories()) {
-					if (factory != null && PluginUtil.equals(ior, factory.getIor())) {
-						return null;
-					}
-				}
-				final ScaWaveformFactory retVal = ScaFactory.eINSTANCE.createScaWaveformFactory();
-				retVal.setCorbaObj(appFactoryObj);
-				domain.getWaveformFactories().add(retVal);
-				return retVal;
-			});
-			if (newWaveformFactory != null && !newWaveformFactory.isDisposed()) {
-				newWaveformFactory.refresh(null, RefreshDepth.SELF);
-			}
+			appFactoryObj = ApplicationFactoryHelper.narrow(event.sourceIOR);
+			ior = appFactoryObj.toString();
+		} catch (SystemException e) {
+			return;
+		}
 
-		} catch (final OBJECT_NOT_EXIST | InterruptedException e) {
-			// PASS
+		final ScaWaveformFactory waveformFactory = ScaFactory.eINSTANCE.createScaWaveformFactory();
+		waveformFactory.setCorbaObj(appFactoryObj);
+		waveformFactory.setIdentifier(event.sourceId);
+		waveformFactory.setName(event.sourceName);
+
+		final ScaDomainManager domain = getContainer();
+		final Boolean added = ScaModelCommandWithResult.execute(domain, () -> {
+			if (!domain.isSetWaveformFactories()) {
+				return false;
+			}
+			for (final ScaWaveformFactory factory : domain.getWaveformFactories()) {
+				if (PluginUtil.equals(ior, factory.getIor())) {
+					return false;
+				}
+			}
+			domain.getWaveformFactories().add(waveformFactory);
+			return true;
+		});
+
+		if (added != null && added) {
+			try {
+				waveformFactory.refresh(null, RefreshDepth.SELF);
+			} catch (InterruptedException e) {
+				return;
+			}
 		}
 	}
 
-	private void handleAddApplicationEvent(final DomainManagementObjectAddedEventType event) {
+	private void handleAddApplication(final DomainManagementObjectAddedEventType event) {
+		final Application appObj;
+		final String ior;
 		try {
-			final Application appObj = ApplicationHelper.narrow(event.sourceIOR);
-			final String ior = appObj.toString();
-			final ScaDomainManager domain = getContainer();
-			final ScaWaveform newWaveform = ScaModelCommandWithResult.execute(domain, () -> {
-				for (final ScaWaveform w : domain.getWaveforms()) {
-					if (w != null && PluginUtil.equals(ior, w.getIor())) {
-						return null;
-					}
-				}
-				final ScaWaveform retVal = ScaFactory.eINSTANCE.createScaWaveform();
-				retVal.setCorbaObj(appObj);
-				domain.getWaveforms().add(retVal);
-				return retVal;
-			});
-			if (newWaveform != null) {
-				newWaveform.refresh(null, RefreshDepth.SELF);
+			appObj = ApplicationHelper.narrow(event.sourceIOR);
+			ior = appObj.toString();
+		} catch (SystemException e) {
+			return;
+		}
+
+		final ScaWaveform waveform = ScaFactory.eINSTANCE.createScaWaveform();
+		waveform.setCorbaObj(appObj);
+		waveform.setIdentifier(event.sourceId);
+		waveform.setName(event.sourceName);
+
+		final ScaDomainManager domain = getContainer();
+		final Boolean added = ScaModelCommandWithResult.execute(domain, () -> {
+			if (!domain.isSetWaveforms()) {
+				return false;
 			}
-		} catch (final InterruptedException | SystemException e) {
-			// PASS if the object does not exist ignore the add request
+			for (final ScaWaveform w : domain.getWaveforms()) {
+				if (PluginUtil.equals(ior, w.getIor())) {
+					return false;
+				}
+			}
+			domain.getWaveforms().add(waveform);
+			return true;
+		});
+
+		if (added != null && added) {
+			try {
+				waveform.refresh(null, RefreshDepth.SELF);
+			} catch (InterruptedException e) {
+				return;
+			}
 		}
 	}
 
 	private void handleAddEventChannel(final DomainManagementObjectAddedEventType event) {
 		if (event.sourceId == null || event.sourceId.isEmpty()) {
-			IStatus status = new Status(IStatus.ERROR, DataProviderActivator.ID, "DomainManagementObjectAddedEventType for event channel did not contain a source ID");
+			IStatus status = new Status(IStatus.ERROR, DataProviderActivator.ID,
+				"DomainManagementObjectAddedEventType for event channel did not contain a source ID");
 			DataProviderActivator.getInstance().getLog().log(status);
 			return;
 		}
 		if (event.sourceIOR == null) {
-			IStatus status = new Status(IStatus.ERROR, DataProviderActivator.ID, "DomainManagementObjectAddedEventType for event channel did not contain an object (sourceIOR)");
+			IStatus status = new Status(IStatus.ERROR, DataProviderActivator.ID,
+				"DomainManagementObjectAddedEventType for event channel did not contain an object (sourceIOR)");
 			DataProviderActivator.getInstance().getLog().log(status);
 			return;
 		}
@@ -275,6 +379,9 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 		newEventChannel.setCorbaObj(event.sourceIOR);
 
 		Boolean added = ScaModelCommandWithResult.execute(domain, () -> {
+			if (!domain.isSetEventChannels()) {
+				return false;
+			}
 			for (ScaEventChannel eventChannel : domain.getEventChannels()) {
 				if (newEventChannel.getName().equals(eventChannel.getName())) {
 					return false;
@@ -283,7 +390,8 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			domain.getEventChannels().add(newEventChannel);
 			return true;
 		});
-		if (added != null && added.booleanValue()) {
+
+		if (added != null && added) {
 			try {
 				newEventChannel.refresh(new NullProgressMonitor(), RefreshDepth.SELF);
 			} catch (InterruptedException e) {
@@ -291,5 +399,4 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			}
 		}
 	}
-
 }

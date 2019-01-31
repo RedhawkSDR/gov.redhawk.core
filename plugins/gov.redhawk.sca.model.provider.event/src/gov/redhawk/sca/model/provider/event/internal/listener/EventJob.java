@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.SystemException;
@@ -54,6 +55,7 @@ import CF.DomainManagerPackage.NotConnected;
 
 public class EventJob extends SilentJob implements PushConsumerOperations {
 
+	private static final boolean DEBUG = "true".equalsIgnoreCase(Platform.getDebugOption(DataProviderActivator.ID + "/debug"));
 	private static final ExecutorService EXECUTOR_POOL = Executors.newSingleThreadExecutor(new NamedThreadFactory(EventJob.class.getName()));
 
 	public static final String EVENT_DATA_PROVIDER_FAMILY = DataProviderActivator.ID + ".jobFamily";
@@ -75,8 +77,14 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 
 	public EventJob(final String channelName, final AbstractEventChannelDataProvider< ? > dp, final ScaDomainManager domain) throws CoreException {
 		super(channelName + " event queue");
+		setSystem(true);
 		this.channelName = channelName;
 		this.dp = dp;
+
+		if (DEBUG) {
+			IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Creating job: " + getName());
+			DataProviderActivator.getInstance().getLog().log(status);
+		}
 
 		try {
 			this.domMgr = domain.fetchNarrowedObject(null);
@@ -87,10 +95,17 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 			this.stub = PushConsumerHelper.narrow(poa.servant_to_reference(new PushConsumerPOATie(this)));
 			this.domMgr.registerWithEventChannel(stub, this.id.toString(), channelName);
 		} catch (ServantNotActive | WrongPolicy | InvalidObjectReference | InvalidEventChannelName | AlreadyConnected | SystemException e) {
-			throw new CoreException(new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+			IStatus status = new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to register with event channel " + channelName, e);
+			if (DEBUG) {
+				DataProviderActivator.getInstance().getLog().log(status);
+			}
+			throw new CoreException(status);
 		}
 
-		setSystem(true);
+		if (DEBUG) {
+			IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Job ready: " + getName());
+			DataProviderActivator.getInstance().getLog().log(status);
+		}
 	}
 
 	public void addEvent(final Any event) {
@@ -121,12 +136,12 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 
 	@Override
 	public boolean shouldRun() {
-		return super.shouldRun() && !this.dp.isDisposed() && !this.disposed;
+		return !this.dp.isDisposed() && !this.disposed;
 	}
 
 	@Override
 	public boolean shouldSchedule() {
-		return super.shouldSchedule() && !this.dp.isDisposed() && !this.disposed;
+		return !this.dp.isDisposed() && !this.disposed;
 	}
 
 	@Override
@@ -162,6 +177,10 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 
 	public void dispose() {
 		if (!this.disposed) {
+			if (DEBUG) {
+				IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Disposing job: " + getName());
+				DataProviderActivator.getInstance().getLog().log(status);
+			}
 			if (this.domMgr != null) {
 				final DomainManagerOperations localDomMgr = domMgr;
 				this.domMgr = null;

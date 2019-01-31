@@ -174,9 +174,11 @@ public abstract class AbstractEventChannelDataProvider< T > extends AbstractData
 	 */
 	public synchronized void disconnectChannel(final String channelName, IProgressMonitor monitor) throws InvalidEventChannelName, NotConnected {
 		SubMonitor progress = SubMonitor.convert(monitor, "Disconnecting " + channelName, 1);
-		final EventJob oldJob = this.connectedChannels.remove(channelName);
-		if (oldJob != null) {
-			oldJob.dispose();
+		if (this.connectedChannels.containsKey(channelName)) {
+			final EventJob oldJob = this.connectedChannels.put(channelName, null);
+			if (oldJob != null) {
+				oldJob.dispose();
+			}
 		}
 		progress.worked(1);
 		progress.done();
@@ -228,17 +230,32 @@ public abstract class AbstractEventChannelDataProvider< T > extends AbstractData
 	@Override
 	public void dispose() {
 		super.dispose();
-		disconnectAll(null);
-		this.connectedChannels.clear();
+		disconnectAsync();
+	}
+
+	/**
+	 * Asynchronously connects to the event channels requested with {@link #addChannel(String)}. This method is called
+	 * automatically whenever the data provider is enabled.
+	 */
+	protected void connectAsync() {
+		this.connectJob.schedule();
+	}
+
+	/**
+	 * Asynchronously disconnects all event channels. This method is called automatically whenever the data provider
+	 * is enabled.
+	 */
+	protected void disconnectAsync() {
+		this.disconnectJob.schedule();
 	}
 
 	@Override
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
-			this.connectJob.schedule();
+			connectAsync();
 		} else {
-			this.disconnectJob.schedule();
+			disconnectAsync();
 		}
 	}
 }
