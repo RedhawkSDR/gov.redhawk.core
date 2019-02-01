@@ -2335,7 +2335,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 				transaction.commit();
 			} catch (CoreException e) {
 				if (DEBUG_KEEP_ALIVE_ERRORS.enabled) {
-					DEBUG_KEEP_ALIVE_ERRORS.message("Errors durring fetch keep alive.");
+					DEBUG_KEEP_ALIVE_ERRORS.message("Errors during fetch keep alive.");
 					DEBUG_KEEP_ALIVE_ERRORS.catching(e);
 				}
 			} catch (InterruptedException e) {
