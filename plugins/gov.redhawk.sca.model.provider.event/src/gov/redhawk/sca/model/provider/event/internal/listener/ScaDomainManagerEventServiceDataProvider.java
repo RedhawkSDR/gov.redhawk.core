@@ -12,8 +12,13 @@
 package gov.redhawk.sca.model.provider.event.internal.listener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.omg.CORBA.Any;
@@ -37,6 +42,7 @@ import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaService;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
@@ -71,6 +77,12 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 		}
 	};
 
+	private Job refreshDevicesJob;
+	private Job refreshDevMgrsJob;
+	private Job refreshServicesJob;
+	private Job refreshWaveformFactoriesJob;
+	private Job refreshWaveformsJob;
+
 	public ScaDomainManagerEventServiceDataProvider(final ScaDomainManager domain) {
 		super(domain, domain);
 		ScaModelCommand.execute(domain, () -> {
@@ -84,6 +96,11 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 		ScaModelCommand.execute(getContainer(), () -> {
 			getContainer().eAdapters().remove(domMgrListener);
 		});
+		for (Job job : Arrays.asList(refreshDevicesJob, refreshDevMgrsJob, refreshServicesJob, refreshWaveformFactoriesJob, refreshWaveformsJob)) {
+			if (job != null) {
+				job.cancel();
+			}
+		}
 		super.dispose();
 	}
 
@@ -129,6 +146,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			handleRemoveDeviceManager(event);
 			break;
 		case SourceCategoryType._SERVICE:
+			handleRemoveService(event);
 			break;
 		default:
 			break;
@@ -137,57 +155,208 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 
 	private void handleRemoveDevice(final DomainManagementObjectRemovedEventType event) {
 		ScaModelCommand.execute(getContainer(), () -> {
+			boolean missingId = false;
 			for (final ScaDeviceManager devMgr : getContainer().getDeviceManagers()) {
 				for (ScaDevice< ? > dev : devMgr.getRootDevices()) {
-					if (PluginUtil.equals(dev.identifier(), event.sourceId)) {
+					String id = dev.identifier();
+					if (PluginUtil.equals(id, event.sourceId)) {
 						devMgr.getRootDevices().remove(dev);
 						return;
+					} else if (id == null) {
+						missingId = true;
 					}
 				}
 				for (ScaDevice< ? > dev : devMgr.getChildDevices()) {
-					if (PluginUtil.equals(dev.identifier(), event.sourceId)) {
+					String id = dev.identifier();
+					if (PluginUtil.equals(id, event.sourceId)) {
 						devMgr.getChildDevices().remove(dev);
 						return;
+					} else if (id == null) {
+						missingId = true;
 					}
 				}
 			}
+
+			// We couldn't find the device, and at least one was missing an identifier and thus could be the device
+			// we're supposed to remove
+			if (missingId) {
+				refreshDevices();
+			}
 		});
+	}
+
+	/**
+	 * Schedules a job to refresh all lists of devices in this domain. This method is used by both add and remove, so
+	 * the refresh also fetches the identifier to make removal easier later on.
+	 */
+	private void refreshDevices() {
+		if (refreshDevicesJob == null) {
+			refreshDevicesJob = Job.create("Refresh devices lists", monitor -> {
+				SubMonitor progress = SubMonitor.convert(monitor);
+				List<ScaDeviceManager> devMgrs = ScaModelCommand.runExclusive(getContainer(), () -> {
+					return new ArrayList<>(getContainer().getDeviceManagers());
+				});
+				for (final ScaDeviceManager devMgr : devMgrs) {
+					if (devMgr.isSetDevices()) {
+						progress.setWorkRemaining(100);
+						for (ScaDevice< ? > dev : devMgr.fetchDevices(progress.newChild(10), RefreshDepth.NONE)) {
+							progress.setWorkRemaining(100);
+							dev.fetchIdentifier(progress.newChild(10));
+						}
+					}
+				}
+				return Status.OK_STATUS;
+			});
+		}
+		refreshDevicesJob.schedule(250);
+	}
+
+	private void handleRemoveService(final DomainManagementObjectRemovedEventType event) {
+		ScaModelCommand.execute(getContainer(), () -> {
+			boolean missingName = false;
+			for (final ScaDeviceManager devMgr : getContainer().getDeviceManagers()) {
+				for (ScaService service : devMgr.getServices()) {
+					String name = service.getName();
+					if (PluginUtil.equals(name, event.sourceId)) {
+						devMgr.getServices().remove(service);
+						return;
+					} else if (name == null) {
+						missingName = true;
+					}
+				}
+			}
+
+			// We couldn't find the service, and at least one was missing a name and thus could be the service we're
+			// supposed to remove
+			if (missingName) {
+				refreshServices();
+			}
+		});
+	}
+
+	/**
+	 * Schedules a job to refresh all lists of services in this domain. This method is used by both add and remove.
+	 */
+	private void refreshServices() {
+		if (refreshServicesJob == null) {
+			refreshServicesJob = Job.create("Refresh services lists", monitor -> {
+				List<ScaDeviceManager> devMgrs = ScaModelCommand.runExclusive(getContainer(), () -> {
+					return new ArrayList<>(getContainer().getDeviceManagers());
+				});
+				for (final ScaDeviceManager devMgr : devMgrs) {
+					if (devMgr.isSetServices()) {
+						devMgr.fetchServices(monitor, RefreshDepth.NONE);
+					}
+				}
+				return Status.OK_STATUS;
+			});
+		}
+		refreshServicesJob.schedule(250);
 	}
 
 	private void handleRemoveDeviceManager(final DomainManagementObjectRemovedEventType event) {
 		final ScaDomainManager domain = getContainer();
 		ScaModelCommand.execute(domain, () -> {
+			boolean missingId = false;
 			for (final ScaDeviceManager deviceManager : domain.getDeviceManagers()) {
-				if (PluginUtil.equals(deviceManager.identifier(), event.sourceId)) {
+				String id = deviceManager.identifier();
+				if (PluginUtil.equals(id, event.sourceId)) {
 					domain.getDeviceManagers().remove(deviceManager);
 					return;
+				} else if (id == null) {
+					missingId = true;
 				}
 			}
+
+			// We couldn't find the device manager, and at least one was missing an identifier and thus could be the
+			// device manager we're supposed to remove
+			if (missingId) {
+				refreshDeviceManagers();
+			}
 		});
+	}
+
+	/**
+	 * Schedules a job to refresh the device managers when we were unable to find and remove a device manager
+	 */
+	private void refreshDeviceManagers() {
+		if (refreshDevMgrsJob == null) {
+			refreshDevMgrsJob = Job.create("Refresh device manager list", monitor -> {
+				getContainer().fetchDeviceManagers(monitor, RefreshDepth.NONE);
+				return Status.OK_STATUS;
+			});
+		}
+		refreshDevMgrsJob.schedule(250);
 	}
 
 	private void handleRemoveApplicationFactory(final DomainManagementObjectRemovedEventType event) {
 		final ScaDomainManager domain = getContainer();
 		ScaModelCommand.execute(domain, () -> {
+			boolean missingId = false;
 			for (final ScaWaveformFactory factory : domain.getWaveformFactories()) {
-				if (PluginUtil.equals(event.sourceId, factory.getIdentifier())) {
+				String id = factory.getIdentifier();
+				if (PluginUtil.equals(event.sourceId, id)) {
 					domain.getWaveformFactories().remove(factory);
 					return;
+				} else if (id == null) {
+					missingId = true;
 				}
 			}
+
+			// We couldn't find the waveform factory, and at least one was missing an identifier and thus could be the
+			// waveform factory we're supposed to remove
+			if (missingId) {
+				refreshWaveformFactories();
+			}
 		});
+	}
+
+	/**
+	 * Schedules a job to refresh the waveforms when we were unable to find and remove a waveform
+	 */
+	private void refreshWaveformFactories() {
+		if (refreshWaveformFactoriesJob == null) {
+			refreshWaveformFactoriesJob = Job.create("Refresh waveform factories list", monitor -> {
+				getContainer().fetchWaveformFactories(new NullProgressMonitor(), RefreshDepth.NONE);
+				return Status.OK_STATUS;
+			});
+		}
+		refreshWaveformFactoriesJob.schedule(250);
 	}
 
 	private void handleRemoveApplication(final DomainManagementObjectRemovedEventType event) {
 		final ScaDomainManager domain = getContainer();
 		ScaModelCommand.execute(domain, () -> {
+			boolean missingId = false;
 			for (final ScaWaveform waveform : domain.getWaveforms()) {
-				if (PluginUtil.equals(event.sourceId, waveform.getIdentifier())) {
+				String id = waveform.getIdentifier();
+				if (PluginUtil.equals(event.sourceId, id)) {
 					domain.getWaveforms().remove(waveform);
 					return;
+				} else if (id == null) {
+					missingId = true;
 				}
 			}
+
+			// We couldn't find the waveform, and at least one was missing an identifier and thus could be the waveform
+			// we're supposed to remove
+			if (missingId) {
+				refreshWaveforms();
+			}
 		});
+	}
+
+	/**
+	 * Schedules a job to refresh the waveforms when we were unable to find and remove a waveform
+	 */
+	private void refreshWaveforms() {
+		if (refreshWaveformsJob == null) {
+			refreshWaveformsJob = Job.create("Refresh waveforms list", monitor -> {
+				getContainer().fetchWaveforms(monitor, RefreshDepth.NONE);
+				return Status.OK_STATUS;
+			});
+		}
+		refreshWaveformsJob.schedule(250);
 	}
 
 	private void handleAddEvent(final DomainManagementObjectAddedEventType event) {
@@ -205,6 +374,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			handleAddDeviceManager(event);
 			break;
 		case SourceCategoryType._SERVICE:
+			handleAddService(event);
 			break;
 		default:
 			break;
@@ -212,14 +382,11 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 	}
 
 	private void handleAddDevice(final DomainManagementObjectAddedEventType event) {
-		List<ScaDeviceManager> devMgrs = ScaModelCommand.runExclusive(getContainer(), () -> {
-			return new ArrayList<>(getContainer().getDeviceManagers());
-		});
-		for (final ScaDeviceManager devMgr : devMgrs) {
-			if (devMgr.isSetDevices()) {
-				devMgr.fetchDevices(null, RefreshDepth.SELF);
-			}
-		}
+		refreshDevices();
+	}
+
+	private void handleAddService(final DomainManagementObjectAddedEventType event) {
+		refreshServices();
 	}
 
 	private void handleAddDeviceManager(final DomainManagementObjectAddedEventType event) {
@@ -253,7 +420,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 
 		if (added != null && added) {
 			try {
-				devMgr.refresh(null, RefreshDepth.SELF);
+				devMgr.refresh(new NullProgressMonitor(), RefreshDepth.SELF);
 			} catch (InterruptedException e) {
 				return;
 			}
@@ -291,7 +458,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 
 		if (added != null && added) {
 			try {
-				waveformFactory.refresh(null, RefreshDepth.SELF);
+				waveformFactory.refresh(new NullProgressMonitor(), RefreshDepth.SELF);
 			} catch (InterruptedException e) {
 				return;
 			}
@@ -329,7 +496,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 
 		if (added != null && added) {
 			try {
-				waveform.refresh(null, RefreshDepth.SELF);
+				waveform.refresh(new NullProgressMonitor(), RefreshDepth.SELF);
 			} catch (InterruptedException e) {
 				return;
 			}
