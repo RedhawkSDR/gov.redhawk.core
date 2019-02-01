@@ -48,8 +48,8 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 
 			@Override
 			public boolean canRefresh() {
-				// Check if the CORBA object exists
-				return object.exists();
+				// Always assume true - this is necessary in case the domain manager is restarted
+				return true;
 			}
 
 			@Override
