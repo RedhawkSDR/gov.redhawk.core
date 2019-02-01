@@ -166,6 +166,11 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 
 	@Override
 	public void disconnect_push_consumer() {
+		if (DEBUG) {
+			IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "disconnect_push_consumer: " + getName());
+			DataProviderActivator.getInstance().getLog().log(status);
+		}
+
 		try {
 			if (!this.dp.isDisposed()) {
 				this.dp.disconnectChannel(this.channelName, null);
