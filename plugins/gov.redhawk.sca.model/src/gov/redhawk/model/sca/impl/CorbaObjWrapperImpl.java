@@ -345,7 +345,11 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		if (!msg.isTouch()) {
 			switch (msg.getFeatureID(CorbaObjWrapper.class)) {
 			case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
-				String ior = msg.getNewValue() == null ? null : msg.getNewValue().toString();
+				String ior = null;
+				if (msg.getNewValue() instanceof org.omg.CORBA.portable.ObjectImpl) {
+					org.omg.CORBA.portable.ObjectImpl impl = ((org.omg.CORBA.portable.ObjectImpl) msg.getNewValue());
+					ior = impl._orb().object_to_string(impl);
+				}
 				Class< ? extends T> corbaType = getCorbaType();
 				if (corbaType != null && corbaType.isInstance(msg.getNewValue())) {
 					setObj(corbaType.cast(msg.getNewValue()));
