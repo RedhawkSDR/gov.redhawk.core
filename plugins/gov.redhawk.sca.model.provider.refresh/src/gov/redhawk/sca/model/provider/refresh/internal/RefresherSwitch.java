@@ -43,7 +43,25 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 
 	@Override
 	public IRefresher caseScaDomainManager(final ScaDomainManager object) {
-		return createRefresher(object, RefreshDepth.SELF);
+		return new IRefresher() {
+
+			@Override
+			public boolean canRefresh() {
+				// Always assume true - this is necessary in case the domain manager is restarted
+				return true;
+			}
+
+			@Override
+			public void refresh(final IProgressMonitor monitor) {
+				SubMonitor progress = SubMonitor.convert(monitor, 2);
+				try {
+					object.refresh(progress.newChild(1), RefreshDepth.SELF);
+					object.fetchEventChannels(progress.newChild(1), RefreshDepth.NONE);
+				} catch (final InterruptedException e) {
+					// PASS
+				}
+			}
+		};
 	}
 
 	@Override

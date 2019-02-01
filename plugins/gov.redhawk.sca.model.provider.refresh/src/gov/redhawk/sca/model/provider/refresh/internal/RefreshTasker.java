@@ -24,6 +24,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 
+import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.services.AbstractDataProvider;
@@ -210,6 +211,9 @@ public class RefreshTasker extends AbstractDataProvider {
 				}
 			} finally {
 				// Reschedule
+				if (objectToRefresh instanceof ScaDomainManager) {
+					backOff = false;
+				}
 				reschedule(backOff);
 			}
 		}
