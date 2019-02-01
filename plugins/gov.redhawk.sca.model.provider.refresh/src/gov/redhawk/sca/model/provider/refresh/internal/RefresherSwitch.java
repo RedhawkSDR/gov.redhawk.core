@@ -43,7 +43,8 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 
 	@Override
 	public IRefresher caseScaDomainManager(final ScaDomainManager object) {
-		return createRefresher(object, RefreshDepth.SELF);
+		// Use the refresher that will always refresh for the domain manager
+		return createRefresher((IRefreshable) object, RefreshDepth.SELF);
 	}
 
 	@Override
