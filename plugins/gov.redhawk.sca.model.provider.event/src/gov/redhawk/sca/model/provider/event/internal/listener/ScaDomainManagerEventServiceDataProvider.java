@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
@@ -81,6 +82,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 
 	private Job refreshDevicesJob;
 	private Job refreshDevMgrsJob;
+	private Job refreshEventChannelsJob;
 	private Job refreshServicesJob;
 	private Job refreshWaveformFactoriesJob;
 	private Job refreshWaveformsJob;
@@ -98,7 +100,8 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 		ScaModelCommand.execute(getContainer(), () -> {
 			getContainer().eAdapters().remove(domMgrListener);
 		});
-		for (Job job : Arrays.asList(refreshDevicesJob, refreshDevMgrsJob, refreshServicesJob, refreshWaveformFactoriesJob, refreshWaveformsJob)) {
+		for (Job job : Arrays.asList(refreshDevicesJob, refreshDevMgrsJob, refreshEventChannelsJob, refreshServicesJob, refreshWaveformFactoriesJob,
+					refreshWaveformsJob)) {
 			if (job != null) {
 				job.cancel();
 			}
@@ -367,13 +370,36 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 	private void handleRemoveEventChannel(final DomainManagementObjectRemovedEventType event) {
 		final ScaDomainManager domain = getContainer();
 		ScaModelCommand.execute(domain, () -> {
+			boolean missingName = false;
 			for (ScaEventChannel eventChannel : domain.getEventChannels()) {
-				if (PluginUtil.equals(event.sourceId, eventChannel.getName())) {
+				String name = eventChannel.getName();
+				if (PluginUtil.equals(name, event.sourceId)) {
 					domain.getEventChannels().remove(eventChannel);
 					return;
+				} else if (name == null) {
+					missingName = true;
 				}
 			}
+
+			// We couldn't find the event channel, and at least one was missing a name and thus could be the event
+			// channel we're supposed to remove
+			if (missingName) {
+				refreshEventChannels();
+			}
 		});
+	}
+
+	/**
+	 * Schedules a job to refresh the event channels when we were unable to find and remove an event channel
+	 */
+	private void refreshEventChannels() {
+		if (refreshEventChannelsJob == null) {
+			refreshEventChannelsJob = Job.create("Refresh event channels list", monitor -> {
+				getContainer().fetchEventChannels(monitor, RefreshDepth.NONE);
+				return Status.OK_STATUS;
+			});
+		}
+		refreshEventChannelsJob.schedule(250);
 	}
 
 	private void handleAddEvent(final DomainManagementObjectAddedEventType event) {
@@ -525,12 +551,14 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 
 	private void handleAddEventChannel(final DomainManagementObjectAddedEventType event) {
 		if (event.sourceId == null || event.sourceId.isEmpty()) {
-			IStatus status = new Status(IStatus.ERROR, DataProviderActivator.ID, "DomainManagementObjectAddedEventType for event channel did not contain a source ID");
+			IStatus status = new Status(IStatus.ERROR, DataProviderActivator.ID,
+				"DomainManagementObjectAddedEventType for event channel did not contain a source ID");
 			DataProviderActivator.getInstance().getLog().log(status);
 			return;
 		}
 		if (event.sourceIOR == null) {
-			IStatus status = new Status(IStatus.ERROR, DataProviderActivator.ID, "DomainManagementObjectAddedEventType for event channel did not contain an object (sourceIOR)");
+			IStatus status = new Status(IStatus.ERROR, DataProviderActivator.ID,
+				"DomainManagementObjectAddedEventType for event channel did not contain an object (sourceIOR)");
 			DataProviderActivator.getInstance().getLog().log(status);
 			return;
 		}
@@ -545,16 +573,17 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 				return false;
 			}
 			for (ScaEventChannel eventChannel : domain.getEventChannels()) {
-				if (PluginUtil.equals(eventChannel.getName(), newEventChannel.getName())) {
+				if (PluginUtil.equals(newEventChannel.getName(), eventChannel.getName())) {
 					return false;
 				}
 			}
 			domain.getEventChannels().add(newEventChannel);
 			return true;
 		});
+
 		if (added != null && added) {
 			try {
-				newEventChannel.refresh(null, RefreshDepth.SELF);
+				newEventChannel.refresh(new NullProgressMonitor(), RefreshDepth.SELF);
 			} catch (InterruptedException e) {
 				return;
 			}
