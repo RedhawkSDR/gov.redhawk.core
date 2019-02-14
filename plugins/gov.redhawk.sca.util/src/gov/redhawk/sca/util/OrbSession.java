@@ -194,11 +194,14 @@ public class OrbSession {
 			}
 		}
 		if (destroy) {
+			if (poa != null) {
+				poa._release();
+			}
 			if (orb != null) {
 				orb.destroy();
 			}
-			orb = null;
 			poa = null;
+			orb = null;
 		}
 	}
 

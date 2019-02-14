@@ -48,6 +48,17 @@ public enum ScaFileCache {
 
 	}
 
+	public synchronized FileSystemCache remove(final ScaFileStore store) {
+		if (store != null) {
+			final String queryStr = store.toURI().getQuery();
+			final Map<String, String> queryMap = QueryParser.parseQuery(queryStr);
+			final String fileSystemUri = queryMap.get(ScaFileSystemConstants.QUERY_PARAM_FS);
+
+			return this.fileSystemCacheMap.remove(fileSystemUri);
+		}
+		return null;
+	}
+
 	public synchronized void clear() {
 		for (final FileSystemCache cache : this.fileSystemCacheMap.values()) {
 			cache.clear();
