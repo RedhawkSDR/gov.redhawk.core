@@ -11,11 +11,14 @@
  */
 package gov.redhawk.efs.sca.internal;
 
+import gov.redhawk.efs.sca.internal.cache.FileSystemCache;
 import gov.redhawk.efs.sca.internal.cache.IFileCache;
 import gov.redhawk.efs.sca.internal.cache.ScaFileCache;
 import gov.redhawk.sca.efs.ScaFileSystemPlugin;
 import gov.redhawk.sca.util.Debug;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -53,7 +56,7 @@ import CF.FilePackage.InvalidFilePointer;
 import CF.FileSystemPackage.FileInformationType;
 import CF.FileSystemPackage.FileType;
 
-public class ScaFileStore extends FileStore {
+public class ScaFileStore extends FileStore implements Closeable {
 
 	private static enum ScaFileInformationDataType {
 		CREATED_TIME,
@@ -502,6 +505,14 @@ public class ScaFileStore extends FileStore {
 			}
 		} else {
 			super.copyFile(sourceInfo, destination, options, monitor);
+		}
+	}
+
+	@Override
+	public void close() throws IOException {
+		FileSystemCache old = ScaFileCache.INSTANCE.remove(this);
+		if (old != null) {
+			old.clear();
 		}
 	}
 

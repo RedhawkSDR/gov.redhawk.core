@@ -19,6 +19,8 @@ import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
@@ -434,6 +436,14 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 					new Status(Status.ERROR, ScaModelPlugin.ID, "Error in resolving file system.", e));
 			}
 		} else {
+			IFileStore oldStore = getFileStore();
+			if (oldStore != null && oldStore instanceof Closeable) {
+				try {
+					((Closeable) oldStore).close();
+				} catch (IOException e) {
+					// PASS
+				}
+			}
 			setFileStore(null);
 		}
 	}
