@@ -76,6 +76,15 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 				} else {
 					disconnectAsync();
 				}
+			} else if (feature == ScaPackage.Literals.ISTATUS_PROVIDER__STATUS) {
+				Status newVal = (Status) msg.getNewValue();
+				if (newVal != null) {
+					if (newVal.isOK()) {
+						connectAsync();
+					} else {
+						disconnectAsync();
+					}
+				}
 			}
 		}
 	};
