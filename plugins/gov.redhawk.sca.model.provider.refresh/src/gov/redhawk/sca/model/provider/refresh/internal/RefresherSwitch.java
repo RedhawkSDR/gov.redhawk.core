@@ -21,7 +21,6 @@ import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.util.ScaSwitch;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.omg.CORBA.Object;
 
@@ -46,25 +45,6 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 	public IRefresher caseScaDomainManager(final ScaDomainManager object) {
 		// Use the refresher that will always refresh for the domain manager
 		return createRefresher((IRefreshable) object, RefreshDepth.SELF);
-//		return new IRefresher() {
-//
-//			@Override
-//			public boolean canRefresh() {
-//				// Always assume true - this is necessary in case the domain manager is restarted
-//				return true;
-//			}
-//
-//			@Override
-//			public void refresh(final IProgressMonitor monitor) {
-//				SubMonitor progress = SubMonitor.convert(monitor, 2);
-//				try {
-//					object.refresh(progress.newChild(1), RefreshDepth.SELF);
-//					object.fetchEventChannels(progress.newChild(1), RefreshDepth.NONE);
-//				} catch (final InterruptedException e) {
-//					// PASS
-//				}
-//			}
-//		};
 	}
 
 	@Override
