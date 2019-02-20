@@ -22,6 +22,8 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.omg.CORBA.COMM_FAILURE;
+import org.omg.CORBA.CompletionStatus;
 import org.omg.CORBA.SystemException;
 
 import CF.DeviceManagerOperations;
@@ -46,10 +48,15 @@ public class ShutdownNodeHandler extends AbstractHandler implements IHandler {
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
 							monitor.beginTask("Shutting down: " + op.label(), IProgressMonitor.UNKNOWN);
-
 							// Try to shutdown the Device Manager
 							try {
 								op.shutdown();
+							} catch (COMM_FAILURE ex) {
+								if (ex.completed == CompletionStatus.COMPLETED_NO) {
+									return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "CORBA Exception while shutting down", ex);
+								}
+								// Assume a COMPLETED_YES or COMPLETED_MAYBE is the DeviceManager
+								// shutting down before the shutdown() call returns
 							} catch (SystemException ex) {
 								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "CORBA Exception while shutting down", ex);
 							}
