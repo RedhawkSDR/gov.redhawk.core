@@ -599,4 +599,8 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 		}
 	}
 
+	@Override
+	public void reEnable() {
+		setEnabled(true);
+	}
 }

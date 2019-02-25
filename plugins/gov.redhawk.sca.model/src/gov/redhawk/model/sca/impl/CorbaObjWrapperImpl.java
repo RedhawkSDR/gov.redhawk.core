@@ -20,6 +20,7 @@ import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
+import gov.redhawk.model.sca.services.IScaDataProvider;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -687,7 +688,18 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 			return;
 		}
 
+		Map<IScaDataProvider, Boolean> enabledProviders = new HashMap<>();
+
 		try {
+			// Fetch the narrowed object first to get the DataProviders
+			fetchNarrowedObject(subMonitor.split(1));
+
+			// Disable the data providers - keep them from refreshing while we're in the middle of
+			// a refresh
+			for (IScaDataProvider provider : getDataProviders()) {
+				enabledProviders.put(provider, provider.isEnabled());
+				provider.setEnabled(false);
+			}
 			fetchAttributes(subMonitor.split(20));
 			switch (depth) {
 			case CHILDREN:
@@ -699,6 +711,14 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 			}
 			super.refresh(subMonitor.split(60), depth);
 		} finally {
+			// Reset the enabled state of the DataProviders
+			enabledProviders.forEach((provider, enabled) -> {
+				if (enabled) {
+					provider.reEnable();
+				}
+			});
+			enabledProviders.clear();
+
 			subMonitor.done();
 		}
 	}

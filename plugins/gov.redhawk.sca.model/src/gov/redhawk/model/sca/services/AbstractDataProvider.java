@@ -129,4 +129,7 @@ public abstract class AbstractDataProvider implements IScaDataProvider {
 		return Status.OK_STATUS;
 	}
 
+	public void reEnable() {
+		setEnabled(true);
+	}
 }
