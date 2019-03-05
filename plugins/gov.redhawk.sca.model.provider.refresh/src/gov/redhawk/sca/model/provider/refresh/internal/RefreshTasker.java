@@ -252,6 +252,10 @@ public class RefreshTasker extends AbstractDataProvider {
 		// Explicitly don't schedule now. This is used by the refresh methods, no need to refresh
 		// while we're already refreshing.
 		super.setEnabled(true);
+
+		// Make sure that the periodic refresh is scheduled. If it gets disabled for some reason,
+		// a manual refresh of the model object should reschedule the it.
+		reschedule(false);
 	}
 
 	/**

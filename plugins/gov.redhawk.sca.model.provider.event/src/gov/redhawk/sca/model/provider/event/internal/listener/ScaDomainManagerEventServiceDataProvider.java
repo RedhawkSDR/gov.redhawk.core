@@ -17,9 +17,12 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.omg.CORBA.Any;
@@ -50,6 +53,7 @@ import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
 import gov.redhawk.model.sca.services.IScaDataProvider;
+import gov.redhawk.sca.model.preferences.ScaModelPreferenceContants;
 import gov.redhawk.sca.model.provider.event.AbstractEventChannelDataProvider;
 import gov.redhawk.sca.model.provider.event.DataProviderActivator;
 import gov.redhawk.sca.model.provider.event.internal.EventServiceDataProviderService;
@@ -61,6 +65,27 @@ import gov.redhawk.sca.util.PluginUtil;
  */
 public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChannelDataProvider<ScaDomainManager> implements IScaDataProvider {
 
+	private static final boolean DEBUG = "true".equalsIgnoreCase(Platform.getDebugOption(DataProviderActivator.ID + "/debug"));
+	private static final boolean DEBUG_STATUS = "true".equalsIgnoreCase(Platform.getDebugOption(DataProviderActivator.ID + "/debug/status"));
+
+	private final IPreferenceChangeListener dataProviderPreferenceChangeListener = new IPreferenceChangeListener() {
+
+		@Override
+		public void preferenceChange(final PreferenceChangeEvent event) {
+			if (event.getKey().equals(ScaModelPreferenceContants.DISABLED_DATA_PROVIDERS)) {
+				String disabledProviders = (String) event.getNewValue();
+				if (disabledProviders != null && disabledProviders.contains(DataProviderActivator.ID)
+						&& ScaDomainManagerEventServiceDataProvider.this.isEnabled()) {
+					ScaDomainManagerEventServiceDataProvider.this.disable(true);
+				} else if (!ScaDomainManagerEventServiceDataProvider.this.isEnabled()
+						&& (disabledProviders == null || !disabledProviders.contains(DataProviderActivator.ID))) {
+					ScaDomainManagerEventServiceDataProvider.this.disable(false);
+				}
+			}
+		}
+
+	};
+
 	/**
 	 * Handles the domain manager connecting/disconnecting or being disposed
 	 */
@@ -69,8 +94,16 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 		public void notifyChanged(final org.eclipse.emf.common.notify.Notification msg) {
 			Object feature = msg.getFeature();
 			if (feature == ScaPackage.Literals.IDISPOSABLE__DISPOSED && msg.getNewBooleanValue()) {
+				if (DEBUG) {
+					IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Disposing the Data Provider");
+					DataProviderActivator.getInstance().getLog().log(status);
+				}
 				dispose();
 			} else if (feature == ScaPackage.Literals.SCA_DOMAIN_MANAGER__CONNECTED && !msg.isTouch()) {
+				if (DEBUG) {
+					IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Received new value for DomainManager::connected: " + msg.getNewBooleanValue());
+					DataProviderActivator.getInstance().getLog().log(status);
+				}
 				if (msg.getNewBooleanValue()) {
 					connectAsync();
 				} else {
@@ -78,6 +111,10 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 				}
 			} else if (feature == ScaPackage.Literals.ISTATUS_PROVIDER__STATUS) {
 				Status newVal = (Status) msg.getNewValue();
+				if (DEBUG_STATUS) {
+					IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Received new value for status: " + newVal);
+					DataProviderActivator.getInstance().getLog().log(status);
+				}
 				if (newVal != null) {
 					if (newVal.isOK()) {
 						connectAsync();
@@ -98,14 +135,20 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 
 	public ScaDomainManagerEventServiceDataProvider(final ScaDomainManager domain) {
 		super(domain, domain);
+		DataProviderActivator.getInstance().getPreferenceAccessor().addPreferenceChangeListener(this.dataProviderPreferenceChangeListener);
+
 		ScaModelCommand.execute(domain, () -> {
 			domain.eAdapters().add(domMgrListener);
 		});
 		addChannel(domain.getName() + ".ODM_Channel");
+
+		super.setEnabled(true);
 	}
 
 	@Override
 	public void dispose() {
+		DataProviderActivator.getInstance().getPreferenceAccessor().removePreferenceChangeListener(this.dataProviderPreferenceChangeListener);
+
 		ScaModelCommand.execute(getContainer(), () -> {
 			getContainer().eAdapters().remove(domMgrListener);
 		});
@@ -122,9 +165,17 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 	protected void connectAsync() {
 		// Don't connect if the domain manager isn't connected or if we're not enabled
 		if (!getContainer().isConnected() || !isEnabled()) {
+			if (DEBUG) {
+				IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Not connecting - enabled: " + isEnabled() + ", connected: " + getContainer().isConnected());
+				DataProviderActivator.getInstance().getLog().log(status);
+			}
 			return;
 		}
 
+		if (DEBUG) {
+			IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Connecting to event channel on " + getContainer().getName());
+			DataProviderActivator.getInstance().getLog().log(status);
+		}
 		super.connectAsync();
 	}
 
@@ -138,9 +189,17 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 		final TypeCode type = data.type();
 		if (type.equal(DomainManagementObjectAddedEventTypeHelper.type())) {
 			final DomainManagementObjectAddedEventType event = DomainManagementObjectAddedEventTypeHelper.extract(data);
+			if (DEBUG) {
+				IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Processing add event for " + event.sourceId + " - " + event.sourceIOR);
+				DataProviderActivator.getInstance().getLog().log(status);
+			}
 			handleAddEvent(event);
 		} else if (type.equal(DomainManagementObjectRemovedEventTypeHelper.type())) {
 			final DomainManagementObjectRemovedEventType event = DomainManagementObjectRemovedEventTypeHelper.extract(data);
+			if (DEBUG) {
+				IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Processing remove event for " + event.sourceId + " (" + event.sourceCategory.value() + ")");
+				DataProviderActivator.getInstance().getLog().log(status);
+			}
 			handleRemoveEvent(event);
 		}
 	}
@@ -197,6 +256,10 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			// We couldn't find the device, and at least one was missing an identifier and thus could be the device
 			// we're supposed to remove
 			if (missingId) {
+				if (DEBUG) {
+					IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Couldn't find " + event.sourceName + ", refreshing all devices.");
+					DataProviderActivator.getInstance().getLog().log(status);
+				}
 				refreshDevices();
 			}
 		});
@@ -246,6 +309,10 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			// We couldn't find the service, and at least one was missing a name and thus could be the service we're
 			// supposed to remove
 			if (missingName) {
+				if (DEBUG) {
+					IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Couldn't find " + event.sourceName + ", refreshing all services.");
+					DataProviderActivator.getInstance().getLog().log(status);
+				}
 				refreshServices();
 			}
 		});
@@ -288,6 +355,10 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			// We couldn't find the device manager, and at least one was missing an identifier and thus could be the
 			// device manager we're supposed to remove
 			if (missingId) {
+				if (DEBUG) {
+					IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Couldn't find " + event.sourceName + ", refreshing all device managers.");
+					DataProviderActivator.getInstance().getLog().log(status);
+				}
 				refreshDeviceManagers();
 			}
 		});
@@ -323,6 +394,10 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			// We couldn't find the waveform factory, and at least one was missing an identifier and thus could be the
 			// waveform factory we're supposed to remove
 			if (missingId) {
+				if (DEBUG) {
+					IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Couldn't find " + event.sourceName + ", refreshing all waveform factories.");
+					DataProviderActivator.getInstance().getLog().log(status);
+				}
 				refreshWaveformFactories();
 			}
 		});
@@ -358,6 +433,10 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			// We couldn't find the waveform, and at least one was missing an identifier and thus could be the waveform
 			// we're supposed to remove
 			if (missingId) {
+				if (DEBUG) {
+					IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Couldn't find " + event.sourceName + ", refreshing all waveforms.");
+					DataProviderActivator.getInstance().getLog().log(status);
+				}
 				refreshWaveforms();
 			}
 		});
@@ -393,6 +472,10 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			// We couldn't find the event channel, and at least one was missing a name and thus could be the event
 			// channel we're supposed to remove
 			if (missingName) {
+				if (DEBUG) {
+					IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Couldn't find " + event.sourceName + ", refreshing all event channels.");
+					DataProviderActivator.getInstance().getLog().log(status);
+				}
 				refreshEventChannels();
 			}
 		});
@@ -454,28 +537,43 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			return;
 		}
 
-		final ScaDeviceManager devMgr = ScaFactory.eINSTANCE.createScaDeviceManager();
-		devMgr.setCorbaObj(devMgrObj);
-		devMgr.setIdentifier(event.sourceId);
-		devMgr.setLabel(event.sourceName);
+		final ScaDeviceManager[] devMgr = { ScaFactory.eINSTANCE.createScaDeviceManager() };
+		devMgr[0].setCorbaObj(devMgrObj);
+		devMgr[0].setIdentifier(event.sourceId);
+		devMgr[0].setLabel(event.sourceName);
 
 		final ScaDomainManager domain = getContainer();
 		final Boolean added = ScaModelCommandWithResult.execute(domain, () -> {
 			if (!domain.isSetDeviceManagers()) {
-				return false;
+				return Boolean.FALSE;
 			}
 			for (final ScaDeviceManager deviceManager : domain.getDeviceManagers()) {
 				if (PluginUtil.equals(ior, deviceManager.getIor())) {
-					return false;
+					return Boolean.FALSE;
+				} else if (PluginUtil.equals(event.sourceId, deviceManager.getIdentifier())) {
+					if (DEBUG) {
+						IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, event.sourceName + " already exists, updating it");
+						DataProviderActivator.getInstance().getLog().log(status);
+						status = new Status(IStatus.INFO, DataProviderActivator.ID, "IOR was: " + deviceManager.getIor() + " changing it to: " + event.sourceIOR);
+						DataProviderActivator.getInstance().getLog().log(status);
+					}
+					deviceManager.setObj(null);
+					deviceManager.setCorbaObj(devMgrObj);
+					devMgr[0] = deviceManager;
+					return Boolean.TRUE;
 				}
 			}
-			domain.getDeviceManagers().add(devMgr);
-			return true;
+			if (DEBUG) {
+				IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Adding new device manager " + event.sourceName + " with IOR: " + event.sourceIOR);
+				DataProviderActivator.getInstance().getLog().log(status);
+			}
+			domain.getDeviceManagers().add(devMgr[0]);
+			return Boolean.TRUE;
 		});
 
-		if (added != null && added) {
+		if (Boolean.TRUE.equals(added)) {
 			try {
-				devMgr.refresh(new NullProgressMonitor(), RefreshDepth.SELF);
+				devMgr[0].refresh(new NullProgressMonitor(), RefreshDepth.SELF);
 			} catch (InterruptedException e) {
 				return;
 			}
@@ -492,28 +590,43 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			return;
 		}
 
-		final ScaWaveformFactory waveformFactory = ScaFactory.eINSTANCE.createScaWaveformFactory();
-		waveformFactory.setCorbaObj(appFactoryObj);
-		waveformFactory.setIdentifier(event.sourceId);
-		waveformFactory.setName(event.sourceName);
+		final ScaWaveformFactory[] waveformFactory = { ScaFactory.eINSTANCE.createScaWaveformFactory() };
+		waveformFactory[0].setCorbaObj(appFactoryObj);
+		waveformFactory[0].setIdentifier(event.sourceId);
+		waveformFactory[0].setName(event.sourceName);
 
 		final ScaDomainManager domain = getContainer();
 		final Boolean added = ScaModelCommandWithResult.execute(domain, () -> {
 			if (!domain.isSetWaveformFactories()) {
-				return false;
+				return Boolean.FALSE;
 			}
 			for (final ScaWaveformFactory factory : domain.getWaveformFactories()) {
 				if (PluginUtil.equals(ior, factory.getIor())) {
-					return false;
+					return Boolean.FALSE;
+				} else if (PluginUtil.equals(event.sourceId, factory.getIdentifier())) {
+					if (DEBUG) {
+						IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, event.sourceName + " already exists, updating it");
+						DataProviderActivator.getInstance().getLog().log(status);
+						status = new Status(IStatus.INFO, DataProviderActivator.ID, "IOR was: " + factory.getIor() + " changing it to: " + event.sourceIOR);
+						DataProviderActivator.getInstance().getLog().log(status);
+					}
+					factory.setObj(null);
+					factory.setCorbaObj(appFactoryObj);
+					waveformFactory[0] = factory;
+					return Boolean.TRUE;
 				}
 			}
-			domain.getWaveformFactories().add(waveformFactory);
-			return true;
+			if (DEBUG) {
+				IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Adding new waveform factory " + event.sourceName + " with IOR: " + event.sourceIOR);
+				DataProviderActivator.getInstance().getLog().log(status);
+			}
+			domain.getWaveformFactories().add(waveformFactory[0]);
+			return Boolean.TRUE;
 		});
 
-		if (added != null && added) {
+		if (Boolean.TRUE.equals(added)) {
 			try {
-				waveformFactory.refresh(new NullProgressMonitor(), RefreshDepth.SELF);
+				waveformFactory[0].refresh(new NullProgressMonitor(), RefreshDepth.SELF);
 			} catch (InterruptedException e) {
 				return;
 			}
@@ -530,28 +643,43 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			return;
 		}
 
-		final ScaWaveform waveform = ScaFactory.eINSTANCE.createScaWaveform();
-		waveform.setCorbaObj(appObj);
-		waveform.setIdentifier(event.sourceId);
-		waveform.setName(event.sourceName);
+		final ScaWaveform[] waveform = { ScaFactory.eINSTANCE.createScaWaveform() };
+		waveform[0].setCorbaObj(appObj);
+		waveform[0].setIdentifier(event.sourceId);
+		waveform[0].setName(event.sourceName);
 
 		final ScaDomainManager domain = getContainer();
 		final Boolean added = ScaModelCommandWithResult.execute(domain, () -> {
 			if (!domain.isSetWaveforms()) {
-				return false;
+				return Boolean.FALSE;
 			}
 			for (final ScaWaveform w : domain.getWaveforms()) {
 				if (PluginUtil.equals(ior, w.getIor())) {
-					return false;
+					return Boolean.FALSE;
+				} else if (PluginUtil.equals(event.sourceId, w.getIdentifier())) {
+					if (DEBUG) {
+						IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, event.sourceName + " already exists, updating it");
+						DataProviderActivator.getInstance().getLog().log(status);
+						status = new Status(IStatus.INFO, DataProviderActivator.ID, "IOR was: " + w.getIor() + " changing it to: " + event.sourceIOR);
+						DataProviderActivator.getInstance().getLog().log(status);
+					}
+					w.setObj(null);
+					w.setCorbaObj(appObj);
+					waveform[0] = w;
+					return Boolean.TRUE;
 				}
 			}
-			domain.getWaveforms().add(waveform);
-			return true;
+			if (DEBUG) {
+				IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Adding new waveform " + event.sourceName + " with IOR: " + event.sourceIOR);
+				DataProviderActivator.getInstance().getLog().log(status);
+			}
+			domain.getWaveforms().add(waveform[0]);
+			return Boolean.TRUE;
 		});
 
-		if (added != null && added) {
+		if (Boolean.TRUE.equals(added)) {
 			try {
-				waveform.refresh(new NullProgressMonitor(), RefreshDepth.SELF);
+				waveform[0].refresh(new NullProgressMonitor(), RefreshDepth.SELF);
 			} catch (InterruptedException e) {
 				return;
 			}
@@ -573,26 +701,42 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 		}
 
 		final ScaDomainManager domain = getContainer();
-		ScaEventChannel newEventChannel = ScaFactory.eINSTANCE.createScaEventChannel();
-		newEventChannel.setName(event.sourceId);
-		newEventChannel.setCorbaObj(event.sourceIOR);
+		ScaEventChannel[] newEventChannel = { ScaFactory.eINSTANCE.createScaEventChannel() };
+		newEventChannel[0].setName(event.sourceId);
+		newEventChannel[0].setCorbaObj(event.sourceIOR);
 
 		Boolean added = ScaModelCommandWithResult.execute(domain, () -> {
 			if (!domain.isSetEventChannels()) {
-				return false;
+				return Boolean.FALSE;
 			}
 			for (ScaEventChannel eventChannel : domain.getEventChannels()) {
-				if (PluginUtil.equals(newEventChannel.getName(), eventChannel.getName())) {
-					return false;
+				if (PluginUtil.equals(newEventChannel[0].getName(), eventChannel.getName())) {
+					if (!PluginUtil.equals(event.sourceIOR, eventChannel.getIor())) {
+						if (DEBUG) {
+							IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, event.sourceId + " already exists, updating it");
+							DataProviderActivator.getInstance().getLog().log(status);
+							status = new Status(IStatus.INFO, DataProviderActivator.ID, "IOR was: " + eventChannel.getIor() + " changing it to: " + event.sourceIOR);
+							DataProviderActivator.getInstance().getLog().log(status);
+						}
+						eventChannel.setObj(null);
+						eventChannel.setCorbaObj(event.sourceIOR);
+						newEventChannel[0] = eventChannel;
+						return Boolean.TRUE;
+					}
+					return Boolean.FALSE;
 				}
 			}
-			domain.getEventChannels().add(newEventChannel);
-			return true;
+			if (DEBUG) {
+				IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Adding new event channel " + event.sourceName + " with IOR: " + event.sourceIOR);
+				DataProviderActivator.getInstance().getLog().log(status);
+			}
+			domain.getEventChannels().add(newEventChannel[0]);
+			return Boolean.TRUE;
 		});
 
-		if (added != null && added) {
+		if (Boolean.TRUE.equals(added)) {
 			try {
-				newEventChannel.refresh(new NullProgressMonitor(), RefreshDepth.SELF);
+				newEventChannel[0].refresh(new NullProgressMonitor(), RefreshDepth.SELF);
 			} catch (InterruptedException e) {
 				return;
 			}
@@ -600,7 +744,16 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 	}
 
 	@Override
+	public void setEnabled(boolean enabled) {
+		// PASS
+	}
+
+	@Override
 	public void reEnable() {
-		setEnabled(true);
+		// PASS
+	}
+
+	public void disable(boolean disable) {
+		super.setEnabled(!disable);
 	}
 }
