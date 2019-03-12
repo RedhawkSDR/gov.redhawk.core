@@ -11,10 +11,13 @@
  */
 package gov.redhawk.sca.model.provider.event;
 
+import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.sca.model.provider.event.internal.listener.EventJob;
+import gov.redhawk.sca.util.ScopedPreferenceAccessor;
 
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.framework.BundleContext;
 
 public class DataProviderActivator extends Plugin {
@@ -22,6 +25,8 @@ public class DataProviderActivator extends Plugin {
 	public static final String ID = "gov.redhawk.sca.model.provider.event";
 
 	private static DataProviderActivator instance;
+
+	private final ScopedPreferenceAccessor preferenceAccessor = new ScopedPreferenceAccessor(InstanceScope.INSTANCE, ScaModelPlugin.ID);
 
 	@Override
 	public void start(final BundleContext context) throws Exception {
@@ -38,6 +43,10 @@ public class DataProviderActivator extends Plugin {
 
 	public static DataProviderActivator getInstance() {
 		return DataProviderActivator.instance;
+	}
+
+	public ScopedPreferenceAccessor getPreferenceAccessor() {
+		return this.preferenceAccessor;
 	}
 
 }

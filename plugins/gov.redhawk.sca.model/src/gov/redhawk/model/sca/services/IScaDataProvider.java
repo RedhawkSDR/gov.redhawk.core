@@ -60,4 +60,9 @@ public interface IScaDataProvider {
 	 * @since 19.0
 	 */
 	public String getID();
+
+	/**
+	 * @since 23.0
+	 */
+	public void reEnable();
 }

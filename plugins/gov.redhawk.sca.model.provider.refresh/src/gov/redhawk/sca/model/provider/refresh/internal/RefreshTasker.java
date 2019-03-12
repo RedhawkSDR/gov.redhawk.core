@@ -63,6 +63,7 @@ public class RefreshTasker extends AbstractDataProvider {
 	 * The delay of the last refresh. <b>NOTE: Access synchronization required</b>.
 	 */
 	private long lastDelay = 0;
+	private boolean firstImmediateSchedule = true;
 
 	/**
 	 * Handles the target object being disposed, or its CORBA object / profile URI changing
@@ -125,6 +126,10 @@ public class RefreshTasker extends AbstractDataProvider {
 	private synchronized void schedule(long delay) {
 		if (delay < 0) {
 			throw new IllegalArgumentException("Delay must be 0 or greater");
+		}
+		if (this.firstImmediateSchedule && (delay == 0)) {
+			this.firstImmediateSchedule = false;
+			return;
 		}
 		if (!isEnabled()) { // TODO: Handle the "active" stuff
 			return;
@@ -222,7 +227,9 @@ public class RefreshTasker extends AbstractDataProvider {
 	@Override
 	public IStatus refresh(IProgressMonitor monitor) {
 		if (refresher.canRefresh()) {
-			refresher.refresh(monitor);
+			if (this.isEnabled()) {
+				refresher.refresh(monitor);
+			}
 			return (monitor.isCanceled()) ? Status.CANCEL_STATUS : Status.OK_STATUS;
 		} else {
 			return (monitor.isCanceled()) ? Status.CANCEL_STATUS : STATUS_CANNOT_REFRESH;
@@ -238,6 +245,17 @@ public class RefreshTasker extends AbstractDataProvider {
 		if (!oldEnabled && enabled) {
 			schedule(0);
 		}
+	}
+
+	@Override
+	public void reEnable() {
+		// Explicitly don't schedule now. This is used by the refresh methods, no need to refresh
+		// while we're already refreshing.
+		super.setEnabled(true);
+
+		// Make sure that the periodic refresh is scheduled. If it gets disabled for some reason,
+		// a manual refresh of the model object should reschedule the it.
+		reschedule(false);
 	}
 
 	/**
