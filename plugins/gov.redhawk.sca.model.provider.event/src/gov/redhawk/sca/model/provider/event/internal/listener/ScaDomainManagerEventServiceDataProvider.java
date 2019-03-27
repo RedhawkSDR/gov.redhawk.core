@@ -116,10 +116,10 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 					DataProviderActivator.getInstance().getLog().log(status);
 				}
 				if (newVal != null) {
-					if (newVal.isOK()) {
-						connectAsync();
-					} else {
+					if (!newVal.isOK()) {
 						disconnectAsync();
+					} else if (ScaDomainManagerEventServiceDataProvider.this.getContainer().getObj() != null) {
+						connectAsync();
 					}
 				}
 			}

@@ -174,7 +174,9 @@ public class RefreshTasker extends AbstractDataProvider {
 				if (completed.compareAndSet(false, true)) {
 					monitor.setCanceled(true);
 					String msg = String.format("Refresh timed out after %d milliseconds", REFRESH_TIMEOUT);
-					setStatus(new Status(IStatus.WARNING, RefreshProviderPlugin.PLUGIN_ID, msg));
+					if (!getStatus().getMessage().equals(msg)) {
+						setStatus(new Status(IStatus.WARNING, RefreshProviderPlugin.PLUGIN_ID, msg));
+					}
 				}
 			}, REFRESH_TIMEOUT, TimeUnit.MILLISECONDS);
 

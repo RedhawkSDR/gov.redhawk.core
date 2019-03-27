@@ -12,11 +12,22 @@
 package gov.redhawk.frontend.provider;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.framework.BundleContext;
+
+import gov.redhawk.model.sca.ScaModelPlugin;
+import gov.redhawk.sca.util.ScopedPreferenceAccessor;
 
 public class FrontEndDataActivator extends Plugin {
 
+	/**
+	 * @since 2.0
+	 */
+	public static final String ID = "gov.redhawk.frontend.provider";
+
 	private static FrontEndDataActivator instance;
+
+	private final ScopedPreferenceAccessor preferenceAccessor = new ScopedPreferenceAccessor(InstanceScope.INSTANCE, ScaModelPlugin.ID);
 
 	/*
 	 * (non-Javadoc)
@@ -40,6 +51,13 @@ public class FrontEndDataActivator extends Plugin {
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 		FrontEndDataActivator.instance = null;
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	public ScopedPreferenceAccessor getPreferenceAccessor() {
+		return this.preferenceAccessor;
 	}
 
 }
