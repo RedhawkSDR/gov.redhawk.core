@@ -117,8 +117,8 @@ public class ScaFileStoreTest {
 	@Test
 	public void testFetchInfoIntIProgressMonitor() {
 		final IFileInfo info = this.rootFileStore.fetchInfo();
-		Assert.assertEquals(ScaFileStoreTest.session.getRootFile().getName(), info.getName());
 		Assert.assertEquals(ScaFileStoreTest.session.getRootFile().lastModified(), info.getLastModified());
+		Assert.assertEquals(ScaFileStoreTest.session.getRootFile().getName(), info.getName());
 		Assert.assertEquals(ScaFileStoreTest.session.getRootFile().length(), info.getLength());
 		Assert.assertEquals(ScaFileStoreTest.session.getRootFile().isDirectory(), info.isDirectory());
 	}
@@ -169,6 +169,7 @@ public class ScaFileStoreTest {
 		FileUtils.touch(this.deleteFile);
 		final IFileStore fileStore = this.rootFileStore.getFileStore(new Path("test"));
 		this.inputStream = fileStore.openInputStream(0, null);
+		this.inputStream.close();
 	}
 
 	/**
@@ -179,15 +180,17 @@ public class ScaFileStoreTest {
 		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "test");
 		FileUtils.touch(this.deleteFile);
 		final IFileStore fileStore = this.rootFileStore.getFileStore(new Path("test"));
-		this.outputStream = fileStore.openOutputStream(0, null);
+		this.outputStream = fileStore.openOutputStream(EFS.APPEND, null);
+		this.outputStream.close();
 	}
 
 	/**
 	 * Test method for {@link gov.redhawk.efs.sca.internal.ScaFileStore#toURI()}.
 	 */
 	@Test
-	public void testToURI() {
+	public void testToURI() throws Exception {
 		Assert.assertNotNull(this.rootFileStore.toURI());
+		Assert.assertEquals(this.getCorbIorUri(), this.rootFileStore.toURI());
 	}
 
 	/**
@@ -223,6 +226,7 @@ public class ScaFileStoreTest {
 		final IFileStore child = this.rootFileStore.getChild("test");
 		child.mkdir(0, null);
 		Assert.assertTrue(this.deleteFile.exists());
+		this.deleteFile.delete();
 	}
 
 	/**

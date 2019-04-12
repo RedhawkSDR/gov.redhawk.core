@@ -65,6 +65,13 @@ public class ScaFileSystemPlugin extends Plugin {
 		ScaFileSystemPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, msg, e));
 	}
 
+	/**
+	 * @since 1.3
+	 */
+	public static void log(final IStatus msg) {
+		ScaFileSystemPlugin.getDefault().getLog().log(msg);
+	}
+
 	public File getTempDirectory() {
 		File dir = FileCache.getTempDir();
 		if (!dir.exists()) {

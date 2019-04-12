@@ -65,22 +65,22 @@ public class FileSystemCache {
 
 	public void clear() {
 		this.fileCacheMap.clear();
-		ORBUtil.release(fs);
-		fs = null;
+		ORBUtil.release(this.fs);
+		this.fs = null;
 	}
 
 	public FileSystemOperations getScaFileSystem() throws CoreException {
-		if (fs == null) {
-			return createFileSystemReference();
+		if (this.fs == null) {
+			createFileSystemReference();
 		}
-		return fs;
+		return this.fs;
 	}
 
 	private FileSystemOperations createFileSystemReference() throws CoreException {
 		try {
 			if (ScaFileSystemConstants.FS_SCHEME_CORBA_NAME.equals(fsInitRef.getScheme())) {
 				final org.omg.CORBA.Object objRef = session.getOrb().string_to_object(fsInitRef.toString());
-				fs = FileSystemHelper.narrow(objRef);
+				this.fs = FileSystemHelper.narrow(objRef);
 			} else if (ScaFileSystemConstants.FS_SCHEME_CORBA_IOR.equals(fsInitRef.getScheme())) {
 				final String ior = fsInitRef.toString();
 
@@ -90,14 +90,14 @@ public class FileSystemCache {
 				}
 
 				final org.omg.CORBA.Object objRef = session.getOrb().string_to_object(ior);
-				fs = FileSystemHelper.narrow(objRef);
+				this.fs = FileSystemHelper.narrow(objRef);
 			} else {
 				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "Unknown File System Schema: " + fsInitRef.getScheme(), null));
 			}
 		} catch (final SystemException e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "Failed to resolve File System: " + fsInitRef, e));
 		}
-		return fs;
+		return this.fs;
 	}
 
 	public String getRoot() {

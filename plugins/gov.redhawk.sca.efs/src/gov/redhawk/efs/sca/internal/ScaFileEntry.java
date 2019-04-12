@@ -27,7 +27,7 @@ public class ScaFileEntry {
 			throw new IllegalArgumentException(Messages.ScaFileEntry__NULL_URI);
 		}
 		this.uri = uri;
-		this.absolutePath = initAbsolutePath();
+		this.absolutePath = ScaFileEntry.makeAbsolutePath(uri);
 		this.name = initName();
 	}
 
@@ -71,8 +71,8 @@ public class ScaFileEntry {
 		return this.name;
 	}
 
-	private String initAbsolutePath() {
-		String path = this.uri.getPath();
+	public static String makeAbsolutePath(URI uri) {
+		String path = uri.getPath();
 		
 		while (path.endsWith(ScaFileEntry.PATH_SEPARATOR)) {
 			path = path.substring(0, path.length() - 1);

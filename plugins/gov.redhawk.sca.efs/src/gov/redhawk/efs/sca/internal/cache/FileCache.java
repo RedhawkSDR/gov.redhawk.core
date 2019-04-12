@@ -38,6 +38,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.osgi.util.NLS;
 import org.omg.CORBA.SystemException;
@@ -47,9 +48,10 @@ import CF.FileSystemOperations;
 import CF.InvalidFileName;
 
 public class FileCache implements IFileCache {
-
+	private static final boolean DEBUG = "true".equalsIgnoreCase(Platform.getDebugOption(ScaFileSystemPlugin.ID + "/debug/fileCache"));
 	private static final int DEFAULT_BUFFER_SIZE = 4096;
 	private static File tempDir;
+
 	private File localFile;
 	private ScaFileStore store;
 	private String[] names;
@@ -88,6 +90,10 @@ public class FileCache implements IFileCache {
 	}
 
 	private void downloadFile(IFileInfo info) throws CoreException {
+		if (DEBUG) {
+			IStatus status = new Status(IStatus.INFO, ScaFileSystemPlugin.ID, "Downloading file: " + info.getName());
+			ScaFileSystemPlugin.log(status);
+		}
 		FileOutputStream fileStream = null;
 		InputStream scaInputStream = null;
 		File tmpFile = null;
@@ -220,6 +226,10 @@ public class FileCache implements IFileCache {
 
 	private InputStream createScaInputStream() throws CoreException {
 		final String path = store.getEntry().getAbsolutePath();
+		if (DEBUG) {
+			IStatus status = new Status(IStatus.INFO, ScaFileSystemPlugin.ID, "Creating InputStream: " + path);
+			ScaFileSystemPlugin.log(status);
+		}
 		try {
 			FileSystemOperations fs = getScaFileSystem();
 
