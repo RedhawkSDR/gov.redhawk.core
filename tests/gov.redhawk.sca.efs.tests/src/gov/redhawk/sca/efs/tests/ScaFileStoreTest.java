@@ -11,14 +11,9 @@
  */
 package gov.redhawk.sca.efs.tests;
 
-import gov.redhawk.efs.sca.internal.ScaFileStore;
-import gov.redhawk.efs.sca.internal.cache.FileSystemCache;
-import gov.redhawk.efs.sca.internal.cache.IFileCache;
-import gov.redhawk.efs.sca.internal.cache.ScaFileCache;
 import gov.redhawk.sca.efs.server.tests.TestServer;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
@@ -236,47 +231,6 @@ public class ScaFileStoreTest {
 	@Test
 	public void testPutInfoIFileInfoIntIProgressMonitor() throws Exception {
 		// TODO Not supported yet
-	}
-
-	/**
-	 * Test method for {@link gov.redhawk.efs.sca.internal.ScaFileStore#close()}.
-	 */
-	@Test
-	public void testClose() {
-		final IFileCache rootStoreCache = ScaFileCache.INSTANCE.getCache((ScaFileStore) this.rootFileStore);
-		// The cache should be created the first time it's called
-		Assert.assertNotNull(rootStoreCache);
-		// Verify that it's the same on the next call
-		Assert.assertEquals(rootStoreCache, ScaFileCache.INSTANCE.getCache((ScaFileStore) this.rootFileStore));
-
-		// Clear the cache and verify that we get a new object
-		try {
-			((ScaFileStore) this.rootFileStore).close();
-		} catch (IOException e) {
-			Assert.assertTrue("Didn't close rootFileStore", false);
-		}
-		Assert.assertNotEquals(rootStoreCache, ScaFileCache.INSTANCE.getCache((ScaFileStore) this.rootFileStore));
-	}
-
-	/**
-	 * Test method for {@link gov.redhawk.efs.sca.internal.ScaFileStore#close()}.
-	 */
-	@Test
-	public void testCacheRemove() {
-		final IFileCache rootStoreCache = ScaFileCache.INSTANCE.getCache((ScaFileStore) this.rootFileStore);
-
-		// The cache should be created the first time it's called
-		Assert.assertNotNull(rootStoreCache);
-
-		// Verify that it's the same one that's removed
-		FileSystemCache rootStoreFsCache = ScaFileCache.INSTANCE.remove((ScaFileStore) this.rootFileStore);
-		Assert.assertEquals(rootStoreCache, rootStoreFsCache.getFileCache((ScaFileStore) this.rootFileStore));
-
-		// Make sure we don't exception on double remove
-		Assert.assertEquals(null, ScaFileCache.INSTANCE.remove((ScaFileStore) this.rootFileStore));
-
-		// Make sure we null gracefully
-		Assert.assertEquals(null, ScaFileCache.INSTANCE.remove(null));
 	}
 
 }
