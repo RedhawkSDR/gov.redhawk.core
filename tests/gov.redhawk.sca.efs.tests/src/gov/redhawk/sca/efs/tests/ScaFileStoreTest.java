@@ -160,9 +160,9 @@ public class ScaFileStoreTest {
 	 */
 	@Test
 	public void testOpenInputStreamIntIProgressMonitor() throws Exception {
-		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "test");
+		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "openInTest");
 		FileUtils.touch(this.deleteFile);
-		final IFileStore fileStore = this.rootFileStore.getFileStore(new Path("test"));
+		final IFileStore fileStore = this.rootFileStore.getFileStore(new Path("openInTest"));
 		this.inputStream = fileStore.openInputStream(0, null);
 		this.inputStream.close();
 	}
@@ -172,9 +172,9 @@ public class ScaFileStoreTest {
 	 */
 	@Test
 	public void testOpenOutputStreamIntIProgressMonitor() throws Exception {
-		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "test");
+		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "openOutTest");
 		FileUtils.touch(this.deleteFile);
-		final IFileStore fileStore = this.rootFileStore.getFileStore(new Path("test"));
+		final IFileStore fileStore = this.rootFileStore.getFileStore(new Path("openOutTest"));
 		this.outputStream = fileStore.openOutputStream(EFS.APPEND, null);
 		this.outputStream.close();
 	}
@@ -204,9 +204,9 @@ public class ScaFileStoreTest {
 	 */
 	@Test
 	public void testDeleteIntIProgressMonitor() throws Exception {
-		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "test");
+		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "deleteTest");
 		FileUtils.touch(this.deleteFile);
-		final IFileStore child = this.rootFileStore.getChild("test");
+		final IFileStore child = this.rootFileStore.getChild("deleteTest");
 		child.delete(0, null);
 		Assert.assertTrue(!this.deleteFile.exists());
 	}
@@ -217,8 +217,8 @@ public class ScaFileStoreTest {
 	 */
 	@Test
 	public void testMkdirIntIProgressMonitor() throws Exception {
-		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "test");
-		final IFileStore child = this.rootFileStore.getChild("test");
+		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "mkdirTest");
+		final IFileStore child = this.rootFileStore.getChild("mkdirTest");
 		child.mkdir(0, null);
 		Assert.assertTrue(this.deleteFile.exists());
 		this.deleteFile.delete();
