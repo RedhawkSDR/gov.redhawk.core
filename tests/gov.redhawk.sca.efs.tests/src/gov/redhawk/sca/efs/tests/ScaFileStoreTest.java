@@ -111,6 +111,12 @@ public class ScaFileStoreTest {
 	 */
 	@Test
 	public void testFetchInfoIntIProgressMonitor() {
+		try {
+			// Ensure the cache expires
+			Thread.sleep(5001);
+		} catch (InterruptedException e) {
+			// PASS
+		}
 		final IFileInfo info = this.rootFileStore.fetchInfo();
 		Assert.assertEquals(ScaFileStoreTest.session.getRootFile().lastModified(), info.getLastModified());
 		Assert.assertEquals(ScaFileStoreTest.session.getRootFile().getName(), info.getName());
