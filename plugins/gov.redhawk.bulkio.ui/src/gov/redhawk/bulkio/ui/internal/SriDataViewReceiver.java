@@ -54,7 +54,7 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 
 			@Override
 			public IStatus runInUIThread(IProgressMonitor monitor) {
-				if (viewer != null & !viewer.getControl().isDisposed()) {
+				if (viewer != null && !viewer.getControl().isDisposed()) {
 
 					// Capture expanded state to persist after setInput
 					setExpandedItems(viewer.getExpandedElements());

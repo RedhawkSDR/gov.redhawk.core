@@ -315,7 +315,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		UpdateValueStrategy targetToModel = new UpdateValueStrategy();
 		targetToModel.setAfterGetValidator(value -> {
 			String s = (String) value;
-			if (s == null | s.trim().isEmpty()) {
+			if (s == null || s.trim().isEmpty()) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoAllocationID);
 			}
 			if (s.contains(",")) { //$NON-NLS-1$
@@ -368,7 +368,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 				return ValidationStatus.ok();
 			}
 			String s = (String) value;
-			if (s == null | s.trim().isEmpty()) {
+			if (s == null || s.trim().isEmpty()) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoExistingAllocationID);
 			}
 			return ValidationStatus.ok();
