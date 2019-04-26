@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.eclipse.core.runtime.CoreException;
 import org.junit.Assert;
 import org.junit.Test;
+import org.omg.CORBA.OBJECT_NOT_EXIST;
 import org.omg.PortableServer.POAPackage.ObjectNotActive;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongAdapter;
@@ -46,7 +47,7 @@ public class JavaFileFileImplTest {
 			// Should not be active any more
 			try {
 				session.getPOA().reference_to_servant(fileObj);
-			} catch (ObjectNotActive e) {
+			} catch (ObjectNotActive | OBJECT_NOT_EXIST e) {
 				return;
 			}
 			Assert.fail("Object should no longer be active");
