@@ -492,6 +492,9 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 		case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED:
 			if (!msg.isTouch()) {
 				if (!msg.getNewBooleanValue()) {
+					if (this instanceof ScaDomainManagerImpl) {
+						System.out.println("Detaching Data Providers in DPOI::notifyChanged");
+					}
 					detachDataProviders();
 					getEnabledDataProviders().clear();
 				} else {
@@ -502,9 +505,15 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 		case ScaPackage.DATA_PROVIDER_OBJECT__ENABLED_DATA_PROVIDERS:
 			switch (msg.getEventType()) {
 			case Notification.REMOVE:
+				if (this instanceof ScaDomainManagerImpl) {
+					System.out.println("Detaching Specific DataProvider in DPOI");
+				}
 				detachDataProvider(msg.getOldStringValue());
 				break;
 			case Notification.REMOVE_MANY:
+				if (this instanceof ScaDomainManagerImpl) {
+					System.out.println("Detaching Specific DataProviders in DPOI");
+				}
 				for (Object value : (Collection< ? >) msg.getOldValue()) {
 					detachDataProvider((String) value);
 				}
@@ -526,11 +535,17 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 			case Notification.REMOVE:
 				if (msg.getOldValue() instanceof IScaDataProvider) {
 					final IScaDataProvider dataProvider = (IScaDataProvider) msg.getOldValue();
+					if (this instanceof ScaDomainManagerImpl) {
+						System.out.println("Removing DataProvider in DPOI");
+					}
 					removeDataProvider(dataProvider);
 				}
 				break;
 			case Notification.REMOVE_MANY:
 				if (msg.getOldValue() instanceof Collection< ? >) {
+					if (this instanceof ScaDomainManagerImpl) {
+						System.out.println("Removing DataProviders in DPOI");
+					}
 					for (Object obj : (Collection< ? >) msg.getOldValue()) {
 						if (obj instanceof IScaDataProvider) {
 							final IScaDataProvider dataProvider = (IScaDataProvider) obj;
@@ -592,7 +607,13 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	public void dispose() {
 		// END GENERATED CODE
 		this.disposed = true;
+		if (this instanceof ScaDomainManagerImpl) {
+			System.out.println("Detaching Data Providers in DPOI");
+		}
 		detachDataProviders();
+		if (this instanceof gov.redhawk.model.sca.impl.ScaDomainManagerImpl) {
+		System.out.println("\t\t\tClearing status from dispose!");
+		}
 		clearAllStatus();
 		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.DATA_PROVIDER_OBJECT__DISPOSED, false, this.disposed));

@@ -1160,6 +1160,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public void connect(IProgressMonitor parentMonitor, RefreshDepth refreshDepth) throws DomainConnectionException {
+		System.out.println("&&&&&&&&&&&&&&&& Connecting to Domain &&&&&&&&&&&&&&");
 		// END GENERATED CODE
 		DomainConnectionState localState = getState();
 		switch (localState) {
@@ -1539,6 +1540,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	private void reset() {
+		System.out.println("$$$$$$$$$$$$$$$$$$ Resetting Domain Manger????? $$$$$$$$$$$$$$$");
 		// END GENERATED CODE
 		unsetCorbaObj();
 		unsetRootContext();
@@ -2226,6 +2228,18 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		} catch (InterruptedException e1) {
 			return;
 		}
+		if (!tmpExists && getObj() != null) {
+			System.out.println("Unable to keep " + this.getName() + " alive");
+			Transaction transaction = keepAliveFeature.createTransaction();
+			transaction.addCommand(new ScaModelCommand() {
+
+				@Override
+				public void execute() {
+					unsetObj();
+				}
+			});
+			transaction.commit();
+		}
 		if (shouldProceed != null && shouldProceed) {
 			try {
 				Transaction transaction = keepAliveFeature.createTransaction();
@@ -2902,4 +2916,16 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		domMgr.setLogConfigURL(config_url);
 	}
 
+	@Override
+	public void setObj(DomainManager newObj) {
+		// TODO Auto-generated method stub
+		System.out.println("Setting Obj to: " + newObj.hashCode());
+		super.setObj(newObj);
+	}
+	@Override
+	public void setCorbaObj(org.omg.CORBA.Object newCorbaObj) {
+		// TODO Auto-generated method stub
+		System.out.println("Setting CORBA Obj to: " + newCorbaObj.hashCode());
+		super.setCorbaObj(newCorbaObj);
+	}
 } // ScaDomainManagerImpl

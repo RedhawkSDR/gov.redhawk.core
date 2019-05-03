@@ -50,6 +50,10 @@ public abstract class AbstractEventChannelDataProvider< T > extends AbstractData
 
 		@Override
 		protected IStatus run(final IProgressMonitor monitor) {
+			if (!domain.exists()) {
+				return Status.CANCEL_STATUS;
+			}
+			System.out.println("Running connectJob for " + (domain != null ? domain.getName() : "null"));
 			connectAll(monitor);
 			return Status.OK_STATUS;
 		}
@@ -63,6 +67,7 @@ public abstract class AbstractEventChannelDataProvider< T > extends AbstractData
 
 		@Override
 		protected IStatus run(final IProgressMonitor monitor) {
+			System.out.println("Running disconnectJob for " + (domain != null ? domain.getName() : "null"));
 			disconnectAll(monitor);
 			return Status.OK_STATUS;
 		}
@@ -70,6 +75,9 @@ public abstract class AbstractEventChannelDataProvider< T > extends AbstractData
 	};
 
 	public AbstractEventChannelDataProvider(final T container, final ScaDomainManager domain) {
+		if (domain == null) {
+			new Exception().printStackTrace();
+		}
 		Assert.isNotNull(container);
 		Assert.isNotNull(domain);
 		this.container = container;

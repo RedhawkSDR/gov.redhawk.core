@@ -23,6 +23,7 @@ import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 import gov.redhawk.model.sca.services.IScaDataProvider;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -347,6 +348,9 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		if (!msg.isTouch()) {
 			switch (msg.getFeatureID(CorbaObjWrapper.class)) {
 			case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
+				if (this instanceof ScaDomainManagerImpl) {
+					System.out.println("Notification of setCorbaObj is null: " + (msg.getNewValue() == null));
+				}
 				String ior = null;
 				if (msg.getNewValue() instanceof org.omg.CORBA.portable.ObjectImpl) {
 					org.omg.CORBA.portable.ObjectImpl impl = ((org.omg.CORBA.portable.ObjectImpl) msg.getNewValue());
@@ -356,19 +360,37 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 				if (corbaType != null && corbaType.isInstance(msg.getNewValue())) {
 					setObj(corbaType.cast(msg.getNewValue()));
 				} else {
+					if (this instanceof ScaDomainManagerImpl) {
+						System.out.println("\tUnsetting Obj");
+					}
 					unsetObj();
 				}
 				setIor(ior);
+				if (this instanceof ScaDomainManagerImpl) {
+					System.out.println("\t!!!!Clearing All Status");
+				}
 				clearAllStatus();
 				if (msg.getOldValue() instanceof org.omg.CORBA.Object) {
 					CorbaUtils.release((org.omg.CORBA.Object) msg.getOldValue());
 				}
 				break;
 			case ScaPackage.CORBA_OBJ_WRAPPER__OBJ:
-				clearAllStatus();
+				if (this instanceof ScaDomainManagerImpl) {
+					System.out.println("Notification of setObject is null: " + (msg.getNewValue() == null));
+				}
 				if (msg.getNewValue() != null) {
+					if (this instanceof ScaDomainManagerImpl) {
+					System.out.println("Does the object exist? " + this.exists());
+					}
+					clearAllStatus();
+					if (this instanceof ScaDomainManagerImpl) {
+						System.out.println("\t!!!!Attaching Data Providers");
+					}
 					attachDataProviders();
 				} else {
+					if (this instanceof ScaDomainManagerImpl) {
+						System.out.println("\tRemoving Data Providers");
+					}
 					detachDataProviders();
 				}
 				break;

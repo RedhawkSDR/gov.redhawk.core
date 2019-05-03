@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.EObject;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.impl.ScaDomainManagerImpl;
 import gov.redhawk.model.sca.services.AbstractDataProvider;
 import gov.redhawk.sca.model.provider.refresh.RefreshProviderPlugin;
 
@@ -64,6 +65,7 @@ public class RefreshTasker extends AbstractDataProvider {
 	 */
 	private long lastDelay = 0;
 	private boolean firstImmediateSchedule = true;
+	private final boolean isDomMgr;
 
 	/**
 	 * Handles the target object being disposed, or its CORBA object / profile URI changing
@@ -83,6 +85,9 @@ public class RefreshTasker extends AbstractDataProvider {
 	};
 
 	private void addListeners() {
+		if (isDomMgr) {
+			System.out.println("RefreshTasker[" + RefreshTasker.this.hashCode() + "] adding listener!");
+		}
 		ScaModelCommand.execute(objectToRefresh, new ScaModelCommand() {
 			@Override
 			public void execute() {
@@ -92,6 +97,9 @@ public class RefreshTasker extends AbstractDataProvider {
 	}
 
 	private void removeListeners() {
+		if (isDomMgr) {
+			System.out.println("RefreshTasker[" + RefreshTasker.this.hashCode() + "] removing listener!");
+		}
 		ScaModelCommand.execute(objectToRefresh, new ScaModelCommand() {
 			@Override
 			public void execute() {
@@ -103,12 +111,19 @@ public class RefreshTasker extends AbstractDataProvider {
 	public RefreshTasker(EObject objectToRefresh, IRefresher refresher) {
 		this.objectToRefresh = objectToRefresh;
 		this.refresher = refresher;
+		this.isDomMgr = objectToRefresh instanceof ScaDomainManager;
 		addListeners();
 		schedule(RefreshProviderPlugin.getRefreshInterval());
+		if (isDomMgr) {
+			System.out.println("Created RefreshTasker for " + ((gov.redhawk.model.sca.impl.ScaDomainManagerImpl)objectToRefresh).getName());
+		}
 	}
 
 	@Override
 	public void dispose() {
+		if (this.isDomMgr) {
+			System.out.println("RefreshTasker[" + RefreshTasker.this.hashCode() + "] being disposed!");
+		}
 		removeListeners();
 		super.dispose();
 	}
@@ -131,8 +146,14 @@ public class RefreshTasker extends AbstractDataProvider {
 			this.firstImmediateSchedule = false;
 			return;
 		}
-		if (!isEnabled()) { // TODO: Handle the "active" stuff
+		if (!isEnabled() && !this.isDomMgr) { // TODO: Handle the "active" stuff
+			if (this.isDomMgr) {
+				System.out.println("RefreshTasker[" + RefreshTasker.this.hashCode() + "] bailing schedule, not enabled");
+			}
 			return;
+		}
+		if (this.isDomMgr) {
+			System.out.println("RefreshTasker[" + RefreshTasker.this.hashCode() + "] scheduling for " + this.scheduledRefresh + " (" + delay + ")");
 		}
 
 		// If a refresh is already scheduled
@@ -161,6 +182,9 @@ public class RefreshTasker extends AbstractDataProvider {
 			// Make sure we're still scheduled to run
 			synchronized (this) {
 				if (doRefresh != this || !isEnabled()) {
+					if (RefreshTasker.this.isDomMgr) {
+						System.out.println("RefreshTasker[" + RefreshTasker.this.hashCode() + "] not running[" + isEnabled() + "] ref: " + (this != doRefresh));
+					}
 					return;
 				}
 			}
@@ -184,6 +208,9 @@ public class RefreshTasker extends AbstractDataProvider {
 			IStatus refreshStatus = null;
 			Throwable refreshThrowable = null;
 			try {
+				if (isDomMgr) {
+					System.out.println("\n");
+				}
 				refreshStatus = refresh(monitor);
 			} catch (OperationCanceledException e) {
 				refreshStatus = Status.CANCEL_STATUS;
@@ -218,7 +245,8 @@ public class RefreshTasker extends AbstractDataProvider {
 				}
 			} finally {
 				// Reschedule
-				if (objectToRefresh instanceof ScaDomainManager) {
+				if (isDomMgr) {
+					System.out.println("Rescheduling in RefreshTasker after refresh");
 					backOff = false;
 				}
 				reschedule(backOff);
@@ -231,6 +259,8 @@ public class RefreshTasker extends AbstractDataProvider {
 		if (refresher.canRefresh()) {
 			if (this.isEnabled()) {
 				refresher.refresh(monitor);
+			} else if (this.isDomMgr) {
+				System.out.println("RefreshTasker[" + RefreshTasker.this.hashCode() + "] not enabled for refresh!");
 			}
 			return (monitor.isCanceled()) ? Status.CANCEL_STATUS : Status.OK_STATUS;
 		} else {
@@ -240,6 +270,9 @@ public class RefreshTasker extends AbstractDataProvider {
 
 	@Override
 	public void setEnabled(boolean enabled) {
+		if (this.isDomMgr) {
+			System.out.println("RefreshTasker[" + RefreshTasker.this.hashCode() + "] enable set to: " + enabled);
+		}
 		boolean oldEnabled = isEnabled();
 		super.setEnabled(enabled);
 
@@ -251,12 +284,15 @@ public class RefreshTasker extends AbstractDataProvider {
 
 	@Override
 	public void reEnable() {
+		if (this.isDomMgr) {
+			System.out.println("RefreshTasker[" + RefreshTasker.this.hashCode() + "] being re-enabled");
+		}
 		// Explicitly don't schedule now. This is used by the refresh methods, no need to refresh
 		// while we're already refreshing.
 		super.setEnabled(true);
 
 		// Make sure that the periodic refresh is scheduled. If it gets disabled for some reason,
-		// a manual refresh of the model object should reschedule the it.
+		// a manual refresh of the model object should reschedule it.
 		reschedule(false);
 	}
 
@@ -266,8 +302,14 @@ public class RefreshTasker extends AbstractDataProvider {
 	 * next refresh.
 	 */
 	private synchronized void reschedule(boolean backOff) {
-		this.scheduledRefresh = null;
-		this.doRefresh = null;
+		if (this.scheduledRefresh != null) {
+			if (isDomMgr) {
+				System.out.println("Cancelling previous scheduled refresh");
+			}
+			this.scheduledRefresh.cancel(false);
+			this.scheduledRefresh = null;
+			this.doRefresh = null;
+		}
 		final long REFRESH_DELAY = RefreshProviderPlugin.getRefreshInterval();
 		if (backOff) {
 			// We'll reschedule for the previous delay + delay (i.e. normal_delay, normal_delay*2, normal_delay*3). We
