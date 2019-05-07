@@ -179,6 +179,9 @@ public class RefreshTasker extends AbstractDataProvider {
 
 		@Override
 		public void run() {
+			if (isDomMgr) {
+				System.out.println("\n\n\n");
+			}
 			// Make sure we're still scheduled to run
 			synchronized (this) {
 				if (doRefresh != this || !isEnabled()) {
@@ -208,9 +211,6 @@ public class RefreshTasker extends AbstractDataProvider {
 			IStatus refreshStatus = null;
 			Throwable refreshThrowable = null;
 			try {
-				if (isDomMgr) {
-					System.out.println("\n");
-				}
 				refreshStatus = refresh(monitor);
 			} catch (OperationCanceledException e) {
 				refreshStatus = Status.CANCEL_STATUS;
@@ -271,7 +271,7 @@ public class RefreshTasker extends AbstractDataProvider {
 	@Override
 	public void setEnabled(boolean enabled) {
 		if (this.isDomMgr) {
-			System.out.println("RefreshTasker[" + RefreshTasker.this.hashCode() + "] enable set to: " + enabled);
+			System.out.println("RefreshTasker[" + RefreshTasker.this.hashCode() + "] enable being set to: " + enabled);
 		}
 		boolean oldEnabled = isEnabled();
 		super.setEnabled(enabled);

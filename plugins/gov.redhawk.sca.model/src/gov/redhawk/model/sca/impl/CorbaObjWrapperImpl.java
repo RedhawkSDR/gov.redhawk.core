@@ -366,10 +366,12 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 					unsetObj();
 				}
 				setIor(ior);
-				if (this instanceof ScaDomainManagerImpl) {
-					System.out.println("\t!!!!Clearing All Status");
+				if (this.exists()) {
+					if (this instanceof ScaDomainManagerImpl) {
+						System.out.println("\t!!!!Clearing All Status");
+					}
+					clearAllStatus();
 				}
-				clearAllStatus();
 				if (msg.getOldValue() instanceof org.omg.CORBA.Object) {
 					CorbaUtils.release((org.omg.CORBA.Object) msg.getOldValue());
 				}
@@ -382,7 +384,9 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 					if (this instanceof ScaDomainManagerImpl) {
 					System.out.println("Does the object exist? " + this.exists());
 					}
-					clearAllStatus();
+					if (this.exists()) {
+						clearAllStatus();
+					}
 					if (this instanceof ScaDomainManagerImpl) {
 						System.out.println("\t!!!!Attaching Data Providers");
 					}
