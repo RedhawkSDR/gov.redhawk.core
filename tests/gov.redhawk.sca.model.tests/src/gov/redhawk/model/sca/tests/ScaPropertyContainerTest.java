@@ -495,7 +495,7 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 		// BEGIN GENERATED CODE
 	}
 
-	public void testRefreshPropertyContainerNeverChagnes() throws InterruptedException {
+	public void testRefreshPropertyContainerNeverChanges() throws InterruptedException {
 		Object[] propertyArray = getFixture().getProperties().toArray();
 		super.testRefresh__IProgressMonitor_RefreshDepth();
 		for (Object obj : propertyArray) {

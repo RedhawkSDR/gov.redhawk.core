@@ -348,25 +348,26 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		if (!msg.isTouch()) {
 			switch (msg.getFeatureID(CorbaObjWrapper.class)) {
 			case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
+				Object newVal = msg.getNewValue();
 				if (this instanceof ScaDomainManagerImpl) {
-					System.out.println("Notification of setCorbaObj is null: " + (msg.getNewValue() == null));
+					System.out.println("Notification of setCorbaObj is null: " + (newVal == null));
 				}
 				String ior = null;
-				if (msg.getNewValue() instanceof org.omg.CORBA.portable.ObjectImpl) {
-					org.omg.CORBA.portable.ObjectImpl impl = ((org.omg.CORBA.portable.ObjectImpl) msg.getNewValue());
+				if (newVal instanceof org.omg.CORBA.portable.ObjectImpl) {
+					org.omg.CORBA.portable.ObjectImpl impl = ((org.omg.CORBA.portable.ObjectImpl) newVal);
 					ior = impl._orb().object_to_string(impl);
 				}
 				Class< ? extends T> corbaType = getCorbaType();
-				if (corbaType != null && corbaType.isInstance(msg.getNewValue())) {
-					setObj(corbaType.cast(msg.getNewValue()));
-				} else {
+				if (corbaType != null && corbaType.isInstance(newVal)) {
+					setObj(corbaType.cast(newVal));
+				} else if (isSetObj()){
 					if (this instanceof ScaDomainManagerImpl) {
 						System.out.println("\tUnsetting Obj");
 					}
 					unsetObj();
 				}
 				setIor(ior);
-				if (this.exists()) {
+				if ((newVal != null) && this.exists()) {
 					if (this instanceof ScaDomainManagerImpl) {
 						System.out.println("\t!!!!Clearing All Status");
 					}
