@@ -2230,6 +2230,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		}
 		if (!tmpExists && getObj() != null) {
 			System.out.println("Unable to keep " + this.getName() + " alive");
+			lostNarrowedObject = true;
 			Transaction transaction = keepAliveFeature.createTransaction();
 			transaction.addCommand(new ScaModelCommand() {
 
@@ -2239,6 +2240,10 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 				}
 			});
 			transaction.commit();
+		} else if (tmpExists && lostNarrowedObject) {
+			System.out.println("KeepAlive found the object");
+			lostNarrowedObject = false;
+			doChildRefresh = true;
 		}
 		if (shouldProceed != null && shouldProceed) {
 			try {

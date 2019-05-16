@@ -96,8 +96,15 @@ public class RefreshTasker extends AbstractDataProvider {
 				CorbaObjWrapper oldObj = (CorbaObjWrapper) msg.getNewValue();
 				CorbaObjWrapper newObj = (CorbaObjWrapper) msg.getNewValue();
 				if ((newObj == null && oldObj != null) || (newObj != null && !newObj.exists())) {
+					if (isDomMgr) {
+						System.out.println("\tRefreshTasker[" + RefreshTasker.this.hashCode() + "] lost narrowed object!");
+					}
+					
 					lostNarrowedObject  = true;
 				} else if (newObj != null && lostNarrowedObject) {
+					if (isDomMgr) {
+						System.out.println("\tRefreshTasker[" + RefreshTasker.this.hashCode() + "] narrowed object came back!");
+					}
 					doChildRefresh  = true;
 					lostNarrowedObject = false;
 				}

@@ -23,7 +23,6 @@ import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 import gov.redhawk.model.sca.services.IScaDataProvider;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -341,6 +340,8 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	}
 
 	private Map<String, Boolean> isAMap = Collections.synchronizedMap(new HashMap<String, Boolean>());
+	protected boolean lostNarrowedObject;
+	protected boolean doChildRefresh;
 
 	/**
 	 * @since 14.0
@@ -481,6 +482,19 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 			}
 			try {
 				T newObj = narrow(localCorbaObj);
+				if (newObj != null && !this.exists()) {
+					if (!lostNarrowedObject && this instanceof ScaDomainManagerImpl) {
+						System.out.println("\tLost narrowed object!");
+					}
+					
+					lostNarrowedObject  = true;
+				} else if (newObj != null && lostNarrowedObject) {
+					if (this instanceof ScaDomainManagerImpl) {
+						System.out.println("\tNarrowed object came back!");
+					}
+					doChildRefresh  = true;
+					lostNarrowedObject = false;
+				}
 				transaction.addCommand(new SetLocalAttributeCommand(this, newObj, ScaPackage.Literals.CORBA_OBJ_WRAPPER__OBJ));
 			} catch (final SystemException e) {
 				IStatus status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to narrow corba object.", e);
@@ -733,6 +747,10 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 				provider.setEnabled(false);
 			}
 			fetchAttributes(subMonitor.split(20));
+			if (doChildRefresh) {
+				doChildRefresh = false;
+				depth = (depth == RefreshDepth.FULL) ? RefreshDepth.FULL : RefreshDepth.CHILDREN;
+			}
 			switch (depth) {
 			case CHILDREN:
 			case FULL:
