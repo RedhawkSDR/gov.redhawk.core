@@ -24,6 +24,8 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 
+import gov.redhawk.model.sca.CorbaObjWrapper;
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
@@ -65,18 +67,40 @@ public class RefreshTasker extends AbstractDataProvider {
 	 */
 	private long lastDelay = 0;
 	private boolean firstImmediateSchedule = true;
+	protected boolean doChildRefresh = false;
+
 	private final boolean isDomMgr;
 
 	/**
 	 * Handles the target object being disposed, or its CORBA object / profile URI changing
 	 */
 	private final Adapter objectToRefreshListener = new AdapterImpl() {
+		private boolean lostNarrowedObject = false;
+
 		@Override
 		public void notifyChanged(final org.eclipse.emf.common.notify.Notification msg) {
 			Object feature = msg.getFeature();
+			if (feature == ScaPackage.Literals.DATA_PROVIDER_OBJECT__DATA_PROVIDERS) {
+				if (msg.getOldValue() == RefreshTasker.this && msg.getNewValue() == null) {
+					// Cancel the scheduled refresh
+					if (RefreshTasker.this.scheduledRefresh != null) {
+						RefreshTasker.this.scheduledRefresh.cancel(false);
+						RefreshTasker.this.doRefresh = null;
+						RefreshTasker.this.scheduledRefresh = null;
+					}
+				}
+			}
 			if (feature == ScaPackage.Literals.IDISPOSABLE__DISPOSED && msg.getNewBooleanValue()) {
 				dispose();
 			} else if (feature == ScaPackage.Literals.CORBA_OBJ_WRAPPER__CORBA_OBJ && !msg.isTouch()) {
+				CorbaObjWrapper oldObj = (CorbaObjWrapper) msg.getNewValue();
+				CorbaObjWrapper newObj = (CorbaObjWrapper) msg.getNewValue();
+				if ((newObj == null && oldObj != null) || (newObj != null && !newObj.exists())) {
+					lostNarrowedObject  = true;
+				} else if (newObj != null && lostNarrowedObject) {
+					doChildRefresh  = true;
+					lostNarrowedObject = false;
+				}
 				schedule(0);
 			} else if ((feature == ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI) && !msg.isTouch()) {
 				schedule(0);
@@ -256,9 +280,17 @@ public class RefreshTasker extends AbstractDataProvider {
 
 	@Override
 	public IStatus refresh(IProgressMonitor monitor) {
-		if (refresher.canRefresh()) {
+		if (this.refresher.canRefresh()) {
 			if (this.isEnabled()) {
-				refresher.refresh(monitor);
+				if (this.doChildRefresh) {
+					if (this.isDomMgr) {
+						System.out.println("\tRefreshTasker[" + RefreshTasker.this.hashCode() + "] Refreshing children!");
+					}
+					this.refresher.refresh(monitor, RefreshDepth.CHILDREN);
+					this.doChildRefresh = false;
+				} else {
+					this.refresher.refresh(monitor);
+				}
 			} else if (this.isDomMgr) {
 				System.out.println("RefreshTasker[" + RefreshTasker.this.hashCode() + "] not enabled for refresh!");
 			}

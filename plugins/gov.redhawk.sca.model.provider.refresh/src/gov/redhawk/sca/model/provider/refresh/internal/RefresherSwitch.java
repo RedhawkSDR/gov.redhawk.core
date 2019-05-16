@@ -81,8 +81,13 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 
 			@Override
 			public void refresh(final IProgressMonitor monitor) {
+				refresh(monitor, depth);
+			}
+
+			@Override
+			public void refresh(final IProgressMonitor monitor, RefreshDepth refreshDepth) {
 				try {
-					refreshable.refresh(monitor, depth);
+					refreshable.refresh(monitor, refreshDepth);
 				} catch (final InterruptedException e) {
 					// PASS
 				}
@@ -101,8 +106,13 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 
 			@Override
 			public void refresh(final IProgressMonitor monitor) {
+				refresh(monitor, depth);
+			}
+
+			@Override
+			public void refresh(final IProgressMonitor monitor, RefreshDepth refreshDepth) {
 				try {
-					refreshable.refresh(monitor, depth);
+					refreshable.refresh(monitor, refreshDepth);
 				} catch (final InterruptedException e) {
 					// PASS
 				}

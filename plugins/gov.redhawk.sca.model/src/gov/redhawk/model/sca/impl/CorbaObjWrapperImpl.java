@@ -239,6 +239,9 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 */
 	@Override
 	public void setObj(T newObj) {
+		if (obj == null && this instanceof ScaDomainManagerImpl) {
+			System.out.println("\tSetting Obj");
+		}
 		T oldObj = obj;
 		obj = newObj;
 		boolean oldObjESet = objESet;
