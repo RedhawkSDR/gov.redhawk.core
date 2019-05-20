@@ -2244,6 +2244,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			System.out.println("KeepAlive found the object");
 			lostNarrowedObject = false;
 			doChildRefresh = true;
+		} else {
+			System.out.println("!!!!What happened?: " + tmpExists + " getObj(): " + (getObj() == null) + " lost: " + lostNarrowedObject);
 		}
 		if (shouldProceed != null && shouldProceed) {
 			try {
