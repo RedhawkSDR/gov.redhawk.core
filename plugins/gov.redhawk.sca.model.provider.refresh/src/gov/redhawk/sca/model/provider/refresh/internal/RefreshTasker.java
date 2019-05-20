@@ -92,8 +92,8 @@ public class RefreshTasker extends AbstractDataProvider {
 			}
 			if (feature == ScaPackage.Literals.IDISPOSABLE__DISPOSED && msg.getNewBooleanValue()) {
 				dispose();
-			} else if (feature == ScaPackage.Literals.CORBA_OBJ_WRAPPER__CORBA_OBJ && !msg.isTouch()) {
-				CorbaObjWrapper oldObj = (CorbaObjWrapper) msg.getNewValue();
+			} else if (feature == ScaPackage.Literals.CORBA_OBJ_WRAPPER__OBJ && !msg.isTouch()) {
+				Object oldObj = msg.getNewValue();
 				CorbaObjWrapper newObj = (CorbaObjWrapper) msg.getNewValue();
 				if ((newObj == null && oldObj != null) || (newObj != null && !newObj.exists())) {
 					if (isDomMgr) {
@@ -108,6 +108,7 @@ public class RefreshTasker extends AbstractDataProvider {
 					doChildRefresh  = true;
 					lostNarrowedObject = false;
 				}
+			} else if (feature == ScaPackage.Literals.CORBA_OBJ_WRAPPER__CORBA_OBJ && !msg.isTouch()) {
 				schedule(0);
 			} else if ((feature == ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI) && !msg.isTouch()) {
 				schedule(0);
