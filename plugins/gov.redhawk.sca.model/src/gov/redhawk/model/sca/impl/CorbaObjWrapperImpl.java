@@ -484,13 +484,13 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 				T newObj = narrow(localCorbaObj);
 				if (newObj != null && !this.exists()) {
 					if (!lostNarrowedObject && this instanceof ScaDomainManagerImpl) {
-						System.out.println("\tLost narrowed object!");
+						System.out.println("\t-----Lost narrowed object!");
 					}
 					
 					lostNarrowedObject  = true;
 				} else if (newObj != null && lostNarrowedObject) {
 					if (this instanceof ScaDomainManagerImpl) {
-						System.out.println("\tNarrowed object came back!");
+						System.out.println("\t-----Narrowed object came back!");
 					}
 					doChildRefresh  = true;
 					lostNarrowedObject = false;
@@ -748,6 +748,9 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 			}
 			fetchAttributes(subMonitor.split(20));
 			if (doChildRefresh) {
+				if (this instanceof ScaDomainManagerImpl) {
+					System.out.println("\t-----Switching depth to CHILDREN!");
+				}
 				doChildRefresh = false;
 				depth = (depth == RefreshDepth.FULL) ? RefreshDepth.FULL : RefreshDepth.CHILDREN;
 			}
