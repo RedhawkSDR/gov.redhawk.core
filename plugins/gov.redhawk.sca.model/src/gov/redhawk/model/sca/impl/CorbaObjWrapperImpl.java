@@ -36,6 +36,7 @@ import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
@@ -171,6 +172,22 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		return ScaPackage.Literals.CORBA_OBJ_WRAPPER;
 	}
 
+	// END GENERATED CODE
+	/**
+	 * @since 24.0
+	 */
+	protected static final boolean DEBUG_REFRESH = "true".equalsIgnoreCase(Platform.getDebugOption(ScaModelPlugin.ID + "/debug/domainRefresh"));
+	/**
+	 * @since 24.0
+	 */
+	protected boolean lostNarrowedObject;
+	/**
+	 * @since 24.0
+	 */
+	protected boolean doChildRefresh;
+
+	// BEGIN GENERATED CODE
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -238,9 +255,6 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 */
 	@Override
 	public void setObj(T newObj) {
-		if (obj == null && this instanceof ScaDomainManagerImpl) {
-			System.out.println("\tSetting Obj");
-		}
 		T oldObj = obj;
 		obj = newObj;
 		boolean oldObjESet = objESet;
@@ -340,8 +354,6 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	}
 
 	private Map<String, Boolean> isAMap = Collections.synchronizedMap(new HashMap<String, Boolean>());
-	protected boolean lostNarrowedObject;
-	protected boolean doChildRefresh;
 
 	/**
 	 * @since 14.0
@@ -353,8 +365,8 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 			switch (msg.getFeatureID(CorbaObjWrapper.class)) {
 			case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
 				Object newVal = msg.getNewValue();
-				if (this instanceof ScaDomainManagerImpl) {
-					System.out.println("Notification of setCorbaObj is null: " + (newVal == null));
+				if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+					ScaModelPlugin.logInfo("Notification of setCorbaObj is null: " + (newVal == null));
 				}
 				String ior = null;
 				if (newVal instanceof org.omg.CORBA.portable.ObjectImpl) {
@@ -365,15 +377,15 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 				if (corbaType != null && corbaType.isInstance(newVal)) {
 					setObj(corbaType.cast(newVal));
 				} else if (isSetObj()){
-					if (this instanceof ScaDomainManagerImpl) {
-						System.out.println("\tUnsetting Obj");
+					if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+						ScaModelPlugin.logInfo("\tUnsetting Obj");
 					}
 					unsetObj();
 				}
 				setIor(ior);
 				if ((newVal != null) && this.exists()) {
-					if (this instanceof ScaDomainManagerImpl) {
-						System.out.println("\t!!!!Clearing All Status");
+					if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+						ScaModelPlugin.logInfo("\t!!!!Clearing All Status");
 					}
 					clearAllStatus();
 				}
@@ -382,23 +394,23 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 				}
 				break;
 			case ScaPackage.CORBA_OBJ_WRAPPER__OBJ:
-				if (this instanceof ScaDomainManagerImpl) {
-					System.out.println("Notification of setObject is null: " + (msg.getNewValue() == null));
+				if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+					ScaModelPlugin.logInfo("Notification of setObject is null: " + (msg.getNewValue() == null));
 				}
 				if (msg.getNewValue() != null) {
-					if (this instanceof ScaDomainManagerImpl) {
-					System.out.println("Does the object exist? " + this.exists());
+					if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+						ScaModelPlugin.logInfo("Does the object exist? " + this.exists());
 					}
 					if (this.exists()) {
 						clearAllStatus();
 					}
-					if (this instanceof ScaDomainManagerImpl) {
-						System.out.println("\t!!!!Attaching Data Providers");
+					if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+						ScaModelPlugin.logInfo("\t!!!!Attaching Data Providers");
 					}
 					attachDataProviders();
 				} else {
-					if (this instanceof ScaDomainManagerImpl) {
-						System.out.println("\tRemoving Data Providers");
+					if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+						ScaModelPlugin.logInfo("\tRemoving Data Providers");
 					}
 					detachDataProviders();
 				}
@@ -483,14 +495,14 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 			try {
 				T newObj = narrow(localCorbaObj);
 				if (newObj != null && !this.exists()) {
-					if (!lostNarrowedObject && this instanceof ScaDomainManagerImpl) {
-						System.out.println("\t-----Lost narrowed object!");
+					if (DEBUG_REFRESH && !lostNarrowedObject && this instanceof ScaDomainManagerImpl) {
+						ScaModelPlugin.logInfo("\t-----Lost narrowed object!");
 					}
 					
 					lostNarrowedObject  = true;
 				} else if (newObj != null && lostNarrowedObject) {
-					if (this instanceof ScaDomainManagerImpl) {
-						System.out.println("\t-----Narrowed object came back!");
+					if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+						ScaModelPlugin.logInfo("\t-----Narrowed object came back!");
 					}
 					doChildRefresh  = true;
 					lostNarrowedObject = false;
@@ -748,8 +760,8 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 			}
 			fetchAttributes(subMonitor.split(20));
 			if (doChildRefresh) {
-				if (this instanceof ScaDomainManagerImpl) {
-					System.out.println("\t-----Switching depth to CHILDREN!");
+				if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+					ScaModelPlugin.logInfo("\t-----Switching depth to CHILDREN!");
 				}
 				doChildRefresh = false;
 				depth = (depth == RefreshDepth.FULL) ? RefreshDepth.FULL : RefreshDepth.CHILDREN;

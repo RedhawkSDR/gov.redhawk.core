@@ -122,11 +122,6 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 					} else if ((oldVal != null) && oldVal.isOK()) {
 						disconnectAsync();
 					}
-//					if (!newVal.isOK()) {
-//						disconnectAsync();
-//					} else if (ScaDomainManagerEventServiceDataProvider.this.getContainer().getObj() != null) {
-//						connectAsync();
-//					}
 				}
 			}
 		}
@@ -153,8 +148,6 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 
 	@Override
 	public void dispose() {
-		System.out.println("SDMESDP being disposed!");
-
 		DataProviderActivator.getInstance().getPreferenceAccessor().removePreferenceChangeListener(this.dataProviderPreferenceChangeListener);
 
 		ScaModelCommand.execute(getContainer(), () -> {
@@ -173,7 +166,6 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 	protected void connectAsync() {
 		// Don't connect if the domain manager isn't connected or if we're not enabled
 		if (!getContainer().isConnected() || !isEnabled()) {
-			System.out.println("Not connecting, enabled: " + isEnabled() + "   Container is connected: " + getContainer().isConnected());
 			if (DEBUG) {
 				IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Not connecting - enabled: " + isEnabled() + ", connected: " + getContainer().isConnected());
 				DataProviderActivator.getInstance().getLog().log(status);
@@ -185,13 +177,15 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Connecting to event channel on " + getContainer().getName());
 			DataProviderActivator.getInstance().getLog().log(status);
 		}
-		System.out.println("Connecting to event channel on " + getContainer().getName());
 		super.connectAsync();
 	}
 	
 	@Override
 	protected void disconnectAsync() {
-		System.out.println("Disconnecting event channels for " + getContainer().getName());
+		if (DEBUG) {
+			IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Disconnecting event channels for " + getContainer().getName());
+			DataProviderActivator.getInstance().getLog().log(status);
+		}
 		super.disconnectAsync();
 	}
 

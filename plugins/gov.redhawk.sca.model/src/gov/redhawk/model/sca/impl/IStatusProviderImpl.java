@@ -174,9 +174,6 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	 */
 	@Override
 	public void clearAllStatus() {
-		if (this instanceof gov.redhawk.model.sca.impl.ScaDomainManagerImpl) {
-			System.out.println("clearAllStatus() called!");
-		}
 		// END GENERATED CODE
 		IStatus oldStatus = getStatus();
 		objectStatusMap.clear();
