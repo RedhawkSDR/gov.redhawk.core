@@ -93,7 +93,6 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 			this.domMgr = domain.fetchNarrowedObject(null);
 			if (this.domMgr == null) {
 				IStatus status = new Status(IStatus.ERROR, DataProviderActivator.ID, "The " + domain.getName() + " Domain Manager appears to be down");
-				new Exception().printStackTrace();
 				throw new CoreException(status);
 			}
 			this.id = UUID.randomUUID();
