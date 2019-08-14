@@ -510,7 +510,7 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 			EventChannelManager ecm = getFixture().eventChannelMgr();
 			objsToRelease.add(ecm);
 			EventChannel newChannel = ecm.create(CHAN_NAME);
-			objsToRelease.add(ecm);
+			objsToRelease.add(newChannel);
 			String ior = newChannel.toString();
 
 			// Fetch event channels again

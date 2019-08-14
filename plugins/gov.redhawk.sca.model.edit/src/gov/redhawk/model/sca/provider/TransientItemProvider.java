@@ -42,8 +42,7 @@ public class TransientItemProvider extends ItemProviderAdapter implements IEditi
 
 	@Override
 	public boolean hasChildren(Object object) {
-		boolean retVal = super.hasChildren(target);
-		return retVal;
+		return target != null && super.hasChildren(target);
 	}
 
 	@Override
@@ -87,12 +86,7 @@ public class TransientItemProvider extends ItemProviderAdapter implements IEditi
 
 	@Override
 	public Collection< ? > getChildren(Object object) {
-		return super.getChildren(target);
-	}
-
-	@Override
-	public Collection< ? > getElements(Object object) {
-		return super.getElements(target);
+		return (target == null) ? Collections.emptyList() : super.getChildren(target);
 	}
 
 	@Override

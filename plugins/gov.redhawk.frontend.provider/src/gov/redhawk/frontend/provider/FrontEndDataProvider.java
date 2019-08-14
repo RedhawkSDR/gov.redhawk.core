@@ -19,6 +19,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
@@ -45,6 +47,7 @@ import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.services.AbstractDataProvider;
+import gov.redhawk.sca.model.preferences.ScaModelPreferenceContants;
 import mil.jpeojtrs.sca.scd.Interface;
 import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.spd.SpdPackage;
@@ -63,6 +66,24 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 
 	private final ScaDevice< ? > device;
 	private boolean supportsFei = false;
+
+	private final IPreferenceChangeListener dataProviderPreferenceChangeListener = new IPreferenceChangeListener() {
+
+		@Override
+		public void preferenceChange(final PreferenceChangeEvent event) {
+			if (event.getKey().equals(ScaModelPreferenceContants.DISABLED_DATA_PROVIDERS)) {
+				String disabledProviders = (String) event.getNewValue();
+				if (disabledProviders != null && disabledProviders.contains(FrontEndDataActivator.ID)
+						&& FrontEndDataProvider.this.isEnabled()) {
+					FrontEndDataProvider.this.disable(true);
+				} else if (!FrontEndDataProvider.this.isEnabled()
+						&& (disabledProviders == null || !disabledProviders.contains(FrontEndDataActivator.ID))) {
+					FrontEndDataProvider.this.disable(false);
+				}
+			}
+		}
+
+	};
 
 	private Adapter tunerAdapter = new AdapterImpl() {
 
@@ -216,6 +237,9 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 
 	public FrontEndDataProvider(ScaDevice< ? > device) {
 		this.device = device;
+		FrontEndDataActivator.getInstance().getPreferenceAccessor().addPreferenceChangeListener(this.dataProviderPreferenceChangeListener);
+		super.setEnabled(true);
+		this.fetchAndPopulate.schedule();
 	}
 
 	/**
@@ -227,6 +251,7 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 
 	@Override
 	public void dispose() {
+		FrontEndDataActivator.getInstance().getPreferenceAccessor().removePreferenceChangeListener(this.dataProviderPreferenceChangeListener);
 		if (!device.isDisposed()) {
 			ScaModelCommand.execute(device, new ScaModelCommand() {
 
@@ -255,8 +280,22 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 
 	@Override
 	public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
-		if (enabled) {
+		// PASS
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@Override
+	public void reEnable() {
+		// PASS - We already listen to the provider getting enabled/disabled
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	public void disable(boolean disable) {
+		if (!disable) {
 			fetchAndPopulate.schedule();
 		} else {
 			ScaModelCommand.execute(device, new ScaModelCommand() {
@@ -268,6 +307,7 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 				}
 			});
 		}
+		super.setEnabled(!disable);
 	}
 
 	private boolean calculateSupport() {

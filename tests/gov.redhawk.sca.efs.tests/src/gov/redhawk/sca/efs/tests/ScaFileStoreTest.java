@@ -111,9 +111,15 @@ public class ScaFileStoreTest {
 	 */
 	@Test
 	public void testFetchInfoIntIProgressMonitor() {
+		try {
+			// Ensure the cache expires
+			Thread.sleep(5001);
+		} catch (InterruptedException e) {
+			// PASS
+		}
 		final IFileInfo info = this.rootFileStore.fetchInfo();
-		Assert.assertEquals(ScaFileStoreTest.session.getRootFile().getName(), info.getName());
 		Assert.assertEquals(ScaFileStoreTest.session.getRootFile().lastModified(), info.getLastModified());
+		Assert.assertEquals(ScaFileStoreTest.session.getRootFile().getName(), info.getName());
 		Assert.assertEquals(ScaFileStoreTest.session.getRootFile().length(), info.getLength());
 		Assert.assertEquals(ScaFileStoreTest.session.getRootFile().isDirectory(), info.isDirectory());
 	}
@@ -160,10 +166,11 @@ public class ScaFileStoreTest {
 	 */
 	@Test
 	public void testOpenInputStreamIntIProgressMonitor() throws Exception {
-		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "test");
+		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "openInTest");
 		FileUtils.touch(this.deleteFile);
-		final IFileStore fileStore = this.rootFileStore.getFileStore(new Path("test"));
+		final IFileStore fileStore = this.rootFileStore.getFileStore(new Path("openInTest"));
 		this.inputStream = fileStore.openInputStream(0, null);
+		this.inputStream.close();
 	}
 
 	/**
@@ -171,18 +178,20 @@ public class ScaFileStoreTest {
 	 */
 	@Test
 	public void testOpenOutputStreamIntIProgressMonitor() throws Exception {
-		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "test");
+		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "openOutTest");
 		FileUtils.touch(this.deleteFile);
-		final IFileStore fileStore = this.rootFileStore.getFileStore(new Path("test"));
-		this.outputStream = fileStore.openOutputStream(0, null);
+		final IFileStore fileStore = this.rootFileStore.getFileStore(new Path("openOutTest"));
+		this.outputStream = fileStore.openOutputStream(EFS.APPEND, null);
+		this.outputStream.close();
 	}
 
 	/**
 	 * Test method for {@link gov.redhawk.efs.sca.internal.ScaFileStore#toURI()}.
 	 */
 	@Test
-	public void testToURI() {
+	public void testToURI() throws Exception {
 		Assert.assertNotNull(this.rootFileStore.toURI());
+		Assert.assertEquals(this.getCorbIorUri(), this.rootFileStore.toURI());
 	}
 
 	/**
@@ -201,9 +210,9 @@ public class ScaFileStoreTest {
 	 */
 	@Test
 	public void testDeleteIntIProgressMonitor() throws Exception {
-		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "test");
+		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "deleteTest");
 		FileUtils.touch(this.deleteFile);
-		final IFileStore child = this.rootFileStore.getChild("test");
+		final IFileStore child = this.rootFileStore.getChild("deleteTest");
 		child.delete(0, null);
 		Assert.assertTrue(!this.deleteFile.exists());
 	}
@@ -214,10 +223,11 @@ public class ScaFileStoreTest {
 	 */
 	@Test
 	public void testMkdirIntIProgressMonitor() throws Exception {
-		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "test");
-		final IFileStore child = this.rootFileStore.getChild("test");
+		this.deleteFile = new File(ScaFileStoreTest.session.getRootFile(), "mkdirTest");
+		final IFileStore child = this.rootFileStore.getChild("mkdirTest");
 		child.mkdir(0, null);
 		Assert.assertTrue(this.deleteFile.exists());
+		this.deleteFile.delete();
 	}
 
 	/**

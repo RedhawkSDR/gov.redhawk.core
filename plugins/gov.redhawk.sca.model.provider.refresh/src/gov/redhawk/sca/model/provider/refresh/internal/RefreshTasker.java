@@ -24,6 +24,9 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 
+import gov.redhawk.model.sca.CorbaObjWrapper;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.services.AbstractDataProvider;
@@ -62,16 +65,41 @@ public class RefreshTasker extends AbstractDataProvider {
 	 * The delay of the last refresh. <b>NOTE: Access synchronization required</b>.
 	 */
 	private long lastDelay = 0;
+	private boolean firstImmediateSchedule = true;
+	protected boolean doChildRefresh = false;
+
+	private final boolean isDomMgr;
 
 	/**
 	 * Handles the target object being disposed, or its CORBA object / profile URI changing
 	 */
 	private final Adapter objectToRefreshListener = new AdapterImpl() {
+		private boolean lostNarrowedObject = false;
+
 		@Override
 		public void notifyChanged(final org.eclipse.emf.common.notify.Notification msg) {
 			Object feature = msg.getFeature();
+			if (feature == ScaPackage.Literals.DATA_PROVIDER_OBJECT__DATA_PROVIDERS) {
+				if (msg.getOldValue() == RefreshTasker.this && msg.getNewValue() == null) {
+					// Cancel the scheduled refresh
+					if (RefreshTasker.this.scheduledRefresh != null) {
+						RefreshTasker.this.scheduledRefresh.cancel(false);
+						RefreshTasker.this.doRefresh = null;
+						RefreshTasker.this.scheduledRefresh = null;
+					}
+				}
+			}
 			if (feature == ScaPackage.Literals.IDISPOSABLE__DISPOSED && msg.getNewBooleanValue()) {
 				dispose();
+			} else if (feature == ScaPackage.Literals.CORBA_OBJ_WRAPPER__OBJ && !msg.isTouch()) {
+				Object oldObj = msg.getNewValue();
+				CorbaObjWrapper newObj = (CorbaObjWrapper) msg.getNewValue();
+				if ((newObj == null && oldObj != null) || (newObj != null && !newObj.exists())) {
+					lostNarrowedObject  = true;
+				} else if (newObj != null && lostNarrowedObject) {
+					doChildRefresh  = true;
+					lostNarrowedObject = false;
+				}
 			} else if (feature == ScaPackage.Literals.CORBA_OBJ_WRAPPER__CORBA_OBJ && !msg.isTouch()) {
 				schedule(0);
 			} else if ((feature == ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI) && !msg.isTouch()) {
@@ -101,6 +129,7 @@ public class RefreshTasker extends AbstractDataProvider {
 	public RefreshTasker(EObject objectToRefresh, IRefresher refresher) {
 		this.objectToRefresh = objectToRefresh;
 		this.refresher = refresher;
+		this.isDomMgr = objectToRefresh instanceof ScaDomainManager;
 		addListeners();
 		schedule(RefreshProviderPlugin.getRefreshInterval());
 	}
@@ -125,7 +154,11 @@ public class RefreshTasker extends AbstractDataProvider {
 		if (delay < 0) {
 			throw new IllegalArgumentException("Delay must be 0 or greater");
 		}
-		if (!isEnabled()) { // TODO: Handle the "active" stuff
+		if (this.firstImmediateSchedule && (delay == 0)) {
+			this.firstImmediateSchedule = false;
+			return;
+		}
+		if (!isEnabled() && !this.isDomMgr) { // TODO: Handle the "active" stuff
 			return;
 		}
 
@@ -168,7 +201,9 @@ public class RefreshTasker extends AbstractDataProvider {
 				if (completed.compareAndSet(false, true)) {
 					monitor.setCanceled(true);
 					String msg = String.format("Refresh timed out after %d milliseconds", REFRESH_TIMEOUT);
-					setStatus(new Status(IStatus.WARNING, RefreshProviderPlugin.PLUGIN_ID, msg));
+					if (!getStatus().getMessage().equals(msg)) {
+						setStatus(new Status(IStatus.WARNING, RefreshProviderPlugin.PLUGIN_ID, msg));
+					}
 				}
 			}, REFRESH_TIMEOUT, TimeUnit.MILLISECONDS);
 
@@ -210,6 +245,9 @@ public class RefreshTasker extends AbstractDataProvider {
 				}
 			} finally {
 				// Reschedule
+				if (isDomMgr) {
+					backOff = false;
+				}
 				reschedule(backOff);
 			}
 		}
@@ -217,8 +255,15 @@ public class RefreshTasker extends AbstractDataProvider {
 
 	@Override
 	public IStatus refresh(IProgressMonitor monitor) {
-		if (refresher.canRefresh()) {
-			refresher.refresh(monitor);
+		if (this.refresher.canRefresh()) {
+			if (this.isEnabled()) {
+				if (this.doChildRefresh) {
+					this.refresher.refresh(monitor, RefreshDepth.CHILDREN);
+					this.doChildRefresh = false;
+				} else {
+					this.refresher.refresh(monitor);
+				}
+			}
 			return (monitor.isCanceled()) ? Status.CANCEL_STATUS : Status.OK_STATUS;
 		} else {
 			return (monitor.isCanceled()) ? Status.CANCEL_STATUS : STATUS_CANNOT_REFRESH;
@@ -236,14 +281,28 @@ public class RefreshTasker extends AbstractDataProvider {
 		}
 	}
 
+	@Override
+	public void reEnable() {
+		// Explicitly don't schedule now. This is used by the refresh methods, no need to refresh
+		// while we're already refreshing.
+		super.setEnabled(true);
+
+		// Make sure that the periodic refresh is scheduled. If it gets disabled for some reason,
+		// a manual refresh of the model object should reschedule it.
+		reschedule(false);
+	}
+
 	/**
 	 * Indicates that a refresh has completed and should be rescheduled.
 	 * @param backoff If true, indicates that the refresh should back off. False to use the default delay before the
 	 * next refresh.
 	 */
 	private synchronized void reschedule(boolean backOff) {
-		this.scheduledRefresh = null;
-		this.doRefresh = null;
+		if (this.scheduledRefresh != null) {
+			this.scheduledRefresh.cancel(false);
+			this.scheduledRefresh = null;
+			this.doRefresh = null;
+		}
 		final long REFRESH_DELAY = RefreshProviderPlugin.getRefreshInterval();
 		if (backOff) {
 			// We'll reschedule for the previous delay + delay (i.e. normal_delay, normal_delay*2, normal_delay*3). We

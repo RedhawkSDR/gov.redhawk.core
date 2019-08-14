@@ -38,9 +38,15 @@ public class BulkIOReceiver extends AbstractUberBulkIOPort {
 	public BulkIOReceiver(final IMidasDataWriter receiver, BulkIOType type, String streamId) {
 		super(type);
 		this.receiver = receiver;
-		this.signed = !type.isUnsigned();
-		this.midasType = type.getMidasType();
 		this.filterStreamId = streamId;
+		if (type != BulkIOType.BIT) {
+			this.signed = !type.isUnsigned();
+			this.midasType = type.getMidasType();
+		} else {
+			// We expand each packed bit into its own byte
+			this.signed = false;
+			this.midasType = 'B';
+		}
 	}
 
 	/**

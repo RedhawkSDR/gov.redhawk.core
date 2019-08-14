@@ -61,18 +61,21 @@ public class ScaDeviceManagerMergeDevicesCommand extends SetStatusCommand<ScaDev
 		super(provider, ScaPackage.Literals.SCA_DEVICE_MANAGER__DEVICES, status);
 		rootDevices = new HashMap<>();
 		childDevices = new HashMap<>();
-		for (Device device : devices) {
-			String ior = device.toString();
-			DeviceData data = getDeviceData(device);
-			try {
-				if (device.compositeDevice() == null) {
+		
+		if (devices != null) {
+			for (Device device : devices) {
+				String ior = device.toString();
+				DeviceData data = getDeviceData(device);
+				try {
+					if (device.compositeDevice() == null) {
+						rootDevices.put(ior, data);
+					} else {
+						childDevices.put(ior, data);
+					}
+				} catch (SystemException e) {
+					// Problem reaching device - assume root
 					rootDevices.put(ior, data);
-				} else {
-					childDevices.put(ior, data);
 				}
-			} catch (SystemException e) {
-				// Problem reaching device - assume root
-				rootDevices.put(ior, data);
 			}
 		}
 	}

@@ -12,6 +12,8 @@ package gov.redhawk.sca.model.provider.refresh.internal;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import gov.redhawk.model.sca.RefreshDepth;
+
 /**
  * Abstracts a refresh operation for a target object.
  */
@@ -29,5 +31,11 @@ public interface IRefresher {
 	 * @param monitor A progress monitor
 	 */
 	public void refresh(IProgressMonitor monitor);
+
+	/**
+	 * Perform a refresh of the target object
+	 * @param monitor A progress monitor
+	 */
+	public void refresh(IProgressMonitor monitor, RefreshDepth depth);
 
 }

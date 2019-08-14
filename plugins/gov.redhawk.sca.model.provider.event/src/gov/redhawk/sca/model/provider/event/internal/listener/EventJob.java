@@ -14,7 +14,6 @@ package gov.redhawk.sca.model.provider.event.internal.listener;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.sca.model.provider.event.AbstractEventChannelDataProvider;
 import gov.redhawk.sca.model.provider.event.DataProviderActivator;
-import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.SilentJob;
 
@@ -27,12 +26,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.NamedThreadFactory;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.SystemException;
@@ -42,7 +43,9 @@ import org.omg.CosEventComm.PushConsumerHelper;
 import org.omg.CosEventComm.PushConsumerOperations;
 import org.omg.CosEventComm.PushConsumerPOATie;
 import org.omg.PortableServer.POA;
+import org.omg.PortableServer.POAPackage.ObjectNotActive;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
+import org.omg.PortableServer.POAPackage.WrongAdapter;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 
 import CF.DomainManager;
@@ -54,6 +57,8 @@ import CF.DomainManagerPackage.NotConnected;
 
 public class EventJob extends SilentJob implements PushConsumerOperations {
 
+	private static final boolean DEBUG = "true".equalsIgnoreCase(Platform.getDebugOption(DataProviderActivator.ID + "/debug"));
+	private static final boolean DEBUG_EVENTS = "true".equalsIgnoreCase(Platform.getDebugOption(DataProviderActivator.ID + "/debug/events"));
 	private static final ExecutorService EXECUTOR_POOL = Executors.newSingleThreadExecutor(new NamedThreadFactory(EventJob.class.getName()));
 
 	public static final String EVENT_DATA_PROVIDER_FAMILY = DataProviderActivator.ID + ".jobFamily";
@@ -75,22 +80,51 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 
 	public EventJob(final String channelName, final AbstractEventChannelDataProvider< ? > dp, final ScaDomainManager domain) throws CoreException {
 		super(channelName + " event queue");
+		setSystem(true);
 		this.channelName = channelName;
 		this.dp = dp;
 
+		if (DEBUG) {
+			IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Creating job: " + getName());
+			DataProviderActivator.getInstance().getLog().log(status);
+		}
+
 		try {
 			this.domMgr = domain.fetchNarrowedObject(null);
-			Assert.isNotNull(this.domMgr, "Domain Manager must not be null");
+			if (this.domMgr == null) {
+				IStatus status = new Status(IStatus.ERROR, DataProviderActivator.ID, "The " + domain.getName() + " Domain Manager appears to be down");
+				throw new CoreException(status);
+			}
 			this.id = UUID.randomUUID();
 
 			POA poa = session.getPOA();
 			this.stub = PushConsumerHelper.narrow(poa.servant_to_reference(new PushConsumerPOATie(this)));
-			this.domMgr.registerWithEventChannel(stub, this.id.toString(), channelName);
+			this.domMgr.registerWithEventChannel(this.stub, this.id.toString(), channelName);
 		} catch (ServantNotActive | WrongPolicy | InvalidObjectReference | InvalidEventChannelName | AlreadyConnected | SystemException e) {
-			throw new CoreException(new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+			IStatus status = new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to register with event channel " + channelName, e);
+			if (DEBUG) {
+				DataProviderActivator.getInstance().getLog().log(status);
+			}
+			if (this.stub != null) {
+				POA poa = session.getPOA();
+				try {
+					poa.deactivate_object(poa.reference_to_id(this.stub));
+				} catch (ObjectNotActive | WrongPolicy | WrongAdapter e1) {
+					// PASS - we did our best
+				}
+				CorbaUtils.release(this.stub);
+				this.stub = null;
+			}
+			if (this.session != null) {
+				this.session.dispose();
+			}
+			throw new CoreException(status);
 		}
 
-		setSystem(true);
+		if (DEBUG) {
+			IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Job ready: " + getName());
+			DataProviderActivator.getInstance().getLog().log(status);
+		}
 	}
 
 	public void addEvent(final Any event) {
@@ -114,19 +148,28 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 
 	@Override
 	protected void canceling() {
+		if (DEBUG) {
+			IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Canceling the EventJob");
+			DataProviderActivator.getInstance().getLog().log(status);
+		}
+
 		super.canceling();
 		this.eventQueue.clear();
-		getThread().interrupt();
+
+		final Thread t = getThread();
+		if (t != null) {
+			t.interrupt();
+		}
 	}
 
 	@Override
 	public boolean shouldRun() {
-		return super.shouldRun() && !this.dp.isDisposed() && !this.disposed;
+		return !this.dp.isDisposed() && !this.disposed;
 	}
 
 	@Override
 	public boolean shouldSchedule() {
-		return super.shouldSchedule() && !this.dp.isDisposed() && !this.disposed;
+		return !this.dp.isDisposed() && !this.disposed;
 	}
 
 	@Override
@@ -135,6 +178,10 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 			return Status.CANCEL_STATUS;
 		}
 		final List<Any> events = drainEvents();
+		if (DEBUG_EVENTS) {
+			IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Processing " + events.size() + " events");
+			DataProviderActivator.getInstance().getLog().log(status);
+		}
 		for (final Any data : events) {
 			if (monitor.isCanceled()) {
 				return Status.CANCEL_STATUS;
@@ -146,11 +193,20 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 
 	@Override
 	public void push(final Any data) throws Disconnected {
+		if (DEBUG_EVENTS) {
+			IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Received event for " + ((this.domMgr != null) ? this.domMgr.identifier() : null));
+			DataProviderActivator.getInstance().getLog().log(status);
+		}
 		addEvent(data);
 	}
 
 	@Override
 	public void disconnect_push_consumer() {
+		if (DEBUG) {
+			IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "disconnect_push_consumer: " + getName());
+			DataProviderActivator.getInstance().getLog().log(status);
+		}
+
 		try {
 			if (!this.dp.isDisposed()) {
 				this.dp.disconnectChannel(this.channelName, null);
@@ -162,6 +218,10 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 
 	public void dispose() {
 		if (!this.disposed) {
+			if (DEBUG) {
+				IStatus status = new Status(IStatus.INFO, DataProviderActivator.ID, "Disposing job: " + getName());
+				DataProviderActivator.getInstance().getLog().log(status);
+			}
 			if (this.domMgr != null) {
 				final DomainManagerOperations localDomMgr = domMgr;
 				this.domMgr = null;
@@ -183,7 +243,15 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 							// PASS
 						} finally {
 							if (localStub != null) {
-								ORBUtil.release(localStub);
+								try {
+									POA poa = localSession.getPOA();
+									poa.deactivate_object(poa.reference_to_id(localStub));
+								} catch (ObjectNotActive | WrongPolicy | WrongAdapter e1) {
+									// PASS - we did our best
+								} catch (CoreException e) {
+									// PASS
+								}
+								CorbaUtils.release(localStub);
 							}
 							if (localSession != null) {
 								localSession.dispose();

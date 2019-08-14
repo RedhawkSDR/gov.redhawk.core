@@ -21,7 +21,7 @@
       <provider
             class="gov.redhawk.sca.model.provider.event.internal.EventServiceDataProviderService"
             id="gov.redhawk.sca.model.provider.event"
-            name="ODM_Channel Data Provioder">
+            name="ODM_Channel Data Provider">
       </provider>
    </extension>
 </plugin>

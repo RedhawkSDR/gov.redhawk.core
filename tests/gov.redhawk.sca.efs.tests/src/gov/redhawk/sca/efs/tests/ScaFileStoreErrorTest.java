@@ -162,7 +162,7 @@ public class ScaFileStoreErrorTest {
 		try {
 			this.rootFileStore.getChild(path).fetchInfo(EFS.NONE, null);
 		} catch (CoreException e) {
-			Assert.assertEquals(errorMsg, e.getMessage());
+			Assert.assertTrue(e.getStatus().getException().getMessage().contains(errorMsg));
 			return;
 		}
 		Assert.fail("No error message received");

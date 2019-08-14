@@ -50,9 +50,7 @@ public class ScaFileSystem extends FileSystem {
 
 	@Override
 	public IFileStore getStore(final URI uri) {
-		// Asked to get File Store After the plugin is disposed, return a null
-		// filesystem
-
+		// Asked to get FileStore After the plug-in is disposed, return a null FileStore
 		if (ScaFileSystemPlugin.getDefault() == null) {
 			return EFS.getNullFileSystem().getStore(uri);
 		}

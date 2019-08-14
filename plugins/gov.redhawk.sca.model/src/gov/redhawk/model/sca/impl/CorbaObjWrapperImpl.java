@@ -20,9 +20,12 @@ import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
+import gov.redhawk.model.sca.services.IScaDataProvider;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -33,6 +36,7 @@ import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
@@ -168,6 +172,22 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		return ScaPackage.Literals.CORBA_OBJ_WRAPPER;
 	}
 
+	// END GENERATED CODE
+	/**
+	 * @since 24.0
+	 */
+	protected static final boolean DEBUG_REFRESH = "true".equalsIgnoreCase(Platform.getDebugOption(ScaModelPlugin.ID + "/debug/domainRefresh"));
+	/**
+	 * @since 24.0
+	 */
+	protected boolean lostNarrowedObject;
+	/**
+	 * @since 24.0
+	 */
+	protected boolean doChildRefresh;
+
+	// BEGIN GENERATED CODE
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -344,24 +364,54 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		if (!msg.isTouch()) {
 			switch (msg.getFeatureID(CorbaObjWrapper.class)) {
 			case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
-				String ior = msg.getNewValue() == null ? null : msg.getNewValue().toString();
+				Object newVal = msg.getNewValue();
+				if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+					ScaModelPlugin.logInfo("Notification of setCorbaObj is null: " + (newVal == null));
+				}
+				String ior = null;
+				if (newVal instanceof org.omg.CORBA.portable.ObjectImpl) {
+					org.omg.CORBA.portable.ObjectImpl impl = ((org.omg.CORBA.portable.ObjectImpl) newVal);
+					ior = impl._orb().object_to_string(impl);
+				}
 				Class< ? extends T> corbaType = getCorbaType();
-				if (corbaType != null && corbaType.isInstance(msg.getNewValue())) {
-					setObj(corbaType.cast(msg.getNewValue()));
-				} else {
+				if (corbaType != null && corbaType.isInstance(newVal)) {
+					setObj(corbaType.cast(newVal));
+				} else if (isSetObj()){
+					if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+						ScaModelPlugin.logInfo("\tUnsetting Obj");
+					}
 					unsetObj();
 				}
 				setIor(ior);
-				clearAllStatus();
+				if ((newVal != null) && this.exists()) {
+					if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+						ScaModelPlugin.logInfo("\t!!!!Clearing All Status");
+					}
+					clearAllStatus();
+				}
 				if (msg.getOldValue() instanceof org.omg.CORBA.Object) {
 					CorbaUtils.release((org.omg.CORBA.Object) msg.getOldValue());
 				}
 				break;
 			case ScaPackage.CORBA_OBJ_WRAPPER__OBJ:
-				clearAllStatus();
+				if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+					ScaModelPlugin.logInfo("Notification of setObject is null: " + (msg.getNewValue() == null));
+				}
 				if (msg.getNewValue() != null) {
+					if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+						ScaModelPlugin.logInfo("Does the object exist? " + this.exists());
+					}
+					if (this.exists()) {
+						clearAllStatus();
+					}
+					if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+						ScaModelPlugin.logInfo("\t!!!!Attaching Data Providers");
+					}
 					attachDataProviders();
 				} else {
+					if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+						ScaModelPlugin.logInfo("\tRemoving Data Providers");
+					}
 					detachDataProviders();
 				}
 				break;
@@ -444,6 +494,19 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 			}
 			try {
 				T newObj = narrow(localCorbaObj);
+				if (newObj != null && !this.exists()) {
+					if (DEBUG_REFRESH && !lostNarrowedObject && this instanceof ScaDomainManagerImpl) {
+						ScaModelPlugin.logInfo("\t-----Lost narrowed object!");
+					}
+					
+					lostNarrowedObject  = true;
+				} else if (newObj != null && lostNarrowedObject) {
+					if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+						ScaModelPlugin.logInfo("\t-----Narrowed object came back!");
+					}
+					doChildRefresh  = true;
+					lostNarrowedObject = false;
+				}
 				transaction.addCommand(new SetLocalAttributeCommand(this, newObj, ScaPackage.Literals.CORBA_OBJ_WRAPPER__OBJ));
 			} catch (final SystemException e) {
 				IStatus status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to narrow corba object.", e);
@@ -683,8 +746,26 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 			return;
 		}
 
+		Map<IScaDataProvider, Boolean> oldEnabledProviders = new HashMap<>();
+
 		try {
+			// Fetch the narrowed object first to get the DataProviders
+			fetchNarrowedObject(subMonitor.split(1));
+
+			// Disable the data providers - keep them from refreshing while we're in the middle of
+			// a refresh
+			for (IScaDataProvider provider : getDataProviders()) {
+				oldEnabledProviders.put(provider, provider.isEnabled());
+				provider.setEnabled(false);
+			}
 			fetchAttributes(subMonitor.split(20));
+			if (doChildRefresh) {
+				if (DEBUG_REFRESH && this instanceof ScaDomainManagerImpl) {
+					ScaModelPlugin.logInfo("\t-----Switching depth to CHILDREN!");
+				}
+				doChildRefresh = false;
+				depth = (depth == RefreshDepth.FULL) ? RefreshDepth.FULL : RefreshDepth.CHILDREN;
+			}
 			switch (depth) {
 			case CHILDREN:
 			case FULL:
@@ -695,6 +776,16 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 			}
 			super.refresh(subMonitor.split(60), depth);
 		} finally {
+			List<IScaDataProvider> newProviders = new ArrayList<>(getDataProviders());
+			// Reset the enabled state of the DataProviders
+			newProviders.forEach(provider -> {
+				if (Boolean.TRUE.equals(oldEnabledProviders.get(provider))) {
+					provider.reEnable();
+				}
+			});
+			oldEnabledProviders.clear();
+			newProviders.clear();
+
 			subMonitor.done();
 		}
 	}

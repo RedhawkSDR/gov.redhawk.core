@@ -2226,6 +2226,21 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		} catch (InterruptedException e1) {
 			return;
 		}
+		if (!tmpExists && getObj() != null) {
+			lostNarrowedObject = true;
+			Transaction transaction = keepAliveFeature.createTransaction();
+			transaction.addCommand(new ScaModelCommand() {
+
+				@Override
+				public void execute() {
+					unsetObj();
+				}
+			});
+			transaction.commit();
+		} else if (tmpExists && lostNarrowedObject) {
+			lostNarrowedObject = false;
+			doChildRefresh = true;
+		}
 		if (shouldProceed != null && shouldProceed) {
 			try {
 				Transaction transaction = keepAliveFeature.createTransaction();
@@ -2249,7 +2264,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 				transaction.commit();
 			} catch (CoreException e) {
 				if (DEBUG_KEEP_ALIVE_ERRORS.enabled) {
-					DEBUG_KEEP_ALIVE_ERRORS.message("Errors durring fetch keep alive.");
+					DEBUG_KEEP_ALIVE_ERRORS.message("Errors during fetch keep alive.");
 					DEBUG_KEEP_ALIVE_ERRORS.catching(e);
 				}
 			} catch (InterruptedException e) {

@@ -127,6 +127,13 @@ public class ScaModelPlugin extends Plugin implements IScaObjectLocator {
 	}
 
 	/**
+	 * @since 24.0
+	 */
+	public static void logInfo(final String msg) {
+		ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.INFO, ScaModelPlugin.ID, msg));
+	}
+
+	/**
 	 * @since 9.0
 	 */
 	public static IDataProviderServiceRegistry getDataProviderRegistry() {

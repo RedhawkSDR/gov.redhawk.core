@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Front End Data Provider
 Bundle-SymbolicName: gov.redhawk.frontend.provider;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 2.0.0.qualifier
 Bundle-Activator: gov.redhawk.frontend.provider.FrontEndDataActivator
 Require-Bundle: org.eclipse.core.runtime,
  gov.redhawk.sca.model;bundle-version="19.0.0",

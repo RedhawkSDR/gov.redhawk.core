@@ -11,10 +11,9 @@
  */
 package gov.redhawk.efs.sca.internal;
 
-import gov.redhawk.efs.sca.internal.cache.IFileCache;
 import gov.redhawk.efs.sca.internal.cache.ScaFileCache;
+import gov.redhawk.efs.sca.internal.cache.ScaFileEntryCache;
 import gov.redhawk.sca.efs.ScaFileSystemPlugin;
-import gov.redhawk.sca.util.Debug;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -36,9 +35,10 @@ import org.eclipse.core.filesystem.provider.FileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.osgi.util.NLS;
 import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.SystemException;
@@ -64,21 +64,30 @@ public class ScaFileStore extends FileStore {
 		EXECUTABLE
 	}
 
-	private static final Debug DEBUG = new Debug(ScaFileSystemPlugin.ID, "fileStore");
+	private static final boolean DEBUG = "true".equalsIgnoreCase(Platform.getDebugOption(ScaFileSystemPlugin.ID + "/debug/scaFileStore")); //$NON-NLS-1$ //$NON-NLS-2$
 
 	private final URI fsInitRef;
 	private final ScaFileEntry entry;
-
-	private IFileCache cache;
+	private Callable<IFileInfo> fetchCallable;
 
 	public ScaFileStore(final URI fsInitRef, final ScaFileEntry entry) {
 		this.fsInitRef = fsInitRef;
 		this.entry = entry;
-		cache = ScaFileCache.INSTANCE.getCache(this);
+		this.fetchCallable = new Callable<IFileInfo>() {
+			public IFileInfo call() throws Exception {
+				try {
+					return internalFetchInfo(entry.getUri());
+				} catch (CoreException e) {
+					throw e;
+				}
+			}
+		};
+		// Resolve the FileSystem pointed to by this fsInitRef. We'll use it soon
+		ScaFileCache.INSTANCE.getCache(this);
 	}
 
 	public URI getFsInitRef() {
-		return fsInitRef;
+		return this.fsInitRef;
 	}
 
 	public ScaFileEntry getEntry() {
@@ -86,7 +95,7 @@ public class ScaFileStore extends FileStore {
 	}
 
 	public FileSystemOperations getScaFileSystem() throws CoreException {
-		return cache.getScaFileSystem();
+		return ScaFileCache.INSTANCE.getCache(this).getScaFileSystem();
 	}
 
 	private boolean exists() throws CoreException {
@@ -94,19 +103,19 @@ public class ScaFileStore extends FileStore {
 		try {
 			return getScaFileSystem().exists(path);
 		} catch (final SystemException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "File System Exception: " + this.entry.getUri(), e));
+			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__FileSystem_Exception, this.entry.getUri()), e));
 		} catch (final InvalidFileName e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.Exists, path), e));
 		}
 	}
 
 	private boolean isDirectory() {
-		return cache.isDirectory();
+		return ScaFileCache.INSTANCE.getCache(this).isDirectory();
 	}
 
 	@Override
 	public String[] childNames(final int options, IProgressMonitor monitor) throws CoreException {
-		return cache.childNames(options, monitor);
+		return ScaFileCache.INSTANCE.getCache(this).childNames(options, monitor);
 	}
 
 	public String[] internalChildNames(final int options, IProgressMonitor monitor) throws CoreException {
@@ -144,6 +153,10 @@ public class ScaFileStore extends FileStore {
 	}
 
 	public static IFileInfo translate(final FileInformationType typeInfo) {
+		if (DEBUG) {
+			IStatus status = new Status(IStatus.INFO, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Translating_File, typeInfo.name));
+			ScaFileSystemPlugin.log(status);
+		}
 		final FileInfo info = new FileInfo(typeInfo.name);
 
 		// If path is a directory we will get the contents of the
@@ -177,14 +190,14 @@ public class ScaFileStore extends FileStore {
 				try {
 					info.setAttribute(EFS.ATTRIBUTE_READ_ONLY, t.value.extract_boolean());
 				} catch (BAD_OPERATION e) {
-					ScaFileSystemPlugin.logError("Non-boolean value for read-only property in FileInformationType", null);
+					ScaFileSystemPlugin.logError(NLS.bind(Messages.ScaFileStore__NonBoolean_Value, t.id), null);
 				}
 				break;
 			case EXECUTABLE:
 				try {
 					info.setAttribute(EFS.ATTRIBUTE_EXECUTABLE, t.value.extract_boolean());
 				} catch (BAD_OPERATION e) {
-					ScaFileSystemPlugin.logError("Non-boolean value for executable property in FileInformationType", null);
+					ScaFileSystemPlugin.logError(NLS.bind(Messages.ScaFileStore__NonBoolean_Value, t.id), null);
 				}
 				break;
 			default:
@@ -210,8 +223,17 @@ public class ScaFileStore extends FileStore {
 
 	@Override
 	public IFileInfo fetchInfo(final int options, IProgressMonitor monitor) throws CoreException {
-		final String path = this.entry.getAbsolutePath();
-		monitor = SubMonitor.convert(monitor, Messages.ScaFileStore__Fetch_Info_Task_Name, IProgressMonitor.UNKNOWN);
+		return ScaFileEntryCache.INSTANCE.getCache(entry.getUri(), fetchCallable);
+	}
+
+	public IFileInfo internalFetchInfo(final URI uri) throws CoreException {
+		if (DEBUG) {
+			IStatus status = new Status(IStatus.INFO, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Fetch_Info, uri));
+			ScaFileSystemPlugin.log(status);
+		}
+
+		final String path = ScaFileEntry.makeAbsolutePath(uri);
+		IProgressMonitor monitor = new NullProgressMonitor();
 		try {
 			IFileInfo retVal;
 			final FileInformationType[] result = CorbaUtils.invoke(new Callable<FileInformationType[]>() {
@@ -256,10 +278,9 @@ public class ScaFileStore extends FileStore {
 			final ScaFileStore child = new ScaFileStore(this.fsInitRef, new ScaFileEntry(childUri));
 			return child;
 		} catch (final UnsupportedEncodingException e) {
-			ScaFileStore.DEBUG.catching(e);
+			ScaFileSystemPlugin.logError(Messages.ScaFileStore__Get_Child_Exception, e);
 			return EFS.getNullFileSystem().getStore(uri);
 		}
-
 	}
 
 	@Override
@@ -282,13 +303,13 @@ public class ScaFileStore extends FileStore {
 
 	@Override
 	public InputStream openInputStream(final int options, final IProgressMonitor monitor) throws CoreException {
-		return cache.openInputStream();
+		return ScaFileCache.INSTANCE.getCache(this).openInputStream();
 	}
 
 	@Override
 	public OutputStream openOutputStream(final int options, IProgressMonitor monitor) throws CoreException {
 		final String path = this.entry.getAbsolutePath();
-		monitor = SubMonitor.convert(monitor, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Task_Name, path), IProgressMonitor.UNKNOWN);
+		SubMonitor openMonitor = SubMonitor.convert(monitor, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Task_Name, path), IProgressMonitor.UNKNOWN);
 		try {
 			final IFileInfo info = this.fetchInfo();
 			boolean exists = info.exists();
@@ -300,7 +321,7 @@ public class ScaFileStore extends FileStore {
 			}
 
 			if (exists && !append) {
-				this.delete(options, new SubProgressMonitor(monitor, 1));
+				this.delete(options, openMonitor.newChild(1));
 				exists = false;
 			}
 
@@ -335,7 +356,7 @@ public class ScaFileStore extends FileStore {
 			throw new CoreException(
 				new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_System, path), e));
 		} finally {
-			monitor.done();
+			openMonitor.done();
 		}
 	}
 
@@ -346,7 +367,7 @@ public class ScaFileStore extends FileStore {
 
 	@Override
 	public IFileInfo[] childInfos(final int options, IProgressMonitor monitor) throws CoreException {
-		return cache.childInfos(options, monitor);
+		return ScaFileCache.INSTANCE.getCache(this).childInfos(options, monitor);
 	}
 
 	public IFileInfo[] internalChildInfos(final int options, IProgressMonitor monitor) throws CoreException {
@@ -394,11 +415,11 @@ public class ScaFileStore extends FileStore {
 			if (fetchInfo().isDirectory()) {
 				final IFileStore[] childStore = childStores(EFS.NONE, subMonitor.newChild(1));
 				final SubMonitor deleteChildrenMonitor = subMonitor.newChild(1);
-				deleteChildrenMonitor.beginTask("Deleting contained items...", childStore.length);
+				deleteChildrenMonitor.beginTask(Messages.ScaFileStore__Delete_Items, childStore.length);
 				for (final IFileStore store : childStore) {
 					store.delete(options, deleteChildrenMonitor.newChild(1));
 				}
-				fs.remove(path + "/*");
+				fs.remove(path + "/*"); //$NON-NLS-1$
 				fs.rmdir(path);
 				subMonitor.worked(1);
 			} else {
@@ -444,13 +465,12 @@ public class ScaFileStore extends FileStore {
 
 	@Override
 	public void putInfo(final IFileInfo info, final int options, final IProgressMonitor monitor) throws CoreException {
-		ScaFileStore.DEBUG.enteringMethod(info, options, monitor);
-		// Nothin to do here
+		// Nothing to do here
 	}
 
 	@Override
 	public java.io.File toLocalFile(final int options, final IProgressMonitor monitor) throws CoreException {
-		return cache.toLocalFile();
+		return ScaFileCache.INSTANCE.getCache(this).toLocalFile();
 //		return super.toLocalFile(options | EFS.CACHE, monitor);
 	}
 

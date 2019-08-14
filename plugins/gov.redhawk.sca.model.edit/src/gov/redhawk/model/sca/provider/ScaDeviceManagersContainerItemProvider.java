@@ -21,6 +21,7 @@ import java.util.Collection;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -81,5 +82,14 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	public Object getParent(Object object) {
 	    return target;
 	}
-
+@Override
+public void setTarget(Notifier target) {
+	// TODO Auto-generated method stub
+	super.setTarget(target);
+}
+@Override
+public void unsetTarget(Notifier target) {
+	// TODO Auto-generated method stub
+	super.unsetTarget(target);
+}
 }

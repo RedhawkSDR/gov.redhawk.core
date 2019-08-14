@@ -25,14 +25,19 @@ public class Messages extends NLS {
 	public static String ScaFileStore__Child_Info_Error_System;
 	public static String ScaFileStore__Child_Names_Error;
 	public static String ScaFileStore__Child_Names_Task_Name;
+	public static String ScaFileStore__Delete_Items;
 	public static String ScaFileStore__Deleting_Error_System;
 	public static String ScaFileStore__Deleting_Task;
+	public static String ScaFileStore__Fetch_Info;
 	public static String ScaFileStore__Fetch_Info_Error;
 	public static String ScaFileStore__Fetch_Info_Task_Name;
+	public static String ScaFileStore__FileSystem_Exception;
 	public static String ScaFileStore__Getting_Child_Info_Task;
+	public static String ScaFileStore__Get_Child_Exception;
 	public static String ScaFileStore__Mkdir_Error_System;
 	public static String ScaFileStore__Mkdir_Error_File_Exists;
 	public static String ScaFileStore__Mkdir_Task_Name;
+	public static String ScaFileStore__NonBoolean_Value;
 	public static String ScaFileStore__Open_Input_Stream_Error;
 	public static String ScaFileStore__Open_Input_Stream_Error_Invalid_File_Name;
 	public static String ScaFileStore__Open_Input_Stream_Error_System;
@@ -40,6 +45,7 @@ public class Messages extends NLS {
 	public static String ScaFileStore__Open_Output_Stream_Error_Read_Only;
 	public static String ScaFileStore__Open_Output_Stream_Error_System;
 	public static String ScaFileStore__Open_Output_Stream_Task_Name;
+	public static String ScaFileStore__Translating_File;
 	public static String ScaFileSystem__FILE_SYSTEM_EXCEPTION;
 	public static String ScaFileSystem__FILE_SYSTEM_REFERENCE_ERROR;
 	public static String ScaFileSystem__INVALID_SCA_FS_URI;
