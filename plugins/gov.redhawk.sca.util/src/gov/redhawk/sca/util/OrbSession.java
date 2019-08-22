@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -117,6 +118,34 @@ public class OrbSession {
 	@NonNull
 	public static OrbSession createSession(@NonNull String id) {
 		return createSession(id, Platform.getApplicationArgs(), System.getProperties());
+	}
+
+	/**
+	 * Returns the ORB session for a given ID, creating a new one if it doesn't exist. This will
+	 * set the server connection timeout to 0, necessary for event channels.
+	 * @param ID id of the session
+	 * @return Session
+	 * @since 5.1
+	 */
+	@NonNull
+	public static OrbSession createPersistentServerSession(@NonNull String id) {
+		return createSessionWithOverrides(id, Collections.singletonMap("jacorb.connection.server.timeout", (Object) "0"));
+	}
+
+	/**
+	 * Returns the ORB session for a given ID, creating a new one if it doesn't exist.
+	 * @param ID id of the session
+	 * @return Session
+	 * @since 5.1
+	 */
+	@NonNull
+	public static OrbSession createSessionWithOverrides(@NonNull String id, @NonNull Map<String, Object> overrides) {
+		String[] args = Platform.getApplicationArgs();
+		Properties sysProps = System.getProperties();
+		for (Entry<String, Object> e : overrides.entrySet()) {
+			sysProps.put(e.getKey(), e.getValue());
+		}
+		return createSession(id, args, sysProps);
 	}
 	
 	/**

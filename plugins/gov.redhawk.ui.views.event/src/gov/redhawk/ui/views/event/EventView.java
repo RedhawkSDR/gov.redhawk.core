@@ -11,6 +11,7 @@
 package gov.redhawk.ui.views.event;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -114,7 +115,7 @@ public class EventView extends ViewPart implements ITabbedPropertySheetPageContr
 
 	private List<ChannelListener> channelListeners = new ArrayList<ChannelListener>();
 
-	private OrbSession session = OrbSession.createSession();
+	private OrbSession session = OrbSession.createPersistentServerSession("eventSession");
 
 	private ScaItemProviderAdapterFactory factory;
 
