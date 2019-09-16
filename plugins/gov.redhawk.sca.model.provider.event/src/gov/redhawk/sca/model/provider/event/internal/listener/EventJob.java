@@ -29,7 +29,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.NamedThreadFactory;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -63,7 +62,7 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 
 	public static final String EVENT_DATA_PROVIDER_FAMILY = DataProviderActivator.ID + ".jobFamily";
 
-	private OrbSession session = OrbSession.createSession();
+	private OrbSession session = OrbSession.createPersistentServerSession("eventSession");
 
 	private final BlockingQueue<Any> eventQueue = new LinkedBlockingQueue<Any>();
 	private final String channelName;
