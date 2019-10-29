@@ -90,12 +90,14 @@ public class SriDataView extends ViewPart {
 	private Adapter portListener = new AdapterImpl() {
 		@Override
 		public void notifyChanged(final Notification msg) {
-			Display.getDefault().syncExec(new Runnable() {
+			Display.getDefault().asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					switch (msg.getFeatureID(IDisposable.class)) {
 					case ScaPackage.IDISPOSABLE__DISPOSED:
-						getSite().getPage().hideView(SriDataView.this);
+						if (getSite() != null && getSite().getPage() != null) {
+							getSite().getPage().hideView(SriDataView.this);
+						}
 						break;
 					default:
 						break;
