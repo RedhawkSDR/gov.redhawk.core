@@ -199,7 +199,8 @@ public abstract class ScaFormPage extends FormPage implements IMenuListener, IEd
 			helpAction.setToolTipText("Help");
 			helpAction.setImageDescriptor(ScaPluginImages.DESC_HELP);
 			manager.add(helpAction);
-		} */
+		}  
+*/
 		// check to see if our form parts are contributing actions
 		final IFormPart[] parts = managedForm.getParts();
 		for (int i = 0; i < parts.length; i++) {
