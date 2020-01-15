@@ -40,7 +40,7 @@ public final class ScaPluginImages {
 	public static final ImageDescriptor DESC_ALPHAB_SORT_CO = ScaPluginImages.create(ScaPluginImages.PATH_LCL, "alphab_sort_co.gif"); //$NON-NLS-1$
 
 	/** The Constant DESC_HELP. */
-	//public static final ImageDescriptor DESC_HELP = ScaPluginImages.create(ScaPluginImages.PATH_LCL, "help.gif"); //$NON-NLS-1$
+	public static final ImageDescriptor DESC_HELP = ScaPluginImages.create(ScaPluginImages.PATH_LCL, "help.gif"); //$NON-NLS-1$
 
 	// CHECKSTYLE:ON
 	/**
