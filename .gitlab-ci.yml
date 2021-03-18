@@ -12,7 +12,7 @@ build:
   tags:
     - ide
   script:
-    - mvn install sonar:sonar -P sign -P develop-2.2 -P with-metadata -D maven.test.failure.ignore=true
+    - mvn install sonar:sonar -P sign -P develop-2.3 -P with-metadata -D maven.test.failure.ignore=true
   artifacts:
     paths:
       - tests/*/target/surefire-reports/*.xml
