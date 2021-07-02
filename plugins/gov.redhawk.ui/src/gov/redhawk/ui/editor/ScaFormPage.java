@@ -12,8 +12,6 @@
 
 package gov.redhawk.ui.editor;
 
-import gov.redhawk.internal.ui.ScaPluginImages;
-
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.command.BasicCommandStack;
@@ -28,7 +26,6 @@ import org.eclipse.emf.edit.ui.dnd.EditingDomainViewerDropAdapter;
 import org.eclipse.emf.edit.ui.dnd.LocalTransfer;
 import org.eclipse.emf.edit.ui.dnd.ViewerDragAdapter;
 import org.eclipse.emf.edit.ui.provider.UnwrappingSelectionProvider;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
@@ -39,7 +36,6 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.dnd.DND;
@@ -73,6 +69,7 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  * The Class ScaFormPage.
  */
+@SuppressWarnings("unused")
 public abstract class ScaFormPage extends FormPage implements IMenuListener, IEditingDomainProvider {
 	private boolean fNewStyleHeader = true;
 	private Control fLastFocusControl;

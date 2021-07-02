@@ -13,7 +13,8 @@ Export-Package: org.ossie,
  org.ossie.component,
  org.ossie.events,
  org.ossie.logging,
- org.ossie.properties
+ org.ossie.properties,
+ org.ossie.buffer
 Bundle-Vendor: REDHAWK
 Bundle-ClassPath: .
 Automatic-Module-Name: org.ossie

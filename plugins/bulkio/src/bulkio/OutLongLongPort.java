@@ -25,13 +25,22 @@ package bulkio;
 
 import org.apache.log4j.Logger;
 
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
+
 import BULKIO.PrecisionUTCTime;
 import BULKIO.dataLongLongOperations;
+import BULKIO.StreamSRI;
+import bulkio.OutLongLongStream;
 
 /**
  * BulkIO output port implementation for dataLongLong.
  */
 public class OutLongLongPort extends ChunkingOutPort<dataLongLongOperations,long[]> {
+
+    protected Map<String, OutLongLongStream> streams;
+    public Object streamsMutex;
 
     public OutLongLongPort(String portName) {
         this(portName, null, null);
@@ -46,7 +55,8 @@ public class OutLongLongPort extends ChunkingOutPort<dataLongLongOperations,long
         if (this.logger != null) {
             this.logger.debug("bulkio.OutPort CTOR port: " + portName);
         }
-
+        this.streams = new HashMap<String, OutLongLongStream>();
+        this.streamsMutex = new Object();
     }
 
     protected dataLongLongOperations narrow(final org.omg.CORBA.Object obj) {
@@ -60,6 +70,58 @@ public class OutLongLongPort extends ChunkingOutPort<dataLongLongOperations,long
 
     public String getRepid() {
         return BULKIO.dataLongLongHelper.id();
+    }
+
+    public OutLongLongStream getStream(String streamID)
+    {
+        synchronized (this.updatingPortsLock) {
+            if (streams.containsKey(streamID)) {
+                return streams.get(streamID);
+            }
+        }
+        return null;
+    }
+  
+    public OutLongLongStream[] getStreams()
+    {
+        OutLongLongStream[] retval = null;
+        Iterator<OutLongLongStream> streams_iter = streams.values().iterator();
+        synchronized (this.streamsMutex) {
+            retval = new OutLongLongStream[streams.size()];
+            int streams_idx = 0;
+            while (streams_iter.hasNext()) {
+                retval[streams_idx] = streams_iter.next();
+                streams_idx++;
+            }
+        }
+        return retval;
+    }
+  
+    public OutLongLongStream createStream(String streamID)
+    {
+        OutLongLongStream stream = null;
+        synchronized (this.updatingPortsLock) {
+            if (streams.containsKey(streamID)) {
+                return streams.get(streamID);
+            }
+            stream = new OutLongLongStream(bulkio.sri.utils.create(streamID), this);
+            streams.put(streamID, stream);
+        }
+        return stream;
+    }
+  
+    public OutLongLongStream createStream(BULKIO.StreamSRI sri)
+    {
+        OutLongLongStream stream = null;
+        synchronized (this.updatingPortsLock) {
+            String streamID = sri.streamID;
+            if (streams.containsKey(streamID)) {
+                return streams.get(streamID);
+            }
+            stream = new OutLongLongStream(sri, this);
+            streams.put(streamID, stream);
+        }
+        return stream;
     }
 }
 

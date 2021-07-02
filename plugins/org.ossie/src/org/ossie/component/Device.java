@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.Object;
@@ -455,6 +456,7 @@ public abstract class Device extends Resource implements DeviceOperations {
         Thread shutdownWatcher = new Thread(new Runnable() {
             public void run() {
                 device_i.waitDisposed();
+                LogManager.shutdown();
                 shutdownORB(orb);
             }
         });
@@ -532,6 +534,10 @@ public abstract class Device extends Resource implements DeviceOperations {
     public boolean allocateCapacity(DataType[] capacities) throws InvalidCapacity, InvalidState {
 
         this._deviceLog.debug("allocateCapacity : " + capacities.toString());
+
+        if (UsageType.BUSY.value() == this.usageState().value()) {
+            return false;
+        }
 
         // Checks for empty
         if (capacities.length == 0){
