@@ -221,6 +221,18 @@ public class _AggregatePlainDeviceStub extends omnijni.ObjectImpl implements CF.
   }
   private static native void deallocateCapacity (long __ref__, CF.DataType[] capacities);
 
+  public CF.DevicePackage.Allocation[] allocate (CF.DataType[] capacities)
+  {
+    return allocate(this.ref_, capacities);
+  }
+  private static native CF.DevicePackage.Allocation[] allocate (long __ref__, CF.DataType[] capacities);
+
+  public void deallocate (String alloc_id)
+  {
+    deallocate(this.ref_, alloc_id);
+  }
+  private static native void deallocate (long __ref__, String alloc_id);
+
   public CF.Device[] devices ()
   {
     return _get_devices(this.ref_);

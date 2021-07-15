@@ -221,6 +221,18 @@ public class _DeviceStub extends omnijni.ObjectImpl implements CF.Device
   }
   private static native void deallocateCapacity (long __ref__, CF.DataType[] capacities);
 
+  public CF.DevicePackage.Allocation[] allocate (CF.DataType[] capacities)
+  {
+    return allocate(this.ref_, capacities);
+  }
+  private static native CF.DevicePackage.Allocation[] allocate (long __ref__, CF.DataType[] capacities);
+
+  public void deallocate (String alloc_id)
+  {
+    deallocate(this.ref_, alloc_id);
+  }
+  private static native void deallocate (long __ref__, String alloc_id);
+
   private static String __ids[] = {
     "IDL:CF/Device:1.0",
     "IDL:CF/Resource:1.0",
