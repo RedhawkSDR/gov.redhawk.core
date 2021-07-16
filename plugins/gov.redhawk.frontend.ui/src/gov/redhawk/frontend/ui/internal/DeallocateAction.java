@@ -150,7 +150,7 @@ public class DeallocateAction extends FrontendAction {
 		Struct allocProp = TunerAllocationProperty.INSTANCE.createDeallocationStruct(tuner);
 		final DataType prop = new DataType(allocProp.getId(), allocProp.toAny());
 
-		Job job = new DeallocateJob(device, prop);
+		Job job = new DeallocateJob(device, tuner.getAllocationID());
 		job.setName("Deallocate FEI control");
 		job.setUser(true);
 		job.schedule();

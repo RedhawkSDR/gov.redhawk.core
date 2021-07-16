@@ -11,8 +11,6 @@
  */
 package gov.redhawk.frontend.ui.internal;
 
-import gov.redhawk.frontend.FrontendPackage;
-import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.TunerStatusUtil;
@@ -21,7 +19,6 @@ import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaUsesPort;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.sca.ui.ConnectPortWizard;
 import gov.redhawk.ui.port.nxmplot.IPlotView;
@@ -48,12 +45,7 @@ import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
@@ -73,6 +65,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import CF.DataType;
 
+@SuppressWarnings("unused")
 public class FeiPlotHandler extends AbstractHandler implements IHandler {
 	private static final AtomicInteger SECONDARY_ID = new AtomicInteger();
 
@@ -95,7 +88,7 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 		}
 
 		final List< ? > elements = selection.toList();
-		String listenerAllocationID = "Plot_" + ConnectPortWizard.generateDefaultConnectionID();
+		String connectionID = "Plot_" + ConnectPortWizard.generateDefaultConnectionID();
 
 		for (Object obj : elements) {
 			if (obj instanceof TunerStatus) {
@@ -114,49 +107,32 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 					StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 					continue;
 				}
-
-				final DataType[] props = TunerStatusUtil.createAllocationProperties(listenerAllocationID, tuner);
+								
 
 				final UIJob uiJob = new UIJob("Launching Plot View...") {
 
 					@Override
 					public IStatus runInUIThread(IProgressMonitor monitor) {
 						try {
-							IStatus retVal = createPlotView(event, props, device, tuner, usesPorts);
-							if (!retVal.isOK()) {
-								TunerStatusUtil.createDeallocationJob(tuner, props).schedule();
-							}
-
+							IStatus retVal = createPlotView(event, connectionID, device, tuner, usesPorts);
 							return retVal;
 						} catch (ExecutionException e) {
-							TunerStatusUtil.createDeallocationJob(tuner, props).schedule();
 							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to open plot view", e);
 						}
 					}
 
 				};
 
-				Job allocJob = TunerStatusUtil.createAllocationJob(tuner, props);
-				allocJob.addJobChangeListener(new JobChangeAdapter() {
-					@Override
-					public void done(IJobChangeEvent event) {
-						if (event.getResult().isOK()) {
-							uiJob.setUser(false);
-							uiJob.setSystem(true);
-							uiJob.schedule();
-						}
-					}
-				});
-				allocJob.setUser(true);
-				allocJob.schedule();
-
+				uiJob.setUser(false);
+				uiJob.setSystem(true);
+				uiJob.schedule();
 			}
 		}
 
 		return null;
 	}
 
-	private IStatus createPlotView(final ExecutionEvent event, final DataType[] props, final ScaDevice< ? > device, final TunerStatus tuner,
+	private IStatus createPlotView(final ExecutionEvent event, final String connectionID, final ScaDevice< ? > device, final TunerStatus tuner,
 		final List<ScaUsesPort> usesPorts) throws ExecutionException {
 
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
@@ -187,8 +163,7 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 		Map<String, Object> exParam = new HashMap<String, Object>();
 		exParam.put(IPlotView.PARAM_PLOT_TYPE, plotType);
 		exParam.put(IPlotView.PARAM_ISFFT, isFft);
-		final String listenerID = TunerStatusUtil.getListenerID(props);
-		exParam.put(IPlotView.PARAM_CONNECTION_ID, listenerID);
+		exParam.put(IPlotView.PARAM_CONNECTION_ID, connectionID);
 		exParam.put(IPlotView.PARAM_SECONDARY_ID, createSecondaryId());
 		ICommandService svc = (ICommandService) window.getService(ICommandService.class);
 		Command comm = svc.getCommand(IPlotView.COMMAND_ID);
@@ -206,52 +181,14 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 		if (view != null) {
 			view.setPartName(name.toString());
 			view.setTitleToolTip(tooltip.toString());
-			view.getPlotPageBook().addDisposeListener(getDisposeListener(tuner, props, device));
 
-			ScaModelCommand.execute(tuner, new ScaModelCommand() {
-
-				@Override
-				public void execute() {
-					for (ListenerAllocation a : tuner.getListenerAllocations()) {
-						if (a.getListenerID().equals(listenerID)) {
-							a.eAdapters().add(new AdapterImpl() {
-								@Override
-								public void notifyChanged(org.eclipse.emf.common.notify.Notification msg) {
-									if (msg.isTouch()) {
-										return;
-									}
-									switch (msg.getFeatureID(ListenerAllocation.class)) {
-									case FrontendPackage.LISTENER_ALLOCATION__TUNER_STATUS:
-										if (msg.getNewValue() == null) {
-											((Notifier) msg.getNotifier()).eAdapters().remove(this);
-											if (view.getPlotPageBook().isDisposed()) {
-												return;
-											}
-											view.getPlotPageBook().getDisplay().asyncExec(new Runnable() {
-
-												@Override
-												public void run() {
-													view.getPlotPageBook().dispose();
-												}
-
-											});
-										}
-										break;
-									default:
-									}
-								}
-							});
-						}
-					}
-				}
-			});
 		} else {
 			return Status.CANCEL_STATUS;
 		}
 
 		return Status.OK_STATUS;
 	}
-
+	
 	@Override
 	public void setEnabled(Object evaluationContext) {
 		if (evaluationContext instanceof IEvaluationContext) {

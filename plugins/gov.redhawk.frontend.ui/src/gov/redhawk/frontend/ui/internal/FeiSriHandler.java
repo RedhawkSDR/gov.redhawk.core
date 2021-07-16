@@ -24,13 +24,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
@@ -39,7 +35,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -49,22 +44,16 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import CF.DataType;
 import gov.redhawk.bulkio.ui.views.SriDataView;
 import gov.redhawk.bulkio.util.BulkIOType;
-import gov.redhawk.frontend.FrontendPackage;
-import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
-import gov.redhawk.frontend.ui.TunerStatusUtil;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
-import gov.redhawk.sca.model.jobs.AllocateJob;
-import gov.redhawk.sca.model.jobs.DeallocateJob;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public class FeiSriHandler extends AbstractHandler implements IHandler {
@@ -95,46 +84,27 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 					continue;
 				}
 
-				String listenerID = "SRI_" + System.getProperty("user.name") + ":" + System.currentTimeMillis();
-
-				// Create the allocation job
-				final DataType[] props = TunerStatusUtil.createAllocationProperties(listenerID, tuner);
-				Job allocationJob = new AllocateJob(device, props);
-				allocationJob.setName("Allocate FEI listener for tuner " + tuner.getAllocationID());
-				allocationJob.setUser(true);
+				String connectionID = "SRI_" + System.getProperty("user.name") + ":" + System.currentTimeMillis();
 
 				// Create the job to display the SRI view
 				Job uiJob = new UIJob("Display SRI view") {
 					@Override
 					public IStatus runInUIThread(IProgressMonitor monitor) {
 						try {
-							boolean opened = createSriView(activePage, device, tuner, usesPort, props, listenerID);
+							boolean opened = createSriView(activePage, device, tuner, usesPort, connectionID);
 							if (!opened) {
-								deallocate(device, props);
 								return Status.CANCEL_STATUS;
 							} else {
 								return Status.OK_STATUS;
 							}
 						} catch (ExecutionException e) {
-							deallocate(device, props);
 							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to open SRI Data View", e);
 						}
 					}
 				};
 				uiJob.setUser(false);
 				uiJob.setSystem(true);
-
-				// Successful allocation -> display SRI view
-				allocationJob.addJobChangeListener(new JobChangeAdapter() {
-					@Override
-					public void done(IJobChangeEvent event) {
-						if (event.getResult() != null && event.getResult().isOK()) {
-							uiJob.schedule();
-						}
-					}
-				});
-
-				allocationJob.schedule();
+				uiJob.schedule();
 			}
 		}
 
@@ -202,76 +172,22 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 	 * @param usesPort The port to attach to
 	 * @return True if the view was displayed
 	 */
-	private boolean createSriView(IWorkbenchPage activePage, final ScaDevice< ? > device, final TunerStatus tuner, ScaUsesPort usesPort, final DataType[] props,
-		String listenerID) throws ExecutionException {
+	private boolean createSriView(IWorkbenchPage activePage, 
+		final ScaDevice< ? > device, 
+		final TunerStatus tuner, 
+		ScaUsesPort usesPort, 
+		String connectionID) throws ExecutionException {
 
 		// Create unique ID for the view
 		String viewID = SriDataView.createSecondaryId(usesPort, tuner.getAllocationID().split(",")[0]);
 
 		// Display the SRI View
-		SriDataView sriViewLocalRef = displaySriView(activePage, usesPort, listenerID, viewID);
+		SriDataView sriViewLocalRef = displaySriView(activePage, usesPort, connectionID, viewID);
 		if (sriViewLocalRef == null) {
 			return false;
 		}
 
-		// Deallocate listener if the view is closed first
-		DisposeListener disposeListener = event -> {
-			deallocate(device, props);
-		};
-		sriViewLocalRef.getTreeViewer().getTree().addDisposeListener(disposeListener);
-
-		// Close the view if the listener is deallocated first
-		ScaModelCommand.execute(tuner, new ScaModelCommand() {
-			@Override
-			public void execute() {
-				for (ListenerAllocation a : tuner.getListenerAllocations()) {
-					if (a.getListenerID().equals(listenerID)) {
-						Adapter adapter = new AdapterImpl() {
-							@Override
-							public void notifyChanged(org.eclipse.emf.common.notify.Notification msg) {
-								if (msg.isTouch()) {
-									return;
-								}
-								switch (msg.getFeatureID(ListenerAllocation.class)) {
-								case FrontendPackage.LISTENER_ALLOCATION__TUNER_STATUS:
-									if (msg.getNewValue() == null) {
-										((Notifier) msg.getNotifier()).eAdapters().remove(this);
-										if (sriViewLocalRef.getTreeViewer().getTree().isDisposed()) {
-											return;
-										}
-
-										sriViewLocalRef.getTreeViewer().getTree().getDisplay().asyncExec(() -> {
-											sriViewLocalRef.getTreeViewer().getTree().removeDisposeListener(disposeListener);
-											sriViewLocalRef.getViewSite().getPage().hideView(sriViewLocalRef);
-										});
-									}
-									break;
-								default:
-									break;
-								}
-							};
-						};
-						a.eAdapters().add(adapter);
-						return;
-					}
-				}
-			}
-		});
-
 		return true;
-	}
-
-	/**
-	 * Calls deallocateCapacity for the provided listener
-	 * @param tuner - Containing tuner
-	 * @param props - DataType[] containing the listener allocation properties
-	 * @param device - Containing device
-	 */
-	private void deallocate(ScaDevice< ? > device, DataType[] props) {
-		Job job = new DeallocateJob(device, props);
-		job.setUser(false);
-		job.setSystem(true);
-		job.schedule();
 	}
 
 	/**

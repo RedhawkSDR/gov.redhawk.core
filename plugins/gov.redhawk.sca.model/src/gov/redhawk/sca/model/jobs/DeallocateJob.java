@@ -38,6 +38,7 @@ public class DeallocateJob extends Job {
 	private ScaDevice< ? > device;
 	private DataType[] deallocation;
 	private String label;
+	private String allocationID = "";
 
 	/**
 	 * @since 22.0
@@ -53,6 +54,19 @@ public class DeallocateJob extends Job {
 		}
 	}
 
+	/**
+	 * @since 24.1
+	 */
+	public DeallocateJob(ScaDevice< ? > device, String allocationId) {
+		super("Deallocating");
+		this.device = device;
+		this.allocationID = allocationId;
+		if (this.device.isSetLabel()) {
+			label = "device " + this.device.getLabel();
+		} else {
+			label = "device";
+		}
+	}
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 		final int WORK_DEALLOCATE = 9;
@@ -62,7 +76,11 @@ public class DeallocateJob extends Job {
 		try {
 			IStatus status = CorbaUtils2.invoke(() -> {
 				try {
-					device.deallocateCapacity(deallocation);
+					if (this.deallocation != null && this.deallocation.length > 0) {
+						device.deallocateCapacity(deallocation);
+					} else {
+						device.deallocate(this.allocationID);
+					}
 					return Status.OK_STATUS;
 				} catch (InvalidCapacity e) {
 					return new Status(IStatus.ERROR, PLUGIN_ID, CFErrorFormatter.format(e, label), e);

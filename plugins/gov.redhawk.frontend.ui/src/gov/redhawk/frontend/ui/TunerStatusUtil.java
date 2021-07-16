@@ -69,7 +69,7 @@ public final class TunerStatusUtil {
 
 	public static Job createDeallocationJob(final TunerStatus tuner, final DataType[] props) {
 		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
-		DeallocateJob job = new DeallocateJob(device, props);
+		DeallocateJob job = new DeallocateJob(device, tuner.getAllocationID());
 		job.setName("FEI Deallocate Listener");
 		return job;
 	}

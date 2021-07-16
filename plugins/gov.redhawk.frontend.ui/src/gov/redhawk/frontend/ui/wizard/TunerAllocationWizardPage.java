@@ -300,7 +300,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			if (tuner.getTunerType() != null) {
 				typeCombo.setSelection(new StructuredSelection(tuner.getTunerType()));
 			} else {
-				typeCombo.setSelection(new StructuredSelection(FRONTEND.TUNER_TYPE_RX_DIGITIZER.value));
+				typeCombo.setSelection(new StructuredSelection(FRONTEND.TUNER_TYPE_RDC.value));
 			}
 		} else {
 			String tunerType = (String) tunerAllocationStruct.getSimple(TunerAllocationProperties.TUNER_TYPE.getId()).getValue();
@@ -906,7 +906,9 @@ public class TunerAllocationWizardPage extends WizardPage {
 		if (getAllocationMode() == AllocationMode.LISTENER) {
 			return false;
 		}
-		String tunerType = (String) tunerAllocationStruct.getSimple(TunerAllocationProperties.TUNER_TYPE.getId()).getValue();
-		return FRONTEND.TUNER_TYPE_RX_SCANNER_DIGITIZER.value.equals(tunerType);
+		// RESOLVE 
+		//String tunerType = (String) tunerAllocationStruct.getSimple(TunerAllocationProperties.TUNER_TYPE.getId()).getValue();
+		//return FRONTEND.TUNER_TYPE_RDC.value.equals(tunerType);
+		return false;
 	}
 }

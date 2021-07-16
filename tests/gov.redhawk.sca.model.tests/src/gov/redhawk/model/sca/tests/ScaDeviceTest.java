@@ -64,6 +64,8 @@ import CF.DevicePackage.UsageType;
  * State</em>}</li>
  * <li>{@link CF.DeviceOperations#allocateCapacity(CF.DataType[]) <em>Allocate Capacity</em>}</li>
  * <li>{@link CF.DeviceOperations#deallocateCapacity(CF.DataType[]) <em>Deallocate Capacity</em>}</li>
+ * <li>{@link CF.DeviceOperations#allocate(CF.DataType[]) <em>Allocate</em>}</li>
+ * <li>{@link CF.DeviceOperations#deallocate(java.lang.String) <em>Deallocate</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -679,6 +681,32 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 		// END GENERATED CODE
 		getFixture().deallocateCapacity(new DataType[0]);
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link CF.DeviceOperations#allocate(CF.DataType[]) <em>Allocate</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see CF.DeviceOperations#allocate(CF.DataType[])
+	 * @generated
+	 */
+	public void testAllocate__DataType() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link CF.DeviceOperations#deallocate(java.lang.String) <em>Deallocate</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see CF.DeviceOperations#deallocate(java.lang.String)
+	 * @generated
+	 */
+	public void testDeallocate__String() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
 	}
 
 	// END GENERATED CODE

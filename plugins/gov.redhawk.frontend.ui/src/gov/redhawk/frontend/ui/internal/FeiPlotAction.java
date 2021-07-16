@@ -25,12 +25,7 @@ import org.eclipse.core.expressions.EvaluationContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
@@ -45,23 +40,14 @@ import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 import org.eclipse.ui.progress.UIJob;
 
-import CF.DataType;
-import CF.PropertiesHelper;
-import gov.redhawk.frontend.FrontendPackage;
-import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
-import gov.redhawk.frontend.ui.TunerStatusUtil;
 import gov.redhawk.frontend.ui.internal.section.FrontendSection;
-import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaUsesPort;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
-import gov.redhawk.sca.model.jobs.AllocateJob;
-import gov.redhawk.sca.model.jobs.DeallocateJob;
 import gov.redhawk.ui.port.nxmplot.IPlotView;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
@@ -80,26 +66,16 @@ public class FeiPlotAction extends FrontendAction {
 		if (obj instanceof TunerStatus) {
 			final TunerStatus tuner = (TunerStatus) obj;
 			final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
-			String listenerAllocationID = "Plot_" + System.getProperty("user.name") + ":" + System.currentTimeMillis();
-			final DataType[] props = TunerStatusUtil.createAllocationProperties(listenerAllocationID, tuner);
-
-			Job job = new AllocateJob(device, props);
-			job.setName("Allocate listener for tuner " + tuner.getAllocationID());
-			job.setUser(true);
+			String connectionID = "Plot_" + System.getProperty("user.name") + ":" + System.currentTimeMillis();
 
 			UIJob uiJob = new UIJob("Launching Plot View...") {
 
 				@Override
 				public IStatus runInUIThread(IProgressMonitor monitor) {
 					try {
-						IStatus retVal = createPlotView(props, device, tuner);
-						if (!retVal.isOK()) {
-							deallocate(tuner, props, device);
-						}
-
+						IStatus retVal = createPlotView(connectionID, device, tuner);
 						return retVal;
 					} catch (ExecutionException e) {
-						deallocate(tuner, props, device);
 						return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to open plot view", e);
 					}
 				}
@@ -107,23 +83,11 @@ public class FeiPlotAction extends FrontendAction {
 			};
 			uiJob.setUser(false);
 			uiJob.setSystem(true);
-
-			// Successful listener allocation -> open plot view
-			job.addJobChangeListener(new JobChangeAdapter() {
-				@Override
-				public void done(IJobChangeEvent event) {
-					if (event.getResult().isOK()) {
-						uiJob.schedule();
-					}
-				}
-			});
-
-			// Kick off the first job
-			job.schedule();
+			uiJob.schedule();
 		}
 	}
 
-	private IStatus createPlotView(final DataType[] props, final ScaDevice< ? > device, final TunerStatus tuner) throws ExecutionException {
+	private IStatus createPlotView(final String connectionID, final ScaDevice< ? > device, final TunerStatus tuner) throws ExecutionException {
 		List<ScaPort< ? , ? >> devicePorts = device.getPorts();
 		List<ScaUsesPort> usesPorts = new ArrayList<ScaUsesPort>();
 		for (ScaPort< ? , ? > port : devicePorts) {
@@ -181,8 +145,7 @@ public class FeiPlotAction extends FrontendAction {
 		Map<String, Object> exParam = new HashMap<String, Object>();
 		exParam.put(IPlotView.PARAM_PLOT_TYPE, "LINE");
 		exParam.put(IPlotView.PARAM_ISFFT, "false");
-		final String listenerID = getListenerID(props);
-		exParam.put(IPlotView.PARAM_CONNECTION_ID, listenerID);
+		exParam.put(IPlotView.PARAM_CONNECTION_ID, connectionID);
 		exParam.put(IPlotView.PARAM_SECONDARY_ID, createSecondaryId());
 
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
@@ -193,87 +156,11 @@ public class FeiPlotAction extends FrontendAction {
 		if (view != null) {
 			view.setPartName(name.toString());
 			view.setTitleToolTip(tooltip.toString());
-			view.getPlotPageBook().addDisposeListener(event -> deallocate(tuner, props, device));
-
-			ScaModelCommand.execute(tuner, new ScaModelCommand() {
-
-				@Override
-				public void execute() {
-					for (ListenerAllocation a : tuner.getListenerAllocations()) {
-						if (a.getListenerID().equals(listenerID)) {
-							a.eAdapters().add(new AdapterImpl() {
-								@Override
-								public void notifyChanged(org.eclipse.emf.common.notify.Notification msg) {
-									if (msg.isTouch()) {
-										return;
-									}
-									switch (msg.getFeatureID(ListenerAllocation.class)) {
-									case FrontendPackage.LISTENER_ALLOCATION__TUNER_STATUS:
-										if (msg.getNewValue() == null) {
-											((Notifier) msg.getNotifier()).eAdapters().remove(this);
-											if (view.getPlotPageBook().isDisposed()) {
-												return;
-											}
-											view.getPlotPageBook().getDisplay().asyncExec(new Runnable() {
-
-												@Override
-												public void run() {
-													view.getPlotPageBook().dispose();
-												}
-
-											});
-										}
-										break;
-									default:
-									}
-								}
-							});
-						}
-					}
-				}
-			});
 		} else {
 			return Status.CANCEL_STATUS;
 		}
 
 		return Status.OK_STATUS;
-	}
-
-	private void deallocate(final TunerStatus tuner, final DataType[] props, final ScaDevice< ? > device) {
-		Job job = new DeallocateJob(device, props) {
-			@Override
-			protected IStatus run(IProgressMonitor parentMonitor) {
-				String listenerId = getListenerID(props);
-				boolean containsListener = ScaModelCommand.runExclusive(tuner, () -> {
-					for (ListenerAllocation a : tuner.getListenerAllocations()) {
-						if (a.getListenerID().equals(listenerId)) {
-							return true;
-						}
-					}
-					return false;
-				});
-				if (containsListener) {
-					return super.run(parentMonitor);
-				} else {
-					return Status.CANCEL_STATUS;
-				}
-			}
-		};
-		job.setUser(false);
-		job.setSystem(true);
-		job.schedule();
-	}
-
-	private String getListenerID(DataType[] props) {
-		for (DataType prop : props) {
-			DataType[] dt = PropertiesHelper.extract(prop.value);
-			for (DataType d : dt) {
-				if (d.id.equals(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId())) {
-					return (d.value.toString());
-				}
-			}
-		}
-		return "";
 	}
 
 	private String createSecondaryId() {

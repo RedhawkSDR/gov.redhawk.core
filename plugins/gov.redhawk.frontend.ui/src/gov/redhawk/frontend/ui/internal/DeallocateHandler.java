@@ -16,26 +16,17 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.expressions.IEvaluationContext;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import CF.DataType;
-import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.internal.section.FrontendSection;
-import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperty;
-import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperty;
 import gov.redhawk.frontend.util.TunerUtils;
 import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.model.jobs.DeallocateJob;
-import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public class DeallocateHandler extends AbstractHandler implements IHandler {
@@ -89,44 +80,11 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 			for (TunerStatus tuner : container.getTunerStatus().toArray(new TunerStatus[0])) {
 				deallocateTuner(tuner);
 			}
-		} else if (obj instanceof ListenerAllocation) {
-			final ListenerAllocation listener = (ListenerAllocation) obj;
-			if (listener.getTunerStatus() == null) {
-				// already deallocated, probably still in a pinned properties view
-				return null;
-			}
-			final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(listener, ScaDevice.class);
-			if (device == null) {
-				return null;
-			}
-
-			Struct allocProp = ListenerAllocationProperty.INSTANCE.createDeallocationStruct(listener);
-			DataType dt = new DataType(allocProp.getId(), allocProp.toAny());
-
-			Job job = new DeallocateJob(device, dt);
-			job.setName("Deallocate FEI listener");
-			job.setUser(true);
-			job.addJobChangeListener(new JobChangeAdapter() {
-				@Override
-				public void done(IJobChangeEvent event) {
-					IStatus result = event.getResult();
-					if (result == null || !result.isOK()) {
-						return;
-					}
-
-					final TunerStatus tunerStatus = listener.getTunerStatus();
-					if (tunerStatus != null) {
-						ScaModelCommand.execute(tunerStatus, new ScaModelCommand() {
-							@Override
-							public void execute() {
-								tunerStatus.getListenerAllocations().remove(listener);
-							}
-						});
-					}
-				}
-			});
-			job.schedule();
-		}
+		} 
+		// RESOVLE - remove 
+		//else if (obj instanceof ListenerAllocation) {
+		//
+		//}
 
 		// If called from toolbar button, we must unset the property page's selection to clear it
 		Object section = ((IEvaluationContext) event.getApplicationContext()).getVariable("gov.redhawk.frontend.propertySection");
@@ -163,10 +121,8 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 
 	private void deallocateTuner(TunerStatus tuner) {
 		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
-		Struct allocProp = TunerAllocationProperty.INSTANCE.createDeallocationStruct(tuner);
-		final DataType prop = new DataType(allocProp.getId(), allocProp.toAny());
 
-		Job job = new DeallocateJob(device, prop);
+		Job job = new DeallocateJob(device, tuner.getAllocationID());
 		job.setName("Deallocate FEI control");
 		job.setUser(true);
 		job.schedule();

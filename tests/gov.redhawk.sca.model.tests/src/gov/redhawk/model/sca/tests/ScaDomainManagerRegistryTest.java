@@ -15,11 +15,8 @@ import gov.redhawk.model.sca.ScaDocumentRoot;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaEventChannel;
 import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import org.junit.Assert;
-import org.junit.Test;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 

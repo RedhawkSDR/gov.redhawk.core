@@ -155,6 +155,18 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated NOT
+	 * @since 24.1
+	 */
+	@Override
+	public void setDefinition(Struct newDefinition) {
+		super.setDefinition(newDefinition);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
 	 * <!-- end-user-doc -->

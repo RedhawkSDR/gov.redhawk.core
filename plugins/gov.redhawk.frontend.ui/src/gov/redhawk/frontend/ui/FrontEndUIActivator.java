@@ -48,9 +48,18 @@ public class FrontEndUIActivator extends AbstractUIPlugin {
 
 	private static List<String> getSupportedTuner() {
 		List<String> supportedTunerTypes = new ArrayList<String>();
-		Collections.addAll(supportedTunerTypes, FRONTEND.TUNER_TYPE_RX_DIGITIZER.value, FRONTEND.TUNER_TYPE_RX_SCANNER_DIGITIZER.value,
-			FRONTEND.TUNER_TYPE_CHANNELIZER.value, FRONTEND.TUNER_TYPE_DDC.value, FRONTEND.TUNER_TYPE_RX.value,
-			FRONTEND.TUNER_TYPE_RX_DIGITIZER_CHANNELIZER.value, FRONTEND.TUNER_TYPE_TX.value);
+		Collections.addAll(supportedTunerTypes, 
+			FRONTEND.TUNER_TYPE_RX.value,
+			FRONTEND.TUNER_TYPE_RX_ARRAY.value,
+			FRONTEND.TUNER_TYPE_ABOT.value,
+			FRONTEND.TUNER_TYPE_ARDC.value,
+			FRONTEND.TUNER_TYPE_DBOT.value,
+			FRONTEND.TUNER_TYPE_RDC.value,
+			FRONTEND.TUNER_TYPE_SRDC.value,
+			FRONTEND.TUNER_TYPE_DRDC.value,
+			FRONTEND.TUNER_TYPE_TX_ARRAY.value,
+			FRONTEND.TUNER_TYPE_TX.value,
+			FRONTEND.TUNER_TYPE_TDC.value);
 		return Collections.unmodifiableList(supportedTunerTypes);
 	}
 

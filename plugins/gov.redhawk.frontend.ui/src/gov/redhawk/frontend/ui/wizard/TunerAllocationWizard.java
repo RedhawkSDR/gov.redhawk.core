@@ -24,10 +24,13 @@ import org.eclipse.jface.wizard.Wizard;
 import CF.DataType;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
+// RESOLVE - Scanner
+/**
 import gov.redhawk.frontend.ui.FrontEndUIActivator.AllocationMode;
 import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperty;
 import gov.redhawk.frontend.util.TunerProperties.ScannerAllocationProperty;
 import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperties;
+**/
 import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperty;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaStructProperty;
@@ -137,6 +140,8 @@ public class TunerAllocationWizard extends Wizard {
 	}
 
 	private DataType[] createAllocationProperties() {
+		// RESOLVE - No Need for Listeners
+		/**
 		// If the listener-only page was shown
 		if (listener) {
 			ScaStructProperty struct = listenerPage.getListenerAllocationStruct();
@@ -150,13 +155,16 @@ public class TunerAllocationWizard extends Wizard {
 			DataType dt = new DataType(ListenerAllocationProperty.INSTANCE.getId(), struct.toAny());
 			return new DataType[] { dt };
 		}
+		**/
 
 		// The full page was shown (allocate or listen), and the user chose allocate
 		List<DataType> props = new ArrayList<DataType>();
 		ScaStructProperty struct = allocatePage.getTunerAllocationStruct();
 		DataType dt = new DataType(TunerAllocationProperty.INSTANCE.getId(), struct.toAny());
 		props.add(dt);
-
+		
+		// RESOLVE - Scanning for FEI 3.0
+		/**
 		// Did they choose a scanner allocation? Add the property for it if so.
 		String tunerType = (String) struct.getSimple(TunerAllocationProperties.TUNER_TYPE.getId()).getValue();
 		if (FRONTEND.TUNER_TYPE_RX_SCANNER_DIGITIZER.value.equals(tunerType)) {
@@ -164,6 +172,7 @@ public class TunerAllocationWizard extends Wizard {
 			dt = new DataType(ScannerAllocationProperty.INSTANCE.getId(), struct.toAny());
 			props.add(dt);
 		}
+		**/
 
 		return props.toArray(new DataType[0]);
 	}

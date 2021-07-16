@@ -19,6 +19,7 @@ import CF.AggregateDevice;
 import CF.DataType;
 import CF.DeviceOperations;
 import CF.DevicePackage.AdminType;
+import CF.DevicePackage.Allocation;
 import CF.DevicePackage.InsufficientCapacity;
 import CF.DevicePackage.InvalidCapacity;
 import CF.DevicePackage.InvalidState;
@@ -91,5 +92,18 @@ public class AbstractDeviceImpl extends AbstractResourceImpl implements
 		// TODO Auto-generated method stub
 
 	}
+	
+	       
+	@Override
+	public Allocation[] allocate(DataType[] capacities) throws InvalidCapacity, InvalidState, InsufficientCapacity {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void deallocate(String allocationId) throws InvalidCapacity, InvalidState {
+		// TODO Auto-generated method stub
+	}
+
 
 }

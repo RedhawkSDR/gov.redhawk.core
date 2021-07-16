@@ -70,6 +70,7 @@ import CF.DevicePackage.InvalidCapacity;
 import CF.DevicePackage.InvalidState;
 import CF.DevicePackage.OperationalType;
 import CF.DevicePackage.UsageType;
+import CF.DevicePackage.Allocation;
 
 /**
  * <!-- begin-user-doc -->
@@ -1046,6 +1047,41 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		device.deallocateCapacity(capacities);
 	}
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 * @since 24.1
+	 */
+	@Override
+	public Allocation[] allocate(DataType[] capacities) throws InvalidCapacity, InvalidState, InsufficientCapacity {
+		D device = fetchNarrowedObject(null);
+		if (device == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		Allocation[] result = device.allocate(capacities);
+		try {
+			this.refresh(null, RefreshDepth.SELF);
+		} catch (InterruptedException e) {
+			// PASS
+		}
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @generated NOT
+	 * @since 24.1
+	 */
+	@Override
+	public void deallocate(String allocationId) throws InvalidCapacity, InvalidState {
+		D device = fetchNarrowedObject(null);
+		if (device == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		device.deallocate(allocationId);
+	}
+
 	// BEGIN GENERATED CODE
 
 	/**
@@ -1431,7 +1467,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		}
 
 		// The componentInstantiation cannot be found
-		IStatus status = new Status(IStatus.ERROR, ScaModelPlugin.ID, "Cannot locate componentInstantiation in DCD XML");
+		IStatus status = new Status(IStatus.WARNING, ScaModelPlugin.ID, "Cannot locate componentInstantiation in DCD XML");
 		ScaModelCommand command = new SetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DEVICE__COMPONENT_INSTANTIATION, status);
 		ScaModelCommand.execute(this, command);
 	}

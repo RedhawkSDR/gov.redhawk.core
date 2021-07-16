@@ -22,6 +22,7 @@ import CF.DataType;
 import CF.DevicePackage.InsufficientCapacity;
 import CF.DevicePackage.InvalidCapacity;
 import CF.DevicePackage.InvalidState;
+import CF.DevicePackage.Allocation;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaModelPlugin;
@@ -58,7 +59,8 @@ public class AllocateJob extends Job {
 			// Attempt the allocation
 			IStatus result = CorbaUtils2.invoke(() -> {
 				try {
-					if (device.allocateCapacity(allocation)) {
+					Allocation[] allocationResults = device.allocate(allocation);
+					if (allocationResults != null &&  allocationResults.length > 0) {
 						return Status.OK_STATUS;
 					} else {
 						return new Status(IStatus.ERROR, ScaModelPlugin.ID, "Allocation failed. Device returned 'false' to allocation requestion.");

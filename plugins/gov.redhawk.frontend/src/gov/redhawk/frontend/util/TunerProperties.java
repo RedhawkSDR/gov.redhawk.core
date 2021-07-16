@@ -570,7 +570,7 @@ public enum TunerProperties {
 					PropertyValueType.STRING,
 					null,
 					"Tuner type",
-					"Example Tuner Types: TX, RX, CHANNELIZER, DDC, RX_DIGITIZER, RX_DIGTIZIER_CHANNELIZER"),
+					"Example Tuner Types: RX, RX_ARRAY, ABOT, DBOT, ARDC, RDC, SRDC, DRDC,  TX, TDC, TX_ARRAY"),
 		ALLOCATION_ID(
 				"allocation_id",
 					PropertyValueType.STRING,
