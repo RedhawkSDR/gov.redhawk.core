@@ -19,7 +19,6 @@ import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.conversion.IConverter;
-import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
@@ -57,8 +56,6 @@ import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.FrontEndUIActivator.AllocationMode;
 import gov.redhawk.frontend.util.MultiRange;
-import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
-import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperty;
 import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperties;
 import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperty;
 import gov.redhawk.frontend.util.TunerProperties.TunerStatusAllocationProperties;
@@ -75,9 +72,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private static final double FREQUENCY_VALUE_CONVERSION_FACTOR = 1e6;
 
 	private static final String ALLOCATE_TUNER = Messages.TunerAllocationWizardPage_ControlNewTuner;
-	private static final String LISTEN_TUNER_BY_ID = Messages.TunerAllocationWizardPage_ListenTunerByID;
-	private static final String LISTEN_TUNER_BY_PROPERTIES = Messages.TunerAllocationWizardPage_ListenTunerByProps;
-	private static final String[] TUNER_ALLOCATION_TYPES = new String[] { ALLOCATE_TUNER, LISTEN_TUNER_BY_ID, LISTEN_TUNER_BY_PROPERTIES };
+	private static final String[] TUNER_ALLOCATION_TYPES = new String[] { ALLOCATE_TUNER };
 
 	private TunerStatus tuner;
 	private ScaDevice< ? > feiDevice;
@@ -85,7 +80,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private ScaStructProperty listenerAllocationStruct;
 
 	private ComboViewer allocationComboViewer;
-	private Text targetAllocText;
 	private Text allocIdText;
 	private ComboViewer typeCombo;
 	private Text cfText;
@@ -153,10 +147,9 @@ public class TunerAllocationWizardPage extends WizardPage {
 		public void selectionChanged(SelectionChangedEvent event) {
 			IStructuredSelection structuredSelection = (IStructuredSelection) allocationComboViewer.getSelection();
 			String selection = (String) structuredSelection.getFirstElement();
-			if (ALLOCATE_TUNER.equals(selection) || LISTEN_TUNER_BY_PROPERTIES.equals(selection)) {
+			allocationMode = AllocationMode.TUNER;
+			if (ALLOCATE_TUNER.equals(selection)) {
 				allocationMode = AllocationMode.TUNER;
-			} else {
-				allocationMode = AllocationMode.LISTENER;
 			}
 
 			tunerAllocationStruct.getSimple(TunerAllocationProperties.DEVICE_CONTROL.getId()).setValue(ALLOCATE_TUNER.equals(selection));
@@ -170,7 +163,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			if (srAnyValue.getSelection()) {
 				srText.setEnabled(false);
 			}
-			targetAllocText.setEnabled(LISTEN_TUNER_BY_ID.equals(selection));
+			
 			for (Object binding : context.getBindings()) {
 				((Binding) binding).validateModelToTarget();
 				((Binding) binding).validateTargetToModel();
@@ -243,24 +236,14 @@ public class TunerAllocationWizardPage extends WizardPage {
 		if (TunerAllocationProperty.INSTANCE.getId().equals(allocationStruct.getId())) {
 			setTunerAllocationStruct(allocationStruct);
 			ScaSimpleProperty deviceControl = (ScaSimpleProperty) allocationStruct.getField(TunerAllocationProperties.DEVICE_CONTROL.getId());
-			if (!(Boolean) deviceControl.getValue()) {
-				// withOUT device control
-				defaultAllocationType = LISTEN_TUNER_BY_PROPERTIES;
-			} else {
-				defaultAllocationType = ALLOCATE_TUNER;
-			}
+			defaultAllocationType = ALLOCATE_TUNER;
 			allocationMode = AllocationMode.TUNER;
-		} else if (ListenerAllocationProperty.INSTANCE.getId().equals(allocationStruct.getId())) {
-			setListenerAllocationStruct(allocationStruct);
-			defaultAllocationType = LISTEN_TUNER_BY_ID;
-			allocationMode = AllocationMode.LISTENER;
-		}
+		} 
 	}
 
 	@Override
 	public void createControl(Composite parent) {
 		initializeTunerAllocationStruct();
-		initializeListenerAllocationStruct();
 
 		setTitle(Messages.TunerAllocationWizardPage_PageTitle);
 		setDescription(Messages.TunerAllocationWizardPage_PageDescription);
@@ -278,9 +261,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 		tunerTypeStrategy.setAfterGetValidator(value -> {
 			IStructuredSelection structuredSelection = (IStructuredSelection) allocationComboViewer.getSelection();
 			String selection = (String) structuredSelection.getFirstElement();
-			if (LISTEN_TUNER_BY_ID.equals(selection)) {
-				return ValidationStatus.ok();
-			}
 			String s = (String) value;
 			if (s == null || s.trim().isEmpty()) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoTunerType);
@@ -328,11 +308,9 @@ public class TunerAllocationWizardPage extends WizardPage {
 		// the model whose value we care about last so that its value ends up in the text box. The value will also
 		// overwrite the value in the other model we don't care about.
 		if (allocationMode == AllocationMode.TUNER) {
-			bindListenerAllocID(targetToModel);
 			bindTunerAllocID(targetToModel);
 		} else {
 			bindTunerAllocID(targetToModel);
-			bindListenerAllocID(targetToModel);
 		}
 
 		allocIdText.addListener(SWT.FocusIn, event -> {
@@ -354,40 +332,10 @@ public class TunerAllocationWizardPage extends WizardPage {
 			SWT.TOP | SWT.LEFT);
 	}
 
-	private void bindListenerAllocID(UpdateValueStrategy targetToModel) {
-		ControlDecorationSupport.create(context.bindValue(WidgetProperties.text(SWT.Modify).observe(allocIdText),
-			SCAObservables.observeSimpleProperty(listenerAllocationStruct.getSimple(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId())),
-			targetToModel, null), SWT.TOP | SWT.LEFT);
-	}
-
-	private void addExistingAllocIdBindings() {
-		UpdateValueStrategy targetToModel = new UpdateValueStrategy();
-		UpdateValueStrategy modelToTarget = new UpdateValueStrategy();
-		IValidator validator = value -> {
-			if (allocationMode == AllocationMode.TUNER) {
-				return ValidationStatus.ok();
-			}
-			String s = (String) value;
-			if (s == null || s.trim().isEmpty()) {
-				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoExistingAllocationID);
-			}
-			return ValidationStatus.ok();
-		};
-		targetToModel.setAfterGetValidator(validator);
-		modelToTarget.setAfterGetValidator(validator);
-
-		ControlDecorationSupport.create(context.bindValue(WidgetProperties.text(SWT.Modify).observe(targetAllocText),
-			SCAObservables.observeSimpleProperty(listenerAllocationStruct.getSimple(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.getId())),
-			targetToModel, modelToTarget), SWT.TOP | SWT.LEFT);
-	}
-
 	private void addCfBindings() {
 		UpdateValueStrategy targetToModel = new UpdateValueStrategy();
 		targetToModel.setConverter(stringToDoubleFreqConverter);
 		targetToModel.setAfterGetValidator(value -> {
-			if (allocationMode == AllocationMode.LISTENER) {
-				return ValidationStatus.ok();
-			}
 			String s = (String) value;
 			if (s == null || s.trim().isEmpty()) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoCenterFreq);
@@ -400,9 +348,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 			return ValidationStatus.ok();
 		});
 		targetToModel.setAfterConvertValidator(value -> {
-			if (allocationMode == AllocationMode.LISTENER) {
-				return ValidationStatus.ok();
-			}
 			if (value == null) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoCenterFreq);
 			}
@@ -428,7 +373,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		UpdateValueStrategy targetToModel = new UpdateValueStrategy();
 		targetToModel.setConverter(stringToDoubleFreqConverter);
 		targetToModel.setAfterGetValidator(value -> {
-			if (allocationMode == AllocationMode.LISTENER || bwAnyValue.getSelection()) {
+			if (bwAnyValue.getSelection())  {
 				return ValidationStatus.ok();
 			}
 			String s = (String) value;
@@ -443,7 +388,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			return ValidationStatus.ok();
 		});
 		targetToModel.setAfterConvertValidator(value -> {
-			if (allocationMode == AllocationMode.LISTENER || bwAnyValue.getSelection()) {
+			if (bwAnyValue.getSelection()) {
 				return ValidationStatus.ok();
 			}
 			if (value == null) {
@@ -508,9 +453,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private void addBwToleranceBindings() {
 		UpdateValueStrategy targetToModel = new EMFUpdateValueStrategy();
 		targetToModel.setAfterGetValidator(value -> {
-			if (allocationMode == AllocationMode.LISTENER) {
-				return ValidationStatus.ok();
-			}
 			String s = (String) value;
 			if (s == null || s.trim().isEmpty()) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoBandwidthTolerance);
@@ -523,9 +465,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 			return ValidationStatus.ok();
 		});
 		targetToModel.setAfterConvertValidator(value -> {
-			if (allocationMode == AllocationMode.LISTENER) {
-				return ValidationStatus.ok();
-			}
 			if (value == null) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoBandwidthTolerance);
 			}
@@ -548,7 +487,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		UpdateValueStrategy targetToModel = new UpdateValueStrategy();
 		targetToModel.setConverter(stringToDoubleFreqConverter);
 		targetToModel.setAfterGetValidator(value -> {
-			if (allocationMode == AllocationMode.LISTENER || srAnyValue.getSelection()) {
+			if (srAnyValue.getSelection()) {
 				return ValidationStatus.ok();
 			}
 			String s = (String) value;
@@ -563,7 +502,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			return ValidationStatus.ok();
 		});
 		targetToModel.setAfterConvertValidator(value -> {
-			if (allocationMode == AllocationMode.LISTENER || srAnyValue.getSelection()) {
+			if (srAnyValue.getSelection()) {
 				return ValidationStatus.ok();
 			}
 			if (value == null) {
@@ -596,9 +535,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private void addSrToleranceBindings() {
 		UpdateValueStrategy targetToModel = new EMFUpdateValueStrategy();
 		targetToModel.setAfterGetValidator(value -> {
-			if (allocationMode == AllocationMode.LISTENER) {
-				return ValidationStatus.ok();
-			}
 			String s = (String) value;
 			if (s == null || s.trim().isEmpty()) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoSampleRateTolerance);
@@ -611,9 +547,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 			return ValidationStatus.ok();
 		});
 		targetToModel.setAfterConvertValidator(value -> {
-			if (allocationMode == AllocationMode.LISTENER) {
-				return ValidationStatus.ok();
-			}
 			if (value == null) {
 				return ValidationStatus.error(Messages.TunerAllocationWizardPage_Error_NoSampleRateTolerance);
 			}
@@ -654,7 +587,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 	public void addBindings() {
 		addTunerTypeBindings();
 		addAllocIdBindings();
-		addExistingAllocIdBindings();
 		addCfBindings();
 		addBwBindings();
 		addBwToleranceBindings();
@@ -672,24 +604,12 @@ public class TunerAllocationWizardPage extends WizardPage {
 		}
 
 		String allocId;
-		if (listenerAllocationStruct != null) {
-			// Use allocation ID from the existing listener
-			allocId = (String) listenerAllocationStruct.getSimple(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.getId()).getValue();
-		} else {
-			// Generate a new allocation ID
-			allocId = generateDefaultAllocID();
-		}
+		// Generate a new allocation ID
+		allocId = generateDefaultAllocID();
 		tunerAllocationStruct = FEIStructDefaults.defaultTunerAllocationStruct(allocId);
 	}
 
-	private void initializeListenerAllocationStruct() {
-		// if not null it was provided in constructor
-		if (listenerAllocationStruct != null) {
-			return;
-		}
 
-		listenerAllocationStruct = FEIStructDefaults.defaultListenerAllocationStruct();
-	}
 
 	private String generateDefaultAllocID() {
 		allocationIDGenerated = true;
@@ -726,13 +646,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 		GridData groupGridData = GridDataFactory.fillDefaults().grab(true, false).create();
 		groupGridData.horizontalSpan = 2;
 		allocPropGroup.setLayoutData(groupGridData);
-
-		Label targetAllocLabel = new Label(allocPropGroup, SWT.NONE);
-		targetAllocLabel.setText(Messages.TunerAllocationWizardPage_ExistingAllocID_Text);
-		targetAllocText = new Text(allocPropGroup, SWT.BORDER);
-		targetAllocText.setToolTipText(Messages.TunerAllocationWizardPage_ExistingAllocID_ToolTip);
-		targetAllocText.setEnabled(false);
-		GridDataFactory.fillDefaults().grab(true, false).applyTo(targetAllocText);
 
 		Label allocIdLabel = new Label(allocPropGroup, SWT.NONE);
 		allocIdLabel.setText(Messages.TunerAllocationWizardPage_NewAllocID_Text);
@@ -868,6 +781,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		this.tunerAllocationStruct = tunerAllocationStruct;
 	}
 
+	/** leaving the following public interfaces so Compatablity check won't get a Red X **/
 	public ScaStructProperty getListenerAllocationStruct() {
 		return this.listenerAllocationStruct;
 	}
@@ -878,8 +792,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 
 	public ScaStructProperty getAllocationStruct() {
 		switch (allocationMode) {
-		case LISTENER:
-			return listenerAllocationStruct;
 		case TUNER:
 			return tunerAllocationStruct;
 		default:
@@ -903,12 +815,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 	 * @since 1.1
 	 */
 	public boolean isScannerAllocation() {
-		if (getAllocationMode() == AllocationMode.LISTENER) {
-			return false;
-		}
-		// RESOLVE 
-		//String tunerType = (String) tunerAllocationStruct.getSimple(TunerAllocationProperties.TUNER_TYPE.getId()).getValue();
-		//return FRONTEND.TUNER_TYPE_RDC.value.equals(tunerType);
+		// removed for 3.0 since scanning is not a separate device type, keeping method so Compatablity check does not yield red x 
 		return false;
 	}
 }
