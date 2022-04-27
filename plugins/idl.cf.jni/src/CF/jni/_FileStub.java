@@ -17,17 +17,17 @@ public class _FileStub extends omnijni.ObjectImpl implements CF.File
   }
   private static native String _get_fileName (long __ref__);
 
-  public int filePointer ()
+  public long filePointer ()
   {
     return _get_filePointer(this.ref_);
   }
-  private static native int _get_filePointer (long __ref__);
+  private static native long _get_filePointer (long __ref__);
 
-  public void read (CF.OctetSequenceHolder data, int length)
+  public void read (CF.OctetSequenceHolder data, long length)
   {
     read(this.ref_, data, length);
   }
-  private static native void read (long __ref__, CF.OctetSequenceHolder data, int length);
+  private static native void read (long __ref__, CF.OctetSequenceHolder data, long length);
 
   public void write (byte[] data)
   {
@@ -35,11 +35,11 @@ public class _FileStub extends omnijni.ObjectImpl implements CF.File
   }
   private static native void write (long __ref__, byte[] data);
 
-  public int sizeOf ()
+  public long sizeOf ()
   {
     return sizeOf(this.ref_);
   }
-  private static native int sizeOf (long __ref__);
+  private static native long sizeOf (long __ref__);
 
   public void close ()
   {
@@ -47,11 +47,11 @@ public class _FileStub extends omnijni.ObjectImpl implements CF.File
   }
   private static native void close (long __ref__);
 
-  public void setFilePointer (int filePointer)
+  public void setFilePointer (long filePointer)
   {
     setFilePointer(this.ref_, filePointer);
   }
-  private static native void setFilePointer (long __ref__, int filePointer);
+  private static native void setFilePointer (long __ref__, long filePointer);
 
   private static String __ids[] = {
     "IDL:CF/File:1.0",

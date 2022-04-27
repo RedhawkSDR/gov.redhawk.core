@@ -22,6 +22,7 @@ package org.ossie.component;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -108,6 +109,7 @@ public abstract class Device extends Resource implements DeviceOperations {
      *
      * @deprecated
      */
+    @Deprecated
     protected HashMap <String, AllocCapacity> callbacks = new HashMap<String,AllocCapacity>();
 
     /**
@@ -121,6 +123,7 @@ public abstract class Device extends Resource implements DeviceOperations {
      *
      * @deprecated
      */
+    @Deprecated
     private List<IProperty> legacyAllocProps = null;
     private boolean warnedLegacyAllocProps = false;
 
@@ -315,48 +318,17 @@ public abstract class Device extends Resource implements DeviceOperations {
      * 
      * @param clazz
      * @param args
-     * @param builtInORB
-     * @param fragSize
-     * @param bufSize
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws InvalidObjectReference 
-     */
-    public static void start_device(final Class<? extends Device> clazz, final String[] args, final boolean builtInORB, final int fragSize, final int bufSize) 
-    throws InstantiationException, IllegalAccessException, InvalidObjectReference, ServantNotActive, WrongPolicy 
-    {
-        final Properties props = new Properties();
-        if (!builtInORB) {
-            props.put("org.omg.CORBA.ORBClass", "org.jacorb.orb.ORB");
-            props.put("org.omg.CORBA.ORBSingletonClass", "org.jacorb.orb.ORBSingleton");
-            props.put("jacorb.fragment_size", Integer.toString(fragSize));
-            props.put("jacorb.outbuf_size", Integer.toString(bufSize));
-            props.put("jacorb.maxManagedBufSize", "23");
-        } else {
-            props.put("com.sun.CORBA.giop.ORBFragmentSize", Integer.toString(fragSize));
-            props.put("com.sun.CORBA.giop.ORBBufferSize", Integer.toString(bufSize));
-        }
-        start_device(clazz, args, props);
-    }
-
-
-
-    /**
-     * Start-up function to be used from a main() function.
-     * 
-     * @param clazz
-     * @param args
-     * @param builtInORB
-     * @param fragSize
-     * @param bufSize
+     * @param props
      * @throws InstantiationException
      * @throws IllegalAccessException
      * @throws InvalidObjectReference 
      * @throws WrongPolicy 
      * @throws ServantNotActive 
+     * @throws NoSuchMethodException 
+     * @throws InvocationTargetException 
      */
     public static void start_device(final Class<? extends Device> clazz,  final String[] args, final Properties props) 
-    throws InstantiationException, IllegalAccessException, InvalidObjectReference, ServantNotActive, WrongPolicy 
+    throws InstantiationException, IllegalAccessException, InvalidObjectReference, ServantNotActive, WrongPolicy, NoSuchMethodException, InvocationTargetException 
     {
         // initialize middleware with command line/properties..
         final org.omg.CORBA.ORB orb = org.ossie.corba.utils.Init( args, props );
@@ -439,7 +411,7 @@ public abstract class Device extends Resource implements DeviceOperations {
         logging.DeviceCtx ctx = new logging.DeviceCtx( label, identifier, dom_path );
 	logging.Configure( logcfg_uri, debugLevel, ctx );
 
-        final Device device_i = clazz.newInstance();
+        final Device device_i = clazz.getDeclaredConstructor().newInstance();
         device_i.initializeProperties(execparams);
         final CF.Device device = device_i.setup(devMgr, 
                                                 compositeDevice, 
@@ -698,6 +670,7 @@ public abstract class Device extends Resource implements DeviceOperations {
      *
      * @deprecated
      */
+    @Deprecated
     @SuppressWarnings("deprecation")
     private void updateUsageStateLegacy() {
         boolean active = false;
