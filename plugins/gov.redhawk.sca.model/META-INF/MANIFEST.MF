@@ -46,5 +46,6 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  gov.redhawk.bulkio.util
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: gov.redhawk.model.sca.ScaModelPlugin
-Import-Package: org.osgi.service.event;version="1.3.0"
+Import-Package: org.osgi.service.event;version="1.3.0",
+ org.omg.CORBA_2_5
 Automatic-Module-Name: gov.redhawk.sca.model
