@@ -90,7 +90,7 @@ public class FileImplTest {
 	 */
 	@Test
 	public void testFilePointer() {
-		final int value = this.file.filePointer();
+		final long value = this.file.filePointer();
 		Assert.assertEquals(0, value);
 	}
 
@@ -114,7 +114,7 @@ public class FileImplTest {
 	 */
 	@Test
 	public void testSetFilePointer() {
-		final int value = this.file.filePointer();
+		final long value = this.file.filePointer();
 		Assert.assertEquals(0, value);
 		try {
 			this.file.setFilePointer(2);

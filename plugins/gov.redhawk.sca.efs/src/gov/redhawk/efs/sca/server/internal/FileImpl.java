@@ -91,10 +91,10 @@ public class FileImpl extends FilePOA {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int filePointer() {
+	public long filePointer() {
 		if (this.fileAccess != null) {
 			try {
-				return (int) this.fileAccess.getFilePointer();
+				return (long) this.fileAccess.getFilePointer();
 			} catch (final java.io.IOException e) {
 				// PASS
 			}
@@ -109,9 +109,9 @@ public class FileImpl extends FilePOA {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void read(final OctetSequenceHolder data, final int length) throws IOException {
+	public void read(final OctetSequenceHolder data, final long length) throws IOException {
 		if (this.fileAccess != null) {
-			final byte[] buffer = new byte[length];
+			final byte[] buffer = new byte[new Long(length).intValue()];
 			try {
 				final int read = this.fileAccess.read(buffer);
 				if (read == -1) {
@@ -136,7 +136,7 @@ public class FileImpl extends FilePOA {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setFilePointer(final int filePointer) throws InvalidFilePointer, FileException {
+	public void setFilePointer(final long filePointer) throws InvalidFilePointer, FileException {
 		if (this.fileAccess != null) {
 			try {
 				this.fileAccess.seek(filePointer);
@@ -155,8 +155,8 @@ public class FileImpl extends FilePOA {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int sizeOf() throws FileException {
-		return (int) this.file.length();
+	public long sizeOf() throws FileException {
+		return (long) this.file.length();
 	}
 
 	/* (non-Javadoc)
