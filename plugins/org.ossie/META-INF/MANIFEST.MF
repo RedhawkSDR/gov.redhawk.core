@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ossie
 Bundle-SymbolicName: org.ossie
-Bundle-Version: 3.0.0.qualifier
+Bundle-Version: 3.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: idl.bulkio.jni;bundle-version="3.0.0";visibility:=reexport,
  org.apache.commons.lang3;bundle-version="2.6.0",
