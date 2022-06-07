@@ -5,10 +5,13 @@ Bundle-SymbolicName: org.ossie
 Bundle-Version: 2.2.8.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: idl.bulkio.jni;bundle-version="2.2.0";visibility:=reexport,
- org.apache.commons.lang;bundle-version="2.6.0",
- org.apache.log4j;bundle-version="1.2.15"
+ org.apache.commons.lang;bundle-version="2.6.0"
 Import-Package: org.omg.CosEventChannelAdmin,
- org.omg.CosEventComm
+ org.omg.CosEventComm,
+ org.apache.log4j;version="1.2.19",
+ org.apache.log4j.spi;version="1.2.19",
+ org.apache.log4j.helpers;version="1.2.19",
+ org.apache.log4j.xml;version="1.2.19"
 Export-Package: org.ossie,
  org.ossie.component,
  org.ossie.events,
