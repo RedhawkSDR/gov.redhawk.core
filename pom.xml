@@ -27,6 +27,7 @@
     <nxm>http://nextmidas.techma.com/p2/nxm/updates/3.6/latest/</nxm>
     <nxm-ui>http://nextmidas.techma.com/p2/nxm.ui/updates/latest/</nxm-ui>
     <jacorb>http://download.redhawksdr.org/jacorb/updates/stable</jacorb>
+    <reload4j>http://download.redhawksdr.org/reload4j/1.2.19</reload4j>
     <!-- Sonar -->
     <sonar.language>java</sonar.language>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
@@ -38,6 +39,12 @@
   </properties>
 
   <repositories>
+
+    <repository>
+      <id>reload4j</id>
+      <layout>p2</layout>
+      <url>${reload4j}</url>
+    </repository>
 
     <repository>
       <id>eclipse</id>
