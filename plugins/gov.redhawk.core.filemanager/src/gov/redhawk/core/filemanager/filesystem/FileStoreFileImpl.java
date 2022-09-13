@@ -56,7 +56,7 @@ public class FileStoreFileImpl extends FilePOA {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int filePointer() {
+	public long filePointer() {
 		return this.pointer;
 	}
 
@@ -64,8 +64,8 @@ public class FileStoreFileImpl extends FilePOA {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void read(final OctetSequenceHolder data, final int length) throws IOException {
-		final byte[] buffer = new byte[length];
+	public void read(final OctetSequenceHolder data, final long length) throws IOException {
+		final byte[] buffer = new byte[new Long(length).intValue()];
 		try {
 			final int read = this.inputStream.read(buffer);
 			if (read == -1) {
@@ -96,8 +96,8 @@ public class FileStoreFileImpl extends FilePOA {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int sizeOf() throws FileException {
-		return (int) this.store.fetchInfo().getLength();
+	public long sizeOf() throws FileException {
+		return (long) this.store.fetchInfo().getLength();
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class FileStoreFileImpl extends FilePOA {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setFilePointer(final int filePointer) throws InvalidFilePointer, FileException {
+	public void setFilePointer(final long filePointer) throws InvalidFilePointer, FileException {
 		try {
 			long actualSkiped = this.inputStream.skip(filePointer);
 			this.pointer += actualSkiped;

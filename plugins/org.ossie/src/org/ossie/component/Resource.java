@@ -25,6 +25,7 @@
 package org.ossie.component;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -939,6 +940,7 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
      * @deprecated use started instead
      * @return true if the component is started
      */
+    @Deprecated
     public boolean isRunning() {
         return this._started;
     }
@@ -1069,6 +1071,7 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
      * @throws WrongPolicy 
      * @throws ServantNotActive 
      */
+    @Deprecated
     protected CF.Resource setup(final String compId, final String compName, final ORB orb, final POA poa) throws ServantNotActive, WrongPolicy {
         this.compId = compId;
         this.compName = compName;
@@ -1128,9 +1131,7 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
      * 
      * @param clazz
      * @param args
-     * @param builtInORB
-     * @param fragSize
-     * @param bufSize
+     * @param props
      * @throws InstantiationException
      * @throws IllegalAccessException
      * @throws InvalidObjectReference 
@@ -1139,43 +1140,11 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
      * @throws NotFound 
      * @throws WrongPolicy 
      * @throws ServantNotActive 
-     */
-    public static void start_component(final Class<? extends Resource> clazz, final String[] args, final boolean builtInORB, final int fragSize, final int bufSize) 
-	throws InstantiationException, IllegalAccessException, InvalidObjectReference, NotFound, CannotProceed, org.omg.CosNaming.NamingContextPackage.InvalidName, ServantNotActive, WrongPolicy 
-    {
-        final Properties props = new Properties();
-        if (!builtInORB) {
-            props.put("org.omg.CORBA.ORBClass", "org.jacorb.orb.ORB");
-            props.put("org.omg.CORBA.ORBSingletonClass", "org.jacorb.orb.ORBSingleton");
-            props.put("jacorb.fragment_size", Integer.toString(fragSize));
-            props.put("jacorb.outbuf_size", Integer.toString(bufSize));
-            props.put("jacorb.maxManagedBufSize", "23");
-        } else {
-            props.put("com.sun.CORBA.giop.ORBFragmentSize", Integer.toString(fragSize));
-            props.put("com.sun.CORBA.giop.ORBBufferSize", Integer.toString(bufSize));
-        }
-        start_component(clazz, args, props);
-    }
-
-    /**
-     * Start-up function to be used from a main() function.
-     * 
-     * @param clazz
-     * @param args
-     * @param builtInORB
-     * @param fragSize
-     * @param bufSize
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws InvalidObjectReference 
-     * @throws org.omg.CosNaming.NamingContextPackage.InvalidName 
-     * @throws CannotProceed 
-     * @throws NotFound 
-     * @throws WrongPolicy 
-     * @throws ServantNotActive 
+     * @throws NoSuchMethodException 
+     * @throws InvocationTargetException 
      */
     public static void start_component(final Class<? extends Resource> clazz,  final String[] args, final Properties props) 
-	throws InstantiationException, IllegalAccessException, InvalidObjectReference, NotFound, CannotProceed, org.omg.CosNaming.NamingContextPackage.InvalidName, ServantNotActive, WrongPolicy 
+	throws InstantiationException, IllegalAccessException, InvalidObjectReference, NotFound, CannotProceed, org.omg.CosNaming.NamingContextPackage.InvalidName, ServantNotActive, WrongPolicy , NoSuchMethodException, InvocationTargetException
     {
         if (args.length == 1) {
             if (args[0].equals("-i")) {
@@ -1276,7 +1245,7 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
 	logging.ComponentCtx ctx = new	logging.ComponentCtx( nameBinding, identifier, dom_path );
 	logging.Configure( logcfg_uri, debugLevel, ctx );
 
-        final Resource resource_i = clazz.newInstance();
+        final Resource resource_i = clazz.getDeclaredConstructor().newInstance();
         final CF.Resource resource = resource_i.setup(identifier, nameBinding, profile, orb, rootpoa);
         String nic = "";
         if (execparams.containsKey("NIC")) {
@@ -1371,6 +1340,7 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
      * @param execparams Map of component execparam values
      * @param orb CORBA ORB instance for contacting SCA FileSystem (if LOGGING_CONFIG_URI is an SCA URI)
      */
+    @Deprecated
     protected static void configureLogging(final Map<String, String> execparams, final org.omg.CORBA.ORB orb) {
 	// Sets up the logging
 	String loggingConfigURI = null;
@@ -1429,7 +1399,7 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
 	CF.OctetSequenceHolder data = new CF.OctetSequenceHolder ();
 	try {
 	    CF.File remoteFile = fileSystem.open(remotePath, true);
-	    int size = remoteFile.sizeOf();
+	    long size = remoteFile.sizeOf();
 	    remoteFile.read(data, size);
 
 	    String tempPath = remotePath;

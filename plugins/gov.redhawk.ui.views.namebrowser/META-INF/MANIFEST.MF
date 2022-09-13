@@ -17,6 +17,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Plugin-Class: gov.redhawk.ui.views.namebrowser.NameBrowserPlugin
 Bundle-Vendor: %Bundle-Vendor
+Import-Package: org.omg.CORBA_2_5
 Export-Package: gov.redhawk.ui.views.namebrowser,
  gov.redhawk.ui.views.namebrowser.internal.command;x-internal:=true,
  gov.redhawk.ui.views.namebrowser.view,

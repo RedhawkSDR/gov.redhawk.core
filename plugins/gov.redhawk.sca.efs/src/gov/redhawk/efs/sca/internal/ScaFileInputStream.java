@@ -98,11 +98,11 @@ public class ScaFileInputStream extends InputStream {
 	@Override
 	public int available() throws IOException {
 		try {
-			final int value = this.file.sizeOf();
+			final long value = this.file.sizeOf();
 			if (value < 0) {
 				return Integer.MAX_VALUE;
 			} else {
-				return value;
+				return new Long(value).intValue();
 			}
 		} catch (final FileException e) {
 			IOException ex = new IOException(e.getMessage() + ": " + e.msg);
