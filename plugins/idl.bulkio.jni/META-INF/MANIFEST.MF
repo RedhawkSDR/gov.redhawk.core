@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: BulkIO JNI
 Bundle-SymbolicName: idl.bulkio.jni
-Bundle-Version: 2.2.10.qualifier
+Bundle-Version: 2.2.11.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: idl.bulkio;bundle-version="2.2.0";visibility:=reexport,
  idl.cf.jni;bundle-version="2.2.0";visibility:=reexport
